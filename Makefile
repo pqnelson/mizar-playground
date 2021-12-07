@@ -1,0 +1,3 @@
+
+all:
+	mizf text/tmp

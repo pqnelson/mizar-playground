@@ -1,0 +1,257 @@
+:: Characteristic Subgroups.
+::  by Alex Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
+
+environ
+
+ vocabularies STRUCT_0, GROUP_1, GROUP_2, SUBSET_1, GROUP_4, MSSUBFAM,
+      GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_2, FUNCT_1,
+      XBOOLE_0, BINOP_1, ALGSTR_0, ZFMISC_1, REALSET1, GROUP_5,
+      WELLORD1, TMP;
+
+notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, REALSET1, RELAT_1,
+      FUNCT_1, RELSET_1, PARTFUN1, FUNCT_2, STRUCT_0, ALGSTR_0,
+      FUNCOP_1, BINOP_1, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
+      GROUP_6, GRSOLV_1;
+
+constructors RELAT_2, PARTFUN1, GROUP_2, BINOP_1, FUNCOP_1, REALSET1,
+      GROUP_4, GROUP_5, GROUP_6, RELSET_1, GRSOLV_1;
+
+registrations XBOOLE_0, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, STRUCT_0,
+  GROUP_1, GROUP_2, GROUP_3, GROUP_6;
+
+ requirements SUBSET, BOOLE;
+ definitions FUNCT_1, TARSKI, FUNCT_2;
+ equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
+ expansions BINOP_1, FUNCT_2;
+ theorems FUNCT_1, FUNCT_2, GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6,
+      REALSET1, RELAT_1, ZFMISC_1, XBOOLE_0, STRUCT_0, GRSOLV_1;
+ schemes BINOP_1, FUNCT_2;
+
+begin
+
+reserve G,G1,G2 for strict Group;
+reserve H for Subgroup of G;
+reserve f for Homomorphism of G, G;
+reserve x for object;
+
+reserve X for object;
+
+:: GROUP_6:31 proves, if f is Homomorphism of G,H, then f.(1_G) = 1_H
+theorem Th1:
+  Image (f|(1).G) = (1).G
+proof
+  set H = f .: ((1).G);
+A1:  H = (1).G by GRSOLV_1:11;
+A2:  H = Image(f|(1).G) by GRSOLV_1:def 3;
+  thus Image (f|(1).G) = (1).G by A1,A2;
+end;
+
+theorem Th2:
+  (1).G is Subgroup of (1).G
+proof
+  thus thesis by GROUP_2:54;
+end;
+
+definition
+  let G1,G2;
+  let f be Homomorphism of G1,G2;
+  attr f is bijective means
+  :Def1:
+  f is one-to-one onto;
+end;
+
+registration
+  let G;
+  cluster bijective for Homomorphism of G,G;
+  existence
+  proof
+    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
+    i is bijective;
+    hence thesis;
+  end;
+end;
+
+definition :: Def2
+  let G;
+  mode Endomorphism of G is Homomorphism of G,G;
+end;
+
+registration
+  let G;
+  cluster bijective for Endomorphism of G;
+  existence
+  proof
+    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
+    i is bijective;
+    hence thesis;
+  end;
+end;
+
+definition :: Def3
+  let G;
+  mode Automorphism of G is bijective Endomorphism of G;
+end;
+
+:: In particular, the trivial proper subgroup (1).G of G is invariant
+:: under inner automorphisms, and thus is a characteristic subgroup.
+theorem Th3:
+  for f being Automorphism of G
+  holds Image(f|(1).G) is Subgroup of (1).G
+proof
+  let phi be Automorphism of G;
+  set G0 = Image(phi|(1).G);
+  Image(phi|(1).G) = (1).G by Th1;
+  (1).G is Subgroup of (1).G by GROUP_2:54;
+  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
+end;
+
+reserve a,b,x for Element of G;
+
+:: This should really be a lemma
+theorem Th4:
+  id the carrier of G is Homomorphism of G,G
+proof
+  thus thesis by GROUP_6:38;
+end;
+
+reserve Id1, Id2 for Endomorphism of G;
+reserve x for Element of G;
+
+definition :: Def3
+  let G;
+  func Id_G -> Endomorphism of G means
+  :Def3:
+  for x being Element of G holds it.x=x;
+  existence
+  proof
+    reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
+    i.x = x by FUNCT_1:17;
+    hence thesis;
+  end;
+  uniqueness
+  proof
+    let Id1, Id2 be Endomorphism of G such that
+A2: for x being Element of G holds Id1.x=x and
+A3: for x being Element of G holds Id2.x=x;
+    let x be Element of G;
+    thus A7: Id1.x = x by A2
+                  .= Id2.x by A3;
+    Id1.x=Id2.x by A7, A2, A3; 
+    thus thesis by A7,FUNCT_2:12;
+  end;
+end;
+
+reserve x,y for Element of G;
+reserve X for set;
+
+Lm1: for x being Element of X holds (id X).x=x;
+
+theorem Th5:
+  Id_G = id (the carrier of G)
+proof
+A1: for x being Element of G holds (Id_G).x=x by Def3;
+A2: for x being Element of G holds (id (the carrier of G)).x=x
+    by RELAT_1:def 8,Lm1;
+  let x be Element of G;
+  thus A3: (Id_G).x = x by A1
+                   .= (id (the carrier of G)).x by A2;
+  then (Id_G).x = (id (the carrier of G)).x by A1,A2;
+  thus thesis by A3,FUNCT_2:12;
+end;
+
+theorem Th6:
+  Id_G is Automorphism of G
+proof
+  :: need to prove it is bijective
+end;
+
+definition :: Def5
+  let G be strict Group, f be Automorphism of G;
+  attr f is inner means
+  :Def4:
+  ex a being Element of G st
+  for x being Element of G holds f.x = x |^ a;
+end;
+
+notation
+  let G be strict Group, f be Automorphism of G;
+  antonym f is outer for f is inner;
+end;
+
+theorem Th7
+  Id_G is inner;
+
+registration
+  let G;
+  cluster inner for Automorphism of G;
+  existence
+  proof
+    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
+::    thus i
+    hence i is Automorphism of G;
+::>     *164,51
+  end;
+end;
+
+reserve N for normal Subgroup of G;
+
+theorem
+  H is normal implies for f being inner Automorphism of G holds
+  Image(f|H) = H
+proof
+  assume A1: H is normal;
+  let f be inner Automorphism of G;
+  then consider a being Element of G such that for x holds f.x = x |^ a
+::>  *164
+  by Def4;
+  then H |^ a = H by A1,GROUP_3:def 13;
+::>  *164
+  hence Image(f|H) = H;
+::>                  *4
+end;
+
+
+definition :: Def6
+  let G;
+  let IT be Subgroup of G;
+  attr IT is characteristic means
+  :Def1:
+  for f being Automorphism of G
+  holds Image (f|IT) is Subgroup of IT;
+end;
+
+registration
+  let G;
+  cluster characteristic for Subgroup of G;
+  existence
+  proof
+    take H = (1).G;
+    for f being Automorphism of G
+    holds Image (f|H) is Subgroup of H by Th3;
+    then H is characteristic by Def1;
+    hence thesis;
+  end;
+end;
+
+reserve K for characteristic Subgroup of G;
+:: "K" for "Karacteristic"...uh, wait...
+
+registration
+  let G;
+  cluster characteristic -> normal for Subgroup of G;
+::>     *73
+end;
+
+::>
+::> 4: This inference is not accepted
+::> 51: Invalid conclusion
+::> 73: Correctness condition missing
+::> 164: Nothing to link

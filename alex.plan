@@ -1,0 +1,57 @@
+<!--- -*- mode: Markdown; var: -*- -->
+# 2021-12-07T09:03:50
+
+I am just jotting my thoughts and findings down as I go along. This file
+could be viewed as a "blog" specific to this experiment.
+
+My first milestone will be to define a "characteristic subgroup". I
+never learned this as an undergraduate, and I don't recall seeing it in
+graduate algebra courses. Basically: a subgroup H of G is characteristic
+if H is invariant under every automorphism of G.
+
+Thus I need a notion of automorphism of a group. This would appear to be
+done in `AUTGROUP.MIZ`, but that article unwisely chose to define `Aut G` 
+as the collection of bijective functions on the underlying set of G.
+Instead, I want an automorphism to be a bijective group endomorphism.
+
+Once I have this notion well-defined, I can introduce an _attribute_
+`characteristic` of `Subgroup`. Then, as I understand it, I need to
+register the attribute as a cluster, so I can write things like 
+`let H be characteristic Subgroup of G`.
+
+In Mizar, defining an attribute requires proving at least one object
+exists with it. This is easy for a characteristic subgroup: the trivial
+group is characteristic. The first few theorems are written with this in
+mind. 
+
+## Problem: `id G` cannot be obviously redefined as Homomorphism of G,G
+
+**Problem:** I want to have `id G` be the identity group morphism
+$id\colon G\to G$, but...that's hard to do? When I try `redefine func id`,
+proving `coherence` is obvious to me but not to Mizar, and it's unclear
+what the goal is:
+
+```mizar
+definition :: Def4
+  let G;
+  redefine func id G -> Homomorphism of G,G;
+  coherence
+  proof
+  :: ???
+  end;
+end;
+```
+
+**Hacky Solution:** I introduced an identity morphism `Id_G`. I proved
+`Id_G = id (the carrier of G)` in theorem 5. It's totally unclear to me
+how to take advantage of this.
+
+## Current Road map
+
+**TODO List:**
+- [ ] Prove `Id_G` is an Automorphism of G (Th6)
+- [ ] Prove `Id_G` is an inner Automorphism of G (Th7)
+- [ ] Prove normal subgroups are invariant under inner automorphisms
+  - It seems like either (a) it may be useful to define a notion of
+    invariance, or (b) it will be a huge detour
+- [ ] Prove characteristic subgroups are normal
