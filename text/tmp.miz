@@ -11,56 +11,62 @@
 
 environ
 
- vocabularies STRUCT_0, GROUP_1, GROUP_2, SUBSET_1, GROUP_4, MSSUBFAM,
-      GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_2, FUNCT_1,
-      XBOOLE_0, BINOP_1, BINOP_2, ALGSTR_0, ZFMISC_1, REALSET1, GROUP_5,
-      NUMBERS, WELLORD1, TMP;
+ vocabularies STRUCT_0, GROUP_1, GROUP_2, GROUP_3, SUBSET_1, GROUP_4,
+   MSSUBFAM, GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_1,
+   FUNCT_2, XBOOLE_0, BINOP_1, BINOP_2, ALGSTR_0, ZFMISC_1, REALSET1,
+   GROUP_5, NUMBERS, WELLORD1, TMP;
 
 notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, REALSET1, RELAT_1,
-      FUNCT_1, RELSET_1, PARTFUN1, FUNCT_2, STRUCT_0, ALGSTR_0,
-      FUNCOP_1, BINOP_1, BINOP_2, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
-      NUMBERS, GROUP_6, GRSOLV_1;
+  FUNCT_1, RELSET_1, PARTFUN1, FUNCT_2, STRUCT_0, ALGSTR_0,
+  FUNCOP_1, BINOP_1, BINOP_2, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
+  NUMBERS, GROUP_6, GRSOLV_1;
 
-constructors RELAT_2, PARTFUN1, GROUP_2, BINOP_1, BINOP_2, FUNCOP_1, REALSET1,
-      GROUP_4, GROUP_5, NUMBERS, GROUP_6, RELSET_1, GRSOLV_1;
+constructors TARSKI, RELAT_2, PARTFUN1, GROUP_2, BINOP_1, BINOP_2,
+  FUNCOP_1, FUNCT_2, REALSET1, GROUP_4, GROUP_5, NUMBERS, GROUP_6,
+  RELSET_1, GRSOLV_1;
 
-registrations XBOOLE_0, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, STRUCT_0,
-  GROUP_1, GROUP_2, GROUP_3, GROUP_6;
+registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+  STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
 
  requirements SUBSET, BOOLE;
  definitions FUNCT_1, TARSKI, FUNCT_2;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
- theorems FUNCT_1, FUNCT_2, GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6,
-      REALSET1, RELAT_1, ZFMISC_1, XBOOLE_0, STRUCT_0, GRSOLV_1;
+ theorems TARSKI_0, TARSKI, FUNCT_1, FUNCT_2, GROUP_1, GROUP_2, GROUP_3,
+   GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1, XBOOLE_0, STRUCT_0,
+   GRSOLV_1;
  schemes BINOP_1, FUNCT_2;
 
-begin
 
-reserve G,G1,G2 for strict Group;
+begin :: preparatory work
+reserve X for set;
+reserve x, y for Element of X;
+
+registration
+  let X;
+  cluster id X -> onto;
+  coherence;
+end;
+
+registration
+  let X;
+  cluster id X -> bijective;
+  coherence;
+end;
+
+
+
+
+begin :: the main work
+
+reserve G,G1,G2 for Group;
 reserve H for Subgroup of G;
+reserve N for normal Subgroup of G;
 reserve f for Homomorphism of G, G;
-reserve x for object;
+reserve a,b,x,y for Element of G;
+reserve X for set;
 
-reserve X for object;
-
-:: GROUP_6:31 proves, if f is Homomorphism of G,H, then f.(1_G) = 1_H
-theorem Th1:
-  Image (f|(1).G) = (1).G
-proof
-  set H = f .: ((1).G);
-A1:  H = (1).G by GRSOLV_1:11;
-A2:  H = Image(f|(1).G) by GRSOLV_1:def 3;
-  thus Image (f|(1).G) = (1).G by A1,A2;
-end;
-
-theorem Th2:
-  (1).G is Subgroup of (1).G
-proof
-  thus thesis by GROUP_2:54;
-end;
-
-definition
+definition :: Def1
   let G1,G2;
   let f be Homomorphism of G1,G2;
   attr f is bijective means
@@ -100,35 +106,33 @@ definition :: Def3
   mode Automorphism of G is bijective Endomorphism of G;
 end;
 
+theorem Th1:
+  Image (f|(1).G) = (1).G
+proof
+  set H = f .: ((1).G);
+A1:  H = (1).G by GRSOLV_1:11;
+A2:  H = Image(f|(1).G) by GRSOLV_1:def 3;
+  thus Image (f|(1).G) = (1).G by A1,A2;
+end;
+
 :: In particular, the trivial proper subgroup (1).G of G is invariant
 :: under inner automorphisms, and thus is a characteristic subgroup.
-theorem Th3:
+theorem Th2:
   for f being Automorphism of G
   holds Image(f|(1).G) is Subgroup of (1).G
 proof
   let phi be Automorphism of G;
-  set G0 = Image(phi|(1).G);
   Image(phi|(1).G) = (1).G by Th1;
   (1).G is Subgroup of (1).G by GROUP_2:54;
   hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
 end;
 
-reserve a,b,x for Element of G;
-
-:: This should really be a lemma
-theorem Th4:
-  id the carrier of G is Homomorphism of G,G
-proof
-  thus thesis by GROUP_6:38;
-end;
-
 reserve Id1, Id2 for Endomorphism of G;
-reserve x for Element of G;
 
-definition :: Def3
+definition :: Def4
   let G;
   func Id_G -> Endomorphism of G means
-  :Def3:
+  :Def4:
   for x being Element of G holds it.x=x;
   existence
   proof
@@ -149,85 +153,134 @@ A3: for x being Element of G holds Id2.x=x;
   end;
 end;
 
-reserve x,y for Element of G;
-reserve X for set;
 
-Lm1: for x being Element of X holds (id X).x=x;
-
-theorem Th5:
+theorem Th3:
   Id_G = id (the carrier of G)
 proof
-A1: for x being Element of G holds (Id_G).x=x by Def3;
-A2: for x being Element of G holds (id (the carrier of G)).x=x
-    by RELAT_1:def 8,Lm1;
+A1: for x being Element of X holds (id X).x=x;
+A2: for x being Element of G holds (Id_G).x=x by Def4;
+A3: for x being Element of G holds (id (the carrier of G)).x=x
+    by RELAT_1:def 8,A1;
   let x be Element of G;
-  thus A3: (Id_G).x = x by A1
-                   .= (id (the carrier of G)).x by A2;
-  then (Id_G).x = (id (the carrier of G)).x by A1,A2;
-  thus thesis by A3,FUNCT_2:12;
+  thus A4: (Id_G).x = x by A2
+                   .= (id (the carrier of G)).x by A3;
+  then (Id_G).x = (id (the carrier of G)).x by A2,A3;
+  thus thesis by A4,FUNCT_2:12;
 end;
 
-theorem Th6:
-  Id_G is Automorphism of G
-  :: need to prove it is bijective
-@proof end;
-::>,203,396
+Lm1: Id_G is one-to-one
+proof
+  id (the carrier of G) is one-to-one;
+  hence thesis by Th3;
+end;
 
-Lm2: Id_G is Automorphism of G @proof end;
-::>                            *203 *396
+Lm2: Id_G is onto
+proof
+  id (the carrier of G) is onto;
+  hence thesis by Th3;
+end;
+
+theorem Th4:
+  Id_G is Automorphism of G
+proof
+  Id_G is bijective by Lm1, Lm2;
+  hence thesis;
+end;
+
+theorem Th5:
+  for x being Element of G holds (Id_G).x = x |^ 1_G
+proof
+  let x;
+  (Id_G).x = x by Def4
+          .= x |^ 1_G by GROUP_3:19;
+  hence thesis;
+end;
 
 definition :: Def5
-  let G be strict Group, f be Automorphism of G;
-  attr f is inner means
-  :Def4:
+  let G;
+  let IT be Automorphism of G;
+  attr IT is inner means
+  :Def5:
   ex a being Element of G st
-  for x being Element of G holds f.x = x |^ a;
+  for x being Element of G holds IT.x = x |^ a;
 end;
 
 notation
-  let G be strict Group, f be Automorphism of G;
+  let G be Group, f be Automorphism of G;
   antonym f is outer for f is inner;
 end;
 
-theorem Th7:
-  Id_G is inner @proof end;
-::>           *106,203*396
-
+:: The only hint at what's going on is a redefinition is needed,
+:: according to "Towards Standard Environments for Formalizing Mathematics"
+:: by  Grabowski and Schwarzweller (see esp. page 7)
+:: https://inf.ug.edu.pl/~schwarzw/papers/6pcm.pdf
 registration
   let G;
   cluster inner for Automorphism of G;
   existence
   proof
-    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
-::    thus i
-    hence i is Automorphism of G;
-::>     *164,51
+A1: ex a st for x being Element of G holds (Id_G).x = x |^ a
+    proof
+      take 1_G;
+      for x being Element of G holds (Id_G).x = x |^ 1_G by Th5,Def5;
+      hence thesis;
+    end;
+    then Id_G is inner;
+::>                  *106
+    hence thesis;
   end;
 end;
 
-reserve N for normal Subgroup of G;
-
-theorem
-  H is normal implies for f being inner Automorphism of G holds
-  Image(f|H) = H
+:: TODO: make this an "iff"
+theorem Th55:
+  N is strict normal Subgroup of G implies (for a holds N |^ a = N)
 proof
-  assume A1: H is normal;
-  let f be inner Automorphism of G;
-  then consider a being Element of G such that for x holds f.x = x |^ a
-::>  *164
-  by Def4;
-  then H |^ a = H by A1,GROUP_3:def 13;
-::>  *164
-  hence Image(f|H) = H;
-::>                  *4
+  assume A1: N is strict normal Subgroup of G;
+  let a;
+  set H = N |^ a;
+  thus H = N
+  proof
+A2:  H in con_class N by A1,GROUP_3:108;
+A3:  con_class N = {N} by A1, GROUP_3:123;
+     hence H = N by A2,TARSKI:def 1;
+  end;
+  hence thesis;
 end;
 
+:: TODO: add lemma that `f inner implies ex g st Image(f|H) = H |^ g`
+theorem Th6:
+  H is strict normal implies for f being inner Automorphism of G holds
+  Image(f|H) = H
+proof
+  assume
+A1: H is strict normal;
+  let f be inner Automorphism of G;
+  consider a being Element of G such that
+A2: for x holds f.x = x |^ a
+  by Def5;
+  H |^ a = H by A1,A2,GROUP_3:def 13,Th55;
+  hence Image(f|H) = H by GROUP_6:def 10;
+::>                     *4
+end;
+
+theorem Th7:
+  for f being inner Automorphism of G st Image(f|H) = H holds
+  H is normal
+proof
+  let f be inner Automorphism of G;
+  assume A1: Image(f|H) = H;
+  consider a such that for x holds f.x = x |^ a by Def5;
+  H |^ a = H by A1,GROUP_3:def 15;
+::>           *4
+  hence H is normal;
+::>               *4
+end;
 
 definition :: Def6
   let G;
   let IT be Subgroup of G;
   attr IT is characteristic means
-  :Def1:
+  :Def6:
   for f being Automorphism of G
   holds Image (f|IT) is Subgroup of IT;
 end;
@@ -239,8 +292,8 @@ registration
   proof
     take H = (1).G;
     for f being Automorphism of G
-    holds Image (f|H) is Subgroup of H by Th3;
-    then H is characteristic by Def1;
+    holds Image (f|H) is Subgroup of H by Th2;
+    then H is characteristic by Def6;
     hence thesis;
   end;
 end;
@@ -251,13 +304,19 @@ reserve K for characteristic Subgroup of G;
 registration
   let G;
   cluster characteristic -> normal for Subgroup of G;
-::>     *73
+  coherence
+  proof
+    :: thus for H being Subgroup of G st H is characteristic holds H is normal;
+    let H be Subgroup of G;
+    assume A1: H is characteristic;
+    for f being inner Automorphism of G holds Image(f|H) = H by A1,Def6;
+::>                                                           *4
+    hence H is normal by A1,Def6,Th7;
+::>                    *4
+    :: for H being characteristic Subgroup of G holds H is normal
+    hence thesis;
+  end;
 end;
 
 ::> 4: This inference is not accepted
-::> 51: Invalid conclusion
-::> 73: Correctness condition missing
 ::> 106: Unknown attribute
-::> 164: Nothing to link
-::> 203: Unknown token, maybe an illegal character used in an identifier
-::> 396: Formula expected
