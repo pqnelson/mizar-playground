@@ -180,6 +180,11 @@ proof
   hence thesis by Th3;
 end;
 
+registration let G;
+  cluster Id_G -> bijective;
+  coherence by Lm1,Lm2;
+end;
+
 theorem Th4:
   Id_G is Automorphism of G
 proof
@@ -210,10 +215,6 @@ notation
   antonym f is outer for f is inner;
 end;
 
-:: The only hint at what's going on is a redefinition is needed,
-:: according to "Towards Standard Environments for Formalizing Mathematics"
-:: by  Grabowski and Schwarzweller (see esp. page 7)
-:: https://inf.ug.edu.pl/~schwarzw/papers/6pcm.pdf
 registration
   let G;
   cluster inner for Automorphism of G;
@@ -226,7 +227,6 @@ A1: ex a st for x being Element of G holds (Id_G).x = x |^ a
       hence thesis;
     end;
     then Id_G is inner;
-::>                  *106
     hence thesis;
   end;
 end;
@@ -319,4 +319,3 @@ registration
 end;
 
 ::> 4: This inference is not accepted
-::> 106: Unknown attribute
