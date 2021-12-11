@@ -1,0 +1,54 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{tutmac}[2021/12/11 Mizar Tutorial Macros Package]
+
+\RequirePackage{ifpdf}
+\RequirePackage{noweb}
+\RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc]{geometry}
+\RequirePackage{amssymb,amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{bm}
+\RequirePackage[nottoc,notlot,notlof]{tocbibind}
+\ifpdf
+\RequirePackage[hidelinks]{hyperref}
+\else
+\RequirePackage[hidelinks,dvipdfmx]{hyperref}
+\fi
+\noweboptions{english}
+
+
+
+% theorems
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lemma}[thm]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{note}[thm]{Note}
+
+
+
+% adjust whitespace between code chunks
+% https://www.cs.tufts.edu/~nr/noweb/FAQ.html
+\def\nwendcode{\endtrivlist \endgroup \vfil\penalty10\vfilneg}
+\let\nwdocspar=\smallbreak
+
+
+% avoid making the page numbers reset in mainmatter
+% https://tex.stackexchange.com/a/61473/14751
+\def\pagenumbering#1{%
+  %\global\c@page \@ne
+  \gdef\thepage{\csname @#1\endcsname
+   \c@page}}
+
+
+\def\define#1{\textbf{``#1''}}
+
+
+\endinput
