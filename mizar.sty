@@ -1,0 +1,65 @@
+\ProvidesPackage{mizar}[2021/12/11 Mizar Syntax Highlighting]
+
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{ghBlue}{HTML}{0550ae} % rgb(5, 80, 174)
+\definecolor{ghPurple}{HTML}{8250df} % rbg(130, 80, 223)
+\definecolor{ghRed}{HTML}{cf222e}  % rbg(207, 34, 46)
+\definecolor{ghRed2}{HTML}{953800}  % rgb(149, 56, 0)
+% orange from https://github.com/sellout/emacs-color-theme-solarized
+\definecolor{solOrange}{HTML}{fb7640}
+\def\defaultCommentStyle{\color{gray}}
+
+
+% hack from https://tex.stackexchange.com/a/536920/14751
+\newcommand\beginlstdelim[3]{%
+    \def\endlstdelim{#2\egroup}%
+    \textcolor{#3}{#1}\bgroup\color{#3}\aftergroup\endlstdelim%
+}
+
+\lstdefinelanguage{mizar}%
+{
+  alsoletter={\&,^,\\,-},
+  morekeywords=[0]{->,(\#,\#),.=)},
+  moredelim = **[is][{\beginlstdelim{\ by}{;}{solOrange}}]{\ by}{;},
+  moredelim = **[is][{\beginlstdelim{from}{;}{solOrange}}]{from}{;},
+  morekeywords=[1]{vocabulary,constructors,%
+    according,aggregate,and,antonym,as,associativity,assume,%
+    asymmetry,attr,be,begin,canceled,case,cases,cluster,%
+    clusters,coherence,commutativity,compatibility,connectedness,%
+    consider,consistency,constructors,contradiction,correctness,def,%
+    deffunc,define,definition,definitions,defpred,environ,equals,%
+    exactly,existence,func,given,hence,hereby,%
+    idempotence,if,involutiveness,irreflexivity,is,it,%
+    let,means,mode,non,notation,of,or,otherwise,over,per,%
+    pred,prefix,projectivity,provided,qua,reconsider,redefine,%
+    reflexivity,requirements,reserve,scheme,schemes,section,selector,%
+    set,struct,such,symmetry,synonym,take,that,the,then,%
+    theorem,theorems,thesis,thus,to,transitivity,uniqueness,%
+    vocabulary,where},%
+  keywordstyle=[1]{\color{ghBlue}},
+  morekeywords=[2]{proof,@proof,end,now,suppose},
+  keywordstyle=[2]{\color{ghRed2}},
+  morekeywords=[3]{\&,being,iff,implies,ex,st,for,holds,not},
+  keywordstyle=[3]{\color{ghPurple}},
+  morekeywords=[4]{$1,$1,$2,$3,$4,$5,$6,$7,$8},
+  morekeywords=[5]{;},
+  keywordstyle=[5]{\color{black}},
+  commentstyle=\defaultCommentStyle,
+  sensitive=t,%
+  morecomment=[l]::%
+}
+
+\lstnewenvironment{litmizar}%
+                  {\lstset{language=mizar,
+                      basicstyle=\ttfamily,
+                      upquote=true,
+                      literate={c=}{$\subseteq$}2}}%
+                  {}
+
+\lstnewenvironment{mizar}[1][]%
+                  {\lstset{language=mizar,
+                      basicstyle=\ttfamily,
+                      upquote=true}}%
+                  {}
