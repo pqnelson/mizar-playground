@@ -11,7 +11,9 @@
 
 environ
 
- vocabularies STRUCT_0, GROUP_1, GROUP_2, GROUP_3, SUBSET_1, GROUP_4,
+ vocabularies RING_3, :: for MIsomorphism
+   MOD_4, :: for Endomorphism, Automorphism
+   AUTGROUP, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, SUBSET_1, GROUP_4,
    MSSUBFAM, GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_1,
    FUNCT_2, XBOOLE_0, BINOP_1, BINOP_2, ALGSTR_0, ZFMISC_1, REALSET1,
    GROUP_5, NUMBERS, WELLORD1, TMP;
@@ -19,28 +21,27 @@ environ
 notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, REALSET1, RELAT_1,
   FUNCT_1, RELSET_1, PARTFUN1, FUNCT_2, STRUCT_0, ALGSTR_0,
   FUNCOP_1, BINOP_1, BINOP_2, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
-  NUMBERS, GROUP_6, GRSOLV_1;
+  NUMBERS, GROUP_6, GRSOLV_1, AUTGROUP;
 
 constructors TARSKI, RELAT_2, PARTFUN1, GROUP_2, BINOP_1, BINOP_2,
   FUNCOP_1, FUNCT_2, REALSET1, GROUP_4, GROUP_5, NUMBERS, GROUP_6,
-  RELSET_1, GRSOLV_1;
+  RELSET_1, GRSOLV_1, AUTGROUP;
 
 registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
 
  requirements SUBSET, BOOLE;
- definitions FUNCT_1, TARSKI, FUNCT_2;
+ definitions FUNCT_1, TARSKI, FUNCT_2, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
  theorems TARSKI_0, TARSKI, FUNCT_1, FUNCT_2, GROUP_1, GROUP_2, GROUP_3,
    GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1, XBOOLE_0, STRUCT_0,
-   GRSOLV_1;
+   GRSOLV_1, AUTGROUP;
  schemes BINOP_1, FUNCT_2;
 
 
 begin :: preparatory work
 reserve X for set;
-reserve x, y for Element of X;
 
 registration
   let X;
@@ -66,14 +67,6 @@ reserve f for Homomorphism of G, G;
 reserve a,b,x,y for Element of G;
 reserve X for set;
 
-definition :: Def1
-  let G1,G2;
-  let f be Homomorphism of G1,G2;
-  attr f is bijective means
-  :Def1:
-  f is one-to-one onto;
-end;
-
 registration
   let G;
   cluster bijective for Homomorphism of G,G;
@@ -85,7 +78,7 @@ registration
   end;
 end;
 
-definition :: Def2
+definition :: Def1
   let G;
   mode Endomorphism of G is Homomorphism of G,G;
 end;
@@ -101,7 +94,7 @@ registration
   end;
 end;
 
-definition :: Def3
+definition :: Def2
   let G;
   mode Automorphism of G is bijective Endomorphism of G;
 end;
@@ -129,10 +122,10 @@ end;
 
 reserve Id1, Id2 for Endomorphism of G;
 
-definition :: Def4
+definition :: Def3
   let G;
   func Id_G -> Endomorphism of G means
-  :Def4:
+  :Def3:
   for x being Element of G holds it.x=x;
   existence
   proof
@@ -148,7 +141,7 @@ A3: for x being Element of G holds Id2.x=x;
     let x be Element of G;
     thus A7: Id1.x = x by A2
                   .= Id2.x by A3;
-    Id1.x=Id2.x by A7, A2, A3; 
+    Id1.x=Id2.x by A7, A2, A3;
     thus thesis by A7,FUNCT_2:12;
   end;
 end;
@@ -158,7 +151,7 @@ theorem Th3:
   Id_G = id (the carrier of G)
 proof
 A1: for x being Element of X holds (id X).x=x;
-A2: for x being Element of G holds (Id_G).x=x by Def4;
+A2: for x being Element of G holds (Id_G).x=x by Def3;
 A3: for x being Element of G holds (id (the carrier of G)).x=x
     by RELAT_1:def 8,A1;
   let x be Element of G;
@@ -196,7 +189,7 @@ theorem Th5:
   for x being Element of G holds (Id_G).x = x |^ 1_G
 proof
   let x;
-  (Id_G).x = x by Def4
+  (Id_G).x = x by Def3
           .= x |^ 1_G by GROUP_3:19;
   hence thesis;
 end;
@@ -230,6 +223,82 @@ A1: ex a st for x being Element of G holds (Id_G).x = x |^ a
     hence thesis;
   end;
 end;
+
+definition :: Def6
+  let G1,G2 be Group;
+  attr G2 is G1-isomorphic means :Def6:
+  G1,G2 are_isomorphic;
+end;
+
+registration
+  let G1 be Group;
+  cluster G1-isomorphic for Group;
+  existence
+  proof
+    take G1;
+    reconsider i = id (the carrier of G1) as Homomorphism of G1,G1
+    by GROUP_6:38;
+    thus thesis;
+  end;
+end;
+
+:: Reflexivity
+Lm3: for G being Group holds G is G-isomorphic
+proof
+  let G be Group;
+  G,G are_isomorphic;
+  thus thesis;
+end;
+
+Lm4:
+  for G2 being G1-isomorphic Group
+  holds (ex h being Homomorphism of G1,G2 st h is bijective)
+proof
+  let G2 be G1-isomorphic Group;
+A1: G1,G2 are_isomorphic by Def6;
+  then consider h being Homomorphism of G1,G2 such that
+A2: h is bijective by GROUP_6:def 11;
+  thus thesis by A2;
+end;
+
+registration
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  cluster bijective for Homomorphism of G1,G2;
+  existence by Lm4;
+end;
+
+reserve h for Homomorphism of G, G;
+
+definition
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
+end;
+
+theorem Th60:
+  for G being strict Group, f being Endomorphism of G
+  holds (f in Aut G) iff (f is Automorphism of G)
+proof
+  let G be strict Group;
+  let f be Endomorphism of G;
+  thus f in Aut G implies f is Automorphism of G
+  proof
+    assume f in Aut G;
+    then f is bijective by AUTGROUP:def 1;
+    hence f is Automorphism of G;
+  end;
+  thus f is Automorphism of G implies f in Aut G
+  proof
+    assume f is Automorphism of G;
+    then f is bijective;
+    then f is one-to-one & f is onto;
+    hence f in Aut G by AUTGROUP:def 1;
+  end;
+  thus thesis;
+end;
+
+
 
 :: TODO: make this an "iff"
 theorem Th55:
@@ -317,5 +386,4 @@ registration
     hence thesis;
   end;
 end;
-
 ::> 4: This inference is not accepted
