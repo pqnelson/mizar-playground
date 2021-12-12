@@ -125,3 +125,46 @@ something like this is:
   [PDF](https://inf.ug.edu.pl/~schwarzw/papers/6pcm.pdf), page 7.
   
 And even then, I am uncertain how to remedy my problem.
+
+# 2021-12-09T11:38:14
+
+The starting point for anyone interested in formalizing groups in Mizar
+would be familiarizing yourself with `struct_0.miz` and possibly
+`algstr_0.miz`. One confusing thing: the terminology uses antiquated
+notions like "loops", etc. Apparently these terms Mizar uses, well, they
+come from:
+
+- Wanda Szmielew, _From Affine to Euclidean Geometry_
+
+A loop is a unital magma with division. It is **not** a group, because
+we do not require associativity. (The term "loop" does not seem to
+appear in Bourbaki's _Algebra_, at least not the English translation.)
+
+------
+
+I have been mulling over the notion of "literate formal mathematics",
+and I think something like `noweb` would fit the bill. I don't know if I
+agree with the procedural theorem proving community that "just inserting
+comments stating what the goal is at each step" qualifies...because,
+well, how am I supposed to know _why_ you defined `lpStrGrMgm` to be
+whatever?
+
+In this regard, Knuth was right in arguing presenting the material twice
+(once informally, the second time formally). Even with declarative proof
+styles, like Mizar, I am finding myself writing notes to remind myself
+_why_ a mode or functor was defined the way to it was. It would be
+useful to bundle these notes together with the code, but as
+comments...that isn't the correct way.
+
+And, being a boring stick-in-the-mud myself, I prefer Knuth's WEB style
+of numbered paragraphs with some English commentary in TeX, some "code
+snippet" in Mizar (or Coq or whatever), and so on.
+
+# 2021-12-09T13:49:41
+
+Adam Grabowski kindly helped me, pointing out I needed to register
+`Id_G` is bijective before I could start treating it like an
+Automorphism automatically. Dr Grabowski also pointed out the command
+line utility `checkvoc text/tmp` to determine if I am accidentally
+defining duplicate terms (like Isomorphism or Endomorphism). I really
+appreciate his help and kind feedback, it's really wonderful.
