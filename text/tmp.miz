@@ -34,9 +34,9 @@ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
  definitions FUNCT_1, TARSKI, FUNCT_2, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
- theorems TARSKI_0, TARSKI, FUNCT_1, FUNCT_2, GROUP_1, GROUP_2, GROUP_3,
-   GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1, XBOOLE_0, STRUCT_0,
-   GRSOLV_1, AUTGROUP;
+ theorems TARSKI_0, TARSKI, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
+   GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1,
+   XBOOLE_0, STRUCT_0, GRSOLV_1, AUTGROUP;
  schemes BINOP_1, FUNCT_2;
 
 
@@ -64,7 +64,9 @@ reserve G,G1,G2 for Group;
 reserve H for Subgroup of G;
 reserve N for normal Subgroup of G;
 reserve f for Homomorphism of G, G;
+reserve f0 for Homomorphism of G1, G2;
 reserve a,b,x,y for Element of G;
+reserve g1 for Element of G1;
 reserve X for set;
 
 registration
@@ -213,7 +215,7 @@ registration
   cluster inner for Automorphism of G;
   existence
   proof
-A1: ex a st for x being Element of G holds (Id_G).x = x |^ a
+A1: ex a being Element of G st for x being Element of G holds (Id_G).x = x |^ a
     proof
       take 1_G;
       for x being Element of G holds (Id_G).x = x |^ 1_G by Th5,Def5;
@@ -270,13 +272,13 @@ end;
 
 reserve h for Homomorphism of G, G;
 
-definition
+definition :: Def7
   let G1 be Group,
       G2 be G1-isomorphic Group;
   mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
 end;
 
-theorem Th60:
+theorem Th6:
   for G being strict Group, f being Endomorphism of G
   holds (f in Aut G) iff (f is Automorphism of G)
 proof
@@ -299,72 +301,121 @@ proof
 end;
 
 
-
-:: TODO: make this an "iff"
-theorem Th55:
-  N is strict normal Subgroup of G implies (for a holds N |^ a = N)
-proof
-  assume A1: N is strict normal Subgroup of G;
-  let a;
-  set H = N |^ a;
-  thus H = N
-  proof
-A2:  H in con_class N by A1,GROUP_3:108;
-A3:  con_class N = {N} by A1, GROUP_3:123;
-     hence H = N by A2,TARSKI:def 1;
-  end;
-  hence thesis;
-end;
-
-:: TODO: add lemma that `f inner implies ex g st Image(f|H) = H |^ g`
-theorem Th6:
-  H is strict normal implies for f being inner Automorphism of G holds
-  Image(f|H) = H
-proof
-  assume
-A1: H is strict normal;
-  let f be inner Automorphism of G;
-  consider a being Element of G such that
-A2: for x holds f.x = x |^ a
-  by Def5;
-  H |^ a = H by A1,A2,GROUP_3:def 13,Th55;
-  hence Image(f|H) = H by GROUP_6:def 10;
-::>                     *4
-end;
+reserve H1,H2 for strict Subgroup of G;
 
 theorem Th7:
-  for f being inner Automorphism of G st Image(f|H) = H holds
-  H is normal
+  (for a holds H |^ a = H) implies H is normal Subgroup of G
 proof
-  let f be inner Automorphism of G;
-  assume A1: Image(f|H) = H;
-  consider a such that for x holds f.x = x |^ a by Def5;
-  H |^ a = H by A1,GROUP_3:def 15;
-::>           *4
-  hence H is normal;
-::>               *4
+  assume
+A1:  for a holds H |^ a = H;
+A2:  the carrier of H |^ a = the carrier of H by A1;
+  then H |^ a is Subgroup of G;
+  then the multMagma of H = H |^ a by A1,A2, GROUP_2:59;
+  hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
 
-definition :: Def6
+theorem Th8:
+  for H being strict Subgroup of G
+  holds (for a holds H |^ a = H) iff H is strict normal Subgroup of G
+proof
+  let H be strict Subgroup of G;
+  thus (for a holds H |^ a = H) implies H is strict normal Subgroup of G
+  proof
+    assume A1: for a holds H |^ a = H;
+    A2:  the carrier of H |^ a = the carrier of H by A1;
+    then H |^ a is Subgroup of G;
+    then the multMagma of H = H |^ a by A1,A2, GROUP_2:59;
+    hence H is strict normal Subgroup of G by GROUP_3:def 13;
+  end;
+  thus H is strict normal Subgroup of G implies (for a holds H |^ a = H)
+  proof
+    assume A1: H is strict normal Subgroup of G;
+    let a;
+    set H1 = H |^ a;
+    thus H1 = H
+    proof
+      A2:  H1 in con_class H by A1,GROUP_3:108;
+      A3:  con_class H = {H} by A1, GROUP_3:123;
+      hence H1 = H by A2,TARSKI:def 1;
+    end;
+    hence thesis;
+  end;
+  thus thesis;
+end;
+
+reserve H for strict Subgroup of G;
+reserve H1,H2 for Subgroup of G;
+reserve h for Element of H;
+
+Lm5:
+for x being object
+holds x in Image(f|H) iff ex g being Element of H st x = (f|H).g
+by GROUP_6:45;
+
+definition :: Def8
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  func dom f -> Group equals G1;
+  coherence;
+end;
+
+reserve H for Subgroup of G1;
+reserve f for Homomorphism of G1,G2;
+reserve H1 for Subgroup of G1;
+reserve g for object;
+reserve X for set;
+
+theorem Th48:
+  g in H implies (f|H).g = f.g;
+::>                          *4
+
+:: TODO: add lemma that `f inner implies ex g st Image(f|H) = H |^ g`
+
+definition :: Def9
   let G;
   let IT be Subgroup of G;
   attr IT is characteristic means
-  :Def6:
+  :Def9:
   for f being Automorphism of G
-  holds Image (f|IT) is Subgroup of IT;
+  holds Image (f|IT) = IT;
+end;
+
+reserve I for Subgroup of H;
+
+Lm6: for H being Subgroup of G st H is Subgroup of (1).G holds the
+multMagma of H = the multMagma of (1).G
+proof
+  let H be Subgroup of G;
+  assume
+A1:  H is Subgroup of (1).G;
+  reconsider H as Subgroup of (1).G by A1;
+A2: (1).G is Subgroup of H by GROUP_2:65;
+  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  hence thesis by GROUP_2:55;
+end;
+
+Lm7: ex H being Subgroup of G st H is characteristic
+proof
+  take H = (1).G;
+A1:    for f being Automorphism of G
+       holds Image (f|H) is Subgroup of H by Th2;
+A2:  for f being Automorphism of G holds Image(f|H) = H
+  proof
+    let f be Automorphism of G;
+    reconsider I = Image(f|H) as Subgroup of H by A1;
+    H = I by Lm6;
+    then
+A3:    Image(f|H) = H by A1;
+    thus thesis by A3;
+  end;
+  then H is characteristic by A2,Def9;
+  hence thesis;
 end;
 
 registration
   let G;
   cluster characteristic for Subgroup of G;
-  existence
-  proof
-    take H = (1).G;
-    for f being Automorphism of G
-    holds Image (f|H) is Subgroup of H by Th2;
-    then H is characteristic by Def6;
-    hence thesis;
-  end;
+  existence by Lm7;
 end;
 
 reserve K for characteristic Subgroup of G;
@@ -378,9 +429,8 @@ registration
     :: thus for H being Subgroup of G st H is characteristic holds H is normal;
     let H be Subgroup of G;
     assume A1: H is characteristic;
-    for f being inner Automorphism of G holds Image(f|H) = H by A1,Def6;
-::>                                                           *4
-    hence H is normal by A1,Def6,Th7;
+    for f being inner Automorphism of G holds Image(f|H) = H by A1,Def9;
+    hence H is normal by A1,Def9,Th7;
 ::>                    *4
     :: for H being characteristic Subgroup of G holds H is normal
     hence thesis;
