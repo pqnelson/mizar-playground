@@ -24,14 +24,14 @@ notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, REALSET1, RELAT_1,
   NUMBERS, GROUP_6, GRSOLV_1, AUTGROUP;
 
 constructors TARSKI, RELAT_2, PARTFUN1, GROUP_2, BINOP_1, BINOP_2,
-  FUNCOP_1, FUNCT_2, REALSET1, GROUP_4, GROUP_5, NUMBERS, GROUP_6,
-  RELSET_1, GRSOLV_1, AUTGROUP;
+  FUNCOP_1, FUNCT_2, REALSET1, GROUP_3, GROUP_4, GROUP_5, NUMBERS,
+  GROUP_6, RELSET_1, GRSOLV_1, AUTGROUP;
 
 registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
 
- requirements SUBSET, BOOLE;
- definitions FUNCT_1, TARSKI, FUNCT_2, AUTGROUP;
+ requirements BOOLE, SUBSET;
+ definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
  theorems TARSKI_0, TARSKI, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
@@ -99,6 +99,20 @@ end;
 definition :: Def2
   let G;
   mode Automorphism of G is bijective Endomorphism of G;
+end;
+
+for G being strict Group holds
+for f being Automorphism of G holds Image(f) = G
+proof
+  let G be strict Group;
+  let f be Automorphism of G;
+  f is Homomorphism of G,G &
+  f is bijective &
+  f is onto;
+  then f" is Homomorphism of G,G by GROUP_6:62;
+  then f" is bijective by GROUP_6:63;
+  then Image(f) = G by GROUP_6:57;
+  hence thesis;
 end;
 
 theorem Th1:
@@ -224,6 +238,94 @@ A1: ex a being Element of G st for x being Element of G holds (Id_G).x = x |^ a
     then Id_G is inner;
     hence thesis;
   end;
+end;
+
+reserve H1,H2 for Subgroup of G;
+
+Lm11: for f being Endomorphism of G holds f is Function of G,G;
+Lm12: for f being Automorphism of G holds f is Function of G,G;
+
+:: I really don't know why this isn't in GROUP_2...
+LmSubgroupElt: for h being Element of G st h in H holds h is Element of H
+proof
+  let h be Element of G;
+  assume h in H;
+  then h is Element of the carrier of H by STRUCT_0:def 5;
+  then h is Element of H;
+  hence thesis;
+end;
+
+::: THIS IS THE PROBLEM I'M WRESTLING WITH, ARRRGGHHH!!!!
+Lm13: for f being Homomorphism of G,G2 holds for h being Element of G holds
+h in H implies (f|H).h = f.h
+proof
+  let f be Homomorphism of G,G2;
+  let h be Element of G;
+  assume h in H;
+  then h is Element of H by LmSubgroupElt;
+  f is Function of G,G2;
+  then dom f = G by FUNCT_2:1;
+::>               *4
+  dom (f|H) = H by RELAT_1:56;
+::>              *4
+  then (f|H).h = f.h by FUNCT_1:48;
+::>                   *4
+  thus thesis;
+end;
+::>,70
+
+theorem
+  for f being inner Automorphism of G
+  st (ex a being Element of G st for x being Element of G holds f.x = x |^ a)
+  holds for H being Subgroup of G holds Image(f|H) = H |^ a
+proof
+  let f be inner Automorphism of G;
+  given a being Element of G such that
+A0:  for x being Element of G holds f.x = x |^ a;
+  let H be Subgroup of G;
+  reconsider H1 = Image(f|H) as Subgroup of G;
+  reconsider H2 = H |^ a as Subgroup of G;
+
+  for x being Element of G holds x in H1 iff x in H2
+  proof
+    let x be Element of G;
+    thus x in H1 implies x in H2
+    proof
+      assume x in H1;
+      then x in Image(f|H);
+      then consider h being Element of H such that x = (f|H).h by GROUP_6:45;
+      :: prove x = h |^ a
+      :: prove h |^ a is Element of H2;
+    end;
+::>   *70
+    thus x in H2 implies x in H1
+    proof
+      assume x in H2;
+      then x in H |^ a by A0;
+      :: x in H |^ a iff ex g st x = g |^ a & g in H
+      then consider h being Element of G such that
+A21: x = h |^ a & h in H by GROUP_3:58; 
+      x = h |^ a by A21
+       .= f.h by A0;
+      then f.h = x;
+      :: prove f.h = h |^ a
+      then x in Image(f) by GROUP_6:45;
+      :: then h |^ a in Image(f|H)
+      h is Element of H by A21,LmSubgroupElt;
+      then consider h0 being Element of H such that h = h0;
+      then (f|H).h0 = f.h0 by FUNCT_1:48;
+::>      *164
+      then x in Image(f|H) by A21;
+::>                         *4
+    end;
+::>   *70
+    thus thesis;
+  end;
+  then the multMagma of H1 = the multMagma of H2 by GROUP_2:60;
+  then H1 = H2;
+  then C0: Image(f|H) = H |^ a;
+  thus thesis by C0; 
+::>            *4
 end;
 
 definition :: Def6
@@ -366,8 +468,8 @@ reserve g for object;
 reserve X for set;
 
 theorem Th48:
-  g in H implies (f|H).g = f.g;
-::>                          *4
+  g in H implies (f|H).g = f.g by FUNCT_1:48;
+::>                             *4
 
 :: TODO: add lemma that `f inner implies ex g st Image(f|H) = H |^ g`
 
@@ -437,3 +539,5 @@ registration
   end;
 end;
 ::> 4: This inference is not accepted
+::> 70: Something remains to be proved
+::> 164: Nothing to link
