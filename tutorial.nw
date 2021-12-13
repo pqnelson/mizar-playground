@@ -8,109 +8,90 @@
 
 \begin{document}
 
-\begin{mizar}
-theorem
-  (for a, b st b is Element of H holds b |^ a in H) iff H is normal by Lm1,Lm2;
+\chapter{Introduction}
 
-definition
-  let G;
-  func Aut G -> FUNCTION_DOMAIN of the carrier of G, the carrier of G means
-  :
-  Def1: ( for f being Element of it holds f is Homomorphism of G, G ) & for h
-  holds h in it iff h is one-to-one & h is onto;
-  existence
-  proof
-    set X = { x where x is Element of Funcs (the carrier of G,the carrier of G
-    ) : ex h st x = h & h is one-to-one & h is onto };
-A1: id the carrier of G in X
-    proof
-      set I = id the carrier of G;
-A2:   I in Funcs (the carrier of G, the carrier of G) by FUNCT_2:8;
-      reconsider I as Homomorphism of G, G by GROUP_6:38;
-      rng I = the carrier of G by RELAT_1:45;
-      then I is onto;
-      hence thesis by A2;
-    end;
-    reconsider X as set;
-    X is functional
-    proof
-      let q be object;
-      assume q in X;
-      then
-      ex x be Element of Funcs (the carrier of G, the carrier of G) st q =
-      x & ex h st h = x & h is one-to-one & h is onto;
-      hence thesis;
-    end;
-    then reconsider X as functional non empty set by A1;
-    X is FUNCTION_DOMAIN of the carrier of G, the carrier of G
-    proof
-      let a be Element of X;
-      a in X;
-      then ex x be Element of Funcs (the carrier of G, the carrier of G ) st a
-      = x & ex h st h = x & h is one-to-one & h is onto;
-      hence thesis;
-    end;
-    then reconsider
-    X as FUNCTION_DOMAIN of the carrier of G, the carrier of G;
-    take X;
-    hereby
-      let f be Element of X;
-      f in X;
-      then
-      ex x being Element of Funcs (the carrier of G, the carrier of G) st
-      f = x & ex h st h = x & h is one-to-one & h is onto;
-      hence f is Homomorphism of G, G;
-    end;
-    let x be Homomorphism of G, G;
-    hereby
-      assume x in X;
-      then
-      ex f being Element of Funcs (the carrier of G, the carrier of G) st
-      f = x & ex h st h = f & h is one-to-one & h is onto;
-      hence x is one-to-one & x is onto;
-    end;
-A3: x is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:8;
-    assume x is one-to-one & x is onto;
-    hence thesis by A3;
-  end;
-  uniqueness
-  proof
-    let F1, F2 be FUNCTION_DOMAIN of the carrier of G, the carrier of G such
-    that
-A4: for f being Element of F1 holds f is Homomorphism of G, G and
-A5: for h holds h in F1 iff h is one-to-one & h is onto and
-A6: for f being Element of F2 holds f is Homomorphism of G, G and
-A7: for h holds h in F2 iff h is one-to-one & h is onto;
-A8: F2 c= F1
-    proof
-      let q be object;
-      assume
-A9:   q in F2;
-      then reconsider h1 = q as Homomorphism of G, G by A6;
-      h1 is one-to-one & h1 is onto by A7,A9;
-      hence thesis by A5;
-    end;
-    F1 c= F2
-    proof
-      let q be object;
-      assume
-A10:  q in F1;
-      then reconsider h1 = q as Homomorphism of G, G by A4;
-      h1 is one-to-one & h1 is onto by A5,A10;
-      hence thesis by A7;
-    end;
-    hence thesis by A8,XBOOLE_0:def 10;
-  end;
-end;
+\M
+Every Mizar article looks like:
 
-theorem
-  Aut G c= Funcs (the carrier of G, the carrier of G)
-proof
-  let q be object;
-  assume q in Aut G;
-  then ex f be Element of Aut G st f = q;
-  hence thesis by FUNCT_2:9;
-end;
+<<text/hello.miz>>=
 
-\end{mizar}
+<<Environment for [[hello.miz]]>>
+
+<<[[hello.miz]] article body>>
+@ 
+
+
+
+\section{Header}
+
+\M
+The header, or ``environment part'', tells Mizar what mathematics needs
+to be imported from existing Mizar articles found in the MML.
+
+<<Environment for [[hello.miz]]>>=
+environ
+ <<[[hello.miz]] vocabularies>>;
+ <<[[hello.miz]] constructors>>;
+ <<[[hello.miz]] notations>>;
+@
+
+\N{Vocabularies}
+The [[vocabularies]] refers to the identifiers defined. For example,
+[[Isomorphism]] may be found in [[RING_3]]. So even if I wanted to use
+[[Isomorphism]] as defined in [[GROUP_66]], I need to add [[RING_3]] to
+the vocabularies list.
+
+<<[[hello.miz]] vocabularies>>=
+vocabularies HELLO,
+@
+
+\M
+We usually want to use set theoretic notation, too, so we add
+
+<<[[hello.miz]] vocabularies>>=
+  SUBSET_1, XBOOLE_0
+@
+
+\N{Constructors}
+But the vocabularies just permits Mizar's parser to \emph{recognize}
+terms. For the \emph{meaning} of these terms, we need to import the
+\emph{constructors}.
+
+For now, we just need the powerset as defined in [[XBOOLE_0]], so we add
+it to the constructors:
+
+<<[[hello.miz]] constructors>>=
+constructors XBOOLE_0
+@
+
+\N{Notations}
+Now we need to import the functor patterns to ``couple'' the definitions
+and notations. Usually this is just the constructor list.
+
+<<[[hello.miz]] notations>>=
+notations XBOOLE_0
+@ 
+
+\section{Article Body}
+
+\M
+The article body is where the magic happens.
+
+<<[[hello.miz]] article body>>=
+begin
+@ 
+
+\begin{definition}[{Dummit and Foote~\cite[\S4,4]{dummit-foote}}]
+A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
+denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
+itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
+\end{definition}
+
+
+\begin{thebibliography}{99}
+\bibitem{dummit-foote}
+  David Dummit and Richard Foote,
+  \emph{Abstract Algebra}.
+  Third ed., Wiley \& Sons, 2004.
+\end{thebibliography}
 \end{document}

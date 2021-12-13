@@ -34,7 +34,7 @@ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
  definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
- theorems TARSKI_0, TARSKI, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
+ theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
    GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1,
    XBOOLE_0, STRUCT_0, GRSOLV_1, AUTGROUP;
  schemes BINOP_1, FUNCT_2;
@@ -55,7 +55,20 @@ registration
   coherence;
 end;
 
-
+:: I really don't know why this isn't in GROUP_2...
+LmSubgroupElt:
+for G being Group
+for H being Subgroup of G
+for h being Element of G st h in H holds h is Element of H
+proof
+  let G be Group,
+      H be Subgroup of G,
+      h be Element of G;
+  assume h in H;
+  then h is Element of the carrier of H by STRUCT_0:def 5;
+  then h is Element of H;
+  hence thesis;
+end;
 
 
 begin :: the main work
@@ -242,84 +255,93 @@ end;
 
 reserve H1,H2 for Subgroup of G;
 
-Lm11: for f being Endomorphism of G holds f is Function of G,G;
-Lm12: for f being Automorphism of G holds f is Function of G,G;
-
-:: I really don't know why this isn't in GROUP_2...
-LmSubgroupElt: for h being Element of G st h in H holds h is Element of H
-proof
-  let h be Element of G;
-  assume h in H;
-  then h is Element of the carrier of H by STRUCT_0:def 5;
-  then h is Element of H;
-  hence thesis;
-end;
-
-::: THIS IS THE PROBLEM I'M WRESTLING WITH, ARRRGGHHH!!!!
-Lm13: for f being Homomorphism of G,G2 holds for h being Element of G holds
-h in H implies (f|H).h = f.h
+Lm3: for f being Homomorphism of G,G2
+for h being Element of G
+holds h in H implies (f|H).h = f.h
 proof
   let f be Homomorphism of G,G2;
   let h be Element of G;
   assume h in H;
-  :: FUNCT_1:48 is: x in X implies (f|X).x = f.x
-  hence (f|H).h = f.h by FUNCT_1:48;
-::>                    *4
+  then h is Element of H by LmSubgroupElt;
+  then h in the carrier of H;
+  then (f|(the carrier of H)).h = f.h by FUNCT_1:49,GRSOLV_1:def 2;
+  then (f|H).h = f.h by GRSOLV_1:def 2;
+  hence thesis;
 end;
 
-theorem
-  for f being inner Automorphism of G
-  st (ex a being Element of G st for x being Element of G holds f.x = x |^ a)
-  holds for H being Subgroup of G holds Image(f|H) = H |^ a
+theorem Th6:
+  for H1 being strict Subgroup of G
+  holds for H2 being strict Subgroup of G holds
+  (H1 is Subgroup of H2) & (H2 is Subgroup of H1) implies H1 = H2
 proof
-  let f be inner Automorphism of G;
-  given a being Element of G such that
-A0:  for x being Element of G holds f.x = x |^ a;
-  let H be Subgroup of G;
-  reconsider H1 = Image(f|H) as Subgroup of G;
-  reconsider H2 = H |^ a as Subgroup of G;
-
-  for x being Element of G holds x in H1 iff x in H2
-  proof
-    let x be Element of G;
-    thus x in H1 implies x in H2
-    proof
-      assume x in H1;
-      then x in Image(f|H);
-      then consider h being Element of H such that x = (f|H).h by GROUP_6:45;
-      :: prove x = h |^ a
-      :: prove h |^ a is Element of H2;
-    end;
-::>   *70
-    thus x in H2 implies x in H1
-    proof
-      assume x in H2;
-      then x in H |^ a by A0;
-      :: x in H |^ a iff ex g st x = g |^ a & g in H
-      then consider h being Element of G such that
-A21: x = h |^ a & h in H by GROUP_3:58;
-      x = h |^ a by A21
-       .= f.h by A0;
-      then f.h = x;
-      :: prove f.h = h |^ a
-      then x in Image(f) by GROUP_6:45;
-      :: then h |^ a in Image(f|H)
-      h is Element of H by A21,LmSubgroupElt;
-      then consider h0 being Element of H such that h = h0;
-      (f|H).h0 = f.h0 by Lm13,FUNCT_1:48;
-::>                    *4
-      then x in Image(f|H) by A21;
-::>                         *4
-    end;
-::>   *70
-    thus thesis;
-  end;
-  then the multMagma of H1 = the multMagma of H2 by GROUP_2:60;
-  then H1 = H2;
-  then C0: Image(f|H) = H |^ a;
-  thus thesis by C0;
-::>            *4
+  let H1 be strict Subgroup of G;
+  let H2 be strict Subgroup of G;
+  assume Z0: H1 is Subgroup of H2;
+  assume Z1: H2 is Subgroup of H1;
+  the multMagma of H1 = the multMagma of H2 by Z0,Z1,GROUP_2:55;
+  hence thesis;
 end;
+
+reserve f for inner Automorphism of G;
+reserve H for Subgroup of G;
+
+theorem Th7:
+  (ex a being Element of G st for x being Element of G holds f.x = x |^ a)
+  implies Image(f|H) = H |^ a
+proof
+  given a being Element of G such that 
+A0:  for x being Element of G holds f.x = x |^ a;
+C1: for h being Element of G st h in H holds (f|H).h = h |^ a
+  proof
+    let h be Element of G;
+    assume h in H;
+    then Z1: f.h = (f|H).h by Lm3;
+    f.h = h |^ a by A0;
+    hence (f|H).h = h |^ a by Z1;
+  end;
+
+C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
+  proof
+    let y be Element of G;
+    assume y in Image(f|H);
+    then consider h being Element of H such that
+    AA1: (f|H).h = y by GROUP_6:45;
+    h is Element of G by GROUP_2:42;
+    then reconsider h as Element of G;
+    AA2: h in H by STRUCT_0:def 5;
+    then (f|H).h = h |^ a by C1;
+    then y = h |^ a by AA1;
+    then y = h |^ a & h in H by AA2; 
+    then y in H |^ a by GROUP_3:58;
+    hence thesis;
+  end;
+
+C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  proof
+    let y be Element of G;
+    assume y in H |^ a;
+    then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
+    then consider g being Element of G such that
+    AB1:    y=g|^a and
+    AB2:    g in H;
+    
+AB3:  (f|H).g = f.g by Lm3,AB2
+      .= g |^ a by A0
+      .= y by AB1;
+    reconsider g as Element of H by AB2,LmSubgroupElt;
+    reconsider fH = (f|H) as Homomorphism of H,G;
+    fH.g = y by AB3;
+    hence y in Image(f|H) by GROUP_6:45;
+  end;
+
+  for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
+  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
+  :: ...wait, what? Invalid deduction?! But---How?!? We just proved it!
+  hence thesis;
+::>          *4
+end;
+
+
 
 definition :: Def6
   let G1,G2 be Group;
@@ -340,14 +362,14 @@ registration
 end;
 
 :: Reflexivity
-Lm3: for G being Group holds G is G-isomorphic
+Lm4: for G being Group holds G is G-isomorphic
 proof
   let G be Group;
   G,G are_isomorphic;
   thus thesis;
 end;
 
-Lm4:
+Lm5:
   for G2 being G1-isomorphic Group
   holds (ex h being Homomorphism of G1,G2 st h is bijective)
 proof
@@ -362,7 +384,7 @@ registration
   let G1 be Group,
       G2 be G1-isomorphic Group;
   cluster bijective for Homomorphism of G1,G2;
-  existence by Lm4;
+  existence by Lm5;
 end;
 
 reserve h for Homomorphism of G, G;
@@ -373,7 +395,7 @@ definition :: Def7
   mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
 end;
 
-theorem Th6:
+theorem Th8:
   for G being strict Group, f being Endomorphism of G
   holds (f in Aut G) iff (f is Automorphism of G)
 proof
@@ -397,8 +419,9 @@ end;
 
 
 reserve H1,H2 for strict Subgroup of G;
+reserve H for Subgroup of G;
 
-theorem Th7:
+theorem Th9:
   (for a holds H |^ a = H) implies H is normal Subgroup of G
 proof
   assume
@@ -409,7 +432,7 @@ A2:  the carrier of H |^ a = the carrier of H by A1;
   hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
 
-theorem Th8:
+theorem Th10:
   for H being strict Subgroup of G
   holds (for a holds H |^ a = H) iff H is strict normal Subgroup of G
 proof
@@ -442,7 +465,7 @@ reserve H for strict Subgroup of G;
 reserve H1,H2 for Subgroup of G;
 reserve h for Element of H;
 
-Lm5:
+Lm6:
 for x being object
 holds x in Image(f|H) iff ex g being Element of H st x = (f|H).g
 by GROUP_6:45;
@@ -459,12 +482,6 @@ reserve f for Homomorphism of G1,G2;
 reserve H1 for Subgroup of G1;
 reserve g for object;
 reserve X for set;
-
-theorem Th48:
-  g in H implies (f|H).g = f.g by FUNCT_1:48;
-::>                             *4
-
-:: TODO: add lemma that `f inner implies ex g st Image(f|H) = H |^ g`
 
 definition :: Def9
   let G;
@@ -524,12 +541,12 @@ registration
     :: thus for H being Subgroup of G st H is characteristic holds H is normal;
     let H be Subgroup of G;
     assume A1: H is characteristic;
-    for f being inner Automorphism of G holds Image(f|H) = H by A1,Def9;
-    hence H is normal by A1,Def9,Th7;
-::>                    *4
-    :: for H being characteristic Subgroup of G holds H is normal
+    A2: for f being inner Automorphism of G holds Image(f|H) = H by A1,Def9;
+    A3: for f being inner Automorphism of G holds Image(f|H) = H |^ a by Th7;
+::>                                                                    *4
+    H is normal by A1,A2,A3,Def9,Th7,Th9,GROUP_3:def 13;
+::>              *4
     hence thesis;
   end;
 end;
 ::> 4: This inference is not accepted
-::> 70: Something remains to be proved

@@ -17,26 +17,35 @@
 
 
 
+% Poor man's chunks, \'a la Knuth's WEB
+\counterwithout*{paragraph}{subsubsection}
+\@addtoreset{paragraph}{chapter}
+\renewcommand\theparagraph{\thechapter.\arabic{paragraph}}
+\renewcommand\paragraph[2][\@empty]{\medbreak\refstepcounter{paragraph}%
+  \def\tmp{#2}%
+  \noindent\textbf{\theparagraph.\ifx\tmp\@empty\else~#2\@addpunct{.}\fi}\enspace\ignorespaces}
+\let\N\paragraph
+\def\M{\paragraph{}}
+
 % theorems
+\swapnumbers
 \theoremstyle{plain}
-\newtheorem{thm}{Theorem}[section]
-\newtheorem{cor}[thm]{Corollary}
-\newtheorem{prop}[thm]{Proposition}
-\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{theorem}[paragraph]{Theorem}
+\newtheorem{cor}[paragraph]{Corollary}
+\newtheorem{prop}[paragraph]{Proposition}
+\newtheorem{lemma}[paragraph]{Lemma}
 
 \theoremstyle{definition}
-\newtheorem{defn}[thm]{Definition}
-\newtheorem{ex}[thm]{Example}
+\newtheorem{definition}[paragraph]{Definition}
+\newtheorem{example}[paragraph]{Example}
 
 \theoremstyle{remark}
-\newtheorem{rmk}[thm]{Remark}
-\newtheorem{note}[thm]{Note}
-
-
+\newtheorem{remark}[paragraph]{Remark}
+\newtheorem{note}[paragraph]{Note}
 
 % adjust whitespace between code chunks
 % https://www.cs.tufts.edu/~nr/noweb/FAQ.html
-\def\nwendcode{\endtrivlist \endgroup \vfil\penalty10\vfilneg}
+\def\nwendcode{\endtrivlist \endgroup \vfil\penalty0\vfilneg}
 \let\nwdocspar=\smallbreak
 
 
@@ -49,6 +58,7 @@
 
 
 \def\define#1{\textbf{``#1''}}
+\DeclareMathOperator\aut{Aut}
 
 
 \endinput
