@@ -262,17 +262,10 @@ proof
   let f be Homomorphism of G,G2;
   let h be Element of G;
   assume h in H;
-  then h is Element of H by LmSubgroupElt;
-  f is Function of G,G2;
-  then dom f = G by FUNCT_2:1;
-::>               *4
-  dom (f|H) = H by RELAT_1:56;
-::>              *4
-  then (f|H).h = f.h by FUNCT_1:48;
-::>                   *4
-  thus thesis;
+  :: FUNCT_1:48 is: x in X implies (f|X).x = f.x
+  hence (f|H).h = f.h by FUNCT_1:48;
+::>                    *4
 end;
-::>,70
 
 theorem
   for f being inner Automorphism of G
@@ -304,7 +297,7 @@ A0:  for x being Element of G holds f.x = x |^ a;
       then x in H |^ a by A0;
       :: x in H |^ a iff ex g st x = g |^ a & g in H
       then consider h being Element of G such that
-A21: x = h |^ a & h in H by GROUP_3:58; 
+A21: x = h |^ a & h in H by GROUP_3:58;
       x = h |^ a by A21
        .= f.h by A0;
       then f.h = x;
@@ -313,8 +306,8 @@ A21: x = h |^ a & h in H by GROUP_3:58;
       :: then h |^ a in Image(f|H)
       h is Element of H by A21,LmSubgroupElt;
       then consider h0 being Element of H such that h = h0;
-      then (f|H).h0 = f.h0 by FUNCT_1:48;
-::>      *164
+      (f|H).h0 = f.h0 by Lm13,FUNCT_1:48;
+::>                    *4
       then x in Image(f|H) by A21;
 ::>                         *4
     end;
@@ -324,7 +317,7 @@ A21: x = h |^ a & h in H by GROUP_3:58;
   then the multMagma of H1 = the multMagma of H2 by GROUP_2:60;
   then H1 = H2;
   then C0: Image(f|H) = H |^ a;
-  thus thesis by C0; 
+  thus thesis by C0;
 ::>            *4
 end;
 
@@ -540,4 +533,3 @@ registration
 end;
 ::> 4: This inference is not accepted
 ::> 70: Something remains to be proved
-::> 164: Nothing to link
