@@ -1,0 +1,1065 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-% ===> this file was generated automatically by noweave --- better not edit it
+\chapter{Characteristic Subgroups}
+
+\N{Structure of an article}
+We call a Mizar file/script an ``article''. While developing a Mizar
+article, the main body is stored in a {\Tt{}TEXT/\nwendquote} subdirectory. As I
+understand it, the casing of the directory matters (because there are
+DOS computers which have case-sensitive file systems\dots or something).
+Every Mizar article looks like:
+
+\nwfilename{nw/characteristic.nw}\nwbegincode{1}\sublabel{NWoaARJ-8Kw8w-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-8Kw8w-1}}}\moddef{TEXT/tmp.miz~{\nwtagstyle{}\subpageref{NWoaARJ-8Kw8w-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+
+\LA{}Environment for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-G7ezF-1}}\RA{}
+
+\LA{}\code{}tmp.miz\edoc{} article body~{\nwtagstyle{}\subpageref{NWoaARJ-ZOhAW-1}}\RA{}
+\nwnotused{TEXT/tmp.miz}\nwendcode{}\nwbegindocs{2}\nwdocspar
+
+\M
+Each Mizar article has an associated ``vocabular file'' which lists the
+\emph{new} terms introduced. It's stored in a {\Tt{}DICT/\nwendquote}
+subdirectory. Terms are prefixed with the following:
+\begin{itemize}
+\item {\Tt{}R\nwendquote} for predicate (like {\Tt{}Rare{\_}isomorphic\nwendquote} for a new predicate {\Tt{}are{\_}isomorphic\nwendquote})
+\item {\Tt{}O\nwendquote} for functor (e.g., {\Tt{}Oid\nwendquote} for {\Tt{}id\nwendquote})
+\item {\Tt{}M\nwendquote} for mode (e.g., {\Tt{}MSubgroup\nwendquote} for {\Tt{}Subgroup\nwendquote})
+\item {\Tt{}G\nwendquote} for structure (e.g., {\Tt{}GmultLoopStr{\_}0\nwendquote} for {\Tt{}multLoopStr{\_}0\nwendquote})
+\item {\Tt{}U\nwendquote} for selectors (e.g., {\Tt{}Ucarrier\nwendquote} in {\Tt{}STRUCT{\_}0\nwendquote} gives us a
+  way to write {\Tt{}the\ carrier\ of\ X\nwendquote})
+\item {\Tt{}V\nwendquote} for attributes (so {\Tt{}Vcharacteristic\nwendquote} is a new attribute ``characteristic'')
+\item {\Tt{}K\nwendquote} for left functor brackets (like \verb#[:# in {\Tt{}ZFMISC{\_}1\nwendquote})
+\item {\Tt{}L\nwendquote} for right functor brackets (like the corresponding \verb#:]#
+  in {\Tt{}ZFMISC{\_}1\nwendquote})
+\end{itemize}
+
+\M
+For our immediate purposes, we want to prove theorems concerning
+characteristic subgroups. We can start with checking if the vocabulary
+word ``characteristic'' has been introduced by running on the command
+line ``\verb#findvoc -w "characteristic"#'' to see if any article has
+already introduced it. (None has, so far.) Since we want to describe
+``characteristic Subgroups'' and ``Subgroup'' is a mode defined in
+{\Tt{}GROUP{\_}2\nwendquote}, it seems reasonable to introduce a new adjective
+[attribute] ``characteristic'' Thus we begin:
+
+\nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-9L8EQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\moddef{DICT/TMP.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NWoaARJ-9L8EQ-2}\nwenddeflinemarkup
+Vcharacteristic
+\nwalsodefined{\\{NWoaARJ-9L8EQ-2}\\{NWoaARJ-9L8EQ-3}}\nwnotused{DICT/TMP.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+
+\section{Environment}
+
+\M
+The header, or ``environment part'', tells Mizar what mathematics needs
+to be imported from existing Mizar articles found in the MML.
+
+\nwenddocs{}\nwbegincode{5}\sublabel{NWoaARJ-G7ezF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-G7ezF-1}}}\moddef{Environment for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-G7ezF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-8Kw8w-1}}\nwenddeflinemarkup
+environ
+ \LA{}\code{}tmp.miz\edoc{} vocabularies~{\nwtagstyle{}\subpageref{NWoaARJ-h1cmx-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} constructors~{\nwtagstyle{}\subpageref{NWoaARJ-1JJknr-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} notations~{\nwtagstyle{}\subpageref{NWoaARJ-j1Lze-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} registrations~{\nwtagstyle{}\subpageref{NWoaARJ-1OlNUs-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} requirements~{\nwtagstyle{}\subpageref{NWoaARJ-2HdRVn-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} definitions~{\nwtagstyle{}\subpageref{NWoaARJ-1XYRUf-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} equalities~{\nwtagstyle{}\subpageref{NWoaARJ-1Aylxu-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} expansions~{\nwtagstyle{}\subpageref{NWoaARJ-10tSeT-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} theorems~{\nwtagstyle{}\subpageref{NWoaARJ-4Fk6bh-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} schemes~{\nwtagstyle{}\subpageref{NWoaARJ-285BP4-1}}\RA{};
+ \LA{}\code{}tmp.miz\edoc{} requirements~{\nwtagstyle{}\subpageref{NWoaARJ-2HdRVn-1}}\RA{};
+\nwused{\\{NWoaARJ-8Kw8w-1}}\nwendcode{}\nwbegindocs{6}\nwdocspar
+
+\subsection{Vocabularies, Notations, Constructors}
+
+\N{Vocabularies}\label{par:characteristic:vocabularies}
+The {\Tt{}vocabularies\nwendquote} refers to the identifiers defined. For example,
+{\Tt{}Isomorphism\nwendquote} may be found in {\Tt{}RING{\_}3\nwendquote}. So even if I wanted to use
+{\Tt{}Isomorphism\nwendquote} as a token, I need to add {\Tt{}RING{\_}3\nwendquote} to
+the vocabularies list. Similarly, {\Tt{}MOD{\_}4\nwendquote} introduces the tokens
+{\Tt{}Endomorphism\nwendquote} and {\Tt{}Automorphism\nwendquote}, which I want to use, so I add
+them, too.
+
+\nwenddocs{}\nwbegincode{7}\sublabel{NWoaARJ-h1cmx-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-h1cmx-1}}}\moddef{\code{}tmp.miz\edoc{} vocabularies~{\nwtagstyle{}\subpageref{NWoaARJ-h1cmx-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+vocabularies RING_3, MOD_4, TMP,
+  \LA{}Functions and subset tokens~{\nwtagstyle{}\subpageref{NWoaARJ-1ATTd1-1}}\RA{},
+  \LA{}Group and subgroups tokens~{\nwtagstyle{}\subpageref{NWoaARJ-5jMsk-1}}\RA{},
+  \LA{}Group conjugation and normal subgroups tokens~{\nwtagstyle{}\subpageref{NWoaARJ-40Iyod-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
+
+\M
+We need to recognize the tokens found in rudimentary set theory, so we
+begin with importing the usual suspects.
+
+\nwenddocs{}\nwbegincode{9}\sublabel{NWoaARJ-1ATTd1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1ATTd1-1}}}\moddef{Functions and subset tokens~{\nwtagstyle{}\subpageref{NWoaARJ-1ATTd1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-h1cmx-1}}\nwenddeflinemarkup
+MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, NUMBERS, WELLORD1,
+SUBSET_1, XBOOLE_0
+\nwused{\\{NWoaARJ-h1cmx-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
+
+\M
+Characteristic subgroups requires recognizing tokens about\dots groups,
+and subgroups.
+
+\nwenddocs{}\nwbegincode{11}\sublabel{NWoaARJ-5jMsk-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-5jMsk-1}}}\moddef{Group and subgroups tokens~{\nwtagstyle{}\subpageref{NWoaARJ-5jMsk-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-h1cmx-1}}\nwenddeflinemarkup
+STRUCT_0, GROUP_1, GROUP_2, SUBSET_1, GROUP_4, GROUP_5,
+MSSUBFAM, GROUP_6, BINOP_1, BINOP_2, ALGSTR_0, REALSET1,
+AUTGROUP
+\nwused{\\{NWoaARJ-h1cmx-1}}\nwendcode{}\nwbegindocs{12}\nwdocspar
+
+\M
+{\Tt{}NEWTON\nwendquote} defines the token {\Tt{}|{\char94}\nwendquote}, used as infix operator {\Tt{}a\ |{\char94}\ b\nwendquote}
+which is Mizar notation for $a^{b}$. Mizar follows group theorist
+notation of writing $g^{h} = h^{-1}gh$ for conjugation. Also observe
+that {\Tt{}normal\nwendquote} is introduced in {\Tt{}PRE{\_}TOPC\nwendquote}, so we need to include
+that, as well.
+
+\nwenddocs{}\nwbegincode{13}\sublabel{NWoaARJ-40Iyod-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-40Iyod-1}}}\moddef{Group conjugation and normal subgroups tokens~{\nwtagstyle{}\subpageref{NWoaARJ-40Iyod-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-h1cmx-1}}\nwenddeflinemarkup
+NEWTON, PRE_TOPC, GROUP_3
+\nwused{\\{NWoaARJ-h1cmx-1}}\nwendcode{}\nwbegindocs{14}\nwdocspar
+
+\N{Constructors}
+But the vocabularies just permits Mizar's parser to \emph{recognize}
+terms. For the \emph{meaning} of these terms, we need to import the
+\emph{constructors}. But if a constructor uses \emph{another article}'s
+constructors, we need to also import that other article as well.
+
+Often we just copy the articles imported for the notations section, but
+in my experience it's often a strict subset of the notations. I'm lazy,
+so I'll just copy the constructor imports:
+
+\nwenddocs{}\nwbegincode{15}\sublabel{NWoaARJ-1JJknr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1JJknr-1}}}\moddef{\code{}tmp.miz\edoc{} constructors~{\nwtagstyle{}\subpageref{NWoaARJ-1JJknr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+constructors \LA{}set theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1usaUC-1}}\RA{},
+  \LA{}group theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1E7MdW-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{16}\nwdocspar
+
+\N{Notations}
+Now we need to import the functor patterns to ``couple'' the definitions
+and notations. Usually this is just the constructor list.
+
+\nwenddocs{}\nwbegincode{17}\sublabel{NWoaARJ-j1Lze-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-j1Lze-1}}}\moddef{\code{}tmp.miz\edoc{} notations~{\nwtagstyle{}\subpageref{NWoaARJ-j1Lze-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+notations \LA{}set theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1usaUC-1}}\RA{},
+  \LA{}group theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1E7MdW-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{18}\nwdocspar
+
+\M The basics of Tarski--Grothendieck set theory may be found in
+{\Tt{}TARSKI\nwendquote}. Partial functions are introduced in {\Tt{}PARTFUN1\nwendquote}. Binary
+operations applied to functions {\Tt{}FUNCOP{\_}1\nwendquote} will be necessary later
+on. And fancy functions from sets to sets, like {\Tt{}Permutation\nwendquote}, is
+defined in {\Tt{}FUNCT{\_}2\nwendquote}. There are few random odds and ends, like
+{\Tt{}NUMBERS\nwendquote} for subsets of complex numbers
+
+\nwenddocs{}\nwbegincode{19}\sublabel{NWoaARJ-1usaUC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1usaUC-1}}}\moddef{set theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1usaUC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1JJknr-1}\\{NWoaARJ-j1Lze-1}}\nwenddeflinemarkup
+TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
+RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS
+\nwused{\\{NWoaARJ-1JJknr-1}\\{NWoaARJ-j1Lze-1}}\nwendcode{}\nwbegindocs{20}\nwdocspar
+
+\M
+The group theoretic notions are a grab bag of binary operators
+({\Tt{}BINOP{\_}1\nwendquote} and {\Tt{}BINOP{\_}2\nwendquote}), prerequisites for algebraic structures
+({\Tt{}STRUCT{\_}0\nwendquote} and {\Tt{}ALGSTR{\_}0\nwendquote}), primordial group theoretic articles
+({\Tt{}REALSET1\nwendquote}), and the relevant group theory articles.
+
+\nwenddocs{}\nwbegincode{21}\sublabel{NWoaARJ-1E7MdW-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1E7MdW-1}}}\moddef{group theoretic notation for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1E7MdW-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1JJknr-1}\\{NWoaARJ-j1Lze-1}}\nwenddeflinemarkup
+BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
+GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
+\nwused{\\{NWoaARJ-1JJknr-1}\\{NWoaARJ-j1Lze-1}}\nwendcode{}\nwbegindocs{22}\nwdocspar
+
+\subsection{Registrations, Definitions, Theorems, Schemes}
+
+\N{Registrations}
+We often cluster adjectives together with registrations, or have one
+adjective imply another automatically (like how a characteristic
+Subgroup is always normal). We import these using the registrations
+portion of the environment. For our purposes, we may need basic facts
+about relations ({\Tt{}RELAT{\_}1\nwendquote}), functions and partial functions ({\Tt{}FUNCT{\_}1\nwendquote},
+{\Tt{}PARTFUN1\nwendquote}, {\Tt{}FUNCT{\_}2\nwendquote}), relations between sets ({\Tt{}RELSET{\_}1\nwendquote}).
+
+\nwenddocs{}\nwbegincode{23}\sublabel{NWoaARJ-1OlNUs-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1OlNUs-1}}}\moddef{\code{}tmp.miz\edoc{} registrations~{\nwtagstyle{}\subpageref{NWoaARJ-1OlNUs-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+registrations \LA{}Register set theoretic clusters~{\nwtagstyle{}\subpageref{NWoaARJ-1d38DI-1}}\RA{},
+  \LA{}Register group theoretic clusters~{\nwtagstyle{}\subpageref{NWoaARJ-3IQfHr-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{24}\nwdocspar
+
+\M
+The clusters we want to use from set theory are defined in the ``same''
+scattering of places.
+
+\nwenddocs{}\nwbegincode{25}\sublabel{NWoaARJ-1d38DI-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1d38DI-1}}}\moddef{Register set theoretic clusters~{\nwtagstyle{}\subpageref{NWoaARJ-1d38DI-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1OlNUs-1}}\nwenddeflinemarkup
+XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
+\nwused{\\{NWoaARJ-1OlNUs-1}}\nwendcode{}\nwbegindocs{26}\nwdocspar
+
+\M
+We also need to register adjectives germane to group theory.
+
+\nwenddocs{}\nwbegincode{27}\sublabel{NWoaARJ-3IQfHr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3IQfHr-1}}}\moddef{Register group theoretic clusters~{\nwtagstyle{}\subpageref{NWoaARJ-3IQfHr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1OlNUs-1}}\nwenddeflinemarkup
+STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
+\nwused{\\{NWoaARJ-1OlNUs-1}}\nwendcode{}\nwbegindocs{28}\nwdocspar
+
+\N{Definitions} When using a definition $f := M$, we need to cite it in
+a proof. Specifically, automatically unfolding predicates from specific
+articles. If we want this to be automated, we can cite the article in
+the {\Tt{}definitions\nwendquote} portion of the {\Tt{}environ\nwendquote}. 
+
+\nwenddocs{}\nwbegincode{29}\sublabel{NWoaARJ-1XYRUf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1XYRUf-1}}}\moddef{\code{}tmp.miz\edoc{} definitions~{\nwtagstyle{}\subpageref{NWoaARJ-1XYRUf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+definitions \LA{}Include set theoretic definitions~{\nwtagstyle{}\subpageref{NWoaARJ-4e7fxs-1}}\RA{},
+  \LA{}Include group theoretic definitions~{\nwtagstyle{}\subpageref{NWoaARJ-40sjrh-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{30}\nwdocspar
+
+\begin{remark}
+  Kornilowicz~\cite[see \S{5.1}]{kornilowicz-definitional-expansion} that:
+  ``Environment directive {\Tt{}definitions\nwendquote} is used for importing two different kinds of information from the database: definitional expansions used by REASONER and expansions of terms defined by equals used by EQUALIZER.''
+\end{remark}
+
+\M Arguably, we want to be using basic predicates concerning subsets
+({\Tt{}SUBSET{\_}1\nwendquote}), functions ({\Tt{}FUNCT{\_}1\nwendquote} and {\Tt{}FUNCT{\_}2\nwendquote}), and set theory
+({\Tt{}TARSKI\nwendquote}), so let's just add them.
+
+\nwenddocs{}\nwbegincode{31}\sublabel{NWoaARJ-4e7fxs-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4e7fxs-1}}}\moddef{Include set theoretic definitions~{\nwtagstyle{}\subpageref{NWoaARJ-4e7fxs-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1XYRUf-1}}\nwenddeflinemarkup
+SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
+\nwused{\\{NWoaARJ-1XYRUf-1}}\nwendcode{}\nwbegindocs{32}\nwdocspar
+
+\M
+But we also want to use facts concerning normal subgroups ({\Tt{}GROUP{\_}3\nwendquote})
+and the automorphism group $\aut(G)$ ({\Tt{}AUTGROUP\nwendquote}).
+
+\nwenddocs{}\nwbegincode{33}\sublabel{NWoaARJ-40sjrh-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-40sjrh-1}}}\moddef{Include group theoretic definitions~{\nwtagstyle{}\subpageref{NWoaARJ-40sjrh-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-1XYRUf-1}}\nwenddeflinemarkup
+GROUP_3, AUTGROUP
+\nwused{\\{NWoaARJ-1XYRUf-1}}\nwendcode{}\nwbegindocs{34}\nwdocspar
+
+\N{Theorems}
+The {\Tt{}vocabularies\nwendquote} allows Mizar's scanner and parser to
+\emph{recognize} terms. The {\Tt{}constructors\nwendquote} and {\Tt{}notations\nwendquote} allows us
+to use the patterns and constructors for terms. But if we want to cite
+theorems and definitions in proofs (i.e., if we want to use the
+\emph{results} of previous articles), then we need to add those cited
+articles to the {\Tt{}theorems\nwendquote} environment.
+
+\nwenddocs{}\nwbegincode{35}\sublabel{NWoaARJ-4Fk6bh-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4Fk6bh-1}}}\moddef{\code{}tmp.miz\edoc{} theorems~{\nwtagstyle{}\subpageref{NWoaARJ-4Fk6bh-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+theorems
+  \LA{}Import set-theoretic theorems~{\nwtagstyle{}\subpageref{NWoaARJ-2m40FU-1}}\RA{},
+  \LA{}Import group-theoretic theorems~{\nwtagstyle{}\subpageref{NWoaARJ-cTLti-1}}\RA{}
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{36}\nwdocspar
+
+\M We have the usual cast of set theoretic characters.
+\nwenddocs{}\nwbegincode{37}\sublabel{NWoaARJ-2m40FU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2m40FU-1}}}\moddef{Import set-theoretic theorems~{\nwtagstyle{}\subpageref{NWoaARJ-2m40FU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-4Fk6bh-1}}\nwenddeflinemarkup
+TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
+XBOOLE_0, RELAT_1
+\nwused{\\{NWoaARJ-4Fk6bh-1}}\nwendcode{}\nwbegindocs{38}\nwdocspar
+
+\M Again, we import the usual group theoretic theorems.
+\nwenddocs{}\nwbegincode{39}\sublabel{NWoaARJ-cTLti-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-cTLti-1}}}\moddef{Import group-theoretic theorems~{\nwtagstyle{}\subpageref{NWoaARJ-cTLti-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-4Fk6bh-1}}\nwenddeflinemarkup
+GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
+GRSOLV_1, AUTGROUP
+\nwused{\\{NWoaARJ-4Fk6bh-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
+
+\N{Schemes}
+If we want to cite and use a scheme defined elsewhere, then we need the
+article's name cited in the {\Tt{}schemes\nwendquote} portion of the environment.
+
+\nwenddocs{}\nwbegincode{41}\sublabel{NWoaARJ-285BP4-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-285BP4-1}}}\moddef{\code{}tmp.miz\edoc{} schemes~{\nwtagstyle{}\subpageref{NWoaARJ-285BP4-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+schemes BINOP_1, FUNCT_2
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{42}\nwdocspar
+
+\subsection{\dots and the rest}
+
+\N{Equalities}
+This seems to be introduced around 2015, the only documentation I could
+find was in Kornilowics~\cite{kornilowicz-definitional-expansion}.
+Expansions of terms defined by {\Tt{}equals\nwendquote} are imported by a new
+{\Tt{}environ\nwendquote} directive {\Tt{}equalities\nwendquote}.
+
+\nwenddocs{}\nwbegincode{43}\sublabel{NWoaARJ-1Aylxu-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1Aylxu-1}}}\moddef{\code{}tmp.miz\edoc{} equalities~{\nwtagstyle{}\subpageref{NWoaARJ-1Aylxu-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{44}\nwdocspar
+
+\N{Expansions}
+Import expansions of predicates and adjectives from the specified
+articles.
+
+\nwenddocs{}\nwbegincode{45}\sublabel{NWoaARJ-10tSeT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-10tSeT-1}}}\moddef{\code{}tmp.miz\edoc{} expansions~{\nwtagstyle{}\subpageref{NWoaARJ-10tSeT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+expansions BINOP_1, FUNCT_2
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{46}\nwdocspar
+
+\N{Requirements} Within mathematics, there's a lot of implicit
+knowledge. Mizar automates some of that with {\Tt{}requirements\nwendquote}
+inclusions. For example, if we want to show {\Tt{}x\ in\ X\nwendquote}
+(Mizar for the primitive binary predicate $x\in X$) implies
+the typing relation {\Tt{}x\ is\ Element\ of\ X\nwendquote}, well, that's ``obvious'' to
+us humans, and we can make it obvious to Mizar as well using the proper
+requirements.
+
+\begin{remark}
+As I understand it (from Wiedijk's excellent ``Writing a Mizar Article
+in 9 easy steps''), the only possibilities for the {\Tt{}requirements\nwendquote} are:
+{\Tt{}BOOLE\nwendquote}, {\Tt{}SUBSET\nwendquote}, {\Tt{}NUMERALS\nwendquote}, {\Tt{}ARITHM\nwendquote}, {\Tt{}REAL\nwendquote}.
+\end{remark}
+
+\nwenddocs{}\nwbegincode{47}\sublabel{NWoaARJ-2HdRVn-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2HdRVn-1}}}\moddef{\code{}tmp.miz\edoc{} requirements~{\nwtagstyle{}\subpageref{NWoaARJ-2HdRVn-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-G7ezF-1}}\nwenddeflinemarkup
+requirements BOOLE, SUBSET
+\nwused{\\{NWoaARJ-G7ezF-1}}\nwendcode{}\nwbegindocs{48}\nwdocspar
+
+
+\section{Article Body}
+
+\M
+The article body is where the magic happens.
+
+\nwenddocs{}\nwbegincode{49}\sublabel{NWoaARJ-ZOhAW-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-ZOhAW-1}}}\moddef{\code{}tmp.miz\edoc{} article body~{\nwtagstyle{}\subpageref{NWoaARJ-ZOhAW-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-8Kw8w-1}}\nwenddeflinemarkup
+\LA{}Helper lemmas and registrations for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-1}}\RA{}
+
+\LA{}Inner and outer automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-32pmQO-1}}\RA{}
+\LA{}Group isomorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-2BsOkA-1}}\RA{}
+\nwused{\\{NWoaARJ-8Kw8w-1}}\nwendcode{}\nwbegindocs{50}\nwdocspar
+
+\subsection{Preparatory results}
+
+\M
+We begin by registering the identity function as being surjective and
+bijective. This should have been done in {\Tt{}FUNCT{\_}2\nwendquote}, but hey, what can
+you do?
+
+\nwenddocs{}\nwbegincode{51}\sublabel{NWoaARJ-LuhGu-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-1}}}\moddef{Helper lemmas and registrations for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-ZOhAW-1}}\nwprevnextdefs{\relax}{NWoaARJ-LuhGu-2}\nwenddeflinemarkup
+begin :: preparatory work
+reserve X for set;
+
+registration
+  let X;
+  cluster id X -> onto;
+  coherence;
+end;
+
+registration
+  let X;
+  cluster id X -> bijective;
+  coherence;
+end;
+
+\nwalsodefined{\\{NWoaARJ-LuhGu-2}\\{NWoaARJ-LuhGu-3}}\nwused{\\{NWoaARJ-ZOhAW-1}}\nwendcode{}\nwbegindocs{52}\nwdocspar
+
+\M
+We also need to prove that, if we have a subgroup $H\subgroup G$ and
+$h\in G$ is an arbitrary element of the underlying set, then $h\in H$
+implies the typing judgement ``{\Tt{}h\ is\ Element\ of\ H\nwendquote}''.
+
+\nwenddocs{}\nwbegincode{53}\sublabel{NWoaARJ-LuhGu-2}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-2}}}\moddef{Helper lemmas and registrations for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-ZOhAW-1}}\nwprevnextdefs{NWoaARJ-LuhGu-1}{NWoaARJ-LuhGu-3}\nwenddeflinemarkup
+LmSubgroupElt:
+for G being Group
+for H being Subgroup of G
+for h being Element of G st h in H holds h is Element of H
+proof
+  let G be Group,
+      H be Subgroup of G,
+      h be Element of G;
+  assume h in H;
+  then h is Element of the carrier of H by STRUCT_0:def 5;
+  then h is Element of H;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-ZOhAW-1}}\nwendcode{}\nwbegindocs{54}\nwdocspar
+
+\N{Restriction of Group Morphisms to Subgroups}
+Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
+$A\subset X$ is an arbitrary subset, then $\forall a\in X$ we have
+$a\in A\implies f|_{A}(a)=f(a)$. But this doesn't generalize to
+morphisms, sadly, because a group is like a chocolate-covered set.
+
+So we just prove for any pair of groups $G_{1}$ and $G_{2}$,
+for any subgroup $H\subgroup G_{1}$,
+for any group morphism $f\colon G_{1}\to G_{2}$, and for arbitrary $h\in G_{1}$,
+we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
+always look at the set-theoretic function $U(f)$ underlying $f$, then
+piggie-back off earlier results establishing the desired claim
+(Theorem~49 of {\Tt{}FUNCT{\_}1\nwendquote}, to be precise).
+
+\nwenddocs{}\nwbegincode{55}\sublabel{NWoaARJ-LuhGu-3}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-3}}}\moddef{Helper lemmas and registrations for \code{}tmp.miz\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-LuhGu-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-ZOhAW-1}}\nwprevnextdefs{NWoaARJ-LuhGu-2}{\relax}\nwenddeflinemarkup
+Lm3: for G1,G2 being Group
+for H being Subgroup of G1
+for f being Homomorphism of G1,G2
+for h being Element of G1
+st h in H
+holds (f|H).h = f.h
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let f be Homomorphism of G1,G2;
+  let h be Element of G1;
+  assume h in H;
+  then h is Element of H by LmSubgroupElt;
+  then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
+  then (f|H).h = f.h by GRSOLV_1:def 2;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-ZOhAW-1}}\nwendcode{}\nwbegindocs{56}\nwdocspar
+
+\M
+Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$.
+If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
+$H_{1}=H_{2}$. Pretty simple, right? \dots I'm not sure I'll need this,
+but here it is if I do.
+
+\nwenddocs{}\nwbegincode{57}\sublabel{NWoaARJ-G9U50-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-G9U50-1}}}\moddef{Sandwich Subgroup Equality Theorem~{\nwtagstyle{}\subpageref{NWoaARJ-G9U50-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+LmSandwich: for H1 being strict Subgroup of G
+for H2 being strict Subgroup of G
+st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
+holds H1 = H2
+proof
+  let H1 be strict Subgroup of G;
+  let H2 be strict Subgroup of G;
+  assume H1 is Subgroup of H2 & H2 is Subgroup of H1;
+  then the multMagma of H1 = the multMagma of H2 by GROUP_2:55;
+  hence thesis;
+end;
+\nwnotused{Sandwich Subgroup Equality Theorem}\nwendcode{}\nwbegindocs{58}\nwdocspar
+
+\M Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
+Then $H\normalSubgroup G$ is a normal subgroup. The current theorems in
+{\Tt{}GROUP{\_}3\nwendquote} require $H$ to be a \emph{strict} subgroup, but this
+strictness condition is not necessary.
+
+\nwenddocs{}\nwbegincode{59}\sublabel{NWoaARJ-2karRI-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2karRI-1}}}\moddef{Subgroups invariant under conjugation are normal~{\nwtagstyle{}\subpageref{NWoaARJ-2karRI-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+LmNormalSubgroup:
+for G being Group
+for H being Subgroup of G
+st (for a being Element of G holds H |^ a = H)
+holds H is normal Subgroup of G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume A0: for a being Element of G holds H |^ a = H;
+  then for a being Element of G holds the carrier of H |^ a = the carrier of H;
+  then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
+  hence H is normal Subgroup of G by GROUP_3:def 13;
+end;
+\nwnotused{Subgroups invariant under conjugation are normal}\nwendcode{}\nwbegindocs{60}\nwdocspar
+
+\subsection{Automorphisms}
+
+\M Now, we have a section for defining inner and outer group
+automorphisms. A \emph{group automorphism} is just a bijective endomorphism on
+a group, and an \emph{endomorphism} is a group morphism whose codomain
+is its domain.
+
+Remember (\S\ref{par:characteristic:vocabularies}), although we are
+defining new terms {\Tt{}Endomorphism\nwendquote} and {\Tt{}Automorphism\nwendquote}, we do not need
+to add them to our {\Tt{}DICT/TMP.VOC\nwendquote} file. Why not? Because the tokens
+are already included from {\Tt{}MOD{\_}4\nwendquote}.
+
+\nwenddocs{}\nwbegincode{61}\sublabel{NWoaARJ-32pmQO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-32pmQO-1}}}\moddef{Inner and outer automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-32pmQO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-ZOhAW-1}}\nwenddeflinemarkup
+begin
+
+\LA{}Reserve symbols for inner and outer automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-1LL7AC-1}}\RA{}
+\LA{}Define \code{}Endomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-17cKlQ-1}}\RA{}
+\LA{}Register \code{}bijective\edoc{} for \code{}Endoomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1BJmAm-1}}\RA{}
+\LA{}Define \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4WeeL5-1}}\RA{}
+\LA{}Endomorphisms preserve the trivial subgroup~{\nwtagstyle{}\subpageref{NWoaARJ-26jvGu-1}}\RA{}
+\LA{}Automorphisms map trivial subgroups to themselves~{\nwtagstyle{}\subpageref{NWoaARJ-3J82fO-1}}\RA{}
+\LA{}Define $\Id_{G}$~{\nwtagstyle{}\subpageref{NWoaARJ-27i33n-1}}\RA{}
+\LA{}\code{}Id{\_}G\edoc{} is the same as \code{}id\ the\ carrier\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4KG2Xs-1}}\RA{}
+\LA{}Register \code{}Id{\_}G\edoc{} is bijective~{\nwtagstyle{}\subpageref{NWoaARJ-37g7e5-1}}\RA{}
+\LA{}Define \code{}inner\edoc{} for Automorphism~{\nwtagstyle{}\subpageref{NWoaARJ-13QmRM-1}}\RA{}
+\LA{}\code{}Id{\_}G\edoc{} is effectively inner~{\nwtagstyle{}\subpageref{NWoaARJ-3VEX6S-1}}\RA{}
+\LA{}Register \code{}inner\edoc{} for \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4IjmGJ-1}}\RA{}
+\LA{}Relate \code{}Automorphism\ of\ G\edoc{} to elements of \code{}Aut\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-3c36xj-1}}\RA{}
+\LA{}Theorem: $f$ in \code{}InnAut\ G\edoc{} iff $f$ is \code{}inner\ Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2gUxot-1}}\RA{}
+\nwused{\\{NWoaARJ-ZOhAW-1}}\nwendcode{}\nwbegindocs{62}\nwdocspar
+
+\M Note we just used the symbol {\Tt{}G\nwendquote} for a generic group, so we add to
+the reserved symbols this association.
+
+\nwenddocs{}\nwbegincode{63}\sublabel{NWoaARJ-1LL7AC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1LL7AC-1}}}\moddef{Reserve symbols for inner and outer automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-1LL7AC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwprevnextdefs{\relax}{NWoaARJ-1LL7AC-2}\nwenddeflinemarkup
+reserve G for Group;
+\nwalsodefined{\\{NWoaARJ-1LL7AC-2}}\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{64}\nwdocspar
+
+\M A group endomorphism of $G$ is just a homomorphism $f\colon G\to G$.
+
+\nwenddocs{}\nwbegincode{65}\sublabel{NWoaARJ-17cKlQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-17cKlQ-1}}}\moddef{Define \code{}Endomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-17cKlQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+definition :: Def1
+  let G;
+  mode Endomorphism of G is Homomorphism of G,G;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{66}\nwdocspar
+
+\M\label{par:characteristic:register-bijective-for-endomorphism}
+We begin by registering the attribute {\Tt{}bijective\nwendquote} for group
+endomorphisms. This will effectively create a subtype of
+{\Tt{}Endomorphism\ of\ G\nwendquote}, the aptly named {\Tt{}bijective\ Endomorphism\ of\ G\nwendquote}.
+Most of our work has been done in article {\Tt{}GROUP{\_}6\nwendquote} by
+Theorem~38 (which effectively states the function on the underlying set
+{\Tt{}id\ (the\ carrier\ of\ G)\nwendquote} is a multiplicative function and so nearly a
+group morphism that we can reconsider it as an {\Tt{}Endomorphism\nwendquote}), and
+the fact that {\Tt{}id\ X\nwendquote} is bijective.
+
+\nwenddocs{}\nwbegincode{67}\sublabel{NWoaARJ-1BJmAm-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1BJmAm-1}}}\moddef{Register \code{}bijective\edoc{} for \code{}Endoomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-1BJmAm-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+registration
+  let G;
+  cluster bijective for Homomorphism of G,G;
+  existence
+  proof
+    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
+    i is bijective;
+    hence thesis;
+  end;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{68}\nwdocspar
+
+\N{Definition (Automorphism)}
+Now we have an {\Tt{}Automorphism\ of\ G\nwendquote} be just a bijective endomorphism.
+
+\nwenddocs{}\nwbegincode{69}\sublabel{NWoaARJ-4WeeL5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4WeeL5-1}}}\moddef{Define \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4WeeL5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+definition :: Def2
+  let G;
+  mode Automorphism of G is bijective Endomorphism of G;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{70}\nwdocspar
+
+\M For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
+subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
+$f(\trivialSubgroup)=\trivialSubgroup$.
+
+\nwenddocs{}\nwbegincode{71}\sublabel{NWoaARJ-26jvGu-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-26jvGu-1}}}\moddef{Endomorphisms preserve the trivial subgroup~{\nwtagstyle{}\subpageref{NWoaARJ-26jvGu-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+theorem Th1:
+  Image (f|(1).G) = (1).G
+proof
+  Image(f|(1).G) = f .: ((1).G) by GRSOLV_1:def 3
+  .= (1).G by GRSOLV_1:11;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{72}\nwdocspar
+
+\M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+
+\nwenddocs{}\nwbegincode{73}\sublabel{NWoaARJ-1LL7AC-2}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1LL7AC-2}}}\moddef{Reserve symbols for inner and outer automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-1LL7AC-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwprevnextdefs{NWoaARJ-1LL7AC-1}{\relax}\nwenddeflinemarkup
+reserve f for Endomorphism of G;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{74}\nwdocspar
+
+\M If $\phi$ is an automorphism of a group $G$, then
+the image of the trivial subgroup under $\phi$ is a subgroup of itself
+$\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
+Theorem~{\Tt{}Th1\nwendquote}, that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
+$\phi$ (being an automorphism) is also an endomorphism. And {\Tt{}GROUP{\_}2\nwendquote}
+proves that $G$ is a subgroup of itself in Theorem~{\Tt{}Th54\nwendquote}.
+
+\nwenddocs{}\nwbegincode{75}\sublabel{NWoaARJ-3J82fO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3J82fO-1}}}\moddef{Automorphisms map trivial subgroups to themselves~{\nwtagstyle{}\subpageref{NWoaARJ-3J82fO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+:: In particular, the trivial proper subgroup (1).G of G is invariant
+:: under inner automorphisms, and thus is a characteristic subgroup.
+theorem Th2:
+  for phi being Automorphism of G
+  holds Image(f|(1).G) is Subgroup of (1).G
+proof
+  let phi be Automorphism of G;
+  (1).G is Subgroup of (1).G by GROUP_2:54;
+  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{76}\nwdocspar
+
+\N{Identity Group Endomorphism}
+I found it tedious to write {\Tt{}id\ (the\ carrier\ of\ G)\nwendquote} over and over
+again, so I wrote a shortcut {\Tt{}Id{\_}G\nwendquote} for $\Id_{G}$.
+
+\nwenddocs{}\nwbegincode{77}\sublabel{NWoaARJ-27i33n-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-27i33n-1}}}\moddef{Define $\Id_{G}$~{\nwtagstyle{}\subpageref{NWoaARJ-27i33n-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+definition :: Def3
+  let G;
+  func Id_G -> Endomorphism of G means
+  :Def3:
+  for x being Element of G holds it.x=x;
+  existence
+  \LA{}Proof that $\Id_{G}$ exists~{\nwtagstyle{}\subpageref{NWoaARJ-2hCvdU-1}}\RA{}
+  uniqueness
+  \LA{}Proof $\Id_{G}$ is unique~{\nwtagstyle{}\subpageref{NWoaARJ-q6iKQ-1}}\RA{}
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{78}\nwdocspar
+
+\M We need to add {\Tt{}Id{\_}\nwendquote} to our vocabulary.
+
+\nwenddocs{}\nwbegincode{79}\sublabel{NWoaARJ-9L8EQ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-2}}}\moddef{DICT/TMP.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-9L8EQ-1}{NWoaARJ-9L8EQ-3}\nwenddeflinemarkup
+OId_
+\nwendcode{}\nwbegindocs{80}\nwdocspar
+
+\N{Proof ($\Id_{G}$ exists)}
+Similar to the proof (\S\ref{par:characteristic:register-bijective-for-endomorphism})
+that there exists a bijective endomorphism, the proof that $\Id_{G}$
+exists amounts to reconsidering {\Tt{}id\nwendquote} as an endomorphism. Earlier work
+in {\Tt{}FUNCT{\_}1\nwendquote} proved (in Theorem~17) the identity function satisfies
+$\forall x\in X, \id_{X}(x)=x$.
+
+\nwenddocs{}\nwbegincode{81}\sublabel{NWoaARJ-2hCvdU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2hCvdU-1}}}\moddef{Proof that $\Id_{G}$ exists~{\nwtagstyle{}\subpageref{NWoaARJ-2hCvdU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-27i33n-1}}\nwenddeflinemarkup
+proof
+  reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
+  i.x = x by FUNCT_1:17;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-27i33n-1}}\nwendcode{}\nwbegindocs{82}\nwdocspar
+
+\N{Proof (Uniqueness of $\Id_{G}$)}
+The usual strategy is to consider two arbitrary endomorphisms
+$\Id^{(1)}_{G}$ and $\Id^{(2)}_{G}$ satisfying the definition of
+{\Tt{}Id{\_}\nwendquote}, then prove $\Id^{(1)}_{G} = \Id^{(2)}_{G}$.
+
+If we wanted to be completely pedantic, we could cite Theorem~12 from
+{\Tt{}FUNCT{\_}2\nwendquote} which states for any functions of sets
+$f_{1}$, $f_{2}\colon X\to Y$ we have $\forall x\in X, f_{1}(x)=f_{2}(x)$
+implies $f_{1}=f_{2}$.
+
+\nwenddocs{}\nwbegincode{83}\sublabel{NWoaARJ-q6iKQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-q6iKQ-1}}}\moddef{Proof $\Id_{G}$ is unique~{\nwtagstyle{}\subpageref{NWoaARJ-q6iKQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-27i33n-1}}\nwenddeflinemarkup
+proof
+  let Id1, Id2 be Endomorphism of G such that
+  A1: for x being Element of G holds Id1.x=x and
+  A2: for x being Element of G holds Id2.x=x;
+  let x be Element of G;
+  thus Id1.x = x by A1
+            .= Id2.x by A2;
+  thus thesis;
+end;
+\nwused{\\{NWoaARJ-27i33n-1}}\nwendcode{}\nwbegindocs{84}\nwdocspar
+
+\M\label{thm:characteristic:identity-endomorphism-is-identity-function}
+We should now have some sanity check that {\Tt{}Id{\_}G\nwendquote} really is
+the identity group morphism $\Id_{G}$ that \emph{we} think it is.
+
+\nwenddocs{}\nwbegincode{85}\sublabel{NWoaARJ-4KG2Xs-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4KG2Xs-1}}}\moddef{\code{}Id{\_}G\edoc{} is the same as \code{}id\ the\ carrier\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4KG2Xs-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+theorem Th3:
+  Id_G = id (the carrier of G)
+proof
+  let x be Element of G;
+  thus A4: (Id_G).x = x by Def3
+                   .= (id (the carrier of G)).x;
+  thus thesis;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{86}\nwdocspar
+
+\M
+Now we should automatically associate $\Id_{G}$ is bijective. This
+requires proving a couple of helper lemmas establishing injectivity and
+surjectivity. 
+
+\nwenddocs{}\nwbegincode{87}\sublabel{NWoaARJ-37g7e5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-37g7e5-1}}}\moddef{Register \code{}Id{\_}G\edoc{} is bijective~{\nwtagstyle{}\subpageref{NWoaARJ-37g7e5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+\LA{}\code{}Id{\_}G\edoc{} is injective~{\nwtagstyle{}\subpageref{NWoaARJ-17utZy-1}}\RA{}
+\LA{}\code{}Id{\_}G\edoc{} is surjective~{\nwtagstyle{}\subpageref{NWoaARJ-2Qowg2-1}}\RA{}
+
+registration let G;
+  cluster Id_G -> bijective;
+  coherence by Lm1,Lm2;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{88}\nwdocspar
+
+\N{Identity is injective}
+The proof is straightforward since we've established (\S\ref{thm:characteristic:identity-endomorphism-is-identity-function}) the group
+endomorphism $\Id_{G}$ coincides with the set-theoretic function $\id_{U(G)}$
+on the underlying set $U(G)$ of the group $G$.
+
+\nwenddocs{}\nwbegincode{89}\sublabel{NWoaARJ-17utZy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-17utZy-1}}}\moddef{\code{}Id{\_}G\edoc{} is injective~{\nwtagstyle{}\subpageref{NWoaARJ-17utZy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-37g7e5-1}}\nwenddeflinemarkup
+Lm1: Id_G is one-to-one
+proof
+  id (the carrier of G) is one-to-one;
+  hence thesis by Th3;
+end;
+\nwused{\\{NWoaARJ-37g7e5-1}}\nwendcode{}\nwbegindocs{90}\nwdocspar
+
+\N{Identity is surjective}
+As with establishing injectivity, it's straightforward.
+
+\nwenddocs{}\nwbegincode{91}\sublabel{NWoaARJ-2Qowg2-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2Qowg2-1}}}\moddef{\code{}Id{\_}G\edoc{} is surjective~{\nwtagstyle{}\subpageref{NWoaARJ-2Qowg2-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-37g7e5-1}}\nwenddeflinemarkup
+Lm2: Id_G is onto
+proof
+  id (the carrier of G) is onto;
+  hence thesis by Th3;
+end;
+\nwused{\\{NWoaARJ-37g7e5-1}}\nwendcode{}\nwbegindocs{92}\nwdocspar
+
+\N{Definition: Inner Automorphism}
+We call a group automorphism $f\in\Aut(G)$ \define{inner} if there is a
+group element $g\in G$ such that for all $x\in G$ we have $f(x) = x^{g} = g^{-1}xg$.
+That is, $f$ is just conjugation by a fixed group element.
+
+\nwenddocs{}\nwbegincode{93}\sublabel{NWoaARJ-13QmRM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-13QmRM-1}}}\moddef{Define \code{}inner\edoc{} for Automorphism~{\nwtagstyle{}\subpageref{NWoaARJ-13QmRM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+definition :: Def5
+  let G;
+  let IT be Automorphism of G;
+  attr IT is inner means
+  :Def5:
+  ex a being Element of G st
+  for x being Element of G holds IT.x = x |^ a;
+end;
+\LA{}Outer as antonym of inner~{\nwtagstyle{}\subpageref{NWoaARJ-RgKDM-1}}\RA{}
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{94}\nwdocspar
+
+\M We also recall that an automorphism is called \define{Outer} if it is
+not inner. Mizar let's us do this with the {\Tt{}antonym\nwendquote} construct within
+a {\Tt{}notation\nwendquote} block.
+
+\nwenddocs{}\nwbegincode{95}\sublabel{NWoaARJ-RgKDM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-RgKDM-1}}}\moddef{Outer as antonym of inner~{\nwtagstyle{}\subpageref{NWoaARJ-RgKDM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-13QmRM-1}}\nwenddeflinemarkup
+notation
+  let G be Group, f be Automorphism of G;
+  antonym f is outer for f is inner;
+end;
+\nwused{\\{NWoaARJ-13QmRM-1}}\nwendcode{}\nwbegindocs{96}\nwdocspar
+
+\N{Update our vocabular file}
+Before rushing off to prove properties concerning inner and outer
+automorphisms, we should add the attributes to our vocabulary file.
+
+
+\nwenddocs{}\nwbegincode{97}\sublabel{NWoaARJ-9L8EQ-3}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-3}}}\moddef{DICT/TMP.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-9L8EQ-2}{\relax}\nwenddeflinemarkup
+Vinner
+Vouter
+\nwendcode{}\nwbegindocs{98}\nwdocspar
+
+\N{Theorem: $\Id_{G}$ is effectively inner}\label{thm:characteristic:id-inner}
+We will be registering ``inner'' as an attribute for ``Automorphism
+of $G$''. This will require proving that there exists an inner
+Automorphism of $G$. I've found the trivial examples are often best for
+establishing the existence of such things, so we will prove {\Tt{}Id\ G\nwendquote} is
+an inner Automorphism. This uses the fact, if $e\in G$ is the identity
+element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
+(proven in Theorem~19 of {\Tt{}GROUP{\_}3\nwendquote}).
+
+\nwenddocs{}\nwbegincode{99}\sublabel{NWoaARJ-3VEX6S-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3VEX6S-1}}}\moddef{\code{}Id{\_}G\edoc{} is effectively inner~{\nwtagstyle{}\subpageref{NWoaARJ-3VEX6S-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+theorem Th5:
+  for x being Element of G holds (Id_G).x = x |^ 1_G
+proof
+  let x;
+  (Id_G).x = x by Def3
+          .= x |^ 1_G by GROUP_3:19;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{100}\nwdocspar
+
+\M Now registering {\Tt{}inner\nwendquote} for {\Tt{}Automorphism\nwendquote}.
+
+\nwenddocs{}\nwbegincode{101}\sublabel{NWoaARJ-4IjmGJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4IjmGJ-1}}}\moddef{Register \code{}inner\edoc{} for \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-4IjmGJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+registration
+  let G;
+  cluster inner for Automorphism of G;
+  existence
+  \LA{}Proof of existence of an inner Automorphism~{\nwtagstyle{}\subpageref{NWoaARJ-9idpO-1}}\RA{}
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{102}\nwdocspar
+
+\N{Proof} The proof is a two punch knock-out. We take {\Tt{}Id{\_}G\nwendquote} to be the
+morphism, {\Tt{}1{\_}g\nwendquote} the group's identity element to be the element
+{\Tt{}Id{\_}G\nwendquote} conjugates by, then from earlier (\S\ref{thm:characteristic:id-inner})
+we have {\Tt{}Id{\_}G\nwendquote} be inner.
+
+\nwenddocs{}\nwbegincode{103}\sublabel{NWoaARJ-9idpO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-9idpO-1}}}\moddef{Proof of existence of an inner Automorphism~{\nwtagstyle{}\subpageref{NWoaARJ-9idpO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-4IjmGJ-1}}\nwenddeflinemarkup
+proof
+  take Id_G;
+  take 1_G;
+  thus thesis by Th5;
+end;
+\nwused{\\{NWoaARJ-4IjmGJ-1}}\nwendcode{}\nwbegindocs{104}\nwdocspar
+
+\N{Theorem ($f\in\aut(G)\iff f$ is {\Tt{}Automorphism\ of\ G\nwendquote})}
+Mizar has {\Tt{}AUTGROUP\nwendquote}, an article which defines {\Tt{}Aut\ G\nwendquote} the
+collection of functions on the underlying set $U(G)$ of a group $G$. We
+can prove that $f\in\aut(G)$ if and only if $f$ is {\Tt{}Automorphism\ of\ G\nwendquote}.
+
+\nwenddocs{}\nwbegincode{105}\sublabel{NWoaARJ-3c36xj-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3c36xj-1}}}\moddef{Relate \code{}Automorphism\ of\ G\edoc{} to elements of \code{}Aut\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-3c36xj-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+theorem Th8:
+  for G being strict Group, f being Endomorphism of G
+  holds (f in Aut G) iff (f is Automorphism of G)
+proof
+  let G be strict Group;
+  let f be Endomorphism of G;
+  thus f in Aut G implies f is Automorphism of G
+  \LA{}Proof $f\in\aut(G)\implies f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-wlMQo-1}}\RA{}
+  thus f is Automorphism of G implies f in Aut G
+  \LA{}Proof $f\in\aut(G)\impliedby f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-21iyLo-1}}\RA{}
+  thus thesis;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{106}\nwdocspar
+
+\N{Proof forwards direction} The forward direction is straightforward.
+
+\nwenddocs{}\nwbegincode{107}\sublabel{NWoaARJ-wlMQo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-wlMQo-1}}}\moddef{Proof $f\in\aut(G)\implies f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-wlMQo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-3c36xj-1}}\nwenddeflinemarkup
+proof
+  assume f in Aut G;
+  then f is bijective by AUTGROUP:def 1;
+  hence f is Automorphism of G;
+end;  
+\nwused{\\{NWoaARJ-3c36xj-1}}\nwendcode{}\nwbegindocs{108}\nwdocspar
+
+\N{Proof backwards direction} The backwards direction is nearly
+identical to the forwards direction proof. 
+
+\nwenddocs{}\nwbegincode{109}\sublabel{NWoaARJ-21iyLo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-21iyLo-1}}}\moddef{Proof $f\in\aut(G)\impliedby f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-21iyLo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-3c36xj-1}}\nwenddeflinemarkup
+proof
+  assume f is Automorphism of G;
+  then f is bijective;
+  hence f in Aut G by AUTGROUP:def 1;
+end;
+\nwused{\\{NWoaARJ-3c36xj-1}}\nwendcode{}\nwbegindocs{110}\nwdocspar
+
+\N{Inner automorphisms are inner automorphisms}
+We can relate the notion of an {\Tt{}inner\ Automorphism\ of\ G\nwendquote} with elements
+of {\Tt{}InnAut\ G\nwendquote} from {\Tt{}AUTGROUP\nwendquote}. The only peculiarity is that
+{\Tt{}AUTGROUP\nwendquote} requires $G$ to be a \emph{strict} group.
+
+\nwenddocs{}\nwbegincode{111}\sublabel{NWoaARJ-2gUxot-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2gUxot-1}}}\moddef{Theorem: $f$ in \code{}InnAut\ G\edoc{} iff $f$ is \code{}inner\ Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2gUxot-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-32pmQO-1}}\nwenddeflinemarkup
+\LA{}Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-3eJW7Q-1}}\RA{}
+
+theorem
+  for G being strict Group
+  for f being object
+  holds (f in InnAut G) iff (f is inner Automorphism of G)
+proof
+  let G be strict Group;
+  let f be object;
+  thus (f in InnAut G) implies (f is inner Automorphism of G)
+  \LA{}Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)~{\nwtagstyle{}\subpageref{NWoaARJ-18aBqf-1}}\RA{}
+  thus (f is inner Automorphism of G) implies (f in InnAut G)
+  \LA{}Proof ($f$ is inner automorphism) $\implies$ $f$ is in \code{}InnAut\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2maG0l-1}}\RA{}
+  thus thesis;
+end;
+\nwused{\\{NWoaARJ-32pmQO-1}}\nwendcode{}\nwbegindocs{112}\nwdocspar
+
+\N{Proof in forwards direction} The proof amounts to unwinding
+definitions, but the subtlety is in first reconsidering $f$ as an
+Automorphism of $G$ thanks to our handy-dandy lemma.
+
+\nwenddocs{}\nwbegincode{113}\sublabel{NWoaARJ-18aBqf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-18aBqf-1}}}\moddef{Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)~{\nwtagstyle{}\subpageref{NWoaARJ-18aBqf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2gUxot-1}}\nwenddeflinemarkup
+proof
+  assume Z0: f in InnAut G;
+  then f is Automorphism of G by LmInnAut;
+  then reconsider f as Automorphism of G;
+  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  then consider a being Element of G such that
+  A2: for x being Element of G holds f.x = x |^ a
+  by Z0,AUTGROUP:def 4;
+  f is inner Automorphism of G by Def5,A2;
+  hence thesis;
+end;  
+\nwused{\\{NWoaARJ-2gUxot-1}}\nwendcode{}\nwbegindocs{114}\nwdocspar
+
+\N{Proof in backwards direction}
+This is again unwinding the definitions. The same subtlety lurks here,
+requiring us to reconsider $f$ as an inner automorphism of $G$.
+
+\nwenddocs{}\nwbegincode{115}\sublabel{NWoaARJ-2maG0l-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2maG0l-1}}}\moddef{Proof ($f$ is inner automorphism) $\implies$ $f$ is in \code{}InnAut\ G\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2maG0l-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2gUxot-1}}\nwenddeflinemarkup
+proof
+  assume Z1: f is inner Automorphism of G;
+  reconsider f as inner Automorphism of G by Z1;
+  f is Element of Aut G by Z1,Th8;
+  then consider a being Element of G such that
+  B1: for x being Element of G holds f.x = x |^ a
+  by Z1,Def5;
+  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  then f in InnAut G by B1,AUTGROUP:def 4;
+  hence thesis;
+end;
+\nwused{\\{NWoaARJ-2gUxot-1}}\nwendcode{}\nwbegindocs{116}\nwdocspar
+
+\M
+It's relatively straightforward to show that if $f$ is an element of
+{\Tt{}InnAut\ G\nwendquote}, then $f$ is an {\Tt{}Automorphism\ of\ G\nwendquote}. We just unwind the
+definitions.
+
+\nwenddocs{}\nwbegincode{117}\sublabel{NWoaARJ-3eJW7Q-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3eJW7Q-1}}}\moddef{Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-3eJW7Q-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2gUxot-1}}\nwenddeflinemarkup
+LmInnAut:
+  for G being strict Group
+  for f being Element of InnAut G
+  holds f is Automorphism of G
+proof
+  let G be strict Group;
+  let f be Element of InnAut G;
+  f is Element of Aut G by AUTGROUP:12;
+  then f in Aut G;
+  hence f is Automorphism of G by Th8;
+end;
+\nwused{\\{NWoaARJ-2gUxot-1}}\nwendcode{}\nwbegindocs{118}\nwdocspar
+
+\subsection{Isomorphisms}
+
+\M
+We also want to prove results concerning group isomorphisms. This
+requires a preliminary notion for a group $G_{2}$ being a
+$G_{1}$-isomorphic group.
+
+\nwenddocs{}\nwbegincode{119}\sublabel{NWoaARJ-2BsOkA-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2BsOkA-1}}}\moddef{Group isomorphisms~{\nwtagstyle{}\subpageref{NWoaARJ-2BsOkA-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-ZOhAW-1}}\nwenddeflinemarkup
+\LA{}Define when a group is \code{}G-isomorphic\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-34yWsG-1}}\RA{}
+\LA{}Register \code{}G-isomorphic\edoc{} for groups~{\nwtagstyle{}\subpageref{NWoaARJ-3gtzsG-1}}\RA{}
+\LA{}Register \code{}bijective\edoc{} for \code{}Homomorphism\edoc{} of $G_{1}$, $G_{2}$~{\nwtagstyle{}\subpageref{NWoaARJ-3ik4I8-1}}\RA{}
+\LA{}Define group \code{}Isomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2NbDsC-1}}\RA{}
+\nwused{\\{NWoaARJ-ZOhAW-1}}\nwendcode{}\nwbegindocs{120}\nwdocspar
+
+
+\M It's useful to introduce, not just a group $K$, but a $G$-isomorphic
+group $K$.
+
+\nwenddocs{}\nwbegincode{121}\sublabel{NWoaARJ-34yWsG-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-34yWsG-1}}}\moddef{Define when a group is \code{}G-isomorphic\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-34yWsG-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2BsOkA-1}}\nwenddeflinemarkup
+definition :: Def6
+  let G1,G2 be Group;
+  attr G2 is G1-isomorphic means :Def6:
+  G1,G2 are_isomorphic;
+end;
+\nwused{\\{NWoaARJ-2BsOkA-1}}\nwendcode{}\nwbegindocs{122}\nwdocspar
+
+\M We also wanter to register this attribute (``being $G$-isomorphic'')
+as a perfectly fine adjective for groups. This requires proving that,
+for any group $G_{1}$ we have a $G_{1}$-isomorphic group. 
+
+\nwenddocs{}\nwbegincode{123}\sublabel{NWoaARJ-3gtzsG-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3gtzsG-1}}}\moddef{Register \code{}G-isomorphic\edoc{} for groups~{\nwtagstyle{}\subpageref{NWoaARJ-3gtzsG-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2BsOkA-1}}\nwenddeflinemarkup
+registration
+  let G1 be Group;
+  cluster G1-isomorphic for Group;
+  existence
+  proof
+    take G1;
+    Id_G1 is bijective;
+    thus thesis;
+  end;
+end;
+\nwused{\\{NWoaARJ-2BsOkA-1}}\nwendcode{}\nwbegindocs{124}\nwdocspar
+
+\N{Registering {\Tt{}bijective\nwendquote} for {\Tt{}Homomorphism\nwendquote}}
+We had to take a detour, because if you just gave me any two random
+groups $G_{1}$ and $G_{2}$, there is zero reason to believe they are
+isomorphic. Just consider any two finite groups of different size. And
+group isomorphisms are only well-defined between isomorphic groups. Now
+that we have a notion of isomorphic-groups, we can define a notion of
+{\Tt{}Isomorphism\nwendquote}. We will also need to prove their existence, which we
+place in a lemma.
+
+\nwenddocs{}\nwbegincode{125}\sublabel{NWoaARJ-3ik4I8-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-3ik4I8-1}}}\moddef{Register \code{}bijective\edoc{} for \code{}Homomorphism\edoc{} of $G_{1}$, $G_{2}$~{\nwtagstyle{}\subpageref{NWoaARJ-3ik4I8-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2BsOkA-1}}\nwenddeflinemarkup
+\LA{}Lemma: $G_{2}$ is $G_{1}$-isomorphic implies existence of isomorphism~{\nwtagstyle{}\subpageref{NWoaARJ-gupLZ-1}}\RA{}
+
+registration
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  cluster bijective for Homomorphism of G1,G2;
+  existence by Lm5;
+end;
+\nwused{\\{NWoaARJ-2BsOkA-1}}\nwendcode{}\nwbegindocs{126}\nwdocspar
+
+\N{Lemma: Isomorphic groups have an isomorphism between them}
+Let $G_{1}$ be a group. For any $G_{1}$-isomorphic group $G_{2}$,
+there exists at least one isomorphism $G_{1}\to G_{2}$. It's just a
+straightforward matter of unwinding the definitions.
+
+\nwenddocs{}\nwbegincode{127}\sublabel{NWoaARJ-gupLZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-gupLZ-1}}}\moddef{Lemma: $G_{2}$ is $G_{1}$-isomorphic implies existence of isomorphism~{\nwtagstyle{}\subpageref{NWoaARJ-gupLZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-3ik4I8-1}}\nwenddeflinemarkup
+Lm5:
+  for G2 being G1-isomorphic Group
+  holds (ex h being Homomorphism of G1,G2 st h is bijective)
+proof
+  let G2 be G1-isomorphic Group;
+  G1,G2 are_isomorphic by Def6;
+  then consider h being Homomorphism of G1,G2 such that
+A1: h is bijective by GROUP_6:def 11;
+  thus thesis by A1;
+end;
+\nwused{\\{NWoaARJ-3ik4I8-1}}\nwendcode{}\nwbegindocs{128}\nwdocspar
+
+\N{Definition} We can now define a notion of group {\Tt{}Isomorphism\nwendquote} in
+Mizar. We can't do it ``willy-nilly'', of course: the notion of an
+isomorphism only makes sense when it is from a group $G_{1}$ to a
+$G_{1}$-isomorphic group. But given such a condition on $G_{2}$, we can
+define an {\Tt{}Isomorphism\nwendquote} as just a bijective group morphism $G_{1}\to G_{2}$.
+
+\nwenddocs{}\nwbegincode{129}\sublabel{NWoaARJ-2NbDsC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2NbDsC-1}}}\moddef{Define group \code{}Isomorphism\edoc{}~{\nwtagstyle{}\subpageref{NWoaARJ-2NbDsC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2BsOkA-1}}\nwenddeflinemarkup
+definition :: Def7
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
+end;
+\nwused{\\{NWoaARJ-2BsOkA-1}}\nwendcode{}
+
+\nwixlogsorted{c}{{\code{}Id{\_}G\edoc{} is effectively inner}{NWoaARJ-3VEX6S-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-3VEX6S-1}}}%
+\nwixlogsorted{c}{{\code{}Id{\_}G\edoc{} is injective}{NWoaARJ-17utZy-1}{\nwixu{NWoaARJ-37g7e5-1}\nwixd{NWoaARJ-17utZy-1}}}%
+\nwixlogsorted{c}{{\code{}Id{\_}G\edoc{} is surjective}{NWoaARJ-2Qowg2-1}{\nwixu{NWoaARJ-37g7e5-1}\nwixd{NWoaARJ-2Qowg2-1}}}%
+\nwixlogsorted{c}{{\code{}Id{\_}G\edoc{} is the same as \code{}id\ the\ carrier\ of\ G\edoc{}}{NWoaARJ-4KG2Xs-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-4KG2Xs-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} article body}{NWoaARJ-ZOhAW-1}{\nwixu{NWoaARJ-8Kw8w-1}\nwixd{NWoaARJ-ZOhAW-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} constructors}{NWoaARJ-1JJknr-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-1JJknr-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} definitions}{NWoaARJ-1XYRUf-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-1XYRUf-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} equalities}{NWoaARJ-1Aylxu-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-1Aylxu-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} expansions}{NWoaARJ-10tSeT-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-10tSeT-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} notations}{NWoaARJ-j1Lze-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-j1Lze-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} registrations}{NWoaARJ-1OlNUs-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-1OlNUs-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} requirements}{NWoaARJ-2HdRVn-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-2HdRVn-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} schemes}{NWoaARJ-285BP4-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-285BP4-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} theorems}{NWoaARJ-4Fk6bh-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-4Fk6bh-1}}}%
+\nwixlogsorted{c}{{\code{}tmp.miz\edoc{} vocabularies}{NWoaARJ-h1cmx-1}{\nwixu{NWoaARJ-G7ezF-1}\nwixd{NWoaARJ-h1cmx-1}}}%
+\nwixlogsorted{c}{{Automorphisms map trivial subgroups to themselves}{NWoaARJ-3J82fO-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-3J82fO-1}}}%
+\nwixlogsorted{c}{{Define $\Id_{G}$}{NWoaARJ-27i33n-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-27i33n-1}}}%
+\nwixlogsorted{c}{{Define \code{}Automorphism\edoc{}}{NWoaARJ-4WeeL5-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-4WeeL5-1}}}%
+\nwixlogsorted{c}{{Define \code{}Endomorphism\edoc{}}{NWoaARJ-17cKlQ-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-17cKlQ-1}}}%
+\nwixlogsorted{c}{{Define \code{}inner\edoc{} for Automorphism}{NWoaARJ-13QmRM-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-13QmRM-1}}}%
+\nwixlogsorted{c}{{Define group \code{}Isomorphism\edoc{}}{NWoaARJ-2NbDsC-1}{\nwixu{NWoaARJ-2BsOkA-1}\nwixd{NWoaARJ-2NbDsC-1}}}%
+\nwixlogsorted{c}{{Define when a group is \code{}G-isomorphic\edoc{}}{NWoaARJ-34yWsG-1}{\nwixu{NWoaARJ-2BsOkA-1}\nwixd{NWoaARJ-34yWsG-1}}}%
+\nwixlogsorted{c}{{DICT/TMP.VOC}{NWoaARJ-9L8EQ-1}{\nwixd{NWoaARJ-9L8EQ-1}\nwixd{NWoaARJ-9L8EQ-2}\nwixd{NWoaARJ-9L8EQ-3}}}%
+\nwixlogsorted{c}{{Endomorphisms preserve the trivial subgroup}{NWoaARJ-26jvGu-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-26jvGu-1}}}%
+\nwixlogsorted{c}{{Environment for \code{}tmp.miz\edoc{}}{NWoaARJ-G7ezF-1}{\nwixu{NWoaARJ-8Kw8w-1}\nwixd{NWoaARJ-G7ezF-1}}}%
+\nwixlogsorted{c}{{Functions and subset tokens}{NWoaARJ-1ATTd1-1}{\nwixu{NWoaARJ-h1cmx-1}\nwixd{NWoaARJ-1ATTd1-1}}}%
+\nwixlogsorted{c}{{Group and subgroups tokens}{NWoaARJ-5jMsk-1}{\nwixu{NWoaARJ-h1cmx-1}\nwixd{NWoaARJ-5jMsk-1}}}%
+\nwixlogsorted{c}{{Group conjugation and normal subgroups tokens}{NWoaARJ-40Iyod-1}{\nwixu{NWoaARJ-h1cmx-1}\nwixd{NWoaARJ-40Iyod-1}}}%
+\nwixlogsorted{c}{{Group isomorphisms}{NWoaARJ-2BsOkA-1}{\nwixu{NWoaARJ-ZOhAW-1}\nwixd{NWoaARJ-2BsOkA-1}}}%
+\nwixlogsorted{c}{{group theoretic notation for \code{}tmp.miz\edoc{}}{NWoaARJ-1E7MdW-1}{\nwixu{NWoaARJ-1JJknr-1}\nwixu{NWoaARJ-j1Lze-1}\nwixd{NWoaARJ-1E7MdW-1}}}%
+\nwixlogsorted{c}{{Helper lemmas and registrations for \code{}tmp.miz\edoc{}}{NWoaARJ-LuhGu-1}{\nwixu{NWoaARJ-ZOhAW-1}\nwixd{NWoaARJ-LuhGu-1}\nwixd{NWoaARJ-LuhGu-2}\nwixd{NWoaARJ-LuhGu-3}}}%
+\nwixlogsorted{c}{{Import group-theoretic theorems}{NWoaARJ-cTLti-1}{\nwixu{NWoaARJ-4Fk6bh-1}\nwixd{NWoaARJ-cTLti-1}}}%
+\nwixlogsorted{c}{{Import set-theoretic theorems}{NWoaARJ-2m40FU-1}{\nwixu{NWoaARJ-4Fk6bh-1}\nwixd{NWoaARJ-2m40FU-1}}}%
+\nwixlogsorted{c}{{Include group theoretic definitions}{NWoaARJ-40sjrh-1}{\nwixu{NWoaARJ-1XYRUf-1}\nwixd{NWoaARJ-40sjrh-1}}}%
+\nwixlogsorted{c}{{Include set theoretic definitions}{NWoaARJ-4e7fxs-1}{\nwixu{NWoaARJ-1XYRUf-1}\nwixd{NWoaARJ-4e7fxs-1}}}%
+\nwixlogsorted{c}{{Inner and outer automorphisms}{NWoaARJ-32pmQO-1}{\nwixu{NWoaARJ-ZOhAW-1}\nwixd{NWoaARJ-32pmQO-1}}}%
+\nwixlogsorted{c}{{Lemma: $G_{2}$ is $G_{1}$-isomorphic implies existence of isomorphism}{NWoaARJ-gupLZ-1}{\nwixu{NWoaARJ-3ik4I8-1}\nwixd{NWoaARJ-gupLZ-1}}}%
+\nwixlogsorted{c}{{Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms}{NWoaARJ-3eJW7Q-1}{\nwixu{NWoaARJ-2gUxot-1}\nwixd{NWoaARJ-3eJW7Q-1}}}%
+\nwixlogsorted{c}{{Outer as antonym of inner}{NWoaARJ-RgKDM-1}{\nwixu{NWoaARJ-13QmRM-1}\nwixd{NWoaARJ-RgKDM-1}}}%
+\nwixlogsorted{c}{{Proof $\Id_{G}$ is unique}{NWoaARJ-q6iKQ-1}{\nwixu{NWoaARJ-27i33n-1}\nwixd{NWoaARJ-q6iKQ-1}}}%
+\nwixlogsorted{c}{{Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)}{NWoaARJ-18aBqf-1}{\nwixu{NWoaARJ-2gUxot-1}\nwixd{NWoaARJ-18aBqf-1}}}%
+\nwixlogsorted{c}{{Proof $f\in\aut(G)\impliedby f$ is \code{}Automorphism\ of\ G\edoc{}}{NWoaARJ-21iyLo-1}{\nwixu{NWoaARJ-3c36xj-1}\nwixd{NWoaARJ-21iyLo-1}}}%
+\nwixlogsorted{c}{{Proof $f\in\aut(G)\implies f$ is \code{}Automorphism\ of\ G\edoc{}}{NWoaARJ-wlMQo-1}{\nwixu{NWoaARJ-3c36xj-1}\nwixd{NWoaARJ-wlMQo-1}}}%
+\nwixlogsorted{c}{{Proof ($f$ is inner automorphism) $\implies$ $f$ is in \code{}InnAut\ G\edoc{}}{NWoaARJ-2maG0l-1}{\nwixu{NWoaARJ-2gUxot-1}\nwixd{NWoaARJ-2maG0l-1}}}%
+\nwixlogsorted{c}{{Proof of existence of an inner Automorphism}{NWoaARJ-9idpO-1}{\nwixu{NWoaARJ-4IjmGJ-1}\nwixd{NWoaARJ-9idpO-1}}}%
+\nwixlogsorted{c}{{Proof that $\Id_{G}$ exists}{NWoaARJ-2hCvdU-1}{\nwixu{NWoaARJ-27i33n-1}\nwixd{NWoaARJ-2hCvdU-1}}}%
+\nwixlogsorted{c}{{Register \code{}bijective\edoc{} for \code{}Endoomorphism\edoc{}}{NWoaARJ-1BJmAm-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-1BJmAm-1}}}%
+\nwixlogsorted{c}{{Register \code{}bijective\edoc{} for \code{}Homomorphism\edoc{} of $G_{1}$, $G_{2}$}{NWoaARJ-3ik4I8-1}{\nwixu{NWoaARJ-2BsOkA-1}\nwixd{NWoaARJ-3ik4I8-1}}}%
+\nwixlogsorted{c}{{Register \code{}G-isomorphic\edoc{} for groups}{NWoaARJ-3gtzsG-1}{\nwixu{NWoaARJ-2BsOkA-1}\nwixd{NWoaARJ-3gtzsG-1}}}%
+\nwixlogsorted{c}{{Register \code{}Id{\_}G\edoc{} is bijective}{NWoaARJ-37g7e5-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-37g7e5-1}}}%
+\nwixlogsorted{c}{{Register \code{}inner\edoc{} for \code{}Automorphism\edoc{}}{NWoaARJ-4IjmGJ-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-4IjmGJ-1}}}%
+\nwixlogsorted{c}{{Register group theoretic clusters}{NWoaARJ-3IQfHr-1}{\nwixu{NWoaARJ-1OlNUs-1}\nwixd{NWoaARJ-3IQfHr-1}}}%
+\nwixlogsorted{c}{{Register set theoretic clusters}{NWoaARJ-1d38DI-1}{\nwixu{NWoaARJ-1OlNUs-1}\nwixd{NWoaARJ-1d38DI-1}}}%
+\nwixlogsorted{c}{{Relate \code{}Automorphism\ of\ G\edoc{} to elements of \code{}Aut\ G\edoc{}}{NWoaARJ-3c36xj-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-3c36xj-1}}}%
+\nwixlogsorted{c}{{Reserve symbols for inner and outer automorphisms}{NWoaARJ-1LL7AC-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-1LL7AC-1}\nwixd{NWoaARJ-1LL7AC-2}}}%
+\nwixlogsorted{c}{{Sandwich Subgroup Equality Theorem}{NWoaARJ-G9U50-1}{\nwixd{NWoaARJ-G9U50-1}}}%
+\nwixlogsorted{c}{{set theoretic notation for \code{}tmp.miz\edoc{}}{NWoaARJ-1usaUC-1}{\nwixu{NWoaARJ-1JJknr-1}\nwixu{NWoaARJ-j1Lze-1}\nwixd{NWoaARJ-1usaUC-1}}}%
+\nwixlogsorted{c}{{Subgroups invariant under conjugation are normal}{NWoaARJ-2karRI-1}{\nwixd{NWoaARJ-2karRI-1}}}%
+\nwixlogsorted{c}{{TEXT/tmp.miz}{NWoaARJ-8Kw8w-1}{\nwixd{NWoaARJ-8Kw8w-1}}}%
+\nwixlogsorted{c}{{Theorem: $f$ in \code{}InnAut\ G\edoc{} iff $f$ is \code{}inner\ Automorphism\ of\ G\edoc{}}{NWoaARJ-2gUxot-1}{\nwixu{NWoaARJ-32pmQO-1}\nwixd{NWoaARJ-2gUxot-1}}}%
+\nwbegindocs{130}\nwdocspar
+
+
+\subsection{Pure Math}
+
+\begin{theorem}[{Gorenstein~\cite[Th.1.5 of ch.2\S1]{gorenstein1980}}]
+  If $H$ is a minimal normal subgroup of $G$ (i.e., $H\normalSubgroup G$
+  and there is no nontrivial proper subgroup of $H$ which is normal in
+  $G$),
+  then \emph{either} $H$ is an elementary Abelian $p$-group (for some
+  prime $p\in\NN$) \emph{or} $H$ is the direct product of isomorphic
+  non-Abelian simple groups.
+\end{theorem}
+
+\begin{definition}[{Dummit and Foote~\cite[\S4,4]{dummit-foote}}]
+A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
+denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
+itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
+\end{definition}
+
+\begin{theorem}[{Gorenstein~\cite[Th.1.3 of ch.2\S1]{gorenstein1980}}]
+Let $G$ be a group. If a normal subgroup $H\normalSubgroup G$ whose
+order and index are coprime
+\begin{equation*}
+\gcd(|H|, [G:H])=1,
+\end{equation*}
+then $H$ is a characteristic subgroup of $G$.
+\end{theorem}
+
+\begin{definition}
+Let $G$ be a group. The \define{Derived Subgroup} of $G$ is the subgroup
+denoteed $G'$ or $[G,G]$ generated by commutators of elements of $G$, where
+for generic subsets $X,Y\subset G$ we denote
+\begin{equation}
+  [X,Y] = \langle [x,y] : x\in X,y\in Y\rangle.
+\end{equation}
+We also use the notation $[X,Y,Z] = [\,{[X,Y]},Z]$
+\end{definition}
+
+
+\begin{theorem}[Hall's Three Subgroup Lemma]
+  Let $H$, $K$, $L$ be subgroups of $G$.
+  If $[H,K,L]=1$ and $[K,L,H]=1$, then $[L,H,K]=1$.
+\end{theorem}
+\nwenddocs{}

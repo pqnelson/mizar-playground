@@ -2,7 +2,7 @@
 \ProvidesPackage{tutmac}[2021/12/11 Mizar Tutorial Macros Package]
 
 \RequirePackage{ifpdf}
-\RequirePackage{noweb}
+\RequirePackage{titlesec}
 \RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc]{geometry}
 \RequirePackage{amssymb,amsmath}
 \RequirePackage{amsthm}
@@ -13,39 +13,96 @@
 \else
 \RequirePackage[hidelinks,dvipdfmx]{hyperref}
 \fi
-\noweboptions{english}
 
+
+\noweboptions{longxref,english}
+
+
+
+% based on Knuth's taocpmac.tex
+\titleformat{\section}
+  {\large\sffamily\bfseries}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\large\sffamily\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titleformat{\subsubsection}
+  {\large\sffamily\bfseries}
+  {\thesubsubsection}
+  {1em}
+  {}
 
 
 % Poor man's chunks, \'a la Knuth's WEB
 \counterwithout*{paragraph}{subsubsection}
 \@addtoreset{paragraph}{chapter}
 \renewcommand\theparagraph{\thechapter.\arabic{paragraph}}
-\renewcommand\paragraph[2][\@empty]{\medbreak\refstepcounter{paragraph}%
+\renewcommand\paragraph[2][\@empty]{\par\medskip%\medbreak
+  \refstepcounter{paragraph}%
   \def\tmp{#2}%
   \noindent\textbf{\theparagraph.\ifx\tmp\@empty\else~#2\@addpunct{.}\fi}\enspace\ignorespaces}
 \let\N\paragraph
 \def\M{\paragraph{}}
 
+
+\newskip\interchunkskip \interchunkskip=\medskipamount%
+% cwebmac.tex has \interchunkskip=12pt minus 3pt
+% latex.ltx and plain.tex has \medskipamount=6pt plus 2pt minus 2pt
+\newskip\thmskip \thmskip=\interchunkskip%\topsep
+
+\newtheoremstyle{thmstyle}
+  {\thmskip}   % ABOVESPACE
+  {\thmskip}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {0.5em plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}          % CUSTOM-HEAD-SPEC
+\newtheoremstyle{defnstyle}
+  {\thmskip}   % ABOVESPACE
+  {\thmskip}   % BELOWSPACE
+  {}          % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {0.5em plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}          % CUSTOM-HEAD-SPEC
+\newtheoremstyle{rmkstyle}
+  {\thmskip}   % ABOVESPACE
+  {\thmskip}   % BELOWSPACE
+  {}          % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\itshape} % HEADFONT
+  {.}         % HEADPUNCT
+  {0.5em plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}
+
 % theorems
-\swapnumbers
-\theoremstyle{plain}
+%\swapnumbers
+\theoremstyle{thmstyle}
 \newtheorem{theorem}[paragraph]{Theorem}
 \newtheorem{cor}[paragraph]{Corollary}
 \newtheorem{prop}[paragraph]{Proposition}
 \newtheorem{lemma}[paragraph]{Lemma}
 
-\theoremstyle{definition}
+\theoremstyle{defnstyle}
 \newtheorem{definition}[paragraph]{Definition}
 \newtheorem{example}[paragraph]{Example}
 
-\theoremstyle{remark}
-\newtheorem{remark}[paragraph]{Remark}
+\theoremstyle{rmkstyle}
+\newtheorem{remark}{Remark}[paragraph]
 \newtheorem{note}[paragraph]{Note}
 
 % adjust whitespace between code chunks
 % https://www.cs.tufts.edu/~nr/noweb/FAQ.html
-\def\nwendcode{\endtrivlist \endgroup \vfil\penalty0\vfilneg}
+\def\nwendcode{\endtrivlist \endgroup \vfil\penalty10\vfilneg}
 \let\nwdocspar=\smallbreak
 
 
@@ -58,7 +115,7 @@
 
 
 \def\define#1{\textbf{``#1''}}
-\DeclareMathOperator\aut{Aut}
 
+\input{notation}
 
 \endinput
