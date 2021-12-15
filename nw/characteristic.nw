@@ -13,7 +13,8 @@ Every Mizar article looks like:
 <<Environment for [[tmp.miz]]>>
 
 <<[[tmp.miz]] article body>>
-@ 
+
+@
 
 \M
 Each Mizar article has an associated ``vocabular file'' which lists the
@@ -44,7 +45,8 @@ already introduced it. (None has, so far.) Since we want to describe
 
 <<DICT/TMP.VOC>>=
 Vcharacteristic
-@ 
+
+@
 
 \section{Environment}
 
@@ -65,6 +67,7 @@ environ
  <<[[tmp.miz]] theorems>>;
  <<[[tmp.miz]] schemes>>;
  <<[[tmp.miz]] requirements>>;
+
 @
 
 \subsection{Vocabularies, Notations, Constructors}
@@ -82,6 +85,7 @@ vocabularies RING_3, MOD_4, TMP,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
   <<Group conjugation and normal subgroups tokens>>
+
 @
 
 \M
@@ -91,7 +95,8 @@ begin with importing the usual suspects.
 <<Functions and subset tokens>>=
 MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, NUMBERS, WELLORD1,
 SUBSET_1, XBOOLE_0
-@ 
+
+@
 
 \M
 Characteristic subgroups requires recognizing tokens about\dots groups,
@@ -101,7 +106,8 @@ and subgroups.
 STRUCT_0, GROUP_1, GROUP_2, SUBSET_1, GROUP_4, GROUP_5,
 MSSUBFAM, GROUP_6, BINOP_1, BINOP_2, ALGSTR_0, REALSET1,
 AUTGROUP
-@ 
+
+@
 
 \M
 [[NEWTON]] defines the token [[|^]], used as infix operator [[a |^ b]]
@@ -112,7 +118,8 @@ that, as well.
 
 <<Group conjugation and normal subgroups tokens>>=
 NEWTON, PRE_TOPC, GROUP_3
-@ 
+
+@
 
 \N{Constructors}
 But the vocabularies just permits Mizar's parser to \emph{recognize}
@@ -127,6 +134,7 @@ so I'll just copy the constructor imports:
 <<[[tmp.miz]] constructors>>=
 constructors <<set theoretic notation for [[tmp.miz]]>>,
   <<group theoretic notation for [[tmp.miz]]>>
+
 @
 
 \N{Notations}
@@ -136,6 +144,7 @@ and notations. Usually this is just the constructor list.
 <<[[tmp.miz]] notations>>=
 notations <<set theoretic notation for [[tmp.miz]]>>,
   <<group theoretic notation for [[tmp.miz]]>>
+
 @
 
 \M The basics of Tarski--Grothendieck set theory may be found in
@@ -148,6 +157,7 @@ defined in [[FUNCT_2]]. There are few random odds and ends, like
 <<set theoretic notation for [[tmp.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
 RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS
+
 @
 
 \M
@@ -159,7 +169,8 @@ The group theoretic notions are a grab bag of binary operators
 <<group theoretic notation for [[tmp.miz]]>>=
 BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
 GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
-@ 
+
+@
 
 \subsection{Registrations, Definitions, Theorems, Schemes}
 
@@ -174,6 +185,7 @@ about relations ([[RELAT_1]]), functions and partial functions ([[FUNCT_1]],
 <<[[tmp.miz]] registrations>>=
 registrations <<Register set theoretic clusters>>,
   <<Register group theoretic clusters>>
+
 @
 
 \M
@@ -182,23 +194,26 @@ scattering of places.
 
 <<Register set theoretic clusters>>=
 XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
-@ 
+
+@
 
 \M
 We also need to register adjectives germane to group theory.
 
 <<Register group theoretic clusters>>=
 STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
+
 @
 
 \N{Definitions} When using a definition $f := M$, we need to cite it in
 a proof. Specifically, automatically unfolding predicates from specific
 articles. If we want this to be automated, we can cite the article in
-the [[definitions]] portion of the [[environ]]. 
+the [[definitions]] portion of the [[environ]].
 
 <<[[tmp.miz]] definitions>>=
 definitions <<Include set theoretic definitions>>,
   <<Include group theoretic definitions>>
+
 @
 
 \begin{remark}
@@ -212,7 +227,8 @@ definitions <<Include set theoretic definitions>>,
 
 <<Include set theoretic definitions>>=
 SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
-@ 
+
+@
 
 \M
 But we also want to use facts concerning normal subgroups ([[GROUP_3]])
@@ -220,6 +236,7 @@ and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
 <<Include group theoretic definitions>>=
 GROUP_3, AUTGROUP
+
 @
 
 \N{Theorems}
@@ -234,19 +251,22 @@ articles to the [[theorems]] environment.
 theorems
   <<Import set-theoretic theorems>>,
   <<Import group-theoretic theorems>>
+
 @
 
 \M We have the usual cast of set theoretic characters.
 <<Import set-theoretic theorems>>=
 TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
 XBOOLE_0, RELAT_1
+
 @
 
 \M Again, we import the usual group theoretic theorems.
 <<Import group-theoretic theorems>>=
 GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
 GRSOLV_1, AUTGROUP
-@ 
+
+@
 
 \N{Schemes}
 If we want to cite and use a scheme defined elsewhere, then we need the
@@ -254,6 +274,7 @@ article's name cited in the [[schemes]] portion of the environment.
 
 <<[[tmp.miz]] schemes>>=
 schemes BINOP_1, FUNCT_2
+
 @
 
 \subsection{\dots and the rest}
@@ -266,6 +287,7 @@ Expansions of terms defined by [[equals]] are imported by a new
 
 <<[[tmp.miz]] equalities>>=
 equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
+
 @
 
 \N{Expansions}
@@ -274,6 +296,7 @@ articles.
 
 <<[[tmp.miz]] expansions>>=
 expansions BINOP_1, FUNCT_2
+
 @
 
 \N{Requirements} Within mathematics, there's a lot of implicit
@@ -292,6 +315,7 @@ in 9 easy steps''), the only possibilities for the [[requirements]] are:
 
 <<[[tmp.miz]] requirements>>=
 requirements BOOLE, SUBSET
+
 @
 
 
@@ -305,6 +329,7 @@ The article body is where the magic happens.
 
 <<Inner and outer automorphisms>>
 <<Group isomorphisms>>
+
 @
 
 \subsection{Preparatory results}
@@ -351,6 +376,7 @@ proof
   then h is Element of H;
   hence thesis;
 end;
+
 @
 
 \N{Restriction of Group Morphisms to Subgroups}
@@ -385,6 +411,7 @@ proof
   then (f|H).h = f.h by GRSOLV_1:def 2;
   hence thesis;
 end;
+
 @
 
 \M
@@ -405,6 +432,7 @@ proof
   then the multMagma of H1 = the multMagma of H2 by GROUP_2:55;
   hence thesis;
 end;
+
 @
 
 \M Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
@@ -426,7 +454,8 @@ proof
   then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
-@ 
+
+@
 
 \subsection{Automorphisms}
 
@@ -457,6 +486,7 @@ begin
 <<Register [[inner]] for [[Automorphism]]>>
 <<Relate [[Automorphism of G]] to elements of [[Aut G]]>>
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>
+
 @
 
 \M Note we just used the symbol [[G]] for a generic group, so we add to
@@ -464,6 +494,7 @@ the reserved symbols this association.
 
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve G for Group;
+
 @
 
 \M A group endomorphism of $G$ is just a homomorphism $f\colon G\to G$.
@@ -473,7 +504,8 @@ definition :: Def1
   let G;
   mode Endomorphism of G is Homomorphism of G,G;
 end;
-@ 
+
+@
 
 \M\label{par:characteristic:register-bijective-for-endomorphism}
 We begin by registering the attribute [[bijective]] for group
@@ -496,7 +528,8 @@ registration
     hence thesis;
   end;
 end;
-@ 
+
+@
 
 \N{Definition (Automorphism)}
 Now we have an [[Automorphism of G]] be just a bijective endomorphism.
@@ -506,7 +539,8 @@ definition :: Def2
   let G;
   mode Automorphism of G is bijective Endomorphism of G;
 end;
-@ 
+
+@
 
 \M For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
 subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
@@ -520,12 +554,14 @@ proof
   .= (1).G by GRSOLV_1:11;
   hence thesis;
 end;
+
 @
 
 \M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
 
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve f for Endomorphism of G;
+
 @
 
 \M If $\phi$ is an automorphism of a group $G$, then
@@ -540,12 +576,13 @@ proves that $G$ is a subgroup of itself in Theorem~[[Th54]].
 :: under inner automorphisms, and thus is a characteristic subgroup.
 theorem Th2:
   for phi being Automorphism of G
-  holds Image(f|(1).G) is Subgroup of (1).G
+  holds Image(phi|(1).G) is Subgroup of (1).G
 proof
   let phi be Automorphism of G;
   (1).G is Subgroup of (1).G by GROUP_2:54;
   hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
 end;
+
 @
 
 \N{Identity Group Endomorphism}
@@ -563,13 +600,15 @@ definition :: Def3
   uniqueness
   <<Proof $\Id_{G}$ is unique>>
 end;
+
 @
 
 \M We need to add [[Id_]] to our vocabulary.
 
 <<DICT/TMP.VOC>>=
 OId_
-@ 
+
+@
 
 \N{Proof ($\Id_{G}$ exists)}
 Similar to the proof (\S\ref{par:characteristic:register-bijective-for-endomorphism})
@@ -584,7 +623,8 @@ proof
   i.x = x by FUNCT_1:17;
   hence thesis;
 end;
-@ 
+
+@
 
 \N{Proof (Uniqueness of $\Id_{G}$)}
 The usual strategy is to consider two arbitrary endomorphisms
@@ -606,6 +646,7 @@ proof
             .= Id2.x by A2;
   thus thesis;
 end;
+
 @
 
 \M\label{thm:characteristic:identity-endomorphism-is-identity-function}
@@ -621,12 +662,13 @@ proof
                    .= (id (the carrier of G)).x;
   thus thesis;
 end;
+
 @
 
 \M
 Now we should automatically associate $\Id_{G}$ is bijective. This
 requires proving a couple of helper lemmas establishing injectivity and
-surjectivity. 
+surjectivity.
 
 <<Register [[Id_G]] is bijective>>=
 <<[[Id_G]] is injective>>
@@ -636,6 +678,7 @@ registration let G;
   cluster Id_G -> bijective;
   coherence by Lm1,Lm2;
 end;
+
 @
 
 \N{Identity is injective}
@@ -649,6 +692,7 @@ proof
   id (the carrier of G) is one-to-one;
   hence thesis by Th3;
 end;
+
 @
 
 \N{Identity is surjective}
@@ -660,6 +704,7 @@ proof
   id (the carrier of G) is onto;
   hence thesis by Th3;
 end;
+
 @
 
 \N{Definition: Inner Automorphism}
@@ -677,6 +722,7 @@ definition :: Def5
   for x being Element of G holds IT.x = x |^ a;
 end;
 <<Outer as antonym of inner>>
+
 @
 
 \M We also recall that an automorphism is called \define{Outer} if it is
@@ -688,6 +734,7 @@ notation
   let G be Group, f be Automorphism of G;
   antonym f is outer for f is inner;
 end;
+
 @
 
 \N{Update our vocabular file}
@@ -698,7 +745,8 @@ automorphisms, we should add the attributes to our vocabulary file.
 <<DICT/TMP.VOC>>=
 Vinner
 Vouter
-@ 
+
+@
 
 \N{Theorem: $\Id_{G}$ is effectively inner}\label{thm:characteristic:id-inner}
 We will be registering ``inner'' as an attribute for ``Automorphism
@@ -718,7 +766,8 @@ proof
           .= x |^ 1_G by GROUP_3:19;
   hence thesis;
 end;
-@ 
+
+@
 
 \M Now registering [[inner]] for [[Automorphism]].
 
@@ -729,6 +778,7 @@ registration
   existence
   <<Proof of existence of an inner Automorphism>>
 end;
+
 @
 
 \N{Proof} The proof is a two punch knock-out. We take [[Id_G]] to be the
@@ -742,7 +792,8 @@ proof
   take 1_G;
   thus thesis by Th5;
 end;
-@ 
+
+@
 
 \N{Theorem ($f\in\aut(G)\iff f$ is [[Automorphism of G]])}
 Mizar has [[AUTGROUP]], an article which defines [[Aut G]] the
@@ -762,6 +813,7 @@ proof
   <<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>
   thus thesis;
 end;
+
 @
 
 \N{Proof forwards direction} The forward direction is
@@ -775,11 +827,12 @@ proof
   f is bijective by A0,AUTGROUP:def 1;
   then f is Automorphism of G;
   hence thesis;
-end;  
-@ 
+end;
+
+@
 
 \N{Proof backwards direction} The backwards direction is nearly
-identical to the forwards direction proof. 
+identical to the forwards direction proof.
 
 <<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>=
 proof
@@ -789,6 +842,7 @@ proof
   then f in Aut G by AUTGROUP:def 1;
   hence thesis;
 end;
+
 @
 
 \N{Inner automorphisms are inner automorphisms}
@@ -812,6 +866,7 @@ proof
   <<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>
   thus thesis;
 end;
+
 @
 
 \N{Proof in forwards direction} The proof amounts to unwinding
@@ -829,8 +884,9 @@ proof
   by Z0,AUTGROUP:def 4;
   f is inner Automorphism of G by Def5,A2;
   hence thesis;
-end;  
-@ 
+end;
+
+@
 
 \N{Proof in backwards direction}
 This is again unwinding the definitions. The same subtlety lurks here,
@@ -848,7 +904,8 @@ proof
   then f in InnAut G by B1,AUTGROUP:def 4;
   hence thesis;
 end;
-@ 
+
+@
 
 \M
 It's relatively straightforward to show that if $f$ is an element of
@@ -867,6 +924,7 @@ proof
   then f in Aut G;
   hence f is Automorphism of G by Th8;
 end;
+
 @
 
 \subsection{Isomorphisms}
@@ -881,6 +939,7 @@ $G_{1}$-isomorphic group.
 <<Register [[G-isomorphic]] for groups>>
 <<Register [[bijective]] for [[Homomorphism]] of $G_{1}$, $G_{2}$>>
 <<Define group [[Isomorphism]]>>
+
 @
 
 
@@ -893,11 +952,12 @@ definition :: Def6
   attr G2 is G1-isomorphic means :Def6:
   G1,G2 are_isomorphic;
 end;
+
 @
 
 \M We also wanter to register this attribute (``being $G$-isomorphic'')
 as a perfectly fine adjective for groups. This requires proving that,
-for any group $G_{1}$ we have a $G_{1}$-isomorphic group. 
+for any group $G_{1}$ we have a $G_{1}$-isomorphic group.
 
 <<Register [[G-isomorphic]] for groups>>=
 registration
@@ -910,6 +970,7 @@ registration
     thus thesis;
   end;
 end;
+
 @
 
 \N{Registering [[bijective]] for [[Homomorphism]]}
@@ -930,7 +991,8 @@ registration
   cluster bijective for Homomorphism of G1,G2;
   existence by Lm5;
 end;
-@ 
+
+@
 
 \N{Lemma: Isomorphic groups have an isomorphism between them}
 Let $G_{1}$ be a group. For any $G_{1}$-isomorphic group $G_{2}$,
@@ -948,6 +1010,7 @@ proof
 A1: h is bijective by GROUP_6:def 11;
   thus thesis by A1;
 end;
+
 @
 
 \N{Definition} We can now define a notion of group [[Isomorphism]] in
@@ -962,7 +1025,8 @@ definition :: Def7
       G2 be G1-isomorphic Group;
   mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
 end;
-@ 
+
+@
 
 
 \subsection{Pure Math}
