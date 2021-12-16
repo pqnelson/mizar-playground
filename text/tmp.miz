@@ -199,9 +199,8 @@ theorem Th3:
   Id_G = id (the carrier of G)
 proof
   let x be Element of G;
-  thus A4: (Id_G).x = x by Def3
-                   .= (id (the carrier of G)).x;
-  thus thesis;
+  thus (Id_G).x = x by Def3
+               .= (id (the carrier of G)).x;
 end;
 
 Lm1: Id_G is one-to-one
@@ -232,9 +231,8 @@ theorem Th5:
   for x being Element of G holds (Id_G).x = x |^ 1_G
 proof
   let x;
-  (Id_G).x = x by Def3
-          .= x |^ 1_G by GROUP_3:19;
-  hence thesis;
+  thus (Id_G).x = x by Def3
+               .= x |^ 1_G by GROUP_3:19;
 end;
 
 definition :: Def5
@@ -265,22 +263,8 @@ end;
 
 reserve H1,H2 for Subgroup of G;
 
-Lm3: for f being Homomorphism of G,G2
-for h being Element of G
-st h in H
-holds (f|H).h = f.h
-:: holds h in H implies (f|H).h = f.h
-proof
-  let f be Homomorphism of G,G2;
-  let h be Element of G;
-  assume h in H;
-  then h is Element of H by LmSubgroupElt;
-  then h in the carrier of H;
-  then (f|(the carrier of H)).h = f.h by FUNCT_1:49,GRSOLV_1:def 2;
-  then (f|H).h = f.h by GRSOLV_1:def 2;
-  hence thesis;
-end;
 
+Lm3:
 for G1,G2 being Group
 for H being Subgroup of G1
 for f being Homomorphism of G1,G2
@@ -294,7 +278,6 @@ proof
   let h be Element of G1;
   assume Z0: h in H;
   then h is Element of H by LmSubgroupElt;
-::  then h in the carrier of H;
   then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
   then (f|H).h = f.h by GRSOLV_1:def 2;
   hence thesis;
@@ -929,4 +912,3 @@ registration
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
-::> 396: Formula expected
