@@ -26,7 +26,7 @@ definition :: Def9
   holds Image (f|IT) = IT;
 end;
 
-@
+@ %def characteristic Def9
 
 \N{Characteristic subgroups are normal}
 Let $G$ be a group, $K\subgroup G$ a subgroup. If $K$ is a
@@ -48,7 +48,7 @@ A1:  for a being Element of G holds K |^ a = K
   hence K is normal Subgroup of G by A1,GROUP_3:def 13;
 end;
 
-@
+@ %def Th11
 
 \M
 Really, proving a characteristic subgroup is normal amounts to proving
@@ -61,13 +61,13 @@ proof
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by ThAlwaysFindInnerAuto;
-  A3: Image(f|K) = K by LmAuto,Def9;
+  A3: Image(f|K) = K by GROUP_6:57,Def9;
   Image(f|K) = K |^ a by A2,Th7;
-  then K |^ a = K by A3,LmAuto,Def9;
+  then K |^ a = K by A3,Def9;
   hence thesis;
 end;
-  
-@ 
+
+@
 
 \M
 Now we can register this fact with Mizar, so it will be automatically
@@ -81,4 +81,4 @@ registration
   coherence by Th11;
 end;
 
-@ 
+@

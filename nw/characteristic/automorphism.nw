@@ -51,7 +51,7 @@ definition :: Def1
   mode Endomorphism of G is Homomorphism of G,G;
 end;
 
-@
+@ %def Endomorphism
 
 \M\label{par:characteristic:register-bijective-for-endomorphism}
 We begin by registering the attribute [[bijective]] for group
@@ -66,7 +66,7 @@ the fact that [[id X]] is bijective.
 <<Register [[bijective]] for [[Endomorphism]]>>=
 registration
   let G;
-  cluster bijective for Homomorphism of G,G;
+  cluster bijective for Endomorphism of G;
   existence
   proof
     reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
@@ -86,7 +86,7 @@ definition :: Def2
   mode Automorphism of G is bijective Endomorphism of G;
 end;
 
-@
+@ %def Automorphism
 
 \M For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
 subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
@@ -101,7 +101,7 @@ proof
   hence thesis;
 end;
 
-@
+@ %def Th1
 
 \M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
 
@@ -129,7 +129,7 @@ proof
   hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
 end;
 
-@
+@ %def Th2
 
 \N{Identity Group Endomorphism}
 I found it tedious to write [[id (the carrier of G)]] over and over
@@ -147,7 +147,7 @@ definition :: Def3
   <<Proof $\Id_{G}$ is unique>>
 end;
 
-@
+@ %def Id_G Id_ Def3
 
 \M We need to add [[Id_]] to our vocabulary.
 
@@ -209,7 +209,7 @@ proof
   thus thesis;
 end;
 
-@
+@ %def Th3
 
 \M
 Now we should automatically associate $\Id_{G}$ is bijective. This
@@ -239,7 +239,7 @@ proof
   hence thesis by Th3;
 end;
 
-@
+@ %def Lm1
 
 \N{Identity is surjective}
 As with establishing injectivity, it's straightforward.
@@ -251,7 +251,7 @@ proof
   hence thesis by Th3;
 end;
 
-@
+@ %def Lm2
 
 \subsubsection{Inner Automorphisms}
 
@@ -271,7 +271,7 @@ definition :: Def5
 end;
 <<Outer as antonym of inner>>
 
-@
+@ %def Def5 inner
 
 \M We also recall that an automorphism is called \define{Outer} if it is
 not inner. Mizar let's us do this with the [[antonym]] construct within
@@ -283,7 +283,7 @@ notation
   antonym f is outer for f is inner;
 end;
 
-@
+@ %def outer
 
 \N{Update our vocabular file}
 Before rushing off to prove properties concerning inner and outer
@@ -315,7 +315,7 @@ proof
   hence thesis;
 end;
 
-@
+@ %def Th5
 
 \M Now registering [[inner]] for [[Automorphism]].
 
@@ -362,7 +362,7 @@ proof
   thus thesis;
 end;
 
-@
+@ %def Th8
 
 \N{Proof forwards direction} The forward direction is
 straightforward. The only subtlety is, since we didn't assume anything
@@ -415,7 +415,7 @@ proof
   thus thesis;
 end;
 
-@
+@ %def Th9
 
 \N{Proof in forwards direction} The proof amounts to unwinding
 definitions, but the subtlety is in first reconsidering $f$ as an
@@ -473,7 +473,7 @@ proof
   hence f is Automorphism of G by Th8;
 end;
 
-@
+@ %def LmInnAut
 
 \N{Theorem}
 Given any element $a\in G$, and any inner automorphism $f$ of $G$ such
@@ -508,8 +508,8 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   then (H |^ a) = Image(f|H) by GROUP_2:def 6;
   hence thesis;
 end;
-  
-@
+
+@ %def Th7
 
 <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>=
 proof
@@ -522,12 +522,12 @@ proof
   AA2: h in H by STRUCT_0:def 5;
   then (f|H).h = h |^ a by C1;
   then y = h |^ a by AA1;
-  then y = h |^ a & h in H by AA2; 
+  then y = h |^ a & h in H by AA2;
   then y in H |^ a by GROUP_3:58;
   hence thesis;
 end;
-    
-@ 
+
+@
 
 
 <<Proof $\forall y\in G, y \in H^{a}\implies y\in f(H)$>>=
@@ -538,7 +538,7 @@ proof
   then consider g being Element of G such that
   AB1:    y=g|^a and
   AB2:    g in H;
-    
+
 AB3:  (f|H).g = f.g by Lm3,AB2
       .= g |^ a by A0
       .= y by AB1;
@@ -570,13 +570,13 @@ proof
   assume A0: for x being Element of G holds f.x = x |^ a;
 A1:  for x being Element of G holds x in Ker f implies x in (1).G
   <<Proof $\ker(f)\subset\trivialSubgroup$>>
-  
+
 A2:  for x being Element of G holds x in (1).G implies x in Ker f
   <<Proof $\trivialSubgroup\subset\ker(f)$>>
   thus Ker f = (1).G by A1,A2,GROUP_2:60;
 end;
 
-@
+@ %def LmKerOfConjugate
 
 <<Proof $\trivialSubgroup\subset\ker(f)$>>=
 proof
@@ -590,8 +590,8 @@ proof
   then x in Ker f by GROUP_6:41;
   hence thesis;
 end;
-  
-@ 
+
+@
 
 <<Proof $\ker(f)\subset\trivialSubgroup$>>=
 proof
@@ -601,7 +601,7 @@ proof
   then x |^ a = 1_G by A0;
   then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
   the carrier of (1).G = {1_G} by GROUP_2:def 7;
-  then 1_G in the carrier of (1).G by TARSKI:def 1; 
+  then 1_G in the carrier of (1).G by TARSKI:def 1;
   then x in the carrier of (1).G by A12;
   then x in (1).G by STRUCT_0:def 5;
   hence thesis;
@@ -631,7 +631,7 @@ proof
 C0: f is one-to-one by GROUP_6:56;
 C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   <<Proof an endomorphism $f^{-1}$ exists>>
-  
+
   then rng f = the carrier of G by FUNCT_2:18;
   then f is onto by GROUP_6:58;
   then f is bijective by C0;
@@ -639,7 +639,7 @@ C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   hence thesis;
 end;
 
-@
+@ %def ThConIsAuto
 
 \N{Proof an inverse exists}
 This is the long part of the proof, its length owing to showing every
@@ -651,7 +651,7 @@ proof
   consider fInv be Function of the carrier of G, the carrier of G such that
 A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
   fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-A2: <<Establish $f^{-1}$ is an Endomorphism>> 
+A2: <<Establish $f^{-1}$ is an Endomorphism>>
   <<Establish $f^{-1}$ is the inverse function of $f$>>
   hence thesis;
 end;
@@ -678,7 +678,7 @@ proof
 end;
 then f*fInv = id the carrier of G by FUNCT_1:2;
 
-@ 
+@
 
 \N{Sub-Proof $f^{-1}$ is a group endomorphism}
 We need to establish $f^{-1}$ is multiplicative, i.e.,
@@ -698,8 +698,8 @@ end;
 then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
 then fInv is Endomorphism of G;
 then reconsider fInv as Endomorphism of G;
-  
-@ 
+
+@
 
 \N{Theorem} Given a group element $a\in G$, we can always construct an
 inner automorphism $f\in\Inn(G)$ defined by
@@ -722,7 +722,7 @@ proof
   hence thesis;
 end;
 
-@ 
+@ %def Th10
 
 \N{Constructing inner automorphisms from group elements}
 Given a group $G$ and suppose we have an element $a\in G$, can we
@@ -761,5 +761,5 @@ C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
   for x being Element of G holds f.x = x |^ a by A1;
   hence thesis by C1;
 end;
-  
-@ 
+
+@ %def ThAlwaysFindInnerAuto

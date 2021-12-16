@@ -100,17 +100,6 @@ reserve a,b,x,y for Element of G;
 reserve g1 for Element of G1;
 reserve X for set;
 
-registration
-  let G;
-  cluster bijective for Homomorphism of G,G;
-  existence
-  proof
-    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
-    i is bijective;
-    hence thesis;
-  end;
-end;
-
 definition :: Def1
   let G;
   mode Endomorphism of G is Homomorphism of G,G;
@@ -139,10 +128,7 @@ proof
   let G be strict Group;
   let f be Automorphism of G;
   f is Homomorphism of G,G &
-  f is bijective &
   f is onto;
-  then f" is Homomorphism of G,G by GROUP_6:62;
-  then f" is bijective by GROUP_6:63;
   then Image(f) = G by GROUP_6:57;
   hence thesis;
 end;
@@ -332,7 +318,7 @@ A1:  for x being Element of G holds x in Ker f implies x in (1).G
     then x |^ a = 1_G by A0;
     then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
     the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1; 
+    then 1_G in the carrier of (1).G by TARSKI:def 1;
     then x in the carrier of (1).G by A12;
     then x in (1).G by STRUCT_0:def 5;
     hence thesis;
@@ -399,7 +385,7 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
     AA2: h in H by STRUCT_0:def 5;
     then (f|H).h = h |^ a by C1;
     then y = h |^ a by AA1;
-    then y = h |^ a & h in H by AA2; 
+    then y = h |^ a & h in H by AA2;
     then y in H |^ a by GROUP_3:58;
     hence thesis;
   end;
@@ -412,7 +398,7 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
     then consider g being Element of G such that
     AB1:    y=g|^a and
     AB2:    g in H;
-    
+
 AB3:  (f|H).g = f.g by Lm3,AB2
       .= g |^ a by A0
       .= y by AB1;
@@ -498,7 +484,7 @@ proof
     then f is Automorphism of G;
     hence thesis;
   end;
-  thus (f is Automorphism of G) implies (f is Isomorphism of G,G2) 
+  thus (f is Automorphism of G) implies (f is Isomorphism of G,G2)
   proof
     assume Z12: f is Automorphism of G;
     then f is bijective Homomorphism of G,G;
@@ -791,7 +777,7 @@ A1:  for x being Element of G holds x in Ker f implies x in (1).G
     then x |^ a = 1_G by A0;
     then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
     the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1; 
+    then 1_G in the carrier of (1).G by TARSKI:def 1;
     then x in the carrier of (1).G by A12;
     then x in (1).G by STRUCT_0:def 5;
     hence thesis;
@@ -926,9 +912,9 @@ A1:  for a being Element of G holds K |^ a = K
     consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
     by ThAlwaysFindInnerAuto;
-    A3: Image(f|K) = K by LmAuto,Def9;
+    A3: Image(f|K) = K by GROUP_6:57,Def9;
     Image(f|K) = K |^ a by A2,Th7;
-    then K |^ a = K by A3,LmAuto,Def9;
+    then K |^ a = K by A3,Def9;
     hence thesis;
   end;
   then for a being Element of G holds the carrier of K |^ a = the
@@ -938,9 +924,9 @@ A2: for x being Element of G holds f.x = x |^ a
 end;
 
 
-
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
+::> 396: Formula expected
