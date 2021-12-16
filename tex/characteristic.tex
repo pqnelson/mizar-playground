@@ -116,6 +116,18 @@ STRUCT_0, GROUP_1, GROUP_2, SUBSET_1, GROUP_4, GROUP_5,
 MSSUBFAM, GROUP_6, BINOP_1, BINOP_2, ALGSTR_0, REALSET1,
 AUTGROUP
 
+\nwused{\\{NW4bbsBH-h1cmx-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
+
+\M
+{\Tt{}NEWTON\nwendquote} defines the token {\Tt{}|{\char94}\nwendquote}, used as infix operator {\Tt{}a\ |{\char94}\ b\nwendquote}
+which is Mizar notation for $a^{b}$. Mizar follows group theorist
+notation of writing $g^{h} = h^{-1}gh$ for conjugation. Also observe
+that {\Tt{}normal\nwendquote} is introduced in {\Tt{}PRE{\_}TOPC\nwendquote}, so we need to include
+that, as well.
+
+\nwenddocs{}\nwbegincode{9}\sublabel{NW4bbsBH-40Iyod-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-40Iyod-1}}}\moddef{Group conjugation and normal subgroups tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-40Iyod-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-h1cmx-1}}\nwenddeflinemarkup
+NEWTON, PRE_TOPC, GROUP_3
+
 \nwused{\\{NW4bbsBH-h1cmx-1}}\nwendcode{}
 
 \nwixlogsorted{c}{{\code{}Id{\_}G\edoc{} is effectively inner}{NW1Nnu7l-3VEX6S-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-3VEX6S-1}}}%
@@ -186,6 +198,7 @@ AUTGROUP
 \nwixlogsorted{c}{{Reserve symbols for inner and outer automorphisms}{NW1Nnu7l-1LL7AC-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-1LL7AC-1}\nwixd{NW1Nnu7l-1LL7AC-2}}}%
 \nwixlogsorted{c}{{Sandwich Subgroup Equality Theorem}{NW18nMBU-G9U50-1}{\nwixd{NW18nMBU-G9U50-1}}}%
 \nwixlogsorted{c}{{set theoretic notation for \code{}tmp.miz\edoc{}}{NW4bbsBH-1usaUC-1}{\nwixu{NW4bbsBH-1JJknr-1}\nwixu{NW4bbsBH-j1Lze-1}\nwixd{NW4bbsBH-1usaUC-1}}}%
+\nwixlogsorted{c}{{Sub-proof: characteristic subgroups invariant under conjugation}{NW47t2dy-2mkOw1-1}{\nwixu{NW47t2dy-xos9m-1}\nwixd{NW47t2dy-2mkOw1-1}}}%
 \nwixlogsorted{c}{{Subgroups invariant under conjugation are normal}{NW18nMBU-2karRI-1}{\nwixd{NW18nMBU-2karRI-1}}}%
 \nwixlogsorted{c}{{TEXT/tmp.miz}{NWoaARJ-8Kw8w-1}{\nwixd{NWoaARJ-8Kw8w-1}}}%
 \nwixlogsorted{c}{{Theorem: $f$ in \code{}InnAut\ G\edoc{} iff $f$ is \code{}inner\ Automorphism\ of\ G\edoc{}}{NW1Nnu7l-2gUxot-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-2gUxot-1}}}%
@@ -194,19 +207,7 @@ AUTGROUP
 \nwixlogsorted{c}{{Theorem: constructing inner automorphisms from group elements}{NW1Nnu7l-arh13-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-arh13-1}}}%
 \nwixlogsorted{c}{{Theorem: inner automorphism acting on subgroup is conjugate of argument}{NW1Nnu7l-2zspfg-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-2zspfg-1}}}%
 \nwixlogsorted{c}{{Theorem: Kernel of conjugation as endomorphism}{NW1Nnu7l-3fLhao-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-3fLhao-1}}}%
-\nwbegindocs{8}\nwdocspar
-
-\M
-{\Tt{}NEWTON\nwendquote} defines the token {\Tt{}|{\char94}\nwendquote}, used as infix operator {\Tt{}a\ |{\char94}\ b\nwendquote}
-which is Mizar notation for $a^{b}$. Mizar follows group theorist
-notation of writing $g^{h} = h^{-1}gh$ for conjugation. Also observe
-that {\Tt{}normal\nwendquote} is introduced in {\Tt{}PRE{\_}TOPC\nwendquote}, so we need to include
-that, as well.
-
-\nwenddocs{}\nwbegincode{9}\sublabel{NW4bbsBH-40Iyod-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-40Iyod-1}}}\moddef{Group conjugation and normal subgroups tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-40Iyod-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-h1cmx-1}}\nwenddeflinemarkup
-NEWTON, PRE_TOPC, GROUP_3
-
-\nwused{\\{NW4bbsBH-h1cmx-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
+\nwbegindocs{10}\nwdocspar
 
 \N{Constructors}
 But the vocabularies just permits Mizar's parser to \emph{recognize}
@@ -1465,18 +1466,8 @@ proof
   let G be Group;
   let K be characteristic Subgroup of G;
 A1:  for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider f being inner Automorphism of G such that
-A2: for x being Element of G holds f.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-    A3: Image(f|K) = K by LmAuto,Def9;
-    Image(f|K) = K |^ a by A2,Th7;
-    then K |^ a = K by A3,LmAuto,Def9;
-    hence thesis;
-  end;
-  then for a being Element of G holds the carrier of K |^ a = the
-  carrier of K;
+  \LA{}Sub-proof: characteristic subgroups invariant under conjugation~{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}\RA{}
+  for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
   then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
   hence K is normal Subgroup of G by A1,GROUP_3:def 13;
 end;
@@ -1484,16 +1475,35 @@ end;
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwendcode{}\nwbegindocs{6}\nwdocspar
 
 \M
+Really, proving a characteristic subgroup is normal amounts to proving
+invariance under conjugation. Fortunately, we have established this
+along the way! We just have to point to our hard work from earlier.
+
+\nwenddocs{}\nwbegincode{7}\sublabel{NW47t2dy-2mkOw1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}}\moddef{Sub-proof: characteristic subgroups invariant under conjugation~{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-xos9m-1}}\nwenddeflinemarkup
+proof
+  let a be Element of G;
+  consider f being inner Automorphism of G such that
+A2: for x being Element of G holds f.x = x |^ a
+  by ThAlwaysFindInnerAuto;
+  A3: Image(f|K) = K by LmAuto,Def9;
+  Image(f|K) = K |^ a by A2,Th7;
+  then K |^ a = K by A3,LmAuto,Def9;
+  hence thesis;
+end;
+  
+\nwused{\\{NW47t2dy-xos9m-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
+
+\M
 Now we can register this fact with Mizar, so it will be automatically
 accounted for in future proofs. Since we made this fact a proof, we just
 have to tell Mizar where to find the proof.
 
-\nwenddocs{}\nwbegincode{7}\sublabel{NW47t2dy-24pxt5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\moddef{Register characteristic subgroups are normal~{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{9}\sublabel{NW47t2dy-24pxt5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\moddef{Register characteristic subgroups are normal~{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
 
-\nwused{\\{NW47t2dy-3N17ED-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
+\nwused{\\{NW47t2dy-3N17ED-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
 \nwenddocs{}

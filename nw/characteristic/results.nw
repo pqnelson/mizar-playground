@@ -42,23 +42,32 @@ proof
   let G be Group;
   let K be characteristic Subgroup of G;
 A1:  for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider f being inner Automorphism of G such that
-A2: for x being Element of G holds f.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-    A3: Image(f|K) = K by LmAuto,Def9;
-    Image(f|K) = K |^ a by A2,Th7;
-    then K |^ a = K by A3,LmAuto,Def9;
-    hence thesis;
-  end;
-  then for a being Element of G holds the carrier of K |^ a = the
-  carrier of K;
+  <<Sub-proof: characteristic subgroups invariant under conjugation>>
+  for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
   then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
   hence K is normal Subgroup of G by A1,GROUP_3:def 13;
 end;
 
 @
+
+\M
+Really, proving a characteristic subgroup is normal amounts to proving
+invariance under conjugation. Fortunately, we have established this
+along the way! We just have to point to our hard work from earlier.
+
+<<Sub-proof: characteristic subgroups invariant under conjugation>>=
+proof
+  let a be Element of G;
+  consider f being inner Automorphism of G such that
+A2: for x being Element of G holds f.x = x |^ a
+  by ThAlwaysFindInnerAuto;
+  A3: Image(f|K) = K by LmAuto,Def9;
+  Image(f|K) = K |^ a by A2,Th7;
+  then K |^ a = K by A3,LmAuto,Def9;
+  hence thesis;
+end;
+  
+@ 
 
 \M
 Now we can register this fact with Mizar, so it will be automatically
