@@ -1,0 +1,765 @@
+\subsection{Automorphisms}
+
+\M Now, we have a section for defining inner and outer group
+automorphisms. A \emph{group automorphism} is just a bijective endomorphism on
+a group, and an \emph{endomorphism} is a group morphism whose codomain
+is its domain.
+
+Remember (\S\ref{par:characteristic:vocabularies}), although we are
+defining new terms [[Endomorphism]] and [[Automorphism]], we do not need
+to add them to our [[DICT/TMP.VOC]] file. Why not? Because the tokens
+are already included from [[MOD_4]].
+
+<<Inner and outer automorphisms>>=
+begin
+
+<<Reserve symbols for inner and outer automorphisms>>
+<<Define [[Endomorphism]]>>
+<<Register [[bijective]] for [[Endomorphism]]>>
+<<Define [[Automorphism]]>>
+<<Endomorphisms preserve the trivial subgroup>>
+<<Automorphisms map trivial subgroups to themselves>>
+<<Define $\Id_{G}$>>
+<<[[Id_G]] is the same as [[id the carrier of G]]>>
+<<Register [[Id_G]] is bijective>>
+<<Define [[inner]] for Automorphism>>
+<<[[Id_G]] is effectively inner>>
+<<Register [[inner]] for [[Automorphism]]>>
+<<Relate [[Automorphism of G]] to elements of [[Aut G]]>>
+<<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>
+<<Theorem: inner automorphism acting on subgroup is conjugate of argument>>
+<<Theorem: Kernel of conjugation as endomorphism>>
+<<Theorem: Conjugation by fixed element is an automorphism>>
+<<Corollary: conjugation of given element is an \emph{inner} automorphism>>
+<<Theorem: constructing inner automorphisms from group elements>>
+
+@
+
+\M Note we just used the symbol [[G]] for a generic group, so we add to
+the reserved symbols this association.
+
+<<Reserve symbols for inner and outer automorphisms>>=
+reserve G for Group;
+
+@
+
+\M A group endomorphism of $G$ is just a homomorphism $f\colon G\to G$.
+
+<<Define [[Endomorphism]]>>=
+definition :: Def1
+  let G;
+  mode Endomorphism of G is Homomorphism of G,G;
+end;
+
+@
+
+\M\label{par:characteristic:register-bijective-for-endomorphism}
+We begin by registering the attribute [[bijective]] for group
+endomorphisms. This will effectively create a subtype of
+[[Endomorphism of G]], the aptly named [[bijective Endomorphism of G]].
+Most of our work has been done in article [[GROUP_6]] by
+Theorem~38 (which effectively states the function on the underlying set
+[[id (the carrier of G)]] is a multiplicative function and so nearly a
+group morphism that we can reconsider it as an [[Endomorphism]]), and
+the fact that [[id X]] is bijective.
+
+<<Register [[bijective]] for [[Endomorphism]]>>=
+registration
+  let G;
+  cluster bijective for Homomorphism of G,G;
+  existence
+  proof
+    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
+    i is bijective;
+    hence thesis;
+  end;
+end;
+
+@
+
+\N{Definition (Automorphism)}
+Now we have an [[Automorphism of G]] be just a bijective endomorphism.
+
+<<Define [[Automorphism]]>>=
+definition :: Def2
+  let G;
+  mode Automorphism of G is bijective Endomorphism of G;
+end;
+
+@
+
+\M For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
+subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
+$f(\trivialSubgroup)=\trivialSubgroup$.
+
+<<Endomorphisms preserve the trivial subgroup>>=
+theorem Th1:
+  Image (f|(1).G) = (1).G
+proof
+  Image(f|(1).G) = f .: ((1).G) by GRSOLV_1:def 3
+  .= (1).G by GRSOLV_1:11;
+  hence thesis;
+end;
+
+@
+
+\M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+
+<<Reserve symbols for inner and outer automorphisms>>=
+reserve f for Endomorphism of G;
+
+@
+
+\M If $\phi$ is an automorphism of a group $G$, then
+the image of the trivial subgroup under $\phi$ is a subgroup of itself
+$\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
+Theorem~[[Th1]], that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
+$\phi$ (being an automorphism) is also an endomorphism. And [[GROUP_2]]
+proves that $G$ is a subgroup of itself in Theorem~[[Th54]].
+
+<<Automorphisms map trivial subgroups to themselves>>=
+:: In particular, the trivial proper subgroup (1).G of G is invariant
+:: under inner automorphisms, and thus is a characteristic subgroup.
+theorem Th2:
+  for phi being Automorphism of G
+  holds Image(phi|(1).G) is Subgroup of (1).G
+proof
+  let phi be Automorphism of G;
+  (1).G is Subgroup of (1).G by GROUP_2:54;
+  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
+end;
+
+@
+
+\N{Identity Group Endomorphism}
+I found it tedious to write [[id (the carrier of G)]] over and over
+again, so I wrote a shortcut [[Id_G]] for $\Id_{G}$.
+
+<<Define $\Id_{G}$>>=
+definition :: Def3
+  let G;
+  func Id_G -> Endomorphism of G means
+  :Def3:
+  for x being Element of G holds it.x=x;
+  existence
+  <<Proof that $\Id_{G}$ exists>>
+  uniqueness
+  <<Proof $\Id_{G}$ is unique>>
+end;
+
+@
+
+\M We need to add [[Id_]] to our vocabulary.
+
+<<DICT/TMP.VOC>>=
+OId_
+
+@
+
+\N{Proof ($\Id_{G}$ exists)}
+Similar to the proof (\S\ref{par:characteristic:register-bijective-for-endomorphism})
+that there exists a bijective endomorphism, the proof that $\Id_{G}$
+exists amounts to reconsidering [[id]] as an endomorphism. Earlier work
+in [[FUNCT_1]] proved (in Theorem~17) the identity function satisfies
+$\forall x\in X, \id_{X}(x)=x$.
+
+<<Proof that $\Id_{G}$ exists>>=
+proof
+  reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
+  i.x = x by FUNCT_1:17;
+  hence thesis;
+end;
+
+@
+
+\N{Proof (Uniqueness of $\Id_{G}$)}
+The usual strategy is to consider two arbitrary endomorphisms
+$\Id^{(1)}_{G}$ and $\Id^{(2)}_{G}$ satisfying the definition of
+[[Id_]], then prove $\Id^{(1)}_{G} = \Id^{(2)}_{G}$.
+
+If we wanted to be completely pedantic, we could cite Theorem~12 from
+[[FUNCT_2]] which states for any functions of sets
+$f_{1}$, $f_{2}\colon X\to Y$ we have $\forall x\in X, f_{1}(x)=f_{2}(x)$
+implies $f_{1}=f_{2}$.
+
+<<Proof $\Id_{G}$ is unique>>=
+proof
+  let Id1, Id2 be Endomorphism of G such that
+  A1: for x being Element of G holds Id1.x=x and
+  A2: for x being Element of G holds Id2.x=x;
+  let x be Element of G;
+  thus Id1.x = x by A1
+            .= Id2.x by A2;
+  thus thesis;
+end;
+
+@
+
+\M\label{thm:characteristic:identity-endomorphism-is-identity-function}
+We should now have some sanity check that [[Id_G]] really is
+the identity group morphism $\Id_{G}$ that \emph{we} think it is.
+
+<<[[Id_G]] is the same as [[id the carrier of G]]>>=
+theorem Th3:
+  Id_G = id (the carrier of G)
+proof
+  let x be Element of G;
+  thus A4: (Id_G).x = x by Def3
+                   .= (id (the carrier of G)).x;
+  thus thesis;
+end;
+
+@
+
+\M
+Now we should automatically associate $\Id_{G}$ is bijective. This
+requires proving a couple of helper lemmas establishing injectivity and
+surjectivity.
+
+<<Register [[Id_G]] is bijective>>=
+<<[[Id_G]] is injective>>
+<<[[Id_G]] is surjective>>
+
+registration let G;
+  cluster Id_G -> bijective;
+  coherence by Lm1,Lm2;
+end;
+
+@
+
+\N{Identity is injective}
+The proof is straightforward since we've established (\S\ref{thm:characteristic:identity-endomorphism-is-identity-function}) the group
+endomorphism $\Id_{G}$ coincides with the set-theoretic function $\id_{U(G)}$
+on the underlying set $U(G)$ of the group $G$.
+
+<<[[Id_G]] is injective>>=
+Lm1: Id_G is one-to-one
+proof
+  id (the carrier of G) is one-to-one;
+  hence thesis by Th3;
+end;
+
+@
+
+\N{Identity is surjective}
+As with establishing injectivity, it's straightforward.
+
+<<[[Id_G]] is surjective>>=
+Lm2: Id_G is onto
+proof
+  id (the carrier of G) is onto;
+  hence thesis by Th3;
+end;
+
+@
+
+\subsubsection{Inner Automorphisms}
+
+\N{Definition: Inner Automorphism}
+We call a group automorphism $f\in\Aut(G)$ \define{inner} if there is a
+group element $g\in G$ such that for all $x\in G$ we have $f(x) = x^{g} = g^{-1}xg$.
+That is, $f$ is just conjugation by a fixed group element.
+
+<<Define [[inner]] for Automorphism>>=
+definition :: Def5
+  let G;
+  let IT be Automorphism of G;
+  attr IT is inner means
+  :Def5:
+  ex a being Element of G st
+  for x being Element of G holds IT.x = x |^ a;
+end;
+<<Outer as antonym of inner>>
+
+@
+
+\M We also recall that an automorphism is called \define{Outer} if it is
+not inner. Mizar let's us do this with the [[antonym]] construct within
+a [[notation]] block.
+
+<<Outer as antonym of inner>>=
+notation
+  let G be Group, f be Automorphism of G;
+  antonym f is outer for f is inner;
+end;
+
+@
+
+\N{Update our vocabular file}
+Before rushing off to prove properties concerning inner and outer
+automorphisms, we should add the attributes to our vocabulary file.
+
+
+<<DICT/TMP.VOC>>=
+Vinner
+Vouter
+
+@
+
+\N{Theorem: $\Id_{G}$ is effectively inner}\label{thm:characteristic:id-inner}
+We will be registering ``inner'' as an attribute for ``Automorphism
+of $G$''. This will require proving that there exists an inner
+Automorphism of $G$. I've found the trivial examples are often best for
+establishing the existence of such things, so we will prove [[Id G]] is
+an inner Automorphism. This uses the fact, if $e\in G$ is the identity
+element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
+(proven in Theorem~19 of [[GROUP_3]]).
+
+<<[[Id_G]] is effectively inner>>=
+theorem Th5:
+  for x being Element of G holds (Id_G).x = x |^ 1_G
+proof
+  let x;
+  (Id_G).x = x by Def3
+          .= x |^ 1_G by GROUP_3:19;
+  hence thesis;
+end;
+
+@
+
+\M Now registering [[inner]] for [[Automorphism]].
+
+<<Register [[inner]] for [[Automorphism]]>>=
+registration
+  let G;
+  cluster inner for Automorphism of G;
+  existence
+  <<Proof of existence of an inner Automorphism>>
+end;
+
+@
+
+\N{Proof} The proof is a two punch knock-out. We take [[Id_G]] to be the
+morphism, [[1_g]] the group's identity element to be the element
+[[Id_G]] conjugates by, then from earlier (\S\ref{thm:characteristic:id-inner})
+we have [[Id_G]] be inner.
+
+<<Proof of existence of an inner Automorphism>>=
+proof
+  take Id_G;
+  take 1_G;
+  thus thesis by Th5;
+end;
+
+@
+
+\N{Theorem ($f\in\aut(G)\iff f$ is [[Automorphism of G]])}
+Mizar has [[AUTGROUP]], an article which defines [[Aut G]] the
+collection of functions on the underlying set $U(G)$ of a group $G$. We
+can prove that $f\in\aut(G)$ if and only if $f$ is [[Automorphism of G]].
+
+<<Relate [[Automorphism of G]] to elements of [[Aut G]]>>=
+theorem Th8:
+  for G being strict Group, f being object
+  holds (f in Aut G) iff (f is Automorphism of G)
+proof
+  let G be strict Group;
+  let f be object;
+  thus f in Aut G implies f is Automorphism of G
+  <<Proof $f\in\aut(G)\implies f$ is [[Automorphism of G]]>>
+  thus f is Automorphism of G implies f in Aut G
+  <<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>
+  thus thesis;
+end;
+
+@
+
+\N{Proof forwards direction} The forward direction is
+straightforward. The only subtlety is, since we didn't assume anything
+about $f$, we should establish it's an endomorphism of $G$ along the way,
+
+<<Proof $f\in\aut(G)\implies f$ is [[Automorphism of G]]>>=
+proof
+  assume A0: f in Aut G;
+  then reconsider f as Endomorphism of G by AUTGROUP:def 1;
+  f is bijective by A0,AUTGROUP:def 1;
+  then f is Automorphism of G;
+  hence thesis;
+end;
+
+@
+
+\N{Proof backwards direction} The backwards direction is nearly
+identical to the forwards direction proof.
+
+<<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>=
+proof
+  assume f is Automorphism of G;
+  then reconsider f as Automorphism of G;
+  f is bijective;
+  then f in Aut G by AUTGROUP:def 1;
+  hence thesis;
+end;
+
+@
+
+\N{Inner automorphisms are inner automorphisms}
+We can relate the notion of an [[inner Automorphism of G]] with elements
+of [[InnAut G]] from [[AUTGROUP]]. The only peculiarity is that
+[[AUTGROUP]] requires $G$ to be a \emph{strict} group.
+
+<<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>=
+<<Lemma: Elements of [[InnAut G]] are automorphisms>>
+
+theorem Th9:
+  for G being strict Group
+  for f being object
+  holds (f in InnAut G) iff (f is inner Automorphism of G)
+proof
+  let G be strict Group;
+  let f be object;
+  thus (f in InnAut G) implies (f is inner Automorphism of G)
+  <<Proof $f$ is in [[InnAut G]] $\implies$ ($f$ is inner automorphism)>>
+  thus (f is inner Automorphism of G) implies (f in InnAut G)
+  <<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>
+  thus thesis;
+end;
+
+@
+
+\N{Proof in forwards direction} The proof amounts to unwinding
+definitions, but the subtlety is in first reconsidering $f$ as an
+Automorphism of $G$ thanks to our handy-dandy lemma.
+
+<<Proof $f$ is in [[InnAut G]] $\implies$ ($f$ is inner automorphism)>>=
+proof
+  assume Z0: f in InnAut G;
+  then f is Automorphism of G by LmInnAut;
+  then reconsider f as Automorphism of G;
+  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  then consider a being Element of G such that
+  A2: for x being Element of G holds f.x = x |^ a
+  by Z0,AUTGROUP:def 4;
+  f is inner Automorphism of G by Def5,A2;
+  hence thesis;
+end;
+
+@
+
+\N{Proof in backwards direction}
+This is again unwinding the definitions. The same subtlety lurks here,
+requiring us to reconsider $f$ as an inner automorphism of $G$.
+
+<<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>=
+proof
+  assume Z1: f is inner Automorphism of G;
+  reconsider f as inner Automorphism of G by Z1;
+  f is Element of Aut G by Z1,Th8;
+  then consider a being Element of G such that
+  B1: for x being Element of G holds f.x = x |^ a
+  by Z1,Def5;
+  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  then f in InnAut G by B1,AUTGROUP:def 4;
+  hence thesis;
+end;
+
+@
+
+\M
+It's relatively straightforward to show that if $f$ is an element of
+[[InnAut G]], then $f$ is an [[Automorphism of G]]. We just unwind the
+definitions.
+
+<<Lemma: Elements of [[InnAut G]] are automorphisms>>=
+LmInnAut:
+  for G being strict Group
+  for f being Element of InnAut G
+  holds f is Automorphism of G
+proof
+  let G be strict Group;
+  let f be Element of InnAut G;
+  f is Element of Aut G by AUTGROUP:12;
+  then f in Aut G;
+  hence f is Automorphism of G by Th8;
+end;
+
+@
+
+\N{Theorem}
+Given any element $a\in G$, and any inner automorphism $f$ of $G$ such
+that $\forall x\in G, f(x) = x^{a} = a^{-1}xa$, it follows that the
+image of a subgroup $f(H) = H^{a}$ is the conjugate of that subgroup.
+
+<<Theorem: inner automorphism acting on subgroup is conjugate of argument>>=
+theorem Th7:
+  for a being Element of G
+  for f being inner Automorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds Image(f|H) = H |^ a
+proof
+  let a be Element of G,
+      f be inner Automorphism of G;
+  assume
+A0: for x being Element of G holds f.x = x |^ a;
+C1: for h being Element of G st h in H holds (f|H).h = h |^ a
+  proof
+    let h be Element of G;
+    assume h in H;
+    then Z1: f.h = (f|H).h by Lm3;
+    f.h = h |^ a by A0;
+    hence (f|H).h = h |^ a by Z1;
+  end;
+
+C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
+  <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>
+C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  <<Proof $\forall y\in G, y \in H^{a}\implies y\in f(H)$>>
+  for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
+  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
+  hence thesis;
+end;
+  
+@
+
+<<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>=
+proof
+  let y be Element of G;
+  assume y in Image(f|H);
+  then consider h being Element of H such that
+  AA1: (f|H).h = y by GROUP_6:45;
+  h is Element of G by GROUP_2:42;
+  then reconsider h as Element of G;
+  AA2: h in H by STRUCT_0:def 5;
+  then (f|H).h = h |^ a by C1;
+  then y = h |^ a by AA1;
+  then y = h |^ a & h in H by AA2; 
+  then y in H |^ a by GROUP_3:58;
+  hence thesis;
+end;
+    
+@ 
+
+
+<<Proof $\forall y\in G, y \in H^{a}\implies y\in f(H)$>>=
+proof
+  let y be Element of G;
+  assume y in H |^ a;
+  then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
+  then consider g being Element of G such that
+  AB1:    y=g|^a and
+  AB2:    g in H;
+    
+AB3:  (f|H).g = f.g by Lm3,AB2
+      .= g |^ a by A0
+      .= y by AB1;
+  reconsider g as Element of H by AB2,LmSubgroupElt;
+  reconsider fH = (f|H) as Homomorphism of H,G;
+  fH.g = y by AB3;
+  hence y in Image(f|H) by GROUP_6:45;
+end;
+
+@
+
+\N{Theorem}
+Let $G$ be a group, $f\in\Inn(G)$ be an inner automorphism.
+Then $\ker(f)=\trivialSubgroup_{G}$. We will prove something a little
+more general, namely, any endomorphism $f\colon G\to G$ defined by
+$f(x)=x^{a}$ for some fixed $a\in G$ will have a trivial kernel.
+
+<<Theorem: Kernel of conjugation as endomorphism>>=
+theorem LmKerOfConjugate:
+  for G being Group
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds Ker f = (1).G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+A1:  for x being Element of G holds x in Ker f implies x in (1).G
+  <<Proof $\ker(f)\subset\trivialSubgroup$>>
+  
+A2:  for x being Element of G holds x in (1).G implies x in Ker f
+  <<Proof $\trivialSubgroup\subset\ker(f)$>>
+  thus Ker f = (1).G by A1,A2,GROUP_2:60;
+end;
+
+@
+
+<<Proof $\trivialSubgroup\subset\ker(f)$>>=
+proof
+  let x be Element of G;
+  assume Z4: x in (1).G;
+  then x is Element of (1).G by LmSubgroupElt;
+  then x in the carrier of (1).G;
+  then x in {1_G} by GROUP_2:def 7;
+  then x = 1_G by TARSKI:def 1;
+  then f.x = 1_G by GROUP_6:31;
+  then x in Ker f by GROUP_6:41;
+  hence thesis;
+end;
+  
+@ 
+
+<<Proof $\ker(f)\subset\trivialSubgroup$>>=
+proof
+  let x be Element of G;
+  assume A11: x in Ker f;
+  then f.x = 1_G by GROUP_6:41;
+  then x |^ a = 1_G by A0;
+  then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
+  the carrier of (1).G = {1_G} by GROUP_2:def 7;
+  then 1_G in the carrier of (1).G by TARSKI:def 1; 
+  then x in the carrier of (1).G by A12;
+  then x in (1).G by STRUCT_0:def 5;
+  hence thesis;
+end;
+
+@
+
+\N{Theorem: Conjugation by fixed element is an automorphism}
+Let $G$ be a group, $a\in G$ a fixed element.
+The endomorphism $f\colon G\to G$ defined by $f(x)=x^{a}$ is, in fact,
+an automorphism of $G$.
+
+<<Theorem: Conjugation by fixed element is an automorphism>>=
+theorem ThConIsAuto:
+for G being Group
+for a being Element of G
+for f being Endomorphism of G
+st (for x being Element of G holds f.x = x |^ a)
+holds f is Automorphism of G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+  then Ker f = (1).G by LmKerOfConjugate;
+  then
+C0: f is one-to-one by GROUP_6:56;
+C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
+  <<Proof an endomorphism $f^{-1}$ exists>>
+  
+  then rng f = the carrier of G by FUNCT_2:18;
+  then f is onto by GROUP_6:58;
+  then f is bijective by C0;
+  then f is Automorphism of G;
+  hence thesis;
+end;
+
+@
+
+\N{Proof an inverse exists}
+This is the long part of the proof, its length owing to showing every
+detail.
+
+<<Proof an endomorphism $f^{-1}$ exists>>=
+proof
+  deffunc F(Element of G) = ($1) |^ a";
+  consider fInv be Function of the carrier of G, the carrier of G such that
+A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
+  fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
+A2: <<Establish $f^{-1}$ is an Endomorphism>> 
+  <<Establish $f^{-1}$ is the inverse function of $f$>>
+  hence thesis;
+end;
+
+@
+
+\N{Sub-Proof: $f^{-1}$ is the inverse of $f$}
+The proof is straightforward, simply compose the functions together and
+show we get the identity function. We just have to unwind a lot of
+definitions.
+
+<<Establish $f^{-1}$ is the inverse function of $f$>>=
+for x being Element of G holds (f*fInv).x = (id the carrier of G).x
+proof
+  let x be Element of G;
+  (f * fInv).x = f.(fInv.x) by FUNCT_2:15
+  .= f.(x |^ a") by A1
+  .= (x |^ a") |^ a by A0
+  .= x |^ (a" * a) by GROUP_3:24
+  .= x |^ 1_G by GROUP_1:def 5
+  .= x by GROUP_3:19
+  .= (id the carrier of G).x;
+  hence thesis;
+end;
+then f*fInv = id the carrier of G by FUNCT_1:2;
+
+@ 
+
+\N{Sub-Proof $f^{-1}$ is a group endomorphism}
+We need to establish $f^{-1}$ is multiplicative, i.e.,
+$f^{-1}(x_{1}x_{2}) = f^{-1}(x_{1})f^{-1}(x_{2})$. The heavy-lifting has
+been done in [[GROUP_3]].
+
+<<Establish $f^{-1}$ is an Endomorphism>>=
+for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
+proof
+  let x1,x2 be Element of G;
+  A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
+  fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
+  .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
+  .= fInv.x1 * fInv.x2 by A21;
+  hence thesis;
+end;
+then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
+then fInv is Endomorphism of G;
+then reconsider fInv as Endomorphism of G;
+  
+@ 
+
+\N{Theorem} Given a group element $a\in G$, we can always construct an
+inner automorphism $f\in\Inn(G)$ defined by
+$\forall x\in G,f(x)=x^{a}=a^{-1}xa$ conjugation by $a$.
+
+<<Corollary: conjugation of given element is an \emph{inner} automorphism>>=
+theorem Th10:
+  for G being Group
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds f is inner Automorphism of G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+  then f is Automorphism of G by ThConIsAuto;
+  then f is inner Automorphism of G by A0,Def5;
+  hence thesis;
+end;
+
+@ 
+
+\N{Constructing inner automorphisms from group elements}
+Given a group $G$ and suppose we have an element $a\in G$, can we
+construct an inner automorphism $f\in\Inn(G)$ such that
+$\forall x\in G, f(x) = x^{a}$? Yes, we can do it!
+A wiser way to organize these results may be to first show such an $f$
+is an Endomorphism and it exists, then use that result in the proof that
+it's an automorphism, and so on.
+
+<<Theorem: constructing inner automorphisms from group elements>>=
+theorem ThAlwaysFindInnerAuto:
+for G being Group
+for a being Element of G
+holds ex f being inner Automorphism of G st (for x being Element of G
+holds f.x = x |^ a)
+proof
+  let G be Group;
+  let a be Element of G;
+  deffunc F(Element of G) = ($1) |^ a;
+  consider f be Function of the carrier of G, the carrier of G such that
+A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
+  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
+  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
+  proof
+    let x1,x2 be Element of G;
+    A2: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
+    f.(x1 * x2) = (x1 * x2) |^ a by A1
+    .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
+    .= f.x1 * f.x2 by A2;
+    hence thesis;
+  end;
+  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
+  then f is Endomorphism of G;
+  then reconsider f as Endomorphism of G;
+C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
+  for x being Element of G holds f.x = x |^ a by A1;
+  hence thesis by C1;
+end;
+  
+@ 

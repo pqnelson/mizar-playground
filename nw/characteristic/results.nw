@@ -1,0 +1,75 @@
+\subsection{Characteristic Subgroups}
+
+\M
+We now arrive at the meat of the matter: characteristic subgroups!
+
+<<Characteristic subgroup results>>=
+<<Define characteristic attribute>>
+<<Theorem: characteristic subgroups are normal>>
+<<Register characteristic subgroups are normal>>
+
+@
+
+\begin{definition}[{Dummit and Foote~\cite[\S4,4]{dummit-foote}}]
+A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
+denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
+itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
+\end{definition}
+
+<<Define characteristic attribute>>=
+definition :: Def9
+  let G;
+  let IT be Subgroup of G;
+  attr IT is characteristic means
+  :Def9:
+  for f being Automorphism of G
+  holds Image (f|IT) = IT;
+end;
+
+@
+
+\N{Characteristic subgroups are normal}
+Let $G$ be a group, $K\subgroup G$ a subgroup. If $K$ is a
+characteristic subgroup of $G$, then $K\normalSubgroup G$ it is also
+normal.
+
+<<Theorem: characteristic subgroups are normal>>=
+theorem Th11:
+  for G being Group
+  for K being characteristic Subgroup of G
+  holds K is normal Subgroup of G
+proof
+  let G be Group;
+  let K be characteristic Subgroup of G;
+A1:  for a being Element of G holds K |^ a = K
+  proof
+    let a be Element of G;
+    consider f being inner Automorphism of G such that
+A2: for x being Element of G holds f.x = x |^ a
+    by ThAlwaysFindInnerAuto;
+    A3: Image(f|K) = K by LmAuto,Def9;
+    Image(f|K) = K |^ a by A2,Th7;
+    then K |^ a = K by A3,LmAuto,Def9;
+    hence thesis;
+  end;
+  then for a being Element of G holds the carrier of K |^ a = the
+  carrier of K;
+  then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
+  hence K is normal Subgroup of G by A1,GROUP_3:def 13;
+end;
+
+@
+
+\M
+Now we can register this fact with Mizar, so it will be automatically
+accounted for in future proofs. Since we made this fact a proof, we just
+have to tell Mizar where to find the proof.
+
+<<Register characteristic subgroups are normal>>=
+registration
+  let G be Group;
+  cluster characteristic -> normal for Subgroup of G;
+  coherence by Th11;
+end;
+
+@ 

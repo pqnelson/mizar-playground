@@ -1,0 +1,101 @@
+\subsection{Isomorphisms}
+
+\M
+We also want to prove results concerning group isomorphisms. This
+requires a preliminary notion for a group $G_{2}$ being a
+$G_{1}$-isomorphic group.
+
+<<Group isomorphisms>>=
+<<Define when a group is [[G-isomorphic]]>>
+<<Register [[G-isomorphic]] for groups>>
+<<Register [[bijective]] for [[Homomorphism]] of $G_{1}$, $G_{2}$>>
+<<Define group [[Isomorphism]]>>
+
+@
+
+
+\M It's useful to introduce, not just a group $K$, but a $G$-isomorphic
+group $K$.
+
+<<Define when a group is [[G-isomorphic]]>>=
+definition :: Def6
+  let G1,G2 be Group;
+  attr G2 is G1-isomorphic means :Def6:
+  G1,G2 are_isomorphic;
+end;
+
+@
+
+\M We also wanter to register this attribute (``being $G$-isomorphic'')
+as a perfectly fine adjective for groups. This requires proving that,
+for any group $G_{1}$ we have a $G_{1}$-isomorphic group.
+
+<<Register [[G-isomorphic]] for groups>>=
+registration
+  let G1 be Group;
+  cluster G1-isomorphic for Group;
+  existence
+  proof
+    take G1;
+    Id_G1 is bijective;
+    thus thesis;
+  end;
+end;
+
+@
+
+\N{Registering [[bijective]] for [[Homomorphism]]}
+We had to take a detour, because if you just gave me any two random
+groups $G_{1}$ and $G_{2}$, there is zero reason to believe they are
+isomorphic. Just consider any two finite groups of different size. And
+group isomorphisms are only well-defined between isomorphic groups. Now
+that we have a notion of isomorphic-groups, we can define a notion of
+[[Isomorphism]]. We will also need to prove their existence, which we
+place in a lemma.
+
+<<Register [[bijective]] for [[Homomorphism]] of $G_{1}$, $G_{2}$>>=
+<<Lemma: $G_{2}$ is $G_{1}$-isomorphic implies existence of isomorphism>>
+
+registration
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  cluster bijective for Homomorphism of G1,G2;
+  existence by Lm5;
+end;
+
+@
+
+\N{Lemma: Isomorphic groups have an isomorphism between them}
+Let $G_{1}$ be a group. For any $G_{1}$-isomorphic group $G_{2}$,
+there exists at least one isomorphism $G_{1}\to G_{2}$. It's just a
+straightforward matter of unwinding the definitions.
+
+<<Lemma: $G_{2}$ is $G_{1}$-isomorphic implies existence of isomorphism>>=
+Lm5:
+  for G2 being G1-isomorphic Group
+  holds (ex h being Homomorphism of G1,G2 st h is bijective)
+proof
+  let G2 be G1-isomorphic Group;
+  G1,G2 are_isomorphic by Def6;
+  then consider h being Homomorphism of G1,G2 such that
+A1: h is bijective by GROUP_6:def 11;
+  thus thesis by A1;
+end;
+
+@
+
+\N{Definition} We can now define a notion of group [[Isomorphism]] in
+Mizar. We can't do it ``willy-nilly'', of course: the notion of an
+isomorphism only makes sense when it is from a group $G_{1}$ to a
+$G_{1}$-isomorphic group. But given such a condition on $G_{2}$, we can
+define an [[Isomorphism]] as just a bijective group morphism $G_{1}\to G_{2}$.
+
+<<Define group [[Isomorphism]]>>=
+definition :: Def7
+  let G1 be Group,
+      G2 be G1-isomorphic Group;
+  mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
+end;
+
+@
+

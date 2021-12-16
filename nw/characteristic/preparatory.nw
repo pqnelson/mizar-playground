@@ -1,0 +1,150 @@
+% This is placed here so the LaTeX is organized correctly, thanks to
+% problems with noweb :(
+\section{Article Body}
+
+\M
+The article body is where the magic happens.
+
+<<[[tmp.miz]] article body>>=
+<<Helper lemmas and registrations for [[tmp.miz]]>>
+
+<<Inner and outer automorphisms>>
+<<Group isomorphisms>>
+<<Characteristic subgroup results>>
+
+@
+
+\subsection{Preparatory results}
+
+\M
+We begin by registering the identity function as being surjective and
+bijective. This should have been done in [[FUNCT_2]], but hey, what can
+you do?
+
+<<Helper lemmas and registrations for [[tmp.miz]]>>=
+begin :: preparatory work
+reserve X for set;
+
+registration
+  let X;
+  cluster id X -> onto;
+  coherence;
+end;
+
+registration
+  let X;
+  cluster id X -> bijective;
+  coherence;
+end;
+
+@
+
+\M
+We also need to prove that, if we have a subgroup $H\subgroup G$ and
+$h\in G$ is an arbitrary element of the underlying set, then $h\in H$
+implies the typing judgement ``[[h is Element of H]]''.
+
+<<Helper lemmas and registrations for [[tmp.miz]]>>=
+LmSubgroupElt:
+for G being Group
+for H being Subgroup of G
+for h being Element of G st h in H holds h is Element of H
+proof
+  let G be Group,
+      H be Subgroup of G,
+      h be Element of G;
+  assume h in H;
+  then h is Element of the carrier of H by STRUCT_0:def 5;
+  then h is Element of H;
+  hence thesis;
+end;
+
+@
+
+\N{Restriction of Group Morphisms to Subgroups}
+Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
+$A\subset X$ is an arbitrary subset, then $\forall a\in X$ we have
+$a\in A\implies f|_{A}(a)=f(a)$. But this doesn't generalize to
+morphisms, sadly, because a group is like a chocolate-covered set.
+
+So we just prove for any pair of groups $G_{1}$ and $G_{2}$,
+for any subgroup $H\subgroup G_{1}$,
+for any group morphism $f\colon G_{1}\to G_{2}$, and for arbitrary $h\in G_{1}$,
+we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
+always look at the set-theoretic function $U(f)$ underlying $f$, then
+piggie-back off earlier results establishing the desired claim
+(Theorem~49 of [[FUNCT_1]], to be precise).
+
+<<Helper lemmas and registrations for [[tmp.miz]]>>=
+Lm3: for G1,G2 being Group
+for H being Subgroup of G1
+for f being Homomorphism of G1,G2
+for h being Element of G1
+st h in H
+holds (f|H).h = f.h
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let f be Homomorphism of G1,G2;
+  let h be Element of G1;
+  assume h in H;
+  then h is Element of H by LmSubgroupElt;
+  then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
+  then (f|H).h = f.h by GRSOLV_1:def 2;
+  hence thesis;
+end;
+
+@
+
+\M
+Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$.
+If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
+$H_{1}=H_{2}$. Pretty simple, right? \dots I'm not sure I'll need this,
+but here it is if I do.
+
+<<Sandwich Subgroup Equality Theorem>>=
+LmSandwich: for H1 being strict Subgroup of G
+for H2 being strict Subgroup of G
+st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
+holds H1 = H2
+proof
+  let H1 be strict Subgroup of G;
+  let H2 be strict Subgroup of G;
+  assume H1 is Subgroup of H2 & H2 is Subgroup of H1;
+  then the multMagma of H1 = the multMagma of H2 by GROUP_2:55;
+  hence thesis;
+end;
+
+@
+
+\begin{remark}[On ``strict'' mathematical gadgets]\index{strict@\texttt{strict}|textbf}
+Mizar has a notion of a ``[[strict]]'' attribute. What does it mean?
+Well, sometimes a mathematical gadget is ``composite''; like a vector
+space over a field is an Abelian group with vector addition, but it also
+has other stuff (like scalar multiplication). This ``other stuff''
+prevents it from being a ``bald-faced Abelian group''. Just as black
+holes have no hair, strict groups have no hair: it's just a
+[[multMagma]] satisfying the group properties (in Mizar, at least).
+\end{remark}
+
+\M Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
+Then $H\normalSubgroup G$ is a normal subgroup. The current theorems in
+[[GROUP_3]] require $H$ to be a \emph{strict} subgroup, but this
+strictness condition is not necessary.
+
+<<Subgroups invariant under conjugation are normal>>=
+LmNormalSubgroup:
+for G being Group
+for H being Subgroup of G
+st (for a being Element of G holds H |^ a = H)
+holds H is normal Subgroup of G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume A0: for a being Element of G holds H |^ a = H;
+  then for a being Element of G holds the carrier of H |^ a = the carrier of H;
+  then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
+  hence H is normal Subgroup of G by GROUP_3:def 13;
+end;
+
+@
