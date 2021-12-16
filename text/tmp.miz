@@ -723,10 +723,10 @@ reserve K for characteristic Subgroup of G;
 :: "K" for "Karacteristic"...uh, wait...
 
 LmAlwaysFindInnerAuto:
-for G being strict Group
-for a being Element of G
-holds ex f being inner Automorphism of G st (for x being Element of G
-holds f.x = x |^ a)
+  for G being strict Group
+  for a being Element of G
+  holds ex f being inner Automorphism of G st (for x being Element of G
+  holds f.x = x |^ a)
 proof
   let G be strict Group;
   let a be Element of G;
@@ -740,13 +740,12 @@ end;
 
 
 
-theorem
-LmKerOfConjugate:
-for G being Group
-for a being Element of G
-for f being Endomorphism of G
-st (for x being Element of G holds f.x = x |^ a)
-holds Ker f = (1).G
+theorem LmKerOfConjugate:
+  for G being Group
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds Ker f = (1).G
 proof
   let G be Group;
   let a be Element of G;
@@ -781,12 +780,38 @@ A2:  for x being Element of G holds x in (1).G implies x in Ker f
 end;
 
 
+theorem Th12:
+  for G being Group
+  for a being Element of G
+  holds ex f being Endomorphism of G st (for x being Element of G
+  holds f.x = x |^ a)
+proof
+  let G be Group;
+  let a be Element of G;
+  deffunc F(Element of G) = ($1) |^ a;
+  consider f be Function of the carrier of G, the carrier of G such that
+A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
+  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
+  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
+  proof
+    let x1,x2 be Element of G;
+    A2: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
+    f.(x1 * x2) = (x1 * x2) |^ a by A1
+               .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
+               .= f.x1 * f.x2 by A2;
+    hence thesis;
+  end;
+  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
+  then f is Endomorphism of G;
+  hence thesis by A1;
+end;
+
 theorem ThConIsAuto:
-for G being Group
-for a being Element of G
-for f being Endomorphism of G
-st (for x being Element of G holds f.x = x |^ a)
-holds f is Automorphism of G
+  for G being Group
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds f is Automorphism of G
 proof
   let G be Group;
   let a be Element of G;
@@ -837,11 +862,11 @@ A2:  for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
 end;
 
 theorem ThConjIsInnerAutomorphism:
-for G being Group
-for a being Element of G
-for f being Endomorphism of G
-st (for x being Element of G holds f.x = x |^ a)
-holds f is inner Automorphism of G
+  for G being Group
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds f is inner Automorphism of G
 proof
   let G be Group;
   let a be Element of G;
@@ -852,31 +877,17 @@ proof
   hence thesis;
 end;
 
-
 theorem ThAlwaysFindInnerAuto:
-for G being Group
-for a being Element of G
-holds ex f being inner Automorphism of G st (for x being Element of G
-holds f.x = x |^ a)
+  for G being Group
+  for a being Element of G
+  holds ex f being inner Automorphism of G st (for x being Element of G
+  holds f.x = x |^ a)
 proof
-  let G be Group;
-  let a be Element of G;
-  deffunc F(Element of G) = ($1) |^ a;
-  consider f be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
-  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-A2:  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
-  proof
-    let x1,x2 be Element of G;
-    A21: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
-    f.(x1 * x2) = (x1 * x2) |^ a by A1
-    .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
-    .= f.x1 * f.x2 by A21;
-    hence thesis;
-  end;
-  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
-  then f is Endomorphism of G;
-  then reconsider f as Endomorphism of G;
+  let G be Group,
+      a be Element of G;
+  consider f being Endomorphism of G such that
+A1: for x being Element of G holds f.x = x |^ a
+  by Th12;
 C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
   for x being Element of G holds f.x = x |^ a by A1;
   hence thesis by C1;
