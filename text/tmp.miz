@@ -132,6 +132,7 @@ definition :: Def2
   mode Automorphism of G is bijective Endomorphism of G;
 end;
 
+LmAuto:
 for G being strict Group holds
 for f being Automorphism of G holds Image(f) = G
 proof
@@ -275,11 +276,14 @@ registration
   end;
 end;
 
+
 reserve H1,H2 for Subgroup of G;
 
 Lm3: for f being Homomorphism of G,G2
 for h being Element of G
-holds h in H implies (f|H).h = f.h
+st h in H
+holds (f|H).h = f.h
+:: holds h in H implies (f|H).h = f.h
 proof
   let f be Homomorphism of G,G2;
   let h be Element of G;
@@ -310,6 +314,44 @@ proof
   hence thesis;
 end;
 
+theorem ThKerInner:
+  for G being Group
+  for f being inner Automorphism of G
+  holds Ker f = (1).G
+proof
+  let G be Group;
+  let f be inner Automorphism of G;
+  consider a being Element of G such that
+A0: for x being Element of G holds f.x = x |^ a
+  by Def5;
+A1:  for x being Element of G holds x in Ker f implies x in (1).G
+  proof
+    let x be Element of G;
+    assume A11: x in Ker f;
+    then f.x = 1_G by GROUP_6:41;
+    then x |^ a = 1_G by A0;
+    then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
+    the carrier of (1).G = {1_G} by GROUP_2:def 7;
+    then 1_G in the carrier of (1).G by TARSKI:def 1; 
+    then x in the carrier of (1).G by A12;
+    then x in (1).G by STRUCT_0:def 5;
+    hence thesis;
+  end;
+A2:  for x being Element of G holds x in (1).G implies x in Ker f
+  proof
+    let x be Element of G;
+    assume Z4: x in (1).G;
+    then x is Element of (1).G by LmSubgroupElt;
+    then x in the carrier of (1).G;
+    then x in {1_G} by GROUP_2:def 7;
+    then x = 1_G by TARSKI:def 1;
+    then f.x = 1_G by GROUP_6:31;
+    then x in Ker f by GROUP_6:41;
+    hence thesis;
+  end;
+  thus Ker f = (1).G by A1,A2,GROUP_2:60;
+end;
+
 
 
 :: theorem Th6:
@@ -325,15 +367,18 @@ proof
   hence thesis;
 end;
 
-reserve f for inner Automorphism of G;
 reserve H for Subgroup of G;
 
 theorem Th7:
-  (ex a being Element of G st for x being Element of G holds f.x = x |^ a)
-  implies Image(f|H) = H |^ a
+  for a being Element of G
+  for f being inner Automorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds Image(f|H) = H |^ a
 proof
-  given a being Element of G such that 
-A0:  for x being Element of G holds f.x = x |^ a;
+  let a be Element of G,
+      f be inner Automorphism of G;
+  assume
+A0: for x being Element of G holds f.x = x |^ a;
 C1: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
@@ -379,11 +424,8 @@ AB3:  (f|H).g = f.g by Lm3,AB2
 
   for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
   then (H |^ a) = Image(f|H) by GROUP_2:def 6;
-  :: ...wait, what? Invalid deduction?! But---How?!? We just proved it!
   hence thesis;
-::>          *4
 end;
-
 
 
 definition :: Def6
@@ -437,6 +479,36 @@ definition :: Def7
   mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
 end;
 
+theorem Th12:
+  for G being Group
+  for G2 being G-isomorphic Group
+  for f being Endomorphism of G
+  st G = G2
+  holds (f is Isomorphism of G,G2) iff (f is Automorphism of G)
+proof
+  let G be Group;
+  let G2 be G-isomorphic Group;
+  let f be Endomorphism of G;
+  assume Z9: G = G2;
+  thus (f is Isomorphism of G,G2) implies (f is Automorphism of G)
+  proof
+    assume Z10: f is Isomorphism of G,G2;
+    then f is bijective Homomorphism of G,G2;
+    then f is bijective Homomorphism of G,G by Z9;
+    then f is Automorphism of G;
+    hence thesis;
+  end;
+  thus (f is Automorphism of G) implies (f is Isomorphism of G,G2) 
+  proof
+    assume Z12: f is Automorphism of G;
+    then f is bijective Homomorphism of G,G;
+    then f is bijective Homomorphism of G,G2 by Z9;
+    then f is Isomorphism of G,G2;
+    hence thesis;
+  end;
+  thus thesis;
+end;
+
 theorem Th8:
   for G being strict Group, f being object
   holds (f in Aut G) iff (f is Automorphism of G)
@@ -475,7 +547,24 @@ proof
   hence f is Automorphism of G by Th8;
 end;
 
-theorem
+LmInnAutHelper:
+for G being strict Group
+for f being Element of InnAut G
+holds ex a being Element of G st (for x being Element of G holds f.x = x |^ a)
+proof
+  let G be strict Group;
+  let f be Element of InnAut G;
+A1: f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  consider a being Element of G such that
+A2:  for x being Element of G holds f.x = x |^ a
+  by A1,AUTGROUP:def 4;
+  take a;
+  let x be Element of G;
+  thus f.x = x |^ a by A2;
+end;
+
+
+LmInnAut2:
   for G being strict Group
   for f being object
   holds (f in InnAut G) iff (f is inner Automorphism of G)
@@ -483,7 +572,44 @@ proof
   let G be strict Group;
   let f be object;
   thus (f in InnAut G) implies (f is inner Automorphism of G)
-::  let f be Endomorphism of G;
+  proof
+    assume f in InnAut G;
+    then reconsider f as Element of InnAut G;
+    consider a being Element of G such that
+A1: for x being Element of G holds f.x = x |^ a
+    by LmInnAutHelper;
+    reconsider f as Element of Aut G by AUTGROUP:12;
+    reconsider f as Automorphism of G by Th8;
+    f is inner by A1,Def5;
+    then f is inner Automorphism of G;
+    hence thesis;
+  end;
+  thus (f is inner Automorphism of G) implies (f in InnAut G)
+  proof
+    assume B0: f is inner Automorphism of G;
+    then reconsider f as inner Automorphism of G;
+    consider a being Element of G such that
+B1: for x being Element of G holds f.x = x |^ a
+    by Def5;
+    reconsider f as Element of Funcs (the carrier of G, the carrier of G)
+    by FUNCT_2:9;
+    f in InnAut G by B1,AUTGROUP:def 4;
+    hence thesis;
+  end;
+  thus thesis;
+end;
+
+
+
+
+theorem Th999:
+  for G being strict Group
+  for f being object
+  holds (f in InnAut G) iff (f is inner Automorphism of G)
+proof
+  let G be strict Group;
+  let f be object;
+  thus (f in InnAut G) implies (f is inner Automorphism of G)
   proof
     assume Z0: f in InnAut G;
     then f is Automorphism of G by LmInnAut;
@@ -627,20 +753,194 @@ end;
 reserve K for characteristic Subgroup of G;
 :: "K" for "Karacteristic"...uh, wait...
 
-registration
-  let G;
-  cluster characteristic -> normal for Subgroup of G;
-  coherence
+LmAlwaysFindInnerAuto:
+for G being strict Group
+for a being Element of G
+holds ex f being inner Automorphism of G st (for x being Element of G
+holds f.x = x |^ a)
+proof
+  let G be strict Group;
+  let a be Element of G;
+  reconsider f = (Conjugate a) as inner Automorphism of G
+  by AUTGROUP:def 6, Th999;
+  take f;
+  let x be Element of G;
+  thus f.x = x |^ a by AUTGROUP:def 6;
+end;
+
+
+
+
+theorem
+LmKerOfConjugate:
+for G being Group
+for a being Element of G
+for f being Endomorphism of G
+st (for x being Element of G holds f.x = x |^ a)
+holds Ker f = (1).G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+A1:  for x being Element of G holds x in Ker f implies x in (1).G
   proof
-    :: thus for H being Subgroup of G st H is characteristic holds H is normal;
-    let H be Subgroup of G;
-    assume A1: H is characteristic;
-    A2: for f being inner Automorphism of G holds Image(f|H) = H by A1,Def9;
-    A3: for f being inner Automorphism of G holds Image(f|H) = H |^ a by Th7;
-::>                                                                    *4
-    H is normal by A1,A2,A3,Def9,Th7,Th9,GROUP_3:def 13;
-::>              *4
+    let x be Element of G;
+    assume A11: x in Ker f;
+    then f.x = 1_G by GROUP_6:41;
+    then x |^ a = 1_G by A0;
+    then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
+    the carrier of (1).G = {1_G} by GROUP_2:def 7;
+    then 1_G in the carrier of (1).G by TARSKI:def 1; 
+    then x in the carrier of (1).G by A12;
+    then x in (1).G by STRUCT_0:def 5;
     hence thesis;
   end;
+A2:  for x being Element of G holds x in (1).G implies x in Ker f
+  proof
+    let x be Element of G;
+    assume Z4: x in (1).G;
+    then x is Element of (1).G by LmSubgroupElt;
+    then x in the carrier of (1).G;
+    then x in {1_G} by GROUP_2:def 7;
+    then x = 1_G by TARSKI:def 1;
+    then f.x = 1_G by GROUP_6:31;
+    then x in Ker f by GROUP_6:41;
+    hence thesis;
+  end;
+  thus Ker f = (1).G by A1,A2,GROUP_2:60;
 end;
-::> 4: This inference is not accepted
+
+
+theorem ThConIsAuto:
+for G being Group
+for a being Element of G
+for f being Endomorphism of G
+st (for x being Element of G holds f.x = x |^ a)
+holds f is Automorphism of G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+  then Ker f = (1).G by LmKerOfConjugate;
+  then
+C0: f is one-to-one by GROUP_6:56;
+
+  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
+  proof
+    deffunc F(Element of G) = ($1) |^ a";
+    consider fInv be Function of the carrier of G, the carrier of G such that
+A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
+    fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
+A2:  for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
+    proof
+      let x1,x2 be Element of G;
+      A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
+      fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
+      .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
+      .= fInv.x1 * fInv.x2 by A21;
+      hence thesis;
+    end;
+    then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
+    then fInv is Endomorphism of G;
+    then reconsider fInv as Endomorphism of G;
+    for x being Element of G holds (f*fInv).x = (id the carrier of G).x
+    proof
+      let x be Element of G;
+      (f * fInv).x = f.(fInv.x) by FUNCT_2:15
+      .= f.(x |^ a") by A1
+      .= (x |^ a") |^ a by A0
+      .= x |^ (a" * a) by GROUP_3:24
+      .= x |^ 1_G by GROUP_1:def 5
+      .= x by GROUP_3:19
+      .= (id the carrier of G).x;
+      hence thesis;
+    end;
+    then f*fInv = id the carrier of G by FUNCT_1:2;
+    hence thesis;
+  end;
+  then rng f = the carrier of G by FUNCT_2:18;
+  then f is onto by GROUP_6:58;
+  then f is bijective by C0;
+  then f is Automorphism of G;
+  hence thesis;
+end;
+
+theorem ThConjIsInnerAutomorphism:
+for G being Group
+for a being Element of G
+for f being Endomorphism of G
+st (for x being Element of G holds f.x = x |^ a)
+holds f is inner Automorphism of G
+proof
+  let G be Group;
+  let a be Element of G;
+  let f be Endomorphism of G;
+  assume A0: for x being Element of G holds f.x = x |^ a;
+  then f is Automorphism of G by ThConIsAuto;
+  then f is inner Automorphism of G by A0,Def5;
+  hence thesis;
+end;
+
+
+theorem ThAlwaysFindInnerAuto:
+for G being Group
+for a being Element of G
+holds ex f being inner Automorphism of G st (for x being Element of G
+holds f.x = x |^ a)
+proof
+  let G be Group;
+  let a be Element of G;
+  deffunc F(Element of G) = ($1) |^ a;
+  consider f be Function of the carrier of G, the carrier of G such that
+A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
+  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
+A2:  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
+  proof
+    let x1,x2 be Element of G;
+    A21: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
+    f.(x1 * x2) = (x1 * x2) |^ a by A1
+    .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
+    .= f.x1 * f.x2 by A21;
+    hence thesis;
+  end;
+  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
+  then f is Endomorphism of G;
+  then reconsider f as Endomorphism of G;
+C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
+  for x being Element of G holds f.x = x |^ a by A1;
+  hence thesis by C1;
+end;
+
+theorem Th11:
+  for G being Group
+  for K being characteristic Subgroup of G
+  holds K is normal Subgroup of G
+proof
+  let G be Group;
+  let K be characteristic Subgroup of G;
+A1:  for a being Element of G holds K |^ a = K
+  proof
+    let a be Element of G;
+    consider f being inner Automorphism of G such that
+A2: for x being Element of G holds f.x = x |^ a
+    by ThAlwaysFindInnerAuto;
+    A3: Image(f|K) = K by LmAuto,Def9;
+    Image(f|K) = K |^ a by A2,Th7;
+    then K |^ a = K by A3,LmAuto,Def9;
+    hence thesis;
+  end;
+  then for a being Element of G holds the carrier of K |^ a = the
+  carrier of K;
+  then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
+  hence K is normal Subgroup of G by A1,GROUP_3:def 13;
+end;
+
+
+
+registration
+  let G be Group;
+  cluster characteristic -> normal for Subgroup of G;
+  coherence by Th11;
+end;
