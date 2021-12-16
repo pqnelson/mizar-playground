@@ -18,9 +18,13 @@ check:
 
 # noweb many-file extraction voodoo starts here
 def/nw/%.nw:
-	nodefs nw/$*.nw > $*.defs
-defs: $(DEFS_CMD)
-	nodefs *.defs | sort -u
+	@echo $*
+	nodefs nw/$*.nw >> all.defs
+rm_defs:
+	-rm all.defs
+	touch all.defs
+defs: rm_defs $(DEFS_CMD)
+
 
 extract_text/nw/%.nw:
 	noweave -n -indexfrom all.defs nw/$*.nw > tex/$*.tex
