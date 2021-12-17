@@ -13,6 +13,7 @@ environ
 
  vocabularies RING_3, :: for MIsomorphism
    MOD_4, :: for Endomorphism, Automorphism
+   CARD_1, :: for card
    AUTGROUP, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, SUBSET_1, GROUP_4,
    MSSUBFAM, GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_1,
    FUNCT_2, XBOOLE_0, BINOP_1, BINOP_2, ALGSTR_0, ZFMISC_1, REALSET1,
@@ -36,12 +37,13 @@ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
 
  requirements BOOLE, SUBSET;
- definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, AUTGROUP;
+ definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, GROUP_4, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0, AUTGROUP;
  expansions BINOP_1, FUNCT_2;
  theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
    GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1,
-   XBOOLE_0, STRUCT_0, GRSOLV_1, AUTGROUP;
+   XBOOLE_0, STRUCT_0, GRSOLV_1, AUTGROUP,
+   GROUP_4;
  schemes BINOP_1, FUNCT_2;
 
 
@@ -60,6 +62,57 @@ registration
   coherence;
 end;
 
+LmOntoMapsEverything:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is onto
+holds f .: X = Y
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume Z58: f is onto;
+  then A0: rng f = Y;
+  A1: dom f = X by FUNCT_2:def 1;
+  A2: for y being object
+  holds y in rng f iff ex x being object st x in X & y = f.x
+  by A1, FUNCT_1:def 3;
+
+  
+  for y being object holds y in (f .: X) iff
+  ex x being object st x in dom f & x in X & y = f.x by FUNCT_1:def 6;
+  
+  A3: for y being object holds y in (f .: X) iff
+  ex x being object st x in X & x in X & y = f.x
+  by A1,FUNCT_1:def 6;
+
+  B1: for y being object holds y in (f .: X) implies y in rng f
+  proof
+    let y be object;
+    assume Z59: y in (f .: X);
+    then consider x being object such that
+    A10: x in X and
+    x in X and
+    A11: y = f.x
+    by A3;
+    thus y in rng f by A10,A11,A2;
+  end;
+
+  B2: for y being object holds y in rng f implies y in (f .: X)
+  proof
+    let y be object;
+    assume Z60: y in rng f;
+    then consider x being object such that
+    A10: x in X and
+    A11: y = f.x
+    by A2;
+    thus y in (f .: X) by A10,A11,A3;
+  end;
+  B3: rng f c= Y & f .: X c= Y;
+  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
+  then rng f = f .: X by TARSKI:2;
+  hence f .: X = Y by A0;
+end;
+
 :: I really don't know why this isn't in GROUP_2...
 LmSubgroupElt:
 for G being Group
@@ -72,6 +125,23 @@ proof
   assume h in H;
   then h is Element of the carrier of H by STRUCT_0:def 5;
   then h is Element of H;
+  hence thesis;
+end;
+
+LmSubgroupEltTrans:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for g being Element of G
+  st g in H1 & H1 is Subgroup of H2
+  holds g in H2
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let g be Element of G;
+  assume A1: g in H1;
+  assume A2: H1 is Subgroup of H2;
+  then g is Element of H1 by A1,LmSubgroupElt;
+  then g in H2 by A1, A2, GROUP_2:40;
   hence thesis;
 end;
 
@@ -414,6 +484,7 @@ registration
   end;
 end;
 
+
 :: Reflexivity
 Lm4: for G being Group holds G is G-isomorphic
 proof
@@ -440,6 +511,7 @@ registration
   existence by Lm5;
 end;
 
+
 reserve h for Homomorphism of G, G;
 
 definition :: Def7
@@ -447,6 +519,137 @@ definition :: Def7
       G2 be G1-isomorphic Group;
   mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
 end;
+
+theorem Th97:
+  for G1 being Group
+  for G2 being strict Group
+  for f being Homomorphism of G1,G2
+  st f is onto
+  holds Image(f) = G2 by GROUP_6:57;
+
+
+theorem Th97:
+  for G,H being Group
+  for f being Homomorphism of G,H
+  st f is onto
+  holds H = Image f
+proof
+  let G,H be Group;
+  let f be Homomorphism of G,H;
+  assume Z61: f is onto;
+  then A1: rng f = the carrier of H;
+  rng f = the carrier of Image f by GROUP_6:44;
+  then the carrier of Image f = the carrier of H by A1;
+  then the multMagma of Image f = the multMagma of H by GROUP_2:61;
+  then Image(f) qua Group = H qua Group;
+::>                                   *4
+end;
+::>,70
+
+
+
+theorem Th98:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  st f is onto
+  holds Image(f) = G2
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  A0: dom f = the carrier of G1 by FUNCT_2:def 1;
+  assume Z57: f is onto;
+  then rng f = the carrier of G2;
+  then f .: (the carrier of G1) = (the carrier of G2)
+  by Z57, LmOntoMapsEverything;
+  A1: Image f is strict Subgroup of G2 by GROUP_6:def 10;
+  A2: G2 is Subgroup of G2 by GROUP_2:54;
+  rng f = the carrier of G2 by Z57;
+  then the carrier of Image f = the carrier of G2 by GROUP_6:44;
+  then the multMagma of Image f = the multMagma of G2 by A1,A2,GROUP_2:59;
+  then Image f = the multMagma of G2 by A1,GROUP_2:61;
+  hence thesis;
+::>          *4
+end;
+
+proof end;
+::> *396
+
+theorem Th99:
+  for G1 being strict Group
+  for G2 being G1-isomorphic Group
+  for f being Isomorphism of G1,G2
+  holds Image(f) = G2
+proof
+  let G1 be strict Group;
+  let G2 be G1-isomorphic Group;
+  let f be Isomorphism of G1,G2;
+  set UG2 = the carrier of G2;
+  A0: f is onto;
+  reconsider G2 as Group;
+  f is Homomorphism of G1,G2;
+  then Image f = G2 by A0,GROUP_6:57;
+::>                  *4
+  hence thesis;
+end;
+
+definition
+  let G1 be Group;
+  let G2 be G1-isomorphic Group;
+  let f be Isomorphism of G1,G2;
+  redefine func f" -> Function of G2,G1;
+  coherence
+  proof
+    rng f = the carrier of G2 by FUNCT_2:def 3;
+    then reconsider g = f" as Function of the carrier of G2, the carrier of G1
+    by FUNCT_2:25;
+    g is Function of G2,G1;
+    hence thesis;
+  end;
+end;
+
+LmIso:
+for G1 being Group
+for G2 being G1-isomorphic Group
+for f being Isomorphism of G1,G2
+holds f" is multiplicative Function of G2,G1
+proof
+  let G1 be Group;
+  let G2 be G1-isomorphic Group;
+  let f be Isomorphism of G1,G2;
+  set g = f";
+  A1: rng f = the carrier of G2 by FUNCT_2:def 3, Th99;
+  now
+    let y1,y2 be Element of G2;
+    consider x1 being Element of G1 such that
+    A2: x1 in G1 & y1 = f.x1 by A1,FUNCT_2:11;
+::>                           *4
+    consider x2 being Element of G1 such that y2 = f.x2 by A1,FUNCT_2:11;
+::>                                                      *4
+    f".(y1*y2) = f".(f(x1)*f(x2))
+::>                  *148  *148
+    .= f".(f(x1*x2))
+::>        *148
+    .= x1*x2;
+  end;
+  thus f" is multiplicative Function of G2,G1;
+::>                                         *4
+end;
+
+
+LmIsoInvIsIso:
+  for G being Group
+  for H being G-isomorphic Group
+  for f being Isomorphism of G,H
+  holds f" is Isomorphism of H,G
+::>                     *101
+proof
+  let G,H be Group;
+  let f be Isomorphism of G,H;
+::>                  *101
+  thus f" is Isomorphism of G,H;
+::>                    *101
+end;
+
 
 theorem Th12:
   for G being Group
@@ -722,6 +925,326 @@ end;
 reserve K for characteristic Subgroup of G;
 :: "K" for "Karacteristic"...uh, wait...
 
+theorem Th13:
+  for G being Group
+  for K being characteristic Subgroup of G
+  for f being Automorphism of G
+  holds f .: K = K
+proof
+  let G be Group;
+  let K be characteristic Subgroup of G;
+  let f be Automorphism of G;
+  f .: K = Image(f|K) by GRSOLV_1:def 3
+  .= K by Def9;
+  hence f .: K = K;
+end;
+
+:: group morphisms preserve subgroups
+theorem
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for f being Homomorphism of G1,G2
+  holds f .: H is Subgroup of G2 by GRSOLV_1:def 3;
+
+LmKerRestrictedIsSubgroupOfKer:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  for H being Subgroup of G1
+  holds Ker(f|H) is Subgroup of Ker(f)
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  let H be Subgroup of G1;
+  C0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
+  C1: Ker(f) is Subgroup of G1;
+  C2: for g being Element of G1
+  st g in Ker(f|H)
+  holds g in Ker(f)
+  proof
+    let g be Element of G1;
+    assume A1: g in Ker(f|H);
+    A2: Ker(f|H) is Subgroup of H;
+    then A3: g in H by A1, LmSubgroupEltTrans;
+    A4: (f|H).g = f.g by A3,Lm3;
+    g is Element of H by A3, LmSubgroupElt;
+    then (f|H).g = 1_G2 by A1, GROUP_6:41;
+    then f.g = 1_G2 by A4;
+    then g in Ker(f) by GROUP_6:41;
+    hence thesis;
+  end;
+  Ker(f|H) is Subgroup of Ker(f) by C0,C1,C2,GROUP_2:58;
+  hence thesis;
+end;
+
+
+Lm9:
+for G being Group
+for H being Subgroup of G
+for phi being Automorphism of G 
+holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let phi be Automorphism of G;
+::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
+  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
+  AA0: phi is one-to-one;
+  then Ker(phi) = (1).G by GROUP_6:56;
+  then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
+  then AA1: Ker(phi|H) = (1).G by Lm6;
+  (1).G = (1).H by GROUP_2:63;
+  then Ker(phi|H) = (1).H by AA1;
+  then (phi|H) is one-to-one by GROUP_6:56;
+  hence thesis;
+end;
+
+
+theorem Th14:
+  for G being Group
+  for H being Subgroup of G
+  for phi being Automorphism of G
+  holds H,phi .: H are_isomorphic
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let phi be Automorphism of G;
+  reconsider H2 = phi .: H as Subgroup of G;
+  A1: Image(phi|H) = H2 by GRSOLV_1:def 3;
+  C1: phi|H is one-to-one by Lm9;
+  then C2: H,Image(phi|H) are_isomorphic by GROUP_6:68;
+  then H,phi .: H are_isomorphic by C2, GRSOLV_1:def 3;
+  hence thesis;
+end;
+
+Lm8:
+for G being Group
+for H being Subgroup of G
+for phi being Automorphism of G
+holds (phi .: H) is H-isomorphic Group by Th14, Def6;
+
+:: GROUP_6:57 requires G2 being a strict group, but that's not necessary
+:: for one direction of implication.
+theorem Th15:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  st Image(f) = G2
+  holds f is onto
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  assume A1: Image(f) = G2;
+  then rng f = the carrier of Image f by GROUP_6:44
+  .= the carrier of G2 by A1;
+  then f is onto by FUNCT_2:def 3;
+  hence thesis;
+end;
+
+LmRestr:
+for G being Group
+for H being Subgroup of G
+for phi being Automorphism of G
+holds phi|H is Homomorphism of H,(phi .: H)
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let phi be Automorphism of G;
+A1:  phi|H is Homomorphism of H, G by GRSOLV_1:def 2;
+A2:  Image(phi|H) = phi .: H by GRSOLV_1:def 3;
+  phi|H is Homomorphism of H, Image(phi|H) by GROUP_6:49;
+  then phi|H is Homomorphism of H,(phi .: H) by A2;
+  hence thesis;
+end;
+
+
+theorem Th16:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for phi being Automorphism of G
+  st H2 = Image(phi|H1)
+  holds (phi|H1) is onto
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H2 = Image(phi|H1);
+  then A2: H2 = phi .: H1 by GRSOLV_1:def 3;
+  then H1,H2 are_isomorphic by Th14;
+  set f = phi|H1;
+  f is onto iff phi|H1 is onto;
+  B1: phi|H1 is one-to-one by Lm9;
+  phi|H1 is Homomorphism of H1,(phi .: H1) by LmRestr;
+  then B2: phi|H1 is Homomorphism of H1,H2 by A2;
+  for y being Element of rng(phi|H1)
+  st (ex x being Element of H1 st y = (phi|H1).x)
+  holds (phi|H1) is onto;
+::>                    *4
+  then phi|H1 is onto by A1,B1,Th15;
+::>                    *4
+  rng(phi|H1) = the carrier of Image(phi|H1) by GROUP_6:44
+  .= the carrier of H2 by A1;
+  (phi|H1) is Homomorphism of H1,H2 by A1,GROUP_6:49;
+  then (phi|H1) is onto;
+::>                   *4
+  (phi|H1) is onto by A1,GROUP_6:44,FUNCT_2:def 3;
+::>                 *4
+  set f = (phi|H1);
+  C1: Image(f) = Image(phi|H1)
+  .= H2 by A1;
+  then f is onto;
+::>            *4
+  reconsider f = (phi|H1) as Homomorphism of H1,Image(phi|H1) by A1,GROUP_6:49;
+  the carrier of Image(f) = f .: (the carrier of H1) by GROUP_6:def 10;
+  f is one-to-one by B1;
+  f is onto by GROUP_6:44;
+  then (phi|H1) is onto;
+::>                   *4
+  hence thesis;
+end;
+
+
+theorem Th16:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for phi being Automorphism of G
+  st H2 = (phi .: H1)
+  holds (phi|H1) is onto 
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H2 = (phi .: H1);
+  then H1,H2 are_isomorphic by Th14;
+  B1: (phi|H1) is one-to-one by Lm9;
+  then B2: (phi|H1)" is Homomorphism of Image(phi|H1),H1 by GROUP_6:55;
+  
+  A2: Image(phi|H1) = H2 by A1, GRSOLV_1:def 3;
+  (phi|H1) is Homomorphism of H1,G by GRSOLV_1:def 2;
+  then A3: (phi|H1) is Homomorphism of H1,H2 by A2,GROUP_6:49;
+  set f = (phi|H1);
+  A6: f is Homomorphism of H1,H2 by A3;
+  A4: Image(f) = H2 by A2;
+  then A5: rng f = the carrier of H2 by GROUP_6:44;
+  then f is onto by A4,A5,A6,FUNCT_2:def 3;
+::>               *4
+::  reconsider f=(phi|H1) as Homomorphism of H1,H2 by A3;
+::  f is onto implies (phi|H1) is onto;
+  reconsider f as Homomorphism of H1,H2 by A3;
+  H1 is Group & H2 is Group & f is Homomorphism of H1,H2;
+  Image(f) = H2 by A2,A4;
+::>              *4
+  f is onto by A4, Th15;
+::>          *4
+end;
+::>,70
+
+
+theorem Th17:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for phi being Automorphism of G
+  st H2 = (phi .: H1)
+  holds (phi|H1) is Homomorphism of H1,H2 & (phi|H1) is bijective
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H2 = (phi .: H1);
+  then H1,H2 are_isomorphic by Th14;
+  A2: Image(phi|H1) = H2 by A1, GRSOLV_1:def 3;
+  (phi|H1) is Homomorphism of H1,G by GRSOLV_1:def 2;
+  then A3: (phi|H1) is Homomorphism of H1,H2 by A2,GROUP_6:49;
+  ::
+  phi"|H2 is Homomorphism of H2,G;
+::>                             *4,4,4
+
+  H1 is Group & H2 is Group;
+  A5: rng(phi|H1) = the carrier of Image(phi|H1) by GROUP_6:44
+  .= the carrier of H2 by A2;
+  then A4: rng(phi|H1) = the carrier of H2;
+  then (phi|H1) is bijective by A4,GROUP_6:60;
+::>                           *4,4
+  reconsider phiH = (phi|H1) as Homomorphism of H1,H2 by A3;
+  rng(phiH) = the carrier of H2 by A4;
+  then phiH is onto by A4,FUNCT_2:def 3;
+  then (phi|H1) qua Homomorphism of H1,H2 is onto by A4,FUNCT_2:def 3;
+::>               *116
+  then the carrier of H2 c= rng(phi|H1);
+::>                                   *4
+  then rng (phi|H1) = the carrier of H2;
+::>                                   *4
+  then (phi|H1) is onto by GROUP_6:57;
+::>                      *4
+  thus (phi|H1) is bijective;
+::>    *51                 *4,4
+end;
+
+
+
+proof
+::> *396
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H2 = phi .: H;
+  A1: Image(phi|H) = H2 by GRSOLV_1:def 3;
+::>       *103
+  C1: phi|H is one-to-one
+  proof
+    AA0: phi is one-to-one;
+    then Ker(phi) = (1).G by GROUP_6:56;
+    then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
+::>        *103
+    then AA1: Ker(phi|H) = (1).G by Lm6;
+::>             *103
+    (1).G = (1).H by GROUP_2:63;
+::>                *4
+    then Ker(phi|H) = (1).H by AA1;
+::>        *103
+    then (phi|H) is one-to-one by GROUP_6:56;
+    hence thesis;
+  end;
+  then C2: H,Image(phi|H) are_isomorphic by GROUP_6:68;
+::>              *103
+  then H,phi .: H are_isomorphic by C2, GRSOLV_1:def 3;
+::>                            *102
+  hence thesis;
+end;
+
+
+
+theorem
+  for G being Group
+  for H being Subgroup of G
+  st (for H2 being Subgroup of G
+      st card H = card H2
+      holds H = H2)
+  holds H is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume A1: for H2 being Subgroup of G st card H = card H2 holds H = H2;
+  now
+    let phi be Automorphism of G;
+    reconsider H2 = phi .: H as Subgroup of G;
+    A2: H,H2 are_isomorphic by Th14;
+    phi|H is Isomorphism of H,H2 by Th14;
+::>                    *101
+    then (the carrier of H), (the carrier of H2) are_equipotent;
+    then the carrier of H, the carrier of H2 are_equipotent;
+    then card H2 = card H by CARD_1:4;
+::>                              *203
+    thus H2 = H by A1;
+::>              *68,4
+  end;
+  then for phi being Automorphism of G holds phi .: H = H;
+  hence H is characteristic Subgroup of G;
+::>                                     *4
+end;
+
+proof end;
+::> *396
+
+
 LmAlwaysFindInnerAuto:
   for G being strict Group
   for a being Element of G
@@ -918,8 +1441,23 @@ A2: for x being Element of G holds f.x = x |^ a
 end;
 
 
+
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
+
+
+
+::> 4: This inference is not accepted
+::> 51: Invalid conclusion
+::> 68: Nongeneralizable variable in the skeleton of a reasoning
+::> 70: Something remains to be proved
+::> 101: Unknown mode
+::> 102: Unknown predicate
+::> 103: Unknown functor
+::> 116: Invalid "qua"
+::> 148: Unknown private functor
+::> 203: Unknown token, maybe an illegal character used in an identifier
+::> 396: Formula expected

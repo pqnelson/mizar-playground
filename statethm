@@ -48,12 +48,20 @@ def find_theorem(theorems, thm_number):
 def test():
     return find_theorem("FUNCT_1",88)
 
-def parse_range(num):
+def parse_range(num, last_thm_number):
     assert('-' in num)
     x,y = num.split('-')
-    return list(range(int(x),int(y)+1))
+    if ''==y or 'end'==y.lower():
+        stop=last_thm_number
+    else:
+        stop=1+int(y)
+    if ''==x:
+        start=1
+    else:
+        start=int(x)
+    return list(range(start,stop))
     
-def parse_numbers(num):
+def parse_numbers(num, last_thm_number):
     """
     Should handle things like '3-5', '3,6,7-9', and so on.
     
@@ -62,10 +70,32 @@ def parse_numbers(num):
     result = []
     for candidate in num.split(','):
         if '-' in candidate:
-            result = result + parse_range(candidate)
+            result = result + parse_range(candidate, last_thm_number)
         else:
             result.append(int(candidate))
     return result
+
+def print_all_theorems(article):
+    theorems = parse_theorems(article)
+    for num in range(1, len(theorems)):
+        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
+
+def print_specified_theorems(arg):
+    article,number_str = arg.split(":")
+    theorems = parse_theorems(article)
+    last_thm_number = len(theorems)
+    for num in parse_numbers(number_str, last_thm_number):
+        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
+
+def is_print_all(arg):
+    idx = arg.find(':')
+    return (':' not in arg) or (arg.find('all', idx) > -1)
+
+def article_name(arg):
+    if ':' in arg:
+        return arg.split(':')[0]
+    else:
+        return arg
 
 def print_help():
     print("Statethm will state the theorems from specified articles.")
@@ -73,6 +103,11 @@ def print_help():
     print("from FUNCT_1. It can print non-sequential theorems by ")
     print("separating them by commas, like FUNCT_2:3,5,9 --- and it can")
     print("even print multiple theorems from multiple articles.")
+    print("\nSpecial case: if only a start to the range is given, then ")
+    print("all theorems from the specified start until the end of the article")
+    print("will be printed. Similarly, if only an end is given, only")
+    print("the theorems from the start, up to and including the last theorem")
+    print("number will be printed.")
     print("\nIf no number is given, then all theorems will be printed.")
     print("Also, if `ARTICLE:all` is given, all theorems will be printed.") 
     print("Even if requesting a specific range, 'all' overrides it, so")
@@ -85,28 +120,11 @@ def print_help():
     print("    statethm FUNCT_1:80-83 FUNCT_2:33,35-90,2")
     print("    statethm TARSKI")
     print("    statethm TARSKI:all")
+    print("    statethm GROUP_3:68-")
+    print("    statethm GROUP_3:-17")
+    print("\nNote: statethm ARTICLE:all gives the same results as ARTICLE:-")
+    print("and ARTICLE.")
     print("")
-
-def print_all_theorems(article):
-    theorems = parse_theorems(article)
-    for num in range(1, len(theorems)):
-        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
-
-def print_specified_theorems(arg):
-    article,number_str = arg.split(":")
-    theorems = parse_theorems(article)
-    for num in parse_numbers(number_str):
-        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
-
-def is_print_all(arg):
-    idx = arg.find(':')
-    return (':' not in arg) or (arg.find('all', idx) > -1)
-
-def article_name(arg):
-    if ':' in arg:
-        return arg.split(':')[0]
-    else:
-        return arg
 
 def main():
     if len(sys.argv) == 1:
