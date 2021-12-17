@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+
+import os
+import pathlib
+import re
+import sys
+
+def article_path(name):
+    filename = name.lower()+".miz"
+    mizfiles = os.environ.get('MIZFILES')
+    return str(pathlib.PurePath(mizfiles, "mml", filename))
+
+def read_theorems(article_id):
+    f = open(article_path(article_id))
+    txt = f.read()
+    f.close()
+    txt = re.sub('\n::[^\n]+\n', '\n', txt)
+    start = txt.find("begin")
+    txt = txt[start:]
+    theorems = [x for x in txt.split('theorem') if x.strip() != ''] # re.split('theorem', txt)
+    return theorems
+
+def end_of_theorem(text_and_proof):
+    proof_start = text_and_proof.find("proof")
+    theorem_end = text_and_proof.find(";")
+    if -1 == proof_start:
+        if -1 == theorem_end:
+            return len(text_and_proof)
+        else:
+            return theorem_end
+    elif 0 < theorem_end and theorem_end < proof_start:
+        return theorem_end
+    assert(proof_start > 0)
+    return proof_start
+
+def parse_theorems(article_id):
+    theorems = read_theorems(article_id)
+    return theorems
+
+def find_theorem(theorems, thm_number):
+    assert(thm_number > 0)
+    if (thm_number > len(theorems)):
+        return 'ERROR: there are only '+str(len(theorems)-1)+' theorems present'
+    text_and_proof = theorems[thm_number].strip()
+    proof_start = end_of_theorem(text_and_proof)
+    return text_and_proof[:proof_start].strip()
+
+def test():
+    return find_theorem("FUNCT_1",88)
+
+def parse_range(num):
+    assert('-' in num)
+    x,y = num.split('-')
+    return list(range(int(x),int(y)+1))
+    
+def parse_numbers(num):
+    """
+    Should handle things like '3-5', '3,6,7-9', and so on.
+    
+    Always returns an array of numbers
+    """
+    result = []
+    for candidate in num.split(','):
+        if '-' in candidate:
+            result = result + parse_range(candidate)
+        else:
+            result.append(int(candidate))
+    return result
+
+def print_help():
+    print("Statethm will state the theorems from specified articles.")
+    print("For example, statethm FUNCT_1:3-5 will print theorems 3, 4, 5")
+    print("from FUNCT_1. It can print non-sequential theorems by ")
+    print("separating them by commas, like FUNCT_2:3,5,9 --- and it can")
+    print("even print multiple theorems from multiple articles.")
+    print("\nIf no number is given, then all theorems will be printed.")
+    print("Also, if `ARTICLE:all` is given, all theorems will be printed.") 
+    print("Even if requesting a specific range, 'all' overrides it, so")
+    print("statethm ARTICLE:2-5,all,8-10 will simply print all the theorems.")
+    print("\nIMPORTANT NOTE: this uses $MIZFILES to locate the local Mizar")
+    print("Mathematical Library, for reading the local versions of articles.")
+    print("\nExamples:")
+    print("    statethm GROUP_4:3")
+    print("    statethm FUNCT_1:3-5,7,40-43")
+    print("    statethm FUNCT_1:80-83 FUNCT_2:33,35-90,2")
+    print("    statethm TARSKI")
+    print("    statethm TARSKI:all")
+    print("")
+
+def print_all_theorems(article):
+    theorems = parse_theorems(article)
+    for num in range(1, len(theorems)):
+        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
+
+def print_specified_theorems(arg):
+    article,number_str = arg.split(":")
+    theorems = parse_theorems(article)
+    for num in parse_numbers(number_str):
+        print(article+':'+str(num)+"\t"+find_theorem(theorems,num))
+
+def is_print_all(arg):
+    idx = arg.find(':')
+    return (':' not in arg) or (arg.find('all', idx) > -1)
+
+def article_name(arg):
+    if ':' in arg:
+        return arg.split(':')[0]
+    else:
+        return arg
+
+def main():
+    if len(sys.argv) == 1:
+        print_help()
+    else:
+        for arg in sys.argv[1:]:
+            if is_print_all(arg):
+                print_all_theorems(article_name(arg))
+            else:
+                print_specified_theorems(arg)
+
+if __name__ == '__main__':
+    main()
+    

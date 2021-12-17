@@ -24,7 +24,7 @@ rm_defs:
 	-rm all.defs
 	touch all.defs
 defs: rm_defs $(DEFS_CMD)
-
+	sort -u all.defs | cpif all.defs
 
 extract_text/nw/%.nw:
 	noweave -n -indexfrom all.defs nw/$*.nw > tex/$*.tex
