@@ -105,7 +105,7 @@ end;
 
 \M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
 
-<<Reserve symbols for inner and outer automorphisms>>=
+<<Define [[Endomorphism]]>>=
 reserve f for Endomorphism of G;
 
 @
@@ -166,7 +166,7 @@ $\forall x\in X, \id_{X}(x)=x$.
 <<Proof that $\Id_{G}$ exists>>=
 proof
   reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
-  i.x = x by FUNCT_1:17;
+  for x being Element of G holds i.x = x by FUNCT_1:17;
   hence thesis;
 end;
 
@@ -309,7 +309,7 @@ element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
 theorem Th5:
   for x being Element of G holds (Id_G).x = x |^ 1_G
 proof
-  let x;
+  let x be Element of G;
   (Id_G).x = x by Def3
           .= x |^ 1_G by GROUP_3:19;
   hence thesis;
@@ -482,12 +482,14 @@ image of a subgroup $f(H) = H^{a}$ is the conjugate of that subgroup.
 
 <<Theorem: inner automorphism acting on subgroup is conjugate of argument>>=
 theorem Th7:
+  for H being Subgroup of G
   for a being Element of G
   for f being inner Automorphism of G
   st (for x being Element of G holds f.x = x |^ a)
   holds Image(f|H) = H |^ a
 proof
-  let a be Element of G,
+  let H be Subgroup of G,
+      a be Element of G,
       f be inner Automorphism of G;
   assume
 A0: for x being Element of G holds f.x = x |^ a;
@@ -757,7 +759,7 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
   then f is Endomorphism of G;
   then reconsider f as Endomorphism of G;
-C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
+C1: f is inner Automorphism of G by A1,Th10;
   for x being Element of G holds f.x = x |^ a by A1;
   hence thesis by C1;
 end;

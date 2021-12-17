@@ -5,6 +5,8 @@ We now arrive at the meat of the matter: characteristic subgroups!
 
 <<Characteristic subgroup results>>=
 <<Define characteristic attribute>>
+<<Existence theorem for characteristic subgroups>>
+<<Register [[characteristic]] as attribute for Subgroup>>
 <<Theorem: characteristic subgroups are normal>>
 <<Register characteristic subgroups are normal>>
 
@@ -27,6 +29,67 @@ definition :: Def9
 end;
 
 @ %def characteristic Def9
+
+\N{Existence theorem}
+We need to prove the existence of a characteristic subgroup. For our
+purposes, it suffices to prove that the trivial subgroup is characteristic.
+
+<<Existence theorem for characteristic subgroups>>=
+<<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>
+
+Lm7: ex H being Subgroup of G st H is characteristic
+proof
+  take H = (1).G;
+A1:    for f being Automorphism of G
+       holds Image (f|H) is Subgroup of H by Th2;
+A2:  for f being Automorphism of G holds Image(f|H) = H
+  proof
+    let f be Automorphism of G;
+    reconsider I = Image(f|H) as Subgroup of H by A1;
+    H = I by Lm6;
+    then
+A3:    Image(f|H) = H by A1;
+    thus thesis by A3;
+  end;
+  then H is characteristic by A2,Def9;
+  hence thesis;
+  end;
+
+@
+
+\N{Lemma: the only subgroup of the trivial group is trivial}
+I couldn't quite find this anywhere in the MML, so I had to prove it
+myself.
+
+<<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
+Lm6: for H being Subgroup of G st H is Subgroup of (1).G holds the
+multMagma of H = the multMagma of (1).G
+proof
+  let H be Subgroup of G;
+  assume
+A1:  H is Subgroup of (1).G;
+  reconsider H as Subgroup of (1).G by A1;
+A2: (1).G is Subgroup of H by GROUP_2:65;
+  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  hence thesis by GROUP_2:55;
+end;
+
+@
+
+\N{Register [[characteristic]] for Subgroups}
+Now we can instruct Mizar to recognize [[characteristic]] as an
+adjective of [[Subgroup]].
+
+<<Register [[characteristic]] as attribute for Subgroup>>=
+registration
+  let G;
+  cluster characteristic for Subgroup of G;
+  existence by Lm7;
+end;
+
+@
+
+
 
 \N{Characteristic subgroups are normal}
 Let $G$ be a group, $K\subgroup G$ a subgroup. If $K$ is a

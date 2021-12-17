@@ -38,6 +38,7 @@ dumb_extract_text:
 
 extract_code:
 	notangle -RTEXT/tmp.miz $(NWFILES) > text/char.miz
+	notangle -RDICT/TMP.VOC $(NWFILES) > dict/char.voc
 
 without_bib:
 	$(TEX) $(BOOK)
