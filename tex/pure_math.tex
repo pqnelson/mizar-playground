@@ -21,6 +21,22 @@ natural number. Thus $\NN=\{1,2,3,\dots\}$. When I need to refer to the
 non-negative integers, I write $\NN_{0}=\{0\}\cup\NN$.
 \end{itemize}
 
+\begin{theorem}[{Dummit and Foote~\cite[Cor.~4.14]{dummit-foote}}]
+  If $H\subgroup G$ is any subgroup and $g\in G$, then
+  $H$ and $gHg^{-1}$ are isomorphic. Conjugate elements have the same
+  order. Conjugate subgroups have the same order.
+\end{theorem}
+
+\begin{theorem}\label{thm:pure-math:iso-subgroups-have-same-order}
+  Let $\varphi\in\Aut(G)$ be any automorphism of a group $G$.
+  If $H\subgroup G$ is a subgroup, then the order of $H$ and
+  $\varphi(H)$ are the same.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+This follows from $\varphi$ being a bijection.
+\end{proof}
+
 \begin{theorem}[{Gorenstein~\cite[{Th.1.5} of {ch.2}\,\S1]{gorenstein1980finite}}]
   If $H$ is a minimal normal subgroup of $G$ (i.e., $H\normalSubgroup G$
   and there is no nontrivial proper subgroup of $H$ which is normal in
@@ -30,20 +46,7 @@ non-negative integers, I write $\NN_{0}=\{0\}\cup\NN$.
   non-Abelian simple groups.
 \end{theorem}
 
-\begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]
-A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
-denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
-itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
-\end{definition}
-
-\begin{theorem}[{Gorenstein~\cite[Th.1.3 of ch.2\S1]{gorenstein1980finite}}]
-Let $G$ be a group. If a normal subgroup $H\normalSubgroup G$ whose
-order and index are coprime
-\begin{equation*}
-\gcd(|H|, [G:H])=1,
-\end{equation*}
-then $H$ is a characteristic subgroup of $G$.
-\end{theorem}
+\section{Commutators}
 
 \begin{definition}
   Let $G$ be a group and let $x$, $y\in G$ be arbitrary.
@@ -82,4 +85,43 @@ and so on. In particular, $[X,Y,Z] = \langle [a,z] : a\in[X,Y], z\in Z\rangle$.
   Let $H$, $K$, $L$ be subgroups of $G$.
   If $[H,K,L]=\trivialSubgroup$ and $[K,L,H]=\trivialSubgroup$,
   then $[L,H,K]=\trivialSubgroup$.
+\end{theorem}
+
+\section{Characteristic Subgroups}
+
+\begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]
+A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
+denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
+itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
+\end{definition}
+
+\begin{theorem}
+For any group $G$, its center $Z(G)$ is a characteristic subgroup.
+\end{theorem}
+
+\begin{theorem}
+If $K\subgroup H$ is characteristic, and if $H\normalSubgroup G$ is normal,
+then $K\normalSubgroup G$ is normal.
+\end{theorem}
+
+\begin{theorem}
+  If $H$ is the unique subgroup of a given order in a group $G$,
+  then $H$ is characteristic in $G$.
+\end{theorem}
+
+\begin{proof}
+Let $H$ be a subgroup of $G$. Assume there are no other subgroups of
+order $|H|$. Then for any $\varphi\in\Aut(G)$, we'd have $\varphi(H)=H$
+since $\varphi(H)$ has the same order as $H$ by
+Theorem~\ref{thm:pure-math:iso-subgroups-have-same-order}, but we
+assumed there is only one (namely, $H$).
+\end{proof}
+
+\begin{theorem}[{Gorenstein~\cite[Th.1.3 of ch.2\S1]{gorenstein1980finite}}]
+Let $G$ be a group. If a normal subgroup $H\normalSubgroup G$ whose
+order and index are coprime
+\begin{equation*}
+\gcd(|H|, [G:H])=1,
+\end{equation*}
+then $H$ is a characteristic subgroup of $G$.
 \end{theorem}
