@@ -9,7 +9,8 @@ NWFILES=$(wildcard nw/*.nw nw/*/*.nw)
 DEFS_CMD=$(foreach file, $(NWFILES), def/$(file))
 EXTRACT_CMD=$(foreach file, $(NWFILES), extract_text/$(file))
 DUMB_NWFILES=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
-	$(CHAR)/automorphism.nw $(CHAR)/isomorphism.nw $(CHAR)/results.nw
+	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/isomorphism.nw \
+	$(CHAR)/results.nw
 
 all: doc
 
