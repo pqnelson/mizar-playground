@@ -29,6 +29,16 @@ non-negative integers, I write $\NN_{0}=\{0\}\cup\NN$.
   integers, $\QQ$ for rationals, $\RR$ for reals, $\CC$ for complex numbers).
 \end{itemize}
 
+\begin{definition}
+Let $G$ be a group. Its \define{Center} is the Subgroup $Z(G)\subgroup G$
+consisting of $Z(G) = \{z\in Z(G) | \forall g\in G, zg=gz\}$ all
+elements which commute with all of $G$.
+\end{definition}
+
+\begin{remark}
+This is defined in Mizar in \verb#GROUP_5:def 10#.
+\end{remark}
+
 \begin{theorem}
   Let $\varphi\colon G_{1}\to G_{2}$ is a group morphism, and
   $e_{G_{2}}\in G_{2}$ be the identity element.
@@ -58,7 +68,7 @@ Mizar proves this in theorem \verb#GROUP_6:Th56#.
 Mizar has the following results:
 \begin{itemize}
 \item \verb#GROUP_3:Th28# state, for any group elements $a,b\in G$ and
-  any integer $k\in\ZZ$, we have $(b^{-1}ab)^{k} = b^{-1}(a^{k})b$; 
+  any integer $k\in\ZZ$, we have $(b^{-1}ab)^{k} = b^{-1}(a^{k})b$;
 \item \verb#GROUP_3:Th64# proves conjugate subgroups have the same order;
 \item \verb#GROUP_3:Th71# proves conjugate subgroups in $G$ have the
   same index;
@@ -106,6 +116,11 @@ groups have the same order.
 \end{definition}
 
 \begin{remark}
+Mizar defins its commutators, $[x,y]$ in \verb#GROUP_5:def 2#, and
+$[x,y,z]$ in \verb#GROUP_5:def 3#.
+\end{remark}
+
+\begin{remark}
 This convention, while used in Mizar (see definition 2 in \verb#GROUP_5#,
 lines 329--334) and finite group theory, clashes with the convention
 with Lie groups where they have $[X,Y]_{\text{Lie}}=XYX^{-1}Y^{-1}$ to
@@ -126,6 +141,14 @@ for generic subsets $X,Y\subset G$ we denote
 We also use the notation $[X,Y,Z] = [\,{[X,Y]},Z]$, $[W,X,Y,Z] = [\,{[W,X,Y]},Z]$,
 and so on. In particular, $[X,Y,Z] = \langle [a,z] : a\in[X,Y], z\in Z\rangle$.
 \end{definition}
+
+\begin{remark}
+This is defined for arbitrary subsets $A\subset G$ and $B\subset G$ in
+\verb#GROUP_5:def 7#, and for subgroups $H_{1}\subgroup G$ and
+$H_{2}\subgroup G$ in \verb#GROUP_5:def 8#. The derived subgroup is
+denoted ``\verb#G `#'' (that is the letter G followed by a
+backtick/back-quote [grave accent]) and defined in \verb#GROUP_5:def 9#.
+\end{remark}
 
 
 \begin{theorem}[Hall's Three Subgroup Lemma]
@@ -171,4 +194,17 @@ order and index are coprime
 \gcd(|H|, [G:H])=1,
 \end{equation*}
 then $H$ is a characteristic subgroup of $G$.
+\end{theorem}
+
+\begin{definition}
+Let $G$ be a group, $p\in\NN$ a prime, and $\SylowSubgroups{p}{G}$ the
+collection of Sylow $p$-subgroups of $G$. The \define{$p$-Core} of $G$
+is the Subgroup given by the intersection of all the Sylow $p$-subgroups
+\begin{equation*}
+\pCore{p}{G} = \bigcap \SylowSubgroups{p}{G}.
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+The $p$-core for any group $G$ is a characteristic subgroup.
 \end{theorem}
