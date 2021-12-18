@@ -38,8 +38,8 @@ dumb_extract_text:
 	noweave $(NOWEBOPTS) $(DUMB_NWFILES) > tex/characteristic.tex
 
 extract_code:
-	notangle -RTEXT/tmp.miz $(NWFILES) > text/char.miz
-	notangle -RDICT/TMP.VOC $(NWFILES) > dict/char.voc
+	notangle -RTEXT/char.miz $(NWFILES) > text/char.miz
+	notangle -RDICT/CHAR.VOC $(NWFILES) > dict/char.voc
 
 without_bib:
 	$(TEX) $(BOOK)

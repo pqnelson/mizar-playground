@@ -1,22 +1,23 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
 \M
 The header, or ``environment part'', tells Mizar what mathematics needs
 to be imported from existing Mizar articles found in the MML.
 
-<<Environment for [[tmp.miz]]>>=
+<<Environment for [[char.miz]]>>=
 environ
 
- <<[[tmp.miz]] vocabularies>>;
- <<[[tmp.miz]] constructors>>;
- <<[[tmp.miz]] notations>>;
- <<[[tmp.miz]] registrations>>;
- <<[[tmp.miz]] requirements>>;
- <<[[tmp.miz]] definitions>>;
- <<[[tmp.miz]] equalities>>;
- <<[[tmp.miz]] expansions>>;
- <<[[tmp.miz]] theorems>>;
- <<[[tmp.miz]] schemes>>;
+ <<[[char.miz]] vocabularies>>;
+ <<[[char.miz]] constructors>>;
+ <<[[char.miz]] notations>>;
+ <<[[char.miz]] registrations>>;
+ <<[[char.miz]] requirements>>;
+ <<[[char.miz]] definitions>>;
+ <<[[char.miz]] equalities>>;
+ <<[[char.miz]] expansions>>;
+ <<[[char.miz]] theorems>>;
+ <<[[char.miz]] schemes>>;
 
 @
 
@@ -30,7 +31,7 @@ the vocabularies list. Similarly, [[MOD_4]] introduces the tokens
 [[Endomorphism]] and [[Automorphism]], which I want to use, so I add
 them, too.
 
-<<[[tmp.miz]] vocabularies>>=
+<<[[char.miz]] vocabularies>>=
 vocabularies RING_3, MOD_4, TMP,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
@@ -81,9 +82,9 @@ Often we just copy the articles imported for the notations section, but
 in my experience it's often a strict subset of the notations. I'm lazy,
 so I'll just copy the constructor imports:
 
-<<[[tmp.miz]] constructors>>=
-constructors <<set theoretic notation for [[tmp.miz]]>>,
-  <<group theoretic notation for [[tmp.miz]]>>
+<<[[char.miz]] constructors>>=
+constructors <<set theoretic notation for [[char.miz]]>>,
+  <<group theoretic notation for [[char.miz]]>>
 
 @
 
@@ -91,9 +92,9 @@ constructors <<set theoretic notation for [[tmp.miz]]>>,
 Now we need to import the functor patterns to ``couple'' the definitions
 and notations. Usually this is just the constructor list.
 
-<<[[tmp.miz]] notations>>=
-notations <<set theoretic notation for [[tmp.miz]]>>,
-  <<group theoretic notation for [[tmp.miz]]>>
+<<[[char.miz]] notations>>=
+notations <<set theoretic notation for [[char.miz]]>>,
+  <<group theoretic notation for [[char.miz]]>>
 
 @
 
@@ -104,7 +105,7 @@ on. And fancy functions from sets to sets, like [[Permutation]], is
 defined in [[FUNCT_2]]. There are few random odds and ends, like
 [[NUMBERS]] for subsets of complex numbers
 
-<<set theoretic notation for [[tmp.miz]]>>=
+<<set theoretic notation for [[char.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
 RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS
 
@@ -116,7 +117,7 @@ The group theoretic notions are a grab bag of binary operators
 ([[STRUCT_0]] and [[ALGSTR_0]]), primordial group theoretic articles
 ([[REALSET1]]), and the relevant group theory articles.
 
-<<group theoretic notation for [[tmp.miz]]>>=
+<<group theoretic notation for [[char.miz]]>>=
 BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
 GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
 
@@ -132,7 +133,7 @@ portion of the environment. For our purposes, we may need basic facts
 about relations ([[RELAT_1]]), functions and partial functions ([[FUNCT_1]],
 [[PARTFUN1]], [[FUNCT_2]]), relations between sets ([[RELSET_1]]).
 
-<<[[tmp.miz]] registrations>>=
+<<[[char.miz]] registrations>>=
 registrations <<Register set theoretic clusters>>,
   <<Register group theoretic clusters>>
 
@@ -160,7 +161,7 @@ a proof. Specifically, automatically unfolding predicates from specific
 articles. If we want this to be automated, we can cite the article in
 the [[definitions]] portion of the [[environ]].
 
-<<[[tmp.miz]] definitions>>=
+<<[[char.miz]] definitions>>=
 definitions <<Include set theoretic definitions>>,
   <<Include group theoretic definitions>>
 
@@ -197,7 +198,7 @@ theorems and definitions in proofs (i.e., if we want to use the
 \emph{results} of previous articles), then we need to add those cited
 articles to the [[theorems]] environment.
 
-<<[[tmp.miz]] theorems>>=
+<<[[char.miz]] theorems>>=
 theorems
   <<Import set-theoretic theorems>>,
   <<Import group-theoretic theorems>>
@@ -222,7 +223,7 @@ GRSOLV_1, AUTGROUP
 If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the [[schemes]] portion of the environment.
 
-<<[[tmp.miz]] schemes>>=
+<<[[char.miz]] schemes>>=
 schemes BINOP_1, FUNCT_2
 
 @
@@ -235,7 +236,7 @@ find was in Kornilowics~\cite{kornilowicz2015definitional}.
 Expansions of terms defined by [[equals]] are imported by a new
 [[environ]] directive [[equalities]].
 
-<<[[tmp.miz]] equalities>>=
+<<[[char.miz]] equalities>>=
 equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
 
 @
@@ -244,7 +245,7 @@ equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
 Import expansions of predicates and adjectives from the specified
 articles.
 
-<<[[tmp.miz]] expansions>>=
+<<[[char.miz]] expansions>>=
 expansions BINOP_1, FUNCT_2
 
 @
@@ -263,7 +264,7 @@ in 9 easy steps''), the only possibilities for the [[requirements]] are:
 [[BOOLE]], [[SUBSET]], [[NUMERALS]], [[ARITHM]], [[REAL]].
 \end{remark}
 
-<<[[tmp.miz]] requirements>>=
+<<[[char.miz]] requirements>>=
 requirements BOOLE, SUBSET
 
 @
