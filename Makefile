@@ -5,12 +5,11 @@ BOOK=driver
 #NOWEBOPTS=-delay -index -latxe
 NOWEBOPTS=-delay -index -latex
 CHAR=nw/characteristic
-NWFILES=$(wildcard nw/*.nw nw/*/*.nw)
+NWFILES=$(wildcard nw/characteristic.nw nw/characteristic/*.nw)
 DEFS_CMD=$(foreach file, $(NWFILES), def/$(file))
 EXTRACT_CMD=$(foreach file, $(NWFILES), extract_text/$(file))
 DUMB_NWFILES=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
-	$(CHAR)/automorphism.nw $(CHAR)/inner.nw \
-	$(CHAR)/results.nw
+	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw
 
 all: doc
 
@@ -38,8 +37,8 @@ dumb_extract_text:
 	noweave $(NOWEBOPTS) $(DUMB_NWFILES) > tex/characteristic.tex
 
 extract_code:
-	notangle -RTEXT/char.miz $(NWFILES) > text/char.miz
-	notangle -RDICT/CHAR.VOC $(NWFILES) > dict/char.voc
+	notangle -RTEXT/char.miz $(DUMB_NWFILES) > text/char.miz
+	notangle -RDICT/CHAR.VOC $(DUMB_NWFILES) > dict/char.voc
 
 without_bib:
 	$(TEX) $(BOOK)
