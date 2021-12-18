@@ -6,9 +6,9 @@ We can now organize our treatment of inner automorphisms.
 
 <<Results and definition: Inner automorphisms>>=
 <<Define [[inner]] for Automorphism>>
-<<[[Id_G]] is effectively inner>>
+<<Theorem: [[Id_G]] is effectively inner>>
 <<Register [[inner]] for [[Automorphism]]>>
-<<Relate [[Automorphism of G]] to elements of [[Aut G]]>>
+<<Theorem: Relate [[Automorphism of G]] to elements of [[Aut G]]>>
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>
 <<Theorem: inner automorphism acting on subgroup is conjugate of argument>>
 <<Theorem: Kernel of conjugation as endomorphism>>
@@ -68,8 +68,8 @@ an inner Automorphism. This uses the fact, if $e\in G$ is the identity
 element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
 (proven in Theorem~19 of [[GROUP_3]]).
 
-<<[[Id_G]] is effectively inner>>=
-theorem Th5:
+<<Theorem: [[Id_G]] is effectively inner>>=
+theorem Th4:
   for x being Element of G holds (Id_G).x = x |^ 1_G
 proof
   let x be Element of G;
@@ -78,7 +78,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th5
+@ %def Th4
 
 \M Now registering [[inner]] for [[Automorphism]].
 
@@ -101,7 +101,7 @@ we have [[Id_G]] be inner.
 proof
   take Id_G;
   take 1_G;
-  thus thesis by Th5;
+  thus thesis by Th4;
 end;
 
 @
@@ -111,8 +111,8 @@ Mizar has [[AUTGROUP]], an article which defines [[Aut G]] the
 collection of functions on the underlying set $U(G)$ of a group $G$. We
 can prove that $f\in\aut(G)$ if and only if $f$ is [[Automorphism of G]].
 
-<<Relate [[Automorphism of G]] to elements of [[Aut G]]>>=
-theorem Th8:
+<<Theorem: Relate [[Automorphism of G]] to elements of [[Aut G]]>>=
+theorem Th5:
   for G being strict Group, f being object
   holds (f in Aut G) iff (f is Automorphism of G)
 proof
@@ -125,7 +125,7 @@ proof
   thus thesis;
 end;
 
-@ %def Th8
+@ %def Th5
 
 \N{Proof forwards direction} The forward direction is
 straightforward. The only subtlety is, since we didn't assume anything
@@ -164,7 +164,7 @@ of [[InnAut G]] from [[AUTGROUP]]. The only peculiarity is that
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>=
 <<Lemma: Elements of [[InnAut G]] are automorphisms>>
 
-theorem Th9:
+theorem Th6:
   for G being strict Group
   for f being object
   holds (f in InnAut G) iff (f is inner Automorphism of G)
@@ -178,7 +178,7 @@ proof
   thus thesis;
 end;
 
-@ %def Th9
+@ %def Th6
 
 \N{Proof in forwards direction} The proof amounts to unwinding
 definitions, but the subtlety is in first reconsidering $f$ as an
@@ -207,7 +207,7 @@ requiring us to reconsider $f$ as an inner automorphism of $G$.
 proof
   assume Z1: f is inner Automorphism of G;
   reconsider f as inner Automorphism of G by Z1;
-  f is Element of Aut G by Z1,Th8;
+  f is Element of Aut G by Z1,Th5;
   then consider a being Element of G such that
   B1: for x being Element of G holds f.x = x |^ a
   by Z1,Def5;
@@ -233,7 +233,7 @@ proof
   let f be Element of InnAut G;
   f is Element of Aut G by AUTGROUP:12;
   then f in Aut G;
-  hence f is Automorphism of G by Th8;
+  hence f is Automorphism of G by Th5;
 end;
 
 @ %def LmInnAut
@@ -322,7 +322,7 @@ more general, namely, any endomorphism $f\colon G\to G$ defined by
 $f(x)=x^{a}$ for some fixed $a\in G$ will have a trivial kernel.
 
 <<Theorem: Kernel of conjugation as endomorphism>>=
-theorem LmKerOfConjugate:
+theorem Th8:
   for G being Group
   for a being Element of G
   for f being Endomorphism of G
@@ -341,7 +341,7 @@ A2:  for x being Element of G holds x in (1).G implies x in Ker f
   thus Ker f = (1).G by A1,A2,GROUP_2:60;
 end;
 
-@ %def LmKerOfConjugate
+@ %def Th8
 
 <<Proof $\trivialSubgroup\subset\ker(f)$>>=
 proof
@@ -380,7 +380,7 @@ The endomorphism $f\colon G\to G$ defined by $f(x)=x^{a}$ is, in fact,
 an automorphism of $G$.
 
 <<Theorem: Conjugation by fixed element is an automorphism>>=
-theorem ThConIsAuto:
+theorem Th9:
 for G being Group
 for a being Element of G
 for f being Endomorphism of G
@@ -391,7 +391,7 @@ proof
   let a be Element of G;
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
-  then Ker f = (1).G by LmKerOfConjugate;
+  then Ker f = (1).G by Th8;
   then
 C0: f is one-to-one by GROUP_6:56;
 C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
@@ -404,7 +404,7 @@ C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   hence thesis;
 end;
 
-@ %def ThConIsAuto
+@ %def Th9
 
 \N{Proof an inverse exists}
 This is the long part of the proof, its length owing to showing every
@@ -482,7 +482,7 @@ proof
   let a be Element of G;
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
-  then f is Automorphism of G by ThConIsAuto;
+  then f is Automorphism of G by Th9;
   then f is inner Automorphism of G by A0,Def5;
   hence thesis;
 end;
