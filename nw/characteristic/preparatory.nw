@@ -16,12 +16,81 @@ The article body is where the magic happens.
 
 \subsection{Preparatory results}
 
+<<Helper lemmas and registrations for [[tmp.miz]]>>=
+<<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>
+<<Register: the identity function is surjective and bijective>>
+<<Lemma: A group element in the subgroup is a subgroup element>>
+<<Lemma: restriction of group morphism acts on elements like the original>>
+<<Lemma: Sandwich Subgroup Equality Theorem>>
+<<Lemma: Subgroups invariant under conjugation are normal>>
+
+@
+
+\M
+We need to prove, if $f\colon X\onto Y$ is a surjective function of
+sets, then $f(X)=Y$.
+
+<<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>=
+LmOntoMapsEverything:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is onto
+holds f .: X = Y
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume f is onto;
+  then A0: rng f = Y;
+  A1: dom f = X by FUNCT_2:def 1;
+  A2: for y being object
+  holds y in rng f iff ex x being object st x in X & y = f.x
+  by A1, FUNCT_1:def 3;
+  A3: for y being object holds y in (f .: X) iff
+  ex x being object st x in X & x in X & y = f.x
+  by A1,FUNCT_1:def 6;
+
+  B1: for y being object holds y in (f .: X) implies y in rng f
+  <<Proof: $y\in f(X)\implies y\in\mathrm{rng}(f)$>>
+
+  B2: for y being object holds y in rng f implies y in (f .: X)
+  <<Proof: $y\in\mathrm{rng}(f)\implies y\in f(X)$>>
+  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
+  then rng f = f .: X by TARSKI:2;
+  hence f .: X = Y by A0;
+end;
+
+@ %def LmOntoMapsEverything
+
+<<Proof: $y\in f(X)\implies y\in\mathrm{rng}(f)$>>=
+proof
+  let y be object;
+  assume y in (f .: X);
+  then consider x being object such that
+  A10: x in X and x in X and A11: y = f.x
+  by A3;
+  thus y in rng f by A10,A11,A2;
+end;
+
+@
+
+<<Proof: $y\in\mathrm{rng}(f)\implies y\in f(X)$>>=
+proof
+  let y be object;
+  assume y in rng f;
+  then consider x being object such that
+  A20: x in X and A21: y = f.x
+  by A2;
+  thus y in (f .: X) by A20,A21,A3;
+end;
+
+@
+
 \M
 We begin by registering the identity function as being surjective and
 bijective. This should have been done in [[FUNCT_2]], but hey, what can
 you do?
 
-<<Helper lemmas and registrations for [[tmp.miz]]>>=
+<<Register: the identity function is surjective and bijective>>=
 begin :: preparatory work
 reserve X for set;
 
@@ -44,7 +113,7 @@ We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``[[h is Element of H]]''.
 
-<<Helper lemmas and registrations for [[tmp.miz]]>>=
+<<Lemma: A group element in the subgroup is a subgroup element>>=
 LmSubgroupElt:
 for G being Group
 for H being Subgroup of G
@@ -75,7 +144,7 @@ always look at the set-theoretic function $U(f)$ underlying $f$, then
 piggie-back off earlier results establishing the desired claim
 (Theorem~49 of [[FUNCT_1]], to be precise).
 
-<<Helper lemmas and registrations for [[tmp.miz]]>>=
+<<Lemma: restriction of group morphism acts on elements like the original>>=
 Lm3: for G1,G2 being Group
 for H being Subgroup of G1
 for f being Homomorphism of G1,G2
@@ -102,7 +171,7 @@ If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
 $H_{1}=H_{2}$. Pretty simple, right? \dots I'm not sure I'll need this,
 but here it is if I do.
 
-<<Sandwich Subgroup Equality Theorem>>=
+<<Lemma: Sandwich Subgroup Equality Theorem>>=
 LmSandwich: for H1 being strict Subgroup of G
 for H2 being strict Subgroup of G
 st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
@@ -132,7 +201,7 @@ Then $H\normalSubgroup G$ is a normal subgroup. The current theorems in
 [[GROUP_3]] require $H$ to be a \emph{strict} subgroup, but this
 strictness condition is not necessary.
 
-<<Subgroups invariant under conjugation are normal>>=
+<<Lemma: Subgroups invariant under conjugation are normal>>=
 LmNormalSubgroup:
 for G being Group
 for H being Subgroup of G
