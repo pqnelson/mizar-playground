@@ -1,0 +1,123 @@
+\chapter{Preface}
+
+\M
+This is an attempt to learn Mizar while formalizing some results in
+finite group theory. I am assuming familiarity with group theory, the
+reader has at least an undergraduate understanding of mathematics.
+Results are reviewed in Chapter~\ref{chapter:pure-math}.
+
+\N{Goal: Quasithin Groups}
+One of the driving questions is how feasible is it to formalize the
+classification theorem of quasithin groups? Aschbacher and Smith have
+written a self-contained 1220-page
+proof~\cite{aschbacher2004classification1,aschbacher2004classification2}.
+
+This constitutes about a quarter of the classification theorem for
+finite simple groups, the theorem with the world's longest proof. The
+classification of quasithin groups constitutes a ``proof of concept''
+whether formalizing the entire classification theorem is feasible ``by hand''.
+
+\M
+Can Mizar formalize the mathematics surrounding the classification of
+quasithin groups?
+
+The answer appears to be, ``If so, not at present.'' Mizar is lacking
+some infrastructure. This document is an attempt to formalize
+\emph{some} of that infrastructure, capture some of the thought process
+behind formalizing the mathematics, and provide some insight into how
+the mathematics works.
+
+\M As far as the classification of finite simple groups, there are two
+proofs of it: the first generation proof spans approximately {15,000}
+pages across decades of articles in many technical journals; the second
+generation attempts to collate this in about a dozen books (volume 40 in
+AMS's series ``Mathematical Surveys and Monographs''). Thus far, the
+nine books of the second generation proof span 3994 pages; four more
+books are likely to be published\footnote{According to Ron Solomon's
+personal communication to Hugo de Garis, as reported on MathOverflow \url{https://mathoverflow.net/a/217397/22457}}, resulting in approximately 3041
+pages\footnote{This is based on using a simple linear regression on the
+number of pages in volume $X$ more than in volume one, against the
+volume number. The adjusted $R^{2}$ for this model is $0.8806$, so it's
+not terrible.}. The approximately 7035 page proof is a ``bridge too
+far'', the quasithin classification is one-sixth this size: still big,
+but at least plausibly formalizable.
+
+% 137 + 200 + 400 + 331 + 471 + 518 + 340 + 483 + 514
+% = 2880 + 514 = 3394
+% vol 1 = 139 - 2
+% vol 2 = 215 - 15
+% vol 3 = 419 - 19
+% vol 4 = 349 - 18
+% vol 5 = 475 - 14
+% vol 6 = 532 - 14
+% vol 7 = 352 - 12
+% vol 8 = 483
+% vol 9 = 530 - 16
+
+\N{On Style}
+The writing style is particularly idiosyncratic. Although Mizar is
+designed in a declarative proof style, and highly readable, it is
+difficult (for me) to keep track of what I've done and where I'm going.
+
+Literate programming techniques are used to organize and present the
+proof scripts and definitions. Cross-referencing occurs automatically,
+so we can see where definitions and theorems are used (for the reader's
+convenience). For me, as author, literate programming let's me track
+intent and keep goals in mind.
+
+The pure mathematician can read these notes like it's written in the
+style of the great Arthur Besse\index{Besse!Arthur}. Or this document may be read, like
+Edward Gibbon's\index{Gibbon!Edward}
+\emph{Decline and Fall}, as written by two Alex Nelsons: one directing
+his voice in code towards Mizar (formatted in \verb#teletype font#), the
+other in \emph{sotto voce} towards the reader through ``footnotes'' (the
+annotations in English which constitute roughly two-thirds of the text).
+
+\N{On Mizar}
+Mizar is a proof assistant working in set theoretic foundations. It is
+among the most sophisticated theorem provers around. Mizar's language is
+human readable and resembles ``ordinary mathematics''. Unfortunately, it
+lacks documentation in one central location. The best introductions on
+the subject remain~\cite{grabowski2010mizar} and~\cite{wiedijk2006mizman}.
+
+I don't think its sophistication is adequately appreciated or understood
+by its competitors. Wiedijk attempts to model its type
+system~\cite{wiedijk2007mizar}, but type theoretic wags just sneer,
+``Why not use a \emph{real} type system?'' Those wags have now probably been eaten
+by bears, like the children who made mock of the prophet Elisha. But if
+they have somehow survived, they may wish to confer de Bruijn's mathematical
+vernacular (see section {3.6} of~\cite{de1994mathematical}) where soft
+typing (what dr Bruijn calls ``higher typing'') is first introduced in
+formalizing mathematical texts. Soft type systems are characteristic of
+serious attempts at formalizing mathematics \emph{in any foundation or framework.}
+
+Josef Urban~\cite{urban2003translating} summarizes the constructor
+system and its translation to ``vanilla'' first-order logic. What's a
+``constructor'' in Mizar? Well, as Trybulec~\cite{trybulec1993some}
+explains: a \emph{predicate} is a ``constructor'' of (atomic) formulas,
+a \emph{mode} is a constructor of (atomic) types, a \emph{functor} is a
+constructor of (atomic) terms. These are the constructors we will
+encounter.
+
+%% \M There are a few drawbacks to Mizar's sophisticated system. For
+%% example, many of the sloppy conveniences which working mathematicians
+%% implicitly use (like treating isomorphic groups as equal) no longer
+%% hold.
+%%
+%% Another problem is that there are various synonyms which confuse
+%% neophytes: ``\verb#NAT#'' is a synonym for $\omega$ (the smallest
+%% infinite ordinal, see \verb#ORDINAL1:def 11#) as defined in \verb#NUMBERS#,
+%% ``\verb#Nat#'' is defined in \verb#ORDINAL1# as
+%% ``\verb#natural number#'' (where ``\verb#natural#'' is an adjective
+%% specifying $\mathtt{it}\in\omega$ and ``\verb#number#'' is a synonym for
+%% ``\verb#set#''). The other number systems have a similar ``two pronged''
+%% definition strategy.
+
+\begin{chapterquotes}
+  For small erections may be finished by their first architects;
+  grand ones, true ones, ever leave the copestone to posterity.
+  God keep me from ever completing anything.
+  This whole book is but a draught---nay, but the draught of a draught.
+  Oh, Time, Strength, Cash, and Patience!
+  \author Herman Melville, \title{Moby Dick} (1851)
+\end{chapterquotes}
