@@ -26,6 +26,7 @@ reserve X for set;
 <<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
 <<Lemma: restriction of group morphism acts on elements like the original>>
 <<Lemma: Subgroups invariant under conjugation are normal>>
+<<Lemma: Morphism is surjective if its image is its codomain>>
 
 @
 
@@ -244,3 +245,29 @@ proof
 end;
 
 @ %def LmNormalSubgroup
+
+\begin{theorem}
+  Let $\varphi\colon G_{1}\to G_{2}$ be a group morphism.
+  If $\varphi(G_{1})=G_{2}$, then $\varphi$ is surjective.
+\end{theorem}
+
+Mizar has this lemma in its library, but it has a more stringent
+requirement that $G_{2}$ be a [[strict Group]], which is totally unnecessary.
+
+<<Lemma: Morphism is surjective if its image is its codomain>>=
+LmEpi:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  st Image(f) = G2
+  holds f is onto
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  assume A1: Image(f) = G2;
+  then rng f = the carrier of Image f by GROUP_6:44
+  .= the carrier of G2 by A1;
+  then f is onto by FUNCT_2:def 3;
+  hence thesis;
+end;
+
+@
