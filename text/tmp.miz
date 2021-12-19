@@ -77,10 +77,10 @@ proof
   holds y in rng f iff ex x being object st x in X & y = f.x
   by A1, FUNCT_1:def 3;
 
-  
+
   for y being object holds y in (f .: X) iff
   ex x being object st x in dom f & x in X & y = f.x by FUNCT_1:def 6;
-  
+
   A3: for y being object holds y in (f .: X) iff
   ex x being object st x in X & x in X & y = f.x
   by A1,FUNCT_1:def 6;
@@ -980,7 +980,7 @@ end;
 Lm9:
 for G being Group
 for H being Subgroup of G
-for phi being Automorphism of G 
+for phi being Automorphism of G
 holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   let G be Group;
@@ -1038,6 +1038,61 @@ proof
   then f is onto by FUNCT_2:def 3;
   hence thesis;
 end;
+
+for G1,G2 being Group
+st G1 = G2
+holds the multMagma of G1 = the multMagma of G2;
+
+for G1,G2 being Group
+st the multMagma of G1 = the multMagma of G2
+holds G1 = G2
+proof
+  let G1,G2 be Group;
+  assume Z1: the multMagma of G1 = the multMagma of G2;
+  then Z2: the carrier of G1 = the carrier of G2 & the multF of G1 = the multF of G2;
+  then G1 = G2;
+::>         *116                  *116         *4
+  hence thesis;
+end;
+
+for G1,G2 being strict Group
+st the multMagma of G1 = the multMagma of G2
+holds G1 = G2
+proof
+  let G1,G2 be strict Group;
+  assume Z1: the multMagma of G1 = the multMagma of G2;
+  then the carrier of G1 = the carrier of G2 & the multF of G1 = the multF of G2;
+  then G1 = G2;
+  hence thesis;
+end;
+
+
+for G1,G2 being Group
+for f being Homomorphism of G1,G2
+st f is onto
+holds Image(f) = G2
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  assume f is onto;
+  then rng f = the carrier of G2;
+  then A0: the carrier of Image f = the carrier of G2 by GROUP_6:44;
+  then A1: the multMagma of Image f = the multMagma of G2 by GROUP_2:61;
+  (Image f) is Group;
+  reconsider fG = (Image f) as Group;
+  A2: f is Function of G1,fG & rng f = the carrier of fG by GROUP_6:44,GROUP_6:49;
+  the multF of fG = the multF of Image f & the multF of Image f = (the multF of G2)||(the carrier of Image f) by GROUP_2:def 5;
+  the carrier of fG = the carrier of G2 by A0;
+  then the multMagma of fG = the multMagma of G2 by A2,GROUP_2:61;
+  then fG = G2;
+::>          *4
+  Image(f) qua Group = G2 by A1,GROUP_2:61;
+::>                        *4
+  hence thesis;
+end;
+
+proof end;
+::> *396
 
 LmRestr:
 for G being Group
@@ -1107,7 +1162,7 @@ theorem Th16:
   for H1,H2 being Subgroup of G
   for phi being Automorphism of G
   st H2 = (phi .: H1)
-  holds (phi|H1) is onto 
+  holds (phi|H1) is onto
 proof
   let G be Group;
   let H1,H2 be Subgroup of G;
@@ -1116,7 +1171,7 @@ proof
   then H1,H2 are_isomorphic by Th14;
   B1: (phi|H1) is one-to-one by Lm9;
   then B2: (phi|H1)" is Homomorphism of Image(phi|H1),H1 by GROUP_6:55;
-  
+
   A2: Image(phi|H1) = H2 by A1, GRSOLV_1:def 3;
   (phi|H1) is Homomorphism of H1,G by GRSOLV_1:def 2;
   then A3: (phi|H1) is Homomorphism of H1,H2 by A2,GROUP_6:49;
@@ -1179,13 +1234,17 @@ proof
 end;
 
 
-
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for phi being Automorphism of G
+  st H2 = (phi .: H1)
+  holds (phi|H1) is Homomorphism of H1,H2 & (phi|H1) is bijective
 proof
-::> *396
   let G be Group;
   let H1,H2 be Subgroup of G;
   let phi be Automorphism of G;
   assume A1: H2 = phi .: H;
+::>    *52
   A1: Image(phi|H) = H2 by GRSOLV_1:def 3;
 ::>       *103
   C1: phi|H is one-to-one
@@ -1442,22 +1501,205 @@ end;
 
 
 
+for G1,G2 being Group
+for H being Subgroup of G1
+for K being Subgroup of H
+for f being Homomorphism of G1,G2
+holds (f|H)|K = f|K
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let K be Subgroup of H;
+  let f be Homomorphism of G1,G2;
+  C0: K is Subgroup of G1;
+  R2: dom f = the carrier of G1 by FUNCT_2:def 1;
+::>                              *4
+  C1: dom(f|H) = the carrier of H by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                *4
+  C2: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                *4
+  set fH = f|H;
+  R0: fH is Homomorphism of H,G2;
+  C3: dom(fH|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                 *4
+  then dom(fH|K) = dom(f|K) by C2, GRSOLV_1:def 2, FUNCT_1:50;
+  the carrier of K c= the carrier of H by GROUP_2:def 5;
+  then
+  P1: dom(fH|K) = dom(f|H) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
+::>                                                                *203
+  P2: for x being Element of H st x in K holds (fH|K).x = fH.x by Lm3;
+  then
+  P3: fH|K = (f|H)|K by FUNCT_1:45, P1;
+  set g = fH|K;
+  the carrier of K c= the carrier of G1 by GROUP_2:def 5;
+  then Q0: dom(g) = dom(f) /\ (the carrier of K) by R2,C1,C2,C3,XBOOLE_1:28;
+::>                                                                   *203
+  then
+  Q1: dom(g) = the carrier of K by C3;
+  Q2: for x being Element of G1 st x in dom(g) holds f.x = g.x
+  proof
+    let x be Element of G1;
+    assume Z13: x in dom(g);
+    then Z14: x in K by Q1, STRUCT_0:def 5;
+    Z15: K is Subgroup of H;
+    x is Element of K by Z14,C0,LmSubgroupElt;
+    then Z16: x is Element of H by Z15,GROUP_2:42;
+    then Z17: x in H by STRUCT_0:def 5;
+    then AHA1: (fH|K).x = fH.x by R0,Z15,Z16,Z14,Lm3;
+    AHA2: fH.x = f.x by Z17,Lm3;
+    AHA3: (f|K).x = f.x by Z14,Lm3;
+    AHA4: g.x = (fH|K).x;
+    then f.x = g.x by AHA1,AHA2,AHA3;
+    hence thesis;
+  end;
+  (dom g = dom f /\ the carrier of K) &
+  (for x being Element of G1 st x in dom g holds g.x = f.x) by Q0,Q1,Q2;
+  (dom g = dom f /\ the carrier of K) &
+  (for x being Element of G1 st x in dom g holds g.x = f.x) implies
+  f|K = g by FUNCT_1:45;
+::>        *4
+  then
+  Q3: f|(the carrier of K) = g by FUNCT_1:45, Q0, Q1, Q2, C3;
+::>                             *4
+  hence (f|H)|K = f|K;
+::>                 *4
+end;
+
+
+theorem Th15:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for K being characteristic Subgroup of N
+  holds K is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let K be characteristic Subgroup of N;
+  N is normal;
+  A1: for f being inner Automorphism of G holds f|N is Automorphism of N
+  proof
+    let f be inner Automorphism of G;
+    Image(f|N) = N by Th16;
+::>                 *4
+    then f|N is Automorphism of N by LmAuto2;
+::>                                        *144
+    hence thesis;
+  end;
+  K is Subgroup of G by GROUP_2:56;
+  A2: for f being inner Automorphism of G holds ((f|N)|K) = f|K
+  proof
+    let f be inner Automorphism of G;
+    C1: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                  *4
+    C2: dom(f|N) = the carrier of N by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                  *4
+    set fN = f|N;
+    C3: dom(fN|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+::>                                   *4
+    then dom(fN|K) = dom(f|K) by C1, GRSOLV_1:def 2, FUNCT_1:50;
+    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
+    then
+    P1: dom(fN|K) = dom(f|N) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
+::>                                                                  *203
+    P2: for x being Element of N st x in K holds (fN|K).x = fN.x
+    by Lm3;
+    then
+    P3: fN|K = (f|N)|K by FUNCT_1:45, P1;
+    hence thesis;
+::>            *4
+  end;
+
+  for f being inner Automorphism of G holds Image((f|N)|K) = K
+  proof
+    let f be inner Automorphism of G;
+    B1: f|N is Automorphism of N by A1;
+    reconsider fN = f|N as Automorphism of N by B1;
+    K is characteristic Subgroup of N;
+    then Image(fN|K) = K by Def9,B1;
+    hence thesis;
+::>            *4
+  end;
+  thus K is normal Subgroup of G;
+::>                            *4
+end;
+
+
+
+for G1,G2 being Group
+for H being Subgroup of G1
+for K being Subgroup of H
+for f being Homomorphism of G1,G2
+holds (f|H)|K = f|K
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let K be Subgroup of H;
+  let f be Homomorphism of G1,G2;
+  C0: K is Subgroup of G1;
+  R2: dom f = the carrier of G1 by FUNCT_2:def 1;
+  C1: dom(f|H) = the carrier of H by GRSOLV_1:def 2, FUNCT_2:def 1;
+  C2: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+  set fH = f|H;
+  R0: fH is Homomorphism of H,G2;
+  C3: dom(fH|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+  then dom(fH|K) = dom(f|K) by C2, GRSOLV_1:def 2, FUNCT_1:50;
+  the carrier of K c= the carrier of H by GROUP_2:def 5;
+  then
+  P1: dom(fH|K) = dom(f|H) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
+  P2: for x being Element of H st x in K holds (fH|K).x = fH.x by Lm3;
+  then
+  P3: fH|K = (f|H)|K by FUNCT_1:45, P1;
+  set g = fH|K;
+  the carrier of K c= the carrier of G1 by GROUP_2:def 5;
+  then Q0: dom(g) = dom(f) /\ (the carrier of K) by R2,C1,C2,C3,XBOOLE_1:28;
+  then
+  Q1: dom(g) = the carrier of K by C3;
+  Q2: for x being Element of G1 st x in dom(g) holds f.x = g.x
+  proof
+    let x be Element of G1;
+    assume Z13: x in dom(g);
+    then Z14: x in K by Q1, STRUCT_0:def 5;
+    Z15: K is Subgroup of H;
+    x is Element of K by Z14,C0,LmSubgroupElt;
+    then Z16: x is Element of H by Z15,GROUP_2:42;
+    then Z17: x in H by STRUCT_0:def 5;
+    then AHA1: (fH|K).x = fH.x by R0,Z15,Z16,Z14,Lm3;
+    AHA2: fH.x = f.x by Z17,Lm3;
+    AHA3: (f|K).x = f.x by Z14,Lm3;
+    AHA4: g.x = (fH|K).x;
+    then f.x = g.x by AHA1,AHA2,AHA3;
+    hence thesis;
+  end;
+  (dom g = dom f /\ the carrier of K) &
+  (for x being Element of G1 st x in dom g holds g.x = f.x) by Q0,Q1,Q2;
+  (dom g = dom f /\ the carrier of K) &
+  (for x being Element of G1 st x in dom g holds g.x = f.x) implies
+  f|K = g by FUNCT_1:45;
+::>        *4
+  then
+  Q3: f|(the carrier of K) = g by FUNCT_1:45, Q0, Q1, Q2, C3;
+::>                             *4
+  hence (f|H)|K = f|K;
+::>                 *4
+end;
+
+
+
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
-
-
-
 ::> 4: This inference is not accepted
 ::> 51: Invalid conclusion
+::> 52: Invalid assumption
 ::> 68: Nongeneralizable variable in the skeleton of a reasoning
 ::> 70: Something remains to be proved
 ::> 101: Unknown mode
 ::> 102: Unknown predicate
 ::> 103: Unknown functor
 ::> 116: Invalid "qua"
+::> 144: Unknown label
 ::> 148: Unknown private functor
 ::> 203: Unknown token, maybe an illegal character used in an identifier
 ::> 396: Formula expected
