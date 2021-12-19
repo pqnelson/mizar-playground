@@ -23,6 +23,7 @@ reserve X for set;
 <<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>
 <<Register: the identity function is surjective and bijective>>
 <<Lemma: A group element in the subgroup is a subgroup element>>
+<<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
 <<Lemma: restriction of group morphism acts on elements like the original>>
 <<Lemma: Subgroups invariant under conjugation are normal>>
 
@@ -128,6 +129,33 @@ proof
 end;
 
 @ %def LmSubgroupElt
+
+\begin{lemma}
+  Let $G$ be a group and $g\in G$ be any element of the group,
+  $H_{1}\subgroup G$ and $H_{2}\subgroup G$ be subgroups.
+  If $H_{1}\subgroup H_{2}$ and $g\in H_{1}$, then $g\in H_{2}$.
+\end{lemma}
+
+This is another ``Well, duh'' lemma that I couldn't find in Mizar's library.
+
+<<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>=
+LmSubgroupEltTrans:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  for g being Element of G
+  st g in H1 & H1 is Subgroup of H2
+  holds g in H2
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  let g be Element of G;
+  assume A1: g in H1 & H1 is Subgroup of H2;
+  then g is Element of H1 by LmSubgroupElt;
+  then g in H2 by A1, GROUP_2:40;
+  hence thesis;
+end;
+
+@ %def LmSubgroupEltTrans
 
 \N{Restriction of Group Morphisms to Subgroups}
 Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and

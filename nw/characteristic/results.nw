@@ -12,6 +12,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Register [[strict]] [[characteristic]] for Subgroups>>
 <<Theorem: characteristic subgroups are normal>>
 <<Register characteristic subgroups are normal>>
+<<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
 
 @
 
@@ -55,6 +56,7 @@ A1:  for f being Automorphism of G
   then (1).G is characteristic by Def9;
   hence thesis;
 end;
+
 @ %def Lm6
 
 \N{Lemma: the only subgroup of the trivial group is trivial}
@@ -174,6 +176,45 @@ registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th12;
+end;
+
+@
+
+\begin{theorem}
+  If $H$ is the unique subgroup of a given order in a group $G$,
+  then $H$ is characteristic in $G$.
+\end{theorem}
+
+\begin{proof}
+Let $H$ be a subgroup of $G$. Assume there are no other subgroups of
+order $|H|$. Then for any $\varphi\in\Aut(G)$, we'd have $\varphi(H)=H$
+since $\varphi(H)$ has the same order as $H$ by
+Theorem~\ref{thm:pure-math:iso-subgroups-have-same-order}, but we
+assumed there is only one (namely, $H$).
+\end{proof}
+
+<<Theorem: unique subgroup of order $n$ is [[characteristic]]>>=
+theorem Th13:
+  for G being Group
+  for H being strict Subgroup of G
+  st (for K being strict Subgroup of G
+      st card K = card H
+      holds H = K)
+  holds H is characteristic
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+  assume A0: for K being strict Subgroup of G st card K = card H holds H = K;
+  H is characteristic
+  proof
+    let phi be Automorphism of G;
+    Image(phi|H) = phi .: H by GRSOLV_1:def 3;
+    then Image(phi|H),H are_isomorphic by Th14;
+    then card H = card Image(phi|H) by GROUP_6:73;
+    then Image(phi|H) = H by A0;
+    hence thesis;
+  end;
+  hence thesis;
 end;
 
 @

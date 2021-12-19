@@ -20,6 +20,9 @@ begin
 <<Define [[Automorphism]]>>
 <<Theorem: Endomorphisms preserve the trivial subgroup>>
 <<Theorem: Automorphisms map trivial subgroups to themselves>>
+<<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>
+<<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>
+<<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>
 <<Define $\Id_{G}$>>
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>
 <<Register [[Id_G]] is bijective>>
@@ -136,6 +139,116 @@ proof
 end;
 
 @ %def Th2
+
+<<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
+Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
+multMagma of H = the multMagma of (1).G
+proof
+  let H be Subgroup of G;
+  assume
+A1:  H is Subgroup of (1).G;
+  reconsider H as Subgroup of (1).G by A1;
+A2: (1).G is Subgroup of H by GROUP_2:65;
+  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  hence thesis by GROUP_2:55;
+end;
+
+@ %def Lm8
+
+<<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
+<<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
+Lm9:
+for G being Group
+for H being Subgroup of G
+for phi being Automorphism of G
+holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let phi be Automorphism of G;
+::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
+  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
+  AA0: phi is one-to-one;
+  then Ker(phi) = (1).G by GROUP_6:56;
+  then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
+  then AA1: Ker(phi|H) = (1).G by Lm8;
+  (1).G = (1).H by GROUP_2:63;
+  then Ker(phi|H) = (1).H by AA1;
+  then (phi|H) is one-to-one by GROUP_6:56;
+  hence thesis;
+end;
+
+@ %def Lm9
+
+\begin{theorem}
+Let $G$ be a group, $H\subgroup G$ be any subgroup, and
+$\varphi\in\Aut(G)$ be any automorphism. Then the image of $H$ under
+$\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
+\end{theorem}
+
+<<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
+theorem Th14:
+  for G being Group
+  for H being Subgroup of G
+  for phi being Automorphism of G
+  holds H,phi .: H are_isomorphic
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let phi be Automorphism of G;
+  reconsider H2 = phi .: H as Subgroup of G;
+  Image(phi|H) = H2 by GRSOLV_1:def 3;
+  phi|H is one-to-one by Lm9;
+  then H,Image(phi|H) are_isomorphic by GROUP_6:68;
+  then H,phi .: H are_isomorphic by GRSOLV_1:def 3;
+  hence thesis;
+end;
+
+@ %def Th14
+
+\begin{theorem}
+Let $G$ be a group, $H\subgroup G$ any subgroup, and $\varphi\in\aut(G)$
+any automorphism.
+Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
+\end{theorem}
+
+<<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>=
+theorem LmKerRestrictedIsSubgroupOfKer:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  for H being Subgroup of G1
+  holds Ker(f|H) is Subgroup of Ker(f)
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  let H be Subgroup of G1;
+  A0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
+  Ker(f) is Subgroup of G1;
+  for g being Element of G1
+  st g in Ker(f|H)
+  holds g in Ker(f)
+  <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>
+  then Ker(f|H) is Subgroup of Ker(f) by A0,GROUP_2:58;
+  hence thesis;
+end;
+
+@ %def LmKerRestrictedIsSubgroupOfKer
+
+<<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>=
+proof
+  let g be Element of G1;
+  assume A1: g in Ker(f|H);
+  Ker(f|H) is Subgroup of H;
+  then A2: g in H by A1, LmSubgroupEltTrans;
+  then A3: (f|H).g = f.g by Lm3;
+  g is Element of H by A2, LmSubgroupElt;
+  then (f|H).g = 1_G2 by A1,GROUP_6:41;
+  then f.g = 1_G2 by A3;
+  then g in Ker(f) by GROUP_6:41;
+  hence thesis;
+end;
+
+@
 
 \N{Identity Group Endomorphism}\index{$\Id_{G}$}\index{Endomorphism!Identity}
 I found it tedious to write [[id (the carrier of G)]] over and over
