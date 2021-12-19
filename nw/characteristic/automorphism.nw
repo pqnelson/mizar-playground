@@ -26,6 +26,7 @@ begin
 <<Define $\Id_{G}$>>
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>
 <<Register [[Id_G]] is bijective>>
+<<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>
 <<Results and definition for Inner automorphisms>>
 
 @
@@ -377,3 +378,58 @@ proof
 end;
 
 @ %def Lm2
+
+\begin{theorem}
+  Let $H\subgroup G$ be any subgroup.
+  If $\varphi\in\Aut(G)$ is an automorphism such that $\varphi(H)=H$ it
+  leaves $H$ invariant, then its restriction to $H$ is an automorphism
+  $\varphi|_{H}\in\Aut(H)$.
+\end{theorem}
+
+This result isn't surprising, but proving surjectivity was surprisingly
+(and agonizingly) hard.
+
+<<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
+for G being Group
+for H being strict Subgroup of G
+for f being Automorphism of G
+st Image(f|H) = H
+holds f|H is Automorphism of H
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+  let f be Automorphism of G;
+  assume A1: Image(f|H) = H;
+  then C1: f|H is Homomorphism of H,H by GROUP_6:49;
+  C2: f|H is one-to-one by A0, Lm9;
+
+  C3: f|H is onto Endomorphism of H
+  <<Proof: $\varphi|_{H}$ is surjective>>
+  then f|H is bijective Homomorphism of H,H by C2;
+  then f|H is Automorphism of H;
+  hence thesis;
+end;
+
+@
+
+\N{Proof of surjectivity}
+For reasons I do not adequately understand, I could not simply handle
+[[f|H]] as a [[Homomorphism of H,H]] (despite having established this
+fact).
+
+I could not use any theorem concerning surjectivity of group morphisms,
+so I just ``forgot'' it was a morphism, proved surjectivity, then
+``remembered'' it was a group morphism after all. I am starting to think
+that the claim [[f is onto]] is different than [[f is onto Homomorphism of G1,G2]].
+
+<<Proof: $\varphi|_{H}$ is surjective>>=
+proof
+  set UH = the carrier of H;
+  AA1: f|H is Function of UH,UH by C1;
+  rng(f|H) = the carrier of H by GROUP_6:44, A1;
+  then AA3: f|H is onto Function of UH,UH by AA1,FUNCT_2:def 3;
+  then f|H is onto Homomorphism of H,H by AA3,C1;
+  hence thesis;
+end;
+
+@
