@@ -15,6 +15,7 @@ We can now organize our treatment of inner automorphisms.
 <<Theorem: Conjugation by fixed element is an automorphism>>
 <<Corollary: conjugation of given element is an \emph{inner} automorphism>>
 <<Theorem: constructing inner automorphisms from group elements>>
+<<Theorem: inner Automorphisms fix only normal Subgroups>>
 
 @
 
@@ -536,3 +537,71 @@ C1: f is inner Automorphism of G by A1,Th10;
 end;
 
 @ %def ThAlwaysFindInnerAuto
+
+\begin{theorem}
+  Let $H\subgroup G$ be an arbitrary subgroup.
+  Then $\forall\varphi\in\Inn(G),\varphi(H)=H$ if and only if
+  $H\normalSubgroup G$.
+\end{theorem}
+
+This is another, ``Well, I guess Mizar should have this, but I can't
+find it, so here we go!''-type proof. The only quirk is the use of
+[[strict Subgroup]], which is necessary because otherwise [[H |^ a]] is
+strictly speaking a [[multMagma]], not a subgroup. And to assert two
+subgroups are equal, we need a [[strict]] subgroup, which requires
+adding a [[strict]] hypothesis.
+
+<<Theorem: inner Automorphisms fix only normal Subgroups>>=
+theorem Th16:
+  for G being Group
+  for H being strict Subgroup of G
+  holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+  <<Proof: normal implies fixed by inner automorphisms>>
+  <<Proof by contradiction: fixed by inner automorphisms implies normal>>
+  thus thesis by C1,C2;
+end;
+
+@ %def Th16
+
+<<Proof: normal implies fixed by inner automorphisms>>=
+C1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
+proof
+  assume A0: H is normal;
+  let f be inner Automorphism of G;
+  consider a being Element of G such that
+  A1: for x being Element of G holds f.x = x |^ a
+  by Def5;
+  A2: Image(f|H) = H |^ a by A1,Th7;
+  H |^ a = the multMagma of H by A0,GROUP_3:def 13
+  .= H by GROUP_2:def 6;
+  then Image(f|H)=H by A2;
+  hence thesis;
+end;
+
+@
+
+\M Mizar's proof by contradiction is rather curious. If we want to prove
+$P\implies Q$ by contradiction, we assert $\neg(P\implies
+Q)\implies\bot$. The proof we offer is about as satisfying as any other
+proof by contradiction.
+
+<<Proof by contradiction: fixed by inner automorphisms implies normal>>=
+C2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
+    implies contradiction
+proof
+  assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
+  assume not H is normal;
+  then consider a being Element of G such that
+  B2: H |^ a <> the multMagma of H
+  by GROUP_3:def 13;
+  consider f being inner Automorphism of G such that
+  B3: (for x being Element of G holds f.x= x |^ a)
+  by ThAlwaysFindInnerAuto;
+  Image(f|H) = H |^ a by B3, Th7;
+  hence contradiction by B1,B2;
+end;
+
+@
