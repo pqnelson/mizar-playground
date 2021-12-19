@@ -6,47 +6,73 @@
 \RequirePackage{enumitem}
 \setlist{nosep}
 \RequirePackage{datetime2}
-\RequirePackage{makeidx}
 \RequirePackage{ifpdf}
-\RequirePackage{titlesec}
-\RequirePackage{fullpage}
-%\RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc]{geometry}
 \RequirePackage{amssymb,amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{bm}
-\RequirePackage[nottoc,notlot,notlof]{tocbibind}
+\@ifclassloaded{amsbook}{
+  \RequirePackage{amsmidx}
+  \RequirePackage[inner=6pc,outer=6pc]{geometry}
+}{
+  \RequirePackage{makeidx}
+  \RequirePackage{titlesec}
+  \RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc,headheight=13.6pt]{geometry}
+  \RequirePackage[nottoc,notlot,notlof]{tocbibind}
+}
 \ifpdf
 \RequirePackage[hidelinks]{hyperref}
 \else
 \RequirePackage[hidelinks,dvipdfmx]{hyperref}
 \fi
 
-\makeindex
+% XXX HACK: amsbook subsections look ugly in my ugly style, so make them
+% synonymous with sections
+\@ifclassloaded{amsbook}{
+  \global\let\subsection\section
+}{}
 
+    
+\@ifclassloaded{amsbook}{
+  \makeindex{driver}
+  \let\ams@index\index
+  \gdef\index#1{\ams@index{driver}{#1}}
+  \gdef\printindex{\Printindex{driver}{Index}}
+}{
+  \makeindex
+}
 \noweboptions{longxref,english,breakcode,externalindex}
 
 \def\compiledTimestamp{Compiled:~\DTMnow}
 
+\@ifclassloaded{amsbook}{
+  \relax
+}{
+  % based on Knuth's taocpmac.tex
+  \titleformat{\section}
+    {\large\sffamily\bfseries}
+    {\thesection}
+    {1em}
+    {}
 
-% based on Knuth's taocpmac.tex
-\titleformat{\section}
-  {\large\sffamily\bfseries}
-  {\thesection}
-  {1em}
-  {}
+  \titleformat{\subsection}
+    {\large\sffamily\bfseries}
+    {\thesubsection}
+    {1em}
+    {}
 
-\titleformat{\subsection}
-  {\large\sffamily\bfseries}
-  {\thesubsection}
-  {1em}
-  {}
+  \titleformat{\subsubsection}
+    {\large\sffamily\bfseries}
+    {\thesubsubsection}
+    {1em}
+    {}
+}
 
-\titleformat{\subsubsection}
-  {\large\sffamily\bfseries}
-  {\thesubsubsection}
-  {1em}
-  {}
 
+\@ifclassloaded{amsbook}{
+  \newcommand\preface{\chapter*{Preface}}
+}{
+  \newcommand\preface{\chapter{Preface}}
+}
 
 % Poor man's chunks, \'a la Knuth's WEB
 \counterwithout*{paragraph}{subsubsection}
