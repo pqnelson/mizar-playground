@@ -390,18 +390,19 @@ This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
-for G being Group
-for H being strict Subgroup of G
-for f being Automorphism of G
-st Image(f|H) = H
-holds f|H is Automorphism of H
+LmMinor:
+  for G being Group
+  for H being strict Subgroup of G
+  for f being Automorphism of G
+  st Image(f|H) = H
+  holds f|H is Automorphism of H
 proof
   let G be Group;
   let H be strict Subgroup of G;
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by A0, Lm9;
+  C2: f|H is one-to-one by A1, Lm9;
 
   C3: f|H is onto Endomorphism of H
   <<Proof: $\varphi|_{H}$ is surjective>>
@@ -410,7 +411,7 @@ proof
   hence thesis;
 end;
 
-@
+@ %def LmMinor
 
 \N{Proof of surjectivity}
 For reasons I do not adequately understand, I could not simply handle

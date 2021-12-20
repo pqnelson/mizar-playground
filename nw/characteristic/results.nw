@@ -13,6 +13,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Theorem: characteristic subgroups are normal>>
 <<Register characteristic subgroups are normal>>
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
+<<Theorem: characteristic subgroup of a normal subgroup is normal>>
 
 @
 
@@ -218,3 +219,147 @@ proof
 end;
 
 @
+
+\begin{theorem}
+If $K\subgroup H$ is characteristic, and if $H\normalSubgroup G$ is normal,
+then $K\normalSubgroup G$ is normal.
+\end{theorem}
+
+This required a surprising amount of legwork.
+
+<<Theorem: characteristic subgroup of a normal subgroup is normal>>=
+theorem
+for G being Group
+for N being strict normal Subgroup of G
+for K being characteristic Subgroup of N
+holds K is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let K be characteristic Subgroup of N;
+  for a being Element of G holds K |^ a = K
+  proof
+    let a be Element of G;
+    consider g being inner Automorphism of G such that
+    A1: for x being Element of G holds g.x = x |^ a
+    by ThAlwaysFindInnerAuto;
+
+    N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
+    then A2: g|N is Automorphism of N by LmMinor;
+
+    K2: Image((g|N)|K) = Image(g|K) by LmRestrictCollapse;
+    N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
+    then A2: g|N is Automorphism of N by LmMinor;
+    reconsider f = g|N as Automorphism of N by A2;
+    f .: K = K by ThAltChar;
+    A3: Image(f|K) = K by Def9;
+
+    for k being Element of G st k in K holds f.k = g.k
+    <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
+    then Image(f|K) = Image(g|K) by ThImgsEqRel;
+    then Image(g|K) = K & Image(g|K) = K |^ a by A3,A1,Th7;
+    then K = K |^ a by A1,Th7;
+    hence thesis;
+  end;
+  then K is normal Subgroup of G by LmNormalSubgroup;
+  hence thesis;
+end;
+  
+@
+
+<<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>=
+proof
+  let k be Element of G;
+  assume Z97: k in K;
+  then (g|K).k = g.k by Lm3;
+  K is Subgroup of N;
+  Z98: k in N by Z97,GROUP_2:40;
+  k is Element of K by LmSubgroupElt,Z97;
+  then f.k = (g|N).k
+  .= g.k by Z98, Z97, Lm3;
+  hence f.k = g.k;
+end;
+    
+@
+
+\N{Lemma}
+The heavy lifting is done by a straightforward and intuitive result: if
+we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to H_{2}$,
+where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if we have
+a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the image of
+the morphisms on this shared subgroup should coincide.
+
+<<Lemma: two group morphisms which coincide on subgroup have the same image>>=
+theorem ThImgsEqRel:
+  for G1,G2 being Group
+  for H1 being Subgroup of G1
+  for K being Subgroup of H1
+  for H2 being Subgroup of G2
+  for f being Homomorphism of G1,G2
+  for g being Homomorphism of H1,H2
+  st (for k being Element of G1 st k in K holds f.k=g.k)
+  holds Image(f|K) = Image(g|K)
+proof
+  let G1,G2 be Group;
+  let H1 be Subgroup of G1;
+  let K be Subgroup of H1;
+  let H2 be Subgroup of G2;
+  let f be Homomorphism of G1,G2;
+  let g be Homomorphism of H1,H2;
+  assume Z90: for k being Element of G1 st k in K holds f.k=g.k;
+  Z91: Image(f|K) is strict Subgroup of G2 &
+  Image(g|K) is strict Subgroup of G2 by GROUP_2:56;
+  for y being object
+  holds y in the carrier of Image(f|K) iff y in the carrier of Image(g|K)
+  proof
+    let y be object;
+    thus y in the carrier of Image(f|K) implies y in the carrier of Image(g|K)
+    <<Proof: $y\in f(K)\implies y\in g(K)$>>
+    thus y in the carrier of Image(g|K) implies y in the carrier of Image(f|K)
+    <<Proof: $y\in g(K)\implies y\in f(K)$>>
+    thus thesis;
+  end;
+  then the carrier of Image(f|K) = the carrier of Image(g|K) by TARSKI:2;
+  then the multMagma of Image(f|K) = the multMagma of Image(g|K) by Z91,GROUP_2:59;
+  then Image(f|K) = Image(g|K) by GROUP_2:def 6;
+  hence thesis;
+end;
+
+@ 
+
+<<Proof: $y\in g(K)\implies y\in f(K)$>>=
+proof
+  assume Z1: y in the carrier of Image(g|K);
+  then consider h being Element of K such that
+  A2: (g|K).h = y
+  by STRUCT_0:def 5,GROUP_6:45;
+  A3: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  then A4: f.h = g.h by Z90;
+  then f.h = (f|K).h by A3,Lm3;
+  then (f|K).h = g.h by A4
+              .= (g|K).h by A3,Lm3
+              .= y by A2;
+  then A5: (f|K).h = y & h is Element of K;
+  then y in the carrier of Image(f|K) by A5,STRUCT_0:def 5,GROUP_6:45;
+  hence thesis;
+end;
+
+@ 
+
+<<Proof: $y\in f(K)\implies y\in g(K)$>>=
+proof
+  assume A1: y in the carrier of Image(f|K);
+  then consider h being Element of K such that
+  A2: (f|K).h = y
+  by STRUCT_0:def 5,GROUP_6:45;
+  A3: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  then A4: f.h = g.h by Z90;
+  then g.h = (g|K).h by A3,Lm3;
+  then (g|K).h = f.h by A4
+              .= (f|K).h by A3,Lm3
+              .= y by A2;
+  then A5: (g|K).h = y & h is Element of K;
+  then y in the carrier of Image(g|K) by A5,STRUCT_0:def 5,GROUP_6:45;
+  hence thesis;
+end;
+@ 
