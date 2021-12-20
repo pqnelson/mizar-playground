@@ -1156,6 +1156,123 @@ proof
   hence thesis;
 end;
 
+theorem Th16a:
+  for G being Group
+  for H being strict Subgroup of G
+  holds (H is normal) iff (for f being inner Automorphism of G holds (f .: H) = H)
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+   C1: (H is normal) implies (for f being inner Automorphism of G holds
+   (f .: H) = H)
+  proof
+    assume A0: H is normal;
+    let f be inner Automorphism of G;
+    consider a being Element of G such that
+    A1: for x being Element of G holds f.x = x |^ a
+    by Def5;
+    Image(f|H) = H |^ a by A1,Th7;
+    then A2: f .: H = H |^ a by GRSOLV_1:def 3;
+    H |^ a = the multMagma of H by A0,GROUP_3:def 13
+    .= H by GROUP_2:def 6;
+    then f .: H = H by A2;
+    hence thesis;
+  end;
+  C2: not ((for f being inner Automorphism of G holds (f .: H = H)) implies H is normal)
+      implies contradiction
+  proof
+    assume B1: for f being inner Automorphism of G holds f .: H = H;
+    assume not H is normal;
+    then consider a being Element of G such that
+    B2: H |^ a <> the multMagma of H
+    by GROUP_3:def 13;
+    consider f being inner Automorphism of G such that
+    B3: (for x being Element of G holds f.x= x |^ a)
+    by ThAlwaysFindInnerAuto;
+    Image(f|H) = H |^ a by B3, Th7;
+    then f .: H = H |^ a by GRSOLV_1:def 3;
+    hence contradiction by B1,B2;
+  end;
+
+  thus thesis by C1,C2;
+end;
+
+Lm25:
+for Y,Z being non empty set
+for f being Function of Y,Z
+for X1,X2 being non empty set
+st X1 c= X2 & X2 c= Y
+holds (f|X2) .: X1 = f .: X1
+proof
+  let Y,Z be non empty set;
+  let f be Function of Y,Z;
+  let X1,X2 be non empty set;
+  assume Z72: X1 c= X2;
+  assume Z73: X2 c= Y;
+  Z78: dom f = Y by FUNCT_2:def 1;
+  Z79: X2 c= dom f by Z78, Z73,Z73,XBOOLE_1:1;
+  then Z80: X2 /\ dom f = X2 by XBOOLE_1:28;
+  Z81: X1 c= dom f by Z72,Z79,XBOOLE_1:1;
+  then Z82: X1 c= dom f /\ X2 by Z72,XBOOLE_1:19;      
+  for y being object holds y in (f .: X1) iff y in ((f|X2) .: X1)
+  proof
+    let y be object;
+    thus y in f .: X1 implies y in ((f|X2) .: X1)
+    proof
+      assume Z76: y in f .: X1;
+      then Z77: ex x being object st x in dom f & x in X1 & y = f.x by FUNCT_1:def 6;
+      then consider x0 being object such that
+      C1: x0 in dom f and
+      C2: x0 in X1 and
+      C3: y = f.x0;
+      ex x being object st x in dom f /\ X2 & x in X1 & y = f.x by
+      Z82, Z77,FUNCT_1:def 6;
+      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
+      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
+      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
+      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
+      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;      
+      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
+      then x0 in dom f /\ X2 & x0 in X1 & y = f.x0 by Z80,Z72,C1,C2,C3;
+:: FUNCT_2:35
+:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
+::  x in P & y = f.x) implies y in f.:P
+      Z <> {} & x0 in X1 & y = f.x0 & y = (f|X2).x0 by BA1, C2,Z72,C3;
+      then y in ((f|X2) .: X1) by B1,C2,Z72,FUNCT_2:35;
+      hence thesis;
+    end;
+    thus y in (f|X2) .: X1 implies y in (f .: X1)
+    proof
+      assume Z1: y in (f|X2) .: X1;
+      then Z2: ex x being object
+      st x in dom (f|X2) & x in X1 & y = (f|X2).x by FUNCT_1:def 6;
+      then consider x0 being object such that
+      C1: x0 in dom (f|X2) and
+      C2: x0 in X1 and
+      C3: y = (f|X2).x0;
+      ex x being object st x in dom (f|X2) & x in X1 & y = (f|X2).x
+      by Z82, Z2,FUNCT_1:def 6;
+      B11: f is Function of Y,Z;
+      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
+      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
+      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
+      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
+      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
+      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
+      f is Function of Y,Z &
+      Z <> {} & X1 c= X2 & X2 c= Y & x0 in X1 & x0 in Y & y = f.x0 by B1,B2,C2,C1,Z72,Z73,C3;
+:: FUNCT_2:35
+:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
+::  x in P & y = f.x) implies y in f.:P
+      then y in (f .: X1) by B1,FUNCT_2:35;
+      hence thesis;
+    end;
+    thus thesis;
+  end;
+  then (f|X2) .: X1 = f .: X1 by TARSKI:2;
+  hence thesis;
+end;
+
 
 theorem Th16:
   for G being Group
@@ -1690,6 +1807,337 @@ registration
   cluster characteristic -> normal for Subgroup of G;
   coherence by Th11;
 end;
+
+
+
+Lm25:
+for Y,Z being non empty set
+for f being Function of Y,Z
+for X1,X2 being non empty set
+st X1 c= X2 & X2 c= Y
+holds (f|X2) .: X1 = f .: X1
+proof
+  let Y,Z be non empty set;
+  let f be Function of Y,Z;
+  let X1,X2 be non empty set;
+  assume Z72: X1 c= X2;
+  assume Z73: X2 c= Y;
+  Z78: dom f = Y by FUNCT_2:def 1;
+  Z79: X2 c= dom f by Z78, Z73,Z73,XBOOLE_1:1;
+  then Z80: X2 /\ dom f = X2 by XBOOLE_1:28;
+  Z81: X1 c= dom f by Z72,Z79,XBOOLE_1:1;
+  then Z82: X1 c= dom f /\ X2 by Z72,XBOOLE_1:19;      
+  for y being object holds y in (f .: X1) iff y in ((f|X2) .: X1)
+  proof
+    let y be object;
+    thus y in f .: X1 implies y in ((f|X2) .: X1)
+    proof
+      assume Z76: y in f .: X1;
+      then Z77: ex x being object st x in dom f & x in X1 & y = f.x by FUNCT_1:def 6;
+      then consider x0 being object such that
+      C1: x0 in dom f and
+      C2: x0 in X1 and
+      C3: y = f.x0;
+      ex x being object st x in dom f /\ X2 & x in X1 & y = f.x by
+      Z82, Z77,FUNCT_1:def 6;
+      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
+      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
+      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
+      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
+      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;      
+      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
+      then x0 in dom f /\ X2 & x0 in X1 & y = f.x0 by Z80,Z72,C1,C2,C3;
+:: FUNCT_2:35
+:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
+::  x in P & y = f.x) implies y in f.:P
+      Z <> {} & x0 in X1 & y = f.x0 & y = (f|X2).x0 by BA1, C2,Z72,C3;
+      then y in ((f|X2) .: X1) by B1,C2,Z72,FUNCT_2:35;
+      hence thesis;
+    end;
+    thus y in (f|X2) .: X1 implies y in (f .: X1)
+    proof
+      assume Z1: y in (f|X2) .: X1;
+      then Z2: ex x being object
+      st x in dom (f|X2) & x in X1 & y = (f|X2).x by FUNCT_1:def 6;
+      then consider x0 being object such that
+      C1: x0 in dom (f|X2) and
+      C2: x0 in X1 and
+      C3: y = (f|X2).x0;
+      ex x being object st x in dom (f|X2) & x in X1 & y = (f|X2).x
+      by Z82, Z2,FUNCT_1:def 6;
+      B11: f is Function of Y,Z;
+      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
+      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
+      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
+      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
+      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
+      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
+      f is Function of Y,Z &
+      Z <> {} & X1 c= X2 & X2 c= Y & x0 in X1 & x0 in Y & y = f.x0 by B1,B2,C2,C1,Z72,Z73,C3;
+:: FUNCT_2:35
+:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
+::  x in P & y = f.x) implies y in f.:P
+      then y in (f .: X1) by B1,FUNCT_2:35;
+      hence thesis;
+    end;
+    thus thesis;
+  end;
+  then (f|X2) .: X1 = f .: X1 by TARSKI:2;
+  hence thesis;
+end;
+
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for f being Endomorphism of G
+  for g being Homomorphism of H,G
+  st dom g = dom f /\ (the carrier of H) &
+  (for x being object st x in dom g holds f.x = g.x)
+  holds g = f|H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let f be Endomorphism of G;
+  let g be Homomorphism of H,G;
+  assume A1: dom g = dom f /\ (the carrier of H);
+  assume A2: for x being object st x in dom g holds f.x = g.x;
+  set UG = the carrier of G;
+  set UH = the carrier of H;
+  E2: dom g = UH & dom f = UG by FUNCT_2:def 1;
+  reconsider g0 = g as Function of UH,UG by E2;
+  reconsider f0 = f as Function of UG,UG by E2;
+  B1: dom g0 = dom f0 /\ UH by A1;
+  B2: for x being object st x in dom g0 holds f0.x = g0.x by A2;
+  g0 = f0|UH by B1,B2,FUNCT_1:45;
+::>           *4
+  g qua Function of UH,UG = f|UH by FUNCT_1:45;
+::>                               *4
+  thus g = f|H;
+::>          *4
+end;
+
+theorem
+  for G being Group
+  for N being strict normal Subgroup of G
+  for K being strict characteristic Subgroup of N
+  holds K is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let K be strict characteristic Subgroup of N;
+  not (for f being inner Automorphism of G holds f .: K = K) implies contradiction
+  proof
+    assume Z71: not for f being inner Automorphism of G holds f .: K = K;
+    then AC1: ex f being inner Automorphism of G st f .: K <> K;
+    then consider f being inner Automorphism of G such that
+    Z72: f .: K <> K;
+    f .: N = N by Th16a;
+    B1: Image(f|N) = N by Th16;
+    then Z73: f|N is Automorphism of N by Lm20;
+
+    A0: f is Function of (the carrier of G), (the carrier of G) &
+    (the carrier of N) c= (the carrier of G) &
+    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
+    then A1: f|(the carrier of N) .: (the carrier of K)
+    = f .: (the carrier of K) by Lm25;
+    f is multiplicative;
+    then A2: f|N .: (the carrier of K) = f .: (the carrier of K) by A0,A1, GRSOLV_1:def 2;
+    A3: the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
+    A4: the carrier of (f .: K) = f .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
+    then A5: the carrier of (f|N .: K) = the carrier of (f .: K) by A1,A2,A3;
+    
+    f|N .: K is strict Subgroup of Image(f|N) by GRSOLV_1:10;
+    then f|N .: K is strict Subgroup of N by B1;
+    then B2: f|N .: K is strict Subgroup of G;
+
+    B3: f .: K is strict Subgroup of G;
+
+    then the multMagma of (f .: K) = the multMagma of (f|N .: K)
+    by GROUP_2:59,A5,B2,B3;
+    then f .: K = f|N .: K by GROUP_2:def 6;
+
+    the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:8;
+    then f|N .: (the carrier of K) = the carrier of K by Lm21,Z73;
+::>                                                    *4
+    f|N .: K = K by Z73,Lm21, GRSOLV_1:def 2;
+::>               *4
+    consider g being Element of G such that
+    AC2: for x being Element of G holds f.x = x |^ g
+    by Def5;
+    
+    Image(f|N) = N;
+::>              *4
+    reconsider fN = f|N as Automorphism of N by Z73;
+    fN .: K = K by Lm21;
+    hence contradiction;
+::>                   *4
+  end;
+
+  CL1: for f being inner Automorphism of G holds ex g being Automorphism of N
+  st (for x being Element of N holds f.x = g.x)
+  proof
+    let f be inner Automorphism of G;
+    consider a being Element of G such that
+    CL2: for x being Element of G holds f.x = x |^ a
+    by Def5;
+    f .: N = N by Th16a;
+    Image(f|N) = N by Th16;
+    then reconsider g = f|N as Automorphism of N by Lm20;
+    take g;
+    let x be Element of N;
+    CL3: (f|N).x = g.x;
+    x is Element of G &
+    x in N by GROUP_2:42, STRUCT_0:def 5;
+    then (f|N).x = f.x by Lm3;
+    then f.x = g.x by CL3;
+    hence thesis;
+  end;
+
+  
+
+  for f being inner Automorphism of G holds f .: K = K
+  proof
+    let f be inner Automorphism of G;
+    B1: Image(f|N) = N by Th16;
+    then Z73: f|N is Automorphism of N by Lm20;
+    set UN = the carrier of N;
+    set UK = the carrier of K;
+    set UG = the carrier of G;
+    A0: f is Function of (the carrier of G), (the carrier of G) &
+    (the carrier of N) c= (the carrier of G) &
+    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
+    then A1: f|(the carrier of N) .: (the carrier of K)
+    = f .: (the carrier of K) by Lm25;
+    f is multiplicative;
+    then A2: f|N .: (the carrier of K) = f .: (the carrier of K) by A0,A1, GRSOLV_1:def 2;
+    A3: the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
+    the carrier of (f .: K) = f .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
+    then A5: the carrier of (f|N .: K) = the carrier of (f .: K) by A1,A2,A3;
+    f|N .: K is strict Subgroup of Image(f|N) by GRSOLV_1:10;
+    then f|N .: K is strict Subgroup of N by B1;
+    then B2: f|N .: K is strict Subgroup of G;
+
+    consider g being Automorphism of N such that
+    AA1: for x being Element of N holds f.x = g.x
+    by CL1;
+    for A being strict Subgroup of N
+    holds f.:A = g.: A
+    proof
+      let A be strict Subgroup of N;
+      consider AG being strict Subgroup of G such that
+      BB1: AG = f .: A
+      by GRSOLV_1:10;
+      consider AN being strict Subgroup of N such that
+      BB2: AN = g .: A
+      by GRSOLV_1:10;
+      for x being Element of A holds f.x = g.x
+      proof
+        let x be Element of A;
+        A is Subgroup of N & x in A by STRUCT_0:def 5;
+        then x is Element of N by GROUP_2:42;
+        hence f.x = g.x by AA1;
+      end;
+      for y being object holds y in f.:A iff y in g.:A
+      proof
+        let y be object;
+        thus y in f.:A implies y in g.:A
+        proof
+          assume Z80: y in f.:A;
+          then y in the carrier of (f.:A) by STRUCT_0:def 5;
+          then consider x being object such that
+          Z801: x in dom f and
+          Z802: x in A and
+          Z803: f.x = y
+          by Z80,FUNCT_1:def 6;
+::>        *4
+          thus y in g.:A;
+::>                    *4
+        end;
+        thus y in f.:A implies y in g.:A;
+::>          *51                       *4
+        thus thesis;
+      end;
+      then the carrier of f.:A = the carrier of g.:A by TARSKI:2;
+::>                                                   *4
+      the carrier of f.:A c= the carrier of g.:A
+      proof
+        let y be Element of the carrier of f.:A;
+::>                                          *56
+        then ex x being object st x in dom f & x in A & y = f.x by FUNCT_1:def 6;
+::>        *164
+        thus y in the carrier of g.:A;
+::>                                 *4
+      end;
+      thus f.:A = g.: A;
+::>                   *4
+    end;
+
+
+    for x being Element of G st x in N holds x is Element of N by LmSubgroupElt;
+    AA2: for x being Element of G st x in N holds f.x = g.x
+    proof
+      let x be Element of G;
+      assume Z78: x in N;
+      then x is Element of N by LmSubgroupElt;
+      then f.x = g.x by AA1;
+      hence thesis;
+    end;
+    AA3: for x being object st x in N holds f.x = g.x
+    proof
+      let x be object;
+      assume Z79: x in N;
+      then x is Element of N by STRUCT_0:def 5;
+      then f.x = g.x by AA1;
+      hence thesis;
+    end;
+    AA4: for x being object st x in UN holds f.x = g.x
+    proof
+      let x be object;
+      assume Z79: x in UN;
+      then x is Element of N by STRUCT_0:def 5;
+      then f.x = g.x by AA1;
+      hence thesis;
+    end;
+
+
+    E1: UN c= UG by GROUP_2:def 5;
+    E2: dom g = UN & dom f = UG by FUNCT_2:def 1;
+    UN /\ dom f = UN by E1,E2,XBOOLE_1:28;
+    then E3: dom g = dom f /\ UN &
+
+    f is Function of UG,UG & g is Function of UN,UN by E2;
+
+    then dom g = dom f /\ UN &
+    (for x being object st x in dom g holds g.x = f.x) by AA4,E2;
+    then g = f|UN by FUNCT_1:45;
+::>                *4
+    Image(g|K) = f .: K by A1,GRSOLV_1:3;
+::>                      *4
+    the carrier of K c= the carrier of N by A0;
+    then Image((f|UN)|UK) = Image(f|UK);
+::>          *103               *103
+
+    B3: f .: K is strict Subgroup of G;
+
+    then the multMagma of (f .: K) = the multMagma of (f|N .: K)
+    by GROUP_2:59,A5,B2,B3;
+    then f .: K = f|N .: K by GROUP_2:def 6;
+    B4: f .: N = N by Th16a;
+    f|N .: N = f .: N by Lm25;
+::>                    *4
+    set fN = f|N;
+    (fN qua Automorphism of N) .: K = K by Z73,Lm21;
+::>       *116
+    hence f .: K = K;
+::>                *4
+  end;
+  then K is normal Subgroup of G by Th16a;
+  thus K is normal Subgroup of G;
+::>                            *4
+end;
+
+
+
 ::> 4: This inference is not accepted
 ::> 51: Invalid conclusion
 ::> 52: Invalid assumption
@@ -1703,3 +2151,4 @@ end;
 ::> 148: Unknown private functor
 ::> 203: Unknown token, maybe an illegal character used in an identifier
 ::> 396: Formula expected
+
