@@ -244,6 +244,7 @@ XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
 \nwixlogsorted{c}{{Lemma: $f\colon X\onto Y\implies f(X)=Y$}{NW18nMBU-3LADMa-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-3LADMa-1}}}%
 \nwixlogsorted{c}{{Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$}{NW18nMBU-7Q5oR-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-7Q5oR-1}}}%
 \nwixlogsorted{c}{{Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$}{NW1Nnu7l-3CeuwY-1}{\nwixd{NW1Nnu7l-3CeuwY-1}\nwixu{NW1Nnu7l-2Beici-1}}}%
+\nwixlogsorted{c}{{Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism}{NW18nMBU-EZoEE-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-EZoEE-1}}}%
 \nwixlogsorted{c}{{Lemma: A group element in the subgroup is a subgroup element}{NW18nMBU-4DvAms-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-4DvAms-1}}}%
 \nwixlogsorted{c}{{Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms}{NW3Mfp8C-3eJW7Q-1}{\nwixu{NW3Mfp8C-2gUxot-1}\nwixd{NW3Mfp8C-3eJW7Q-1}}}%
 \nwixlogsorted{c}{{Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$}{NW1Nnu7l-2Beici-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-2Beici-1}}}%
@@ -493,6 +494,7 @@ reserve X for set;
 \LA{}Lemma: restriction of group morphism acts on elements like the original~{\nwtagstyle{}\subpageref{NW18nMBU-3Uc8Un-1}}\RA{}
 \LA{}Lemma: Subgroups invariant under conjugation are normal~{\nwtagstyle{}\subpageref{NW18nMBU-3PXqHm-1}}\RA{}
 \LA{}Lemma: Morphism is surjective if its image is its codomain~{\nwtagstyle{}\subpageref{NW18nMBU-35JO6n-1}}\RA{}
+\LA{}Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism~{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}\RA{}
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
@@ -737,6 +739,44 @@ proof
 end;
 
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwendcode{}\nwbegindocs{24}\nwdocspar
+
+\begin{lemma}
+Let $G_{1}$ and $G_{2}$ be groups, $K\subgroup G_{1}$ and $H\subgroup K$
+be subgroups. If $f\colon G_{1}\to G_{2}$ is a group morphism, then
+$(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
+\end{lemma}
+
+Something like this was proven in {\Tt{}FUNCT{\_}1:50\nwendquote}, but I couldn't apply
+that theorem (not even to functions of sets).
+
+\nwenddocs{}\nwbegincode{25}\sublabel{NW18nMBU-EZoEE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\moddef{Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism~{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+LmRestrictCollapse:
+for G,G2 being Group
+for K being Subgroup of G
+for H being Subgroup of K
+for f being Homomorphism of G,G2
+holds (f|K)|H = f|H
+proof
+  let G,G2 be Group;
+  let K be Subgroup of G;
+  let H be Subgroup of K;
+  let f be Homomorphism of G,G2;
+  set UG = the carrier of G;
+  set UK = the carrier of K;
+  set UH = the carrier of H;
+  UH c= UK by GROUP_2:def 5;
+  then C1: (f|UK)|UH = f|UH by RELAT_1:73,74;
+  f|K is Homomorphism of K,G2;
+  (f|K)|H is Homomorphism of H,G2;
+  C2: (f|UK) = f|K &
+  f|UH = f|H by GRSOLV_1:def 2;
+  (f|K)|H = (f|K)|UH by GRSOLV_1:def 2
+  .= (f|UK)|UH by GRSOLV_1:def 2;
+  then (f|K)|H = f|H by C1,C2;
+  hence thesis;
+end;
+
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwendcode{}\nwbegindocs{26}\nwdocspar
 \nwenddocs{}\nwfilename{nw/characteristic/automorphism.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \subsection{Automorphisms}
 
