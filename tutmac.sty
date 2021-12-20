@@ -34,6 +34,12 @@
   dvipdfmx]{hyperref}
 \fi
 
+%%% Format author stuff nicely
+%%%
+\@ifclassloaded{amsbook}{
+  \email{pqnelson@gmail.com}
+}{}
+
 % XXX HACK: amsbook subsections look ugly in my ugly style, so make them
 % synonymous with sections
 \@ifclassloaded{amsbook}{
@@ -51,7 +57,8 @@
 }
 \noweboptions{longxref,english,breakcode,externalindex}
 
-\def\compiledTimestamp{Compiled:~\DTMnow}
+% This should be evaluated \emph{once}.
+\xdef\compiledTimestamp{Compiled:~\DTMnow}
 
 \@ifclassloaded{amsbook}{
   \relax
