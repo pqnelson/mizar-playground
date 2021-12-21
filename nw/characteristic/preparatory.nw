@@ -1,10 +1,24 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 % This is placed here so the LaTeX is organized correctly, thanks to
 % problems with noweb :(
-\section{Article Body}
+\section{Article Body}\label{sec:characteristic:preparatory:start}
 
 \M
-The article body is where the magic happens.
+The article body is where the magic happens. Now we can start making
+definitions, stating theorems, proving results. The basic structure of
+our article can be cleaved in two: first we state and prove ``helper
+lemmas'', which probably belong somewhere else, but currently are not
+located anywhere in the Mizar library. The second half are our results
+concerning characteristic subgroups.
+
+Just to give some idea of what we're doing, we will have to define a
+notion of [[Automorphism]]. We will also have to prove a number of
+results concerning [[Automorphism]]s. After all, a characteristic
+subgroup is one which is left invariant under any automorphism of its
+parent group.
+
+Once that has been squared away, we will define a notion of a
+[[characteristic]] subgroup. Then we will prove results right away.
 
 <<[[char.miz]] article body>>=
 <<Helper lemmas and registrations for [[char.miz]]>>
@@ -43,6 +57,16 @@ reserve X for set;
 \M
 We need to prove, if $f\colon X\onto Y$ is a surjective function of
 sets, then $f(X)=Y$.
+
+\begin{remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
+We should caution Mizar's notation for writing something like, if
+$f\colon X\to Y$ is a function of sets and $A\subset X$, then
+$f(A)=\{f(a)\in Y|a\in A\}$ is denoted as [[f.:A]] instead of $f(A)$,
+and [[f.a]] instead of $f(a)$. This is because $f$ is a set theoretic
+function, a collection of ``(input, output)'' ordered pairs. Mizar
+distinguishes $f(x)$ as function application from ``functors'' (i.e.,
+parametrized terms) by using $f(x)=\mathtt{f.x}$ for mathematical functions.
+\end{remark}
 
 <<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>=
 LmOntoMapsEverything:
@@ -123,6 +147,13 @@ end;
 We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``[[h is Element of H]]''.
+
+\begin{remark}\index{[[h in H]]!Mizar for $h\in H$}
+Mizar writes ``[[h in H]]'' instead of ``$h\in H$''. The statement
+``[[h is Element of H]]'' is a typing declaration roughly analogous to
+``$h{:}H$''; strictly speaking, it's a predicate in the object language,
+not a judgement in the metalanguage.
+\end{remark}
 
 <<Lemma: A group element in the subgroup is a subgroup element>>=
 LmSubgroupElt:

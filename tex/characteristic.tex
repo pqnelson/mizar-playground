@@ -60,7 +60,14 @@ Vcharacteristic
 
 \M
 The header, or ``environment part'', tells Mizar what mathematics needs
-to be imported from existing Mizar articles found in the MML.
+to be imported from existing Mizar articles found in the MML. The idea
+is we can define new terms [``functors''], new predicates, or new types
+[``modes''], but we have to specify which articles we want to use for
+their definitions, results, and notations.
+
+This is complicated and kind of a distraction. The reader can skip ahead
+to where we start proving theorems and defining concepts in
+\S\ref{sec:characteristic:preparatory:start}.
 
 \nwenddocs{}\nwbegincode{1}\sublabel{NW4bbsBH-3ZQoFX-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-3ZQoFX-1}}}\moddef{Environment for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW4bbsBH-3ZQoFX-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2sCaVS-1}}\nwenddeflinemarkup
 environ
@@ -78,23 +85,47 @@ environ
 
 \nwused{\\{NWoaARJ-2sCaVS-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
+\begin{remark}
+In practice, we often just copy/paste the {\Tt{}environ\nwendquote} of an article
+proving results about similar topics. This is probably the easiest way
+to get started, but it leaves one wondering what exactly this elaborate
+section \emph{does} in Mizar.
+\end{remark}
+
 \subsection{Vocabularies, Notations, Constructors}
 
 \N{Vocabularies}\label{par:characteristic:vocabularies}
-The {\Tt{}vocabularies\nwendquote} refers to the identifiers defined. For example,
-{\Tt{}Isomorphism\nwendquote} may be found in {\Tt{}RING{\_}3\nwendquote}. So even if I wanted to use
-{\Tt{}Isomorphism\nwendquote} as a token, I need to add {\Tt{}RING{\_}3\nwendquote} to
-the vocabularies list. Similarly, {\Tt{}MOD{\_}4\nwendquote} introduces the tokens
-{\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\nwendquote} and {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}, which I want to use, so I add
-them, too.
+The {\Tt{}vocabularies\nwendquote} refers to the identifiers defined. As I understand
+it, Mizar is actually using the {\Tt{}vocabularies\nwendquote} for the user to add new
+tokens to the language. Then Mizar will parse the file and treat
+user-defined terms \emph{as} terms. The meaning associated to them will
+be spelled out in the other parts of the {\Tt{}environ\nwendquote}.
+
+For example, {\Tt{}Isomorphism\nwendquote} may be found in {\Tt{}RING{\_}3\nwendquote}. If I wanted to
+define an {\Tt{}Isomorphism\nwendquote} of groups, then I must use {\Tt{}Isomorphism\nwendquote} as
+a token. Thus I would need to add {\Tt{}RING{\_}3\nwendquote} to the vocabularies list.
+(Earlier versions of this text made me think this was a good idea, but
+it turned out to be a huge distraction.)
+
+Similarly, {\Tt{}MOD{\_}4\nwendquote} introduces the tokens {\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\nwendquote} and
+{\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}, which I want to use, so I add them, too.
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW4bbsBH-3Tf8w1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-3Tf8w1-1}}}\moddef{\code{}char.miz\edoc{} vocabularies~{\nwtagstyle{}\subpageref{NW4bbsBH-3Tf8w1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3ZQoFX-1}}\nwenddeflinemarkup
-vocabularies RING_3, MOD_4, TMP,
+vocabularies MOD_4, TMP,
   \LA{}Functions and subset tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-1ATTd1-1}}\RA{},
   \LA{}Group and subgroups tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-5jMsk-1}}\RA{},
   \LA{}Group conjugation and normal subgroups tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-40Iyod-1}}\RA{}
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
+
+\N{VOC file}
+For our article, we will need to define new tokens. They are placed in
+{\Tt{}./DICT/CHAR.VOC\nwendquote} (relative to whatever directory we have made our
+Mizar workstation). As we introduce new terms, we will check if it
+exists already in Mizar by running ``{\Tt{}findvoc\ -w\ "term"\nwendquote}''. If Mizar
+is unfamiliar with the term, then nothing will be reported, and we will
+have to add it to our {\Tt{}VOC\nwendquote} file. Otherwise, if {\Tt{}term\nwendquote} is introduced
+in another article, we add it to our {\Tt{}vocabularies\nwendquote} environ directive.
 
 \M
 We need to recognize the tokens found in rudimentary set theory, so we
@@ -294,10 +325,7 @@ find was in Kornilowics~\cite{kornilowicz2015definitional}.
 Expansions of terms defined by {\Tt{}equals\nwendquote} are imported by a new
 {\Tt{}environ\nwendquote} directive {\Tt{}equalities\nwendquote}.
 
-\nwenddocs{}\nwbegincode{39}\sublabel{NW4bbsBH-1aojze-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\moddef{\code{}char.miz\edoc{} equalities~{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3ZQoFX-1}}\nwenddeflinemarkup
-equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
-
-\nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}
+\nwenddocs{}
 
 \nwixlogsorted{c}{{\code{}char.miz\edoc{} article body}{NW18nMBU-2TX9wk-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NW18nMBU-2TX9wk-1}}}%
 \nwixlogsorted{c}{{\code{}char.miz\edoc{} constructors}{NW4bbsBH-45oKpZ-1}{\nwixu{NW4bbsBH-3ZQoFX-1}\nwixd{NW4bbsBH-45oKpZ-1}}}%
@@ -447,9 +475,14 @@ equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
 \nwixlogsorted{i}{{\nwixident{Th23}}{Th23}}%
 \nwixlogsorted{i}{{\nwixident{Th24}}{Th24}}%
 \nwixlogsorted{i}{{\nwixident{Th25}}{Th25}}%
+\nwixlogsorted{i}{{\nwixident{Th26}}{Th26}}%
+\nwixlogsorted{i}{{\nwixident{Th27}}{Th27}}%
 \nwixlogsorted{i}{{\nwixident{Th8}}{Th8}}%
 \nwixlogsorted{i}{{\nwixident{Th9}}{Th9}}%
-\nwbegindocs{40}\nwdocspar
+\nwbegincode{39}\sublabel{NW4bbsBH-1aojze-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\moddef{\code{}char.miz\edoc{} equalities~{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3ZQoFX-1}}\nwenddeflinemarkup
+equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
+
+\nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 
 \N{Expansions}
 Import expansions of predicates and adjectives from the specified
@@ -481,10 +514,24 @@ requirements BOOLE, SUBSET
 \nwenddocs{}\nwfilename{nw/characteristic/preparatory.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 % This is placed here so the LaTeX is organized correctly, thanks to
 % problems with noweb :(
-\section{Article Body}
+\section{Article Body}\label{sec:characteristic:preparatory:start}
 
 \M
-The article body is where the magic happens.
+The article body is where the magic happens. Now we can start making
+definitions, stating theorems, proving results. The basic structure of
+our article can be cleaved in two: first we state and prove ``helper
+lemmas'', which probably belong somewhere else, but currently are not
+located anywhere in the Mizar library. The second half are our results
+concerning characteristic subgroups.
+
+Just to give some idea of what we're doing, we will have to define a
+notion of {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}. We will also have to prove a number of
+results concerning {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}s. After all, a characteristic
+subgroup is one which is left invariant under any automorphism of its
+parent group.
+
+Once that has been squared away, we will define a notion of a
+{\Tt{}\nwlinkedidentq{characteristic}{NW47t2dy-49dosn-1}\nwendquote} subgroup. Then we will prove results right away.
 
 \nwenddocs{}\nwbegincode{1}\sublabel{NW18nMBU-2TX9wk-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2TX9wk-1}}}\moddef{\code{}char.miz\edoc{} article body~{\nwtagstyle{}\subpageref{NW18nMBU-2TX9wk-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2sCaVS-1}}\nwenddeflinemarkup
 \LA{}Helper lemmas and registrations for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW18nMBU-oqDk7-1}}\RA{}
@@ -523,6 +570,16 @@ reserve X for set;
 \M
 We need to prove, if $f\colon X\onto Y$ is a surjective function of
 sets, then $f(X)=Y$.
+
+\begin{remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
+We should caution Mizar's notation for writing something like, if
+$f\colon X\to Y$ is a function of sets and $A\subset X$, then
+$f(A)=\{f(a)\in Y|a\in A\}$ is denoted as {\Tt{}f.:A\nwendquote} instead of $f(A)$,
+and {\Tt{}f.a\nwendquote} instead of $f(a)$. This is because $f$ is a set theoretic
+function, a collection of ``(input, output)'' ordered pairs. Mizar
+distinguishes $f(x)$ as function application from ``functors'' (i.e.,
+parametrized terms) by using $f(x)=\mathtt{f.x}$ for mathematical functions.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{5}\sublabel{NW18nMBU-3LADMa-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3LADMa-1}}}\moddef{Lemma: $f\colon X\onto Y\implies f(X)=Y$~{\nwtagstyle{}\subpageref{NW18nMBU-3LADMa-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{LmOntoMapsEverything}{NW18nMBU-3LADMa-1}:
@@ -603,6 +660,13 @@ end;
 We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``{\Tt{}h\ is\ Element\ of\ H\nwendquote}''.
+
+\begin{remark}\index{{\Tt{}h\ in\ H\nwendquote}!Mizar for $h\in H$}
+Mizar writes ``{\Tt{}h\ in\ H\nwendquote}'' instead of ``$h\in H$''. The statement
+``{\Tt{}h\ is\ Element\ of\ H\nwendquote}'' is a typing declaration roughly analogous to
+``$h{:}H$''; strictly speaking, it's a predicate in the object language,
+not a judgement in the metalanguage.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{13}\sublabel{NW18nMBU-4DvAms-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4DvAms-1}}}\moddef{Lemma: A group element in the subgroup is a subgroup element~{\nwtagstyle{}\subpageref{NW18nMBU-4DvAms-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{LmSubgroupElt}{NW18nMBU-4DvAms-1}:
@@ -1856,7 +1920,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
-\begin{definition}[{Dummit and Foote~\cite[\S4,4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}
+\begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}
 A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
 denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
 itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
@@ -2229,7 +2293,7 @@ The proof is remarkably similar to the previous theorem. In fact, we can
 re-use exactly the same line of reasoning establishing $\forall k\in G$, $k\in K\implies f(k)=g(k)$.
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW47t2dy-2ur0LT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2ur0LT-1}}}\moddef{Theorem: transitivity of characteristic subgroups~{\nwtagstyle{}\subpageref{NW47t2dy-2ur0LT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
-theorem Th26:
+theorem \nwlinkedidentc{Th26}{NW47t2dy-2ur0LT-1}:
   for N being \nwlinkedidentc{characteristic}{NW47t2dy-49dosn-1} Subgroup of G
   for K being \nwlinkedidentc{characteristic}{NW47t2dy-49dosn-1} Subgroup of N
   holds K is \nwlinkedidentc{characteristic}{NW47t2dy-49dosn-1} Subgroup of G
@@ -2254,8 +2318,8 @@ proof
   hence thesis;
 end;
 
-\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def9}}{Def9}}\\{{\nwixident{Th11}}{Th11}}\\{{\nwixident{Th24}}{Th24}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Th11}}{Th11}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Th24}}{Th24}{NW47t2dy-2ur0LT-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
-
+\nwindexdefn{\nwixident{Th26}}{Th26}{NW47t2dy-2ur0LT-1}\eatline
+\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th26}}{Th26}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def9}}{Def9}}\\{{\nwixident{Th11}}{Th11}}\\{{\nwixident{Th24}}{Th24}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Th11}}{Th11}{NW47t2dy-2ur0LT-1}\nwindexuse{\nwixident{Th24}}{Th24}{NW47t2dy-2ur0LT-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
 \begin{theorem}\index{$Z(G)$}\index{Center!Group}\index{Group!Center}
 Let $G$ be a group. Its center $Z(G)$ is a characteristic subgroup.
 \end{theorem}
@@ -2265,8 +2329,8 @@ The {\Tt{}center\nwendquote} functor is defined in {\Tt{}GROUP{\_}5:def\ 10\nwen
 \end{remark}
 
 \nwenddocs{}\nwbegincode{39}\sublabel{NW47t2dy-g56Nl-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-g56Nl-1}}}\moddef{Theorem: $Z(G)$ is characteristic subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-g56Nl-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
-theorem Th26:
+theorem \nwlinkedidentc{Th27}{NW47t2dy-g56Nl-1}:
   center G is \nwlinkedidentc{characteristic}{NW47t2dy-49dosn-1} Subgroup of G;
 
-\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-g56Nl-1}\nwendcode{}\nwbegindocs{40}\nwdocspar
-\nwenddocs{}
+\nwindexdefn{\nwixident{Th27}}{Th27}{NW47t2dy-g56Nl-1}\eatline
+\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th27}}{Th27}}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-g56Nl-1}\nwendcode{}

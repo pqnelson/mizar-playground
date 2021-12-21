@@ -3,7 +3,14 @@
 
 \M
 The header, or ``environment part'', tells Mizar what mathematics needs
-to be imported from existing Mizar articles found in the MML.
+to be imported from existing Mizar articles found in the MML. The idea
+is we can define new terms [``functors''], new predicates, or new types
+[``modes''], but we have to specify which articles we want to use for
+their definitions, results, and notations.
+
+This is complicated and kind of a distraction. The reader can skip ahead
+to where we start proving theorems and defining concepts in
+\S\ref{sec:characteristic:preparatory:start}.
 
 <<Environment for [[char.miz]]>>=
 environ
@@ -21,23 +28,47 @@ environ
 
 @
 
+\begin{remark}
+In practice, we often just copy/paste the [[environ]] of an article
+proving results about similar topics. This is probably the easiest way
+to get started, but it leaves one wondering what exactly this elaborate
+section \emph{does} in Mizar.
+\end{remark}
+
 \subsection{Vocabularies, Notations, Constructors}
 
 \N{Vocabularies}\label{par:characteristic:vocabularies}
-The [[vocabularies]] refers to the identifiers defined. For example,
-[[Isomorphism]] may be found in [[RING_3]]. So even if I wanted to use
-[[Isomorphism]] as a token, I need to add [[RING_3]] to
-the vocabularies list. Similarly, [[MOD_4]] introduces the tokens
-[[Endomorphism]] and [[Automorphism]], which I want to use, so I add
-them, too.
+The [[vocabularies]] refers to the identifiers defined. As I understand
+it, Mizar is actually using the [[vocabularies]] for the user to add new
+tokens to the language. Then Mizar will parse the file and treat
+user-defined terms \emph{as} terms. The meaning associated to them will
+be spelled out in the other parts of the [[environ]].
+
+For example, [[Isomorphism]] may be found in [[RING_3]]. If I wanted to
+define an [[Isomorphism]] of groups, then I must use [[Isomorphism]] as
+a token. Thus I would need to add [[RING_3]] to the vocabularies list.
+(Earlier versions of this text made me think this was a good idea, but
+it turned out to be a huge distraction.)
+
+Similarly, [[MOD_4]] introduces the tokens [[Endomorphism]] and
+[[Automorphism]], which I want to use, so I add them, too.
 
 <<[[char.miz]] vocabularies>>=
-vocabularies RING_3, MOD_4, TMP,
+vocabularies MOD_4, TMP,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
   <<Group conjugation and normal subgroups tokens>>
 
 @
+
+\N{VOC file}
+For our article, we will need to define new tokens. They are placed in
+[[./DICT/CHAR.VOC]] (relative to whatever directory we have made our
+Mizar workstation). As we introduce new terms, we will check if it
+exists already in Mizar by running ``[[findvoc -w "term"]]''. If Mizar
+is unfamiliar with the term, then nothing will be reported, and we will
+have to add it to our [[VOC]] file. Otherwise, if [[term]] is introduced
+in another article, we add it to our [[vocabularies]] environ directive.
 
 \M
 We need to recognize the tokens found in rudimentary set theory, so we
