@@ -1,0 +1,100 @@
+\chapter{Group Theory in Mizar}
+
+\section{Basic Definitions}
+
+\M
+Recall, there are two ways to define a group. I will make bold the
+differences:
+
+\begin{definition}[Version 1]\label{defn:introduction:mizar-style-group}
+  A \emph{group} consists of
+  \begin{enumerate}
+  \item a set $G$
+  \end{enumerate}
+  equipped with
+  \begin{enumerate}
+  \item a binary operator $\mu\colon G\times G$
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+  \item Associativity: for any $g_{1}$, $g_{2}$, $g_{3}\in G$, we have
+    $\mu(g_{1}, \mu(g_{2},g_{3})) = \mu(\mu(g_{1},g_{2}),g_{3})$
+  \item \textbf{Existence of Unit: there exists an element $1\in G$ such
+    that for any $g\in G$ we have $\mu(g,1)=\mu(1,g)=g$}
+  \item \textbf{Existence of inverses: for each $g\in G$, there is an
+    $h\in G$ such that $\mu(g,h)=1$}
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[Version 2]
+  A \emph{group} consists of
+  \begin{enumerate}
+  \item a set $G$
+  \end{enumerate}
+  equipped with
+  \begin{enumerate}
+  \item a binary operator $\mu\colon G\times G$
+  \item \textbf{a unit $1\in G$}
+  \item \textbf{an inverse operator $\iota\colon G\to G$}
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+  \item Associativity: for any $g_{1}$, $g_{2}$, $g_{3}\in G$, we have
+    $\mu(g_{1}, \mu(g_{2},g_{3})) = \mu(\mu(g_{1},g_{2}),g_{3})$
+  \item \textbf{Unit laws: for any $g\in G$ we have $\mu(g,1)=\mu(1,g)=g$}
+  \item \textbf{Inverse law: for each $g\in G$, $\mu(\iota(g),g)=1$}
+  \end{enumerate}
+\end{definition}
+
+\M
+As Baez~\cite[week one]{baez2004qg-lectures} notes, these two different
+definitions give rise to \emph{different} notions of ``morphism'' (but
+identical notions of ``isomorphism'').
+
+Mizar takes the first version as its definition. Implicit in its
+definition is a notion of a ``\verb#multMagma#'', a magma with a
+multiplication operator (defined in \verb#ALGSTR_0#). As Nakasho and
+friends explicate~\cite{nakasho2014formalization}, a ``\verb#multMagma#''
+is a magma as could be found in, e.g., Bourbaki's \emph{Algebra}: it
+consists of a set (which Mizar calls its ``\verb#carrier#'') and a
+binary operator ``\verb#multF#''.
+
+\begin{mizar}
+:: algstr_0.miz
+definition
+  struct (1-sorted) multMagma (# carrier -> set,
+  multF -> BinOp of the carrier
+  #);
+end;
+\end{mizar}
+
+\M
+Mizar formalizes a group following the style of
+Definition~\ref{defn:introduction:mizar-style-group}. 
+
+\begin{mizar}
+:: group_1.miz
+definition
+  let IT be multMagma;
+
+  attr IT is unital means
+:: GROUP_1:def 1
+  ex e being Element of IT st for h being
+  Element of IT holds h * e = h & e * h = h;
+  
+  attr IT is Group-like means
+:: GROUP_1:def 2
+  ex e being Element of IT st for h being Element of IT
+  holds h * e = h & e * h = h &
+        ex g being Element of IT st h * g = e & g * h = e;
+
+  attr IT is associative means
+:: GROUP_1:def 3
+  for x,y,z being Element of IT holds (x*y )*z = x*(y*z);
+end;
+
+definition
+  mode Group is Group-like associative non empty multMagma;
+end;
+\end{mizar}
+  

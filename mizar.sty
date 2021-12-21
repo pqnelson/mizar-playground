@@ -3,14 +3,18 @@
 \RequirePackage{listings}
 \RequirePackage[dvipsnames]{xcolor}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{ghBlue}{HTML}{0550ae} % rgb(5, 80, 174)
-\definecolor{ghPurple}{HTML}{8250df} % rbg(130, 80, 223)
+%\definecolor{ghBlue}{HTML}{0550ae} % rgb(5, 80, 174)
+\definecolor{ghBlue}{HTML}{268bd2} % {2075c7}
+%\definecolor{ghPurple}{HTML}{8250df} % rbg(130, 80, 223)
+\definecolor{ghPurple}{HTML}{c61b6e}
 \definecolor{ghRed}{HTML}{cf222e}  % rbg(207, 34, 46)
 \definecolor{ghRed2}{HTML}{953800}  % rgb(149, 56, 0)
 % orange from https://github.com/sellout/emacs-color-theme-solarized
 \definecolor{solOrange}{HTML}{fb7640}
-\def\defaultCommentStyle{\color{gray}}
+\definecolor{bgcolor}{HTML}{073642} % solarized-dark
+\definecolor{base3}{HTML}{fcf4dc}
 
+\def\defaultCommentStyle{\color{gray}}
 
 % hack from https://tex.stackexchange.com/a/536920/14751
 \newcommand\beginlstdelim[3]{%
@@ -52,14 +56,32 @@
 }
 
 \lstnewenvironment{litmizar}%
-                  {\lstset{language=mizar,
-                      basicstyle=\ttfamily,
+                  {
+                    \lstset{language=mizar,
+                      basicstyle=\color{base3}\ttfamily,
+                      backgroundcolor=\color{bgcolor},
                       upquote=true,
                       literate={c=}{$\subseteq$}2}}%
                   {}
 
-\lstnewenvironment{mizar}[1][]%
-                  {\lstset{language=mizar,
-                      basicstyle=\ttfamily\small,
+\RequirePackage{mdframed}
+\mdfsetup{skipabove=6pt,
+  skipbelow=\topsep,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  innertopmargin=\topsep,
+  innerbottommargin=\topsep}                  
+\lstnewenvironment{mizar}%
+                  {\mdframed[backgroundcolor=bgcolor,
+                      outerlinewidth=1pt]
+                    \lstset{language=mizar,
+                      basicstyle=\color{base3}\ttfamily,
+%                      basicstyle=\ttfamily\small,
                       upquote=true}}%
-                  {}
+                  {\endmdframed}
+%% \newenvironment{mizar}%
+%%                {\begin{mdframed}[backgroundcolor=bgcolor]\begin{rawmizar}}
+%%                {\end{rawmizar}{\end{mdframed}}}
+%%\def\mizar{\begin{rawmizar}}
+%%\def\endmizar{\end{rawmizar}}
+  
