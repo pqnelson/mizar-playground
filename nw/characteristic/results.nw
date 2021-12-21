@@ -14,6 +14,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Register characteristic subgroups are normal>>
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>
+<<Theorem: transitivity of characteristic subgroups>>
 <<Theorem: $Z(G)$ is characteristic subgroup>>
 
 @
@@ -242,7 +243,7 @@ proof
   then K is normal Subgroup of G by LmNormalSubgroup;
   hence thesis;
 end;
-  
+
 @ %def Th25
 
 \begin{remark}
@@ -256,12 +257,12 @@ proof
   consider g being inner Automorphism of G such that
   A1: for x being Element of G holds g.x = x |^ a
   by Th19;
-  
+
   Image(g|N) = N by Th20;
   then g|N is Automorphism of N by Th11;
   then reconsider f = g|N as Automorphism of N;
   A2: Image(f|K) = K by Def9;
-  
+
   for k being Element of G st k in K holds f.k = g.k
   <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
   then Image(f|K) = Image(g|K) by Th24;
@@ -270,7 +271,7 @@ proof
   hence thesis;
 end;
 
-@ 
+@
 
 <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>=
 proof
@@ -283,7 +284,7 @@ proof
           .= g.k by B1, B2, Lm3;
   hence f.k = g.k;
 end;
-    
+
 @
 
 \N{Lemma}
@@ -341,8 +342,8 @@ proof
   <<Proof: $y\in g(K)\implies y\in f(K)$>>
   thus thesis;
 end;
-  
-@ 
+
+@
 
 <<Proof: $y\in f(K)\implies y\in g(K)$>>=
 proof
@@ -361,7 +362,7 @@ proof
   hence thesis;
 end;
 
-@ 
+@
 
 <<Proof: $y\in g(K)\implies y\in f(K)$>>=
 proof
@@ -382,6 +383,42 @@ end;
 
 @
 
+\begin{theorem}
+If $N\subgroup G$ is characteristic, and if $K\subgroup N$ is
+characteristic, then $K\subgroup G$ is characteristic.
+\end{theorem}
+
+The proof is remarkably similar to the previous theorem. In fact, we can
+re-use exactly the same line of reasoning establishing $\forall k\in G$, $k\in K\implies f(k)=g(k)$.
+
+<<Theorem: transitivity of characteristic subgroups>>=
+theorem Th26:
+  for N being characteristic Subgroup of G
+  for K being characteristic Subgroup of N
+  holds K is characteristic Subgroup of G
+proof
+  let N be characteristic Subgroup of G;
+  let K be characteristic Subgroup of N;
+  for g being Automorphism of G holds Image(g|K) = K
+  proof
+    let g be Automorphism of G;
+    A1: Image(g|N) = N by Def9;
+    then g|N is Automorphism of N by Th11;
+    then reconsider f = g|N as Automorphism of N;
+    A2: Image(f|K) = K by Def9;
+
+    for k being Element of G st k in K holds f.k = g.k
+    <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
+    then Image(g|K) = Image(f|K) by Th24
+                   .= K by A2;
+    hence Image(g|K) = K;
+  end;
+  then K is characteristic Subgroup of G by Def9;
+  hence thesis;
+end;
+
+@
+
 \begin{theorem}\index{$Z(G)$}\index{Center!Group}\index{Group!Center}
 Let $G$ be a group. Its center $Z(G)$ is a characteristic subgroup.
 \end{theorem}
@@ -394,4 +431,4 @@ The [[center]] functor is defined in [[GROUP_5:def 10]].
 theorem Th26:
   center G is characteristic Subgroup of G;
 
-@ 
+@
