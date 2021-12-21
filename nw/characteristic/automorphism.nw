@@ -159,19 +159,17 @@ end;
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
 Lm9:
-for G being Group
 for H being Subgroup of G
 for phi being Automorphism of G
 holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
-  let G be Group;
   let H be Subgroup of G;
   let phi be Automorphism of G;
 ::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
   thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
   AA0: phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
-  then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
+  then Ker(phi|H) is Subgroup of (1).G by Th9;
   then AA1: Ker(phi|H) = (1).G by Lm8;
   (1).G = (1).H by GROUP_2:63;
   then Ker(phi|H) = (1).H by AA1;
@@ -188,13 +186,11 @@ $\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
 \end{theorem}
 
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
-theorem Th14:
-  for G being Group
+theorem Th8:
   for H being Subgroup of G
   for phi being Automorphism of G
   holds H,phi .: H are_isomorphic
 proof
-  let G be Group;
   let H be Subgroup of G;
   let phi be Automorphism of G;
   reconsider H2 = phi .: H as Subgroup of G;
@@ -205,7 +201,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th14
+@ %def Th8
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ any subgroup, and $\varphi\in\aut(G)$
@@ -214,7 +210,7 @@ Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
 \end{theorem}
 
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>=
-theorem LmKerRestrictedIsSubgroupOfKer:
+theorem Th9:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
   for H being Subgroup of G1
@@ -233,7 +229,7 @@ proof
   hence thesis;
 end;
 
-@ %def LmKerRestrictedIsSubgroupOfKer
+@ %def Th9
 
 <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>=
 proof
@@ -320,7 +316,7 @@ We should now have some sanity check that [[Id_G]] really is
 the identity group morphism $\Id_{G}$ that \emph{we} think it is.
 
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>=
-theorem Th3:
+theorem Th10:
   Id_G = id (the carrier of G)
 proof
   let x be Element of G;
@@ -329,7 +325,7 @@ proof
   thus thesis;
 end;
 
-@ %def Th3
+@ %def Th10
 
 \M
 Now we should automatically associate $\Id_{G}$ is bijective. This
@@ -359,7 +355,7 @@ on the underlying set $U(G)$ of the group $G$.
 Lm1: Id_G is one-to-one
 proof
   id (the carrier of G) is one-to-one;
-  hence thesis by Th3;
+  hence thesis by Th10;
 end;
 
 @ %def Lm1
@@ -374,7 +370,7 @@ As with establishing injectivity, it's straightforward.
 Lm2: Id_G is onto
 proof
   id (the carrier of G) is onto;
-  hence thesis by Th3;
+  hence thesis by Th10;
 end;
 
 @ %def Lm2
@@ -390,14 +386,12 @@ This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
-LmMinor:
-  for G being Group
+theorem Th11:
   for H being strict Subgroup of G
   for f being Automorphism of G
   st Image(f|H) = H
   holds f|H is Automorphism of H
 proof
-  let G be Group;
   let H be strict Subgroup of G;
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
@@ -411,7 +405,7 @@ proof
   hence thesis;
 end;
 
-@ %def LmMinor
+@ %def Th11
 
 \N{Proof of surjectivity}
 For reasons I do not adequately understand, I could not simply handle

@@ -14,6 +14,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Register characteristic subgroups are normal>>
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>
+<<Theorem: $Z(G)$ is characteristic subgroup>>
 
 @
 
@@ -85,7 +86,7 @@ purposes, it suffices to prove that the trivial subgroup is characteristic.
 
 <<Theorem: Existence of characteristic subgroups>>=
 
-theorem Th11:
+theorem Th21:
   ex H being Subgroup of G st H is characteristic
 proof
   take H = (1).G;
@@ -93,7 +94,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th11
+@ %def Th21
 
 \N{Register [[characteristic]] for Subgroups}
 Now we can instruct Mizar to recognize [[characteristic]] as an
@@ -103,7 +104,7 @@ adjective of [[Subgroup]].
 registration
   let G;
   cluster characteristic for Subgroup of G;
-  existence by Th11;
+  existence by Th21;
 end;
 
 @
@@ -132,12 +133,10 @@ characteristic subgroup of $G$, then $K\normalSubgroup G$ it is also
 normal.
 
 <<Theorem: characteristic subgroups are normal>>=
-theorem Th12:
-  for G being Group
+theorem Th22:
   for K being characteristic Subgroup of G
   holds K is normal Subgroup of G
 proof
-  let G be Group;
   let K be characteristic Subgroup of G;
 A1:  for a being Element of G holds K |^ a = K
   <<Sub-proof: characteristic subgroups invariant under conjugation>>
@@ -146,7 +145,7 @@ A1:  for a being Element of G holds K |^ a = K
   hence K is normal Subgroup of G by A1,GROUP_3:def 13;
 end;
 
-@ %def Th12
+@ %def Th22
 
 \M
 Really, proving a characteristic subgroup is normal amounts to proving
@@ -158,9 +157,9 @@ proof
   let a be Element of G;
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
-  by ThAlwaysFindInnerAuto;
+  by Th19;
   A3: Image(f|K) = K by GROUP_6:57,Def9;
-  Image(f|K) = K |^ a by A2,Th7;
+  Image(f|K) = K |^ a by A2,Th15;
   then K |^ a = K by A3,Def9;
   hence thesis;
 end;
@@ -176,7 +175,7 @@ have to tell Mizar where to find the proof.
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
-  coherence by Th12;
+  coherence by Th22;
 end;
 
 @
@@ -195,22 +194,20 @@ assumed there is only one (namely, $H$).
 \end{proof}
 
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>=
-theorem Th13:
-  for G being Group
+theorem Th23:
   for H being strict Subgroup of G
   st (for K being strict Subgroup of G
       st card K = card H
       holds H = K)
   holds H is characteristic
 proof
-  let G be Group;
   let H be strict Subgroup of G;
   assume A0: for K being strict Subgroup of G st card K = card H holds H = K;
   H is characteristic
   proof
     let phi be Automorphism of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then Image(phi|H),H are_isomorphic by Th14;
+    then Image(phi|H),H are_isomorphic by Th8;
     then card H = card Image(phi|H) by GROUP_6:73;
     then Image(phi|H) = H by A0;
     hence thesis;
@@ -218,65 +215,72 @@ proof
   hence thesis;
 end;
 
-@
+@ %def Th23
 
 \begin{theorem}
 If $K\subgroup H$ is characteristic, and if $H\normalSubgroup G$ is normal,
 then $K\normalSubgroup G$ is normal.
 \end{theorem}
 
-This required a surprising amount of legwork.
+This required a surprising amount of legwork, even when carving it out
+into a helper theorem! The ``architecture'' of the proof follows what we
+would find in a textbook. It's just that a textbook will gloss over
+facts about morphisms which we'd need to prove.
 
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>=
-theorem
-for G being Group
-for N being strict normal Subgroup of G
-for K being characteristic Subgroup of N
-holds K is normal Subgroup of G
+<<Lemma: two group morphisms which coincide on subgroup have the same image>>
+
+theorem Th25:
+  for N being strict normal Subgroup of G
+  for K being characteristic Subgroup of N
+  holds K is normal Subgroup of G
 proof
-  let G be Group;
   let N be strict normal Subgroup of G;
   let K be characteristic Subgroup of N;
   for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider g being inner Automorphism of G such that
-    A1: for x being Element of G holds g.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-
-    N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
-    then A2: g|N is Automorphism of N by LmMinor;
-
-    K2: Image((g|N)|K) = Image(g|K) by LmRestrictCollapse;
-    N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
-    then A2: g|N is Automorphism of N by LmMinor;
-    reconsider f = g|N as Automorphism of N by A2;
-    f .: K = K by ThAltChar;
-    A3: Image(f|K) = K by Def9;
-
-    for k being Element of G st k in K holds f.k = g.k
-    <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
-    then Image(f|K) = Image(g|K) by ThImgsEqRel;
-    then Image(g|K) = K & Image(g|K) = K |^ a by A3,A1,Th7;
-    then K = K |^ a by A1,Th7;
-    hence thesis;
-  end;
+  <<Proof: $\forall a\in G, K^{a}=K$>>
   then K is normal Subgroup of G by LmNormalSubgroup;
   hence thesis;
 end;
   
-@
+@ %def Th25
+
+\begin{remark}
+The [[strict]] hypothesis on [[N]] is necessary, since [[GROUP_2:def 6]]
+defines equality only on \emph{strict} subgroups.
+\end{remark}
+
+<<Proof: $\forall a\in G, K^{a}=K$>>=
+proof
+  let a be Element of G;
+  consider g being inner Automorphism of G such that
+  A1: for x being Element of G holds g.x = x |^ a
+  by Th19;
+  
+  Image(g|N) = N by Th20;
+  then g|N is Automorphism of N by Th11;
+  then reconsider f = g|N as Automorphism of N;
+  A2: Image(f|K) = K by Def9;
+  
+  for k being Element of G st k in K holds f.k = g.k
+  <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
+  then Image(f|K) = Image(g|K) by Th24;
+  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th15;
+  then K = K |^ a by A1,Th15;
+  hence thesis;
+end;
+
+@ 
 
 <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>=
 proof
   let k be Element of G;
-  assume Z97: k in K;
+  assume B1: k in K;
   then (g|K).k = g.k by Lm3;
-  K is Subgroup of N;
-  Z98: k in N by Z97,GROUP_2:40;
-  k is Element of K by LmSubgroupElt,Z97;
+  B2: k in N by B1,GROUP_2:40;
+  k is Element of K by LmSubgroupElt,B1;
   then f.k = (g|N).k
-  .= g.k by Z98, Z97, Lm3;
+          .= g.k by B1, B2, Lm3;
   hence f.k = g.k;
 end;
     
@@ -289,8 +293,15 @@ where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if we have
 a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the image of
 the morphisms on this shared subgroup should coincide.
 
+Initially, I had a more conservative result: let $\varphi,\psi\in\Aut(G)$
+and $H\subgroup G$, if $\forall h\in H,\varphi(h)=\psi(h)$, then
+$\varphi(H)=\psi(H)$. Then I realized this didn't describe the situation
+I was facing, so I revised it to fit. Then I realized I didn't need the
+hypothesis that $\varphi$ and $\psi$ were automorphisms, they could be
+generic morphisms.
+
 <<Lemma: two group morphisms which coincide on subgroup have the same image>>=
-theorem ThImgsEqRel:
+theorem Th24:
   for G1,G2 being Group
   for H1 being Subgroup of G1
   for K being Subgroup of H1
@@ -306,22 +317,47 @@ proof
   let H2 be Subgroup of G2;
   let f be Homomorphism of G1,G2;
   let g be Homomorphism of H1,H2;
-  assume Z90: for k being Element of G1 st k in K holds f.k=g.k;
-  Z91: Image(f|K) is strict Subgroup of G2 &
-  Image(g|K) is strict Subgroup of G2 by GROUP_2:56;
+  assume A1: for k being Element of G1 st k in K holds f.k=g.k;
+  A2: Image(f|K) is strict Subgroup of G2 &
+      Image(g|K) is strict Subgroup of G2 by GROUP_2:56;
   for y being object
   holds y in the carrier of Image(f|K) iff y in the carrier of Image(g|K)
-  proof
-    let y be object;
-    thus y in the carrier of Image(f|K) implies y in the carrier of Image(g|K)
-    <<Proof: $y\in f(K)\implies y\in g(K)$>>
-    thus y in the carrier of Image(g|K) implies y in the carrier of Image(f|K)
-    <<Proof: $y\in g(K)\implies y\in f(K)$>>
-    thus thesis;
-  end;
+  <<Proof: $y\in f(K)\iff y\in g(K)$>>
   then the carrier of Image(f|K) = the carrier of Image(g|K) by TARSKI:2;
-  then the multMagma of Image(f|K) = the multMagma of Image(g|K) by Z91,GROUP_2:59;
-  then Image(f|K) = Image(g|K) by GROUP_2:def 6;
+  then Image(f|K) = Image(g|K) by A2,GROUP_2:59,GROUP_2:def 6;
+  hence thesis;
+end;
+
+@ %def Th24
+
+
+
+<<Proof: $y\in f(K)\iff y\in g(K)$>>=
+proof
+  let y be object;
+  thus y in the carrier of Image(f|K) implies y in the carrier of Image(g|K)
+  <<Proof: $y\in f(K)\implies y\in g(K)$>>
+  thus y in the carrier of Image(g|K) implies y in the carrier of Image(f|K)
+  <<Proof: $y\in g(K)\implies y\in f(K)$>>
+  thus thesis;
+end;
+  
+@ 
+
+<<Proof: $y\in f(K)\implies y\in g(K)$>>=
+proof
+  assume y in the carrier of Image(f|K);
+  then consider h being Element of K such that
+  B1: (f|K).h = y
+  by STRUCT_0:def 5,GROUP_6:45;
+  B2: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  f.h = g.h by A1,B2
+     .= (g|K).h by B2, Lm3;
+  then (g|K).h = f.h
+              .= (f|K).h by B2,Lm3
+              .= y by B1;
+  then (g|K).h = y & h is Element of K;
+  then y in the carrier of Image(g|K) by STRUCT_0:def 5,GROUP_6:45;
   hence thesis;
 end;
 
@@ -329,37 +365,33 @@ end;
 
 <<Proof: $y\in g(K)\implies y\in f(K)$>>=
 proof
-  assume Z1: y in the carrier of Image(g|K);
+  assume y in the carrier of Image(g|K);
   then consider h being Element of K such that
-  A2: (g|K).h = y
+  C1: (g|K).h = y
   by STRUCT_0:def 5,GROUP_6:45;
-  A3: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42, STRUCT_0:def 5;
-  then A4: f.h = g.h by Z90;
-  then f.h = (f|K).h by A3,Lm3;
-  then (f|K).h = g.h by A4
-              .= (g|K).h by A3,Lm3
-              .= y by A2;
-  then A5: (f|K).h = y & h is Element of K;
-  then y in the carrier of Image(f|K) by A5,STRUCT_0:def 5,GROUP_6:45;
+  C2: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  g.h = f.h by A1,C2
+     .= (f|K).h by C2,Lm3;
+  then (f|K).h = g.h
+              .= (g|K).h by C2,Lm3
+              .= y by C1;
+  then (f|K).h = y & h is Element of K;
+  then y in the carrier of Image(f|K) by STRUCT_0:def 5,GROUP_6:45;
   hence thesis;
 end;
 
-@ 
+@
 
-<<Proof: $y\in f(K)\implies y\in g(K)$>>=
-proof
-  assume A1: y in the carrier of Image(f|K);
-  then consider h being Element of K such that
-  A2: (f|K).h = y
-  by STRUCT_0:def 5,GROUP_6:45;
-  A3: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42, STRUCT_0:def 5;
-  then A4: f.h = g.h by Z90;
-  then g.h = (g|K).h by A3,Lm3;
-  then (g|K).h = f.h by A4
-              .= (f|K).h by A3,Lm3
-              .= y by A2;
-  then A5: (g|K).h = y & h is Element of K;
-  then y in the carrier of Image(g|K) by A5,STRUCT_0:def 5,GROUP_6:45;
-  hence thesis;
-end;
+\begin{theorem}\index{$Z(G)$}\index{Center!Group}\index{Group!Center}
+Let $G$ be a group. Its center $Z(G)$ is a characteristic subgroup.
+\end{theorem}
+
+\begin{remark}
+The [[center]] functor is defined in [[GROUP_5:def 10]].
+\end{remark}
+
+<<Theorem: $Z(G)$ is characteristic subgroup>>=
+theorem Th26:
+  center G is characteristic Subgroup of G;
+
 @ 

@@ -70,7 +70,7 @@ element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
 (proven in Theorem~19 of [[GROUP_3]]).
 
 <<Theorem: [[Id_G]] is effectively inner>>=
-theorem Th4:
+theorem Th12:
   for x being Element of G holds (Id_G).x = x |^ 1_G
 proof
   let x be Element of G;
@@ -79,7 +79,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th4
+@ %def Th12
 
 \M Now registering [[inner]] for [[Automorphism]].
 
@@ -102,7 +102,7 @@ we have [[Id_G]] be inner.
 proof
   take Id_G;
   take 1_G;
-  thus thesis by Th4;
+  thus thesis by Th12;
 end;
 
 @
@@ -113,7 +113,7 @@ collection of functions on the underlying set $U(G)$ of a group $G$. We
 can prove that $f\in\aut(G)$ if and only if $f$ is [[Automorphism of G]].
 
 <<Theorem: Relate [[Automorphism of G]] to elements of [[Aut G]]>>=
-theorem Th5:
+theorem Th13:
   for G being strict Group, f being object
   holds (f in Aut G) iff (f is Automorphism of G)
 proof
@@ -126,7 +126,7 @@ proof
   thus thesis;
 end;
 
-@ %def Th5
+@ %def Th13
 
 \N{Proof forwards direction} The forward direction is
 straightforward. The only subtlety is, since we didn't assume anything
@@ -165,7 +165,7 @@ of [[InnAut G]] from [[AUTGROUP]]. The only peculiarity is that
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>=
 <<Lemma: Elements of [[InnAut G]] are automorphisms>>
 
-theorem Th6:
+theorem Th14:
   for G being strict Group
   for f being object
   holds (f in InnAut G) iff (f is inner Automorphism of G)
@@ -179,7 +179,7 @@ proof
   thus thesis;
 end;
 
-@ %def Th6
+@ %def Th14
 
 \N{Proof in forwards direction} The proof amounts to unwinding
 definitions, but the subtlety is in first reconsidering $f$ as an
@@ -208,7 +208,7 @@ requiring us to reconsider $f$ as an inner automorphism of $G$.
 proof
   assume Z1: f is inner Automorphism of G;
   reconsider f as inner Automorphism of G by Z1;
-  f is Element of Aut G by Z1,Th5;
+  f is Element of Aut G by Z1,Th13;
   then consider a being Element of G such that
   B1: for x being Element of G holds f.x = x |^ a
   by Z1,Def5;
@@ -234,7 +234,7 @@ proof
   let f be Element of InnAut G;
   f is Element of Aut G by AUTGROUP:12;
   then f in Aut G;
-  hence f is Automorphism of G by Th5;
+  hence f is Automorphism of G by Th13;
 end;
 
 @ %def Lm4
@@ -247,7 +247,7 @@ $f(H) = H^{a}$.
 \end{theorem}
 
 <<Theorem: inner automorphism acting on subgroup is conjugate of argument>>=
-theorem Th7:
+theorem Th15:
   for H being Subgroup of G
   for a being Element of G
   for f being inner Automorphism of G
@@ -277,7 +277,7 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   hence thesis;
 end;
 
-@ %def Th7
+@ %def Th15
 
 <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>=
 proof
@@ -328,14 +328,12 @@ more general, namely, any endomorphism $f\colon G\to G$ defined by
 $f(x)=x^{a}$ (for some fixed $a\in G$) will have a trivial kernel.
 
 <<Theorem: Kernel of conjugation as endomorphism>>=
-theorem Th8:
-  for G being Group
+theorem Th16:
   for a being Element of G
   for f being Endomorphism of G
   st (for x being Element of G holds f.x = x |^ a)
   holds Ker f = (1).G
 proof
-  let G be Group;
   let a be Element of G;
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
@@ -347,7 +345,7 @@ A2:  for x being Element of G holds x in (1).G implies x in Ker f
   thus Ker f = (1).G by A1,A2,GROUP_2:60;
 end;
 
-@ %def Th8
+@ %def Th16
 
 <<Proof $\trivialSubgroup\subset\ker(f)$>>=
 proof
@@ -387,18 +385,16 @@ an automorphism of $G$.
 \end{theorem}
 
 <<Theorem: Conjugation by fixed element is an automorphism>>=
-theorem Th9:
-for G being Group
-for a being Element of G
-for f being Endomorphism of G
-st (for x being Element of G holds f.x = x |^ a)
-holds f is Automorphism of G
+theorem Th17:
+  for a being Element of G
+  for f being Endomorphism of G
+  st (for x being Element of G holds f.x = x |^ a)
+  holds f is Automorphism of G
 proof
-  let G be Group;
   let a be Element of G;
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
-  then Ker f = (1).G by Th8;
+  then Ker f = (1).G by Th16;
   then
 C0: f is one-to-one by GROUP_6:56;
 C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
@@ -411,7 +407,7 @@ C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   hence thesis;
 end;
 
-@ %def Th9
+@ %def Th17
 
 \N{Proof an inverse exists}
 This is the long part of the proof, its length owing to showing every
@@ -480,23 +476,21 @@ $\forall x\in G,f(x)=x^{a}=a^{-1}xa$ conjugation by $a$.
 \end{corollary}
 
 <<Corollary: conjugation of given element is an \emph{inner} automorphism>>=
-theorem Th10:
-  for G being Group
+theorem Th18:
   for a being Element of G
   for f being Endomorphism of G
   st (for x being Element of G holds f.x = x |^ a)
   holds f is inner Automorphism of G
 proof
-  let G be Group;
   let a be Element of G;
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
-  then f is Automorphism of G by Th9;
+  then f is Automorphism of G by Th17;
   then f is inner Automorphism of G by A0,Def5;
   hence thesis;
 end;
 
-@ %def Th10
+@ %def Th18
 
 \N{Constructing inner automorphisms from group elements}
 Given a group $G$ and suppose we have an element $a\in G$, can we
@@ -507,13 +501,11 @@ is an Endomorphism and it exists, then use that result in the proof that
 it's an automorphism, and so on.
 
 <<Theorem: constructing inner automorphisms from group elements>>=
-theorem ThAlwaysFindInnerAuto:
-for G being Group
-for a being Element of G
-holds ex f being inner Automorphism of G st (for x being Element of G
-holds f.x = x |^ a)
+theorem Th19:
+  for a being Element of G
+  holds ex f being inner Automorphism of G st (for x being Element of G
+  holds f.x = x |^ a)
 proof
-  let G be Group;
   let a be Element of G;
   deffunc F(Element of G) = ($1) |^ a;
   consider f be Function of the carrier of G, the carrier of G such that
@@ -531,12 +523,12 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
   then f is Endomorphism of G;
   then reconsider f as Endomorphism of G;
-C1: f is inner Automorphism of G by A1,Th10;
+C1: f is inner Automorphism of G by A1,Th18;
   for x being Element of G holds f.x = x |^ a by A1;
   hence thesis by C1;
 end;
 
-@ %def ThAlwaysFindInnerAuto
+@ %def Th19
 
 \begin{theorem}
   Let $H\subgroup G$ be an arbitrary subgroup.
@@ -552,19 +544,26 @@ subgroups are equal, we need a [[strict]] subgroup, which requires
 adding a [[strict]] hypothesis.
 
 <<Theorem: inner Automorphisms fix only normal Subgroups>>=
-theorem Th16:
-  for G being Group
+theorem Th20:
   for H being strict Subgroup of G
   holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
 proof
-  let G be Group;
   let H be strict Subgroup of G;
   <<Proof: normal implies fixed by inner automorphisms>>
   <<Proof by contradiction: fixed by inner automorphisms implies normal>>
   thus thesis by C1,C2;
 end;
 
-@ %def Th16
+@ %def Th20
+
+\begin{remark}[On \texttt{strict} hypothesis]
+The [[strict]] condition is necessary to prove $H\normalSubgroup G$
+implies $\forall\varphi\in\Inn(G),\varphi(H)=H$. Otherwise, we end up
+with the slightly peculiar situation where $\varphi(H) = $
+[[the multMagma of ]]$H$, which isn't terrible, but requires additional
+steps later on in proving ``$K\subgroup N$ is characteristic and
+$N\normalSubgroup G$ is [[strict]] normal implies $K\normalSubgroup G$.''
+\end{remark}
 
 <<Proof: normal implies fixed by inner automorphisms>>=
 C1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
@@ -574,7 +573,7 @@ proof
   consider a being Element of G such that
   A1: for x being Element of G holds f.x = x |^ a
   by Def5;
-  A2: Image(f|H) = H |^ a by A1,Th7;
+  A2: Image(f|H) = H |^ a by A1,Th15;
   H |^ a = the multMagma of H by A0,GROUP_3:def 13
   .= H by GROUP_2:def 6;
   then Image(f|H)=H by A2;
@@ -599,8 +598,8 @@ proof
   by GROUP_3:def 13;
   consider f being inner Automorphism of G such that
   B3: (for x being Element of G holds f.x= x |^ a)
-  by ThAlwaysFindInnerAuto;
-  Image(f|H) = H |^ a by B3, Th7;
+  by Th19;
+  Image(f|H) = H |^ a by B3, Th15;
   hence contradiction by B1,B2;
 end;
 
