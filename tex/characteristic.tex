@@ -591,23 +591,23 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume f is onto;
-  then A0: rng f = Y;
-  A1: dom f = X by FUNCT_2:def 1;
-  A2: for y being object
+  then A1: rng f = Y;
+  A2: dom f = X by FUNCT_2:def 1;
+  then A3: for y being object
   holds y in rng f iff ex x being object st x in X & y = f.x
-  by A1, FUNCT_1:def 3;
-  A3: for y being object holds y in (f .: X) iff
+  by FUNCT_1:def 3;
+  A4: for y being object holds y in (f .: X) iff
   ex x being object st x in X & x in X & y = f.x
-  by A1,FUNCT_1:def 6;
+  by A2,FUNCT_1:def 6;
 
-  B1: for y being object holds y in (f .: X) implies y in rng f
+  C1: for y being object holds y in (f .: X) implies y in rng f
   \LA{}Proof: $y\in f(X)\implies y\in\mathrm{rng}(f)$~{\nwtagstyle{}\subpageref{NW18nMBU-13m7BQ-1}}\RA{}
 
-  B2: for y being object holds y in rng f implies y in (f .: X)
+  C2: for y being object holds y in rng f implies y in (f .: X)
   \LA{}Proof: $y\in\mathrm{rng}(f)\implies y\in f(X)$~{\nwtagstyle{}\subpageref{NW18nMBU-43XoCQ-1}}\RA{}
-  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
+  for y being object holds y in rng f iff y in (f .: X) by C1,C2;
   then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A0;
+  hence f .: X = Y by A1;
 end;
 
 \nwindexdefn{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}{NW18nMBU-3LADMa-1}\eatline
@@ -617,9 +617,9 @@ proof
   let y be object;
   assume y in (f .: X);
   then consider x being object such that
-  A10: x in X and x in X and A11: y = f.x
-  by A3;
-  thus y in rng f by A10,A11,A2;
+  B1: x in X and x in X and B2: y = f.x
+  by A4;
+  thus y in rng f by A3,B1,B2;
 end;
 
 \nwused{\\{NW18nMBU-3LADMa-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
@@ -629,9 +629,9 @@ proof
   let y be object;
   assume y in rng f;
   then consider x being object such that
-  A20: x in X and A21: y = f.x
-  by A2;
-  thus y in (f .: X) by A20,A21,A3;
+  B1: x in X and B2: y = f.x
+  by A3;
+  thus y in (f .: X) by A4,B1,B2;
 end;
 
 \nwused{\\{NW18nMBU-3LADMa-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
@@ -792,7 +792,7 @@ holds H is normal Subgroup of G
 proof
   let G be Group;
   let H be Subgroup of G;
-  assume A0: for a being Element of G holds H |^ a = H;
+  assume for a being Element of G holds H |^ a = H;
   then for a being Element of G holds the carrier of H |^ a = the carrier of H;
   then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
@@ -838,28 +838,23 @@ that theorem (not even to functions of sets).
 \nwenddocs{}\nwbegincode{25}\sublabel{NW18nMBU-EZoEE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\moddef{Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism~{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 LmRestrictCollapse:
 for G,G2 being Group
-for K being Subgroup of G
-for H being Subgroup of K
+for N being Subgroup of G
+for H being Subgroup of N
 for f being Homomorphism of G,G2
-holds (f|K)|H = f|H
+holds (f|N)|H = f|H
 proof
   let G,G2 be Group;
-  let K be Subgroup of G;
-  let H be Subgroup of K;
+  let N be Subgroup of G;
+  let H be Subgroup of N;
   let f be Homomorphism of G,G2;
-  set UG = the carrier of G;
-  set UK = the carrier of K;
+  set UN = the carrier of N;
   set UH = the carrier of H;
-  UH c= UK by GROUP_2:def 5;
-  then C1: (f|UK)|UH = f|UH by RELAT_1:73,74;
-  f|K is Homomorphism of K,G2;
-  (f|K)|H is Homomorphism of H,G2;
-  C2: (f|UK) = f|K &
-  f|UH = f|H by GRSOLV_1:def 2;
-  (f|K)|H = (f|K)|UH by GRSOLV_1:def 2
-         .= (f|UK)|UH by GRSOLV_1:def 2;
-  then (f|K)|H = f|H by C1,C2;
-  hence thesis;
+  UH c= UN by GROUP_2:def 5;
+  then A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
+  by RELAT_1:73,74,GRSOLV_1:def 2;
+  (f|N)|H = (f|N)|UH by GRSOLV_1:def 2
+         .= (f|UN)|UH by GRSOLV_1:def 2;
+  hence (f|N)|H = f|H by A1;
 end;
 
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwendcode{}\nwbegindocs{26}\nwdocspar
@@ -1011,11 +1006,10 @@ end;
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  assume A1: H is Subgroup of (1).G;
+  then reconsider H as Subgroup of (1).G;
+  (1).G is Subgroup of H by GROUP_2:65;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
   hence thesis by GROUP_2:55;
 end;
 
@@ -1032,12 +1026,11 @@ proof
   let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
 ::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
   thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
-  AA0: phi is one-to-one;
+  phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by \nwlinkedidentc{Th9}{NW1Nnu7l-2Q8R0t-1};
-  then AA1: Ker(phi|H) = (1).G by \nwlinkedidentc{Lm8}{NW1Nnu7l-3CeuwY-1};
-  (1).G = (1).H by GROUP_2:63;
-  then Ker(phi|H) = (1).H by AA1;
+  then Ker(phi|H) = (1).G by \nwlinkedidentc{Lm8}{NW1Nnu7l-3CeuwY-1}
+                 .= (1).H by GROUP_2:63;
   then (phi|H) is one-to-one by GROUP_6:56;
   hence thesis;
 end;
@@ -1084,13 +1077,13 @@ proof
   let G1,G2 be Group;
   let f be Homomorphism of G1,G2;
   let H be Subgroup of G1;
-  A0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
+  A1: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
   Ker(f) is Subgroup of G1;
   for g being Element of G1
   st g in Ker(f|H)
   holds g in Ker(f)
   \LA{}Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1MwKaZ-1}}\RA{}
-  then Ker(f|H) is Subgroup of Ker(f) by A0,GROUP_2:58;
+  then Ker(f|H) is Subgroup of Ker(f) by A1,GROUP_2:58;
   hence thesis;
 end;
 
@@ -1099,13 +1092,13 @@ end;
 \nwenddocs{}\nwbegincode{25}\sublabel{NW1Nnu7l-1MwKaZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1MwKaZ-1}}}\moddef{Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1MwKaZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2Q8R0t-1}}\nwenddeflinemarkup
 proof
   let g be Element of G1;
-  assume A1: g in Ker(f|H);
+  assume A2: g in Ker(f|H);
   Ker(f|H) is Subgroup of H;
-  then A2: g in H by A1, \nwlinkedidentc{LmSubgroupEltTrans}{NW18nMBU-7Q5oR-1};
-  then A3: (f|H).g = f.g by \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1};
-  g is Element of H by A2, \nwlinkedidentc{LmSubgroupElt}{NW18nMBU-4DvAms-1};
-  then (f|H).g = 1_G2 by A1,GROUP_6:41;
-  then f.g = 1_G2 by A3;
+  then A3: g in H by A2, \nwlinkedidentc{LmSubgroupEltTrans}{NW18nMBU-7Q5oR-1};
+  then A4: (f|H).g = f.g by \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1};
+  g is Element of H by A3, \nwlinkedidentc{LmSubgroupElt}{NW18nMBU-4DvAms-1};
+  then 1_G2 = (f|H).g by A2,GROUP_6:41
+           .= f.g by A4;
   then g in Ker(f) by GROUP_6:41;
   hence thesis;
 end;
@@ -1185,8 +1178,8 @@ theorem \nwlinkedidentc{Th10}{NW1Nnu7l-4SFZrK-1}:
   \nwlinkedidentc{Id_G}{NW1Nnu7l-27i33n-1} = id (the carrier of G)
 proof
   let x be Element of G;
-  thus A4: (\nwlinkedidentc{Id_G}{NW1Nnu7l-27i33n-1}).x = x by \nwlinkedidentc{Def3}{NW1Nnu7l-27i33n-1}
-                   .= (id (the carrier of G)).x;
+  thus (\nwlinkedidentc{Id_G}{NW1Nnu7l-27i33n-1}).x = x by \nwlinkedidentc{Def3}{NW1Nnu7l-27i33n-1}
+               .= (id (the carrier of G)).x;
   thus thesis;
 end;
 
@@ -1285,10 +1278,10 @@ that the claim {\Tt{}f\ is\ onto\nwendquote} is different than {\Tt{}f\ is\ onto
 \nwenddocs{}\nwbegincode{45}\sublabel{NW1Nnu7l-41Pxbq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\moddef{Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1QHEJY-1}}\nwenddeflinemarkup
 proof
   set UH = the carrier of H;
-  AA1: f|H is Function of UH,UH by C1;
+  B1: f|H is Function of UH,UH by C1;
   rng(f|H) = the carrier of H by GROUP_6:44, A1;
-  then AA3: f|H is onto Function of UH,UH by AA1,FUNCT_2:def 3;
-  then f|H is onto Homomorphism of H,H by AA3,C1;
+  then f|H is onto Function of UH,UH by B1,FUNCT_2:def 3;
+  then f|H is onto Homomorphism of H,H by C1;
   hence thesis;
 end;
 
@@ -1429,9 +1422,9 @@ about $f$, we should establish it's an endomorphism of $G$ along the way,
 
 \nwenddocs{}\nwbegincode{17}\sublabel{NW3Mfp8C-wlMQo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-wlMQo-1}}}\moddef{Proof $f\in\aut(G)\implies f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-wlMQo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2VuNZX-1}}\nwenddeflinemarkup
 proof
-  assume A0: f in Aut G;
+  assume A1: f in Aut G;
   then reconsider f as \nwlinkedidentc{Endomorphism}{NW1Nnu7l-17cKlQ-1} of G by AUTGROUP:def 1;
-  f is bijective by A0,AUTGROUP:def 1;
+  f is bijective by A1,AUTGROUP:def 1;
   then f is \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   hence thesis;
 end;
@@ -1482,13 +1475,13 @@ Automorphism of $G$ thanks to our handy-dandy lemma.
 
 \nwenddocs{}\nwbegincode{23}\sublabel{NW3Mfp8C-18aBqf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-18aBqf-1}}}\moddef{Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)~{\nwtagstyle{}\subpageref{NW3Mfp8C-18aBqf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2gUxot-1}}\nwenddeflinemarkup
 proof
-  assume Z0: f in InnAut G;
+  assume A1: f in InnAut G;
   then f is \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G by \nwlinkedidentc{Lm4}{NW3Mfp8C-3eJW7Q-1};
   then reconsider f as \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   then consider a being Element of G such that
   A2: for x being Element of G holds f.x = x |^ a
-  by Z0,AUTGROUP:def 4;
+  by A1,AUTGROUP:def 4;
   f is \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G by \nwlinkedidentc{Def5}{NW3Mfp8C-13QmRM-1},A2;
   hence thesis;
 end;
@@ -1501,14 +1494,14 @@ requiring us to reconsider $f$ as an inner automorphism of $G$.
 
 \nwenddocs{}\nwbegincode{25}\sublabel{NW3Mfp8C-2maG0l-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-2maG0l-1}}}\moddef{Proof ($f$ is inner automorphism) $\implies$ $f$ is in \code{}InnAut\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-2maG0l-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2gUxot-1}}\nwenddeflinemarkup
 proof
-  assume Z1: f is \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
-  reconsider f as \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G by Z1;
-  f is Element of Aut G by Z1,\nwlinkedidentc{Th13}{NW3Mfp8C-2VuNZX-1};
+  assume B1: f is \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
+  then reconsider f as \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
+  f is Element of Aut G by B1,\nwlinkedidentc{Th13}{NW3Mfp8C-2VuNZX-1};
   then consider a being Element of G such that
-  B1: for x being Element of G holds f.x = x |^ a
-  by Z1,\nwlinkedidentc{Def5}{NW3Mfp8C-13QmRM-1};
+  B2: for x being Element of G holds f.x = x |^ a
+  by B1,\nwlinkedidentc{Def5}{NW3Mfp8C-13QmRM-1};
   f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-  then f in InnAut G by B1,AUTGROUP:def 4;
+  then f in InnAut G by B2,AUTGROUP:def 4;
   hence thesis;
 end;
 
@@ -1553,13 +1546,13 @@ proof
       a be Element of G,
       f be \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   assume
-A0: for x being Element of G holds f.x = x |^ a;
+A1: for x being Element of G holds f.x = x |^ a;
 C1: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
     then Z1: f.h = (f|H).h by \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1};
-    f.h = h |^ a by A0;
+    f.h = h |^ a by A1;
     hence (f|H).h = h |^ a by Z1;
   end;
 
@@ -1603,7 +1596,7 @@ proof
   AB2:    g in H;
 
 AB3:  (f|H).g = f.g by \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1},AB2
-             .= g |^ a by A0
+             .= g |^ a by A1
              .= y by AB1;
   reconsider g as Element of H by AB2,\nwlinkedidentc{LmSubgroupElt}{NW18nMBU-4DvAms-1};
   reconsider fH = (f|H) as Homomorphism of H,G;
@@ -1631,13 +1624,13 @@ theorem \nwlinkedidentc{Th16}{NW3Mfp8C-3fLhao-1}:
 proof
   let a be Element of G;
   let f be \nwlinkedidentc{Endomorphism}{NW1Nnu7l-17cKlQ-1} of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-A1:  for x being Element of G holds x in Ker f implies x in (1).G
+  assume A1: for x being Element of G holds f.x = x |^ a;
+C1:  for x being Element of G holds x in Ker f implies x in (1).G
   \LA{}Proof $\ker(f)\subset\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1msO16-1}}\RA{}
 
-A2:  for x being Element of G holds x in (1).G implies x in Ker f
+C2:  for x being Element of G holds x in (1).G implies x in Ker f
   \LA{}Proof $\trivialSubgroup\subset\ker(f)$~{\nwtagstyle{}\subpageref{NW3Mfp8C-12vITF-1}}\RA{}
-  thus Ker f = (1).G by A1,A2,GROUP_2:60;
+  thus Ker f = (1).G by C1,C2,GROUP_2:60;
 end;
 
 \nwindexdefn{\nwixident{Th16}}{Th16}{NW3Mfp8C-3fLhao-1}\eatline
@@ -1645,7 +1638,7 @@ end;
 \nwenddocs{}\nwbegincode{37}\sublabel{NW3Mfp8C-12vITF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-12vITF-1}}}\moddef{Proof $\trivialSubgroup\subset\ker(f)$~{\nwtagstyle{}\subpageref{NW3Mfp8C-12vITF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-3fLhao-1}}\nwenddeflinemarkup
 proof
   let x be Element of G;
-  assume Z4: x in (1).G;
+  assume x in (1).G;
   then x is Element of (1).G by \nwlinkedidentc{LmSubgroupElt}{NW18nMBU-4DvAms-1};
   then x in the carrier of (1).G;
   then x in \{1_G\} by GROUP_2:def 7;
@@ -1660,13 +1653,13 @@ end;
 \nwenddocs{}\nwbegincode{39}\sublabel{NW3Mfp8C-1msO16-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-1msO16-1}}}\moddef{Proof $\ker(f)\subset\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1msO16-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-3fLhao-1}}\nwenddeflinemarkup
 proof
   let x be Element of G;
-  assume A11: x in Ker f;
+  assume x in Ker f;
   then f.x = 1_G by GROUP_6:41;
-  then x |^ a = 1_G by A0;
-  then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
+  then x |^ a = 1_G by A1;
+  then B1: x = 1_G by A1,GROUP_3:18,GROUP_6:41;
   the carrier of (1).G = \{1_G\} by GROUP_2:def 7;
   then 1_G in the carrier of (1).G by TARSKI:def 1;
-  then x in the carrier of (1).G by A12;
+  then x in the carrier of (1).G by B1;
   then x in (1).G by STRUCT_0:def 5;
   hence thesis;
 end;
@@ -1972,11 +1965,10 @@ myself.
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  assume A1: H is Subgroup of (1).G;
+  then reconsider H as Subgroup of (1).G;
+  (1).G is Subgroup of H by GROUP_2:65;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
   hence thesis by GROUP_2:55;
 end;
 
@@ -2060,9 +2052,8 @@ proof
   consider f being \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by \nwlinkedidentc{Th19}{NW3Mfp8C-arh13-1};
-  A3: Image(f|K) = K by GROUP_6:57,\nwlinkedidentc{Def9}{NW47t2dy-49dosn-1};
-  Image(f|K) = K |^ a by A2,\nwlinkedidentc{Th15}{NW3Mfp8C-2zspfg-1};
-  then K |^ a = K by A3,\nwlinkedidentc{Def9}{NW47t2dy-49dosn-1};
+  K = Image(f|K) = K by GROUP_6:57,\nwlinkedidentc{Def9}{NW47t2dy-49dosn-1}
+   .= K |^ a by A2,\nwlinkedidentc{Th15}{NW3Mfp8C-2zspfg-1};
   hence thesis;
 end;
 

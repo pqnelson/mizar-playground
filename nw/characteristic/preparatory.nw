@@ -96,7 +96,6 @@ proof
   then rng f = f .: X by TARSKI:2;
   hence f .: X = Y by A1;
 end;
-proof end;
 
 @ %def LmOntoMapsEverything
 
@@ -326,28 +325,23 @@ that theorem (not even to functions of sets).
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>=
 LmRestrictCollapse:
 for G,G2 being Group
-for K being Subgroup of G
-for H being Subgroup of K
+for N being Subgroup of G
+for H being Subgroup of N
 for f being Homomorphism of G,G2
-holds (f|K)|H = f|H
+holds (f|N)|H = f|H
 proof
   let G,G2 be Group;
-  let K be Subgroup of G;
-  let H be Subgroup of K;
+  let N be Subgroup of G;
+  let H be Subgroup of N;
   let f be Homomorphism of G,G2;
-  set UG = the carrier of G;
-  set UK = the carrier of K;
+  set UN = the carrier of N;
   set UH = the carrier of H;
-  UH c= UK by GROUP_2:def 5;
-  then A1: (f|UK)|UH = f|UH by RELAT_1:73,74;
-  f|K is Homomorphism of K,G2;
-  (f|K)|H is Homomorphism of H,G2;
-  A2: (f|UK) = f|K &
-  f|UH = f|H by GRSOLV_1:def 2;
-  (f|K)|H = (f|K)|UH by GRSOLV_1:def 2
-         .= (f|UK)|UH by GRSOLV_1:def 2;
-  then (f|K)|H = f|H by A1,A2;
-  hence thesis;
+  UH c= UN by GROUP_2:def 5;
+  then A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
+  by RELAT_1:73,74,GRSOLV_1:def 2;
+  (f|N)|H = (f|N)|UH by GRSOLV_1:def 2
+         .= (f|UN)|UH by GRSOLV_1:def 2;
+  hence (f|N)|H = f|H by A1;
 end;
 
 @
