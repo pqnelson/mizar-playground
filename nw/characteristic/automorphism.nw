@@ -178,6 +178,49 @@ end;
 @ %def Lm9
 
 \begin{theorem}
+For any automorphism $\varphi\in\Aut(G)$, its inverse is also an
+automorphism $\varphi^{-1}\in\Aut(G)$.
+\end{theorem}
+
+<<Theorem: if $\varphi\in\Aut(G)$, then $\varphi^{-1}\in\Aut(G)$>>=
+theorem Th3:
+  for f being Automorphism of G
+  holds f" is Automorphism of G
+proof
+  let f be Automorphism of G;
+  set UG = the carrier of G;
+  A1: f is bijective;
+  then A2: f" is Function of UG,UG & f" is bijective by GROUP_6:63;
+  for a,b being Element of G holds (f").(a * b) = (f").a * (f").b
+  <<Proof: $\varphi^{-1}$ is multiplicative>>
+  then f" is multiplicative by GROUP_6:def 6;
+  then f" is Automorphism of G by A2;
+  hence thesis;
+end;
+
+@ %def Th3
+
+<<Proof: $\varphi^{-1}$ is multiplicative>>=
+proof
+  let a,b be Element of G;
+  consider x1 being Element of G such that
+  B1: a = f.x1
+  by GROUP_6:58,A1;
+  consider x2 being Element of G such that
+  B2: b = f.x2
+  by GROUP_6:58,A1;
+  B3: f".a = x1 & f".b = x2 by B1,B2,FUNCT_2:26;
+  (f").(a*b) = (f").((f.x1)*(f.x2)) by B1,B2
+            .= (f").(f.(x1 * x2)) by A1,FUNCT_2:26,GROUP_6:def 6
+            .= x1*x2 by A1,FUNCT_2:26
+            .= (f").a * (f").b by B3;
+  then (f").(a * b) = (f").a * (f").b;
+  hence thesis;
+end;
+
+@ 
+
+\begin{theorem}
 Let $G$ be a group, $H\subgroup G$ be any subgroup, and
 $\varphi\in\Aut(G)$ be any automorphism. Then the image of $H$ under
 $\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
