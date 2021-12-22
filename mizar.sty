@@ -4,7 +4,7 @@
 \RequirePackage[dvipsnames]{xcolor}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 %\definecolor{ghBlue}{HTML}{0550ae} % rgb(5, 80, 174)
-\definecolor{ghBlue}{HTML}{268bd2} % {2075c7}
+\definecolor{ghBlue}{HTML}{2075c7}
 %\definecolor{ghPurple}{HTML}{8250df} % rbg(130, 80, 223)
 \definecolor{ghPurple}{HTML}{c61b6e}
 \definecolor{ghRed}{HTML}{cf222e}  % rbg(207, 34, 46)
@@ -13,8 +13,15 @@
 \definecolor{solOrange}{HTML}{fb7640}
 \definecolor{bgcolor}{HTML}{073642} % solarized-dark
 \definecolor{base3}{HTML}{fcf4dc}
+\definecolor{solarizedGreen}{HTML}{859900}
+\definecolor{solarizedPurple}{HTML}{ff699e}%{c47896}%{cc6791}%{d33682}
+\definecolor{solarizedBlue}{HTML}{268bd2}
 
 \def\defaultCommentStyle{\color{gray}}
+\def\mizarDefaultStyle{}
+\def\mizarFormulaStyle{\color{solarizedPurple}}
+\def\mizarKWStyle{\color{solarizedBlue}}
+\def\mizarProofKWStyle{\color{solarizedGreen}}
 
 % hack from https://tex.stackexchange.com/a/536920/14751
 \newcommand\beginlstdelim[3]{%
@@ -42,14 +49,14 @@
     set,struct,such,symmetry,synonym,take,that,the,then,%
     theorem,theorems,thesis,thus,to,transitivity,uniqueness,%
     vocabulary,where},%
-  keywordstyle=[1]{\color{ghBlue}},
+  keywordstyle=[1]{\mizarKWStyle},
   morekeywords=[2]{proof,@proof,end,now,suppose},
-  keywordstyle=[2]{\color{ghRed2}},
+  keywordstyle=[2]{\mizarProofKWStyle},
   morekeywords=[3]{\&,being,iff,implies,ex,st,for,holds,not},
-  keywordstyle=[3]{\color{ghPurple}},
+  keywordstyle=[3]{\mizarFormulaStyle},
   morekeywords=[4]{$1,$1,$2,$3,$4,$5,$6,$7,$8},
   morekeywords=[5]{;},
-  keywordstyle=[5]{\color{black}},
+  keywordstyle=[5]{},
   commentstyle=\defaultCommentStyle,
   sensitive=t,%
   morecomment=[l]::%
@@ -70,10 +77,10 @@
   leftmargin=0pt,
   rightmargin=0pt,
   innertopmargin=\topsep,
-  innerbottommargin=\topsep}                  
+  innerbottommargin=\topsep}
 \lstnewenvironment{mizar}%
-                  {\mdframed[backgroundcolor=bgcolor,
-                      outerlinewidth=1pt]
+                  {\mdframed[backgroundcolor=bgcolor]
+                   %\mdframed[backgroundcolor=bgcolor,outerlinewidth=1pt]
                     \lstset{language=mizar,
                       basicstyle=\color{base3}\ttfamily,
 %                      basicstyle=\ttfamily\small,
@@ -84,4 +91,3 @@
 %%                {\end{rawmizar}{\end{mdframed}}}
 %%\def\mizar{\begin{rawmizar}}
 %%\def\endmizar{\end{rawmizar}}
-  

@@ -1,10 +1,77 @@
 \chapter{Group Theory in Mizar}
 
+\section{First-Order Logic in Mizar}
+
+\N{Propositional Logic}
+We will briefly review Mizar's syntax for formulas.
+
+\begin{equation}
+  \neg\Phi\quad\equiv\quad\mathtt{not}~\Phi
+\end{equation}
+\begin{equation}
+  \Phi\lor\Psi\quad\equiv\quad\Phi~\mathtt{or}~\Psi
+\end{equation}
+\begin{equation}
+  \Phi\land\Psi\quad\equiv\quad\Phi~\mathtt{\&}~\Psi
+\end{equation}
+\begin{equation}
+  \Phi\implies\Psi\quad\equiv\quad\Phi~\mathtt{implies}~\Psi
+\end{equation}
+\begin{equation}
+  \Phi\iff\Psi\quad\equiv\quad\Phi~\mathtt{iff}~\Psi
+\end{equation}
+
+\N{Typing Statements as Propositions}
+Unique to Mizar is that typing judgements are object language
+propositions. When we write ``\texttt{x is natural number}'', that's a
+proposition. Type theory would make it a judgement, a proposition
+\emph{in the metalanguage}. Mizar makes it a proposition in the
+\emph{object} language.
+
+\N{Quantifiers}
+Quantifiers are a bit trickier. We quantify a variable over a type.
+\begin{equation}
+\forall_{x:A}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{holds}~\Phi
+\end{equation}
+\begin{equation}
+\exists_{x:A}\Phi\quad\equiv\quad\mathtt{ex}~x~\mathtt{being}~A~\mathtt{st}~\Phi
+\end{equation}
+We can also just ``stack'' multiple quantifiers next to each other, like
+\begin{equation}
+\forall_{x:A}\forall_{y:B}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{for}~y~\mathtt{being}~B~\mathtt{holds}~\Phi.
+\end{equation}
+We have syntactic sugar for universal quantification of an implication:
+\begin{equation}
+\forall_{x:A}\Phi\implies\Psi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{st}~\Phi~\mathtt{holds}~\Psi.
+\end{equation}
+
+\N{Final remark on notations used in Mizar}
+There are a few quirky choices of notation which I wish to discuss, just
+to let the reader be aware of it. I will also remind the reader when it
+comes up in the future:
+
+\begin{enumerate}
+\item In mathematics, function application is written $f(x)$, but in
+  Mizar it is ``\texttt{f.x}''
+\item Applying a function to a set is denoted $f(A)$, but in Mizar it is
+  denoted ``\texttt{f.:A}''
+\item The inverse function relating $y=f(x)$ to $f^{-1}(y)=x$, in Mizar
+  is denoted by ``\texttt{f".y}''. More generally, instead of using
+  superscript $-1$, Mizar will use double quotes.
+\item If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
+  we write the restriction of $f$ to $A$ as $f|_{A}\colon A\to X$
+  defined by $\forall a\in A, f(a)=f|_{A}(a)$. In Mizar, this
+  restriction is denoted ``\verb#f|A#'' and function application with it
+  is ``\verb#(f|A).x#'' for $f|_{A}(x)$.
+\end{enumerate}
+
 \section{Basic Definitions}
 
 \M
-Recall, there are two ways to define a group. I will make bold the
-differences:
+Recall, as Baez~\cite[week one]{baez2004qg-lectures} notes, there are
+two ways to define a group. These two different definitions give rise to
+\emph{different} notions of ``group homomorphism'' (but identical
+notions of ``group isomorphism''). I will make bold the differences:
 
 \begin{definition}[Version 1]\label{defn:introduction:mizar-style-group}
   A \emph{group} consists of
@@ -13,7 +80,7 @@ differences:
   \end{enumerate}
   equipped with
   \begin{enumerate}
-  \item a binary operator $\mu\colon G\times G$
+  \item a binary operator $\mu\colon G\times G\to G$
   \end{enumerate}
   such that
   \begin{enumerate}
@@ -33,7 +100,7 @@ differences:
   \end{enumerate}
   equipped with
   \begin{enumerate}
-  \item a binary operator $\mu\colon G\times G$
+  \item a binary operator $\mu\colon G\times G\to G$
   \item \textbf{a unit $1\in G$}
   \item \textbf{an inverse operator $\iota\colon G\to G$}
   \end{enumerate}
@@ -46,18 +113,20 @@ differences:
   \end{enumerate}
 \end{definition}
 
-\M
-As Baez~\cite[week one]{baez2004qg-lectures} notes, these two different
-definitions give rise to \emph{different} notions of ``morphism'' (but
-identical notions of ``isomorphism'').
+\begin{remark}
+I will adopt modern terminology, and simply refer to a group
+homomorphism as a ``\emph{group morphism}'', or more tersely as just a
+morphism.
+\end{remark}
 
-Mizar takes the first version as its definition. Implicit in its
+\M Mizar takes the first version as its definition. Implicit in its
 definition is a notion of a ``\verb#multMagma#'', a magma with a
 multiplication operator (defined in \verb#ALGSTR_0#). As Nakasho and
 friends explicate~\cite{nakasho2014formalization}, a ``\verb#multMagma#''
-is a magma as could be found in, e.g., Bourbaki's \emph{Algebra}: it
+is a magma as could be found in, e.g., Bourbaki's
+\emph{Algebra}~\cite[see Ch.I\S1.1]{bourbaki1974elements}: it
 consists of a set (which Mizar calls its ``\verb#carrier#'') and a
-binary operator ``\verb#multF#''.
+binary operator ``\verb#multF#''.\index{multF@\texttt{multF}}\index{carrier@\texttt{carrier}}\index{multMagma@\texttt{multMagma}}
 
 \begin{mizar}
 :: algstr_0.miz
@@ -69,8 +138,61 @@ end;
 \end{mizar}
 
 \M
+Let us unpack what is going on in this code. We are defining a
+\verb#struct#, a mathematical structure which is usually presented in
+ordinary mathematics as a tuple of some kind $\langle\dots\rangle$. For
+example, a field might be presented as $\langle F, +, \cdot, 0, 1\rangle$
+consisting of a set $F$, a couple binary operators, and a couple of
+selected elements of $F$.
+
+Mizar's grammar for defining a structure is:
+\begin{equation}
+  \langle\textit{structure-definition}\rangle ::=
+  \mbox{\texttt{struct}}~(\langle\textit{ancestors}\rangle)~\langle\textit{symbol}\rangle~
+  \mbox{\texttt{(\#}}\quad
+  \langle\textit{fields}\rangle\quad
+  \mbox{\texttt{\#)}}
+  \texttt{;}
+\end{equation}
+The ancestors are optional. For ``\verb#multMagma#'',\index{multMagma@\texttt{multMagma}} it has one ancestor
+(namely, ``\verb#1-sorted#''\index{1-sorted@\texttt{1-sorted}}). The fields for a structure look like a
+comma-separated list whose entries are of the form:
+\begin{equation}
+  \langle\textit{field}\rangle ::= \langle\textit{identifier}\rangle\quad\mathtt{->}\quad\langle\textit{type}\rangle
+\end{equation}
+We see that ``\texttt{multMagma}'' has two fields:
+\begin{enumerate}
+\item ``\texttt{carrier}'' which is a set
+\item ``\texttt{multF}'' which is a ``\texttt{BinOp}'' (binary operator)
+  acting on the ``\texttt{carrier}''.
+\end{enumerate}
+This matches Bourbaki's definition of a magma.
+
+\N{Mizar's definition of Group}
 Mizar formalizes a group following the style of
-Definition~\ref{defn:introduction:mizar-style-group}. 
+Definition~\ref{defn:introduction:mizar-style-group}: it's a magma which
+satisfies a bunch of extra properties (as opposed to a magma equipped
+with more structure). Mizar's notion of ``extra properties'' is handled
+by a mechanism called \define{Attributes}\index{Attribute!Mizar}, which
+are adjectives we can tack onto types and they encode certain axioms or
+formulas which must hold. There are three such attributes being defined
+immediately in \texttt{group\_1.miz}:
+\begin{enumerate}
+\item ``\texttt{unital}''\index{unital@\texttt{unital}} which asserts
+  $\exists_{e{:}\mathtt{IT}}\forall_{h{:}\mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h$
+\item ``\texttt{Group-like}''\index{Group-like@\texttt{Group-like}},
+  which extends the condition of ``\texttt{unital}'' with the assertion
+  that for any element $h$ and inverse element $g$ exists
+  $\exists_{e{:}\mathtt{IT}}\forall_{h{:}\mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h\land\exists_{g{:}\mathtt{IT}}\mu(h,g)=e\land\mu(g,h)=e$
+\item ``\texttt{associative}''\index{associative@\texttt{associative}}
+  which corresponds to our demand of associativity
+  $\forall_{x,y,z{:}\mathtt{IT}}\mu(\mu(x,y),z)=\mu(x,\mu(y,z))$.
+\end{enumerate}
+With these attributes in hand, Mizar defines a group to be a
+``\texttt{Group-like associative non empty multMagma}'', i.e., a magma such
+that it is associative and group-like (has an identity element and for
+each element, a corresponding inverse element exists). This is collected
+in a new type, or \define{Mode}\index{Mode!in Mizar} (as Mizar calls them).
 
 \begin{mizar}
 :: group_1.miz
@@ -81,7 +203,7 @@ definition
 :: GROUP_1:def 1
   ex e being Element of IT st for h being
   Element of IT holds h * e = h & e * h = h;
-  
+
   attr IT is Group-like means
 :: GROUP_1:def 2
   ex e being Element of IT st for h being Element of IT
@@ -97,4 +219,54 @@ definition
   mode Group is Group-like associative non empty multMagma;
 end;
 \end{mizar}
-  
+
+\M Observe that a more faithful translation of Mizar's definition would
+be:
+
+\begin{quote}
+  \textbf{Definition.} A \emph{Group} $\langle G,\cdot\rangle$ is a set of
+  elements with a binary operator $\cdot\colon G\times G\to G$
+  satisfying the following conditions:
+  \begin{enumerate}
+  \item \textbf{Associativity:} for all $a,b,c\in G$, we have $(a\cdot b)\cdot c = a\cdot(b\cdot c)$
+  \item \textbf{Identity element:} There exists an element $e$ such that
+    $e\cdot a= a\cdot e = a$ for all $a\in G$
+  \item \textbf{Inverse Element:} For all $a\in G$, there exists an
+    element $b\in G$ with $a\cdot b=b\cdot a = e$.
+  \end{enumerate}
+\end{quote}
+
+We often work with multiple groups, and if we want to refer to the
+identity element of a particular group, then in ordinary mathematics we
+write either $1_{G}$ (if $G$ uses multiplicative notation) or $0_{G}$
+(if $G$ uses addition). Mizar has a way to encode this convention, which
+is the next definition in \texttt{group\_1.miz}:
+
+\begin{mizar}
+definition
+  let G be multMagma such that
+A1: G is unital;
+  func 1_G -> Element of G means
+:: GROUP_1:def 4
+  for h being Element of G holds h * it = h & it * h = h;
+  existence by A1;
+  uniqueness
+  proof
+    let e1,e2 be Element of G;
+    assume that
+A2: for h being Element of G holds h * e1 = h & e1 * h = h and
+A3: for h being Element of G holds h * e2 = h & e2 * h = h;
+    thus e1 = e2 * e1 by A3
+           .= e2 by A2;
+  end;
+end;
+\end{mizar}
+
+\M What's going on here? Well, for any unital magma $G$, we have a
+``functor'' (a logical function, i.e., parametrized term) denoted
+``\verb#1_#'' which produces the unit element for the given magma.
+Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
+write ``\verb#1_G#''.
+
+Mizar demands we prove such a thing exists, and then a proof of
+uniqueness is supplied.
