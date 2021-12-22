@@ -78,24 +78,25 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume f is onto;
-  then A0: rng f = Y;
-  A1: dom f = X by FUNCT_2:def 1;
-  A2: for y being object
+  then A1: rng f = Y;
+  A2: dom f = X by FUNCT_2:def 1;
+  then A3: for y being object
   holds y in rng f iff ex x being object st x in X & y = f.x
-  by A1, FUNCT_1:def 3;
-  A3: for y being object holds y in (f .: X) iff
+  by FUNCT_1:def 3;
+  A4: for y being object holds y in (f .: X) iff
   ex x being object st x in X & x in X & y = f.x
-  by A1,FUNCT_1:def 6;
+  by A2,FUNCT_1:def 6;
 
-  B1: for y being object holds y in (f .: X) implies y in rng f
+  C1: for y being object holds y in (f .: X) implies y in rng f
   <<Proof: $y\in f(X)\implies y\in\mathrm{rng}(f)$>>
 
-  B2: for y being object holds y in rng f implies y in (f .: X)
+  C2: for y being object holds y in rng f implies y in (f .: X)
   <<Proof: $y\in\mathrm{rng}(f)\implies y\in f(X)$>>
-  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
+  for y being object holds y in rng f iff y in (f .: X) by C1,C2;
   then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A0;
+  hence f .: X = Y by A1;
 end;
+proof end;
 
 @ %def LmOntoMapsEverything
 
@@ -104,9 +105,9 @@ proof
   let y be object;
   assume y in (f .: X);
   then consider x being object such that
-  A10: x in X and x in X and A11: y = f.x
-  by A3;
-  thus y in rng f by A10,A11,A2;
+  B1: x in X and x in X and B2: y = f.x
+  by A4;
+  thus y in rng f by A3,B1,B2;
 end;
 
 @
@@ -116,9 +117,9 @@ proof
   let y be object;
   assume y in rng f;
   then consider x being object such that
-  A20: x in X and A21: y = f.x
-  by A2;
-  thus y in (f .: X) by A20,A21,A3;
+  B1: x in X and B2: y = f.x
+  by A3;
+  thus y in (f .: X) by A4,B1,B2;
 end;
 
 @
@@ -279,7 +280,7 @@ holds H is normal Subgroup of G
 proof
   let G be Group;
   let H be Subgroup of G;
-  assume A0: for a being Element of G holds H |^ a = H;
+  assume for a being Element of G holds H |^ a = H;
   then for a being Element of G holds the carrier of H |^ a = the carrier of H;
   then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
@@ -338,14 +339,14 @@ proof
   set UK = the carrier of K;
   set UH = the carrier of H;
   UH c= UK by GROUP_2:def 5;
-  then C1: (f|UK)|UH = f|UH by RELAT_1:73,74;
+  then A1: (f|UK)|UH = f|UH by RELAT_1:73,74;
   f|K is Homomorphism of K,G2;
   (f|K)|H is Homomorphism of H,G2;
-  C2: (f|UK) = f|K &
+  A2: (f|UK) = f|K &
   f|UH = f|H by GRSOLV_1:def 2;
   (f|K)|H = (f|K)|UH by GRSOLV_1:def 2
          .= (f|UK)|UH by GRSOLV_1:def 2;
-  then (f|K)|H = f|H by C1,C2;
+  then (f|K)|H = f|H by A1,A2;
   hence thesis;
 end;
 

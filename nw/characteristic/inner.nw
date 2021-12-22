@@ -134,9 +134,9 @@ about $f$, we should establish it's an endomorphism of $G$ along the way,
 
 <<Proof $f\in\aut(G)\implies f$ is [[Automorphism of G]]>>=
 proof
-  assume A0: f in Aut G;
+  assume A1: f in Aut G;
   then reconsider f as Endomorphism of G by AUTGROUP:def 1;
-  f is bijective by A0,AUTGROUP:def 1;
+  f is bijective by A1,AUTGROUP:def 1;
   then f is Automorphism of G;
   hence thesis;
 end;
@@ -187,13 +187,13 @@ Automorphism of $G$ thanks to our handy-dandy lemma.
 
 <<Proof $f$ is in [[InnAut G]] $\implies$ ($f$ is inner automorphism)>>=
 proof
-  assume Z0: f in InnAut G;
+  assume A1: f in InnAut G;
   then f is Automorphism of G by Lm4;
   then reconsider f as Automorphism of G;
   f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   then consider a being Element of G such that
   A2: for x being Element of G holds f.x = x |^ a
-  by Z0,AUTGROUP:def 4;
+  by A1,AUTGROUP:def 4;
   f is inner Automorphism of G by Def5,A2;
   hence thesis;
 end;
@@ -206,14 +206,14 @@ requiring us to reconsider $f$ as an inner automorphism of $G$.
 
 <<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>=
 proof
-  assume Z1: f is inner Automorphism of G;
-  reconsider f as inner Automorphism of G by Z1;
-  f is Element of Aut G by Z1,Th13;
+  assume B1: f is inner Automorphism of G;
+  then reconsider f as inner Automorphism of G;
+  f is Element of Aut G by B1,Th13;
   then consider a being Element of G such that
-  B1: for x being Element of G holds f.x = x |^ a
-  by Z1,Def5;
+  B2: for x being Element of G holds f.x = x |^ a
+  by B1,Def5;
   f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-  then f in InnAut G by B1,AUTGROUP:def 4;
+  then f in InnAut G by B2,AUTGROUP:def 4;
   hence thesis;
 end;
 
@@ -258,13 +258,13 @@ proof
       a be Element of G,
       f be inner Automorphism of G;
   assume
-A0: for x being Element of G holds f.x = x |^ a;
+A1: for x being Element of G holds f.x = x |^ a;
 C1: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
     then Z1: f.h = (f|H).h by Lm3;
-    f.h = h |^ a by A0;
+    f.h = h |^ a by A1;
     hence (f|H).h = h |^ a by Z1;
   end;
 
@@ -308,7 +308,7 @@ proof
   AB2:    g in H;
 
 AB3:  (f|H).g = f.g by Lm3,AB2
-             .= g |^ a by A0
+             .= g |^ a by A1
              .= y by AB1;
   reconsider g as Element of H by AB2,LmSubgroupElt;
   reconsider fH = (f|H) as Homomorphism of H,G;
@@ -336,13 +336,13 @@ theorem Th16:
 proof
   let a be Element of G;
   let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-A1:  for x being Element of G holds x in Ker f implies x in (1).G
+  assume A1: for x being Element of G holds f.x = x |^ a;
+C1:  for x being Element of G holds x in Ker f implies x in (1).G
   <<Proof $\ker(f)\subset\trivialSubgroup$>>
 
-A2:  for x being Element of G holds x in (1).G implies x in Ker f
+C2:  for x being Element of G holds x in (1).G implies x in Ker f
   <<Proof $\trivialSubgroup\subset\ker(f)$>>
-  thus Ker f = (1).G by A1,A2,GROUP_2:60;
+  thus Ker f = (1).G by C1,C2,GROUP_2:60;
 end;
 
 @ %def Th16
@@ -350,7 +350,7 @@ end;
 <<Proof $\trivialSubgroup\subset\ker(f)$>>=
 proof
   let x be Element of G;
-  assume Z4: x in (1).G;
+  assume x in (1).G;
   then x is Element of (1).G by LmSubgroupElt;
   then x in the carrier of (1).G;
   then x in {1_G} by GROUP_2:def 7;
@@ -365,13 +365,13 @@ end;
 <<Proof $\ker(f)\subset\trivialSubgroup$>>=
 proof
   let x be Element of G;
-  assume A11: x in Ker f;
+  assume x in Ker f;
   then f.x = 1_G by GROUP_6:41;
-  then x |^ a = 1_G by A0;
-  then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
+  then x |^ a = 1_G by A1;
+  then B1: x = 1_G by A1,GROUP_3:18,GROUP_6:41;
   the carrier of (1).G = {1_G} by GROUP_2:def 7;
   then 1_G in the carrier of (1).G by TARSKI:def 1;
-  then x in the carrier of (1).G by A12;
+  then x in the carrier of (1).G by B1;
   then x in (1).G by STRUCT_0:def 5;
   hence thesis;
 end;

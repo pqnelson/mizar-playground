@@ -71,11 +71,10 @@ Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  assume A1: H is Subgroup of (1).G;
+  then reconsider H as Subgroup of (1).G;
+  (1).G is Subgroup of H by GROUP_2:65;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
   hence thesis by GROUP_2:55;
 end;
 
@@ -159,9 +158,8 @@ proof
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by Th19;
-  A3: Image(f|K) = K by GROUP_6:57,Def9;
-  Image(f|K) = K |^ a by A2,Th15;
-  then K |^ a = K by A3,Def9;
+  K = Image(f|K) = K by GROUP_6:57,Def9
+   .= K |^ a by A2,Th15;
   hence thesis;
 end;
 

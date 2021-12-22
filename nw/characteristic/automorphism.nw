@@ -146,11 +146,10 @@ Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
+  assume A1: H is Subgroup of (1).G;
+  then reconsider H as Subgroup of (1).G;
+  (1).G is Subgroup of H by GROUP_2:65;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
   hence thesis by GROUP_2:55;
 end;
 
@@ -167,12 +166,11 @@ proof
   let phi be Automorphism of G;
 ::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
   thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
-  AA0: phi is one-to-one;
+  phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by Th9;
-  then AA1: Ker(phi|H) = (1).G by Lm8;
-  (1).G = (1).H by GROUP_2:63;
-  then Ker(phi|H) = (1).H by AA1;
+  then Ker(phi|H) = (1).G by Lm8
+                 .= (1).H by GROUP_2:63;
   then (phi|H) is one-to-one by GROUP_6:56;
   hence thesis;
 end;
@@ -219,13 +217,13 @@ proof
   let G1,G2 be Group;
   let f be Homomorphism of G1,G2;
   let H be Subgroup of G1;
-  A0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
+  A1: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
   Ker(f) is Subgroup of G1;
   for g being Element of G1
   st g in Ker(f|H)
   holds g in Ker(f)
   <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>
-  then Ker(f|H) is Subgroup of Ker(f) by A0,GROUP_2:58;
+  then Ker(f|H) is Subgroup of Ker(f) by A1,GROUP_2:58;
   hence thesis;
 end;
 
@@ -234,13 +232,13 @@ end;
 <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>=
 proof
   let g be Element of G1;
-  assume A1: g in Ker(f|H);
+  assume A2: g in Ker(f|H);
   Ker(f|H) is Subgroup of H;
-  then A2: g in H by A1, LmSubgroupEltTrans;
-  then A3: (f|H).g = f.g by Lm3;
-  g is Element of H by A2, LmSubgroupElt;
-  then (f|H).g = 1_G2 by A1,GROUP_6:41;
-  then f.g = 1_G2 by A3;
+  then A3: g in H by A2, LmSubgroupEltTrans;
+  then A4: (f|H).g = f.g by Lm3;
+  g is Element of H by A3, LmSubgroupElt;
+  then 1_G2 = (f|H).g by A2,GROUP_6:41
+           .= f.g by A4;
   then g in Ker(f) by GROUP_6:41;
   hence thesis;
 end;
@@ -320,8 +318,8 @@ theorem Th10:
   Id_G = id (the carrier of G)
 proof
   let x be Element of G;
-  thus A4: (Id_G).x = x by Def3
-                   .= (id (the carrier of G)).x;
+  thus (Id_G).x = x by Def3
+               .= (id (the carrier of G)).x;
   thus thesis;
 end;
 
@@ -420,10 +418,10 @@ that the claim [[f is onto]] is different than [[f is onto Homomorphism of G1,G2
 <<Proof: $\varphi|_{H}$ is surjective>>=
 proof
   set UH = the carrier of H;
-  AA1: f|H is Function of UH,UH by C1;
+  B1: f|H is Function of UH,UH by C1;
   rng(f|H) = the carrier of H by GROUP_6:44, A1;
-  then AA3: f|H is onto Function of UH,UH by AA1,FUNCT_2:def 3;
-  then f|H is onto Homomorphism of H,H by AA3,C1;
+  then f|H is onto Function of UH,UH by B1,FUNCT_2:def 3;
+  then f|H is onto Homomorphism of H,H by C1;
   hence thesis;
 end;
 
