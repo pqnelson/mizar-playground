@@ -44,6 +44,7 @@ without_bib:
 	$(TEX) $(BOOK)
 	noindex $(BOOK)
 	makeindex $(BOOK)
+	makeindex mizar
 	$(TEX) $(BOOK)
 
 with_bib: without_bib

@@ -55,7 +55,7 @@ We have syntactic sugar for universal quantification of an implication:
   $y\in Y$ such that $\Phi$ holds.''
 \end{exercise}
 
-\N{Referring to Labels}
+\N{Referring to Labels}\label{par:introduction:referring-to-labels}
 Mizar can refer to theorems from another article, say
 ``\verb#ARTICLE#'', by writing ``\verb#ARTICLE:56#'' to refer to theorem 56.
 Definitions are referred to using ``\verb#ARTICLE:def xx#'' (where
@@ -65,26 +65,297 @@ try to refer to theorem $X$ by writing } ``\verb#ARTICLE:ThX#''.
 \N{Final remark on notations used in Mizar}
 There are a few quirky choices of notation which I wish to discuss, just
 to let the reader be aware of it. I will also remind the reader when it
-comes up in the future:
+comes up in the future:\footnote{Shinshu University has a webpage giving
+a ``rosetta stone'' for Mizar notation and the usual mathematical
+notation, see: \url{http://markun.cs.shinshu-u.ac.jp/kiso/projects/proofchecker/mizar/mizardictionary1.htm}}
 
 \begin{enumerate}
-\item In mathematics, function application is written $f(x)$, but in
+\item\index{\texttt{f.x}!Mizar for $f(x)$} In mathematics, function application is written $f(x)$, but in
   Mizar it is ``\texttt{f.x}''
-\item Applying a function to a set is denoted $f(A)$, but in Mizar it is
+\item\index{\texttt{f.:A}!Mizar for $f(A)$} Applying a function to a set is denoted $f(A)$, but in Mizar it is
   denoted ``\texttt{f.:A}''
-\item The inverse function relating $y=f(x)$ to $f^{-1}(y)=x$, in Mizar
+\item\index{{\texttt{f"\""}}!Mizar for $f^{-1}$} The inverse function relating $y=f(x)$ to $f^{-1}(y)=x$, in Mizar
   is denoted by ``\texttt{f".y}''. More generally, instead of using
   superscript $-1$, Mizar will use double quotes.
-\item If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
+\item\index{{\texttt{f"|"A}}!Mizar for $f\vert_{A}$} If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
   we write the restriction of $f$ to $A$ as $f|_{A}\colon A\to X$
   defined by $\forall a\in A, f(a)=f|_{A}(a)$. In Mizar, this
   restriction is denoted ``\verb#f|A#'' and function application with it
   is ``\verb#(f|A).x#'' for $f|_{A}(x)$.
+\item\index{\texttt{h in H}!Mizar for $h\in H$} Set membership $x\in X$ is
+  denoted in Mizar by the formula ``\verb#x in X#''.
 \end{enumerate}
+
+\section{Natural Deduction in Mizar}
+
+\M
+Arguably, Mizar consists of three domain specific languages: one for
+proofs, another for definitions, and a third for stating formulas. We
+have summarized Mizar's syntax for formulas. Let us now consider how
+Mizar handles proofs. We basically follow Grabowski and
+friends~\cite{grabowski2010mizar} in presenting ``proof skeletons'' to
+summarize the semantics of the various proof steps, and
+Wiedijk~\cite{wiedijk2000mv} in relating the Mizar proof steps to
+natural deduction rules of inference.
+
+Remember, in natural deduction for logic, the basic judgements we're
+working with are sequents of the form $\Gamma\vdash\Phi$ where $\Gamma$
+is a (possibly empty) list of formulas, and $\Phi$ is proven from
+them. We have inference rules, which look like fractions, describing how
+to transform such judgements. Inference rules should be read ``from
+bottom to top''.
+
+\N{Assume: $\Longrightarrow$-introduction}\index{Assume@\texttt{assume}}
+When we want to prove a formula of the form $\Psi\implies\Phi$, we begin
+with stipulating $\Psi$ holds. That is to say, we ``\verb#assume# $\Psi$''.
+In Mizar:
+
+\begin{mizar}
+Psi implies Phi
+proof
+  :: preliminatry steps
+  assume Psi;
+  :: proof of Phi
+end;
+\end{mizar}
+This corresponds to the natural deduction rule of inference for
+$\Longrightarrow$-introduction:
+\begin{equation}
+  \infer[\mathtt{assume}~\Psi]{\Gamma\vdash\Psi\implies\Phi}{\Gamma,\Psi\vdash\Phi}.
+\end{equation}
+Remember, we read this from bottom to top, so if we want to prove
+the claim $\Psi\implies\Phi$ (having established the results $\Gamma$),
+then the statement ``\verb#assume# $\Psi$'' transforms our proof
+obligation to $\Gamma,\Psi\vdash\Phi$ (i.e., proving $\Phi$ from the
+list $\Gamma$ with $\Psi$ appended to $\Gamma$).
+
+\N{Assume: proof by contradiction}
+Sometimes we want to prove a claim by showing its negation leads to
+calamity. This is done routinely in mathematics, since $\neg\Phi$ is
+logically equivalent to $\Phi\implies\contradiction$, so double negation
+would be equivalent to $\Phi$, right? Right! We have the tautology
+$\Phi\iff(\neg\Phi\implies\contradiction)$.
+
+\begin{mizar}
+not Psi implies contradiction
+proof
+  :: preliminatry steps
+  assume not Psi;
+  :: proof leading to contradiction
+end;
+\end{mizar}
+
+\N{Assume: proving disjunction}
+The idiomatic way to prove the claim $\Phi\lor\Psi$ in Mizar is to
+assume the negation of one of the disjuncts (usually the first, i.e.,
+to ``\verb#assume# $\neg\Phi$'') and then prove $\Psi$ holds.
+\begin{mizar}
+Phi or Psi
+proof
+  assume not Phi;
+  :: proof of Psi
+  thus Psi;
+end;
+\end{mizar}
+
+\begin{ddanger}
+  The reader may wonder if they may instead start the proof with
+  ``\verb#assume not Psi#'', since that's \emph{logically equivalent}, right?
+  The Mizar prover translates formulas and proof steps into a normal
+  form (called ``semantic correlates''\index{Semantic Correlate}).
+  Unfortunately, starting with ``\verb#assume not Psi#'' translates into
+  a \emph{different} semantic correlate. One would have to change the
+  claim to ``\verb#Psi or Phi#''.
+\end{ddanger}
+
+\N{Thus: $\land$-introduction}\index{Thus@\texttt{thus}}
+Whenever we want to prove a claim $\Phi$, we conclude the proof with
+``\texttt{thus} $\Phi$''. In Mizar, this looks like (with the
+preliminary steps omitted with a comment ``\verb#:: proof of ...#''):
+
+\begin{mizar}
+Phi
+proof
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}
+
+For proving \emph{multiple} claims (i.e., a conjunction), the proof
+looks like:
+
+\begin{mizar}
+Phi & Psi
+proof
+  :: proof of Phi
+  thus Phi by ...;
+  :: proof of Psi
+  thus Psi by...;
+end;
+\end{mizar}
+There is some justification for stating ``\verb#thus# $\Phi$'' or
+``\verb#thus# $\Psi$'', which are the ``\verb#by ...#'' suffix to the
+statements (referring to labels~\S\ref{par:introduction:referring-to-labels}). 
+
+This corresponds to the $\land$-introduction rule in natural deduction:
+\begin{equation}
+  \infer[\mathtt{thus}~\Phi]{\Gamma\vdash\Phi\land\Psi}{
+    \Gamma\vdash\Phi &\qquad \Gamma\vdash\Psi}
+\end{equation}
+where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
+and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
+
+\begin{remark}[Mizar idiom]\index{Thesis@\texttt{thesis}}
+Some Mizar code adheres to the idiom of concluding proofs, all proofs,
+with the statement ``\verb#thus thesis#''. Here ``\verb#thesis#'' is the
+special formula representing what remains to be proven.
+\end{remark}
+
+\begin{exercise}[Proving ``if and only if'' claims]
+Frequently we have logical equivalences $\Phi\iff\Psi$, how would we
+prove it in Mizar? Well, recall, by definition this is
+$(\Phi\implies\Psi)\land(\Phi\impliedby\Psi)$.
+\end{exercise}
+
+\N{Let: $\forall$-introduction}\index{Let@\texttt{let}}
+The most common proof step which starts nearly every proof, introducing
+variables.
+
+\begin{mizar}
+for a being T holds Phi
+proof
+  let a be T;
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}
+
+This corresponds to the inference rule
+\begin{equation}
+\infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}
+\end{equation}
+
+\N{Consider: $\exists$-elimination}\index{Consider@\texttt{consider}}
+When we want to apply the fact $\exists x,\Psi(x)$, we introduce a
+``fresh'' variable which satisfies the given condition. In Mizar, this
+proof skeleton looks like
+\begin{mizar}
+Phi
+proof
+  :: preliminary steps
+  consider x such that Psi by ...;
+  :: proof of Phi involving x
+  thus Phi by ...;
+end;
+\end{mizar}
+This corresponds to the inference rule:
+\begin{equation}
+\infer[\mathtt{consider}~x~\mathtt{such~that}~\Psi(x)]{\Gamma\vdash\Phi}{%
+  \Gamma\vdash\exists x,\Psi(x)
+  &\qquad\Gamma,x,\Psi(x)\vdash\Phi}
+\end{equation}
+The justification for this step refers to the derivation of the upper
+left subgoal.
+
+\N{Take: $\exists$-introduction}\index{Take@\texttt{take}}
+If we want to prove the claim ``$\exists x,\Phi(x)$'', then we need to
+``\verb#take# $t$'' (where $t$ is a term). We can take an explicit term,
+like ``\verb#take# $t = f(x)$''. The proof skeleton looks like:
+\begin{mizar}
+ex t being T st Phi
+proof
+  :: preliminary steps
+  take t;
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}
+This corresponds to the natural deduction rule of inference:
+\begin{equation}
+  \infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}.
+\end{equation}
+
+\N{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
+When we want to prove $\Psi_{1}\lor\dots\lor\Psi_{n}\implies \Phi$,
+we simply prove $\Psi_{1}\implies\Phi$, \dots, $\Psi_{n}\implies\Phi$.
+But instead of using the ``\verb#assume#'' step for each of these
+proofs, we use the special ``\verb#suppose#'' step to introduce a
+subproof.
+\begin{mizar}
+Phi
+proof
+  :: preliminary steps
+  per cases by ...;
+  suppose Psi_1:
+    :: proof of Phi from Psi_1
+    thus Phi by ...;
+  :: suppose Psi_2, ..., Psi_(n-1)
+  suppose Psi_n:
+    :: proof of Phi from Psi_n
+    thus Phi by ...;
+end;
+\end{mizar}
+This corresponds to the natural deduction rule
+\begin{equation}
+  \infer[\mathtt{per~cases}]{\Gamma\vdash \Phi}{%
+    \Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}
+    & \qquad\Gamma,\Psi_{1}\vdash\Phi
+    & \dots
+    & \Gamma,\Psi_{n}\vdash\Phi}
+\end{equation}
+Here the justification cited in the ``\verb#per cases by...#'' is the
+label for the upper-left inference, that $\Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}$.
+Each ``\verb#suppose# $\Psi_{j}$; \dots; \verb#thus# $\Phi$'' block
+corresponds to the derivation $\Gamma,\Psi_{j}\vdash\Phi$.
+
+\N{Justification, nested subproofs}\index{By@\texttt{by}}\index{Proof!Nested}
+I have been trying to include ``\verb#by ...#'' explicitly in proof
+steps to reflect which steps require justification. This can be done in
+one of two ways:
+\begin{enumerate}
+\item cite theorems, definitions, and/or labeled steps which occur in
+  the proof (as discussed in~\S\ref{par:introduction:referring-to-labels}); or
+\item have a subproof, i.e., instead of writing ``\verb#by ...#'', we
+  could have a proof on the next line.
+\end{enumerate}
+There is also syntactic sugar, if one wishes to cite \emph{the previous step},
+simply prepend the step with ``\verb#then ...#''. So instead of
+\begin{mizar}
+proof
+  :: A1,A2 omitted but exist
+  assume A3: Psi;
+  consider x such that Phi by A1,A2,A3;
+  :: ...
+end;
+\end{mizar}
+We could equivalently write:
+\begin{mizar}
+proof
+  :: ....
+  assume Psi;
+  then consider x such that Phi by A2,A3;
+  :: ...
+end;
+\end{mizar}
+The two are equivalent.
+
+\begin{ddanger}
+  There are two caveats to this rule of prepending ``\verb#then#'' to
+  statements: (1) the step ``\verb#then thus# $\Phi$'' looks awkward, so
+  Mizar has this be ``\verb#hence# $\Phi$''\index{Hence@\texttt{hence}};
+  (2) if we have two statements
+  ``\verb#assume ex x st Phi;# \verb#then consider x such that Phi;#'' is
+  contracted into a single step 
+  ``\verb#given x such that Phi;#''\index{Given@\texttt{given}} since
+  that resembles working mathematics. 
+\end{ddanger}
 
 \section{Basic Definitions}
 
-\M
+\M We will review the definitions germane to group theory, as inspired
+by Nakasho and friends~\cite{nakasho2014formalization}. This entire
+section is inspired by their paper.
+
 Recall, as Baez~\cite[week one]{baez2004qg-lectures} notes, there are
 two ways to define a group. These two different definitions give rise to
 \emph{different} notions of ``group homomorphism'' (but identical
@@ -136,14 +407,17 @@ homomorphism as a ``\emph{group morphism}'', or more tersely as just a
 morphism.
 \end{remark}
 
-\M Mizar takes the first version as its definition. Implicit in its
+\M\index{Magma|(} Mizar takes the first version as its definition. Implicit in its
 definition is a notion of a ``\verb#multMagma#'', a magma with a
 multiplication operator (defined in \verb#ALGSTR_0#). As Nakasho and
 friends explicate~\cite{nakasho2014formalization}, a ``\verb#multMagma#''
-is a magma as could be found in, e.g., Bourbaki's
+is a magma as could be found in, e.g., Bourbaki's\index{Bourbaki, Nicholas}
 \emph{Algebra}~\cite[see Ch.I\S1.1]{bourbaki1974elements}: it
 consists of a set (which Mizar calls its ``\verb#carrier#'') and a
 binary operator ``\verb#multF#''.\index{multF@\texttt{multF}}\index{carrier@\texttt{carrier}}\index{multMagma@\texttt{multMagma}}
+
+Note: comments in Mizar are started by ``\verb#::#'' and continue until
+the end of the line.
 
 \begin{mizar}
 :: algstr_0.miz
@@ -183,7 +457,7 @@ We see that ``\texttt{multMagma}'' has two fields:
 \item ``\texttt{multF}'' which is a ``\texttt{BinOp}'' (binary operator)
   acting on the ``\texttt{carrier}''.
 \end{enumerate}
-This matches Bourbaki's definition of a magma.
+This matches Bourbaki's definition of a magma.\index{Magma|)}
 
 \N{Mizar's definition of Group}
 Mizar formalizes a group following the style of
@@ -211,6 +485,7 @@ that it is associative and group-like (has an identity element and for
 each element, a corresponding inverse element exists). This is collected
 in a new type, or \define{Mode}\index{Mode!in Mizar} (as Mizar calls them).
 
+\index{Unital@\texttt{unital}|(}\index{Group-like@\texttt{Group-like}|(}\index{Associative@\texttt{associative}|(}
 \begin{mizar}
 :: group_1.miz
 definition
@@ -236,6 +511,7 @@ definition
   mode Group is Group-like associative non empty multMagma;
 end;
 \end{mizar}
+\index{Associative@\texttt{associative}|)}\index{Group-like@\texttt{Group-like}|)}\index{Unital@\texttt{unital}|)}\index{Group@\texttt{Group}|textbf}
 
 \M Observe that a more faithful translation of Mizar's definition would
 be:
@@ -286,4 +562,82 @@ Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
 write ``\verb#1_G#''.
 
 Mizar demands we prove such a thing exists, and then a proof of
-uniqueness is supplied.
+uniqueness is supplied. This coincides with the usual practice in
+mathematical logic, when considering a ``function term'' in first-order
+logic, which has [existence] exactly one [uniqueness] output for each
+possible argument configuration. 
+
+\begin{remark}[Functors in Mizar]\index{Functor!In Mizar|(}
+A functor in Mizar is the only way to construct a term. Rudnicki and
+friends~\cite{rudnicki2001commutative} cite the term originating from
+Rasiowa and Sikorski~\cite[see p.148]{rasiowa1963mathematics},
+quoting: ``\dots some signs in the formalized language should correspond
+to the mappings and functions being examined. These signs are called
+\emph{functors}, or---more precisely---\emph{$m$-argument functors}
+provided they correspond to $m$-argument mappings from objects to
+objects ($m = 1, 2, \dots$)''.
+
+\emph{\textbf{This has absolutely no relation to functors in category theory},
+and in my opinion is an extremely poor
+choice of terminology due entirely to the ironies of history.}
+\index{Functor!In Mizar|)}\end{remark}
+
+\N{Inverse operator for group elements}
+When we have a group $\langle G,\cdot\rangle$, we also have the ability
+to invert any given element $g\in G$. Mizar denotes this by
+``\verb#g"#'', which is what the ``Rosette stone'' of notation suggests
+(since mathematicians would write $g^{-1}$). This is handled in
+``\verb#GROUP_1:def 5#''.\mizindex{\texttt{GROUP\_1}!def 05@\texttt{def 5}}
+A formal ``\verb#inverse_op(G)#'' is given in
+``\verb#GROUP_1:def 6#''.\mizindex{\texttt{GROUP\_1}!def 06@\texttt{def 6}}
+
+\begin{remark}[Inverse operator for subsets of $G$]
+We generalize this notation in group theory to write, if $A\subset G$ is
+some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
+notation in \verb#GROUP_2:def 1#\mizindex{\texttt{GROUP\_2}!def 01@\texttt{def 1}}
+\end{remark}
+
+\N{Power operator}
+For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
+understanding this stands for $g^{0}=1_{G}$ and $g^{n+1}=g^{n}\cdot g$.
+This is defined in ``\verb#GROUP_1:def 7#''
+\mizindex{\texttt{GROUP\_1}!def 07@\texttt{def 7}}. But we generalize this in
+mathematics to let $n\in\ZZ$, allowing the case when $n<0$ to be defined
+by $g^{n} = (g^{|n|})^{-1}$.
+
+Mizar does this in
+``\verb#GROUP_1:def 8#'',\mizindex{\texttt{GROUP\_1}!def 08@\texttt{def 8}} following the conventions
+taken by earlier articles in Mizar that $x^{y}$ is denoted by
+``\verb#x |^ y#''.\index{{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
+For the sake of consistency, Mizar explicitly states in
+``\verb#GROUP_1:def 8#'' when $g\in G$ and $n{:}\NN_{0}$, it follows
+that ``\verb#g |^ n#'' coincides with what we expect (i.e., $g^{n}$).
+
+\N{Order of Group Element (and Group Order)}
+If $h\in G$, then we say $h$ is of order 0 if the only $n\in\NN_{0}$
+satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute in
+``\verb#GROUP_1:def 10#''\mizindex{\texttt{GROUP\_1}!def 10@\texttt{def 10}} as ``\verb#being_of_order_0#''\index{Being of Order 0@\texttt{being\_of\_order\_0}}.
+This segues into defining the notion of the order for an element $g\in G$
+as the smallest natural number $|g|=n\in\NN_{0}$ for which $g^{n}=1_{G}$
+(provided $g$ is not of order zero, in which case we specially define
+its order to be $|g|=0$). Mizar defines this as
+``\verb#ord g#''\index{Order!\texttt{ord g}} in ``\verb#GROUP_1:def 11#''.\mizindex{\texttt{GROUP\_1}!def 11@\texttt{def 11}}
+
+The order of the group, Mizar overloads the cardinality operator (again,
+matching mathematical practice). Specifically, 
+for $G$ being any finite 1-sorted typed object (like a group), we have
+``\verb#card G#''\index{Cardinality@\texttt{card G}} be the cardinality
+of the underlying set.
+
+\N{Abelian Groups}
+Sadly, Mizar departs from mathematical practice, and defines an
+attribute in ``\verb#GROUP_1:def 12#''\mizindex{\texttt{GROUP\_1}!def 12@\texttt{def 12}} for a \verb#multMagma# to be
+``\verb#commutative#''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}
+This demands the expected property
+\begin{equation*}
+  \forall x,y\in G, x\cdot y=y\cdot x.
+\end{equation*}
+
+
+
+

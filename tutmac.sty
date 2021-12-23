@@ -1,6 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{tutmac}[2021/12/11 Mizar Tutorial Macros Package]
 
+\RequirePackage{manfnt}
+\RequirePackage{proof}
 \RequirePackage{ssqquote}
 \RequirePackage{upquote}
 \RequirePackage{enumitem}
@@ -57,11 +59,17 @@
 
 \@ifclassloaded{amsbook}{
   \makeindex{driver}
-  \let\ams@index\index
+  \makeindex{mizar}
+  \makeindex{mizar}
+  \global\let\ams@index\index
+  \gdef\mizindex#1{\ams@index{mizar}{#1}}
   \gdef\index#1{\ams@index{driver}{#1}}
-  \gdef\printindex{\Printindex{driver}{Index}}
+  \gdef\printindices{\Printindex{driver}{Index}
+    \Printindex{mizar}{Mizar References}}
 }{
+  \gdef\mizindex#1{\index{#1}}
   \makeindex
+  \gdef\printindices{\printindex}
 }
 \noweboptions{longxref,english,breakcode,externalindex}
 
@@ -162,6 +170,22 @@
 \newtheorem{remark}{Remark}[paragraph]
 \newtheorem{note}[paragraph]{Note}
 
+%%% Dangerous bend environments
+\font\manual=manfnt
+\def\dbend{{\manual\char127}} % dangerous bend sign
+
+% Danger, Will Robinson!
+\newenvironment{danger}{\medbreak\noindent\hangindent=2pc\hangafter=-2%
+  \clubpenalty=10000%
+  \hbox to0pt{\hskip-\hangindent\dbend\hfill}\small\ignorespaces}%
+  {\medbreak\par}
+
+% Danger! Danger!
+\newenvironment{ddanger}{\medbreak\noindent\hangindent=3pc\hangafter=-2%
+  \clubpenalty=10000%
+  \hbox to0pt{\hskip-\hangindent\dbend\kern2pt\dbend\hfill}\small\ignorespaces}%
+  {\medbreak\par}
+
 % adjust whitespace between code chunks
 % https://www.cs.tufts.edu/~nr/noweb/FAQ.html
 \def\nwendcode{\endtrivlist \endgroup \vfil\penalty10\vfilneg}
@@ -178,6 +202,7 @@
 \numberwithin{equation}{chapter}
 
 \def\define#1{\textbf{``#1''}}
+\newcommand{\Caret}{\char`\^}
 
 \input{notation}
 
