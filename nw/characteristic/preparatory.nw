@@ -51,6 +51,10 @@ reserve X for set;
 <<Lemma: Subgroups invariant under conjugation are normal>>
 <<Lemma: Morphism is surjective if its image is its codomain>>
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>
+<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
+<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
+<<Theorem: bijections have inverses>>
+<<Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
 
 @
 
@@ -311,7 +315,7 @@ proof
   hence thesis;
 end;
 
-@
+@ %def LmEpi
 
 \begin{lemma}
 Let $G_{1}$ and $G_{2}$ be groups, $K\subgroup G_{1}$ and $H\subgroup K$
@@ -344,4 +348,187 @@ proof
   hence (f|N)|H = f|H by A1;
 end;
 
-@
+@ %def LmRestrictCollapse
+
+
+<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
+Lm10:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is bijective
+holds (f")" = f
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is bijective;
+  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
+  f is one-to-one & rng f = Y implies f" is Function of Y,X
+  by FUNCT_2:25; 
+  then consider g being Function of Y,X such that
+  A2: g = f"
+  by A1,B1,FUNCT_2:25;
+  A3: g is bijective by A1,A2,GROUP_6:63;
+  then B2: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
+  g is one-to-one & rng g = X implies g" is Function of X,Y
+  by A3,FUNCT_2:25;
+  then consider h being Function of X,Y such that
+  A4: h = g"
+  by A3,FUNCT_2:def 1, def 3,25;
+  A5: h is bijective by A3,A4,GROUP_6:63;
+
+  for x being object st x in X holds h.x = f.x
+  <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>
+  then h = f by FUNCT_2:12;
+  hence (f")" = f by A2,A4;
+end;
+
+@ %def Lm10
+
+<<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>=
+proof
+  let x be object;
+  assume Z1: x in X;
+  then reconsider x as Element of X;
+  Y <> {};
+  then consider y being object such that
+  Z3: y = f.x
+  by FUNCT_2:5;
+  Z6: g is one-to-one & y in dom g by Z3, A2, B2;
+  f is one-to-one & x in dom f by A1, Z1,B1;
+  then Z4: x = (f").y by Z3,FUNCT_2:26;
+  then Z5: x = g.y by A2;
+  h.x = (g").x by A4
+     .= (g").(g.y) by Z4,A2
+     .= y by Z6,FUNCT_2:26;
+  then h.x = f.x by Z3;
+  hence thesis;
+end;
+  
+@ 
+
+\begin{theorem}
+If $f\colon X\to Y$ is a bijective function of sets, then for any $y\in Y$
+we have $f(f^{-1}(y))=y$.
+\end{theorem}
+
+Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#
+states that $f^{-1}(f(x))=x$ provided $f$ is injective.
+
+<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
+Lm11:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is bijective
+for y being Element of Y
+holds f.((f").y) = y
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is bijective;
+  let y be Element of Y;
+  (rng f = Y & f is one-to-one) &
+  (f is one-to-one & rng f = Y implies f" is Function of Y,X)
+  by A1,FUNCT_2:def 3, 25;
+  then consider g being Function of Y,X such that
+  A2: g = f"
+  by A1;
+  g = f" & f is bijective by A1,A2;
+  then g is bijective by A1, GROUP_6:63;
+  then y = (g").(g.y) by A2,FUNCT_2:26
+        .= ((f")").((f").y) by A2
+        .= f.((f").y) by Lm10,A1;
+  hence thesis by Lm10;
+end;
+
+@ %def Lm11
+
+\begin{theorem}
+  If $f\colon X\to Y$ is a bijective function of sets,
+  then its inverse function $f^{-1}\colon Y\to X$ exists (as defined by
+  $f\circ f^{-1}=\id_{Y}$ and $f^{-1}\circ f=\id_{X}$).
+\end{theorem}
+
+<<Theorem: bijections have inverses>>=
+Lm12:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is bijective
+holds f*(f") = id Y & (f")*f = id X
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is bijective;
+  then consider g being Function of Y,X such that
+  A2: g = f" and
+  A3: g is bijective
+  by Lm13;
+  A4: g" = f by A1,A2,A3,Lm10;
+  for y being object st y in Y holds (f*(f")).y = (id Y).y
+  <<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>
+  then f*g = id Y by A2,FUNCT_2:12;
+  hence f*(f") = id Y by A2,FUNCT_2:12;
+  for x being object st x in X holds ((f")*f).x = (id X).x
+  <<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>
+  then g*f = id X by A2,FUNCT_2:12;
+  hence (f")*f = id X by A2,FUNCT_2:12;
+end;
+
+@ %def Lm12
+
+<<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>=
+proof
+  let y be object;
+  assume Z1: y in Y;
+  then (Y <> {} & f" is Function of Y,X & f is Function) implies (f*(f")).y=f.((f").y)
+  by FUNCT_2:15;
+  Z2: Y <> {} & f is Function & g is Function of Y,X & g = f" by A2;
+  then (f*g).y=f.(g.y) by Z1,FUNCT_2:15
+             .= y by A4,A3,Z1,Z2, FUNCT_2:26
+             .= (id Y).y by Z1,FUNCT_1:18;
+  hence thesis by A2;
+end;
+  
+@ 
+
+<<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>=
+proof
+  let x be object;
+  assume Z1: x in X;
+  then (X <> {} & f is Function of X,Y & f" is Function) implies ((f")*f).x=(f").(f.x)
+  by FUNCT_2:15;
+  Z2: X <> {} & f is Function of X,Y & f" is Function by A2;
+  then (g*f).x = g.(f.x) by Z1,FUNCT_2:15
+              .= x by A2,Z1,Z2,A1,FUNCT_2:26
+              .= (id X).x by Z1,FUNCT_1:18;
+  hence thesis by A2;
+end;
+  
+@ 
+
+\begin{theorem}
+If $f\colon X\to Y$ is bijective, then there exists an inverse function
+$f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
+\end{theorem}
+
+<<Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
+Lm13:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is bijective
+holds ex g being Function of Y,X st g = f" & g is bijective
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is bijective;
+  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
+  f is one-to-one & rng f = Y implies f" is Function of Y,X
+  by FUNCT_2:25; 
+  then consider g being Function of Y,X such that
+  A2: g = f"
+  by A1,B1,FUNCT_2:25;
+  take g;
+  thus g = f" by A2;
+  thus g is bijective by A1,A2, GROUP_6:63;
+end;
+
+@ %def Lm13
