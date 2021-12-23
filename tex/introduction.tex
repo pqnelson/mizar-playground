@@ -36,18 +36,18 @@ is a proposition in Mizar.
 \N{Quantifiers}
 Quantifiers are a bit trickier. We quantify a variable over a type.
 \begin{equation}
-\forall_{x:A}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{holds}~\Phi
+\forall_{x\esti A}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{holds}~\Phi
 \end{equation}
 \begin{equation}
-\exists_{x:A}\Phi\quad\equiv\quad\mathtt{ex}~x~\mathtt{being}~A~\mathtt{st}~\Phi
+\exists_{x\esti A}\Phi\quad\equiv\quad\mathtt{ex}~x~\mathtt{being}~A~\mathtt{st}~\Phi
 \end{equation}
 We can also just ``stack'' multiple quantifiers next to each other, like
 \begin{equation}
-\forall_{x:A}\forall_{y:B}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{for}~y~\mathtt{being}~B~\mathtt{holds}~\Phi.
+\forall_{x\esti A}\forall_{y\esti B}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{for}~y~\mathtt{being}~B~\mathtt{holds}~\Phi.
 \end{equation}
 We have syntactic sugar for universal quantification of an implication:
 \begin{equation}
-\forall_{x:A}\Phi\implies\Psi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{st}~\Phi~\mathtt{holds}~\Psi.
+\forall_{x\esti A}\Phi\implies\Psi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{st}~\Phi~\mathtt{holds}~\Psi.
 \end{equation}
 
 \begin{exercise}
@@ -74,10 +74,10 @@ notation, see: \url{http://markun.cs.shinshu-u.ac.jp/kiso/projects/proofchecker/
   Mizar it is ``\texttt{f.x}''
 \item\index{\texttt{f.:A}!Mizar for $f(A)$} Applying a function to a set is denoted $f(A)$, but in Mizar it is
   denoted ``\texttt{f.:A}''
-\item\index{{\texttt{f"\""}}!Mizar for $f^{-1}$} The inverse function relating $y=f(x)$ to $f^{-1}(y)=x$, in Mizar
+\item\index{\texttt{f''}@{\texttt{f"\""}}!Mizar for $f^{-1}$} The inverse function relating $y=f(x)$ to $f^{-1}(y)=x$, in Mizar
   is denoted by ``\texttt{f".y}''. More generally, instead of using
   superscript $-1$, Mizar will use double quotes.
-\item\index{{\texttt{f"|"A}}!Mizar for $f\vert_{A}$} If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
+\item\index{\texttt{f \mid A}@{\texttt{f"|"A}}!Mizar for $f\vert_{A}$} If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
   we write the restriction of $f$ to $A$ as $f|_{A}\colon A\to X$
   defined by $\forall a\in A, f(a)=f|_{A}(a)$. In Mizar, this
   restriction is denoted ``\verb#f|A#'' and function application with it
@@ -145,7 +145,7 @@ proof
 end;
 \end{mizar}
 
-\N{Assume: proving disjunction}
+\N{Assume: proving disjunction}\index{Idiom!Proving $\Phi\lor\Psi$}
 The idiomatic way to prove the claim $\Phi\lor\Psi$ in Mizar is to
 assume the negation of one of the disjuncts (usually the first, i.e.,
 to ``\verb#assume# $\neg\Phi$'') and then prove $\Psi$ holds.
@@ -205,7 +205,7 @@ This corresponds to the $\land$-introduction rule in natural deduction:
 where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
 and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
 
-\begin{remark}[Mizar idiom]\index{Thesis@\texttt{thesis}}
+\begin{remark}[Mizar idiom]\index{Thesis@\texttt{thesis}}\index{Idiom!\texttt{thus thesis}}
 Some Mizar code adheres to the idiom of concluding proofs, all proofs,
 with the statement ``\verb#thus thesis#''. Here ``\verb#thesis#'' is the
 special formula representing what remains to be proven.
@@ -430,7 +430,7 @@ end;
 
 \M
 Let us unpack what is going on in this code. We are defining a
-\verb#struct#, a mathematical structure which is usually presented in
+\verb#struct#,\index{Struct@\texttt{struct}} a mathematical structure which is usually presented in
 ordinary mathematics as a tuple of some kind $\langle\dots\rangle$. For
 example, a field might be presented as $\langle F, +, \cdot, 0, 1\rangle$
 consisting of a set $F$, a couple binary operators, and a couple of
@@ -449,7 +449,7 @@ The ancestors are optional. For ``\verb#multMagma#'',\index{multMagma@\texttt{mu
 (namely, ``\verb#1-sorted#''\index{1-sorted@\texttt{1-sorted}}). The fields for a structure look like a
 comma-separated list whose entries are of the form:
 \begin{equation}
-  \langle\textit{field}\rangle ::= \langle\textit{identifier}\rangle\quad\mathtt{->}\quad\langle\textit{type}\rangle
+  \langle\textit{field}\rangle ::= \langle\textit{identifier}\rangle\quad\mbox{\texttt{->}}\quad\langle\textit{type}\rangle
 \end{equation}
 We see that ``\texttt{multMagma}'' has two fields:
 \begin{enumerate}
@@ -458,6 +458,42 @@ We see that ``\texttt{multMagma}'' has two fields:
   acting on the ``\texttt{carrier}''.
 \end{enumerate}
 This matches Bourbaki's definition of a magma.\index{Magma|)}
+
+\begin{remark}[Accessing fields of a structure]
+We can refer to, e.g., the ``\verb#multF#'' of a given instance of a
+``\verb#multMagma#'' by writing
+``\verb#the multF of <instance>#''. These are called accessor
+functors. Sometimes we want to access ``the underlying magma'' of an
+algebraic gadget, and a horrible pun used to describe this is the
+\emph{forgetful functor}\index{Functor!Forgetful}. We discuss more about
+functors later on (\S\ref{par:introduction:functor-one-g}).
+\end{remark}
+
+\begin{remark}[Multiplication operator]\index{\texttt{x * y}}
+Before continuing on too far, I should note that for a
+``\texttt{M being multMagma}'' we have an infix binary operator
+``\texttt{x*y = (the multF of M).(x,y)}''. This is defined in
+\MizDef{ALGSTR\_0}{19}. 
+\end{remark}
+
+\N{Equality of Instances of Structures}
+If we a structure $\mathtt{Foo} \langle \mathsf{F}_{1},\dots,\mathsf{F}_{n}\rangle$
+with $n$ fields $\mathsf{F}_{j}$, then we can make an instance of it
+using notation ``\verb$Foo(# F1, ..., Fn #)$''. Equality of two
+instances follows the same axiomatic behavior as ordered $n$-tuples:
+\verb$Foo(# E1, ..., En #) = Foo(# F1, ..., Fn #)$ if and only if
+\verb#E1# = \verb#F1# and \dots and \verb#En# = \verb#Fn#. If we tried
+to assert two \emph{different} structures are equal --- e.g.,
+\verb$Foo(# E1, ..., En #) = Bar(# F1, ..., Fm #)$ --- well, this is not
+allowed, Mizar will reject it.
+
+One caveat to this is if we have, for example, a topological group
+$G_{1}$ (which has all the fields as a group \emph{and} a topological
+space \emph{combined}) and, say, $S_{n}$ (which has all the fields of a
+group, but nothing else), then we cannot meaningfully compare these
+two. We will need to do something like write ``\verb#the Group of G1 = Sn#''
+to compare the \emph{group structure} of $G_{1}$ to the \emph{Group structure}
+of $S_{n}$.
 
 \N{Mizar's definition of Group}
 Mizar formalizes a group following the style of
@@ -470,14 +506,14 @@ formulas which must hold. There are three such attributes being defined
 immediately in \texttt{group\_1.miz}:
 \begin{enumerate}
 \item ``\texttt{unital}''\index{unital@\texttt{unital}} which asserts
-  $\exists_{e{:}\mathtt{IT}}\forall_{h{:}\mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h$
+  $\exists_{e\esti \mathtt{IT}}\forall_{h\esti \mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h$
 \item ``\texttt{Group-like}''\index{Group-like@\texttt{Group-like}},
   which extends the condition of ``\texttt{unital}'' with the assertion
   that for any element $h$ and inverse element $g$ exists
-  $\exists_{e{:}\mathtt{IT}}\forall_{h{:}\mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h\land\exists_{g{:}\mathtt{IT}}\mu(h,g)=e\land\mu(g,h)=e$
+  $\exists_{e\esti \mathtt{IT}}\forall_{h\esti \mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h\land\exists_{g\esti \mathtt{IT}}\mu(h,g)=e\land\mu(g,h)=e$
 \item ``\texttt{associative}''\index{associative@\texttt{associative}}
   which corresponds to our demand of associativity
-  $\forall_{x,y,z{:}\mathtt{IT}}\mu(\mu(x,y),z)=\mu(x,\mu(y,z))$.
+  $\forall_{x,y,z\esti \mathtt{IT}}\mu(\mu(x,y),z)=\mu(x,\mu(y,z))$.
 \end{enumerate}
 With these attributes in hand, Mizar defines a group to be a
 ``\texttt{Group-like associative non empty multMagma}'', i.e., a magma such
@@ -512,6 +548,22 @@ definition
 end;
 \end{mizar}
 \index{Associative@\texttt{associative}|)}\index{Group-like@\texttt{Group-like}|)}\index{Unital@\texttt{unital}|)}\index{Group@\texttt{Group}|textbf}
+
+\begin{remark}[Mizar Idiom]\label{rmk:introduction:idiom-it-in-attributes}\index{Idiom!IT in Attributes}
+Whenever defining an attribute in Mizar, we have an ambient
+``\verb#IT#'' object for which the attribute will be defined upon. For
+example, these attributes appearing in \verb#GROUP_1:def 1# are defined
+on a \verb#multMagma#.
+\end{remark}
+
+\begin{remark}[Registering attributes]\index{Registration}
+Once we have defined attributes, we cannot use them as adjectives for
+types until we ``\verb#register#'' them. Without registration, writing
+something like ``\texttt{let x be associative multMagma}'' would confuse
+Mizar, and it would throw an error. Until registered, we would have to
+write something like ``\texttt{let x be multMagma; assume x is associative}''
+or ``\texttt{let x be multMagma such that x is associative}''.
+\end{remark}
 
 \M Observe that a more faithful translation of Mizar's definition would
 be:
@@ -557,11 +609,20 @@ A3: for h being Element of G holds h * e2 = h & e2 * h = h;
 end;
 \end{mizar}
 
-\M What's going on here? Well, for any unital magma $G$, we have a
+\N{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
 ``functor'' (a logical function, i.e., parametrized term) denoted
 ``\verb#1_#'' which produces the unit element for the given magma.
 Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
 write ``\verb#1_G#''.
+
+Such a term is defined as $\forall h\in G, h\cdot\mathtt{it}=h\land\mathtt{it}\cdot{h}=h$.
+Here ``\verb#it#''\index{It@\texttt{it}} anaphorically\footnote{We have
+Lisp programmers to thank for this lovely term.} refers to the
+definiendum (the term being defined, i.e., ``\verb#1_G#''). Whenever
+functors are defined, their defining properties will involve
+``\verb#it#'' satisfying some formula.\footnote{The ``\texttt{IT}''
+appearing in definitions of attributes play an analogous role, hence the
+idiom noted in Remark~\ref{rmk:introduction:idiom-it-in-attributes}.}
 
 Mizar demands we prove such a thing exists, and then a proof of
 uniqueness is supplied. This coincides with the usual practice in
@@ -609,9 +670,9 @@ by $g^{n} = (g^{|n|})^{-1}$.
 Mizar does this in
 ``\verb#GROUP_1:def 8#'',\MizDef{GROUP\_1}[08]{8} following the conventions
 taken by earlier articles in Mizar that $x^{y}$ is denoted by
-``\verb#x |^ y#''.\index{{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
+``\verb#x |^ y#''.\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
 For the sake of consistency, Mizar explicitly states in
-``\verb#GROUP_1:def 8#'' when $g\in G$ and $n{:}\NN_{0}$, it follows
+``\verb#GROUP_1:def 8#'' when $g\in G$ and $n\esti \NN_{0}$, it follows
 that ``\verb#g |^ n#'' coincides with what we expect (i.e., $g^{n}$).
 
 \N{Order of Group Element (and Group Order)}
