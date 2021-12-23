@@ -8,7 +8,9 @@
 :: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
 :: licenses, or see http://www.gnu.org/licenses/gpl.html and
 :: http://creativecommons.org/licenses/by-sa/3.0/.
-
+for G being Group
+for phi being Automorphism of G
+holds phi " is Automorphism of G by GROUP_6 :62;
 environ
 
  vocabularies RING_3, :: for MIsomorphism
@@ -924,6 +926,21 @@ end;
 
 reserve K for characteristic Subgroup of G;
 :: "K" for "Karacteristic"...uh, wait...
+
+theorem ThAltChar:
+  for G being Group
+  for K being characteristic Subgroup of G
+  for f being Automorphism of G
+  holds f .: K = K
+proof
+  let G be Group;
+  let K be characteristic Subgroup of G;
+  let f be Automorphism of G;
+  f .: K = Image(f|K) by GRSOLV_1:def 3
+  .= K by Def9;
+  hence f .: K = K;
+end;
+
 
 theorem Th13:
   for G being Group
