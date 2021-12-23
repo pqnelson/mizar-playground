@@ -533,7 +533,9 @@ We often work with multiple groups, and if we want to refer to the
 identity element of a particular group, then in ordinary mathematics we
 write either $1_{G}$ (if $G$ uses multiplicative notation) or $0_{G}$
 (if $G$ uses addition). Mizar has a way to encode this convention, which
-is the next definition in \texttt{group\_1.miz}:
+is the next definition in
+\texttt{group\_1.miz}:\MizDef{GROUP\_1}[04]{4}
+\mizindex{1G@$\mathtt{1\_G}$}
 
 \begin{mizar}
 definition
@@ -587,26 +589,25 @@ When we have a group $\langle G,\cdot\rangle$, we also have the ability
 to invert any given element $g\in G$. Mizar denotes this by
 ``\verb#g"#'', which is what the ``Rosette stone'' of notation suggests
 (since mathematicians would write $g^{-1}$). This is handled in
-``\verb#GROUP_1:def 5#''.\mizindex{\texttt{GROUP\_1}!def 05@\texttt{def 5}}
-A formal ``\verb#inverse_op(G)#'' is given in
-``\verb#GROUP_1:def 6#''.\mizindex{\texttt{GROUP\_1}!def 06@\texttt{def 6}}
+``\verb#GROUP_1:def 5#''.\MizDef{GROUP\_1}[05]{5}
+A formal ``\verb#inverse_op(G)#''\mizindex{Inverse Op(G)@$\mathtt{inverse\_op(G)}$} is given in
+``\verb#GROUP_1:def 6#''.\MizDef{GROUP\_1}[06]{6}
 
 \begin{remark}[Inverse operator for subsets of $G$]
 We generalize this notation in group theory to write, if $A\subset G$ is
 some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
-notation in \verb#GROUP_2:def 1#\mizindex{\texttt{GROUP\_2}!def 01@\texttt{def 1}}
+notation in \verb#GROUP_2:def 1#.\MizDef{GROUP\_2}[01]{1}
 \end{remark}
 
 \N{Power operator}
 For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
 understanding this stands for $g^{0}=1_{G}$ and $g^{n+1}=g^{n}\cdot g$.
-This is defined in ``\verb#GROUP_1:def 7#''
-\mizindex{\texttt{GROUP\_1}!def 07@\texttt{def 7}}. But we generalize this in
+This is defined in ``\verb#GROUP_1:def 7#''\MizDef{GROUP\_1}[07]{7}. But we generalize this in
 mathematics to let $n\in\ZZ$, allowing the case when $n<0$ to be defined
 by $g^{n} = (g^{|n|})^{-1}$.
 
 Mizar does this in
-``\verb#GROUP_1:def 8#'',\mizindex{\texttt{GROUP\_1}!def 08@\texttt{def 8}} following the conventions
+``\verb#GROUP_1:def 8#'',\MizDef{GROUP\_1}[08]{8} following the conventions
 taken by earlier articles in Mizar that $x^{y}$ is denoted by
 ``\verb#x |^ y#''.\index{{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
 For the sake of consistency, Mizar explicitly states in
@@ -616,23 +617,23 @@ that ``\verb#g |^ n#'' coincides with what we expect (i.e., $g^{n}$).
 \N{Order of Group Element (and Group Order)}
 If $h\in G$, then we say $h$ is of order 0 if the only $n\in\NN_{0}$
 satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute in
-``\verb#GROUP_1:def 10#''\mizindex{\texttt{GROUP\_1}!def 10@\texttt{def 10}} as ``\verb#being_of_order_0#''\index{Being of Order 0@\texttt{being\_of\_order\_0}}.
+``\verb#GROUP_1:def 10#''\MizDef{GROUP\_1}{10} as ``\verb#being_of_order_0#''\index{Being of Order 0@\texttt{being\_of\_order\_0}}\mizindex{Being of Order 0@$\mathtt{being\_of\_order\_0}$}.
 This segues into defining the notion of the order for an element $g\in G$
 as the smallest natural number $|g|=n\in\NN_{0}$ for which $g^{n}=1_{G}$
 (provided $g$ is not of order zero, in which case we specially define
 its order to be $|g|=0$). Mizar defines this as
-``\verb#ord g#''\index{Order!\texttt{ord g}} in ``\verb#GROUP_1:def 11#''.\mizindex{\texttt{GROUP\_1}!def 11@\texttt{def 11}}
+``\verb#ord g#''\index{Order!\texttt{ord g}}\mizindex{ord g@$\mathtt{ord~g}$} in ``\verb#GROUP_1:def 11#''.\MizDef{GROUP\_1}{11}
 
 The order of the group, Mizar overloads the cardinality operator (again,
 matching mathematical practice). Specifically, 
 for $G$ being any finite 1-sorted typed object (like a group), we have
-``\verb#card G#''\index{Cardinality@\texttt{card G}} be the cardinality
+``\verb#card G#''\mizindex{Card G@\texttt{card G}}\index{Cardinality@\texttt{card G}} be the cardinality
 of the underlying set.
 
 \N{Abelian Groups}
 Sadly, Mizar departs from mathematical practice, and defines an
-attribute in ``\verb#GROUP_1:def 12#''\mizindex{\texttt{GROUP\_1}!def 12@\texttt{def 12}} for a \verb#multMagma# to be
-``\verb#commutative#''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}
+attribute in ``\verb#GROUP_1:def 12#''\MizDef{GROUP\_1}{12} for a \verb#multMagma# to be
+``\verb#commutative#''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}\mizindex{Commutative@\texttt{commutative}}
 This demands the expected property
 \begin{equation*}
   \forall x,y\in G, x\cdot y=y\cdot x.

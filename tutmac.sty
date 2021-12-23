@@ -205,5 +205,25 @@
 \newcommand{\Caret}{\char`\^}
 
 \input{notation}
+% \MizTh{GROUP\_3}{55} produces an index entry for {GROUP_3!Th 55}
+% \MizTh{GROUP\_3}[03]{3} produces \index{GROUP_3!Th 03@\texttt{Th 3}}
+% \MizTh[GROUP\_03]{GROUP\_3}[03]{3} produces \index{GROUP_03@GROUP_3!Th 03@\texttt{Th 3}}
+\def\MizTh{\@ifnextchar[{\MizThm@i@with}{\MizThm@i@without}}
+\def\MizThm@i@with[#1]#2{\def\tempa{#1}\def\tempb{#2}\futurelet\next\MizThm@with@ii}
+\def\MizThm@with@ii{\@ifnextchar[{\MizThm@with@with}{\MizThm@with@without}}
+\def\MizThm@with@without#1{\mizindex{$\mathtt{\tempa}$@$\mathtt{\tempb}$!Th #1@\texttt{Th #1}}}
+\def\MizThm@with@with[#1]#2{\mizindex{$\mathtt{\tempa}$@$\mathtt{\tempb}$!Th #1@\texttt{Th #2}}}
+
+\def\MizThm@i@without#1{\def\tempa{#1}\futurelet\next\MizThm@without@ii}% Save first argument
+\def\MizThm@without@ii{\@ifnextchar[{\MizThm@without@with}{\MizThm@without@without}}
+\def\MizThm@without@without#1{\mizindex{$\mathtt{\tempa}$!Th #1@\texttt{Th #1}}}
+\def\MizThm@without@with[#1]#2{\mizindex{$\mathtt{\tempa}$!Th #1@\texttt{Th #2}}}
+\let\MizThm\MizTh
+
+\def\MizDef#1{\def\tempa{#1}\futurelet\next\MizDef@i}% Save first argument
+\def\MizDef@i{\@ifnextchar[{\MizDef@with}{\MizDef@without}}
+\def\MizDef@without#1{\mizindex{$\mathtt{\tempa}$!def #1@\texttt{def #1}}}
+\def\MizDef@with[#1]#2{\mizindex{$\mathtt{\tempa}$!def #1@\texttt{def #2}}}
+
 
 \endinput
