@@ -1163,35 +1163,31 @@ proof
     let g be Element of G;
     thus g in Image(phi|Image(psi|H)) implies g in H
     proof
-      assume B0: g in Image(phi|Image(psi|H));
+      assume B1: g in Image(phi|Image(psi|H));
       then ex a being Element of Image(psi|H) st g = (phi|Image(psi|H)).a by GROUP_6:45;
       then consider a being Element of Image(psi|H) such that
-      B1: g = (phi|Image(psi|H)).a by GROUP_6:45;
-      B2: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
-      then (phi|Image(psi|H)).a = phi.a by Lm3;
-      then B3: g = phi.a by B1;
-      ex b being Element of H st a = (psi|H).b by B2,GROUP_6:45;
-      then consider b being Element of H such that
-      B4: a = (psi|H).b;
-      B5: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
+      B2: g = (phi|Image(psi|H)).a by GROUP_6:45;
+      B3: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
+      then B4: phi.a = (phi|Image(psi|H)).a by Lm3
+                    .= g by B2;
+      consider b being Element of H such that
+      B5: a = (psi|H).b
+      by B3,GROUP_6:45;
+      B6: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
       then psi.b = (psi|H).b by Lm3
-                .= a by B4;
-      then phi.(psi.b) = phi.a
-                      .= g by B3;
-      then B6: phi.(psi.b) = g;
-      phi.((phi").b) = phi.(psi.b);
-      b is Element of G & (the carrier of G)<>{} & phi is bijective & phi is Function of (the carrier of G),(the
-      carrier of G) by GROUP_2:42;
-      then B7: b = phi.((phi").b) by Lm11
-                .= phi.(psi.b)
-                .= g by B6;
-      thus g in H by B5,B7;
+                .= a by B5;
+      then B7: phi.(psi.b) = phi.a
+                          .= g by B4;
+      b is Element of G by GROUP_2:42;
+      then b = phi.((phi").b) by Lm11
+            .= phi.(psi.b)
+            .= g by B7;
+      hence g in H by B6;
     end;
     thus g in H implies g in Image(phi|Image(psi|H))
     proof
       assume B1: g in H;
       set a = (psi|H).g;
-      :: prove a in Image(psi|H)
       B2: a in Image(psi|H)
       proof
         dom(psi|H) = the carrier of H by FUNCT_2:def 1;
@@ -1203,7 +1199,6 @@ proof
       end;
       set K = Image(psi|H);
       set b = (phi|Image(psi|H)).a;
-      :: prove b in Image(phi|(psi|H))
       B3: b in Image(phi|Image(psi|H))
       proof
         dom(phi|K) = the carrier of K by FUNCT_2:def 1;
@@ -1213,20 +1208,22 @@ proof
         then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
         hence b in Image(phi|K);
       end;
-      H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
-      then B4: psi.g = (psi|H).g by Lm3
-      .= a by B2;
-      B5: a is Element of K & K is Subgroup of G & a in K & phi is
-      Homomorphism of G,G by B2,STRUCT_0:def 5;
-      then a is Element of G by GROUP_2:42;
-      then B6: (phi|K).a =  phi.a  by B5,Lm3;
-      then B7: phi.a = phi.(psi.g) by B4
-      .= phi.((phi").g)
-      .= g by Lm11;
-      then b = (phi|K).((psi|H).g) by B4,B6
-      .= g by B4,B6,B7;
-      then B8: b = g;
-      hence g in Image(phi|K) by B3;
+      thus g in Image(phi|K)
+      proof
+        H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
+        then B4: psi.g = (psi|H).g by Lm3
+                      .= a by B2;
+        B5: a is Element of K & K is Subgroup of G & a in K & phi is
+        Homomorphism of G,G by B2,STRUCT_0:def 5;
+        then a is Element of G by GROUP_2:42;
+        then B6: (phi|K).a =  phi.a  by B5,Lm3
+                          .= phi.(psi.g) by B4
+                          .= phi.((phi").g)
+                          .= g by Lm11;
+        then b = (phi|K).((psi|H).g) by B4
+              .= g by B4,B6;
+        hence thesis by B3;
+      end;
     end;
     thus thesis;
   end;
@@ -1256,66 +1253,25 @@ proof
   proof
     assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
     A2: for phi being Automorphism of G
-    for z being Element of G
-    st z in H
-    holds (phi|H).z in H
-    proof
-      let phi be Automorphism of G;
-      let z be Element of G;
-      assume H0: z in H;
-      then phi.z = (phi|H).z by Lm3;
-      H1: Image(phi|H) is Subgroup of H by A1;
-      z is Element of H by H0,STRUCT_0:def 5;
-      then (phi|H).z in Image(phi|H) by H0,GROUP_6:45;
-      hence (phi|H).z in H by H1, GROUP_2:40;
-    end;
-    A3: for phi being Automorphism of G
-    holds Image(phi|H) is Subgroup of H
-    proof
-      let phi be Automorphism of G;
-      H1: rng(phi|H) c= the carrier of G &
-      the carrier of H c= the carrier of G by GROUP_2:def 5;
-      for z being Element of G st z in H holds (phi|H).z in H by A2;
-      for w being Element of G st w in rng(phi|H) holds w in H
-      proof
-        let w be Element of G;
-        assume H2: w in rng(phi|H);
-        then consider z being object such that
-        H3: z in dom(phi|H) and
-        H4: (phi|H).z = w by FUNCT_1:def 3;
-        H5: dom(phi|H) = the carrier of H by FUNCT_2:def 1;
-        reconsider z as Element of H by H3;
-        H6: z in H by STRUCT_0:def 5;
-        z is Element of G by GROUP_2:42;
-        then (phi|H).z in H by A2,H6;
-        hence w in H by H4;
-      end;
-      then for w being Element of G holds w in rng(phi|H) implies w in H;
-      then for w being Element of G holds w in rng(phi|H) implies w in the carrier of H by STRUCT_0:def 5;
-      then H2: rng(phi|H) c= the carrier of H by H1,SUBSET_1:2;
-      then the carrier of Image(phi|H) c= the carrier of H by GROUP_6:44;
-      hence H3: Image(phi|H) is Subgroup of H by GROUP_2:57;
-    end;
-    A4: for phi being Automorphism of G
     holds H is Subgroup of Image(phi|H)
     proof
       let phi be Automorphism of G;
       consider psi being Automorphism of G such that
-      AA1: psi = phi" and
-      B1: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A3,Lm39;
+      B1: psi = phi" and
+      B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Lm39;
       consider psi2 being Automorphism of G such that
-      AA2: psi2 = phi" and
-      B2: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A3,Lm40;
-      psi2 = psi by AA1,AA2;
-      hence H is Subgroup of Image(phi|H) by B1,B2;
+      B3: psi2 = phi" and
+      B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Lm40;
+      psi2 = psi by B1,B3;
+      hence H is Subgroup of Image(phi|H) by B2,B4;
     end;
     for phi being Automorphism of G
     holds H = Image(phi|H)
     proof
       let phi be Automorphism of G;
-      AA1: H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
+      H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
       H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
-      by A3,A4;
+      by A1,A2;
       then the multMagma of H = the multMagma of Image(phi|H) by GROUP_2:55;
       hence H = Image(phi|H) by GROUP_2:def 5;
     end;
@@ -1354,38 +1310,36 @@ A2:  for phi being Automorphism of G
   proof
     let phi be Automorphism of G;
     let z be Element of G;
-    assume Z0: z in Z;
+    assume B1: z in Z;
     then for y being Element of G holds (phi.z)*y=y*(phi.z) by A1;
-    then Z1: (phi.z) in Z by GROUP_5:77;
-    phi.z = (phi|Z).z by Z0,Lm3;
-    hence ((phi|Z).z) in Z by Z1;
+    then B2: (phi.z) in Z by GROUP_5:77;
+    phi.z = (phi|Z).z by B1,Lm3;
+    hence ((phi|Z).z) in Z by B2;
   end;
 A3: for phi being Automorphism of G
   holds Image(phi|Z) is Subgroup of Z
   proof
     let phi be Automorphism of G;
-    Z1: rng(phi|Z) c= the carrier of G &
+    B1: rng(phi|Z) c= the carrier of G &
     the carrier of Z c= the carrier of G by GROUP_2:def 5;
     for z being Element of G st z in Z holds (phi|Z).z in Z by A2;
     for w being Element of G st w in rng(phi|Z) holds w in Z
     proof
       let w be Element of G;
-      assume Z2: w in rng(phi|Z);
+      assume w in rng(phi|Z);
       then consider z being object such that
-      Z3: z in dom(phi|Z) and
-      Z4: (phi|Z).z = w by FUNCT_1:def 3;
-      Z5: dom(phi|Z) = the carrier of Z by FUNCT_2:def 1;
-      reconsider z as Element of Z by Z3;
-      Z6: z in Z by STRUCT_0:def 5;
+      C1: z in dom(phi|Z) and
+      C2: (phi|Z).z = w by FUNCT_1:def 3;
+      reconsider z as Element of Z by C1;
+      C3: z in Z by STRUCT_0:def 5;
       z is Element of G by GROUP_2:42;
-      then (phi|Z).z in Z by A2,Z6;
-      hence w in Z by Z4;
+      then (phi|Z).z in Z by A2,C3;
+      hence w in Z by C2;
     end;
-    then for w being Element of G holds w in rng(phi|Z) implies w in Z;
     then for w being Element of G holds w in rng(phi|Z) implies w in the carrier of Z by STRUCT_0:def 5;
-    then Z2: rng(phi|Z) c= the carrier of Z by Z1,SUBSET_1:2;
+    then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
-    hence Z3: Image(phi|Z) is Subgroup of Z by GROUP_2:57;
+    hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
   hence Z is characteristic Subgroup of G by Th27;
 end;

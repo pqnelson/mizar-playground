@@ -23,26 +23,25 @@
   \RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc,headheight=13.6pt]{geometry}
   \RequirePackage[nottoc,notlot,notlof]{tocbibind}
 }
-\ifpdf
-\RequirePackage[hidelinks]{hyperref}
-\else
-% eTeX uses this color for links, it's better than BrickRed imho
+
 \definecolor{linkRed}{cmyk}{0.28, 1, 1, 0.35}
-\RequirePackage[%hidelinks
-  colorlinks=true,
-  linkcolor=linkRed,
-  citecolor=linkRed,
-  filecolor=linkRed,
-  urlcolor=linkRed,
-  dvipdfmx,
-  pdfinfo={
-    Title={Formalizing Finite Groups in Mizar},
-    Author={Alex Nelson},
-    CreationDate={D:20211214152256},
-    ModDate={D:\pdfdate}
-                %   20040502195600
-  }]{hyperref}
+\ifpdf
+  \RequirePackage{hyperref}
+\else
+  % eTeX uses this color for links, it's better than BrickRed imho
+  \RequirePackage[dvipdfmx]{hyperref}
 \fi
+\hypersetup{colorlinks=true,
+    linkcolor=linkRed,
+    citecolor=linkRed,
+    filecolor=linkRed,
+    urlcolor=linkRed,
+    pdfinfo={
+      Title={Formalizing Finite Groups in Mizar},
+      Author={Alex Nelson},
+      CreationDate={D:20211214152256},
+      ModDate={D:\pdfdate}
+  }}
 
 %%% Format author stuff nicely
 %%%

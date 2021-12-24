@@ -731,10 +731,27 @@ restricted to the Subgroup.
 We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
 \end{remark}
 
-\N{Equality of Subgroups}
+\N{Equality of Subgroups}\label{par:introduction:subgroup-equality}
 For reasons which are not well documented, \verb#GROUP_2:def 6#
 redefines equality for \emph{strict} Subgroups. Non-strict subgroups
 cannot be equal (not as subgroups).
+
+There are a few useful theorems
+concerning equality of subgroups, but the idiomatic Mizar code seems to
+be to assert ``\texttt{the multMagma of H1 = the multMagma of H2}''.
+When the user knows both subgroups are strict, they can set ``\texttt{H1 = H2}''.
+
+
+
+\begin{remark}[On ``strict'' mathematical gadgets]\index{strict@\texttt{strict}|textbf}
+Mizar has a notion of a ``\texttt{strict}'' attribute. What does it mean?
+Well, sometimes a mathematical gadget is ``composite''; like a vector
+space over a field is an Abelian group with vector addition, but it also
+has other stuff (like scalar multiplication). This ``other stuff''
+prevents it from being a ``bald-faced Abelian group''. Just as black
+holes have no hair, strict groups have no hair: it's just a
+``\texttt{multMagma}'' satisfying the group properties (in Mizar, at least).
+\end{remark}
 
 \N{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
 For any group $G$, $\trivialSubgroup_{G}$ is the trivial subgroup
