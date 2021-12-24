@@ -40,15 +40,13 @@ holds f .: X = Y
 proof
   let X,Y be non empty set;
   let f be Function of X,Y;
-  assume f is onto;
-  then A1: rng f = Y;
-  A2: dom f = X by FUNCT_2:def 1;
-  then A3: for y being object
-  holds y in rng f iff ex x being object st x in X & y = f.x
-  by FUNCT_1:def 3;
-  A4: for y being object holds y in (f .: X) iff
-  ex x being object st x in X & x in X & y = f.x
-  by A2,FUNCT_1:def 6;
+  assume A1: f is onto;
+  dom f = X by FUNCT_2:def 1;
+  then A2: (for y being object
+  holds y in rng f iff ex x being object st x in X & y = f.x) &
+  (for y being object holds y in (f .: X) iff
+  ex x being object st x in X & x in X & y = f.x)
+  by FUNCT_1:def 3,def 6;
 
   C1: for y being object holds y in (f .: X) implies y in rng f
   proof
@@ -56,8 +54,8 @@ proof
     assume y in (f .: X);
     then consider x being object such that
     B1: x in X and x in X and B2: y = f.x
-    by A4;
-    thus y in rng f by A3,B1,B2;
+    by A2;
+    thus y in rng f by A2,B1,B2;
   end;
 
   C2: for y being object holds y in rng f implies y in (f .: X)
@@ -66,14 +64,16 @@ proof
     assume y in rng f;
     then consider x being object such that
     B1: x in X and B2: y = f.x
-    by A3;
-    thus y in (f .: X) by A4,B1,B2;
+    by A2;
+    thus y in (f .: X) by A2,B1,B2;
   end;
 
   for y being object holds y in rng f iff y in (f .: X) by C1,C2;
-  then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A1;
+  hence f .: X = rng f by TARSKI:2
+              .= Y by A1;
 end;
+proof end;
+::> *396
 
 registration
   let X;
@@ -1227,8 +1227,6 @@ proof
 end;
 
 
-
-
 theorem Th27:
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
@@ -1338,3 +1336,4 @@ A3: for phi being Automorphism of G
   end;
   hence Z is characteristic Subgroup of G by Th27;
 end;
+::> 396: Formula expected
