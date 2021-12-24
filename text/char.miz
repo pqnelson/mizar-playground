@@ -196,7 +196,7 @@ proof
   assume A1: f is bijective;
   then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   f is one-to-one & rng f = Y implies f" is Function of Y,X
-  by FUNCT_2:25; 
+  by FUNCT_2:25;
   then consider g being Function of Y,X such that
   A2: g = f"
   by A1,B1,FUNCT_2:25;
@@ -228,7 +228,7 @@ proof
     then h.x = f.x by Z3;
     hence thesis;
   end;
-    
+
   then h = f by FUNCT_2:12;
   hence (f")" = f by A2,A4;
 end;
@@ -258,6 +258,26 @@ proof
   hence thesis by Lm10;
 end;
 
+Lm13:
+for X,Y being non empty set
+for f being Function of X,Y
+st f is bijective
+holds ex g being Function of Y,X st g = f" & g is bijective
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is bijective;
+  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
+  f is one-to-one & rng f = Y implies f" is Function of Y,X
+  by FUNCT_2:25;
+  then consider g being Function of Y,X such that
+  A2: g = f"
+  by A1,B1,FUNCT_2:25;
+  take g;
+  thus g = f" by A2;
+  thus g is bijective by A1,A2, GROUP_6:63;
+end;
+
 Lm12:
 for X,Y being non empty set
 for f being Function of X,Y
@@ -284,7 +304,7 @@ proof
                .= (id Y).y by Z1,FUNCT_1:18;
     hence thesis by A2;
   end;
-    
+
   then f*g = id Y by A2,FUNCT_2:12;
   hence f*(f") = id Y by A2,FUNCT_2:12;
   for x being object st x in X holds ((f")*f).x = (id X).x
@@ -299,29 +319,9 @@ proof
                 .= (id X).x by Z1,FUNCT_1:18;
     hence thesis by A2;
   end;
-    
+
   then g*f = id X by A2,FUNCT_2:12;
   hence (f")*f = id X by A2,FUNCT_2:12;
-end;
-
-Lm13:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds ex g being Function of Y,X st g = f" & g is bijective
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is bijective;
-  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
-  f is one-to-one & rng f = Y implies f" is Function of Y,X
-  by FUNCT_2:25; 
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1,B1,FUNCT_2:25;
-  take g;
-  thus g = f" by A2;
-  thus g is bijective by A1,A2, GROUP_6:63;
 end;
 
 
@@ -947,7 +947,7 @@ A1:  for a being Element of G holds K |^ a = K
     consider f being inner Automorphism of G such that
   A2: for x being Element of G holds f.x = x |^ a
     by Th19;
-    K = Image(f|K) = K by GROUP_6:57,Def9
+    K = Image(f|K) by GROUP_6:57,Def9
      .= K |^ a by A2,Th15;
     hence thesis;
   end;
@@ -1236,7 +1236,97 @@ end;
 
 
 theorem Th27:
-  center G is characteristic Subgroup of G;
+  for H being strict Subgroup of G
+  holds H is characteristic Subgroup of G iff
+  (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+proof
+  let H be strict Subgroup of G;
+  thus H is characteristic Subgroup of G implies (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+  proof
+    assume A1: H is characteristic Subgroup of G;
+    thus for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
+    proof
+      let phi be Automorphism of G;
+      Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,A1,Def9;
+      hence Image(phi|H) is Subgroup of H;
+    end;
+  end;
+
+  thus (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H) implies H is characteristic Subgroup of G
+  proof
+    assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
+    A2: for phi being Automorphism of G
+    for z being Element of G
+    st z in H
+    holds (phi|H).z in H
+    proof
+      let phi be Automorphism of G;
+      let z be Element of G;
+      assume H0: z in H;
+      then phi.z = (phi|H).z by Lm3;
+      H1: Image(phi|H) is Subgroup of H by A1;
+      z is Element of H by H0,STRUCT_0:def 5;
+      then (phi|H).z in Image(phi|H) by H0,GROUP_6:45;
+      hence (phi|H).z in H by H1, GROUP_2:40;
+    end;
+    A3: for phi being Automorphism of G
+    holds Image(phi|H) is Subgroup of H
+    proof
+      let phi be Automorphism of G;
+      H1: rng(phi|H) c= the carrier of G &
+      the carrier of H c= the carrier of G by GROUP_2:def 5;
+      for z being Element of G st z in H holds (phi|H).z in H by A2;
+      for w being Element of G st w in rng(phi|H) holds w in H
+      proof
+        let w be Element of G;
+        assume H2: w in rng(phi|H);
+        then consider z being object such that
+        H3: z in dom(phi|H) and
+        H4: (phi|H).z = w by FUNCT_1:def 3;
+        H5: dom(phi|H) = the carrier of H by FUNCT_2:def 1;
+        reconsider z as Element of H by H3;
+        H6: z in H by STRUCT_0:def 5;
+        z is Element of G by GROUP_2:42;
+        then (phi|H).z in H by A2,H6;
+        hence w in H by H4;
+      end;
+      then for w being Element of G holds w in rng(phi|H) implies w in H;
+      then for w being Element of G holds w in rng(phi|H) implies w in the carrier of H by STRUCT_0:def 5;
+      then H2: rng(phi|H) c= the carrier of H by H1,SUBSET_1:2;
+      then the carrier of Image(phi|H) c= the carrier of H by GROUP_6:44;
+      hence H3: Image(phi|H) is Subgroup of H by GROUP_2:57;
+    end;
+    A4: for phi being Automorphism of G
+    holds H is Subgroup of Image(phi|H)
+    proof
+      let phi be Automorphism of G;
+      consider psi being Automorphism of G such that
+      AA1: psi = phi" and
+      B1: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A3,Lm39;
+      consider psi2 being Automorphism of G such that
+      AA2: psi2 = phi" and
+      B2: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A3,Lm40;
+      psi2 = psi by AA1,AA2;
+      hence H is Subgroup of Image(phi|H) by B1,B2;
+    end;
+    for phi being Automorphism of G
+    holds H = Image(phi|H)
+    proof
+      let phi be Automorphism of G;
+      AA1: H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
+      H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
+      by A3,A4;
+      then the multMagma of H = the multMagma of Image(phi|H) by GROUP_2:55;
+      hence H = Image(phi|H) by GROUP_2:def 5;
+    end;
+    hence H is characteristic Subgroup of G by Def9;
+  end;
+
+  thus thesis;
+end;
+
+theorem Th28:
+  center G is characteristic Subgroup of G
 proof
   set Z = center G;
   A1: for phi being Automorphism of G
@@ -1297,32 +1387,5 @@ A3: for phi being Automorphism of G
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
     hence Z3: Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
-  A4: for phi being Automorphism of G
-  holds Z is Subgroup of Image(phi|Z)
-  proof
-    let phi be Automorphism of G;
-    consider psi being Automorphism of G such that
-    AA1: psi = phi" and
-    B1: Image(phi|Image(psi|Z)) is Subgroup of Image(phi|Z) by A3,Lm39;
-    consider psi2 being Automorphism of G such that
-    AA2: psi2 = phi" and
-    B2: the multMagma of Z = the multMagma of Image(phi|Image(psi2|Z)) by A3,Lm40;
-    psi2 = psi by AA1,AA2;
-    hence Z is Subgroup of Image(phi|Z) by B1,B2;
-  end;
-  for phi being Automorphism of G
-  holds Z = Image(phi|Z)
-  proof
-    let phi be Automorphism of G;
-    AA1: Z is strict Subgroup of G & Image(phi|Z) is strict Subgroup of G;
-    Z is Subgroup of Image(phi|Z) & Image(phi|Z) is Subgroup of Z
-    by A3,A4;
-    then the multMagma of Z = the multMagma of Image(phi|Z) by GROUP_2:55;
-    hence Z = Image(phi|Z) by GROUP_2:def 5;
-  end;
-  hence center G is characteristic Subgroup of G by Def9;
+  hence Z is characteristic Subgroup of G by Th27;
 end;
-
-
-
-

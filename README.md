@@ -2,6 +2,9 @@ This is a "work in progress" where I try to implement some basic gadgets
 from group theory in Mizar. A log is kept in `alex.plan` from earliest
 entries to more recent ones.
 
+To make a PDF of the literate proof, simply run `make doc` or `make`. To
+extract the Mizar code and vocabulary file, run `make extract_code`.
+
 # Mizar References
 
 - Wiedijk, [Writing a Mizar Article in 9 Easy Steps](http://www.mizar.org/project/mizman.pdf)
