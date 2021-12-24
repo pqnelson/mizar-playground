@@ -433,6 +433,106 @@ proof
   hence thesis;
 end;
 
+theorem Th6:
+  for H being Subgroup of G
+  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
+  for phi being Automorphism of G
+  holds ex psi being Automorphism of G
+  st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
+proof
+  let H be Subgroup of G;
+  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
+  let phi be Automorphism of G;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  Image(psi|H) is Subgroup of H by A1;
+  then phi .: Image(psi|H) is Subgroup of phi .: H by GRSOLV_1:12;
+  then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
+  hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
+end;
+
+theorem Th7:
+  for H being Subgroup of G
+  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
+  for phi being Automorphism of G
+  holds ex psi being Automorphism of G
+  st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
+proof
+  let H be Subgroup of G;
+  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
+  let phi be Automorphism of G;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  for g being Element of G holds g in Image(phi|Image(psi|H)) iff g in H
+  proof
+    let g be Element of G;
+    thus g in Image(phi|Image(psi|H)) implies g in H
+    proof
+      assume g in Image(phi|Image(psi|H));
+      then consider a being Element of Image(psi|H) such that
+      B1: g = (phi|Image(psi|H)).a by GROUP_6:45;
+      M1: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
+      then B2: phi.a = (phi|Image(psi|H)).a by Lm3
+                    .= g by B1;
+      consider b being Element of H such that
+      B3: a = (psi|H).b
+      by M1,GROUP_6:45;
+      M2: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
+      then b = phi.(psi.b) by Lm11
+            .= phi.((psi|H).b) by M2,Lm3
+            .= phi.a by B3
+            .= g by B2;
+      hence g in H by M2;
+    end;
+    thus g in H implies g in Image(phi|Image(psi|H))
+    proof
+      assume B1: g in H;
+      set a = (psi|H).g;
+      B2: a in Image(psi|H)
+      proof
+        dom(psi|H) = the carrier of H by FUNCT_2:def 1;
+        then g in dom(psi|H) by B1,STRUCT_0:def 5;
+        then (psi|H).g in (psi|H) .: (the carrier of H) by FUNCT_1:def 6;
+        then (psi|H).g in the carrier of Image(psi|H) by GROUP_6:def 10;
+        then (psi|H).g in Image(psi|H) by STRUCT_0:def 5;
+        hence a in Image(psi|H);
+      end;
+      set K = Image(psi|H);
+      set b = (phi|Image(psi|H)).a;
+      B3: b in Image(phi|Image(psi|H))
+      proof
+        dom(phi|K) = the carrier of K by FUNCT_2:def 1;
+        then a in dom(phi|K) by B2,STRUCT_0:def 5;
+        then (phi|K).a in (phi|K) .: (the carrier of K) by FUNCT_1:def 6;
+        then (phi|K).a in the carrier of Image(phi|K) by GROUP_6:def 10;
+        then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
+        hence b in Image(phi|K);
+      end;
+      thus g in Image(phi|K)
+      proof
+        H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
+        then B4: psi.g = (psi|H).g by Lm3
+                      .= a by B2;
+        B5: a is Element of K & K is Subgroup of G & a in K & phi is
+        Homomorphism of G,G by B2,STRUCT_0:def 5;
+        then a is Element of G by GROUP_2:42;
+        then B6: (phi|K).a =  phi.a  by B5,Lm3
+                          .= phi.(psi.g) by B4
+                          .= phi.((phi").g)
+                          .= g by Lm11;
+        then b = (phi|K).((psi|H).g) by B4
+              .= g by B4,B6;
+        hence thesis by B3;
+      end;
+    end;
+    thus thesis;
+  end;
+  hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
+end;
+
+
 theorem Th8:
   for H being Subgroup of G
   for phi being Automorphism of G
@@ -1126,109 +1226,6 @@ proof
   hence thesis;
 end;
 
-Lm39:
-for H being Subgroup of G
-st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-for phi being Automorphism of G
-holds ex psi being Automorphism of G
-st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
-proof
-  let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  take psi;
-  thus psi = phi";
-  Image(psi|H) is Subgroup of H by A1;
-  then phi .: Image(psi|H) is Subgroup of phi .: H by GRSOLV_1:12;
-  then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
-  hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
-end;
-
-Lm40:
-for H being Subgroup of G
-st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-for phi being Automorphism of G
-holds ex psi being Automorphism of G
-st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
-proof
-  let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  take psi;
-  thus psi = phi";
-  for g being Element of G holds g in Image(phi|Image(psi|H)) iff g in H
-  proof
-    let g be Element of G;
-    thus g in Image(phi|Image(psi|H)) implies g in H
-    proof
-      assume B1: g in Image(phi|Image(psi|H));
-      then ex a being Element of Image(psi|H) st g = (phi|Image(psi|H)).a by GROUP_6:45;
-      then consider a being Element of Image(psi|H) such that
-      B2: g = (phi|Image(psi|H)).a by GROUP_6:45;
-      B3: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
-      then B4: phi.a = (phi|Image(psi|H)).a by Lm3
-                    .= g by B2;
-      consider b being Element of H such that
-      B5: a = (psi|H).b
-      by B3,GROUP_6:45;
-      B6: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
-      then psi.b = (psi|H).b by Lm3
-                .= a by B5;
-      then B7: phi.(psi.b) = phi.a
-                          .= g by B4;
-      b is Element of G by GROUP_2:42;
-      then b = phi.((phi").b) by Lm11
-            .= phi.(psi.b)
-            .= g by B7;
-      hence g in H by B6;
-    end;
-    thus g in H implies g in Image(phi|Image(psi|H))
-    proof
-      assume B1: g in H;
-      set a = (psi|H).g;
-      B2: a in Image(psi|H)
-      proof
-        dom(psi|H) = the carrier of H by FUNCT_2:def 1;
-        then g in dom(psi|H) by B1,STRUCT_0:def 5;
-        then (psi|H).g in (psi|H) .: (the carrier of H) by FUNCT_1:def 6;
-        then (psi|H).g in the carrier of Image(psi|H) by GROUP_6:def 10;
-        then (psi|H).g in Image(psi|H) by STRUCT_0:def 5;
-        hence a in Image(psi|H);
-      end;
-      set K = Image(psi|H);
-      set b = (phi|Image(psi|H)).a;
-      B3: b in Image(phi|Image(psi|H))
-      proof
-        dom(phi|K) = the carrier of K by FUNCT_2:def 1;
-        then a in dom(phi|K) by B2,STRUCT_0:def 5;
-        then (phi|K).a in (phi|K) .: (the carrier of K) by FUNCT_1:def 6;
-        then (phi|K).a in the carrier of Image(phi|K) by GROUP_6:def 10;
-        then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
-        hence b in Image(phi|K);
-      end;
-      thus g in Image(phi|K)
-      proof
-        H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
-        then B4: psi.g = (psi|H).g by Lm3
-                      .= a by B2;
-        B5: a is Element of K & K is Subgroup of G & a in K & phi is
-        Homomorphism of G,G by B2,STRUCT_0:def 5;
-        then a is Element of G by GROUP_2:42;
-        then B6: (phi|K).a =  phi.a  by B5,Lm3
-                          .= phi.(psi.g) by B4
-                          .= phi.((phi").g)
-                          .= g by Lm11;
-        then b = (phi|K).((psi|H).g) by B4
-              .= g by B4,B6;
-        hence thesis by B3;
-      end;
-    end;
-    thus thesis;
-  end;
-  hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
-end;
 
 
 
@@ -1258,10 +1255,10 @@ proof
       let phi be Automorphism of G;
       consider psi being Automorphism of G such that
       B1: psi = phi" and
-      B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Lm39;
+      B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th6;
       consider psi2 being Automorphism of G such that
       B3: psi2 = phi" and
-      B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Lm40;
+      B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Th7;
       psi2 = psi by B1,B3;
       hence H is Subgroup of Image(phi|H) by B2,B4;
     end;
@@ -1320,9 +1317,7 @@ A3: for phi being Automorphism of G
   holds Image(phi|Z) is Subgroup of Z
   proof
     let phi be Automorphism of G;
-    B1: rng(phi|Z) c= the carrier of G &
-    the carrier of Z c= the carrier of G by GROUP_2:def 5;
-    for z being Element of G st z in Z holds (phi|Z).z in Z by A2;
+    B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
     for w being Element of G st w in rng(phi|Z) holds w in Z
     proof
       let w be Element of G;
@@ -1331,12 +1326,12 @@ A3: for phi being Automorphism of G
       C1: z in dom(phi|Z) and
       C2: (phi|Z).z = w by FUNCT_1:def 3;
       reconsider z as Element of Z by C1;
-      C3: z in Z by STRUCT_0:def 5;
       z is Element of G by GROUP_2:42;
-      then (phi|Z).z in Z by A2,C3;
+      then (phi|Z).z in Z by A2,STRUCT_0:def 5;
       hence w in Z by C2;
     end;
-    then for w being Element of G holds w in rng(phi|Z) implies w in the carrier of Z by STRUCT_0:def 5;
+    then for w being Element of G st w in rng(phi|Z) holds w in the carrier of Z
+    by STRUCT_0:def 5;
     then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
     hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;

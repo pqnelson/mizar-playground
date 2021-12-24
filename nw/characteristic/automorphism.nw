@@ -22,6 +22,8 @@ begin
 <<Theorem: Automorphisms map trivial subgroups to themselves>>
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>
+<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>
+<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>
 <<Define $\Id_{G}$>>
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>
@@ -218,7 +220,204 @@ proof
   hence thesis;
 end;
 
-@ 
+@
+
+
+\begin{theorem}
+Let $H\subgroup G$ be a subgroup such that
+$\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$.
+Then any automorphism $\varphi$ of $G$ has an inverse which satisfies
+$\varphi[\varphi^{-1}(H)]\subgroup\varphi(H)$.
+\end{theorem}
+
+<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>=
+theorem Th6:
+for H being Subgroup of G
+st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
+for phi being Automorphism of G
+holds ex psi being Automorphism of G
+st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
+proof
+  let H be Subgroup of G;
+  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
+  let phi be Automorphism of G;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  Image(psi|H) is Subgroup of H by A1;
+  then phi .: Image(psi|H) is Subgroup of phi .: H by GRSOLV_1:12;
+  then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
+  hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
+end;
+
+@ %def Th6
+
+\begin{theorem}
+  Let $G$ be a group, and $H\subgroup G$ be a subgroup such that it is
+  invariant under the Automorphisms of $G$, i.e.,
+  $\forall\varphi\in\Aut(G)$ we have $\varphi(H)\subgroup H$.
+  Then for any automorphism $\varphi\in\Aut(G)$, we have
+  $\varphi[\varphi^{-1}(H)]=H$.
+\end{theorem}
+
+This is an obvious result which is usually taken for granted.
+
+<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>=
+theorem Th7:
+  for H being Subgroup of G
+  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
+  for phi being Automorphism of G
+  holds ex psi being Automorphism of G
+  st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
+proof
+  let H be Subgroup of G;
+  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
+  let phi be Automorphism of G;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  for g being Element of G holds g in Image(phi|Image(psi|H)) iff g in H
+  <<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>
+  hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
+end;
+
+@ %def Th7
+
+\M The bones of the proof for this claim amounts to unfolding the
+logical structure of the claim.
+
+<<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>=
+proof
+  let g be Element of G;
+  thus g in Image(phi|Image(psi|H)) implies g in H
+  <<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>
+
+  thus g in H implies g in Image(phi|Image(psi|H))
+  <<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>
+  thus thesis;
+end;
+
+@
+
+\M We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
+some [[M1:]] $a\in\varphi^{-1}(H)$ such that [[B2:]] $g=\varphi(a)$. And
+then we have, by the same line of reasoning applied to $a$, there is
+some [[M2:]] $b\in H$ such that [[B3:]] $\varphi^{-1}|_{H}(b)=a$. It
+follows that $g = \varphi(\varphi^{-1}(b))$, and by [[Lm11]] we have
+$g = b$ which proves the claim.
+
+<<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>=
+proof
+  assume B1: g in Image(phi|Image(psi|H));
+  <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>
+  <<$\exists b\in H, a = \varphi^{-1}(b)$>>
+  then b = phi.(psi.b) by Lm11
+        .= phi.((psi|H).b) by M2,Lm3
+        .= phi.a by B3
+        .= g by B2;
+  hence g in H by M2;
+end;
+
+@
+
+\M Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
+
+<<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>=
+then consider a being Element of Image(psi|H) such that
+B1: g = (phi|Image(psi|H)).a by GROUP_6:45;
+M1: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
+then B2: phi.a = (phi|Image(psi|H)).a by Lm3
+              .= g by B1;
+
+@
+
+\M Almost the same reasoning applies to $b\in H$ satisfying
+$a=\varphi^{-1}(b)$.
+
+<<$\exists b\in H, a = \varphi^{-1}(b)$>>=
+consider b being Element of H such that
+B3: a = (psi|H).b
+by M1,GROUP_6:45;
+M2: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
+
+@
+
+
+\M To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
+let $K=\varphi^{-1}(H)$ and show $a = \varphi^{-1}|_{H}(g)\in K$ and
+then show $b=\varphi|_{K}(a)\in\varphi[K]=\varphi[\varphi^{-1}(H)]$. Then
+we have $b=\varphi(\varphi^{-1}(g))=g$ due to $\varphi$ being bijective.
+The result follows.
+
+<<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>=
+proof
+  assume B1: g in H;
+  set a = (psi|H).g;
+  B2: a in Image(psi|H)
+  <<Sub-step 1: $a\in\varphi^{-1}(H)$>>
+
+  set K = Image(psi|H);
+  set b = (phi|Image(psi|H)).a;
+
+  B3: b in Image(phi|Image(psi|H))
+  <<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>
+  thus g in Image(phi|K)
+  <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>
+end;
+
+@
+
+\M The first step follows by unfolding definitions.
+
+<<Sub-step 1: $a\in\varphi^{-1}(H)$>>=
+proof
+  dom(psi|H) = the carrier of H by FUNCT_2:def 1;
+  then g in dom(psi|H) by B1,STRUCT_0:def 5;
+  then (psi|H).g in (psi|H) .: (the carrier of H) by FUNCT_1:def 6;
+  then (psi|H).g in the carrier of Image(psi|H) by GROUP_6:def 10;
+  then (psi|H).g in Image(psi|H) by STRUCT_0:def 5;
+  hence a in Image(psi|H);
+end;
+
+@
+
+\M The next step, like the first, follows from definitions.
+
+<<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>=
+proof
+  dom(phi|K) = the carrier of K by FUNCT_2:def 1;
+  then a in dom(phi|K) by B2,STRUCT_0:def 5;
+  then (phi|K).a in (phi|K) .: (the carrier of K) by FUNCT_1:def 6;
+  then (phi|K).a in the carrier of Image(phi|K) by GROUP_6:def 10;
+  then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
+  hence b in Image(phi|K);
+end;
+
+@
+
+\M The last step is a little more involved, because it requires
+recalling $\varphi|_{k}(k)=\varphi(k)$ for $k\in K$, and
+$\varphi^{-1}|_{H}(h)=\varphi^{-1}(h)$ for $h\in H$. We can then combine
+these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
+
+<<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>=
+proof
+  H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
+  then B4: psi.g = (psi|H).g by Lm3
+                .= a by B2;
+  B5: a is Element of K & K is Subgroup of G & a in K & phi is
+  Homomorphism of G,G by B2,STRUCT_0:def 5;
+  then a is Element of G by GROUP_2:42;
+  then B6: (phi|K).a =  phi.a  by B5,Lm3
+                    .= phi.(psi.g) by B4
+                    .= phi.((phi").g)
+                    .= g by Lm11;
+  then b = (phi|K).((psi|H).g) by B4
+        .= g by B4,B6;
+  hence thesis by B3;
+end;
+
+@
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ be any subgroup, and

@@ -26,6 +26,12 @@ denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
 itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
 \end{definition}
 
+\begin{remark}
+The other definition which is routinely given is that $H$ is a
+characteristic subgroup of $G$ if for any $\varphi\in\Aut(G)$ we have
+$\varphi(H)\subgroup H$. We prove this later as equivalent (\S\ref{thm:results:alt-def-of-char-subgroup}).
+\end{remark}
+
 <<Define [[characteristic]] attribute>>=
 definition :: Def9
   let G;
@@ -418,7 +424,7 @@ end;
 
 @ %def Th26
 
-\begin{theorem}
+\begin{theorem}\label{thm:results:alt-def-of-char-subgroup}
   Let $H\subgroup G$.
   Then $H\charSubgroup G$ if and only if for any automorphism $\varphi$, we have
   $\varphi(H)\subgroup H$.
@@ -428,9 +434,6 @@ Some texts give this as the definition for $H$ being a characteristic
 subgroup, which is fine.
 
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
-<<Lemma: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup G$>>
-<<Lemma: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>
-
 theorem Th27:
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
@@ -481,21 +484,9 @@ have the hypothesis that $H$ is a strict subgroup of $G$.
 <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
   assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
-  A2: for phi being Automorphism of G
-  holds H is Subgroup of Image(phi|H)
-  proof
-    let phi be Automorphism of G;
-    consider psi being Automorphism of G such that
-    B1: psi = phi" and
-    B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Lm39;
-    consider psi2 being Automorphism of G such that
-    B3: psi2 = phi" and
-    B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Lm40;
-    psi2 = psi by B1,B3;
-    hence H is Subgroup of Image(phi|H) by B2,B4;
-  end;
-  for phi being Automorphism of G
-  holds H = Image(phi|H)
+  A2: for phi being Automorphism of G holds H is Subgroup of Image(phi|H)
+  <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>
+  for phi being Automorphism of G holds H = Image(phi|H)
   proof
     let phi be Automorphism of G;
     H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
@@ -509,163 +500,26 @@ end;
 
 @
 
-<<Lemma: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup G$>>=
-Lm39:
-for H being Subgroup of G
-st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-for phi being Automorphism of G
-holds ex psi being Automorphism of G
-st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
+\M This is a slick argument, which is confusing until one realizes
+what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
+\begin{itemize}
+\item[{[[A1]]}:] $\psi(H)\subgroup H$;
+\item[{[[Th6]]}:] for $\psi=\varphi^{-1}$, we have $\varphi[\psi(H)]\subgroup\varphi(H)$; and
+\item[{[[Th7]]}:] for $\psi=\varphi^{-1}$, the underlying magmas of $H$ and $\varphi[\psi(H)]$ are equal.
+\end{itemize}
+This suffices to infer $H\subgroup\varphi(H)$.
+
+<<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>=
 proof
-  let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
   let phi be Automorphism of G;
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  take psi;
-  thus psi = phi";
-  Image(psi|H) is Subgroup of H by A1;
-  then phi .: Image(psi|H) is Subgroup of phi .: H by GRSOLV_1:12;
-  then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
-  hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
-end;
-
-@ %def Lm39
-
-<<Lemma: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>=
-Lm40:
-for H being Subgroup of G
-st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-for phi being Automorphism of G
-holds ex psi being Automorphism of G
-st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
-proof
-  let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  take psi;
-  thus psi = phi";
-  for g being Element of G holds g in Image(phi|Image(psi|H)) iff g in H
-  <<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>
-  hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
-end;
-
-@ %def Lm40
-
-\M The bones of the proof for this claim amounts to unfolding the
-logical structure of the claim.
-
-<<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>=
-proof
-  let g be Element of G;
-  thus g in Image(phi|Image(psi|H)) implies g in H
-  <<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>
-
-  thus g in H implies g in Image(phi|Image(psi|H))
-  <<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>
-  thus thesis;
-end;
-
-@
-
-<<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>=
-proof
-  assume B1: g in Image(phi|Image(psi|H));
-  then ex a being Element of Image(psi|H) st g = (phi|Image(psi|H)).a by GROUP_6:45;
-  then consider a being Element of Image(psi|H) such that
-  B2: g = (phi|Image(psi|H)).a by GROUP_6:45;
-  B3: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
-  then B4: phi.a = (phi|Image(psi|H)).a by Lm3
-                .= g by B2;
-  consider b being Element of H such that
-  B5: a = (psi|H).b
-  by B3,GROUP_6:45;
-  B6: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
-  then psi.b = (psi|H).b by Lm3
-            .= a by B5;
-  then B7: phi.(psi.b) = phi.a
-                      .= g by B4;
-  b is Element of G by GROUP_2:42;
-  then b = phi.((phi").b) by Lm11
-        .= phi.(psi.b)
-        .= g by B7;
-  hence g in H by B6;
-end;
-
-@
-
-\M To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
-let $K=\varphi^{-1}(H)$ and show $a = \varphi^{-1}|_{H}(g)\in K$ and
-then show $b=\varphi|_{K}(a)\in\varphi[K]=\varphi[\varphi^{-1}(H)]$. Then
-we have $b=\varphi(\varphi^{-1}(g))=g$ due to $\varphi$ being bijective.
-The result follows.
-
-<<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>=
-proof
-  assume B1: g in H;
-  set a = (psi|H).g;
-  B2: a in Image(psi|H)
-  <<Sub-step 1: $a\in\varphi^{-1}(H)$>>
-
-  set K = Image(psi|H);
-  set b = (phi|Image(psi|H)).a;
-
-  B3: b in Image(phi|Image(psi|H))
-  <<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>
-  thus g in Image(phi|K)
-  <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>
-end;
-
-@
-
-\M The first step follows by unfolding definitions.
-
-<<Sub-step 1: $a\in\varphi^{-1}(H)$>>=
-proof
-  dom(psi|H) = the carrier of H by FUNCT_2:def 1;
-  then g in dom(psi|H) by B1,STRUCT_0:def 5;
-  then (psi|H).g in (psi|H) .: (the carrier of H) by FUNCT_1:def 6;
-  then (psi|H).g in the carrier of Image(psi|H) by GROUP_6:def 10;
-  then (psi|H).g in Image(psi|H) by STRUCT_0:def 5;
-  hence a in Image(psi|H);
-end;
-
-@
-
-\M The next step, like the first, follows from definitions.
-
-<<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>=
-proof
-  dom(phi|K) = the carrier of K by FUNCT_2:def 1;
-  then a in dom(phi|K) by B2,STRUCT_0:def 5;
-  then (phi|K).a in (phi|K) .: (the carrier of K) by FUNCT_1:def 6;
-  then (phi|K).a in the carrier of Image(phi|K) by GROUP_6:def 10;
-  then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
-  hence b in Image(phi|K);
-end;
-
-@
-
-\M The last step is a little more involved, because it requires
-recalling $\varphi|_{k}(k)=\varphi(k)$ for $k\in K$, and
-$\varphi^{-1}|_{H}(h)=\varphi^{-1}(h)$ for $h\in H$. We can then combine
-these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
-
-<<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>=
-proof
-  H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
-  then B4: psi.g = (psi|H).g by Lm3
-                .= a by B2;
-  B5: a is Element of K & K is Subgroup of G & a in K & phi is
-  Homomorphism of G,G by B2,STRUCT_0:def 5;
-  then a is Element of G by GROUP_2:42;
-  then B6: (phi|K).a =  phi.a  by B5,Lm3
-                    .= phi.(psi.g) by B4
-                    .= phi.((phi").g)
-                    .= g by Lm11;
-  then b = (phi|K).((psi|H).g) by B4
-        .= g by B4,B6;
-  hence thesis by B3;
+  consider psi being Automorphism of G such that
+  B1: psi = phi" and
+  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th6;
+  consider psi2 being Automorphism of G such that
+  B3: psi2 = phi" and
+  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Th7;
+  psi2 = psi by B1,B3;
+  hence H is Subgroup of Image(phi|H) by B2,B4;
 end;
 
 @
@@ -766,34 +620,44 @@ end;
 \M The last step, which is the ``obvious'' part, infers from
 $\forall z\in Z(G),\varphi(z)\in Z(G)$ that $\varphi(Z(G))\subgroup Z(G)$.
 It's also the ugliest part of the proof which could probably be cleaned
-up considerably.
+up considerably. This is only due to the sub-step establishing
+$w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
 
 <<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
 A3: for phi being Automorphism of G
 holds Image(phi|Z) is Subgroup of Z
 proof
   let phi be Automorphism of G;
-  B1: rng(phi|Z) c= the carrier of G &
-  the carrier of Z c= the carrier of G by GROUP_2:def 5;
-  for z being Element of G st z in Z holds (phi|Z).z in Z by A2;
+  B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
   for w being Element of G st w in rng(phi|Z) holds w in Z
-  proof
-    let w be Element of G;
-    assume w in rng(phi|Z);
-    then consider z being object such that
-    C1: z in dom(phi|Z) and
-    C2: (phi|Z).z = w by FUNCT_1:def 3;
-    reconsider z as Element of Z by C1;
-    C3: z in Z by STRUCT_0:def 5;
-    z is Element of G by GROUP_2:42;
-    then (phi|Z).z in Z by A2,C3;
-    hence w in Z by C2;
-  end;
-  then for w being Element of G holds w in rng(phi|Z) implies w in the carrier of Z
+  <<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>
+  then for w being Element of G st w in rng(phi|Z) holds w in the carrier of Z
   by STRUCT_0:def 5;
   then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
   then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
   hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
+end;
+
+@
+
+\M This substep is ugly, and I offer no apology for it. There's probably
+a more elegant solution, but I cannot think of one. We explicitely
+walkthrough showing $w\in\rng(\varphi|_{Z(G)})$, which means there is
+some $z$ such that $z\in\dom(\varphi|_{Z(G)})$ and $\varphi|_{Z(G)}(z) = w$.
+Since $\dom(\varphi|_{Z(G)})=Z(G)$, it follows $\varphi|_{Z(G)}(z)\in Z(G)$
+from step 2. Thus the result follows.
+
+<<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>=
+proof
+  let w be Element of G;
+  assume w in rng(phi|Z);
+  then consider z being object such that
+  C1: z in dom(phi|Z) and
+  C2: (phi|Z).z = w by FUNCT_1:def 3;
+  reconsider z as Element of Z by C1;
+  z is Element of G by GROUP_2:42;
+  then (phi|Z).z in Z by A2,STRUCT_0:def 5;
+  hence w in Z by C2;
 end;
 
 @
