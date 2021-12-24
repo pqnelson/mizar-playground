@@ -710,29 +710,22 @@ end;
 $\varphi$, that $\varphi(Z(G))$ is a subgroup of $Z(G)$.
 
 <<Prove $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
-A1: for phi being Automorphism of G
-for y,z being Element of G
-st z in Z
-holds (phi.z)*y = y*phi.z
-<<Proof: $\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>
-
-A2: for phi being Automorphism of G
-for z being Element of G
-st z in Z
-holds (phi|Z).z in Z
-<<Proof: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>
-
-A3: for phi being Automorphism of G
-holds Image(phi|Z) is Subgroup of Z
-<<Proof: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>
+<<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>
+<<Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>
+<<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>
 
 @
 
 \M Proving $\varphi(z)$ commutes with every element of the group is a
 straightforward calculation. In fact, this is usually what textbooks
-present, then dismiss the rest of the proof as ``trivial'' or ``obvious''.
+present, then dismiss the rest of the proof as ``trivial'' or
+``obvious''.
 
-<<Proof: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>=
+<<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>=
+A1: for phi being Automorphism of G
+for y,z being Element of G
+st z in Z
+holds (phi.z)*y = y*phi.z
 proof
   let phi be Automorphism of G;
   let y,z be Element of G;
@@ -753,7 +746,11 @@ end;
 \M Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
 unfolding definitions.
 
-<<Proof: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>=
+<<Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>=
+A2: for phi being Automorphism of G
+for z being Element of G
+st z in Z
+holds (phi|Z).z in Z
 proof
   let phi be Automorphism of G;
   let z be Element of G;
@@ -768,9 +765,12 @@ end;
 
 \M The last step, which is the ``obvious'' part, infers from
 $\forall z\in Z(G),\varphi(z)\in Z(G)$ that $\varphi(Z(G))\subgroup Z(G)$.
+It's also the ugliest part of the proof which could probably be cleaned
+up considerably.
 
-
-<<Proof: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
+<<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
+A3: for phi being Automorphism of G
+holds Image(phi|Z) is Subgroup of Z
 proof
   let phi be Automorphism of G;
   B1: rng(phi|Z) c= the carrier of G &
@@ -789,7 +789,8 @@ proof
     then (phi|Z).z in Z by A2,C3;
     hence w in Z by C2;
   end;
-  then for w being Element of G holds w in rng(phi|Z) implies w in the carrier of Z by STRUCT_0:def 5;
+  then for w being Element of G holds w in rng(phi|Z) implies w in the carrier of Z
+  by STRUCT_0:def 5;
   then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
   then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
   hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
