@@ -23,7 +23,8 @@ begin
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>
 <<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>
-<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>
+<<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>
+<<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>
 <<Define $\Id_{G}$>>
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>
@@ -222,25 +223,21 @@ end;
 @ %def Th6
 
 \begin{theorem}
-  Let $G$ be a group, and $H\subgroup G$ be a subgroup such that it is
-  invariant under the Automorphisms of $G$, i.e.,
-  $\forall\varphi\in\Aut(G)$ we have $\varphi(H)\subgroup H$.
+  Let $G$ be a group, and $H\subgroup G$ be a subgroup.
   Then for any automorphism $\varphi\in\Aut(G)$, we have
   $\varphi[\varphi^{-1}(H)]=H$.
 \end{theorem}
 
 This is an obvious result which is usually taken for granted.
 
-<<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies \varphi[\varphi^{-1}(H)]=H$>>=
+<<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
 theorem Th7:
   for H being Subgroup of G
-  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
   for phi being Automorphism of G
   holds ex psi being Automorphism of G
   st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
 proof
   let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
   let phi be Automorphism of G;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
@@ -386,6 +383,46 @@ proof
   hence thesis by B3;
 end;
 
+@
+
+\begin{theorem}
+Let $H\subgroup G$ and $K\subgroup G$ be subgroups, let $\varphi\in\Aut(G)$
+be an automorphism of G. If $\varphi(H)\subgroup K$, then $H\subgroup\varphi^{-1}(K)$.
+\end{theorem}
+
+I need to work on my numbering scheme\dots
+
+The argument basically applies [[Th7]] to $\varphi^{-1}$, then unfolds
+definitions.
+
+<<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>=
+theorem Th7b:
+  for H being strict Subgroup of G
+  for K being Subgroup of G
+  for phi being Automorphism of G
+  st Image(phi|H) is Subgroup of K
+  holds ex psi being Automorphism of G
+  st psi = phi" & H is Subgroup of Image(psi|K)
+proof
+  let H be strict Subgroup of G;
+  let K be Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: Image(phi|H) is Subgroup of K;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  A2: psi" = phi by Lm10;
+  consider phi0 being Automorphism of G such that
+  A3: phi0 = psi" and
+  A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
+  by Th7;
+  phi = phi0 by A2,A3;
+  then A5: Image(psi|Image(phi|H)) = H by A4;
+  psi .: Image(phi|H) is Subgroup of psi .: K by A1,GRSOLV_1:12;
+  then Image(psi|Image(phi|H)) is Subgroup of psi .: K by GRSOLV_1:def 3;
+  then Image(psi|Image(phi|H)) is Subgroup of Image(psi|K) by GRSOLV_1:def 3;
+  hence H is Subgroup of Image(psi|K) by A5;
+end;
 @
 
 \begin{theorem}
