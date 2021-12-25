@@ -1,7 +1,7 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
-\M
+%\M
 The header, or ``environment part'', tells Mizar what mathematics needs
 to be imported from existing Mizar articles found in the MML. The idea
 is we can define new terms [``functors''], new predicates, or new types
@@ -37,7 +37,7 @@ section \emph{does} in Mizar.
 
 \subsection{Vocabularies, Notations, Constructors}
 
-\N{Vocabularies}\label{par:characteristic:vocabularies}
+\subsubsection{Vocabularies}\label{par:characteristic:vocabularies}
 The [[vocabularies]] refers to the identifiers defined. As I understand
 it, Mizar is actually using the [[vocabularies]] for the user to add new
 tokens to the language. Then Mizar will parse the file and treat
@@ -61,7 +61,7 @@ vocabularies MOD_4, TMP,
 
 @
 
-\N{VOC file}
+\begin{remark}[VOC file]
 For our article, we will need to define new tokens. They are placed in
 [[./DICT/CHAR.VOC]] (relative to whatever directory we have made our
 Mizar workstation). As we introduce new terms, we will check if it
@@ -69,8 +69,8 @@ exists already in Mizar by running ``[[findvoc -w "term"]]''. If Mizar
 is unfamiliar with the term, then nothing will be reported, and we will
 have to add it to our [[VOC]] file. Otherwise, if [[term]] is introduced
 in another article, we add it to our [[vocabularies]] environ directive.
+\end{remark}
 
-\M
 We need to recognize the tokens found in rudimentary set theory, so we
 begin with importing the usual suspects. For [[bijective]] and [[onto]],
 we need [[FUNCT_2]]. We will also be proving properties concerning the
@@ -82,7 +82,7 @@ SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
 
 @
 
-\M
+%\M
 Characteristic subgroups requires recognizing tokens about\dots groups,
 and subgroups.
 
@@ -92,7 +92,7 @@ BINOP_1, BINOP_2, ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP
 
 @
 
-\M
+%\M
 [[NEWTON]] defines the token [[|^]], used as infix operator [[a |^ b]]
 which is Mizar notation for $a^{b}$. Mizar follows group theorist
 notation of writing $g^{h} = h^{-1}gh$ for conjugation. Also observe
@@ -104,7 +104,7 @@ NEWTON, PRE_TOPC, GROUP_3
 
 @
 
-\N{Constructors}
+\subsubsection{Constructors}
 But the vocabularies just permits Mizar's parser to \emph{recognize}
 terms. For the \emph{meaning} of these terms, we need to import the
 \emph{constructors}. But if a constructor uses \emph{another article}'s
@@ -120,7 +120,7 @@ constructors <<set theoretic notation for [[char.miz]]>>,
 
 @
 
-\N{Notations}
+\subsubsection{Notations}
 Now we need to import the functor patterns to ``couple'' the definitions
 and notations. Usually this is just the constructor list.
 
@@ -130,7 +130,8 @@ notations <<set theoretic notation for [[char.miz]]>>,
 
 @
 
-\M The basics of Tarski--Grothendieck set theory may be found in
+%\M
+The basics of Tarski--Grothendieck set theory may be found in
 [[TARSKI]]. Partial functions are introduced in [[PARTFUN1]]. Binary
 operations applied to functions [[FUNCOP_1]] will be necessary later
 on. And fancy functions from sets to sets, like [[Permutation]], is
@@ -143,7 +144,7 @@ RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS
 
 @
 
-\M
+% \M
 The group theoretic notions are a grab bag of binary operators
 ([[BINOP_1]] and [[BINOP_2]]), prerequisites for algebraic structures
 ([[STRUCT_0]] and [[ALGSTR_0]]), primordial group theoretic articles
@@ -157,7 +158,7 @@ GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
 
 \subsection{Registrations, Definitions, Theorems, Schemes}
 
-\N{Registrations}
+\subsubsection{Registrations}
 We often cluster adjectives together with registrations, or have one
 adjective imply another automatically (like how a characteristic
 Subgroup is always normal). We import these using the registrations
@@ -171,7 +172,7 @@ registrations <<Register set theoretic clusters>>,
 
 @
 
-\M
+%\M
 The clusters we want to use from set theory are defined in the ``same''
 scattering of places.
 
@@ -180,7 +181,7 @@ XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
 
 @
 
-\M
+%\M
 We also need to register adjectives germane to group theory.
 
 <<Register group theoretic clusters>>=
@@ -188,7 +189,7 @@ STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
 
 @
 
-\N{Definitions} When using a definition $f := M$, we need to cite it in
+\subsubsection{Definitions} When using a definition $f := M$, we need to cite it in
 a proof. Specifically, automatically unfolding predicates from specific
 articles. If we want this to be automated, we can cite the article in
 the [[definitions]] portion of the [[environ]].
@@ -204,7 +205,8 @@ definitions <<Include set theoretic definitions>>,
   ``Environment directive [[definitions]] is used for importing two different kinds of information from the database: definitional expansions used by REASONER and expansions of terms defined by equals used by EQUALIZER.''
 \end{remark}
 
-\M Arguably, we want to be using basic predicates concerning subsets
+%\M
+Arguably, we want to be using basic predicates concerning subsets
 ([[SUBSET_1]]), functions ([[FUNCT_1]] and [[FUNCT_2]]), and set theory
 ([[TARSKI]]), so let's just add them.
 
@@ -213,7 +215,7 @@ SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
 
 @
 
-\M
+%\M
 But we also want to use facts concerning normal subgroups ([[GROUP_3]])
 and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
@@ -222,7 +224,7 @@ GROUP_3, AUTGROUP
 
 @
 
-\N{Theorems}
+\subsubsection{Theorems}
 The [[vocabularies]] allows Mizar's scanner and parser to
 \emph{recognize} terms. The [[constructors]] and [[notations]] allows us
 to use the patterns and constructors for terms. But if we want to cite
@@ -237,21 +239,23 @@ theorems
 
 @
 
-\M We have the usual cast of set theoretic characters.
+%\M
+We have the usual cast of set theoretic characters.
 <<Import set-theoretic theorems>>=
 TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
 XBOOLE_0, RELAT_1
 
 @
 
-\M Again, we import the usual group theoretic theorems.
+%\M
+Again, we import the usual group theoretic theorems.
 <<Import group-theoretic theorems>>=
 GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
 GRSOLV_1, AUTGROUP
 
 @
 
-\N{Schemes}
+\subsubsection{Schemes}
 If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the [[schemes]] portion of the environment.
 
@@ -262,7 +266,7 @@ schemes BINOP_1, FUNCT_2
 
 \subsection{\dots and the rest}
 
-\N{Equalities}
+\subsubsection{Equalities}
 This seems to be introduced around 2015, the only documentation I could
 find was in Kornilowics~\cite{kornilowicz2015definitional}.
 Expansions of terms defined by [[equals]] are imported by a new
@@ -273,7 +277,7 @@ equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
 
 @
 
-\N{Expansions}
+\subsubsection{Expansions}
 Import expansions of predicates and adjectives from the specified
 articles.
 
@@ -282,7 +286,7 @@ expansions BINOP_1, FUNCT_2
 
 @
 
-\N{Requirements} Within mathematics, there's a lot of implicit
+\subsubsection{Requirements} Within mathematics, there's a lot of implicit
 knowledge. Mizar automates some of that with [[requirements]]
 inclusions. For example, if we want to show [[x in X]]
 (Mizar for the primitive binary predicate $x\in X$) implies

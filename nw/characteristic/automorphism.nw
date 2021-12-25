@@ -33,10 +33,12 @@ begin
 
 @
 
-\M Note we just used the symbol [[G]] for a generic group, so we add to
+\begin{reserve}
+Note we just used the symbol [[G]] for a generic group, so we add to
 the reserved symbols this association. Most of our theorems will no
 longer state ``Let $G$ be a group'', it will be implicitly assumed
 unless otherwise stated.
+\end{reserve}
 
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve G for Group;
@@ -66,8 +68,8 @@ end;
 
 @ %def Endomorphism
 
-\M\label{par:characteristic:register-bijective-for-endomorphism} We
-begin by registering the attribute [[bijective]] for group
+\begin{registration}\label{par:characteristic:register-bijective-for-endomorphism}
+We begin by registering the attribute [[bijective]] for group
 endomorphisms. This will effectively create a subtype of [[Endomorphism of G]],
 the aptly named [[bijective Endomorphism of G]]. Most of our work has
 been done in article [[GROUP_6]] by Theorem~38\MizThm{GROUP\_6}{38}
@@ -75,6 +77,7 @@ been done in article [[GROUP_6]] by Theorem~38\MizThm{GROUP\_6}{38}
 [[id (the carrier of G)]] is a multiplicative function and so nearly a
 group morphism that we can reconsider it as an [[Endomorphism]]), and
 the fact that [[id X]] is bijective.
+\end{registration}
 
 <<Register [[bijective]] for [[Endomorphism]]>>=
 registration
@@ -145,7 +148,10 @@ end;
 
 @ %def Th1
 
-\M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+\begin{reserve}
+Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+\end{reserve}
+
 
 <<Define [[Endomorphism]]>>=
 reserve f for Endomorphism of G;
@@ -611,7 +617,9 @@ end;
 
 @ %def Id_G Id_ Def3
 
-\M We need to add [[Id_]] to our vocabulary.
+\begin{voc}
+We need to add [[Id_]] to our vocabulary.
+\end{voc}
 
 <<DICT/CHAR.VOC>>=
 OId_
@@ -679,10 +687,11 @@ end;
 
 @ %def Th10
 
-\M
+\begin{registration}
 Now we should automatically associate $\Id_{G}$ is bijective. This
 requires proving a couple of helper lemmas establishing injectivity and
 surjectivity.
+\end{registration}
 
 <<Register [[Id_G]] is bijective>>=
 <<[[Id_G]] is injective>>

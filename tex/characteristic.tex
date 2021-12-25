@@ -1,7 +1,6 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-% ===> this file was generated automatically by noweave --- better not edit it
 \chapter{Characteristic Subgroups}
 
-\N{Structure of an article}
 We call a Mizar file/script an ``article''. While developing a Mizar
 article, the main body is stored in a {\Tt{}TEXT/\nwendquote} subdirectory. As I
 understand it, the casing of the directory matters (because there are
@@ -26,7 +25,7 @@ Every Mizar article looks like:
 
 \nwnotused{TEXT/char.miz}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
-\M
+\bigskip
 Each Mizar article has an associated ``vocabular file'' which lists the
 \emph{new} terms introduced. It's stored in a {\Tt{}DICT/\nwendquote}
 subdirectory. Terms are prefixed with the following:
@@ -43,7 +42,6 @@ subdirectory. Terms are prefixed with the following:
   in {\Tt{}ZFMISC{\_}1\nwendquote})
 \end{itemize}
 
-\M
 For our immediate purposes, we want to prove theorems concerning
 characteristic subgroups. We can start with checking if the vocabulary
 word ``characteristic'' has been introduced by running on the command
@@ -60,7 +58,7 @@ Vcharacteristic
 \nwenddocs{}\nwfilename{nw/characteristic/environ.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
-\M
+%\M
 The header, or ``environment part'', tells Mizar what mathematics needs
 to be imported from existing Mizar articles found in the MML. The idea
 is we can define new terms [``functors''], new predicates, or new types
@@ -96,7 +94,7 @@ section \emph{does} in Mizar.
 
 \subsection{Vocabularies, Notations, Constructors}
 
-\N{Vocabularies}\label{par:characteristic:vocabularies}
+\subsubsection{Vocabularies}\label{par:characteristic:vocabularies}
 The {\Tt{}vocabularies\nwendquote} refers to the identifiers defined. As I understand
 it, Mizar is actually using the {\Tt{}vocabularies\nwendquote} for the user to add new
 tokens to the language. Then Mizar will parse the file and treat
@@ -120,7 +118,7 @@ vocabularies MOD_4, TMP,
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
-\N{VOC file}
+\begin{remark}[VOC file]
 For our article, we will need to define new tokens. They are placed in
 {\Tt{}./DICT/CHAR.VOC\nwendquote} (relative to whatever directory we have made our
 Mizar workstation). As we introduce new terms, we will check if it
@@ -128,8 +126,8 @@ exists already in Mizar by running ``{\Tt{}findvoc\ -w\ "term"\nwendquote}''. If
 is unfamiliar with the term, then nothing will be reported, and we will
 have to add it to our {\Tt{}VOC\nwendquote} file. Otherwise, if {\Tt{}term\nwendquote} is introduced
 in another article, we add it to our {\Tt{}vocabularies\nwendquote} environ directive.
+\end{remark}
 
-\M
 We need to recognize the tokens found in rudimentary set theory, so we
 begin with importing the usual suspects. For {\Tt{}bijective\nwendquote} and {\Tt{}onto\nwendquote},
 we need {\Tt{}FUNCT{\_}2\nwendquote}. We will also be proving properties concerning the
@@ -141,7 +139,7 @@ SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
 
 \nwused{\\{NW4bbsBH-3Tf8w1-1}}\nwendcode{}\nwbegindocs{6}\nwdocspar
 
-\M
+%\M
 Characteristic subgroups requires recognizing tokens about\dots groups,
 and subgroups.
 
@@ -151,7 +149,7 @@ BINOP_1, BINOP_2, ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP
 
 \nwused{\\{NW4bbsBH-3Tf8w1-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
 
-\M
+%\M
 {\Tt{}NEWTON\nwendquote} defines the token {\Tt{}|{\char94}\nwendquote}, used as infix operator {\Tt{}a\ |{\char94}\ b\nwendquote}
 which is Mizar notation for $a^{b}$. Mizar follows group theorist
 notation of writing $g^{h} = h^{-1}gh$ for conjugation. Also observe
@@ -163,7 +161,7 @@ NEWTON, PRE_TOPC, GROUP_3
 
 \nwused{\\{NW4bbsBH-3Tf8w1-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
 
-\N{Constructors}
+\subsubsection{Constructors}
 But the vocabularies just permits Mizar's parser to \emph{recognize}
 terms. For the \emph{meaning} of these terms, we need to import the
 \emph{constructors}. But if a constructor uses \emph{another article}'s
@@ -179,7 +177,7 @@ constructors \LA{}set theoretic notation for \code{}char.miz\edoc{}~{\nwtagstyle
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{12}\nwdocspar
 
-\N{Notations}
+\subsubsection{Notations}
 Now we need to import the functor patterns to ``couple'' the definitions
 and notations. Usually this is just the constructor list.
 
@@ -189,7 +187,8 @@ notations \LA{}set theoretic notation for \code{}char.miz\edoc{}~{\nwtagstyle{}\
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{14}\nwdocspar
 
-\M The basics of Tarski--Grothendieck set theory may be found in
+%\M
+The basics of Tarski--Grothendieck set theory may be found in
 {\Tt{}TARSKI\nwendquote}. Partial functions are introduced in {\Tt{}PARTFUN1\nwendquote}. Binary
 operations applied to functions {\Tt{}FUNCOP{\_}1\nwendquote} will be necessary later
 on. And fancy functions from sets to sets, like {\Tt{}Permutation\nwendquote}, is
@@ -202,7 +201,7 @@ RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS
 
 \nwused{\\{NW4bbsBH-45oKpZ-1}\\{NW4bbsBH-40mYXi-1}}\nwendcode{}\nwbegindocs{16}\nwdocspar
 
-\M
+% \M
 The group theoretic notions are a grab bag of binary operators
 ({\Tt{}BINOP{\_}1\nwendquote} and {\Tt{}BINOP{\_}2\nwendquote}), prerequisites for algebraic structures
 ({\Tt{}STRUCT{\_}0\nwendquote} and {\Tt{}ALGSTR{\_}0\nwendquote}), primordial group theoretic articles
@@ -216,7 +215,7 @@ GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
 
 \subsection{Registrations, Definitions, Theorems, Schemes}
 
-\N{Registrations}
+\subsubsection{Registrations}
 We often cluster adjectives together with registrations, or have one
 adjective imply another automatically (like how a characteristic
 Subgroup is always normal). We import these using the registrations
@@ -230,7 +229,7 @@ registrations \LA{}Register set theoretic clusters~{\nwtagstyle{}\subpageref{NW4
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{20}\nwdocspar
 
-\M
+%\M
 The clusters we want to use from set theory are defined in the ``same''
 scattering of places.
 
@@ -239,7 +238,7 @@ XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
 
 \nwused{\\{NW4bbsBH-PI8yt-1}}\nwendcode{}\nwbegindocs{22}\nwdocspar
 
-\M
+%\M
 We also need to register adjectives germane to group theory.
 
 \nwenddocs{}\nwbegincode{23}\sublabel{NW4bbsBH-3IQfHr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-3IQfHr-1}}}\moddef{Register group theoretic clusters~{\nwtagstyle{}\subpageref{NW4bbsBH-3IQfHr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-PI8yt-1}}\nwenddeflinemarkup
@@ -247,7 +246,7 @@ STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
 
 \nwused{\\{NW4bbsBH-PI8yt-1}}\nwendcode{}\nwbegindocs{24}\nwdocspar
 
-\N{Definitions} When using a definition $f := M$, we need to cite it in
+\subsubsection{Definitions} When using a definition $f := M$, we need to cite it in
 a proof. Specifically, automatically unfolding predicates from specific
 articles. If we want this to be automated, we can cite the article in
 the {\Tt{}definitions\nwendquote} portion of the {\Tt{}environ\nwendquote}.
@@ -263,7 +262,8 @@ definitions \LA{}Include set theoretic definitions~{\nwtagstyle{}\subpageref{NW4
   ``Environment directive {\Tt{}definitions\nwendquote} is used for importing two different kinds of information from the database: definitional expansions used by REASONER and expansions of terms defined by equals used by EQUALIZER.''
 \end{remark}
 
-\M Arguably, we want to be using basic predicates concerning subsets
+%\M
+Arguably, we want to be using basic predicates concerning subsets
 ({\Tt{}SUBSET{\_}1\nwendquote}), functions ({\Tt{}FUNCT{\_}1\nwendquote} and {\Tt{}FUNCT{\_}2\nwendquote}), and set theory
 ({\Tt{}TARSKI\nwendquote}), so let's just add them.
 
@@ -272,7 +272,7 @@ SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
 
 \nwused{\\{NW4bbsBH-25lITS-1}}\nwendcode{}\nwbegindocs{28}\nwdocspar
 
-\M
+%\M
 But we also want to use facts concerning normal subgroups ({\Tt{}GROUP{\_}3\nwendquote})
 and the automorphism group $\aut(G)$ ({\Tt{}AUTGROUP\nwendquote}).
 
@@ -281,7 +281,7 @@ GROUP_3, AUTGROUP
 
 \nwused{\\{NW4bbsBH-25lITS-1}}\nwendcode{}\nwbegindocs{30}\nwdocspar
 
-\N{Theorems}
+\subsubsection{Theorems}
 The {\Tt{}vocabularies\nwendquote} allows Mizar's scanner and parser to
 \emph{recognize} terms. The {\Tt{}constructors\nwendquote} and {\Tt{}notations\nwendquote} allows us
 to use the patterns and constructors for terms. But if we want to cite
@@ -296,21 +296,23 @@ theorems
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{32}\nwdocspar
 
-\M We have the usual cast of set theoretic characters.
+%\M
+We have the usual cast of set theoretic characters.
 \nwenddocs{}\nwbegincode{33}\sublabel{NW4bbsBH-2m40FU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-2m40FU-1}}}\moddef{Import set-theoretic theorems~{\nwtagstyle{}\subpageref{NW4bbsBH-2m40FU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-1CXYUa-1}}\nwenddeflinemarkup
 TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
 XBOOLE_0, RELAT_1
 
 \nwused{\\{NW4bbsBH-1CXYUa-1}}\nwendcode{}\nwbegindocs{34}\nwdocspar
 
-\M Again, we import the usual group theoretic theorems.
+%\M
+Again, we import the usual group theoretic theorems.
 \nwenddocs{}\nwbegincode{35}\sublabel{NW4bbsBH-cTLti-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-cTLti-1}}}\moddef{Import group-theoretic theorems~{\nwtagstyle{}\subpageref{NW4bbsBH-cTLti-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-1CXYUa-1}}\nwenddeflinemarkup
 GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
 GRSOLV_1, AUTGROUP
 
 \nwused{\\{NW4bbsBH-1CXYUa-1}}\nwendcode{}\nwbegindocs{36}\nwdocspar
 
-\N{Schemes}
+\subsubsection{Schemes}
 If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the {\Tt{}schemes\nwendquote} portion of the environment.
 
@@ -321,7 +323,7 @@ schemes BINOP_1, FUNCT_2
 
 \subsection{\dots and the rest}
 
-\N{Equalities}
+\subsubsection{Equalities}
 This seems to be introduced around 2015, the only documentation I could
 find was in Kornilowics~\cite{kornilowicz2015definitional}.
 Expansions of terms defined by {\Tt{}equals\nwendquote} are imported by a new
@@ -332,7 +334,7 @@ equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 
-\N{Expansions}
+\subsubsection{Expansions}
 Import expansions of predicates and adjectives from the specified
 articles.
 
@@ -341,7 +343,7 @@ expansions BINOP_1, FUNCT_2
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{42}\nwdocspar
 
-\N{Requirements} Within mathematics, there's a lot of implicit
+\subsubsection{Requirements} Within mathematics, there's a lot of implicit
 knowledge. Mizar automates some of that with {\Tt{}requirements\nwendquote}
 inclusions. For example, if we want to show {\Tt{}x\ in\ X\nwendquote}
 (Mizar for the primitive binary predicate $x\in X$) implies
@@ -516,10 +518,11 @@ end;
 
 \nwused{\\{NW18nMBU-3LADMa-1}}\nwendcode{}\nwbegindocs{12}\nwdocspar
 
-\M
+\begin{registration}
 We begin by registering the identity function as being surjective and
 bijective. This should have been done in {\Tt{}FUNCT{\_}2\nwendquote}, but hey, what can
 you do?
+\end{registration}
 
 \nwenddocs{}\nwbegincode{13}\sublabel{NW18nMBU-1ouPZe-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1ouPZe-1}}}\moddef{Register: the identity function is surjective and bijective~{\nwtagstyle{}\subpageref{NW18nMBU-1ouPZe-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
@@ -1037,10 +1040,12 @@ begin
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
-\M Note we just used the symbol {\Tt{}G\nwendquote} for a generic group, so we add to
+\begin{reserve}
+Note we just used the symbol {\Tt{}G\nwendquote} for a generic group, so we add to
 the reserved symbols this association. Most of our theorems will no
 longer state ``Let $G$ be a group'', it will be implicitly assumed
 unless otherwise stated.
+\end{reserve}
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW1Nnu7l-1LL7AC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1LL7AC-1}}}\moddef{Reserve symbols for inner and outer automorphisms~{\nwtagstyle{}\subpageref{NW1Nnu7l-1LL7AC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 reserve G for Group;
@@ -1070,8 +1075,8 @@ end;
 
 \nwindexdefn{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-17cKlQ-1}\eatline
 \nwalsodefined{\\{NW1Nnu7l-17cKlQ-2}}\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwendcode{}\nwbegindocs{6}\nwdocspar
-\M\label{par:characteristic:register-bijective-for-endomorphism} We
-begin by registering the attribute {\Tt{}bijective\nwendquote} for group
+\begin{registration}\label{par:characteristic:register-bijective-for-endomorphism}
+We begin by registering the attribute {\Tt{}bijective\nwendquote} for group
 endomorphisms. This will effectively create a subtype of {\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote},
 the aptly named {\Tt{}bijective\ \nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote}. Most of our work has
 been done in article {\Tt{}GROUP{\_}6\nwendquote} by Theorem~38\MizThm{GROUP\_6}{38}
@@ -1079,6 +1084,7 @@ been done in article {\Tt{}GROUP{\_}6\nwendquote} by Theorem~38\MizThm{GROUP\_6}
 {\Tt{}id\ (the\ carrier\ of\ G)\nwendquote} is a multiplicative function and so nearly a
 group morphism that we can reconsider it as an {\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\nwendquote}), and
 the fact that {\Tt{}id\ X\nwendquote} is bijective.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{7}\sublabel{NW1Nnu7l-6ndaE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-6ndaE-1}}}\moddef{Register \code{}bijective\edoc{} for \code{}Endomorphism\edoc{}~{\nwtagstyle{}\subpageref{NW1Nnu7l-6ndaE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 registration
@@ -1149,7 +1155,10 @@ end;
 
 \nwindexdefn{\nwixident{Th1}}{Th1}{NW1Nnu7l-3pJfHu-1}\eatline
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th1}}{Th1}}}\nwendcode{}\nwbegindocs{12}\nwdocspar
-\M Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+\begin{reserve}
+Now we need to tell Mizar that $f$ is an endomorphism of $G$.
+\end{reserve}
+
 
 \nwenddocs{}\nwbegincode{13}\sublabel{NW1Nnu7l-17cKlQ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-17cKlQ-2}}}\moddef{Define \code{}Endomorphism\edoc{}~{\nwtagstyle{}\subpageref{NW1Nnu7l-17cKlQ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwprevnextdefs{NW1Nnu7l-17cKlQ-1}{\relax}\nwenddeflinemarkup
 reserve f for \nwlinkedidentc{Endomorphism}{NW1Nnu7l-17cKlQ-1} of G;
@@ -1615,7 +1624,9 @@ end;
 
 \nwindexdefn{\nwixident{Id{\_}G}}{Id:unG}{NW1Nnu7l-27i33n-1}\nwindexdefn{\nwixident{Id{\_}}}{Id:un}{NW1Nnu7l-27i33n-1}\nwindexdefn{\nwixident{Def3}}{Def3}{NW1Nnu7l-27i33n-1}\eatline
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Def3}}{Def3}}\\{{\nwixident{Id{\_}}}{Id:un}}\\{{\nwixident{Id{\_}G}}{Id:unG}}}\nwidentuses{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-27i33n-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
-\M We need to add {\Tt{}\nwlinkedidentq{Id{\_}}{NW1Nnu7l-27i33n-1}\nwendquote} to our vocabulary.
+\begin{voc}
+We need to add {\Tt{}\nwlinkedidentq{Id{\_}}{NW1Nnu7l-27i33n-1}\nwendquote} to our vocabulary.
+\end{voc}
 
 \nwenddocs{}\nwbegincode{51}\sublabel{NW1Nnu7l-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
 OId_
@@ -1874,10 +1885,11 @@ end;
 \nwixlogsorted{i}{{\nwixident{Th8}}{Th8}}%
 \nwixlogsorted{i}{{\nwixident{Th9}}{Th9}}%
 \nwbegindocs{58}\nwdocspar
-\M
+\begin{registration}
 Now we should automatically associate $\Id_{G}$ is bijective. This
 requires proving a couple of helper lemmas establishing injectivity and
 surjectivity.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{59}\sublabel{NW1Nnu7l-37g7e5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-37g7e5-1}}}\moddef{Register \code{}Id{\_}G\edoc{} is bijective~{\nwtagstyle{}\subpageref{NW1Nnu7l-37g7e5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 \LA{}\code{}Id{\_}G\edoc{} is injective~{\nwtagstyle{}\subpageref{NW1Nnu7l-17utZy-1}}\RA{}
@@ -2056,10 +2068,10 @@ end;
 
 \nwindexdefn{\nwixident{outer}}{outer}{NW3Mfp8C-RgKDM-1}\eatline
 \nwused{\\{NW3Mfp8C-13QmRM-1}}\nwidentdefs{\\{{\nwixident{outer}}{outer}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-RgKDM-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-RgKDM-1}\nwendcode{}\nwbegindocs{6}\nwdocspar
-\N{Update our vocabular file}
+\begin{voc}
 Before rushing off to prove properties concerning inner and outer
 automorphisms, we should add the attributes to our vocabulary file.
-
+\end{voc}
 
 \nwenddocs{}\nwbegincode{7}\sublabel{NW3Mfp8C-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW1Nnu7l-4FyAEL-1}{\relax}\nwenddeflinemarkup
 Vinner
@@ -2091,7 +2103,9 @@ end;
 
 \nwindexdefn{\nwixident{Th12}}{Th12}{NW3Mfp8C-ATJLl-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th12}}{Th12}}}\nwidentuses{\\{{\nwixident{Def3}}{Def3}}\\{{\nwixident{Id{\_}G}}{Id:unG}}}\nwindexuse{\nwixident{Def3}}{Def3}{NW3Mfp8C-ATJLl-1}\nwindexuse{\nwixident{Id{\_}G}}{Id:unG}{NW3Mfp8C-ATJLl-1}\nwendcode{}\nwbegindocs{10}\nwdocspar
-\M Now registering {\Tt{}\nwlinkedidentq{inner}{NW3Mfp8C-13QmRM-1}\nwendquote} for {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}.
+\begin{registration}
+Now registering {\Tt{}\nwlinkedidentq{inner}{NW3Mfp8C-13QmRM-1}\nwendquote} for {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\nwendquote}.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{11}\sublabel{NW3Mfp8C-4IjmGJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-4IjmGJ-1}}}\moddef{Register \code{}inner\edoc{} for \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-4IjmGJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 registration
@@ -2819,9 +2833,10 @@ end;
 
 \nwindexdefn{\nwixident{Th21}}{Th21}{NW47t2dy-3KEBxf-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th21}}{Th21}}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-3KEBxf-1}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW47t2dy-3KEBxf-1}\nwendcode{}\nwbegindocs{10}\nwdocspar
-\N{Register {\Tt{}\nwlinkedidentq{characteristic}{NW47t2dy-49dosn-1}\nwendquote} for Subgroups}
+\begin{registration}
 Now we can instruct Mizar to recognize {\Tt{}\nwlinkedidentq{characteristic}{NW47t2dy-49dosn-1}\nwendquote} as an
 adjective of {\Tt{}Subgroup\nwendquote}.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{11}\sublabel{NW47t2dy-1HIoHq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1HIoHq-1}}}\moddef{Register \code{}characteristic\edoc{} as attribute for Subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-1HIoHq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 registration
@@ -2832,9 +2847,10 @@ end;
 
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th21}}{Th21}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-1HIoHq-1}\nwindexuse{\nwixident{Th21}}{Th21}{NW47t2dy-1HIoHq-1}\nwendcode{}\nwbegindocs{12}\nwdocspar
 
-\N{Register {\Tt{}strict\nwendquote} {\Tt{}\nwlinkedidentq{characteristic}{NW47t2dy-49dosn-1}\nwendquote} for Subgroups}
+\begin{registration}
 We can also register the cluster {\Tt{}strict\nwendquote} {\Tt{}\nwlinkedidentq{characteristic}{NW47t2dy-49dosn-1}\nwendquote} for
 Subgroups, which will come handy later.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{13}\sublabel{NW47t2dy-2iAFXC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2iAFXC-1}}}\moddef{Register \code{}strict\edoc{} \code{}characteristic\edoc{} for Subgroups~{\nwtagstyle{}\subpageref{NW47t2dy-2iAFXC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 registration
@@ -2894,10 +2910,11 @@ end;
 
 \nwused{\\{NW47t2dy-xos9m-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def9}}{Def9}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th15}}{Th15}}\\{{\nwixident{Th19}}{Th19}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{inner}}{inner}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Th15}}{Th15}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Th19}}{Th19}{NW47t2dy-2mkOw1-1}\nwendcode{}\nwbegindocs{18}\nwdocspar
 
-\M
+\begin{registration}
 Now we can register this fact with Mizar, so it will be automatically
 accounted for in future proofs. Since we made this fact a proof, we just
 have to tell Mizar where to find the proof.
+\end{registration}
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW47t2dy-24pxt5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\moddef{Register characteristic subgroups are normal~{\nwtagstyle{}\subpageref{NW47t2dy-24pxt5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 registration

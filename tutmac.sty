@@ -106,8 +106,8 @@
   \refstepcounter{paragraph}%
   \def\tmp{#2}%
   \noindent\textbf{\theparagraph.\ifx\tmp\@empty\else~#2\@addpunct{.}\fi}\enspace\ignorespaces}
-\let\N\paragraph
-\def\M{\paragraph{}}
+%\let\N\paragraph
+%\def\M{\paragraph{}}
 
 
 \setcounter{secnumdepth}{10}
@@ -115,35 +115,7 @@
 \newskip\interchunkskip \interchunkskip=\medskipamount%
 % cwebmac.tex has \interchunkskip=12pt minus 3pt
 % latex.ltx and plain.tex has \medskipamount=6pt plus 2pt minus 2pt
-\newskip\thmskip \thmskip=\interchunkskip%\topsep
-
-\newtheoremstyle{thmstyle}
-  {\thmskip}   % ABOVESPACE
-  {\thmskip}   % BELOWSPACE
-  {\itshape}  % BODYFONT
-  {0pt}       % INDENT (empty value is the same as 0pt)
-  {\bfseries} % HEADFONT
-  {.}         % HEADPUNCT
-  {0.5em plus 1pt minus 1pt} % HEADSPACE
-  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}          % CUSTOM-HEAD-SPEC
-\newtheoremstyle{defnstyle}
-  {\thmskip}   % ABOVESPACE
-  {\thmskip}   % BELOWSPACE
-  {}          % BODYFONT
-  {0pt}       % INDENT (empty value is the same as 0pt)
-  {\bfseries} % HEADFONT
-  {.}         % HEADPUNCT
-  {0.5em plus 1pt minus 1pt} % HEADSPACE
-  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}          % CUSTOM-HEAD-SPEC
-\newtheoremstyle{rmkstyle}
-  {\thmskip}   % ABOVESPACE
-  {\thmskip}   % BELOWSPACE
-  {}          % BODYFONT
-  {0pt}       % INDENT (empty value is the same as 0pt)
-  {\itshape} % HEADFONT
-  {.}         % HEADPUNCT
-  {0.5em plus 1pt minus 1pt} % HEADSPACE
-  {\thmnumber{#2\@addpunct{.}~}\thmname{#1}\thmnote{~\textrm{\normalfont(#3)}}}
+% \newskip\thmskip \thmskip=\interchunkskip%\topsep
 
 % theorems
 %\swapnumbers
@@ -154,13 +126,16 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{exercise}[theorem]{Exercise}
 
-\theoremstyle{definitionstyle}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-
 \theoremstyle{remarkstyle}
 \newtheorem{remark}{Remark}[theorem]
 \newtheorem{note}[theorem]{Note}
+
+\theoremstyle{definitionstyle}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{registration}[theorem]{Registration}
+\newtheorem{reserve}[theorem]{Reserve}
+\newtheorem{voc}[remark]{Vocabular}
 
 \renewcommand\thetheorem{\thechapter.\thesection.\arabic{theorem}}
 

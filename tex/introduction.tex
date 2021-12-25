@@ -2,7 +2,7 @@
 
 \section{First-Order Logic in Mizar}
 
-\N{Propositional Logic}
+\subsection{Propositional Logic}
 We will briefly review Mizar's syntax for formulas.
 
 \begin{equation}
@@ -21,7 +21,7 @@ We will briefly review Mizar's syntax for formulas.
   \Phi\iff\Psi\quad\equiv\quad\Phi~\mathtt{iff}~\Psi
 \end{equation}
 
-\N{Typing Statements as Propositions}
+\subsection{Typing Statements as Propositions}
 Unique to Mizar is that typing judgements are object language
 propositions. When we write ``\texttt{x is natural number}'', that's a
 proposition. Type theory would make it a judgement, a proposition
@@ -33,7 +33,7 @@ $\mathcal{T}$ is a Mizar type, then
 \end{equation}
 is a proposition in Mizar.
 
-\N{Quantifiers}
+\subsection{Quantifiers}
 Quantifiers are a bit trickier. We quantify a variable over a type.
 \begin{equation}
 \forall_{x\esti A}\Phi\quad\equiv\quad\mathtt{for}~x~\mathtt{being}~A~\mathtt{holds}~\Phi
@@ -55,14 +55,14 @@ We have syntactic sugar for universal quantification of an implication:
   $y\in Y$ such that $\Phi$ holds.''
 \end{exercise}
 
-\N{Referring to Labels}\label{par:introduction:referring-to-labels}
+\subsection{Referring to Labels}\label{par:introduction:referring-to-labels}
 Mizar can refer to theorems from another article, say
 ``\verb#ARTICLE#'', by writing ``\verb#ARTICLE:56#'' to refer to theorem 56.
 Definitions are referred to using ``\verb#ARTICLE:def xx#'' (where
 ``\verb#xx#'' is a number). \emph{It is a common beginner's mistake to
 try to refer to theorem $X$ by writing } ``\verb#ARTICLE:ThX#''.
 
-\N{Final remark on notations used in Mizar}
+\subsection{Final remark on notations used in Mizar}
 There are a few quirky choices of notation which I wish to discuss, just
 to let the reader be aware of it. I will also remind the reader when it
 comes up in the future:\footnote{Shinshu University has a webpage giving
@@ -88,7 +88,6 @@ notation, see: \url{http://markun.cs.shinshu-u.ac.jp/kiso/projects/proofchecker/
 
 \section{Natural Deduction in Mizar}
 
-\M
 Arguably, Mizar consists of three domain specific languages: one for
 proofs, another for definitions, and a third for stating formulas. We
 have summarized Mizar's syntax for formulas. Let us now consider how
@@ -105,7 +104,7 @@ them. We have inference rules, which look like fractions, describing how
 to transform such judgements. Inference rules should be read ``from
 bottom to top''.
 
-\N{Assume: $\Longrightarrow$-introduction}\index{Assume@\texttt{assume}}
+\subsection{Assume: $\Longrightarrow$-introduction}\index{Assume@\texttt{assume}}
 When we want to prove a formula of the form $\Psi\implies\Phi$, we begin
 with stipulating $\Psi$ holds. That is to say, we ``\verb#assume# $\Psi$''.
 In Mizar:
@@ -129,7 +128,7 @@ then the statement ``\verb#assume# $\Psi$'' transforms our proof
 obligation to $\Gamma,\Psi\vdash\Phi$ (i.e., proving $\Phi$ from the
 list $\Gamma$ with $\Psi$ appended to $\Gamma$).
 
-\N{Assume: proof by contradiction}
+\subsection{Assume: proof by contradiction}
 Sometimes we want to prove a claim by showing its negation leads to
 calamity. This is done routinely in mathematics, since $\neg\Phi$ is
 logically equivalent to $\Phi\implies\contradiction$, so double negation
@@ -145,7 +144,7 @@ proof
 end;
 \end{mizar}
 
-\N{Assume: proving disjunction}\index{Idiom!Proving $\Phi\lor\Psi$}
+\subsection{Assume: proving disjunction}\index{Idiom!Proving $\Phi\lor\Psi$}
 The idiomatic way to prove the claim $\Phi\lor\Psi$ in Mizar is to
 assume the negation of one of the disjuncts (usually the first, i.e.,
 to ``\verb#assume# $\neg\Phi$'') and then prove $\Psi$ holds.
@@ -168,7 +167,7 @@ end;
   claim to ``\verb#Psi or Phi#''.
 \end{ddanger}
 
-\N{Thus: $\land$-introduction}\index{Thus@\texttt{thus}}
+\subsection{Thus: $\land$-introduction}\index{Thus@\texttt{thus}}
 Whenever we want to prove a claim $\Phi$, we conclude the proof with
 ``\texttt{thus} $\Phi$''. In Mizar, this looks like (with the
 preliminary steps omitted with a comment ``\verb#:: proof of ...#''):
@@ -217,7 +216,7 @@ prove it in Mizar? Well, recall, by definition this is
 $(\Phi\implies\Psi)\land(\Phi\impliedby\Psi)$.
 \end{exercise}
 
-\N{Let: $\forall$-introduction}\index{Let@\texttt{let}}
+\subsection{Let: $\forall$-introduction}\index{Let@\texttt{let}}
 The most common proof step which starts nearly every proof, introducing
 variables.
 
@@ -235,7 +234,7 @@ This corresponds to the inference rule
 \infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}
 \end{equation}
 
-\N{Consider: $\exists$-elimination}\index{Consider@\texttt{consider}}
+\subsection{Consider: $\exists$-elimination}\index{Consider@\texttt{consider}}
 When we want to apply the fact $\exists x,\Psi(x)$, we introduce a
 ``fresh'' variable which satisfies the given condition. In Mizar, this
 proof skeleton looks like
@@ -257,7 +256,7 @@ This corresponds to the inference rule:
 The justification for this step refers to the derivation of the upper
 left subgoal.
 
-\N{Take: $\exists$-introduction}\index{Take@\texttt{take}}
+\subsection{Take: $\exists$-introduction}\index{Take@\texttt{take}}
 If we want to prove the claim ``$\exists x,\Phi(x)$'', then we need to
 ``\verb#take# $t$'' (where $t$ is a term). We can take an explicit term,
 like ``\verb#take# $t = f(x)$''. The proof skeleton looks like:
@@ -275,7 +274,7 @@ This corresponds to the natural deduction rule of inference:
   \infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}.
 \end{equation}
 
-\N{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
+\subsection{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
 When we want to prove $\Psi_{1}\lor\dots\lor\Psi_{n}\implies \Phi$,
 we simply prove $\Psi_{1}\implies\Phi$, \dots, $\Psi_{n}\implies\Phi$.
 But instead of using the ``\verb#assume#'' step for each of these
@@ -308,7 +307,7 @@ label for the upper-left inference, that $\Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_
 Each ``\verb#suppose# $\Psi_{j}$; \dots; \verb#thus# $\Phi$'' block
 corresponds to the derivation $\Gamma,\Psi_{j}\vdash\Phi$.
 
-\N{Justification, nested subproofs}\index{By@\texttt{by}}\index{Proof!Nested}
+\subsection{Justification, nested subproofs}\index{By@\texttt{by}}\index{Proof!Nested}
 I have been trying to include ``\verb#by ...#'' explicitly in proof
 steps to reflect which steps require justification. This can be done in
 one of two ways:
@@ -352,7 +351,7 @@ The two are equivalent.
 
 \section{Basic Definitions}
 
-\M We will review the definitions germane to group theory, as inspired
+We will review the definitions germane to group theory, as inspired
 by Nakasho and friends~\cite{nakasho2014formalization}. This entire
 section is inspired by their paper.
 
@@ -407,7 +406,7 @@ homomorphism as a ``\emph{group morphism}'', or more tersely as just a
 morphism.
 \end{remark}
 
-\M\index{Magma|(} Mizar takes the first version as its definition. Implicit in its
+\index{Magma|(} Mizar takes the first version as its definition. Implicit in its
 definition is a notion of a ``\verb#multMagma#'', a magma with a
 multiplication operator (defined in \verb#ALGSTR_0#). As Nakasho and
 friends explicate~\cite{nakasho2014formalization}, a ``\verb#multMagma#''
@@ -428,7 +427,6 @@ definition
 end;
 \end{mizar}
 
-\M
 Let us unpack what is going on in this code. We are defining a
 \verb#struct#,\index{Struct@\texttt{struct}} a mathematical structure which is usually presented in
 ordinary mathematics as a tuple of some kind $\langle\dots\rangle$. For
@@ -476,7 +474,7 @@ Before continuing on too far, I should note that for a
 \verb#ALGSTR_0:def 19#.\MizDef{ALGSTR\_0}{19}
 \end{remark}
 
-\N{Equality of Instances of Structures}
+\subsection{Equality of Instances of Structures}
 If we a structure $\mathtt{Foo} \langle \mathsf{F}_{1},\dots,\mathsf{F}_{n}\rangle$
 with $n$ fields $\mathsf{F}_{j}$, then we can make an instance of it
 using notation ``\verb$Foo(# F1, ..., Fn #)$''. Equality of two
@@ -495,7 +493,7 @@ two. We will need to do something like write ``\verb#the Group of G1 = Sn#''
 to compare the \emph{group structure} of $G_{1}$ to the \emph{Group structure}
 of $S_{n}$.
 
-\N{Mizar's definition of Group}
+\subsection{Mizar's definition of Group}
 Mizar formalizes a group following the style of
 Definition~\ref{defn:introduction:mizar-style-group}: it's a magma which
 satisfies a bunch of extra properties (as opposed to a magma equipped
@@ -565,7 +563,7 @@ write something like ``\texttt{let x be multMagma; assume x is associative}''
 or ``\texttt{let x be multMagma such that x is associative}''.
 \end{remark}
 
-\M Observe that a more faithful translation of Mizar's definition would
+Observe that a more faithful translation of Mizar's definition would
 be:
 
 \begin{quote}
@@ -609,7 +607,7 @@ A3: for h being Element of G holds h * e2 = h & e2 * h = h;
 end;
 \end{mizar}
 
-\N{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
+\subsection{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
 ``functor'' (a logical function, i.e., parametrized term) denoted
 ``\verb#1_#'' which produces the unit element for the given magma.
 Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
@@ -645,7 +643,7 @@ and in my opinion is an extremely poor
 choice of terminology due entirely to the ironies of history.}
 \index{Functor!In Mizar|)}\end{remark}
 
-\N{Inverse operator for group elements}
+\subsection{Inverse operator for group elements}
 When we have a group $\langle G,\cdot\rangle$, we also have the ability
 to invert any given element $g\in G$. Mizar denotes this by
 ``\verb#g"#'', which is what the ``Rosette stone'' of notation suggests
@@ -660,7 +658,7 @@ some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
 notation in \verb#GROUP_2:def 1#.\MizDef{GROUP\_2}[01]{1}
 \end{remark}
 
-\N{Power operator}
+\subsection{Power operator}
 For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
 understanding this stands for $g^{0}=1_{G}$ and $g^{n+1}=g^{n}\cdot g$.
 This is defined in ``\verb#GROUP_1:def 7#''\MizDef{GROUP\_1}[07]{7}. But we generalize this in
@@ -675,7 +673,7 @@ For the sake of consistency, Mizar explicitly states in
 ``\verb#GROUP_1:def 8#'' when $g\in G$ and $n\esti \NN_{0}$, it follows
 that ``\verb#g |^ n#'' coincides with what we expect (i.e., $g^{n}$).
 
-\N{Order of Group Element (and Group Order)}
+\subsection{Order of Group Element (and Group Order)}
 If $h\in G$, then we say $h$ is of order 0 if the only $n\in\NN_{0}$
 satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute in
 ``\verb#GROUP_1:def 10#''\MizDef{GROUP\_1}{10} as ``\verb#being_of_order_0#''\index{Being of Order 0@$\mathtt{being\_of\_order\_0}$}\mizindex{Being of Order 0@$\mathtt{being\_of\_order\_0}$}.
@@ -691,7 +689,7 @@ for $G$ being any finite 1-sorted typed object (like a group), we have
 ``\verb#card G#''\mizindex{Card G@\texttt{card G}}\index{Cardinality@\texttt{card G}} be the cardinality
 of the underlying set.
 
-\N{Abelian Groups}
+\subsection{Abelian Groups}
 Sadly, Mizar departs from mathematical practice, and defines an
 attribute in ``\verb#GROUP_1:def 12#''\MizDef{GROUP\_1}{12} for a \verb#multMagma# to be
 ``\verb#commutative#''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}\mizindex{Commutative@\texttt{commutative}}
@@ -702,7 +700,7 @@ This demands the expected property
 
 \section{Subgroups}
 
-\N{Helper notation}
+\subsection{Helper notation}
 We have $A,B\subset G$ be subsets of the carrier set underlying a
 non-empty magma $G$. Then we can define ``\verb#A*B#'' as the set of
 elements of the form $ab$ for $a\in A$ and $b\in B$. This was done in
@@ -720,7 +718,7 @@ underlying $H$, then using the earlier definitions (from
 Similarly, for any subgroup $H\subgroup G$ and $g\in G$, we have
 \verb#g*H# and \verb#H*g# be defined using the underlying set of $H$.
 
-\N{Subgroup}
+\subsection{Subgroup}
 For a group $G$, \verb#GROUP_2:def 5#\MizDef{GROUP\_2}[05]{5} defines a
 ``\verb#Subgroup of G#'' to be a Group-like non-empty \verb#multMagma#
 such that its carrier is a subset of the underlying set of $G$, and the
@@ -731,7 +729,7 @@ restricted to the Subgroup.
 We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
 \end{remark}
 
-\N{Equality of Subgroups}\label{par:introduction:subgroup-equality}
+\subsection{Equality of Subgroups}\label{par:introduction:subgroup-equality}
 For reasons which are not well documented, \verb#GROUP_2:def 6#
 redefines equality for \emph{strict} Subgroups. Non-strict subgroups
 cannot be equal (not as subgroups).
@@ -753,7 +751,7 @@ holes have no hair, strict groups have no hair: it's just a
 ``\texttt{multMagma}'' satisfying the group properties (in Mizar, at least).
 \end{remark}
 
-\N{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
+\subsection{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
 For any group $G$, $\trivialSubgroup_{G}$ is the trivial subgroup
 consisting of the identity element \verb#1_G# and nothing else. This is
 defined in \verb#GROUP_2:def 7#\MizDef{GROUP\_2}[07]{7} and denoted \verb#(1).G#\mizindex{1.G@$\mathtt{(1).G}$}. The other
@@ -761,14 +759,14 @@ trivial subgroup is denoted by mathematicians as $G$ itself, but Mizar
 distinguishes this trivial improper subgroup as $\Omega_{G}$\index{$\Omega_{G}$} in
 \verb#GROUP_2:def 8#\MizDef{GROUP\_2}[08]{8}.\mizindex{Omega.G@$\mathtt{(Omega).G}$}
 
-\N{Intersection of Subgroups}
+\subsection{Intersection of Subgroups}
 If $H_{1}\subgroup G$ and $H_{2}\subgroup G$, then $H_{1}\cap H_{2}$ is
 a subgroup of $G$, too. Mizar denotes this by
 \texttt{H1 /\char`\\{} H2}\index{\texttt{H1 /\char`\\{} H2}}. Its
 defined in \verb#GROUP_2:def 10#\MizDef{GROUP\_2}{10} as the group whose
 underlying set is the intersection of the sets underlying $H_{1}$ and $H_{2}$.
 
-\N{Cosets}
+\subsection{Cosets}
 For any subgroup $H\subgroup G$, we can consider the left (or right)
 cosets of $H$ as the family of subsets of $G$ of the form
 $\{gH|g\in G\}$ (resp., $\{Hg|g\in G\}$). This is defined in
@@ -784,7 +782,7 @@ More generally, the collection of all possible subgroups of $G$ is given
 in \verb#GROUP_3:def 1#\MizDef{GROUP\_3}[01]{1} as
 ``\verb#Subgroups G#''\mizindex{Subgroups@\texttt{Subgroups}}.
 
-\N{Conjugation}
+\subsection{Conjugation}
 For any $a,b\in G$ the conjugate of $a$ by $b$ defined as $a^{b}$ (or
 using Mizar syntax ``\verb#a |^ b#''\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}\mizindex{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}})
 for $b^{-1}ab$. For subsets $A,B\subset G$, we define
@@ -816,7 +814,7 @@ such that $A = B^{g}$);
   are conjugate to $H$
 \end{enumerate}
 
-\N{Normal Subgroups}
+\subsection{Normal Subgroups}
 Having thus described conjugation of elements, subsets, and subgroups by
 elements, subsets, and subgroups, we have enough infrastructure to
 define a notion of ``normal subgroup''. Mizar's
@@ -831,7 +829,7 @@ underlying set is $\{h \mid A^{h} = A\}$. We generalize this notion in
 \verb#GROUP_2:def 15# to subgroups $H\subgroup G$ by just taking the
 normalizer of the underlying set of $H$.
 
-\N{Group generated by a subset}
+\subsection{Group generated by a subset}
 For $A\subset G$, we define\index{$\langle A\rangle$}
 \begin{equation}
 \langle A\rangle = \bigcap_{A\subset H\subgroup G} H.
@@ -841,14 +839,14 @@ Mizar defines this in \verb#GROUP_3:def 4#\MizDef{GROUP\_3}[04]{4} as
 property of $\langle A\rangle$ is proven in
 \verb#GROUP_3:Th34#\MizThm{GROUP\_3}{34}.
 
-\N{Element is Generating}
+\subsection{Element is Generating}
 We call an element $a\in G$ \emph{generating} if there is an $A\subset G$
 such that $\langle A\rangle = G$ (i.e., \texttt{gr A = G}) and
 $\langle A\setminus\{a\}\rangle\neq G$ (i.e., \texttt{gr(A \ \{a\}) = G}).
 Mizar provides this in \verb#GROUP_3:def 5#\MizDef{GROUP\_3}[05]{5} as
 an attribute \verb#generating#\mizindex{Generating@\texttt{generating}}.
 
-\N{Frattini Subgroup}\index{Frattini Subgroup}\index{$\Phi(G)$}
+\subsection{Frattini Subgroup}\index{Frattini Subgroup}\index{$\Phi(G)$}
 We define a maximal subgroup as one which is proper and not contained in
 any other proper subgroup (Mizar defines this as an attribute for a
 subgroup $H\subgroup G$ in \verb#GROUP_3:def 6#\MizDef{GROUP\_3}[06]{6}\mizindex{Mazimal@\texttt{maximal}}).
