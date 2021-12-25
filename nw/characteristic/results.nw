@@ -70,8 +70,18 @@ end;
 @ %def Lm6
 
 \N{Lemma: the only subgroup of the trivial group is trivial}
+\begin{lemma}
+For any subgroup $H\subgroup G$, if $\trivialSubgroup_{G}\subgroup H$
+and $H\subgroup\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
+\end{lemma}
+
+\begin{remark}
 I couldn't quite find this anywhere in the MML, so I had to prove it
 myself.
+\end{remark}
+\begin{remark}[To do]
+I think I prove this result several times, I should refactor my code accordingly.
+\end{remark}
 
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
 Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
@@ -87,9 +97,13 @@ end;
 
 @ %def Lm5
 
-\N{Existence theorem}
-We need to prove the existence of a characteristic subgroup. For our
-purposes, it suffices to prove that the trivial subgroup is characteristic.
+\begin{theorem}[Existence of a characteristic subgroup]
+For any group $G$, there exists a subgroup $H\subgroup G$ which is characteristic.
+\end{theorem}
+\begin{proof}[Proof outline]
+The trivial subgroup is a subgroup of any group. And it is
+characteristic. Thus the result.
+\end{proof}
 
 <<Theorem: Existence of characteristic subgroups>>=
 
@@ -133,11 +147,16 @@ end;
 
 @
 
-
-\N{Characteristic subgroups are normal}
+\begin{theorem}[Characteristic subgroups are normal]
 Let $G$ be a group, $K\subgroup G$ a subgroup. If $K$ is a
 characteristic subgroup of $G$, then $K\normalSubgroup G$ it is also
 normal.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+We show $K$ is invariant under conjugation, i.e., for any $a\in G$ we
+have $K^{a}=K$. Then $K\normalSubgroup G$.
+\end{proof}
 
 <<Theorem: characteristic subgroups are normal>>=
 theorem Th22:
@@ -154,10 +173,11 @@ end;
 
 @ %def Th22
 
-\M
+\begin{proof}[Sub-proof (characteristic subgroups invariant under conjugation)]
 Really, proving a characteristic subgroup is normal amounts to proving
 invariance under conjugation. Fortunately, we have established this
 along the way! We just have to point to our hard work from earlier.
+\end{proof}
 
 <<Sub-proof: characteristic subgroups invariant under conjugation>>=
 proof
@@ -233,6 +253,21 @@ into a helper theorem! The ``architecture'' of the proof follows what we
 would find in a textbook. It's just that a textbook will gloss over
 facts about morphisms which we'd need to prove.
 
+\begin{proof}
+Let $K$ be a characteristic subgroup of $N$ and $N\normalSubgroup G$ be
+a normal subgroup. Then consider conjugation of $N$ by any element $a\in G$.
+This corresponds to an inner Automorphism of $G$, $\varphi\in\Inn(G)$, and an
+automorphism $\varphi|_{N}\in\Aut(N)$ of $N$. But since $K$ is
+characteristic in $N$, it follows $\varphi|_{N}(K)=K$. Then $K$,
+considered as a subgroup of $G$, must be invariant under $\varphi$ and
+therefore a normal subgroup of $G$ by [[LmNormalSubgroup]].
+\end{proof}
+
+\begin{remark}
+The [[strict]] hypothesis on [[N]] is necessary, since [[GROUP_2:def 6]]\MizDef{GROUP\_2}[06]{6}
+defines equality only on \emph{strict} subgroups.
+\end{remark}
+
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>=
 <<Lemma: two group morphisms which coincide on subgroup have the same image>>
 
@@ -251,10 +286,15 @@ end;
 
 @ %def Th25
 
-\begin{remark}
-The [[strict]] hypothesis on [[N]] is necessary, since [[GROUP_2:def 6]]\MizDef{GROUP\_2}[06]{6}
-defines equality only on \emph{strict} subgroups.
-\end{remark}
+\begin{proof}[Sub-proof ($\forall a\in G, K^{a}=K$)]
+Given an arbitrary $a\in G$, we construct an inner automorphism
+$\varphi\in\Inn(G)$ defined by $\varphi(x)=x^{a}$. Then $\varphi(N)=N$
+by [[Th20]] which implies $\varphi|_{N}\in\Aut(N)$ by [[Th11]]. Viewed
+as an automorphism of $N$, $\varphi|_{N}=:\psi\in\Aut(N)$, we must have
+$\psi(K)=K$ by virtue of $K$ being characteristic subgroup of $N$. But
+$\psi(K)=\varphi(K)$ due to a sub-sub-proof that $\forall k\in K,\psi(k)=\varphi(k)$.
+Then the result follows.
+\end{proof}
 
 <<Proof: $\forall a\in G, K^{a}=K$>>=
 proof
@@ -278,6 +318,16 @@ end;
 
 @
 
+\begin{proof}[Sub-sub-proof ($\forall k\in G$, $k\in K\implies f(k)=g(k)$).]
+  We simply unfold the definitions
+  \begin{subequations}
+    \begin{align}
+      \psi|_{K}(k) &= \psi(k)\\
+      &= \varphi(k)\qedhere
+    \end{align}
+  \end{subequations}
+\end{proof}
+
 <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>=
 proof
   let k be Element of G;
@@ -292,12 +342,22 @@ end;
 
 @
 
-\N{Lemma}
-The heavy lifting is done by a straightforward and intuitive result: if
-we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to H_{2}$,
-where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if we have
-a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the image of
-the morphisms on this shared subgroup should coincide.
+\begin{theorem}
+If we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to
+H_{2}$, where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if
+we have a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the
+image of the morphisms on this shared subgroup should coincide.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+  Let $f\colon G_{1}\to G_{2}$ be a group morphism, let $H_{1}\subgroup G_{1}$
+  and $H_{2}\subgroup G_{2}$ be subgroups, let $g\colon H_{1}\to H_{2}$.
+  If $K\subgroup H_{1}$ is a subgroup for which $g|_{K}=f|_{K}$, then $f(K)=g(K)$.
+\end{proof}
+
+
+\begin{remark}
+The heavy lifting is done by a straightforward and intuitive result.
 
 Initially, I had a more conservative result: let $\varphi,\psi\in\Aut(G)$
 and $H\subgroup G$, if $\forall h\in H,\varphi(h)=\psi(h)$, then
@@ -305,6 +365,7 @@ $\varphi(H)=\psi(H)$. Then I realized this didn't describe the situation
 I was facing, so I revised it to fit. Then I realized I didn't need the
 hypothesis that $\varphi$ and $\psi$ were automorphisms, they could be
 generic morphisms.
+\end{remark}
 
 <<Lemma: two group morphisms which coincide on subgroup have the same image>>=
 theorem Th24:
@@ -336,7 +397,11 @@ end;
 
 @ %def Th24
 
-
+\begin{proof}[Sub-proof ($\forall y,y\in f(K)\iff y\in g(K)$)]
+  We show, for any $y$, that both $y\in f(K)\implies y\in g(K)$ and
+  $y\in f(K)\impliedby y\in g(K)$. Taken together, this gives us
+  $y\in f(K)\iff y\in g(K)$.
+\end{proof}
 
 <<Proof: $y\in f(K)\iff y\in g(K)$>>=
 proof
@@ -349,6 +414,11 @@ proof
 end;
 
 @
+
+\begin{proof}[Sub-proof step 1 ($y\in f(K)\implies y\in g(K)$)]
+We have $y\in f(K)$ if there is some $h\in K$ such that $y=f|_{K}(h)$.
+But by hypothesis, $f|_{K}(h)=g|_{K}(h)$, and thus $y=g|_{k}(h)\in g(K)$.
+\end{proof}
 
 <<Proof: $y\in f(K)\implies y\in g(K)$>>=
 proof
@@ -368,6 +438,11 @@ proof
 end;
 
 @
+
+\begin{proof}[Sub-proof step 2 ($y\in g(K)\implies y\in f(K)$)]
+  We have $y\in g(K)$ if there is some $h\in K$ such that $y=g|_{K}(h)$.
+  But by hypothesis $g|_{K}(h) = f|_{K}(h)$, and thus $y = f|_{K}(h)\in f(K)$.
+\end{proof}
 
 <<Proof: $y\in g(K)\implies y\in f(K)$>>=
 proof
@@ -394,7 +469,18 @@ characteristic, then $K\subgroup G$ is characteristic.
 \end{theorem}
 
 The proof is remarkably similar to the previous theorem. In fact, we can
-re-use exactly the same line of reasoning establishing $\forall k\in G$, $k\in K\implies f(k)=g(k)$.
+re-use exactly the same line of reasoning establishing
+$\forall k\in G$, $k\in K\implies f(k)=g(k)$.
+
+\begin{proof}[Proof outline]
+For any automorphism $g\in\Aut(G)$ we have $g(N)=N$ by virtue of $N$ is
+a characteristic subgroup of $G$. We can then consider $f=g|_{N}$ as an
+automorphism of $N$. Then $f(K)=K$ since $K$ is a characteristic
+subgroup of $N$.
+
+We have $\forall k\in K, f(k)=g(k)$. Thus $f(K)=g(K)$, and we have
+established $f(K)=K$, therefore $g(K)=K$.
+\end{proof}
 
 <<Theorem: transitivity of characteristic subgroups>>=
 theorem Th26:
@@ -433,6 +519,18 @@ end;
 Some texts give this as the definition for $H$ being a characteristic
 subgroup, which is fine.
 
+\begin{proof}[Proof outline]
+  Given a subgroup $H\subgroup G$. We have two halfs to our proof.
+
+We prove $H$ is a characteristic subgroup of $G$ implies
+$\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$. This uses the facts
+$\varphi(H)=H\subgroup H$. This establishes the first half of the proof.
+
+Now, the other direction, assuming
+$\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$ we find $H$ is a
+characteristic subgroup of $G$.
+\end{proof}
+
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 theorem Th27:
   for H being strict Subgroup of G
@@ -453,9 +551,11 @@ end;
 
 @ %def Th27
 
-\M
+\begin{proof}[Sub-proof ($H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$).]
 The proof in the forward direction boils down to the observation
 $H\subgroup H$ then applying the definition of characteristic subgroup.
+\end{proof}
+
 
 <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
@@ -470,7 +570,7 @@ end;
 
 @
 
-\M
+\begin{proof}[Sub-proof ($H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$).]
 The proof in the backward direction amounts to proving, for arbitrary
 automorphisms $\varphi$ of $G$, $\varphi(H)\subgroup H$ and since
 $\varphi$ is an Automorphism $H\subgroup \varphi^{-1}(H)$. Then for any
@@ -480,6 +580,7 @@ this implies $\forall\varphi\in\Aut(G)$, $H = \varphi(H)$.
 But as discussed earlier (\S\ref{par:introduction:subgroup-equality}),
 subgroup equality holds only for strict subgroups. For this reason, we
 have the hypothesis that $H$ is a strict subgroup of $G$.
+\end{proof}
 
 <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
@@ -500,7 +601,8 @@ end;
 
 @
 
-\M This is a slick argument, which is confusing until one realizes
+\begin{proof}[Sub-sub-proof ($\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$).]
+This is a slick argument, which is confusing until one realizes
 what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
 \begin{itemize}
 \item[{[[A1]]}:] $\psi(H)\subgroup H$;
@@ -508,6 +610,7 @@ what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
 \item[{[[Th7]]}:] for $\psi=\varphi^{-1}$, the underlying magmas of $H$ and $\varphi[\psi(H)]$ are equal.
 \end{itemize}
 This suffices to infer $H\subgroup\varphi(H)$.
+\end{proof}
 
 <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>=
 proof
@@ -529,6 +632,7 @@ end;
 Let $G$ be a group. Its center $Z(G)$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{proof}[Proof outline]
 This is our first application of
 $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$ implies $H$ is characteristic.
 The bulk of the proof amounts to showing $\varphi(Z(G))\subgroup Z(G)$,
@@ -541,6 +645,7 @@ which requires two prior steps:
 \end{enumerate}
 Then we have $\varphi(Z(G))$ be a subgroup of $Z(G)$, which let's us use
 the previous theorem.
+\end{proof}
 
 \begin{remark}
 The [[center]]\mizindex{Center@\texttt{center}} functor is defined in
@@ -560,8 +665,10 @@ end;
 
 @ %def Th28
 
-\M The heart of the proof amounts to showing, for any Automorphism
+\begin{proof}[Proof branch ($\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$)]
+The heart of the proof amounts to showing, for any Automorphism
 $\varphi$, that $\varphi(Z(G))$ is a subgroup of $Z(G)$.
+\end{proof}
 
 <<Prove $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
 <<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>
@@ -570,10 +677,13 @@ $\varphi$, that $\varphi(Z(G))$ is a subgroup of $Z(G)$.
 
 @
 
-\M Proving $\varphi(z)$ commutes with every element of the group is a
+\begin{proof}[Proof step 1 ($\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$).]
+Proving $\varphi(z)$ commutes with every element of the group is a
 straightforward calculation. In fact, this is usually what textbooks
 present, then dismiss the rest of the proof as ``trivial'' or
 ``obvious''.
+\end{proof}
+
 
 <<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>=
 A1: for phi being Automorphism of G
@@ -597,8 +707,10 @@ end;
 
 @
 
-\M Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
+\begin{proof}[Proof step 2 ($\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$).]
+Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
 unfolding definitions.
+\end{proof}
 
 <<Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>=
 A2: for phi being Automorphism of G
@@ -617,11 +729,13 @@ end;
 
 @
 
-\M The last step, which is the ``obvious'' part, infers from
+\begin{proof}[Proof step 3 ($\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$).]
+The last step, which is the ``obvious'' part, infers from
 $\forall z\in Z(G),\varphi(z)\in Z(G)$ that $\varphi(Z(G))\subgroup Z(G)$.
 It's also the ugliest part of the proof which could probably be cleaned
 up considerably. This is only due to the sub-step establishing
 $w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
+\end{proof}
 
 <<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
 A3: for phi being Automorphism of G
@@ -640,12 +754,14 @@ end;
 
 @
 
-\M This substep is ugly, and I offer no apology for it. There's probably
+\begin{proof}[Proof sub-step 3.1 ($\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$).]
+This substep is ugly, and I offer no apology for it. There's probably
 a more elegant solution, but I cannot think of one. We explicitely
 walkthrough showing $w\in\rng(\varphi|_{Z(G)})$, which means there is
 some $z$ such that $z\in\dom(\varphi|_{Z(G)})$ and $\varphi|_{Z(G)}(z) = w$.
 Since $\dom(\varphi|_{Z(G)})=Z(G)$, it follows $\varphi|_{Z(G)}(z)\in Z(G)$
 from step 2. Thus the result follows.
+\end{proof}
 
 <<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>=
 proof

@@ -59,9 +59,21 @@ reserve X for set;
 
 @
 
-\M
-We need to prove, if $f\colon X\onto Y$ is a surjective function of
-sets, then $f(X)=Y$.
+\begin{theorem}
+If $f\colon X\onto Y$ is a surjective function of sets, then $f(X)=Y$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+  Assume $f\colon X\onto Y$ is surjective. Then by definition its range
+  is its codomain $\rng(f)=Y$.
+  We just need to show $\rng(f)=Y$ implies $f(X)=Y$, and $f(X)=Y$
+  implies $\rng(f)$.
+\end{proof}
+
+\begin{remark}[Note to Alex]
+This should be refactored out into another theorem, namely
+$\rng(f)=f(X)$. The result claimed follows immediately.
+\end{remark}
 
 \begin{remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
 We should caution Mizar's notation for writing something like, if
@@ -99,8 +111,10 @@ end;
 
 @ %def LmOntoMapsEverything
 
-\M We can look up the definitions for [[rng f]] and [[f .: X]], which
+\begin{proof}[Proof step (conditions for $\rng(f)$, $f(X)$)]
+We can look up the definitions for [[rng f]] and [[f .: X]], which
 give the logical equivalences:
+\end{proof}
 
 <<Defining formulas for $\rng(f)$ and $f(X)$>>=
 (for y being object
@@ -111,7 +125,9 @@ by FUNCT_1:def 3,def 6
 
 @
 
-\M Proving the forward direction amounts to unfolding definitions.
+\begin{proof}[Proof step ($f(X)\subset\rng(f)$)]
+Proving the forward direction amounts to unfolding definitions.
+\end{proof}
 
 <<Proof: $y\in f(X)\implies y\in\rng(f)$>>=
 proof
@@ -125,8 +141,10 @@ end;
 
 @
 
-\M Proving the backward direction amounts to unfolding the same
+\begin{proof}[Proof step ($f(X)\supset\rng(f)$)]
+Proving the backward direction amounts to unfolding the same
 definitions, in the opposite order.
+\end{proof}
 
 <<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>=
 proof
@@ -160,7 +178,11 @@ end;
 
 @
 
-\M
+\begin{lemma}
+If $H\subgroup G$ is a subgroup and $h$ is an element of $G$ such that
+$h\in H$, then $h$ is an element of $H$.
+\end{lemma}
+
 We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``[[h is Element of H]]''.
@@ -216,7 +238,12 @@ end;
 
 @ %def LmSubgroupEltTrans
 
-\N{Restriction of Group Morphisms to Subgroups}
+\begin{lemma}[{Restriction of Group Morphisms to Subgroups}]
+If $f\colon G_{1}\to G_{2}$ is a group morphism and $H\subgroup G_{1}$
+is a subgroup, then for any $h\in H$ we have $f(h) = f|_{H}(h)$.
+\end{lemma}
+
+\begin{remark}
 Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
 $A\subset X$ is an arbitrary subset, then $\forall a\in X$ we have
 $a\in A\implies f|_{A}(a)=f(a)$. But this doesn't generalize to
@@ -228,7 +255,9 @@ for any group morphism $f\colon G_{1}\to G_{2}$, and for arbitrary $h\in G_{1}$,
 we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
 always look at the set-theoretic function $U(f)$ underlying $f$, then
 piggie-back off earlier results establishing the desired claim
-(Theorem~49 of [[FUNCT_1]], to be precise).
+(Theorem~49 of [[FUNCT_1]]\MizThm{FUNCT\_1}{49}, to be precise).
+\end{remark}
+
 
 <<Lemma: restriction of group morphism acts on elements like the original>>=
 Lm3: for G1,G2 being Group
@@ -251,11 +280,15 @@ end;
 
 @ %def Lm3
 
-\M
+\begin{lemma}
 Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$.
 If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
-$H_{1}=H_{2}$. Pretty simple, right? \dots I'm not sure I'll need this,
-but here it is if I do.
+$H_{1}=H_{2}$.
+\end{lemma}
+
+\begin{remark}
+Pretty simple, right? \dots I'm not sure I'll need this, but here it is if I do.
+\end{remark}
 
 <<Lemma: Sandwich Subgroup Equality Theorem>>=
 LmSandwich: for H1 being strict Subgroup of G
@@ -272,10 +305,16 @@ end;
 
 @ %def LmSandwich
 
-\M Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
-Then $H\normalSubgroup G$ is a normal subgroup. The current theorems in
-[[GROUP_3]] require $H$ to be a \emph{strict} subgroup, but this
-strictness condition is not necessary.
+\begin{lemma}
+Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
+Then $H\normalSubgroup G$ is a normal subgroup.
+\end{lemma}
+
+\begin{remark}
+The current theorems in [[GROUP_3]] require $H$ to be a \emph{strict}
+subgroup, but this strictness condition is not necessary.
+\end{remark}
+
 
 <<Lemma: Subgroups invariant under conjugation are normal>>=
 LmNormalSubgroup:
@@ -357,8 +396,10 @@ be subgroups. If $f\colon G_{1}\to G_{2}$ is a group morphism, then
 $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
 \end{lemma}
 
-Something like this was proven in [[FUNCT_1:50]], but I couldn't apply
-that theorem (not even to functions of sets).
+\begin{remark}
+Something like this was proven in [[FUNCT_1:50]]\MizThm{FUNCT\_1}{50},
+but I couldn't apply that theorem (not even to functions of sets).
+\end{remark}
 
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>=
 LmRestrictCollapse:
@@ -384,9 +425,15 @@ end;
 
 @ %def LmRestrictCollapse
 
-\begin{theorem}
+\begin{lemma}\label{lm:characteristic:preparatory:lm10}
 If $f\colon X\to Y$ is a bijective function of non-empty sets, then $(f^{-1})^{-1}=f$.
-\end{theorem}
+\end{lemma}
+
+\begin{proof}[Proof outline]
+Let $f\colon X\to Y$ be bijective. Then $g=f^{-1}$ is a bijective
+function from $Y$ to $X$. And $h=g^{-1}$ is a bijective function from
+$X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
+\end{proof}
 
 <<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
 Lm10:
@@ -416,7 +463,22 @@ end;
 
 @ %def Lm10
 
-\M Proving $h(x) = f(x)$ amounts to unfolding definitions.
+\begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
+  Let $x\in X$ be arbitrary. Consider
+  \begin{subequations}\label{eq:characteristic:preparatory:lm-finvinv-is-inv}
+  \begin{equation}
+    y=f(x).
+  \end{equation}
+  Then $x=g(y)$ --- i.e.,
+  $x = f^{-1}(y)$ --- implies
+  \begin{equation}
+  h(x) = g^{-1}(x) = y.
+  \end{equation}
+  \end{subequations}
+  But since $y=y$ we from
+  Eqs~\eqref{eq:characteristic:preparatory:lm-finvinv-is-inv}
+  prove $h(x)=f(x)$.
+\end{proof}
 
 <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>=
 proof
@@ -439,13 +501,23 @@ end;
 
 @
 
-\begin{theorem}
+\begin{lemma}
 If $f\colon X\to Y$ is a bijective function of sets, then for any $y\in Y$
 we have $f(f^{-1}(y))=y$.
-\end{theorem}
+\end{lemma}
 
-Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#
+\begin{proof}[Proof sketch]
+Let $f\colon X\to Y$ be bijective. Then $g\colon Y\to X$ given by
+$g=f^{-1}$ is bijective. Mizar knows $g^{-1}(g(y))=y$ for $y=f(x)$. Then
+plugging in the definition of $g$ and using
+Lemma~\ref{lm:characteristic:preparatory:lm10} to transform
+$(f^{-1})^{-1}=f$, together gives the result.
+\end{proof}
+
+\begin{remark}
+Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#\MizThm{FUNCT\_2}{26}
 states that $f^{-1}(f(x))=x$ provided $f$ is injective.
+\end{remark}
 
 <<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
 Lm11:
@@ -470,11 +542,18 @@ end;
 
 @ %def Lm11
 
-\begin{theorem}
+\begin{lemma}
   If $f\colon X\to Y$ is a bijective function of sets,
   then its inverse function $f^{-1}\colon Y\to X$ exists (as defined by
   $f\circ f^{-1}=\id_{Y}$ and $f^{-1}\circ f=\id_{X}$).
-\end{theorem}
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+We need to prove two results. We have, for any $y\in Y$,
+$f(f^{-1}(y))=y$ establish the result that $f\circ f^{-1}=\id_{Y}$. The
+other result follows from, for any $x\in X$, that $f^{-1}(f(x))=x$ which
+implies $f^{-1}\circ f=\id_{X}$.
+\end{proof}
 
 <<Theorem: bijections have inverses>>=
 Lm12:
@@ -503,7 +582,9 @@ end;
 
 @ %def Lm12
 
-\M Unfolding the definition of inverse functions gives us the result.
+\begin{proof}[Proof step ($\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$)]
+The result follows from $(f\circ f^{-1})(y)=f(f^{-1}(y))=y$.
+\end{proof}
 
 <<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>=
 proof
@@ -517,7 +598,9 @@ end;
 
 @
 
-\M Almost identical unfolding of definitions as the other case.
+\begin{proof}[Proof step ($\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$)]
+The result follows from $(f^{-1}\circ f)(x) = f^{-1}(f(x))=x$.
+\end{proof}
 
 <<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>=
 proof
@@ -535,6 +618,13 @@ end;
 If $f\colon X\to Y$ is bijective, then there exists an inverse function
 $f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
 \end{theorem}
+
+\begin{proof}[Proof sketch]
+This follows from theorem\MizThm{GROUP\_6}{63} \verb#GROUP_6:63# which
+asserts $f$ is bijective and $g=f^{-1}$ together implies $g$ is
+bijective. We just need to prove the existence of $g=f^{-1}$, which is
+handled by theorem\MizThm{FUNCT\_2}{25} \verb#FUNCT_2:25#.
+\end{proof}
 
 <<Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
 Lm13:

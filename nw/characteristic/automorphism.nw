@@ -35,14 +35,29 @@ begin
 @
 
 \M Note we just used the symbol [[G]] for a generic group, so we add to
-the reserved symbols this association.
+the reserved symbols this association. Most of our theorems will no
+longer state ``Let $G$ be a group'', it will be implicitly assumed
+unless otherwise stated.
 
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve G for Group;
 
 @
 
-\M\index{Endomorphism} A group endomorphism of $G$ is just a homomorphism $f\colon G\to G$.
+\begin{definition}\index{Endomorphism|textbf}
+Let $G$ be a group. An \define{Endomorphism} of $G$ is a group morphism
+$f\colon G\to G$.
+\end{definition}
+
+\begin{remark}\index{$\End(G)$}
+We denote the collection of endomorphisms of $G$ as $\End(G)$.
+\end{remark}
+
+\begin{remark}
+Mizar uses the archaic word ``homomorphism'' instead of the more modern
+conventional term ``morphism''. I will use the two interchangeably. And,
+unless stated otherwise, it is understood these are group morphisms.
+\end{remark}
 
 <<Define [[Endomorphism]]>>=
 definition :: Def1
@@ -52,12 +67,12 @@ end;
 
 @ %def Endomorphism
 
-\M\label{par:characteristic:register-bijective-for-endomorphism}
-We begin by registering the attribute [[bijective]] for group
-endomorphisms. This will effectively create a subtype of
-[[Endomorphism of G]], the aptly named [[bijective Endomorphism of G]].
-Most of our work has been done in article [[GROUP_6]] by
-Theorem~38\MizThm{GROUP\_6}{38} (which effectively states the function on the underlying set
+\M\label{par:characteristic:register-bijective-for-endomorphism} We
+begin by registering the attribute [[bijective]] for group
+endomorphisms. This will effectively create a subtype of [[Endomorphism of G]],
+the aptly named [[bijective Endomorphism of G]]. Most of our work has
+been done in article [[GROUP_6]] by Theorem~38\MizThm{GROUP\_6}{38}
+(which effectively states the function on the underlying set
 [[id (the carrier of G)]] is a multiplicative function and so nearly a
 group morphism that we can reconsider it as an [[Endomorphism]]), and
 the fact that [[id X]] is bijective.
@@ -76,8 +91,15 @@ end;
 
 @
 
-\N{Definition (Automorphism)}\index{Automorphism}
-Now we have an [[Automorphism of G]] be just a bijective endomorphism.
+\begin{definition}\index{Automorphism|textbf}\index{Endomorphism}
+Let $G$ be a group. We define an \define{Automorphism} of $G$ to be a
+bijective endomorphism $f\colon G\to G$. In particular, an inverse
+$f^{-1}\colon G\to G$ exists and is a group morphism.
+\end{definition}
+
+\begin{remark}\index{$\Aut(G)$}
+We denote the collection of automorphisms of $G$ as $\Aut(G)$.
+\end{remark}
 
 <<Define [[Automorphism]]>>=
 definition :: Def2
@@ -109,6 +131,10 @@ $f(\trivialSubgroup)=\trivialSubgroup$.
 
 The proof is simply ``follow your nose''.
 
+\begin{proof}
+\emph{Trivial}.
+\end{proof}
+
 <<Theorem: Endomorphisms preserve the trivial subgroup>>=
 theorem Th1:
   Image (f|(1).G) = (1).G
@@ -131,12 +157,14 @@ reserve f for Endomorphism of G;
 For any automorphism $\varphi\in\Aut(G)$, we have $\varphi(\trivialSubgroup_{G})=\trivialSubgroup_{G}$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
 If $\phi$ is an automorphism of a group $G$, then
 the image of the trivial subgroup under $\phi$ is a subgroup of itself
 $\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
 Theorem~[[Th1]], that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
 $\phi$ (being an automorphism) is also an endomorphism. And [[GROUP_2]]
 proves that $G$ is a subgroup of itself in Theorem~[[Th54]].\MizThm{GROUP\_2}{54}
+\end{proof}
 
 <<Theorem: Automorphisms map trivial subgroups to themselves>>=
 :: In particular, the trivial proper subgroup (1).G of G is invariant
@@ -156,6 +184,11 @@ end;
 If $H\subgroup\trivialSubgroup_{G}\subgroup G$, then $H=\trivialSubgroup$.
 \end{lemma}
 
+\begin{proof}
+Assume $H\subgroup\trivialSubgroup_{G}$. We know
+$\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
+\end{proof}
+
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
 Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
@@ -172,6 +205,16 @@ end;
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
 $G$, we have $\varphi|_{H}\colon H\into\varphi(H)$ be an injective group morphism.
 \end{lemma}
+
+\begin{proof}[Proof sketch]
+Given a subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$, we
+know $\varphi|_{H}\colon H\to \varphi|_{H}(H)$ is a group morphism.
+Since $\varphi$ is an automorphism, it is injective, and in particular
+$\ker(\varphi)=\trivialSubgroup_{G}$. Then
+$\ker(\varphi|_{H})\subgroup\ker(\varphi)$ and
+$\trivialSubgroup_{G}\subgroup\ker(\varphi|_{H})$ implies
+$\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
+\end{proof}
 
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
@@ -199,6 +242,13 @@ $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$.
 Then any automorphism $\varphi$ of $G$ has an inverse which satisfies
 $\varphi[\varphi^{-1}(H)]\subgroup\varphi(H)$.
 \end{theorem}
+
+\begin{proof}
+Let $\psi=\varphi^{-1}\in\Aut(G)$ be an automorphism (which follows from
+theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). We have
+$\psi(H)=\psi|_{H}(H)\subgroup H$ since the image of a morphism is a subgroup of
+the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
+\end{proof}
 
 <<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>=
 theorem Th6:
@@ -230,6 +280,14 @@ end;
 
 This is an obvious result which is usually taken for granted.
 
+\begin{proof}[Proof outline]
+Let $\psi=\varphi^{-1}\in\Aut(G)$ (which follows from
+theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). Then we establish any
+group element $g$ is a member of $\varphi(\psi(H))$ if and only if $g$
+is a member of $H$.
+The result then follows that they are equal as groups using theorem \verb#GROUP_2:60#\MizThm{GROUP\_2}{60}.
+\end{proof}
+
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
 theorem Th7:
   for H being Subgroup of G
@@ -249,8 +307,10 @@ end;
 
 @ %def Th7
 
-\M The bones of the proof for this claim amounts to unfolding the
+\begin{proof}[{Sub-proof ($\forall g\in G, g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
+The bones of the proof for this claim amounts to unfolding the
 logical structure of the claim.
+\end{proof}
 
 <<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>=
 proof
@@ -265,12 +325,14 @@ end;
 
 @
 
-\M We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
+\begin{proof}[{Proof step 1 ($g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
+We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
 some [[M1:]] $a\in\varphi^{-1}(H)$ such that [[B2:]] $g=\varphi(a)$. And
 then we have, by the same line of reasoning applied to $a$, there is
 some [[M2:]] $b\in H$ such that [[B3:]] $\varphi^{-1}|_{H}(b)=a$. It
 follows that $g = \varphi(\varphi^{-1}(b))$, and by [[Lm11]] we have
 $g = b$ which proves the claim.
+\end{proof}
 
 <<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>=
 proof
@@ -286,7 +348,9 @@ end;
 
 @
 
-\M Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
+\begin{proof}[Proof sub-step 1]
+Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
+\end{proof}
 
 <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>=
 then consider a being Element of Image(psi|H) such that
@@ -297,8 +361,10 @@ then B2: phi.a = (phi|Image(psi|H)).a by Lm3
 
 @
 
-\M Almost the same reasoning applies to $b\in H$ satisfying
+\begin{proof}[Proof sub-step 2]
+Almost the same reasoning applies to $b\in H$ satisfying
 $a=\varphi^{-1}(b)$.
+\end{proof}
 
 <<$\exists b\in H, a = \varphi^{-1}(b)$>>=
 consider b being Element of H such that
@@ -308,12 +374,13 @@ M2: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
 
 @
 
-
-\M To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
+\begin{proof}[{Proof step 2 ($g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$)}.]
+To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
 let $K=\varphi^{-1}(H)$ and show $a = \varphi^{-1}|_{H}(g)\in K$ and
 then show $b=\varphi|_{K}(a)\in\varphi[K]=\varphi[\varphi^{-1}(H)]$. Then
 we have $b=\varphi(\varphi^{-1}(g))=g$ due to $\varphi$ being bijective.
 The result follows.
+\end{proof}
 
 <<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>=
 proof
@@ -333,7 +400,10 @@ end;
 
 @
 
-\M The first step follows by unfolding definitions.
+\begin{proof}[Proof sub-step 1 ($a\in\varphi^{-1}(H)$).]
+The first step follows by unfolding definitions.
+\end{proof}
+
 
 <<Sub-step 1: $a\in\varphi^{-1}(H)$>>=
 proof
@@ -347,7 +417,9 @@ end;
 
 @
 
-\M The next step, like the first, follows from definitions.
+\begin{proof}[{Proof sub-step 2 ($b\in\varphi[\varphi^{-1}(H)]$)}.]
+The next step, like the first, follows from definitions.
+\end{proof}
 
 <<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>=
 proof
@@ -361,10 +433,12 @@ end;
 
 @
 
-\M The last step is a little more involved, because it requires
+\begin{proof}[{Proof sub-step 3 ($g\in\varphi[\varphi^{-1}(H)]$)}.]
+The last step is a little more involved, because it requires
 recalling $\varphi|_{k}(k)=\varphi(k)$ for $k\in K$, and
 $\varphi^{-1}|_{H}(h)=\varphi^{-1}(h)$ for $h\in H$. We can then combine
 these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
+\end{proof}
 
 <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>=
 proof
@@ -390,10 +464,15 @@ Let $H\subgroup G$ and $K\subgroup G$ be subgroups, let $\varphi\in\Aut(G)$
 be an automorphism of G. If $\varphi(H)\subgroup K$, then $H\subgroup\varphi^{-1}(K)$.
 \end{theorem}
 
-I need to work on my numbering scheme\dots
 
+\begin{proof}[Proof sketch]
 The argument basically applies [[Th7]] to $\varphi^{-1}$, then unfolds
 definitions.
+\end{proof}
+
+\begin{remark}
+I need to work on my numbering scheme\dots
+\end{remark}
 
 <<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>=
 theorem Th7b:
@@ -431,6 +510,11 @@ $\varphi\in\Aut(G)$ be any automorphism. Then the image of $H$ under
 $\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+Let $H_{2}=\varphi(H)$ be a subgroup of $G$. We know $\varphi|_{H}$ is
+injective by [[Lm9]]. This gives us our result.
+\end{proof}
+
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
 theorem Th8:
   for H being Subgroup of G
@@ -454,6 +538,13 @@ any automorphism.
 Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+  We begin by recognizing $\ker(\varphi|_{H})\subgroup G_{1}$ and
+  $\ker(\varphi)\subgroup G_{1}$. Then any $g\in G$ such that
+  $g\in\ker(\varphi|_{H})$ is also a member of $\ker(\varphi)$. The
+  result follows.
+\end{proof}
+
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>=
 theorem Th9:
   for G1,G2 being Group
@@ -476,6 +567,12 @@ end;
 
 @ %def Th9
 
+\begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
+Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
+But $\varphi|_{H}(g)=\varphi(g)$ by [[Lm3]]. So we have
+$\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by theorem \verb#GROUP_6:41#\MizThm{GROUP\_6}{41}.
+\end{proof}
+
 <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>=
 proof
   let g be Element of G1;
@@ -491,10 +588,15 @@ proof
 end;
 
 @
+\begin{definition}\index{$\Id_{G}$}\index{Endomorphism!Identity}
+Let $G$ be a group. The \define{Identity endomorphism} of $G$ is defined
+to be $\Id_{G}\in\End(G)$ such that for any $x\in G$, $\Id_{G}(x)=x$.
+\end{definition}
 
-\N{Identity Group Endomorphism}\index{$\Id_{G}$}\index{Endomorphism!Identity}
+\begin{remark}
 I found it tedious to write [[id (the carrier of G)]] over and over
 again, so I wrote a shortcut [[Id_G]] for $\Id_{G}$.
+\end{remark}
 
 <<Define $\Id_{G}$>>=
 definition :: Def3
@@ -517,12 +619,14 @@ OId_
 
 @
 
-\N{Proof ($\Id_{G}$ exists)}
+\begin{proof}[Proof sketch (Existence of $\Id_{G}$)]
 Similar to the proof (\S\ref{par:characteristic:register-bijective-for-endomorphism})
 that there exists a bijective endomorphism, the proof that $\Id_{G}$
-exists amounts to reconsidering [[id]] as an endomorphism. Earlier work
-in [[FUNCT_1]] proved (in Theorem~17\MizThm{FUNCT\_1}{17}) the identity
+exists amounts to reconsidering [[id]] as an endomorphism. Using theorem
+\verb#FUNCT_1:17#\MizThm{FUNCT\_1}{17} the identity
 function satisfies $\forall x\in X, \id_{X}(x)=x$.
+\end{proof}
+
 
 <<Proof that $\Id_{G}$ exists>>=
 proof
@@ -533,15 +637,16 @@ end;
 
 @
 
-\N{Proof (Uniqueness of $\Id_{G}$)}
+\begin{proof}[Proof sketch (Uniqueness of $\Id_{G}$)]
 The usual strategy is to consider two arbitrary endomorphisms
 $\Id^{(1)}_{G}$ and $\Id^{(2)}_{G}$ satisfying the definition of
 [[Id_]], then prove $\Id^{(1)}_{G} = \Id^{(2)}_{G}$.
 
-If we wanted to be completely pedantic, we could cite Theorem~12 from
-[[FUNCT_2]]\MizThm{FUNCT\_2}{12} which states for any functions of sets
+If we wanted to be completely pedantic, we could cite Theorem
+[[FUNCT_2:12]]\MizThm{FUNCT\_2}{12} which states for any functions of sets
 $f_{1}$, $f_{2}\colon X\to Y$ we have $\forall x\in X, f_{1}(x)=f_{2}(x)$
 implies $f_{1}=f_{2}$.
+\end{proof}
 
 <<Proof $\Id_{G}$ is unique>>=
 proof
@@ -556,7 +661,11 @@ end;
 
 @
 
-\M\label{thm:characteristic:identity-endomorphism-is-identity-function}
+\begin{theorem}\label{thm:characteristic:identity-endomorphism-is-identity-function}
+For any group $G$, the identity endomorphism coincides with the identity
+function on the underlying set.
+\end{theorem}
+
 We should now have some sanity check that [[Id_G]] really is
 the identity group morphism $\Id_{G}$ that \emph{we} think it is.
 
@@ -591,9 +700,11 @@ end;
 For any group $G$, the identity morphism $\Id_{G}$ is injective.
 \end{lemma}
 
+\begin{proof}[Proof sketch]
 The proof is straightforward since we've established (\S\ref{thm:characteristic:identity-endomorphism-is-identity-function}) the group
 endomorphism $\Id_{G}$ coincides with the set-theoretic function $\id_{U(G)}$
 on the underlying set $U(G)$ of the group $G$.
+\end{proof}
 
 <<[[Id_G]] is injective>>=
 Lm1: Id_G is one-to-one
@@ -629,6 +740,21 @@ end;
 This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
+\begin{proof}[Proof outline]
+  We have for any $\varphi\in\Aut(G)$ such that
+  \begin{equation*}
+    \tag{$A_{1}$} \varphi|_{H}(H)=H
+  \end{equation*}
+  be a morphism $\varphi|_{H}\colon H\to H$ by theorem
+  [[GROUP_6:49]]\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
+  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by [[Lm9]]
+  and hypothesis $A_{1}$.
+
+  The nontrivial part of the proof is establishing $\varphi|_{H}$ is
+  surjective. Once established, it follows $\varphi|_{H}$ is bijective
+  and thus an automorphism.
+\end{proof}
+
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
 theorem Th11:
   for H being strict Subgroup of G
@@ -651,15 +777,20 @@ end;
 
 @ %def Th11
 
-\N{Proof of surjectivity}
+\begin{proof}[Proof sketch (Surjectivity)]
 For reasons I do not adequately understand, I could not simply handle
 [[f|H]] as a [[Homomorphism of H,H]] (despite having established this
 fact).
 
 I could not use any theorem concerning surjectivity of group morphisms,
 so I just ``forgot'' it was a morphism, proved surjectivity, then
-``remembered'' it was a group morphism after all. I am starting to think
-that the claim [[f is onto]] is different than [[f is onto Homomorphism of G1,G2]].
+``remembered'' it was a group morphism after all.
+\end{proof}
+
+\begin{remark}
+I am starting to think that the claim [[f is onto]] is different than
+[[f is onto Homomorphism of G1,G2]].
+\end{remark}
 
 <<Proof: $\varphi|_{H}$ is surjective>>=
 proof

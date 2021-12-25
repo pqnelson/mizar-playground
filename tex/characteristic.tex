@@ -9,6 +9,16 @@ DOS computers which have case-sensitive file systems\dots or something).
 Every Mizar article looks like:
 
 \nwfilename{nw/characteristic.nw}\nwbegincode{1}\sublabel{NWoaARJ-2sCaVS-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2sCaVS-1}}}\moddef{TEXT/char.miz~{\nwtagstyle{}\subpageref{NWoaARJ-2sCaVS-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+:: Characteristic Subgroups.
+::  by Alex Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
 
 \LA{}Environment for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW4bbsBH-3ZQoFX-1}}\RA{}
 
@@ -47,14 +57,6 @@ already introduced it. (None has, so far.) Since we want to describe
 Vcharacteristic
 
 \nwnotused{DICT/TMP.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
-
-%\input{tex/characteristic/environ}
-
-
-%\input{tex/characteristic/preparatory}
-%\input{tex/characteristic/automorphism}
-%\input{tex/characteristic/isomorphism}
-%\input{tex/characteristic/results}
 \nwenddocs{}\nwfilename{nw/characteristic/environ.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
@@ -418,9 +420,21 @@ reserve X for set;
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
-\M
-We need to prove, if $f\colon X\onto Y$ is a surjective function of
-sets, then $f(X)=Y$.
+\begin{theorem}
+If $f\colon X\onto Y$ is a surjective function of sets, then $f(X)=Y$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+  Assume $f\colon X\onto Y$ is surjective. Then by definition its range
+  is its codomain $\rng(f)=Y$.
+  We just need to show $\rng(f)=Y$ implies $f(X)=Y$, and $f(X)=Y$
+  implies $\rng(f)$.
+\end{proof}
+
+\begin{remark}[Note to Alex]
+This should be refactored out into another theorem, namely
+$\rng(f)=f(X)$. The result claimed follows immediately.
+\end{remark}
 
 \begin{remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
 We should caution Mizar's notation for writing something like, if
@@ -458,8 +472,10 @@ end;
 
 \nwindexdefn{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}{NW18nMBU-3LADMa-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}}}\nwendcode{}\nwbegindocs{6}\nwdocspar
-\M We can look up the definitions for {\Tt{}rng\ f\nwendquote} and {\Tt{}f\ .:\ X\nwendquote}, which
+\begin{proof}[Proof step (conditions for $\rng(f)$, $f(X)$)]
+We can look up the definitions for {\Tt{}rng\ f\nwendquote} and {\Tt{}f\ .:\ X\nwendquote}, which
 give the logical equivalences:
+\end{proof}
 
 \nwenddocs{}\nwbegincode{7}\sublabel{NW18nMBU-24g6aa-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-24g6aa-1}}}\moddef{Defining formulas for $\rng(f)$ and $f(X)$~{\nwtagstyle{}\subpageref{NW18nMBU-24g6aa-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-3LADMa-1}}\nwenddeflinemarkup
 (for y being object
@@ -470,7 +486,9 @@ by FUNCT_1:def 3,def 6
 
 \nwused{\\{NW18nMBU-3LADMa-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
 
-\M Proving the forward direction amounts to unfolding definitions.
+\begin{proof}[Proof step ($f(X)\subset\rng(f)$)]
+Proving the forward direction amounts to unfolding definitions.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{9}\sublabel{NW18nMBU-20ZyyY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-20ZyyY-1}}}\moddef{Proof: $y\in f(X)\implies y\in\rng(f)$~{\nwtagstyle{}\subpageref{NW18nMBU-20ZyyY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-3LADMa-1}}\nwenddeflinemarkup
 proof
@@ -484,8 +502,10 @@ end;
 
 \nwused{\\{NW18nMBU-3LADMa-1}}\nwendcode{}\nwbegindocs{10}\nwdocspar
 
-\M Proving the backward direction amounts to unfolding the same
+\begin{proof}[Proof step ($f(X)\supset\rng(f)$)]
+Proving the backward direction amounts to unfolding the same
 definitions, in the opposite order.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{11}\sublabel{NW18nMBU-3EwHBf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3EwHBf-1}}}\moddef{Proof: $y\in f(X)\impliedby y\in\rng(f)$~{\nwtagstyle{}\subpageref{NW18nMBU-3EwHBf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-3LADMa-1}}\nwenddeflinemarkup
 proof
@@ -519,7 +539,11 @@ end;
 
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwendcode{}\nwbegindocs{14}\nwdocspar
 
-\M
+\begin{lemma}
+If $H\subgroup G$ is a subgroup and $h$ is an element of $G$ such that
+$h\in H$, then $h$ is an element of $H$.
+\end{lemma}
+
 We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``{\Tt{}h\ is\ Element\ of\ H\nwendquote}''.
@@ -575,7 +599,12 @@ end;
 
 \nwindexdefn{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}{NW18nMBU-7Q5oR-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}}}\nwidentuses{\\{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}}\nwindexuse{\nwixident{LmSubgroupElt}}{LmSubgroupElt}{NW18nMBU-7Q5oR-1}\nwendcode{}\nwbegindocs{18}\nwdocspar
-\N{Restriction of Group Morphisms to Subgroups}
+\begin{lemma}[{Restriction of Group Morphisms to Subgroups}]
+If $f\colon G_{1}\to G_{2}$ is a group morphism and $H\subgroup G_{1}$
+is a subgroup, then for any $h\in H$ we have $f(h) = f|_{H}(h)$.
+\end{lemma}
+
+\begin{remark}
 Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
 $A\subset X$ is an arbitrary subset, then $\forall a\in X$ we have
 $a\in A\implies f|_{A}(a)=f(a)$. But this doesn't generalize to
@@ -587,7 +616,9 @@ for any group morphism $f\colon G_{1}\to G_{2}$, and for arbitrary $h\in G_{1}$,
 we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
 always look at the set-theoretic function $U(f)$ underlying $f$, then
 piggie-back off earlier results establishing the desired claim
-(Theorem~49 of {\Tt{}FUNCT{\_}1\nwendquote}, to be precise).
+(Theorem~49 of {\Tt{}FUNCT{\_}1\nwendquote}\MizThm{FUNCT\_1}{49}, to be precise).
+\end{remark}
+
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW18nMBU-3Uc8Un-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3Uc8Un-1}}}\moddef{Lemma: restriction of group morphism acts on elements like the original~{\nwtagstyle{}\subpageref{NW18nMBU-3Uc8Un-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1}: for G1,G2 being Group
@@ -610,11 +641,15 @@ end;
 
 \nwindexdefn{\nwixident{Lm3}}{Lm3}{NW18nMBU-3Uc8Un-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm3}}{Lm3}}}\nwidentuses{\\{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}}\nwindexuse{\nwixident{LmSubgroupElt}}{LmSubgroupElt}{NW18nMBU-3Uc8Un-1}\nwendcode{}\nwbegindocs{20}\nwdocspar
-\M
+\begin{lemma}
 Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$.
 If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
-$H_{1}=H_{2}$. Pretty simple, right? \dots I'm not sure I'll need this,
-but here it is if I do.
+$H_{1}=H_{2}$.
+\end{lemma}
+
+\begin{remark}
+Pretty simple, right? \dots I'm not sure I'll need this, but here it is if I do.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{21}\sublabel{NW18nMBU-2ftEik-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2ftEik-1}}}\moddef{Lemma: Sandwich Subgroup Equality Theorem~{\nwtagstyle{}\subpageref{NW18nMBU-2ftEik-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
 \nwlinkedidentc{LmSandwich}{NW18nMBU-2ftEik-1}: for H1 being strict Subgroup of G
@@ -631,10 +666,16 @@ end;
 
 \nwindexdefn{\nwixident{LmSandwich}}{LmSandwich}{NW18nMBU-2ftEik-1}\eatline
 \nwnotused{Lemma: Sandwich Subgroup Equality Theorem}\nwidentdefs{\\{{\nwixident{LmSandwich}}{LmSandwich}}}\nwendcode{}\nwbegindocs{22}\nwdocspar
-\M Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
-Then $H\normalSubgroup G$ is a normal subgroup. The current theorems in
-{\Tt{}GROUP{\_}3\nwendquote} require $H$ to be a \emph{strict} subgroup, but this
-strictness condition is not necessary.
+\begin{lemma}
+Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
+Then $H\normalSubgroup G$ is a normal subgroup.
+\end{lemma}
+
+\begin{remark}
+The current theorems in {\Tt{}GROUP{\_}3\nwendquote} require $H$ to be a \emph{strict}
+subgroup, but this strictness condition is not necessary.
+\end{remark}
+
 
 \nwenddocs{}\nwbegincode{23}\sublabel{NW18nMBU-3PXqHm-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3PXqHm-1}}}\moddef{Lemma: Subgroups invariant under conjugation are normal~{\nwtagstyle{}\subpageref{NW18nMBU-3PXqHm-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{LmNormalSubgroup}{NW18nMBU-3PXqHm-1}:
@@ -716,8 +757,10 @@ be subgroups. If $f\colon G_{1}\to G_{2}$ is a group morphism, then
 $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
 \end{lemma}
 
-Something like this was proven in {\Tt{}FUNCT{\_}1:50\nwendquote}, but I couldn't apply
-that theorem (not even to functions of sets).
+\begin{remark}
+Something like this was proven in {\Tt{}FUNCT{\_}1:50\nwendquote}\MizThm{FUNCT\_1}{50},
+but I couldn't apply that theorem (not even to functions of sets).
+\end{remark}
 
 \nwenddocs{}\nwbegincode{29}\sublabel{NW18nMBU-EZoEE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\moddef{Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism~{\nwtagstyle{}\subpageref{NW18nMBU-EZoEE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{LmRestrictCollapse}{NW18nMBU-EZoEE-1}:
@@ -743,9 +786,15 @@ end;
 
 \nwindexdefn{\nwixident{LmRestrictCollapse}}{LmRestrictCollapse}{NW18nMBU-EZoEE-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{LmRestrictCollapse}}{LmRestrictCollapse}}}\nwendcode{}\nwbegindocs{30}\nwdocspar
-\begin{theorem}
+\begin{lemma}\label{lm:characteristic:preparatory:lm10}
 If $f\colon X\to Y$ is a bijective function of non-empty sets, then $(f^{-1})^{-1}=f$.
-\end{theorem}
+\end{lemma}
+
+\begin{proof}[Proof outline]
+Let $f\colon X\to Y$ be bijective. Then $g=f^{-1}$ is a bijective
+function from $Y$ to $X$. And $h=g^{-1}$ is a bijective function from
+$X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{31}\sublabel{NW18nMBU-l92FA-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-l92FA-1}}}\moddef{Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$~{\nwtagstyle{}\subpageref{NW18nMBU-l92FA-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm10}{NW18nMBU-l92FA-1}:
@@ -775,7 +824,22 @@ end;
 
 \nwindexdefn{\nwixident{Lm10}}{Lm10}{NW18nMBU-l92FA-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm10}}{Lm10}}}\nwendcode{}\nwbegindocs{32}\nwdocspar
-\M Proving $h(x) = f(x)$ amounts to unfolding definitions.
+\begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
+  Let $x\in X$ be arbitrary. Consider
+  \begin{subequations}\label{eq:characteristic:preparatory:lm-finvinv-is-inv}
+  \begin{equation}
+    y=f(x).
+  \end{equation}
+  Then $x=g(y)$ --- i.e.,
+  $x = f^{-1}(y)$ --- implies
+  \begin{equation}
+  h(x) = g^{-1}(x) = y.
+  \end{equation}
+  \end{subequations}
+  But since $y=y$ we from
+  Eqs~\eqref{eq:characteristic:preparatory:lm-finvinv-is-inv}
+  prove $h(x)=f(x)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{33}\sublabel{NW18nMBU-1bDmhU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1bDmhU-1}}}\moddef{Proof: $\forall x, x\in X\implies h(x) = f(x)$~{\nwtagstyle{}\subpageref{NW18nMBU-1bDmhU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-l92FA-1}}\nwenddeflinemarkup
 proof
@@ -798,13 +862,23 @@ end;
 
 \nwused{\\{NW18nMBU-l92FA-1}}\nwendcode{}\nwbegindocs{34}\nwdocspar
 
-\begin{theorem}
+\begin{lemma}
 If $f\colon X\to Y$ is a bijective function of sets, then for any $y\in Y$
 we have $f(f^{-1}(y))=y$.
-\end{theorem}
+\end{lemma}
 
-Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#
+\begin{proof}[Proof sketch]
+Let $f\colon X\to Y$ be bijective. Then $g\colon Y\to X$ given by
+$g=f^{-1}$ is bijective. Mizar knows $g^{-1}(g(y))=y$ for $y=f(x)$. Then
+plugging in the definition of $g$ and using
+Lemma~\ref{lm:characteristic:preparatory:lm10} to transform
+$(f^{-1})^{-1}=f$, together gives the result.
+\end{proof}
+
+\begin{remark}
+Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#\MizThm{FUNCT\_2}{26}
 states that $f^{-1}(f(x))=x$ provided $f$ is injective.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-1Brdpy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1Brdpy-1}}}\moddef{Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$~{\nwtagstyle{}\subpageref{NW18nMBU-1Brdpy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm11}{NW18nMBU-1Brdpy-1}:
@@ -829,11 +903,18 @@ end;
 
 \nwindexdefn{\nwixident{Lm11}}{Lm11}{NW18nMBU-1Brdpy-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm11}}{Lm11}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-1Brdpy-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
-\begin{theorem}
+\begin{lemma}
   If $f\colon X\to Y$ is a bijective function of sets,
   then its inverse function $f^{-1}\colon Y\to X$ exists (as defined by
   $f\circ f^{-1}=\id_{Y}$ and $f^{-1}\circ f=\id_{X}$).
-\end{theorem}
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+We need to prove two results. We have, for any $y\in Y$,
+$f(f^{-1}(y))=y$ establish the result that $f\circ f^{-1}=\id_{Y}$. The
+other result follows from, for any $x\in X$, that $f^{-1}(f(x))=x$ which
+implies $f^{-1}\circ f=\id_{X}$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-29j2HE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-29j2HE-1}}}\moddef{Theorem: bijections have inverses~{\nwtagstyle{}\subpageref{NW18nMBU-29j2HE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm12}{NW18nMBU-29j2HE-1}:
@@ -862,7 +943,9 @@ end;
 
 \nwindexdefn{\nwixident{Lm12}}{Lm12}{NW18nMBU-29j2HE-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm12}}{Lm12}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm13}}{Lm13}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-29j2HE-1}\nwindexuse{\nwixident{Lm13}}{Lm13}{NW18nMBU-29j2HE-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
-\M Unfolding the definition of inverse functions gives us the result.
+\begin{proof}[Proof step ($\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$)]
+The result follows from $(f\circ f^{-1})(y)=f(f^{-1}(y))=y$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{39}\sublabel{NW18nMBU-2pd9SK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2pd9SK-1}}}\moddef{Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$~{\nwtagstyle{}\subpageref{NW18nMBU-2pd9SK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-29j2HE-1}}\nwenddeflinemarkup
 proof
@@ -876,7 +959,9 @@ end;
 
 \nwused{\\{NW18nMBU-29j2HE-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 
-\M Almost identical unfolding of definitions as the other case.
+\begin{proof}[Proof step ($\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$)]
+The result follows from $(f^{-1}\circ f)(x) = f^{-1}(f(x))=x$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{41}\sublabel{NW18nMBU-45FeqA-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-45FeqA-1}}}\moddef{Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$~{\nwtagstyle{}\subpageref{NW18nMBU-45FeqA-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-29j2HE-1}}\nwenddeflinemarkup
 proof
@@ -894,6 +979,13 @@ end;
 If $f\colon X\to Y$ is bijective, then there exists an inverse function
 $f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
 \end{theorem}
+
+\begin{proof}[Proof sketch]
+This follows from theorem\MizThm{GROUP\_6}{63} \verb#GROUP_6:63# which
+asserts $f$ is bijective and $g=f^{-1}$ together implies $g$ is
+bijective. We just need to prove the existence of $g=f^{-1}$, which is
+handled by theorem\MizThm{FUNCT\_2}{25} \verb#FUNCT_2:25#.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-swt6L-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-swt6L-1}}}\moddef{Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective~{\nwtagstyle{}\subpageref{NW18nMBU-swt6L-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm13}{NW18nMBU-swt6L-1}:
@@ -950,14 +1042,29 @@ begin
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
 \M Note we just used the symbol {\Tt{}G\nwendquote} for a generic group, so we add to
-the reserved symbols this association.
+the reserved symbols this association. Most of our theorems will no
+longer state ``Let $G$ be a group'', it will be implicitly assumed
+unless otherwise stated.
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW1Nnu7l-1LL7AC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1LL7AC-1}}}\moddef{Reserve symbols for inner and outer automorphisms~{\nwtagstyle{}\subpageref{NW1Nnu7l-1LL7AC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 reserve G for Group;
 
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
-\M\index{Endomorphism} A group endomorphism of $G$ is just a homomorphism $f\colon G\to G$.
+\begin{definition}\index{Endomorphism|textbf}
+Let $G$ be a group. An \define{Endomorphism} of $G$ is a group morphism
+$f\colon G\to G$.
+\end{definition}
+
+\begin{remark}\index{$\End(G)$}
+We denote the collection of endomorphisms of $G$ as $\End(G)$.
+\end{remark}
+
+\begin{remark}
+Mizar uses the archaic word ``homomorphism'' instead of the more modern
+conventional term ``morphism''. I will use the two interchangeably. And,
+unless stated otherwise, it is understood these are group morphisms.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{5}\sublabel{NW1Nnu7l-17cKlQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-17cKlQ-1}}}\moddef{Define \code{}Endomorphism\edoc{}~{\nwtagstyle{}\subpageref{NW1Nnu7l-17cKlQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwprevnextdefs{\relax}{NW1Nnu7l-17cKlQ-2}\nwenddeflinemarkup
 definition :: Def1
@@ -967,12 +1074,12 @@ end;
 
 \nwindexdefn{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-17cKlQ-1}\eatline
 \nwalsodefined{\\{NW1Nnu7l-17cKlQ-2}}\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwendcode{}\nwbegindocs{6}\nwdocspar
-\M\label{par:characteristic:register-bijective-for-endomorphism}
-We begin by registering the attribute {\Tt{}bijective\nwendquote} for group
-endomorphisms. This will effectively create a subtype of
-{\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote}, the aptly named {\Tt{}bijective\ \nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote}.
-Most of our work has been done in article {\Tt{}GROUP{\_}6\nwendquote} by
-Theorem~38\MizThm{GROUP\_6}{38} (which effectively states the function on the underlying set
+\M\label{par:characteristic:register-bijective-for-endomorphism} We
+begin by registering the attribute {\Tt{}bijective\nwendquote} for group
+endomorphisms. This will effectively create a subtype of {\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote},
+the aptly named {\Tt{}bijective\ \nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\ of\ G\nwendquote}. Most of our work has
+been done in article {\Tt{}GROUP{\_}6\nwendquote} by Theorem~38\MizThm{GROUP\_6}{38}
+(which effectively states the function on the underlying set
 {\Tt{}id\ (the\ carrier\ of\ G)\nwendquote} is a multiplicative function and so nearly a
 group morphism that we can reconsider it as an {\Tt{}\nwlinkedidentq{Endomorphism}{NW1Nnu7l-17cKlQ-1}\nwendquote}), and
 the fact that {\Tt{}id\ X\nwendquote} is bijective.
@@ -991,8 +1098,15 @@ end;
 
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentuses{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-6ndaE-1}\nwendcode{}\nwbegindocs{8}\nwdocspar
 
-\N{Definition (Automorphism)}\index{Automorphism}
-Now we have an {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote} be just a bijective endomorphism.
+\begin{definition}\index{Automorphism|textbf}\index{Endomorphism}
+Let $G$ be a group. We define an \define{Automorphism} of $G$ to be a
+bijective endomorphism $f\colon G\to G$. In particular, an inverse
+$f^{-1}\colon G\to G$ exists and is a group morphism.
+\end{definition}
+
+\begin{remark}\index{$\Aut(G)$}
+We denote the collection of automorphisms of $G$ as $\Aut(G)$.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{9}\sublabel{NW1Nnu7l-4WeeL5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4WeeL5-1}}}\moddef{Define \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NW1Nnu7l-4WeeL5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 definition :: Def2
@@ -1024,6 +1138,10 @@ $f(\trivialSubgroup)=\trivialSubgroup$.
 
 The proof is simply ``follow your nose''.
 
+\begin{proof}
+\emph{Trivial}.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{11}\sublabel{NW1Nnu7l-3pJfHu-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3pJfHu-1}}}\moddef{Theorem: Endomorphisms preserve the trivial subgroup~{\nwtagstyle{}\subpageref{NW1Nnu7l-3pJfHu-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th1}{NW1Nnu7l-3pJfHu-1}:
   Image (f|(1).G) = (1).G
@@ -1046,12 +1164,14 @@ reserve f for \nwlinkedidentc{Endomorphism}{NW1Nnu7l-17cKlQ-1} of G;
 For any automorphism $\varphi\in\Aut(G)$, we have $\varphi(\trivialSubgroup_{G})=\trivialSubgroup_{G}$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
 If $\phi$ is an automorphism of a group $G$, then
 the image of the trivial subgroup under $\phi$ is a subgroup of itself
 $\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
 Theorem~{\Tt{}\nwlinkedidentq{Th1}{NW1Nnu7l-3pJfHu-1}\nwendquote}, that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
 $\phi$ (being an automorphism) is also an endomorphism. And {\Tt{}GROUP{\_}2\nwendquote}
 proves that $G$ is a subgroup of itself in Theorem~{\Tt{}Th54\nwendquote}.\MizThm{GROUP\_2}{54}
+\end{proof}
 
 \nwenddocs{}\nwbegincode{15}\sublabel{NW1Nnu7l-49bqr6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-49bqr6-1}}}\moddef{Theorem: Automorphisms map trivial subgroups to themselves~{\nwtagstyle{}\subpageref{NW1Nnu7l-49bqr6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 :: In particular, the trivial proper subgroup (1).G of G is invariant
@@ -1071,6 +1191,11 @@ end;
 If $H\subgroup\trivialSubgroup_{G}\subgroup G$, then $H=\trivialSubgroup$.
 \end{lemma}
 
+\begin{proof}
+Assume $H\subgroup\trivialSubgroup_{G}$. We know
+$\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{17}\sublabel{NW1Nnu7l-3CeuwY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}}\moddef{Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2Beici-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm8}{NW1Nnu7l-3CeuwY-1}: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
@@ -1087,6 +1212,16 @@ end;
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
 $G$, we have $\varphi|_{H}\colon H\into\varphi(H)$ be an injective group morphism.
 \end{lemma}
+
+\begin{proof}[Proof sketch]
+Given a subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$, we
+know $\varphi|_{H}\colon H\to \varphi|_{H}(H)$ is a group morphism.
+Since $\varphi$ is an automorphism, it is injective, and in particular
+$\ker(\varphi)=\trivialSubgroup_{G}$. Then
+$\ker(\varphi|_{H})\subgroup\ker(\varphi)$ and
+$\trivialSubgroup_{G}\subgroup\ker(\varphi|_{H})$ implies
+$\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW1Nnu7l-2Beici-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2Beici-1}}}\moddef{Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2Beici-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 \LA{}Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}\RA{}
@@ -1114,6 +1249,13 @@ $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$.
 Then any automorphism $\varphi$ of $G$ has an inverse which satisfies
 $\varphi[\varphi^{-1}(H)]\subgroup\varphi(H)$.
 \end{theorem}
+
+\begin{proof}
+Let $\psi=\varphi^{-1}\in\Aut(G)$ be an automorphism (which follows from
+theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). We have
+$\psi(H)=\psi|_{H}(H)\subgroup H$ since the image of a morphism is a subgroup of
+the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{21}\sublabel{NW1Nnu7l-g7029-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-g7029-1}}}\moddef{Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-g7029-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th6}{NW1Nnu7l-g7029-1}:
@@ -1145,6 +1287,14 @@ end;
 
 This is an obvious result which is usually taken for granted.
 
+\begin{proof}[Proof outline]
+Let $\psi=\varphi^{-1}\in\Aut(G)$ (which follows from
+theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). Then we establish any
+group element $g$ is a member of $\varphi(\psi(H))$ if and only if $g$
+is a member of $H$.
+The result then follows that they are equal as groups using theorem \verb#GROUP_2:60#\MizThm{GROUP\_2}{60}.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{23}\sublabel{NW1Nnu7l-xUcSR-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-xUcSR-1}}}\moddef{Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$~{\nwtagstyle{}\subpageref{NW1Nnu7l-xUcSR-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1}:
   for H being Subgroup of G
@@ -1164,8 +1314,10 @@ end;
 
 \nwindexdefn{\nwixident{Th7}}{Th7}{NW1Nnu7l-xUcSR-1}\eatline
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th7}}{Th7}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-xUcSR-1}\nwendcode{}\nwbegindocs{24}\nwdocspar
-\M The bones of the proof for this claim amounts to unfolding the
+\begin{proof}[{Sub-proof ($\forall g\in G, g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
+The bones of the proof for this claim amounts to unfolding the
 logical structure of the claim.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{25}\sublabel{NW1Nnu7l-1ZaFZM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1ZaFZM-1}}}\moddef{Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1ZaFZM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-xUcSR-1}}\nwenddeflinemarkup
 proof
@@ -1180,12 +1332,14 @@ end;
 
 \nwused{\\{NW1Nnu7l-xUcSR-1}}\nwendcode{}\nwbegindocs{26}\nwdocspar
 
-\M We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
+\begin{proof}[{Proof step 1 ($g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
+We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
 some {\Tt{}M1:\nwendquote} $a\in\varphi^{-1}(H)$ such that {\Tt{}B2:\nwendquote} $g=\varphi(a)$. And
 then we have, by the same line of reasoning applied to $a$, there is
 some {\Tt{}M2:\nwendquote} $b\in H$ such that {\Tt{}B3:\nwendquote} $\varphi^{-1}|_{H}(b)=a$. It
 follows that $g = \varphi(\varphi^{-1}(b))$, and by {\Tt{}\nwlinkedidentq{Lm11}{NW18nMBU-1Brdpy-1}\nwendquote} we have
 $g = b$ which proves the claim.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{27}\sublabel{NW1Nnu7l-47FJLD-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-47FJLD-1}}}\moddef{Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$~{\nwtagstyle{}\subpageref{NW1Nnu7l-47FJLD-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1ZaFZM-1}}\nwenddeflinemarkup
 proof
@@ -1201,7 +1355,9 @@ end;
 
 \nwused{\\{NW1Nnu7l-1ZaFZM-1}}\nwidentuses{\\{{\nwixident{Lm11}}{Lm11}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW1Nnu7l-47FJLD-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-47FJLD-1}\nwendcode{}\nwbegindocs{28}\nwdocspar
 
-\M Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
+\begin{proof}[Proof sub-step 1]
+Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{29}\sublabel{NW1Nnu7l-41Hbi6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-41Hbi6-1}}}\moddef{$\exists a\in\varphi^{-1}(H),g=\varphi(a)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Hbi6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-47FJLD-1}}\nwenddeflinemarkup
 then consider a being Element of Image(psi|H) such that
@@ -1212,8 +1368,10 @@ then B2: phi.a = (phi|Image(psi|H)).a by \nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1}
 
 \nwused{\\{NW1Nnu7l-47FJLD-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-41Hbi6-1}\nwendcode{}\nwbegindocs{30}\nwdocspar
 
-\M Almost the same reasoning applies to $b\in H$ satisfying
+\begin{proof}[Proof sub-step 2]
+Almost the same reasoning applies to $b\in H$ satisfying
 $a=\varphi^{-1}(b)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{31}\sublabel{NW1Nnu7l-2rS80d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2rS80d-1}}}\moddef{$\exists b\in H, a = \varphi^{-1}(b)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2rS80d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-47FJLD-1}}\nwenddeflinemarkup
 consider b being Element of H such that
@@ -1223,12 +1381,13 @@ M2: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
 
 \nwused{\\{NW1Nnu7l-47FJLD-1}}\nwendcode{}\nwbegindocs{32}\nwdocspar
 
-
-\M To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
+\begin{proof}[{Proof step 2 ($g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$)}.]
+To prove $g\in H$ implies $g\in\varphi[\varphi^{-1}(H)]$, we simply
 let $K=\varphi^{-1}(H)$ and show $a = \varphi^{-1}|_{H}(g)\in K$ and
 then show $b=\varphi|_{K}(a)\in\varphi[K]=\varphi[\varphi^{-1}(H)]$. Then
 we have $b=\varphi(\varphi^{-1}(g))=g$ due to $\varphi$ being bijective.
 The result follows.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{33}\sublabel{NW1Nnu7l-WRyHP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-WRyHP-1}}}\moddef{Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$~{\nwtagstyle{}\subpageref{NW1Nnu7l-WRyHP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1ZaFZM-1}}\nwenddeflinemarkup
 proof
@@ -1248,7 +1407,10 @@ end;
 
 \nwused{\\{NW1Nnu7l-1ZaFZM-1}}\nwendcode{}\nwbegindocs{34}\nwdocspar
 
-\M The first step follows by unfolding definitions.
+\begin{proof}[Proof sub-step 1 ($a\in\varphi^{-1}(H)$).]
+The first step follows by unfolding definitions.
+\end{proof}
+
 
 \nwenddocs{}\nwbegincode{35}\sublabel{NW1Nnu7l-3vZPH1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3vZPH1-1}}}\moddef{Sub-step 1: $a\in\varphi^{-1}(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3vZPH1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-WRyHP-1}}\nwenddeflinemarkup
 proof
@@ -1262,7 +1424,9 @@ end;
 
 \nwused{\\{NW1Nnu7l-WRyHP-1}}\nwendcode{}\nwbegindocs{36}\nwdocspar
 
-\M The next step, like the first, follows from definitions.
+\begin{proof}[{Proof sub-step 2 ($b\in\varphi[\varphi^{-1}(H)]$)}.]
+The next step, like the first, follows from definitions.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW1Nnu7l-2IWBBW-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2IWBBW-1}}}\moddef{Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2IWBBW-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-WRyHP-1}}\nwenddeflinemarkup
 proof
@@ -1276,10 +1440,12 @@ end;
 
 \nwused{\\{NW1Nnu7l-WRyHP-1}}\nwendcode{}\nwbegindocs{38}\nwdocspar
 
-\M The last step is a little more involved, because it requires
+\begin{proof}[{Proof sub-step 3 ($g\in\varphi[\varphi^{-1}(H)]$)}.]
+The last step is a little more involved, because it requires
 recalling $\varphi|_{k}(k)=\varphi(k)$ for $k\in K$, and
 $\varphi^{-1}|_{H}(h)=\varphi^{-1}(h)$ for $h\in H$. We can then combine
 these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{39}\sublabel{NW1Nnu7l-kMqjk-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-kMqjk-1}}}\moddef{Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$~{\nwtagstyle{}\subpageref{NW1Nnu7l-kMqjk-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-WRyHP-1}}\nwenddeflinemarkup
 proof
@@ -1305,10 +1471,15 @@ Let $H\subgroup G$ and $K\subgroup G$ be subgroups, let $\varphi\in\Aut(G)$
 be an automorphism of G. If $\varphi(H)\subgroup K$, then $H\subgroup\varphi^{-1}(K)$.
 \end{theorem}
 
-I need to work on my numbering scheme\dots
 
+\begin{proof}[Proof sketch]
 The argument basically applies {\Tt{}\nwlinkedidentq{Th7}{NW1Nnu7l-xUcSR-1}\nwendquote} to $\varphi^{-1}$, then unfolds
 definitions.
+\end{proof}
+
+\begin{remark}
+I need to work on my numbering scheme\dots
+\end{remark}
 
 \nwenddocs{}\nwbegincode{41}\sublabel{NW1Nnu7l-zRHLm-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-zRHLm-1}}}\moddef{Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-zRHLm-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem Th7b:
@@ -1346,6 +1517,11 @@ $\varphi\in\Aut(G)$ be any automorphism. Then the image of $H$ under
 $\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+Let $H_{2}=\varphi(H)$ be a subgroup of $G$. We know $\varphi|_{H}$ is
+injective by {\Tt{}\nwlinkedidentq{Lm9}{NW1Nnu7l-2Beici-1}\nwendquote}. This gives us our result.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{43}\sublabel{NW1Nnu7l-3WScXE-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3WScXE-1}}}\moddef{Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3WScXE-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th8}{NW1Nnu7l-3WScXE-1}:
   for H being Subgroup of G
@@ -1369,6 +1545,13 @@ any automorphism.
 Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+  We begin by recognizing $\ker(\varphi|_{H})\subgroup G_{1}$ and
+  $\ker(\varphi)\subgroup G_{1}$. Then any $g\in G$ such that
+  $g\in\ker(\varphi|_{H})$ is also a member of $\ker(\varphi)$. The
+  result follows.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{45}\sublabel{NW1Nnu7l-2Q8R0t-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2Q8R0t-1}}}\moddef{Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2Q8R0t-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th9}{NW1Nnu7l-2Q8R0t-1}:
   for G1,G2 being Group
@@ -1391,6 +1574,12 @@ end;
 
 \nwindexdefn{\nwixident{Th9}}{Th9}{NW1Nnu7l-2Q8R0t-1}\eatline
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th9}}{Th9}}}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
+Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
+But $\varphi|_{H}(g)=\varphi(g)$ by {\Tt{}\nwlinkedidentq{Lm3}{NW18nMBU-3Uc8Un-1}\nwendquote}. So we have
+$\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by theorem \verb#GROUP_6:41#\MizThm{GROUP\_6}{41}.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{47}\sublabel{NW1Nnu7l-1MwKaZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1MwKaZ-1}}}\moddef{Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1MwKaZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2Q8R0t-1}}\nwenddeflinemarkup
 proof
   let g be Element of G1;
@@ -1406,10 +1595,15 @@ proof
 end;
 
 \nwused{\\{NW1Nnu7l-2Q8R0t-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}\\{{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-1MwKaZ-1}\nwindexuse{\nwixident{LmSubgroupElt}}{LmSubgroupElt}{NW1Nnu7l-1MwKaZ-1}\nwindexuse{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}{NW1Nnu7l-1MwKaZ-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
+\begin{definition}\index{$\Id_{G}$}\index{Endomorphism!Identity}
+Let $G$ be a group. The \define{Identity endomorphism} of $G$ is defined
+to be $\Id_{G}\in\End(G)$ such that for any $x\in G$, $\Id_{G}(x)=x$.
+\end{definition}
 
-\N{Identity Group Endomorphism}\index{$\Id_{G}$}\index{Endomorphism!Identity}
+\begin{remark}
 I found it tedious to write {\Tt{}id\ (the\ carrier\ of\ G)\nwendquote} over and over
 again, so I wrote a shortcut {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} for $\Id_{G}$.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{49}\sublabel{NW1Nnu7l-27i33n-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-27i33n-1}}}\moddef{Define $\Id_{G}$~{\nwtagstyle{}\subpageref{NW1Nnu7l-27i33n-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 definition :: \nwlinkedidentc{Def3}{NW1Nnu7l-27i33n-1}
@@ -1432,12 +1626,14 @@ OId_
 
 \nwalsodefined{\\{NW3Mfp8C-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{52}\nwdocspar
 
-\N{Proof ($\Id_{G}$ exists)}
+\begin{proof}[Proof sketch (Existence of $\Id_{G}$)]
 Similar to the proof (\S\ref{par:characteristic:register-bijective-for-endomorphism})
 that there exists a bijective endomorphism, the proof that $\Id_{G}$
-exists amounts to reconsidering {\Tt{}id\nwendquote} as an endomorphism. Earlier work
-in {\Tt{}FUNCT{\_}1\nwendquote} proved (in Theorem~17\MizThm{FUNCT\_1}{17}) the identity
+exists amounts to reconsidering {\Tt{}id\nwendquote} as an endomorphism. Using theorem
+\verb#FUNCT_1:17#\MizThm{FUNCT\_1}{17} the identity
 function satisfies $\forall x\in X, \id_{X}(x)=x$.
+\end{proof}
+
 
 \nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-2hCvdU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2hCvdU-1}}}\moddef{Proof that $\Id_{G}$ exists~{\nwtagstyle{}\subpageref{NW1Nnu7l-2hCvdU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-27i33n-1}}\nwenddeflinemarkup
 proof
@@ -1448,15 +1644,16 @@ end;
 
 \nwused{\\{NW1Nnu7l-27i33n-1}}\nwendcode{}\nwbegindocs{54}\nwdocspar
 
-\N{Proof (Uniqueness of $\Id_{G}$)}
+\begin{proof}[Proof sketch (Uniqueness of $\Id_{G}$)]
 The usual strategy is to consider two arbitrary endomorphisms
 $\Id^{(1)}_{G}$ and $\Id^{(2)}_{G}$ satisfying the definition of
 {\Tt{}\nwlinkedidentq{Id{\_}}{NW1Nnu7l-27i33n-1}\nwendquote}, then prove $\Id^{(1)}_{G} = \Id^{(2)}_{G}$.
 
-If we wanted to be completely pedantic, we could cite Theorem~12 from
-{\Tt{}FUNCT{\_}2\nwendquote}\MizThm{FUNCT\_2}{12} which states for any functions of sets
+If we wanted to be completely pedantic, we could cite Theorem
+{\Tt{}FUNCT{\_}2:12\nwendquote}\MizThm{FUNCT\_2}{12} which states for any functions of sets
 $f_{1}$, $f_{2}\colon X\to Y$ we have $\forall x\in X, f_{1}(x)=f_{2}(x)$
 implies $f_{1}=f_{2}$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{55}\sublabel{NW1Nnu7l-q6iKQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-q6iKQ-1}}}\moddef{Proof $\Id_{G}$ is unique~{\nwtagstyle{}\subpageref{NW1Nnu7l-q6iKQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-27i33n-1}}\nwenddeflinemarkup
 proof
@@ -1471,7 +1668,11 @@ end;
 
 \nwused{\\{NW1Nnu7l-27i33n-1}}\nwidentuses{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-q6iKQ-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 
-\M\label{thm:characteristic:identity-endomorphism-is-identity-function}
+\begin{theorem}\label{thm:characteristic:identity-endomorphism-is-identity-function}
+For any group $G$, the identity endomorphism coincides with the identity
+function on the underlying set.
+\end{theorem}
+
 We should now have some sanity check that {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} really is
 the identity group morphism $\Id_{G}$ that \emph{we} think it is.
 
@@ -1697,9 +1898,11 @@ end;
 For any group $G$, the identity morphism $\Id_{G}$ is injective.
 \end{lemma}
 
+\begin{proof}[Proof sketch]
 The proof is straightforward since we've established (\S\ref{thm:characteristic:identity-endomorphism-is-identity-function}) the group
 endomorphism $\Id_{G}$ coincides with the set-theoretic function $\id_{U(G)}$
 on the underlying set $U(G)$ of the group $G$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{61}\sublabel{NW1Nnu7l-17utZy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-17utZy-1}}}\moddef{\code{}Id{\_}G\edoc{} is injective~{\nwtagstyle{}\subpageref{NW1Nnu7l-17utZy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-37g7e5-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm1}{NW1Nnu7l-17utZy-1}: \nwlinkedidentc{Id_G}{NW1Nnu7l-27i33n-1} is one-to-one
@@ -1735,6 +1938,21 @@ end;
 This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
+\begin{proof}[Proof outline]
+  We have for any $\varphi\in\Aut(G)$ such that
+  \begin{equation*}
+    \tag{$A_{1}$} \varphi|_{H}(H)=H
+  \end{equation*}
+  be a morphism $\varphi|_{H}\colon H\to H$ by theorem
+  {\Tt{}GROUP{\_}6:49\nwendquote}\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
+  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by {\Tt{}\nwlinkedidentq{Lm9}{NW1Nnu7l-2Beici-1}\nwendquote}
+  and hypothesis $A_{1}$.
+
+  The nontrivial part of the proof is establishing $\varphi|_{H}$ is
+  surjective. Once established, it follows $\varphi|_{H}$ is bijective
+  and thus an automorphism.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{65}\sublabel{NW1Nnu7l-1QHEJY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1QHEJY-1}}}\moddef{Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1QHEJY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th11}{NW1Nnu7l-1QHEJY-1}:
   for H being strict Subgroup of G
@@ -1757,15 +1975,20 @@ end;
 
 \nwindexdefn{\nwixident{Th11}}{Th11}{NW1Nnu7l-1QHEJY-1}\eatline
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th11}}{Th11}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{Lm9}}{Lm9}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Lm9}}{Lm9}{NW1Nnu7l-1QHEJY-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
-\N{Proof of surjectivity}
+\begin{proof}[Proof sketch (Surjectivity)]
 For reasons I do not adequately understand, I could not simply handle
 {\Tt{}f|H\nwendquote} as a {\Tt{}Homomorphism\ of\ H,H\nwendquote} (despite having established this
 fact).
 
 I could not use any theorem concerning surjectivity of group morphisms,
 so I just ``forgot'' it was a morphism, proved surjectivity, then
-``remembered'' it was a group morphism after all. I am starting to think
-that the claim {\Tt{}f\ is\ onto\nwendquote} is different than {\Tt{}f\ is\ onto\ Homomorphism\ of\ G1,G2\nwendquote}.
+``remembered'' it was a group morphism after all.
+\end{proof}
+
+\begin{remark}
+I am starting to think that the claim {\Tt{}f\ is\ onto\nwendquote} is different than
+{\Tt{}f\ is\ onto\ Homomorphism\ of\ G1,G2\nwendquote}.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{67}\sublabel{NW1Nnu7l-41Pxbq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\moddef{Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1QHEJY-1}}\nwenddeflinemarkup
 proof
@@ -1798,10 +2021,17 @@ We can now organize our treatment of inner automorphisms.
 
 \nwused{\\{NW1Nnu7l-32pmQO-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
-\N{Definition: Inner Automorphism}\index{Automorphism!inner}\index{inner!Automorphism|see {Automorphism}}
+\begin{definition}\index{Automorphism!inner}\index{inner!Automorphism|see {Automorphism}}
 We call a group automorphism $f\in\Aut(G)$ \define{inner} if there is a
 group element $g\in G$ such that for all $x\in G$ we have $f(x) = x^{g} = g^{-1}xg$.
 That is, $f$ is just conjugation by a fixed group element.
+\end{definition}
+
+\begin{remark}[Notation: $\Inn(G)$]\index{$\Inn(G)$}
+We denote the set of inner automorphisms of $G$ by $\Inn(G)$ and
+informally we know $\Inn(G)\subset\Aut(G)$. (We will prove
+$\Inn(G)\subset\Aut(G)$ later, I think.)
+\end{remark}
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW3Mfp8C-13QmRM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-13QmRM-1}}}\moddef{Define \code{}inner\edoc{} for Automorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-13QmRM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 definition :: \nwlinkedidentc{Def5}{NW3Mfp8C-13QmRM-1}
@@ -1816,9 +2046,13 @@ end;
 
 \nwindexdefn{\nwixident{Def5}}{Def5}{NW3Mfp8C-13QmRM-1}\nwindexdefn{\nwixident{inner}}{inner}{NW3Mfp8C-13QmRM-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Def5}}{Def5}}\\{{\nwixident{inner}}{inner}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-13QmRM-1}\nwendcode{}\nwbegindocs{4}\nwdocspar
-\M\index{Automorphism!outer} We also recall that an automorphism is called \define{Outer} if it is
-not inner. Mizar let's us do this with the {\Tt{}antonym\nwendquote} construct within
-a {\Tt{}notation\nwendquote} block.
+\begin{definition}\index{Automorphism!outer}
+We also recall that an automorphism is called \define{Outer} if it is
+not inner.
+\end{definition}
+
+Mizar let's us do this with the {\Tt{}antonym\nwendquote} construct within a
+{\Tt{}notation\nwendquote} block.
 
 \nwenddocs{}\nwbegincode{5}\sublabel{NW3Mfp8C-RgKDM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-RgKDM-1}}}\moddef{Outer as antonym of inner~{\nwtagstyle{}\subpageref{NW3Mfp8C-RgKDM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-13QmRM-1}}\nwenddeflinemarkup
 notation
@@ -1839,7 +2073,10 @@ Vouter
 
 \nwendcode{}\nwbegindocs{8}\nwdocspar
 
-\N{Theorem: $\Id_{G}$ is effectively inner}\label{thm:characteristic:id-inner}
+\begin{theorem}[$\Id_{G}$ is effectively inner]\label{thm:characteristic:id-inner}
+The identity endomorphism $\Id_{G}$ is an inner automorphism of $G$.
+\end{theorem}
+
 We will be registering ``inner'' as an attribute for ``Automorphism
 of $G$''. This will require proving that there exists an inner
 Automorphism of $G$. I've found the trivial examples are often best for
@@ -1872,10 +2109,12 @@ end;
 
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-4IjmGJ-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-4IjmGJ-1}\nwendcode{}\nwbegindocs{12}\nwdocspar
 
-\N{Proof} The proof is a two punch knock-out. We take {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} to be the
+\begin{proof}[Proof sketch (Existence of inner automorphism)]
+The proof is a two punch knock-out. We take {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} to be the
 morphism, {\Tt{}1{\_}g\nwendquote} the group's identity element to be the element
 {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} conjugates by, then from earlier (\S\ref{thm:characteristic:id-inner})
 we have {\Tt{}\nwlinkedidentq{Id{\_}G}{NW1Nnu7l-27i33n-1}\nwendquote} be inner.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{13}\sublabel{NW3Mfp8C-9idpO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-9idpO-1}}}\moddef{Proof of existence of an inner Automorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-9idpO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-4IjmGJ-1}}\nwenddeflinemarkup
 proof
@@ -1886,10 +2125,27 @@ end;
 
 \nwused{\\{NW3Mfp8C-4IjmGJ-1}}\nwidentuses{\\{{\nwixident{Id{\_}G}}{Id:unG}}\\{{\nwixident{Th12}}{Th12}}}\nwindexuse{\nwixident{Id{\_}G}}{Id:unG}{NW3Mfp8C-9idpO-1}\nwindexuse{\nwixident{Th12}}{Th12}{NW3Mfp8C-9idpO-1}\nwendcode{}\nwbegindocs{14}\nwdocspar
 
-\N{Theorem ($f\in\aut(G)\iff f$ is {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote})}
+\begin{theorem}[{$\varphi\in\aut(G)\iff \varphi$ is {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote}}]
+For any $\varphi$, we have $\varphi\in\Aut(G)$ if and only if
+$\varphi\colon G\to G$ is an automorphism.
+\end{theorem}
+
+\begin{remark}
 Mizar has {\Tt{}AUTGROUP\nwendquote}, an article which defines {\Tt{}Aut\ G\nwendquote} the
 collection of functions on the underlying set $U(G)$ of a group $G$. We
 can prove that $f\in\aut(G)$ if and only if $f$ is {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote}.
+\end{remark}
+
+\begin{proof}[Proof outline]
+  Like any ``if{}f'' statement, we have two steps to this proof:
+
+  Step 1: $\varphi\in\Aut(g)\implies\varphi\colon G\to G$ is an
+  Automorphism. This is involved and requires carving out a sub-proof.
+
+  Step 2: $\varphi\in\Aut(g)\impliedby\varphi\colon G\to G$ is an
+  Automorphism. This follows from how $\Aut(G)$ is defined in
+  \verb#AUTGROUP:def 1#\MizDef{AUTGROUP}{1}.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{15}\sublabel{NW3Mfp8C-2VuNZX-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-2VuNZX-1}}}\moddef{Theorem: Relate \code{}Automorphism\ of\ G\edoc{} to elements of \code{}Aut\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-2VuNZX-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th13}{NW3Mfp8C-2VuNZX-1}:
@@ -1906,9 +2162,13 @@ end;
 
 \nwindexdefn{\nwixident{Th13}}{Th13}{NW3Mfp8C-2VuNZX-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th13}}{Th13}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-2VuNZX-1}\nwendcode{}\nwbegindocs{16}\nwdocspar
-\N{Proof forwards direction} The forward direction is
+\begin{proof}[Sub-proof ($\Longrightarrow$)]
+The forward direction is
 straightforward. The only subtlety is, since we didn't assume anything
-about $f$, we should establish it's an endomorphism of $G$ along the way,
+about $\varphi$, we should establish it's an endomorphism of $G$ along
+the way. Then its membership in $\Aut(G)$ implies $\varphi$ is
+bijective, and the result follows.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{17}\sublabel{NW3Mfp8C-wlMQo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-wlMQo-1}}}\moddef{Proof $f\in\aut(G)\implies f$ is \code{}Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-wlMQo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2VuNZX-1}}\nwenddeflinemarkup
 proof
@@ -1921,10 +2181,28 @@ end;
 \nwused{\\{NW3Mfp8C-2VuNZX-1}}\nwidentuses{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW3Mfp8C-wlMQo-1}\nwendcode{}\nwbegindocs{18}\nwdocspar
 
 
-\N{Inner automorphisms are inner automorphisms}
+\begin{theorem}
+We have $\varphi\in\Inn\Aut(G)$ if and only if $\varphi$ is an inner
+Automorphism of $G$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+  We have two steps to our proof.
+
+  Step 1: $\varphi\in\Inn\Aut(G)$ (in the sense of {\Tt{}AUTGROUP:def\ 4\nwendquote}\MizDef{AUTGROUP}{4})
+  imply $\varphi$ is an inner automorphism of $G$.
+
+  Step 2: $\varphi$ is an inner automorphism of $G$ implies $\varphi\in\Inn\Aut(G)$.
+
+  Then the result follows.
+\end{proof}
+
+\begin{remark}
 We can relate the notion of an {\Tt{}\nwlinkedidentq{inner}{NW3Mfp8C-13QmRM-1}\ \nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote} with elements
 of {\Tt{}InnAut\ G\nwendquote} from {\Tt{}AUTGROUP\nwendquote}. The only peculiarity is that
 {\Tt{}AUTGROUP\nwendquote} requires $G$ to be a \emph{strict} group.
+\end{remark}
+
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW3Mfp8C-2gUxot-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-2gUxot-1}}}\moddef{Theorem: $f$ in \code{}InnAut\ G\edoc{} iff $f$ is \code{}inner\ Automorphism\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-2gUxot-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 \LA{}Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-3eJW7Q-1}}\RA{}
@@ -1936,7 +2214,8 @@ theorem \nwlinkedidentc{Th14}{NW3Mfp8C-2gUxot-1}:
 proof
   let G be strict Group;
   let f be object;
-  A1: f is \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G implies f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  A1: f is \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G implies
+      f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   thus (f in InnAut G) implies (f is \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G)
   \LA{}Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)~{\nwtagstyle{}\subpageref{NW3Mfp8C-18aBqf-1}}\RA{}
   thus (f is \nwlinkedidentc{inner}{NW3Mfp8C-13QmRM-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G) implies (f in InnAut G)
@@ -1946,9 +2225,11 @@ end;
 
 \nwindexdefn{\nwixident{Th14}}{Th14}{NW3Mfp8C-2gUxot-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th14}}{Th14}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-2gUxot-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-2gUxot-1}\nwendcode{}\nwbegindocs{20}\nwdocspar
-\N{Proof in forwards direction} The proof amounts to unwinding
-definitions, but the subtlety is in first reconsidering $f$ as an
+\begin{proof}[Proof step ($\varphi\in\Inn\Aut(G)\implies\varphi$ is inner).]
+The proof amounts to unwinding
+definitions, but the subtlety is in first reconsidering $\varphi$ as an
 Automorphism of $G$ thanks to our handy-dandy lemma.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{21}\sublabel{NW3Mfp8C-18aBqf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-18aBqf-1}}}\moddef{Proof $f$ is in \code{}InnAut\ G\edoc{} $\implies$ ($f$ is inner automorphism)~{\nwtagstyle{}\subpageref{NW3Mfp8C-18aBqf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2gUxot-1}}\nwenddeflinemarkup
 proof
@@ -1964,9 +2245,10 @@ end;
 
 \nwused{\\{NW3Mfp8C-2gUxot-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def5}}{Def5}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Lm4}}{Lm4}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-18aBqf-1}\nwindexuse{\nwixident{Def5}}{Def5}{NW3Mfp8C-18aBqf-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-18aBqf-1}\nwindexuse{\nwixident{Lm4}}{Lm4}{NW3Mfp8C-18aBqf-1}\nwendcode{}\nwbegindocs{22}\nwdocspar
 
-\N{Proof in backwards direction}
+\begin{proof}[Proof step ($\varphi$ is inner$\implies\varphi\in\Inn\Aut(G)$).]
 This is again unwinding the definitions. The same subtlety lurks here,
 requiring us to reconsider $f$ as an inner automorphism of $G$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{23}\sublabel{NW3Mfp8C-2maG0l-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-2maG0l-1}}}\moddef{Proof ($f$ is inner automorphism) $\implies$ $f$ is in \code{}InnAut\ G\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-2maG0l-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2gUxot-1}}\nwenddeflinemarkup
 proof
@@ -1982,7 +2264,10 @@ end;
 
 \nwused{\\{NW3Mfp8C-2gUxot-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def5}}{Def5}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th13}}{Th13}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-2maG0l-1}\nwindexuse{\nwixident{Def5}}{Def5}{NW3Mfp8C-2maG0l-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-2maG0l-1}\nwindexuse{\nwixident{Th13}}{Th13}{NW3Mfp8C-2maG0l-1}\nwendcode{}\nwbegindocs{24}\nwdocspar
 
-\M
+\begin{lemma}
+Any member of the group $\Inn\Aut(G)$ is an Automorphism of $G$.
+\end{lemma}
+
 It's relatively straightforward to show that if $f$ is an element of
 {\Tt{}InnAut\ G\nwendquote}, then $f$ is an {\Tt{}\nwlinkedidentq{Automorphism}{NW1Nnu7l-4WeeL5-1}\ of\ G\nwendquote}. We just unwind the
 definitions.
@@ -2002,11 +2287,18 @@ end;
 \nwindexdefn{\nwixident{Lm4}}{Lm4}{NW3Mfp8C-3eJW7Q-1}\eatline
 \nwused{\\{NW3Mfp8C-2gUxot-1}}\nwidentdefs{\\{{\nwixident{Lm4}}{Lm4}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th13}}{Th13}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-3eJW7Q-1}\nwindexuse{\nwixident{Th13}}{Th13}{NW3Mfp8C-3eJW7Q-1}\nwendcode{}\nwbegindocs{26}\nwdocspar
 \begin{theorem}
-Given any element $a\in G$, and any inner automorphism $f$ of $G$ such
+Given any element $a\in G$, and any inner automorphism $\varphi$ of $G$ such
 that $\forall x\in G, f(x) = x^{a} = a^{-1}xa$, it follows that the
 image of a subgroup under $f$ is the conjugate of that subgroup
-$f(H) = H^{a}$.
+$\varphi(H) = H^{a}$.
 \end{theorem}
+
+\begin{proof}
+Let $\varphi\in\End(G)$ be defined by hypothesis as $\varphi(x)=x^{a}$
+for some fixed $a\in G$. We have $\varphi|_{H}(h)= h^{a}$ for any $h\in H$.
+We show $y\in\varphi|_{H}(H)\iff y\in H^{a}$ in two sub-proofs. Then it
+follows that $\varphi(H)=H^{a}$ by theorem {\Tt{}GROUP{\_}2:def\ 6\nwendquote}\MizDef{GROUP\_2}{6}.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{27}\sublabel{NW3Mfp8C-2zspfg-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-2zspfg-1}}}\moddef{Theorem: inner automorphism acting on subgroup is conjugate of argument~{\nwtagstyle{}\subpageref{NW3Mfp8C-2zspfg-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th15}{NW3Mfp8C-2zspfg-1}:
@@ -2040,7 +2332,10 @@ end;
 
 \nwindexdefn{\nwixident{Th15}}{Th15}{NW3Mfp8C-2zspfg-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th15}}{Th15}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-2zspfg-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-2zspfg-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW3Mfp8C-2zspfg-1}\nwendcode{}\nwbegindocs{28}\nwdocspar
-\M The forward direction amounts to unwrapping the definition of $f(h) = h^{a}$.
+\begin{proof}[{Proof step 1 ($\forall y\in G, y\in f(H)\implies y\in H^{a}$)}.]
+The forward direction amounts to unwrapping the definition of $f(h) = h^{a}$.
+Since $h\in H$, it follows $h^{a}\in H^{a}$ by theorem {\Tt{}GROUP{\_}3:58\nwendquote}\MizThm{GROUP\_3}{58}.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{29}\sublabel{NW3Mfp8C-1BjobC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-1BjobC-1}}}\moddef{Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1BjobC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2zspfg-1}}\nwenddeflinemarkup
 proof
@@ -2057,8 +2352,11 @@ end;
 
 \nwused{\\{NW3Mfp8C-2zspfg-1}}\nwendcode{}\nwbegindocs{30}\nwdocspar
 
-\M The proof in the backwards direction begins with $y = g^{a}$ for some
-$g\in G$, and showing $y = f(g)$, which amounts to ``plug it in''.
+\begin{proof}[{Proof step 2 ($\forall y\in G, y \in f(H)\impliedby y\in H^{a}$)}.]
+The proof in the backwards direction begins with $y\in H^{a}$ must look
+like $y = g^{a}$ for some $g\in H$ by theorem {\Tt{}GROUP{\_}3:58\nwendquote}\MizThm{GROUP\_3}{58},
+and showing $y = f(g)$, which amounts to ``plug it in''.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{31}\sublabel{NW3Mfp8C-1b1ocA-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-1b1ocA-1}}}\moddef{Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1b1ocA-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-2zspfg-1}}\nwenddeflinemarkup
 proof
@@ -2078,14 +2376,24 @@ end;
 
 \nwused{\\{NW3Mfp8C-2zspfg-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW3Mfp8C-1b1ocA-1}\nwindexuse{\nwixident{LmSubgroupElt}}{LmSubgroupElt}{NW3Mfp8C-1b1ocA-1}\nwendcode{}\nwbegindocs{32}\nwdocspar
 
-\begin{theorem}
-Let $G$ be a group, $f\in\Inn(G)$ be an inner automorphism.
-Then $\ker(f)=\trivialSubgroup_{G}$.
+\begin{theorem}[Kernel of inner automorphism is trivial]
+Let $G$ be a group, $\varphi\in\End(G)$ be defined by $\forall x\in
+G,\varphi(x)=x^{a}$ for some fixed $a\in G$.
+Then $\ker(\varphi)=\trivialSubgroup_{G}$.
 \end{theorem}
 
-We will prove something a little
+We are proving something a little
 more general, namely, any endomorphism $f\colon G\to G$ defined by
 $f(x)=x^{a}$ (for some fixed $a\in G$) will have a trivial kernel.
+
+\begin{proof}[Proof outline]
+If $\varphi\in\End(G)$ is defined as $\forall x\in G,\varphi(x)=x^{a}$
+for some fixed $a\in G$, then we will prove
+$\ker(\varphi)\subgroup\trivialSubgroup_{G}$. We know from theorem
+{\Tt{}GROUP{\_}2:65\nwendquote}\MizThm{GROUP\_2}{65} that $\trivialSubgroup_{G}\subgroup\ker(\varphi)$.
+Since one is subgroup of the other (and vice-versa), we know from
+theorem {\Tt{}GROUP{\_}2:55\nwendquote}\MizThm{GROUP\_2}{55} they must be equal as subgroups.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{33}\sublabel{NW3Mfp8C-3fLhao-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-3fLhao-1}}}\moddef{Theorem: Kernel of conjugation as endomorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-3fLhao-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th16}{NW3Mfp8C-3fLhao-1}:
@@ -2107,9 +2415,11 @@ end;
 
 \nwindexdefn{\nwixident{Th16}}{Th16}{NW3Mfp8C-3fLhao-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th16}}{Th16}}}\nwidentuses{\\{{\nwixident{Endomorphism}}{Endomorphism}}}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW3Mfp8C-3fLhao-1}\nwendcode{}\nwbegindocs{34}\nwdocspar
-\M Let $x\in\ker(f)$ be arbitrary, then $f(x)=1_{G}$. But this means $x=1_{G}$
-(according to \verb#GROUP_3:18#). Thus $x\in\trivialSubgroup_{G}$ by
-definition of the trivial subgroup.
+\begin{proof}[Sub-proof ($\ker(f)\subset\trivialSubgroup$)]
+Let $x\in\ker(f)$ be arbitrary, then $f(x)=1_{G}$. But this means $x=1_{G}$
+(according to \verb#GROUP_3:18#\MizThm{GROUP\_3}{18}). Thus
+$x\in\trivialSubgroup_{G}$ by definition of the trivial subgroup.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{35}\sublabel{NW3Mfp8C-1msO16-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-1msO16-1}}}\moddef{Proof $\ker(f)\subset\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1msO16-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-3fLhao-1}}\nwenddeflinemarkup
 proof
@@ -2123,11 +2433,20 @@ end;
 
 \nwused{\\{NW3Mfp8C-3fLhao-1}}\nwendcode{}\nwbegindocs{36}\nwdocspar
 
-\begin{theorem}[Conjugation by fixed element is an automorphism]
+\begin{theorem}[{Conjugation by fixed element is an automorphism}]
 Let $G$ be a group, $a\in G$ a fixed element.
-The endomorphism $f\colon G\to G$ defined by $f(x)=x^{a}$ is, in fact,
+The endomorphism $\varphi\colon G\to G$ defined by $\varphi(x)=x^{a}$ is, in fact,
 an automorphism of $G$.
 \end{theorem}
+
+\begin{proof}[Proof outline]
+We establish $\varphi$ is injective because it has a trivial kernel
+(thanks to {\Tt{}\nwlinkedidentq{Th16}{NW3Mfp8C-3fLhao-1}\nwendquote} and theorem {\Tt{}GROUP{\_}6:56\nwendquote}\MizThm{GROUP\_6}{56}).
+We then prove $\psi\in\End(G)$ exists such that $\varphi\circ\psi=\id_{G}$.
+The existence of such a $\psi$ implies $\rng(\varphi)=G$, which implies
+$\varphi$ is surjective. We then have $\varphi$, being both injective
+and surjective, is bijective and moreover an automorphism.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW3Mfp8C-VBRVv-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-VBRVv-1}}}\moddef{Theorem: Conjugation by fixed element is an automorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-VBRVv-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th17}{NW3Mfp8C-VBRVv-1}:
@@ -2153,9 +2472,13 @@ end;
 
 \nwindexdefn{\nwixident{Th17}}{Th17}{NW3Mfp8C-VBRVv-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th17}}{Th17}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{Th16}}{Th16}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-VBRVv-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW3Mfp8C-VBRVv-1}\nwindexuse{\nwixident{Th16}}{Th16}{NW3Mfp8C-VBRVv-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
-\N{Proof an inverse exists}
+\begin{proof}[Sub-proof (Existence of inverse of conjugation)]
 This is the long part of the proof, its length owing to showing every
-detail.
+detail. We can construct $\psi(x)=x^{a^{-1}}$ as a function of the
+underlying set of the group. We just need to prove this is an
+endomorphism (suffices to prove it respects the group binary operation),
+and that $\psi$ is the inverse function of $\varphi$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{39}\sublabel{NW3Mfp8C-a3qbq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-a3qbq-1}}}\moddef{Proof an endomorphism $f^{-1}$ exists~{\nwtagstyle{}\subpageref{NW3Mfp8C-a3qbq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-VBRVv-1}}\nwenddeflinemarkup
 proof
@@ -2169,10 +2492,11 @@ end;
 
 \nwused{\\{NW3Mfp8C-VBRVv-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 
-\N{Sub-Proof: $f^{-1}$ is the inverse of $f$}
+\begin{proof}[Sub-proof ($\psi$ is inverse function of $\varphi$).]
 The proof is straightforward, simply compose the functions together and
 show we get the identity function. We just have to unwind a lot of
 definitions.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{41}\sublabel{NW3Mfp8C-oixct-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-oixct-1}}}\moddef{Establish $f^{-1}$ is the inverse function of $f$~{\nwtagstyle{}\subpageref{NW3Mfp8C-oixct-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-a3qbq-1}}\nwenddeflinemarkup
 for x being Element of G holds (f*fInv).x = (id the carrier of G).x
@@ -2191,10 +2515,10 @@ then f*fInv = id the carrier of G by FUNCT_1:2;
 
 \nwused{\\{NW3Mfp8C-a3qbq-1}}\nwendcode{}\nwbegindocs{42}\nwdocspar
 
-\N{Sub-Proof $f^{-1}$ is a group endomorphism}
-We need to establish $f^{-1}$ is multiplicative, i.e.,
-$f^{-1}(x_{1}x_{2}) = f^{-1}(x_{1})f^{-1}(x_{2})$. The heavy-lifting has
-been done in {\Tt{}GROUP{\_}3\nwendquote}.
+\begin{proof}[Sub-proof ($\psi$ is an endomorphism)]
+We need to show $\psi(x_{1}x_{2})=\psi(x_{1})\psi(x_{2})$, which follows
+from the results of conjugation from the article {\Tt{}GROUP{\_}3\nwendquote}.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{43}\sublabel{NW3Mfp8C-lTiQo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-lTiQo-1}}}\moddef{Establish $f^{-1}$ is an Endomorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-lTiQo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-a3qbq-1}}\nwenddeflinemarkup
 for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
@@ -2218,6 +2542,11 @@ inner automorphism $f\in\Inn(G)$ defined by
 $\forall x\in G,f(x)=x^{a}=a^{-1}xa$ conjugation by $a$.
 \end{corollary}
 
+\begin{proof}
+We have shown in {\Tt{}\nwlinkedidentq{Th17}{NW3Mfp8C-VBRVv-1}\nwendquote} that conjugation is an automorphism, and by
+definition it is inner.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{45}\sublabel{NW3Mfp8C-47V7KL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-47V7KL-1}}}\moddef{Corollary: conjugation of given element is an \emph{inner} automorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-47V7KL-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th18}{NW3Mfp8C-47V7KL-1}:
   for a being Element of G
@@ -2234,13 +2563,28 @@ end;
 
 \nwindexdefn{\nwixident{Th18}}{Th18}{NW3Mfp8C-47V7KL-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th18}}{Th18}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def5}}{Def5}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th17}}{Th17}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-47V7KL-1}\nwindexuse{\nwixident{Def5}}{Def5}{NW3Mfp8C-47V7KL-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW3Mfp8C-47V7KL-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-47V7KL-1}\nwindexuse{\nwixident{Th17}}{Th17}{NW3Mfp8C-47V7KL-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
-\N{Constructing inner automorphisms from group elements}
+\begin{theorem}[Constructing inner automorphisms]
+Let $a\in G$ be a group element. Then there exists an inner automorphism
+$\varphi\in\Inn(G)$ such that for any $x\in G$ we have $\varphi(x)=x^{a}$.
+\end{theorem}
+
+\begin{proof}
+We can show that, for any $a\in G$, we can construct a function of the
+underlying set of $G$ to itself $\varphi\colon G\to G$ defined by
+$\forall x\in G, \varphi(x)=x^{a}$. We have to show this is an
+endomorphism, i.e., for any $x_{1},x_{2}\in G$ that
+$\varphi(x_{1}x_{2})=\varphi(x_{1})\varphi(x_{2})$. The result follows
+thanks to {\Tt{}\nwlinkedidentq{Th18}{NW3Mfp8C-47V7KL-1}\nwendquote}.
+\end{proof}
+
+\begin{remark}[Motivation]
 Given a group $G$ and suppose we have an element $a\in G$, can we
 construct an inner automorphism $f\in\Inn(G)$ such that
 $\forall x\in G, f(x) = x^{a}$? Yes, we can do it!
 A wiser way to organize these results may be to first show such an $f$
 is an Endomorphism and it exists, then use that result in the proof that
 it's an automorphism, and so on.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{47}\sublabel{NW3Mfp8C-arh13-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-arh13-1}}}\moddef{Theorem: constructing inner automorphisms from group elements~{\nwtagstyle{}\subpageref{NW3Mfp8C-arh13-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th19}{NW3Mfp8C-arh13-1}:
@@ -2278,12 +2622,23 @@ end;
   $H\normalSubgroup G$.
 \end{theorem}
 
+\begin{remark}
 This is another, ``Well, I guess Mizar should have this, but I can't
 find it, so here we go!''-type proof. The only quirk is the use of
 {\Tt{}strict\ Subgroup\nwendquote}, which is necessary because otherwise {\Tt{}H\ |{\char94}\ a\nwendquote} is
 strictly speaking a {\Tt{}multMagma\nwendquote}, not a subgroup. And to assert two
 subgroups are equal, we need a {\Tt{}strict\nwendquote} subgroup, which requires
 adding a {\Tt{}strict\nwendquote} hypothesis.
+\end{remark}
+
+\begin{remark}[On \texttt{strict} hypothesis]
+The {\Tt{}strict\nwendquote} condition is necessary to prove $H\normalSubgroup G$
+implies $\forall\varphi\in\Inn(G),\varphi(H)=H$. Otherwise, we end up
+with the slightly peculiar situation where $\varphi(H) = $
+{\Tt{}the\ multMagma\ of\ \nwendquote}$H$, which isn't terrible, but requires additional
+steps later on in proving ``$K\subgroup N$ is characteristic and
+$N\normalSubgroup G$ is {\Tt{}strict\nwendquote} normal implies $K\normalSubgroup G$.''
+\end{remark}
 
 \nwenddocs{}\nwbegincode{49}\sublabel{NW3Mfp8C-4Qqcti-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-4Qqcti-1}}}\moddef{Theorem: inner Automorphisms fix only normal Subgroups~{\nwtagstyle{}\subpageref{NW3Mfp8C-4Qqcti-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-gMHRo-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th20}{NW3Mfp8C-4Qqcti-1}:
@@ -2301,14 +2656,14 @@ end;
 
 \nwindexdefn{\nwixident{Th20}}{Th20}{NW3Mfp8C-4Qqcti-1}\eatline
 \nwused{\\{NW3Mfp8C-gMHRo-1}}\nwidentdefs{\\{{\nwixident{Th20}}{Th20}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-4Qqcti-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-4Qqcti-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
-\begin{remark}[On \texttt{strict} hypothesis]
-The {\Tt{}strict\nwendquote} condition is necessary to prove $H\normalSubgroup G$
-implies $\forall\varphi\in\Inn(G),\varphi(H)=H$. Otherwise, we end up
-with the slightly peculiar situation where $\varphi(H) = $
-{\Tt{}the\ multMagma\ of\ \nwendquote}$H$, which isn't terrible, but requires additional
-steps later on in proving ``$K\subgroup N$ is characteristic and
-$N\normalSubgroup G$ is {\Tt{}strict\nwendquote} normal implies $K\normalSubgroup G$.''
-\end{remark}
+\begin{proof}[Sub-proof (normal implies fixed by inner automorphisms)]
+Assume $H\normalSubgroup G$ is a normal subgroup. Let
+$\varphi\in\Inn(G)$ be an arbitrary inner automorphism. We have
+$\varphi(x)=x^{a}$ for some fixed $a\in G$ and for any $x\in G$. Then
+$\varphi(H) = H^{a}$ by {\Tt{}\nwlinkedidentq{Th15}{NW3Mfp8C-2zspfg-1}\nwendquote} and $H^{a}=H$ by definition
+{\Tt{}GROUP{\_}3:def\ 13\nwendquote}\MizDef{GROUP\_3}{13} and definition of equality for
+subgroups {\Tt{}GROUP{\_}2:def\ 6\nwendquote}\MizDef{GROUP\_2}{6}. Thus the result.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{51}\sublabel{NW3Mfp8C-ZiHjv-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-ZiHjv-1}}}\moddef{Proof: normal implies fixed by inner automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-ZiHjv-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-4Qqcti-1}}\nwenddeflinemarkup
 proof
@@ -2325,10 +2680,19 @@ end;
 
 \nwused{\\{NW3Mfp8C-4Qqcti-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def5}}{Def5}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th15}}{Th15}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-ZiHjv-1}\nwindexuse{\nwixident{Def5}}{Def5}{NW3Mfp8C-ZiHjv-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-ZiHjv-1}\nwindexuse{\nwixident{Th15}}{Th15}{NW3Mfp8C-ZiHjv-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
 
-\M Mizar's proof by contradiction is rather curious. If we want to prove
+\begin{proof}[Sub-proof (fixed by inner automorphisms implies normal)]
+We prove by contradiction, assuming $\forall\varphi\in\Inn(G)$ that $\varphi(H)=H$
+but assuming for contradiction that $H$ is not a normal subgroup. We run
+into the situation where $\varphi(H) = H^{a} = H$. But a subgroup is
+normal if and only if $H^{a}=H$. Thus the contradiction.
+\end{proof}
+
+\begin{remark}[Proof by contradiction in Mizar]\index{Proof!by Contradiction}
+Mizar's proof by contradiction is rather curious. If we want to prove
 $P\implies Q$ by contradiction, we assert $\neg(P\implies
 Q)\implies\bot$. The proof we offer is about as satisfying as any other
 proof by contradiction.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{53}\sublabel{NW3Mfp8C-3U116k-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-3U116k-1}}}\moddef{Proof by contradiction: fixed by inner automorphisms implies normal~{\nwtagstyle{}\subpageref{NW3Mfp8C-3U116k-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW3Mfp8C-4Qqcti-1}}\nwenddeflinemarkup
 proof
@@ -2417,8 +2781,18 @@ end;
 \nwindexdefn{\nwixident{Lm6}}{Lm6}{NW47t2dy-HjATr-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Lm6}}{Lm6}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def9}}{Def9}}\\{{\nwixident{Lm5}}{Lm5}}\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-HjATr-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-HjATr-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-HjATr-1}\nwindexuse{\nwixident{Lm5}}{Lm5}{NW47t2dy-HjATr-1}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-HjATr-1}\nwendcode{}\nwbegindocs{6}\nwdocspar
 \N{Lemma: the only subgroup of the trivial group is trivial}
+\begin{lemma}
+For any subgroup $H\subgroup G$, if $\trivialSubgroup_{G}\subgroup H$
+and $H\subgroup\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
+\end{lemma}
+
+\begin{remark}
 I couldn't quite find this anywhere in the MML, so I had to prove it
 myself.
+\end{remark}
+\begin{remark}[To do]
+I think I prove this result several times, I should refactor my code accordingly.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{7}\sublabel{NW47t2dy-1tYS7d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1tYS7d-1}}}\moddef{Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$~{\nwtagstyle{}\subpageref{NW47t2dy-1tYS7d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-HjATr-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm5}{NW47t2dy-1tYS7d-1}: for H being Subgroup of G st H is Subgroup of (1).G holds the
@@ -2434,9 +2808,13 @@ end;
 
 \nwindexdefn{\nwixident{Lm5}}{Lm5}{NW47t2dy-1tYS7d-1}\eatline
 \nwused{\\{NW47t2dy-HjATr-1}}\nwidentdefs{\\{{\nwixident{Lm5}}{Lm5}}}\nwendcode{}\nwbegindocs{8}\nwdocspar
-\N{Existence theorem}
-We need to prove the existence of a characteristic subgroup. For our
-purposes, it suffices to prove that the trivial subgroup is characteristic.
+\begin{theorem}[Existence of a characteristic subgroup]
+For any group $G$, there exists a subgroup $H\subgroup G$ which is characteristic.
+\end{theorem}
+\begin{proof}[Proof outline]
+The trivial subgroup is a subgroup of any group. And it is
+characteristic. Thus the result.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{9}\sublabel{NW47t2dy-3KEBxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3KEBxf-1}}}\moddef{Theorem: Existence of characteristic subgroups~{\nwtagstyle{}\subpageref{NW47t2dy-3KEBxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 
@@ -2480,11 +2858,16 @@ end;
 
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2iAFXC-1}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW47t2dy-2iAFXC-1}\nwendcode{}\nwbegindocs{14}\nwdocspar
 
-
-\N{Characteristic subgroups are normal}
+\begin{theorem}[Characteristic subgroups are normal]
 Let $G$ be a group, $K\subgroup G$ a subgroup. If $K$ is a
 characteristic subgroup of $G$, then $K\normalSubgroup G$ it is also
 normal.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+We show $K$ is invariant under conjugation, i.e., for any $a\in G$ we
+have $K^{a}=K$. Then $K\normalSubgroup G$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{15}\sublabel{NW47t2dy-xos9m-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-xos9m-1}}}\moddef{Theorem: characteristic subgroups are normal~{\nwtagstyle{}\subpageref{NW47t2dy-xos9m-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th22}{NW47t2dy-xos9m-1}:
@@ -2501,10 +2884,11 @@ end;
 
 \nwindexdefn{\nwixident{Th22}}{Th22}{NW47t2dy-xos9m-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th22}}{Th22}}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-xos9m-1}\nwendcode{}\nwbegindocs{16}\nwdocspar
-\M
+\begin{proof}[Sub-proof (characteristic subgroups invariant under conjugation)]
 Really, proving a characteristic subgroup is normal amounts to proving
 invariance under conjugation. Fortunately, we have established this
 along the way! We just have to point to our hard work from earlier.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{17}\sublabel{NW47t2dy-2mkOw1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}}\moddef{Sub-proof: characteristic subgroups invariant under conjugation~{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-xos9m-1}}\nwenddeflinemarkup
 proof
@@ -2580,6 +2964,21 @@ into a helper theorem! The ``architecture'' of the proof follows what we
 would find in a textbook. It's just that a textbook will gloss over
 facts about morphisms which we'd need to prove.
 
+\begin{proof}
+Let $K$ be a characteristic subgroup of $N$ and $N\normalSubgroup G$ be
+a normal subgroup. Then consider conjugation of $N$ by any element $a\in G$.
+This corresponds to an inner Automorphism of $G$, $\varphi\in\Inn(G)$, and an
+automorphism $\varphi|_{N}\in\Aut(N)$ of $N$. But since $K$ is
+characteristic in $N$, it follows $\varphi|_{N}(K)=K$. Then $K$,
+considered as a subgroup of $G$, must be invariant under $\varphi$ and
+therefore a normal subgroup of $G$ by {\Tt{}\nwlinkedidentq{LmNormalSubgroup}{NW18nMBU-3PXqHm-1}\nwendquote}.
+\end{proof}
+
+\begin{remark}
+The {\Tt{}strict\nwendquote} hypothesis on {\Tt{}N\nwendquote} is necessary, since {\Tt{}GROUP{\_}2:def\ 6\nwendquote}\MizDef{GROUP\_2}[06]{6}
+defines equality only on \emph{strict} subgroups.
+\end{remark}
+
 \nwenddocs{}\nwbegincode{23}\sublabel{NW47t2dy-4WQdGY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4WQdGY-1}}}\moddef{Theorem: characteristic subgroup of a normal subgroup is normal~{\nwtagstyle{}\subpageref{NW47t2dy-4WQdGY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 \LA{}Lemma: two group morphisms which coincide on subgroup have the same image~{\nwtagstyle{}\subpageref{NW47t2dy-475WvU-1}}\RA{}
 
@@ -2598,10 +2997,15 @@ end;
 
 \nwindexdefn{\nwixident{Th25}}{Th25}{NW47t2dy-4WQdGY-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th25}}{Th25}}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{LmNormalSubgroup}}{LmNormalSubgroup}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-4WQdGY-1}\nwindexuse{\nwixident{LmNormalSubgroup}}{LmNormalSubgroup}{NW47t2dy-4WQdGY-1}\nwendcode{}\nwbegindocs{24}\nwdocspar
-\begin{remark}
-The {\Tt{}strict\nwendquote} hypothesis on {\Tt{}N\nwendquote} is necessary, since {\Tt{}GROUP{\_}2:def\ 6\nwendquote}\MizDef{GROUP\_2}[06]{6}
-defines equality only on \emph{strict} subgroups.
-\end{remark}
+\begin{proof}[Sub-proof ($\forall a\in G, K^{a}=K$)]
+Given an arbitrary $a\in G$, we construct an inner automorphism
+$\varphi\in\Inn(G)$ defined by $\varphi(x)=x^{a}$. Then $\varphi(N)=N$
+by {\Tt{}\nwlinkedidentq{Th20}{NW3Mfp8C-4Qqcti-1}\nwendquote} which implies $\varphi|_{N}\in\Aut(N)$ by {\Tt{}\nwlinkedidentq{Th11}{NW1Nnu7l-1QHEJY-1}\nwendquote}. Viewed
+as an automorphism of $N$, $\varphi|_{N}=:\psi\in\Aut(N)$, we must have
+$\psi(K)=K$ by virtue of $K$ being characteristic subgroup of $N$. But
+$\psi(K)=\varphi(K)$ due to a sub-sub-proof that $\forall k\in K,\psi(k)=\varphi(k)$.
+Then the result follows.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{25}\sublabel{NW47t2dy-4CFIX3-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4CFIX3-1}}}\moddef{Proof: $\forall a\in G, K^{a}=K$~{\nwtagstyle{}\subpageref{NW47t2dy-4CFIX3-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-4WQdGY-1}}\nwenddeflinemarkup
 proof
@@ -2625,6 +3029,16 @@ end;
 
 \nwused{\\{NW47t2dy-4WQdGY-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def9}}{Def9}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th11}}{Th11}}\\{{\nwixident{Th15}}{Th15}}\\{{\nwixident{Th19}}{Th19}}\\{{\nwixident{Th20}}{Th20}}\\{{\nwixident{Th24}}{Th24}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{inner}}{inner}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th11}}{Th11}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th15}}{Th15}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th19}}{Th19}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th20}}{Th20}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th24}}{Th24}{NW47t2dy-4CFIX3-1}\nwendcode{}\nwbegindocs{26}\nwdocspar
 
+\begin{proof}[Sub-sub-proof ($\forall k\in G$, $k\in K\implies f(k)=g(k)$).]
+  We simply unfold the definitions
+  \begin{subequations}
+    \begin{align}
+      \psi|_{K}(k) &= \psi(k)\\
+      &= \varphi(k)\qedhere
+    \end{align}
+  \end{subequations}
+\end{proof}
+
 \nwenddocs{}\nwbegincode{27}\sublabel{NW47t2dy-5gaS4-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-5gaS4-1}}}\moddef{Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$~{\nwtagstyle{}\subpageref{NW47t2dy-5gaS4-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-4CFIX3-1}\\{NW47t2dy-2ur0LT-1}}\nwenddeflinemarkup
 proof
   let k be Element of G;
@@ -2639,12 +3053,22 @@ end;
 
 \nwused{\\{NW47t2dy-4CFIX3-1}\\{NW47t2dy-2ur0LT-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW47t2dy-5gaS4-1}\nwindexuse{\nwixident{LmSubgroupElt}}{LmSubgroupElt}{NW47t2dy-5gaS4-1}\nwendcode{}\nwbegindocs{28}\nwdocspar
 
-\N{Lemma}
-The heavy lifting is done by a straightforward and intuitive result: if
-we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to H_{2}$,
-where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if we have
-a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the image of
-the morphisms on this shared subgroup should coincide.
+\begin{theorem}
+If we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to
+H_{2}$, where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if
+we have a common subgroup $K\subgroup H_{1}\subgroup G_{1}$, then the
+image of the morphisms on this shared subgroup should coincide.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+  Let $f\colon G_{1}\to G_{2}$ be a group morphism, let $H_{1}\subgroup G_{1}$
+  and $H_{2}\subgroup G_{2}$ be subgroups, let $g\colon H_{1}\to H_{2}$.
+  If $K\subgroup H_{1}$ is a subgroup for which $g|_{K}=f|_{K}$, then $f(K)=g(K)$.
+\end{proof}
+
+
+\begin{remark}
+The heavy lifting is done by a straightforward and intuitive result.
 
 Initially, I had a more conservative result: let $\varphi,\psi\in\Aut(G)$
 and $H\subgroup G$, if $\forall h\in H,\varphi(h)=\psi(h)$, then
@@ -2652,6 +3076,7 @@ $\varphi(H)=\psi(H)$. Then I realized this didn't describe the situation
 I was facing, so I revised it to fit. Then I realized I didn't need the
 hypothesis that $\varphi$ and $\psi$ were automorphisms, they could be
 generic morphisms.
+\end{remark}
 
 \nwenddocs{}\nwbegincode{29}\sublabel{NW47t2dy-475WvU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-475WvU-1}}}\moddef{Lemma: two group morphisms which coincide on subgroup have the same image~{\nwtagstyle{}\subpageref{NW47t2dy-475WvU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-4WQdGY-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th24}{NW47t2dy-475WvU-1}:
@@ -2683,7 +3108,11 @@ end;
 
 \nwindexdefn{\nwixident{Th24}}{Th24}{NW47t2dy-475WvU-1}\eatline
 \nwused{\\{NW47t2dy-4WQdGY-1}}\nwidentdefs{\\{{\nwixident{Th24}}{Th24}}}\nwendcode{}\nwbegindocs{30}\nwdocspar
-
+\begin{proof}[Sub-proof ($\forall y,y\in f(K)\iff y\in g(K)$)]
+  We show, for any $y$, that both $y\in f(K)\implies y\in g(K)$ and
+  $y\in f(K)\impliedby y\in g(K)$. Taken together, this gives us
+  $y\in f(K)\iff y\in g(K)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{31}\sublabel{NW47t2dy-1JehLA-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1JehLA-1}}}\moddef{Proof: $y\in f(K)\iff y\in g(K)$~{\nwtagstyle{}\subpageref{NW47t2dy-1JehLA-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-475WvU-1}}\nwenddeflinemarkup
 proof
@@ -2696,6 +3125,11 @@ proof
 end;
 
 \nwused{\\{NW47t2dy-475WvU-1}}\nwendcode{}\nwbegindocs{32}\nwdocspar
+
+\begin{proof}[Sub-proof step 1 ($y\in f(K)\implies y\in g(K)$)]
+We have $y\in f(K)$ if there is some $h\in K$ such that $y=f|_{K}(h)$.
+But by hypothesis, $f|_{K}(h)=g|_{K}(h)$, and thus $y=g|_{k}(h)\in g(K)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{33}\sublabel{NW47t2dy-1yCGg9-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1yCGg9-1}}}\moddef{Proof: $y\in f(K)\implies y\in g(K)$~{\nwtagstyle{}\subpageref{NW47t2dy-1yCGg9-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1JehLA-1}}\nwenddeflinemarkup
 proof
@@ -2715,6 +3149,11 @@ proof
 end;
 
 \nwused{\\{NW47t2dy-1JehLA-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW47t2dy-1yCGg9-1}\nwendcode{}\nwbegindocs{34}\nwdocspar
+
+\begin{proof}[Sub-proof step 2 ($y\in g(K)\implies y\in f(K)$)]
+  We have $y\in g(K)$ if there is some $h\in K$ such that $y=g|_{K}(h)$.
+  But by hypothesis $g|_{K}(h) = f|_{K}(h)$, and thus $y = f|_{K}(h)\in f(K)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{35}\sublabel{NW47t2dy-1aEga6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1aEga6-1}}}\moddef{Proof: $y\in g(K)\implies y\in f(K)$~{\nwtagstyle{}\subpageref{NW47t2dy-1aEga6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1JehLA-1}}\nwenddeflinemarkup
 proof
@@ -2741,7 +3180,18 @@ characteristic, then $K\subgroup G$ is characteristic.
 \end{theorem}
 
 The proof is remarkably similar to the previous theorem. In fact, we can
-re-use exactly the same line of reasoning establishing $\forall k\in G$, $k\in K\implies f(k)=g(k)$.
+re-use exactly the same line of reasoning establishing
+$\forall k\in G$, $k\in K\implies f(k)=g(k)$.
+
+\begin{proof}[Proof outline]
+For any automorphism $g\in\Aut(G)$ we have $g(N)=N$ by virtue of $N$ is
+a characteristic subgroup of $G$. We can then consider $f=g|_{N}$ as an
+automorphism of $N$. Then $f(K)=K$ since $K$ is a characteristic
+subgroup of $N$.
+
+We have $\forall k\in K, f(k)=g(k)$. Thus $f(K)=g(K)$, and we have
+established $f(K)=K$, therefore $g(K)=K$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW47t2dy-2ur0LT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2ur0LT-1}}}\moddef{Theorem: transitivity of characteristic subgroups~{\nwtagstyle{}\subpageref{NW47t2dy-2ur0LT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th26}{NW47t2dy-2ur0LT-1}:
@@ -2780,6 +3230,18 @@ end;
 Some texts give this as the definition for $H$ being a characteristic
 subgroup, which is fine.
 
+\begin{proof}[Proof outline]
+  Given a subgroup $H\subgroup G$. We have two halfs to our proof.
+
+We prove $H$ is a characteristic subgroup of $G$ implies
+$\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$. This uses the facts
+$\varphi(H)=H\subgroup H$. This establishes the first half of the proof.
+
+Now, the other direction, assuming
+$\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$ we find $H$ is a
+characteristic subgroup of $G$.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{39}\sublabel{NW47t2dy-4Z20G4-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4Z20G4-1}}}\moddef{Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$~{\nwtagstyle{}\subpageref{NW47t2dy-4Z20G4-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th27}{NW47t2dy-4Z20G4-1}:
   for H being strict Subgroup of G
@@ -2800,9 +3262,11 @@ end;
 
 \nwindexdefn{\nwixident{Th27}}{Th27}{NW47t2dy-4Z20G4-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th27}}{Th27}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-4Z20G4-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-4Z20G4-1}\nwendcode{}\nwbegindocs{40}\nwdocspar
-\M
+\begin{proof}[Sub-proof ($H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$).]
 The proof in the forward direction boils down to the observation
 $H\subgroup H$ then applying the definition of characteristic subgroup.
+\end{proof}
+
 
 \nwenddocs{}\nwbegincode{41}\sublabel{NW47t2dy-ikrOm-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-ikrOm-1}}}\moddef{Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$~{\nwtagstyle{}\subpageref{NW47t2dy-ikrOm-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-4Z20G4-1}}\nwenddeflinemarkup
 proof
@@ -2817,7 +3281,7 @@ end;
 
 \nwused{\\{NW47t2dy-4Z20G4-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def9}}{Def9}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-ikrOm-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-ikrOm-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-ikrOm-1}\nwendcode{}\nwbegindocs{42}\nwdocspar
 
-\M
+\begin{proof}[Sub-proof ($H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$).]
 The proof in the backward direction amounts to proving, for arbitrary
 automorphisms $\varphi$ of $G$, $\varphi(H)\subgroup H$ and since
 $\varphi$ is an Automorphism $H\subgroup \varphi^{-1}(H)$. Then for any
@@ -2827,6 +3291,7 @@ this implies $\forall\varphi\in\Aut(G)$, $H = \varphi(H)$.
 But as discussed earlier (\S\ref{par:introduction:subgroup-equality}),
 subgroup equality holds only for strict subgroups. For this reason, we
 have the hypothesis that $H$ is a strict subgroup of $G$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{43}\sublabel{NW47t2dy-1WVJgD-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1WVJgD-1}}}\moddef{Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$~{\nwtagstyle{}\subpageref{NW47t2dy-1WVJgD-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-4Z20G4-1}}\nwenddeflinemarkup
 proof
@@ -2847,7 +3312,8 @@ end;
 
 \nwused{\\{NW47t2dy-4Z20G4-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def9}}{Def9}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1WVJgD-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-1WVJgD-1}\nwindexuse{\nwixident{Def9}}{Def9}{NW47t2dy-1WVJgD-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
 
-\M This is a slick argument, which is confusing until one realizes
+\begin{proof}[Sub-sub-proof ($\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$).]
+This is a slick argument, which is confusing until one realizes
 what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
 \begin{itemize}
 \item[{{\Tt{}A1\nwendquote}}:] $\psi(H)\subgroup H$;
@@ -2855,6 +3321,7 @@ what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
 \item[{{\Tt{}\nwlinkedidentq{Th7}{NW1Nnu7l-xUcSR-1}\nwendquote}}:] for $\psi=\varphi^{-1}$, the underlying magmas of $H$ and $\varphi[\psi(H)]$ are equal.
 \end{itemize}
 This suffices to infer $H\subgroup\varphi(H)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{45}\sublabel{NW47t2dy-2AHwGO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2AHwGO-1}}}\moddef{Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$~{\nwtagstyle{}\subpageref{NW47t2dy-2AHwGO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1WVJgD-1}}\nwenddeflinemarkup
 proof
@@ -2876,6 +3343,7 @@ end;
 Let $G$ be a group. Its center $Z(G)$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{proof}[Proof outline]
 This is our first application of
 $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$ implies $H$ is characteristic.
 The bulk of the proof amounts to showing $\varphi(Z(G))\subgroup Z(G)$,
@@ -2888,6 +3356,7 @@ which requires two prior steps:
 \end{enumerate}
 Then we have $\varphi(Z(G))$ be a subgroup of $Z(G)$, which let's us use
 the previous theorem.
+\end{proof}
 
 \begin{remark}
 The {\Tt{}center\nwendquote}\mizindex{Center@\texttt{center}} functor is defined in
@@ -2907,8 +3376,10 @@ end;
 
 \nwindexdefn{\nwixident{Th28}}{Th28}{NW47t2dy-g56Nl-1}\eatline
 \nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th28}}{Th28}}}\nwidentuses{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th27}}{Th27}}}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-g56Nl-1}\nwindexuse{\nwixident{Th27}}{Th27}{NW47t2dy-g56Nl-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
-\M The heart of the proof amounts to showing, for any Automorphism
+\begin{proof}[Proof branch ($\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$)]
+The heart of the proof amounts to showing, for any Automorphism
 $\varphi$, that $\varphi(Z(G))$ is a subgroup of $Z(G)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{49}\sublabel{NW47t2dy-1dPqXM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1dPqXM-1}}}\moddef{Prove $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-1dPqXM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-g56Nl-1}}\nwenddeflinemarkup
 \LA{}Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$~{\nwtagstyle{}\subpageref{NW47t2dy-3ZyLrF-1}}\RA{}
@@ -2917,10 +3388,13 @@ $\varphi$, that $\varphi(Z(G))$ is a subgroup of $Z(G)$.
 
 \nwused{\\{NW47t2dy-g56Nl-1}}\nwendcode{}\nwbegindocs{50}\nwdocspar
 
-\M Proving $\varphi(z)$ commutes with every element of the group is a
+\begin{proof}[Proof step 1 ($\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$).]
+Proving $\varphi(z)$ commutes with every element of the group is a
 straightforward calculation. In fact, this is usually what textbooks
 present, then dismiss the rest of the proof as ``trivial'' or
 ``obvious''.
+\end{proof}
+
 
 \nwenddocs{}\nwbegincode{51}\sublabel{NW47t2dy-3ZyLrF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3ZyLrF-1}}}\moddef{Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$~{\nwtagstyle{}\subpageref{NW47t2dy-3ZyLrF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1dPqXM-1}}\nwenddeflinemarkup
 A1: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G
@@ -2944,8 +3418,10 @@ end;
 
 \nwused{\\{NW47t2dy-1dPqXM-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm11}}{Lm11}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3ZyLrF-1}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW47t2dy-3ZyLrF-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
 
-\M Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
+\begin{proof}[Proof step 2 ($\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$).]
+Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
 unfolding definitions.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{53}\sublabel{NW47t2dy-1r6gW0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1r6gW0-1}}}\moddef{Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-1r6gW0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1dPqXM-1}}\nwenddeflinemarkup
 A2: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G
@@ -2964,11 +3440,13 @@ end;
 
 \nwused{\\{NW47t2dy-1dPqXM-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1r6gW0-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW47t2dy-1r6gW0-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 
-\M The last step, which is the ``obvious'' part, infers from
+\begin{proof}[Proof step 3 ($\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$).]
+The last step, which is the ``obvious'' part, infers from
 $\forall z\in Z(G),\varphi(z)\in Z(G)$ that $\varphi(Z(G))\subgroup Z(G)$.
 It's also the ugliest part of the proof which could probably be cleaned
 up considerably. This is only due to the sub-step establishing
 $w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{55}\sublabel{NW47t2dy-10qnyb-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-10qnyb-1}}}\moddef{Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-10qnyb-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1dPqXM-1}}\nwenddeflinemarkup
 A3: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G
@@ -2987,12 +3465,14 @@ end;
 
 \nwused{\\{NW47t2dy-1dPqXM-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-10qnyb-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 
-\M This substep is ugly, and I offer no apology for it. There's probably
+\begin{proof}[Proof sub-step 3.1 ($\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$).]
+This substep is ugly, and I offer no apology for it. There's probably
 a more elegant solution, but I cannot think of one. We explicitely
 walkthrough showing $w\in\rng(\varphi|_{Z(G)})$, which means there is
 some $z$ such that $z\in\dom(\varphi|_{Z(G)})$ and $\varphi|_{Z(G)}(z) = w$.
 Since $\dom(\varphi|_{Z(G)})=Z(G)$, it follows $\varphi|_{Z(G)}(z)\in Z(G)$
 from step 2. Thus the result follows.
+\end{proof}
 
 \nwenddocs{}\nwbegincode{57}\sublabel{NW47t2dy-2KjPoO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2KjPoO-1}}}\moddef{Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-2KjPoO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-10qnyb-1}}\nwenddeflinemarkup
 proof
