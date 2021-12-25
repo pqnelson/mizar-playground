@@ -50,6 +50,7 @@ reserve X for set;
 <<Lemma: restriction of group morphism acts on elements like the original>>
 <<Lemma: Subgroups invariant under conjugation are normal>>
 <<Lemma: Morphism is surjective if its image is its codomain>>
+<<Lemma: $\varphi\colon G_{1}\onto G_{2}$ is surjective implies $\varphi(G_{1})=G_{2}$>>
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>
 <<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
 <<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
@@ -81,27 +82,36 @@ holds f .: X = Y
 proof
   let X,Y be non empty set;
   let f be Function of X,Y;
-  assume f is onto;
-  then A1: rng f = Y;
-  A2: dom f = X by FUNCT_2:def 1;
-  then A3: for y being object
-  holds y in rng f iff ex x being object st x in X & y = f.x
-  by FUNCT_1:def 3;
-  A4: for y being object holds y in (f .: X) iff
-  ex x being object st x in X & x in X & y = f.x
-  by A2,FUNCT_1:def 6;
+  assume A1: f is onto;
+  dom f = X by FUNCT_2:def 1;
+  then A2: <<Defining formulas for $\rng(f)$ and $f(X)$>>;
 
   C1: for y being object holds y in (f .: X) implies y in rng f
   <<Proof: $y\in f(X)\implies y\in\rng(f)$>>
 
   C2: for y being object holds y in rng f implies y in (f .: X)
-  <<Proof: $y\in\rng(f)\implies y\in f(X)$>>
+  <<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>
+
   for y being object holds y in rng f iff y in (f .: X) by C1,C2;
-  then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A1;
+  hence f .: X = rng f by TARSKI:2
+              .= Y by A1;
 end;
 
 @ %def LmOntoMapsEverything
+
+\M We can look up the definitions for [[rng f]] and [[f .: X]], which
+give the logical equivalences:
+
+<<Defining formulas for $\rng(f)$ and $f(X)$>>=
+(for y being object
+holds y in rng f iff ex x being object st x in X & y = f.x) &
+(for y being object
+holds y in (f .: X) iff ex x being object st x in X & x in X & y = f.x)
+by FUNCT_1:def 3,def 6
+
+@
+
+\M Proving the forward direction amounts to unfolding definitions.
 
 <<Proof: $y\in f(X)\implies y\in\rng(f)$>>=
 proof
@@ -109,20 +119,23 @@ proof
   assume y in (f .: X);
   then consider x being object such that
   B1: x in X and x in X and B2: y = f.x
-  by A4;
-  thus y in rng f by A3,B1,B2;
+  by A2;
+  thus y in rng f by A2,B1,B2;
 end;
 
 @
 
-<<Proof: $y\in\rng(f)\implies y\in f(X)$>>=
+\M Proving the backward direction amounts to unfolding the same
+definitions, in the opposite order.
+
+<<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>=
 proof
   let y be object;
   assume y in rng f;
   then consider x being object such that
   B1: x in X and B2: y = f.x
-  by A3;
-  thus y in (f .: X) by A4,B1,B2;
+  by A2;
+  thus y in (f .: X) by A2,B1,B2;
 end;
 
 @
@@ -287,18 +300,20 @@ end;
 \end{theorem}
 
 Mizar has this lemma in its library, but it has a more stringent
-requirement that $G_{2}$ be a [[strict Group]], which is totally unnecessary.
+requirement that $G_{2}$ be a [[strict Group]], which is totally
+unnecessary. We weaken the conditions further, allowing $G_{2}$ to have
+some bizarre exotic structure.
 
 <<Lemma: Morphism is surjective if its image is its codomain>>=
 LmEpi:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
-  st Image(f) = G2
+  st the multMagma of Image(f) = the multMagma of G2
   holds f is onto
 proof
   let G1,G2 be Group;
   let f be Homomorphism of G1,G2;
-  assume A1: Image(f) = G2;
+  assume A1: the multMagma of Image(f) = the multMagma of G2;
   then rng f = the carrier of Image f by GROUP_6:44
             .= the carrier of G2 by A1;
   then f is onto by FUNCT_2:def 3;
@@ -306,6 +321,35 @@ proof
 end;
 
 @ %def LmEpi
+
+\begin{theorem}
+  If $\varphi\colon G_{1}\onto G_{2}$ is a surjective group morphism,
+  then $\varphi(G_{1}) = G_{2}$.
+\end{theorem}
+
+The only subtlety to this claim is that we either require $G_{2}$ being
+a \emph{strict} group, or we prove [[the multMagma of G2 = the multMagma of Image(f)]].
+
+<<Lemma: $\varphi\colon G_{1}\onto G_{2}$ is surjective implies $\varphi(G_{1})=G_{2}$>>=
+LmEpi2:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  st f is onto
+  holds the multMagma of Image(f) = the multMagma of G2
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  assume A1: f is onto;
+  reconsider GG = Image(f) as Group;
+  A2: the carrier of G2 = rng(f) by A1
+                       .= the carrier of Image(f) by GROUP_6:44
+                       .= the carrier of GG;
+  the multF of GG = (the multF of G2)||(the carrier of G2) by A2,GROUP_2:def 5
+                 .= the multF of G2;
+  hence the multMagma of Image(f) = the multMagma of G2 by A2;
+end;
+
+@ %def LmEpi2
 
 \begin{lemma}
 Let $G_{1}$ and $G_{2}$ be groups, $K\subgroup G_{1}$ and $H\subgroup K$
@@ -340,6 +384,9 @@ end;
 
 @ %def LmRestrictCollapse
 
+\begin{theorem}
+If $f\colon X\to Y$ is a bijective function of non-empty sets, then $(f^{-1})^{-1}=f$.
+\end{theorem}
 
 <<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
 Lm10:
@@ -351,46 +398,42 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
-  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
+  then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   f is one-to-one & rng f = Y implies f" is Function of Y,X
   by FUNCT_2:25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1,B1,FUNCT_2:25;
-  A3: g is bijective by A1,A2,GROUP_6:63;
-  then B2: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
+  reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
+  A3: g is bijective by A1,GROUP_6:63;
+  then A4: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
-  by A3,FUNCT_2:25;
-  then consider h being Function of X,Y such that
-  A4: h = g"
-  by A3,FUNCT_2:def 1, def 3,25;
-  A5: h is bijective by A3,A4,GROUP_6:63;
+  by FUNCT_2:25;
+  then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 1, def 3,25;
 
   for x being object st x in X holds h.x = f.x
   <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>
   then h = f by FUNCT_2:12;
-  hence (f")" = f by A2,A4;
+  hence (f")" = f;
 end;
 
 @ %def Lm10
+
+\M Proving $h(x) = f(x)$ amounts to unfolding definitions.
 
 <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>=
 proof
   let x be object;
   assume Z1: x in X;
   then reconsider x as Element of X;
-  Y <> {};
-  then consider y being object such that
-  Z3: y = f.x
+  consider y being object such that
+  Z2: y = f.x
   by FUNCT_2:5;
-  Z6: g is one-to-one & y in dom g by Z3, A2, B2;
-  f is one-to-one & x in dom f by A1, Z1,B1;
-  then Z4: x = (f").y by Z3,FUNCT_2:26;
-  then Z5: x = g.y by A2;
-  h.x = (g").x by A4
-     .= (g").(g.y) by Z4,A2
-     .= y by Z6,FUNCT_2:26;
-  then h.x = f.x by Z3;
+  Z3: g is one-to-one & y in dom g by A4, Z2;
+  f is one-to-one & x in dom f by A1, Z1, A2;
+  then Z4: x = (f").y by Z2,FUNCT_2:26
+            .= g.y;
+  h.x = (g").x
+     .= (g").(g.y) by Z4
+     .= y by Z3,FUNCT_2:26;
+  then h.x = f.x by Z2;
   hence thesis;
 end;
 
@@ -416,16 +459,11 @@ proof
   let f be Function of X,Y;
   assume A1: f is bijective;
   let y be Element of Y;
-  (rng f = Y & f is one-to-one) &
-  (f is one-to-one & rng f = Y implies f" is Function of Y,X)
-  by A1,FUNCT_2:def 3, 25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1;
-  g = f" & f is bijective by A1,A2;
-  then g is bijective by A1, GROUP_6:63;
-  then y = (g").(g.y) by A2,FUNCT_2:26
-        .= ((f")").((f").y) by A2
+  f is onto by A1;
+  then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
+  g is bijective by A1, GROUP_6:63;
+  then y = (g").(g.y) by FUNCT_2:26
+        .= ((f")").((f").y)
         .= f.((f").y) by Lm10,A1;
   hence thesis by Lm10;
 end;
@@ -465,30 +503,28 @@ end;
 
 @ %def Lm12
 
+\M Unfolding the definition of inverse functions gives us the result.
+
 <<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>=
 proof
   let y be object;
   assume Z1: y in Y;
-  then (Y <> {} & f" is Function of Y,X & f is Function) implies (f*(f")).y=f.((f").y)
-  by FUNCT_2:15;
-  Z2: Y <> {} & f is Function & g is Function of Y,X & g = f" by A2;
-  then (f*g).y=f.(g.y) by Z1,FUNCT_2:15
-             .= y by A4,A3,Z1,Z2, FUNCT_2:26
+  then (f*g).y=f.(g.y) by FUNCT_2:15
+             .= y by A2,A3,A4,Z1, FUNCT_2:26
              .= (id Y).y by Z1,FUNCT_1:18;
   hence thesis by A2;
 end;
 
 @
 
+\M Almost identical unfolding of definitions as the other case.
+
 <<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>=
 proof
   let x be object;
   assume Z1: x in X;
-  then (X <> {} & f is Function of X,Y & f" is Function) implies ((f")*f).x=(f").(f.x)
-  by FUNCT_2:15;
-  Z2: X <> {} & f is Function of X,Y & f" is Function by A2;
-  then (g*f).x = g.(f.x) by Z1,FUNCT_2:15
-              .= x by A2,Z1,Z2,A1,FUNCT_2:26
+  then (g*f).x = g.(f.x) by FUNCT_2:15
+              .= x by A1,A2,Z1,FUNCT_2:26
               .= (id X).x by Z1,FUNCT_1:18;
   hence thesis by A2;
 end;
@@ -510,15 +546,11 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
-  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
-  f is one-to-one & rng f = Y implies f" is Function of Y,X
-  by FUNCT_2:25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1,B1,FUNCT_2:25;
+  then dom f = X & rng f = Y & f is one-to-one & f is onto by FUNCT_2:def 3,def 1;
+  then reconsider g = f" as Function of Y,X by FUNCT_2:25;
   take g;
-  thus g = f" by A2;
-  thus g is bijective by A1,A2, GROUP_6:63;
+  thus g = f";
+  thus g is bijective by A1, GROUP_6:63;
 end;
 
 @ %def Lm13

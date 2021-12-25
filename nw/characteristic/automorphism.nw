@@ -100,9 +100,13 @@ for phi being Automorphism of G
 holds phi" is Automorphism of G by GROUP_6:62;
 \end{mizar}
 
-\M For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
+\begin{theorem}
+For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
 subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
 $f(\trivialSubgroup)=\trivialSubgroup$.
+\end{theorem}
+
+The proof is simply ``follow your nose''.
 
 <<Theorem: Endomorphisms preserve the trivial subgroup>>=
 theorem Th1:
@@ -122,7 +126,11 @@ reserve f for Endomorphism of G;
 
 @
 
-\M If $\phi$ is an automorphism of a group $G$, then
+\begin{theorem}
+For any automorphism $\varphi\in\Aut(G)$, we have $\varphi(\trivialSubgroup_{G})=\trivialSubgroup_{G}$.
+\end{theorem}
+
+If $\phi$ is an automorphism of a group $G$, then
 the image of the trivial subgroup under $\phi$ is a subgroup of itself
 $\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
 Theorem~[[Th1]], that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
@@ -143,19 +151,26 @@ end;
 
 @ %def Th2
 
+\begin{lemma}
+If $H\subgroup\trivialSubgroup_{G}\subgroup G$, then $H=\trivialSubgroup$.
+\end{lemma}
+
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
 Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume A1: H is Subgroup of (1).G;
-  then reconsider H as Subgroup of (1).G;
-  (1).G is Subgroup of H by GROUP_2:65;
-  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
+  assume H is Subgroup of (1).G;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
 @ %def Lm8
+
+\begin{lemma}
+For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
+$G$, we have $\varphi|_{H}\colon H\into\varphi(H)$ be an injective group morphism.
+\end{lemma}
 
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
@@ -166,62 +181,16 @@ holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   let H be Subgroup of G;
   let phi be Automorphism of G;
-::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
-  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
+  thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by Th9;
   then Ker(phi|H) = (1).G by Lm8
                  .= (1).H by GROUP_2:63;
-  then (phi|H) is one-to-one by GROUP_6:56;
-  hence thesis;
+  hence (phi|H) is one-to-one by GROUP_6:56;
 end;
 
 @ %def Lm9
-
-\begin{theorem}
-For any automorphism $\varphi\in\Aut(G)$, its inverse is also an
-automorphism $\varphi^{-1}\in\Aut(G)$.
-\end{theorem}
-
-<<Theorem: if $\varphi\in\Aut(G)$, then $\varphi^{-1}\in\Aut(G)$>>=
-theorem Th3:
-  for f being Automorphism of G
-  holds f" is Automorphism of G
-proof
-  let f be Automorphism of G;
-  set UG = the carrier of G;
-  A1: f is bijective;
-  then A2: f" is Function of UG,UG & f" is bijective by GROUP_6:63;
-  for a,b being Element of G holds (f").(a * b) = (f").a * (f").b
-  <<Proof: $\varphi^{-1}$ is multiplicative>>
-  then f" is multiplicative by GROUP_6:def 6;
-  then f" is Automorphism of G by A2;
-  hence thesis;
-end;
-
-@ %def Th3
-
-<<Proof: $\varphi^{-1}$ is multiplicative>>=
-proof
-  let a,b be Element of G;
-  consider x1 being Element of G such that
-  B1: a = f.x1
-  by GROUP_6:58,A1;
-  consider x2 being Element of G such that
-  B2: b = f.x2
-  by GROUP_6:58,A1;
-  B3: f".a = x1 & f".b = x2 by B1,B2,FUNCT_2:26;
-  (f").(a*b) = (f").((f.x1)*(f.x2)) by B1,B2
-            .= (f").(f.(x1 * x2)) by A1,FUNCT_2:26,GROUP_6:def 6
-            .= x1*x2 by A1,FUNCT_2:26
-            .= (f").a * (f").b by B3;
-  then (f").(a * b) = (f").a * (f").b;
-  hence thesis;
-end;
-
-@
-
 
 \begin{theorem}
 Let $H\subgroup G$ be a subgroup such that
@@ -437,8 +406,7 @@ proof
   Image(phi|H) = H2 by GRSOLV_1:def 3;
   phi|H is one-to-one by Lm9;
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
-  then H,phi .: H are_isomorphic by GRSOLV_1:def 3;
-  hence thesis;
+  hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
 
 @ %def Th8
@@ -562,7 +530,6 @@ proof
   let x be Element of G;
   thus (Id_G).x = x by Def3
                .= (id (the carrier of G)).x;
-  thus thesis;
 end;
 
 @ %def Th10
@@ -638,7 +605,7 @@ proof
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
   C2: f|H is one-to-one by A1, Lm9;
 
-  C3: f|H is onto Endomorphism of H
+  f|H is onto Endomorphism of H
   <<Proof: $\varphi|_{H}$ is surjective>>
   then f|H is bijective Homomorphism of H,H by C2;
   then f|H is Automorphism of H;
@@ -660,9 +627,8 @@ that the claim [[f is onto]] is different than [[f is onto Homomorphism of G1,G2
 <<Proof: $\varphi|_{H}$ is surjective>>=
 proof
   set UH = the carrier of H;
-  B1: f|H is Function of UH,UH by C1;
-  rng(f|H) = the carrier of H by GROUP_6:44, A1;
-  then f|H is onto Function of UH,UH by B1,FUNCT_2:def 3;
+  f|H is Function of UH,UH & rng(f|H) = the carrier of H by C1, GROUP_6:44, A1;
+  then f|H is onto Function of UH,UH by FUNCT_2:def 3;
   then f|H is onto Homomorphism of H,H by C1;
   hence thesis;
 end;

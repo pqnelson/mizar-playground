@@ -72,8 +72,6 @@ proof
   hence f .: X = rng f by TARSKI:2
               .= Y by A1;
 end;
-proof end;
-::> *396
 
 registration
   let X;
@@ -152,16 +150,34 @@ end;
 LmEpi:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
-  st Image(f) = G2
+  st the multMagma of Image(f) = the multMagma of G2
   holds f is onto
 proof
   let G1,G2 be Group;
   let f be Homomorphism of G1,G2;
-  assume A1: Image(f) = G2;
+  assume A1: the multMagma of Image(f) = the multMagma of G2;
   then rng f = the carrier of Image f by GROUP_6:44
             .= the carrier of G2 by A1;
   then f is onto by FUNCT_2:def 3;
   hence thesis;
+end;
+
+LmEpi2:
+  for G1,G2 being Group
+  for f being Homomorphism of G1,G2
+  st f is onto
+  holds the multMagma of Image(f) = the multMagma of G2
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1,G2;
+  assume A1: f is onto;
+  reconsider GG = Image(f) as strict Group;
+  A2: the carrier of G2 = rng(f) by A1
+                       .= the carrier of Image(f) by GROUP_6:44
+                       .= the carrier of GG;
+  the multF of GG = (the multF of G2)||(the carrier of G2) by A2,GROUP_2:def 5
+                 .= the multF of G2;
+  hence the multMagma of Image(f) = the multMagma of G2 by A2;
 end;
 
 LmRestrictCollapse:
@@ -194,43 +210,37 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
-  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
+  then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   f is one-to-one & rng f = Y implies f" is Function of Y,X
   by FUNCT_2:25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1,B1,FUNCT_2:25;
-  A3: g is bijective by A1,A2,GROUP_6:63;
-  then B2: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
+  reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
+  A3: g is bijective by A1,GROUP_6:63;
+  then A4: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
-  by A3,FUNCT_2:25;
-  then consider h being Function of X,Y such that
-  A4: h = g"
-  by A3,FUNCT_2:def 1, def 3,25;
-  A5: h is bijective by A3,A4,GROUP_6:63;
+  by FUNCT_2:25;
+  then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 1, def 3,25;
 
   for x being object st x in X holds h.x = f.x
   proof
     let x be object;
     assume Z1: x in X;
     then reconsider x as Element of X;
-    Y <> {};
-    then consider y being object such that
-    Z3: y = f.x
+    consider y being object such that
+    Z2: y = f.x
     by FUNCT_2:5;
-    Z6: g is one-to-one & y in dom g by Z3, A2, B2;
-    f is one-to-one & x in dom f by A1, Z1,B1;
-    then Z4: x = (f").y by Z3,FUNCT_2:26;
-    then Z5: x = g.y by A2;
-    h.x = (g").x by A4
-       .= (g").(g.y) by Z4,A2
-       .= y by Z6,FUNCT_2:26;
-    then h.x = f.x by Z3;
+    Z3: g is one-to-one & y in dom g by A4, Z2;
+    f is one-to-one & x in dom f by A1, Z1, A2;
+    then Z4: x = (f").y by Z2,FUNCT_2:26
+              .= g.y;
+    h.x = (g").x
+       .= (g").(g.y) by Z4
+       .= y by Z3,FUNCT_2:26;
+    then h.x = f.x by Z2;
     hence thesis;
   end;
 
   then h = f by FUNCT_2:12;
-  hence (f")" = f by A2,A4;
+  hence (f")" = f;
 end;
 
 Lm11:
@@ -244,16 +254,11 @@ proof
   let f be Function of X,Y;
   assume A1: f is bijective;
   let y be Element of Y;
-  (rng f = Y & f is one-to-one) &
-  (f is one-to-one & rng f = Y implies f" is Function of Y,X)
-  by A1,FUNCT_2:def 3, 25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1;
-  g = f" & f is bijective by A1,A2;
-  then g is bijective by A1, GROUP_6:63;
-  then y = (g").(g.y) by A2,FUNCT_2:26
-        .= ((f")").((f").y) by A2
+  f is onto by A1;
+  then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
+  g is bijective by A1, GROUP_6:63;
+  then y = (g").(g.y) by FUNCT_2:26
+        .= ((f")").((f").y)
         .= f.((f").y) by Lm10,A1;
   hence thesis by Lm10;
 end;
@@ -267,15 +272,11 @@ proof
   let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
-  then B1: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
-  f is one-to-one & rng f = Y implies f" is Function of Y,X
-  by FUNCT_2:25;
-  then consider g being Function of Y,X such that
-  A2: g = f"
-  by A1,B1,FUNCT_2:25;
+  then dom f = X & rng f = Y & f is one-to-one & f is onto by FUNCT_2:def 3,def 1;
+  then reconsider g = f" as Function of Y,X by FUNCT_2:25;
   take g;
-  thus g = f" by A2;
-  thus g is bijective by A1,A2, GROUP_6:63;
+  thus g = f";
+  thus g is bijective by A1, GROUP_6:63;
 end;
 
 Lm12:
@@ -296,11 +297,8 @@ proof
   proof
     let y be object;
     assume Z1: y in Y;
-    then (Y <> {} & f" is Function of Y,X & f is Function) implies (f*(f")).y=f.((f").y)
-    by FUNCT_2:15;
-    Z2: Y <> {} & f is Function & g is Function of Y,X & g = f" by A2;
-    then (f*g).y=f.(g.y) by Z1,FUNCT_2:15
-               .= y by A4,A3,Z1,Z2, FUNCT_2:26
+    then (f*g).y=f.(g.y) by FUNCT_2:15
+               .= y by A2,A3,A4,Z1,FUNCT_2:26
                .= (id Y).y by Z1,FUNCT_1:18;
     hence thesis by A2;
   end;
@@ -311,11 +309,8 @@ proof
   proof
     let x be object;
     assume Z1: x in X;
-    then (X <> {} & f is Function of X,Y & f" is Function) implies ((f")*f).x=(f").(f.x)
-    by FUNCT_2:15;
-    Z2: X <> {} & f is Function of X,Y & f" is Function by A2;
-    then (g*f).x = g.(f.x) by Z1,FUNCT_2:15
-                .= x by A2,Z1,Z2,A1,FUNCT_2:26
+    then (g*f).x = g.(f.x) by FUNCT_2:15
+                .= x by A1,A2,Z1,FUNCT_2:26
                 .= (id X).x by Z1,FUNCT_1:18;
     hence thesis by A2;
   end;
@@ -383,7 +378,6 @@ proof
   let f be Homomorphism of G1,G2;
   let H be Subgroup of G1;
   A1: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
-  Ker(f) is Subgroup of G1;
   for g being Element of G1
   st g in Ker(f|H)
   holds g in Ker(f)
@@ -408,10 +402,8 @@ Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
 multMagma of H = the multMagma of (1).G
 proof
   let H be Subgroup of G;
-  assume A1: H is Subgroup of (1).G;
-  then reconsider H as Subgroup of (1).G;
-  (1).G is Subgroup of H by GROUP_2:65;
-  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
+  assume H is Subgroup of (1).G;
+  then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
@@ -422,15 +414,13 @@ holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   let H be Subgroup of G;
   let phi be Automorphism of G;
-::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
-  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
+  thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by Th9;
   then Ker(phi|H) = (1).G by Lm8
                  .= (1).H by GROUP_2:63;
-  then (phi|H) is one-to-one by GROUP_6:56;
-  hence thesis;
+  hence (phi|H) is one-to-one by GROUP_6:56;
 end;
 
 theorem Th6:
@@ -544,8 +534,7 @@ proof
   Image(phi|H) = H2 by GRSOLV_1:def 3;
   phi|H is one-to-one by Lm9;
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
-  then H,phi .: H are_isomorphic by GRSOLV_1:def 3;
-  hence thesis;
+  hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
 
 definition :: Def3
@@ -579,7 +568,6 @@ proof
   let x be Element of G;
   thus (Id_G).x = x by Def3
                .= (id (the carrier of G)).x;
-  thus thesis;
 end;
 
 Lm1: Id_G is one-to-one
@@ -612,16 +600,14 @@ proof
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
   C2: f|H is one-to-one by A1, Lm9;
 
-  C3: f|H is onto Endomorphism of H
+  f|H is onto Endomorphism of H
   proof
     set UH = the carrier of H;
-    B1: f|H is Function of UH,UH by C1;
-    rng(f|H) = the carrier of H by GROUP_6:44, A1;
-    then f|H is onto Function of UH,UH by B1,FUNCT_2:def 3;
+    f|H is Function of UH,UH & rng(f|H) = the carrier of H by C1, GROUP_6:44, A1;
+    then f|H is onto Function of UH,UH by FUNCT_2:def 3;
     then f|H is onto Homomorphism of H,H by C1;
     hence thesis;
   end;
-
   then f|H is bijective Homomorphism of H,H by C2;
   then f|H is Automorphism of H;
   hence thesis;
@@ -673,19 +659,10 @@ proof
     assume A1: f in Aut G;
     then reconsider f as Endomorphism of G by AUTGROUP:def 1;
     f is bijective by A1,AUTGROUP:def 1;
-    then f is Automorphism of G;
     hence thesis;
   end;
 
-  thus f is Automorphism of G implies f in Aut G
-  proof
-    assume f is Automorphism of G;
-    then reconsider f as Automorphism of G;
-    f is bijective;
-    then f in Aut G by AUTGROUP:def 1;
-    hence thesis;
-  end;
-
+  thus f is Automorphism of G implies f in Aut G by AUTGROUP:def 1;
   thus thesis;
 end;
 
@@ -697,7 +674,6 @@ proof
   let G be strict Group;
   let f be Element of InnAut G;
   f is Element of Aut G by AUTGROUP:12;
-  then f in Aut G;
   hence f is Automorphism of G by Th13;
 end;
 
@@ -709,16 +685,15 @@ theorem Th14:
 proof
   let G be strict Group;
   let f be object;
+  A1: f is Automorphism of G implies f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   thus (f in InnAut G) implies (f is inner Automorphism of G)
   proof
-    assume A1: f in InnAut G;
-    then f is Automorphism of G by Lm4;
-    then reconsider f as Automorphism of G;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then consider a being Element of G such that
-    A2: for x being Element of G holds f.x = x |^ a
-    by A1,AUTGROUP:def 4;
-    f is inner Automorphism of G by Def5,A2;
+    assume B1: f in InnAut G;
+    then reconsider f as Automorphism of G by Lm4;
+    consider a being Element of G such that
+    B2: for x being Element of G holds f.x = x |^ a
+    by A1,B1,AUTGROUP:def 4;
+    f is inner Automorphism of G by Def5,B2;
     hence thesis;
   end;
 
@@ -730,8 +705,7 @@ proof
     then consider a being Element of G such that
     B2: for x being Element of G holds f.x = x |^ a
     by B1,Def5;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then f in InnAut G by B2,AUTGROUP:def 4;
+    f in InnAut G by A1,B2,AUTGROUP:def 4;
     hence thesis;
   end;
 
@@ -754,9 +728,8 @@ C1: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
-    then Z1: f.h = (f|H).h by Lm3;
-    f.h = h |^ a by A1;
-    hence (f|H).h = h |^ a by Z1;
+    hence (f|H).h = f.h by Lm3
+                 .= h |^ a by A1;
   end;
 
 C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
@@ -764,38 +737,32 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
     let y be Element of G;
     assume y in Image(f|H);
     then consider h being Element of H such that
-    AA1: (f|H).h = y by GROUP_6:45;
-    h is Element of G by GROUP_2:42;
-    then reconsider h as Element of G;
-    AA2: h in H by STRUCT_0:def 5;
-    then (f|H).h = h |^ a by C1;
-    then y = h |^ a by AA1;
-    then y = h |^ a & h in H by AA2;
-    then y in H |^ a by GROUP_3:58;
-    hence thesis;
+    B1: (f|H).h = y by GROUP_6:45;
+    reconsider h as Element of G by GROUP_2:42;
+    B2: h in H by STRUCT_0:def 5;
+    then h |^ a = (f|H).h by B2,C1
+               .= y by B1;
+    hence y in H |^ a by B2,GROUP_3:58;
   end;
 
 C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   proof
     let y be Element of G;
     assume y in H |^ a;
-    then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
     then consider g being Element of G such that
-    AB1:    y=g|^a and
-    AB2:    g in H;
+    B1:    y=g|^a and
+    B2:    g in H
+    by GROUP_3:58;
 
-  AB3:  (f|H).g = f.g by Lm3,AB2
+    B3: (f|H).g = f.g by Lm3,B2
                .= g |^ a by A1
-               .= y by AB1;
-    reconsider g as Element of H by AB2,LmSubgroupElt;
-    reconsider fH = (f|H) as Homomorphism of H,G;
-    fH.g = y by AB3;
-    hence y in Image(f|H) by GROUP_6:45;
+               .= y by B1;
+    g is Element of H by B2,LmSubgroupElt;
+    hence y in Image(f|H) by B3,GROUP_6:45;
   end;
 
   for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
-  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
-  hence thesis;
+  hence (H |^ a) = Image(f|H) by GROUP_2:def 6;
 end;
 
 theorem Th16:
@@ -807,35 +774,19 @@ proof
   let a be Element of G;
   let f be Endomorphism of G;
   assume A1: for x being Element of G holds f.x = x |^ a;
-C1:  for x being Element of G holds x in Ker f implies x in (1).G
+  for x being Element of G holds x in Ker f implies x in (1).G
   proof
     let x be Element of G;
     assume x in Ker f;
-    then f.x = 1_G by GROUP_6:41;
-    then x |^ a = 1_G by A1;
-    then B1: x = 1_G by A1,GROUP_3:18,GROUP_6:41;
-    the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1;
-    then x in the carrier of (1).G by B1;
-    then x in (1).G by STRUCT_0:def 5;
-    hence thesis;
+    then 1_G = f.x by GROUP_6:41
+            .= x |^ a by A1;
+    then x = 1_G by GROUP_3:18;
+    hence x in (1).G by GROUP_2:46;
   end;
+  then B2: Ker f is Subgroup of (1).G by GROUP_2:58;
 
-
-C2:  for x being Element of G holds x in (1).G implies x in Ker f
-  proof
-    let x be Element of G;
-    assume x in (1).G;
-    then x is Element of (1).G by LmSubgroupElt;
-    then x in the carrier of (1).G;
-    then x in {1_G} by GROUP_2:def 7;
-    then x = 1_G by TARSKI:def 1;
-    then f.x = 1_G by GROUP_6:31;
-    then x in Ker f by GROUP_6:41;
-    hence thesis;
-  end;
-
-  thus Ker f = (1).G by C1,C2,GROUP_2:60;
+  B1: (1).G is Subgroup of Ker f by GROUP_2:65;
+  thus Ker f = (1).G by B1,B2,GROUP_2:55;
 end;
 
 theorem Th17:
@@ -846,35 +797,30 @@ theorem Th17:
 proof
   let a be Element of G;
   let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
+  assume A1: for x being Element of G holds f.x = x |^ a;
   then Ker f = (1).G by Th16;
-  then
-C0: f is one-to-one by GROUP_6:56;
-C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
+  then A2: f is one-to-one by GROUP_6:56;
+  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   proof
     deffunc F(Element of G) = ($1) |^ a";
     consider fInv be Function of the carrier of G, the carrier of G such that
-  A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
-    fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-  A2: for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
-      proof
-        let x1,x2 be Element of G;
-        A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
-        fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
-                      .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
-                      .= fInv.x1 * fInv.x2 by A21;
-        hence thesis;
-      end;
-      then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
-      then fInv is Endomorphism of G;
-      then reconsider fInv as Endomorphism of G;
+    A3: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
+    for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
+    proof
+      let x1,x2 be Element of G;
+      A4: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A3;
+      hence fInv.(x1 * x2) = (x1 * x2) |^ a" by A3
+                          .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
+                          .= fInv.x1 * fInv.x2 by A4;
+    end;
+    then reconsider fInv as Endomorphism of G by GROUP_3:23, GROUP_6:def 6;
 
     for x being Element of G holds (f*fInv).x = (id the carrier of G).x
     proof
       let x be Element of G;
       (f * fInv).x = f.(fInv.x) by FUNCT_2:15
-                  .= f.(x |^ a") by A1
-                  .= (x |^ a") |^ a by A0
+                  .= f.(x |^ a") by A3
+                  .= (x |^ a") |^ a by A1
                   .= x |^ (a" * a) by GROUP_3:24
                   .= x |^ 1_G by GROUP_1:def 5
                   .= x by GROUP_3:19
@@ -882,14 +828,13 @@ C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
       hence thesis;
     end;
     then f*fInv = id the carrier of G by FUNCT_1:2;
-
     hence thesis;
   end;
 
 
   then rng f = the carrier of G by FUNCT_2:18;
   then f is onto by GROUP_6:58;
-  then f is bijective by C0;
+  then f is bijective by A2;
   then f is Automorphism of G;
   hence thesis;
 end;
@@ -904,8 +849,7 @@ proof
   let f be Endomorphism of G;
   assume A0: for x being Element of G holds f.x = x |^ a;
   then f is Automorphism of G by Th17;
-  then f is inner Automorphism of G by A0,Def5;
-  hence thesis;
+  hence f is inner Automorphism of G by A0,Def5;
 end;
 
 theorem Th19:
@@ -916,7 +860,7 @@ proof
   let a be Element of G;
   deffunc F(Element of G) = ($1) |^ a;
   consider f be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
+  A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
   for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
   proof
@@ -930,9 +874,9 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
   then f is Endomorphism of G;
   then reconsider f as Endomorphism of G;
-C1: f is inner Automorphism of G by A1,Th18;
-  for x being Element of G holds f.x = x |^ a by A1;
-  hence thesis by C1;
+  for x being Element of G holds f.x = x |^ a & f is inner Automorphism of G
+  by A1,Th18;
+  hence thesis;
 end;
 
 theorem Th20:
@@ -940,21 +884,20 @@ theorem Th20:
   holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
 proof
   let H be strict Subgroup of G;
-  C1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
+  A1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
   proof
-    assume A0: H is normal;
+    assume B1: H is normal;
     let f be inner Automorphism of G;
     consider a being Element of G such that
-    A1: for x being Element of G holds f.x = x |^ a
+    B2: for x being Element of G holds f.x = x |^ a
     by Def5;
-    A2: Image(f|H) = H |^ a by A1,Th15;
-    H |^ a = the multMagma of H by A0,GROUP_3:def 13
-          .= H by GROUP_2:def 6;
-    then Image(f|H)=H by A2;
-    hence thesis;
+    Image(f|H) = H |^ a by B2,Th15
+              .= the multMagma of H by B1,GROUP_3:def 13
+              .= H by GROUP_2:def 6;
+    hence Image(f|H)=H;
   end;
 
-  C2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
+  A2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
       implies contradiction
   proof
     assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
@@ -969,7 +912,7 @@ proof
     hence contradiction by B1,B2;
   end;
 
-  thus thesis by C1,C2;
+  thus thesis by A1,A2;
 end;
 
 
@@ -1010,6 +953,7 @@ A1:  for f being Automorphism of G
   then (1).G is characteristic by Def9;
   hence thesis;
 end;
+
 
 
 theorem Th21:
@@ -1336,4 +1280,3 @@ A3: for phi being Automorphism of G
   end;
   hence Z is characteristic Subgroup of G by Th27;
 end;
-::> 396: Formula expected

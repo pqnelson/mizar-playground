@@ -121,8 +121,7 @@ proof
   let f be object;
   thus f in Aut G implies f is Automorphism of G
   <<Proof $f\in\aut(G)\implies f$ is [[Automorphism of G]]>>
-  thus f is Automorphism of G implies f in Aut G
-  <<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>
+  thus f is Automorphism of G implies f in Aut G by AUTGROUP:def 1;
   thus thesis;
 end;
 
@@ -137,25 +136,11 @@ proof
   assume A1: f in Aut G;
   then reconsider f as Endomorphism of G by AUTGROUP:def 1;
   f is bijective by A1,AUTGROUP:def 1;
-  then f is Automorphism of G;
   hence thesis;
 end;
 
 @
 
-\N{Proof backwards direction} The backwards direction is nearly
-identical to the forwards direction proof.
-
-<<Proof $f\in\aut(G)\impliedby f$ is [[Automorphism of G]]>>=
-proof
-  assume f is Automorphism of G;
-  then reconsider f as Automorphism of G;
-  f is bijective;
-  then f in Aut G by AUTGROUP:def 1;
-  hence thesis;
-end;
-
-@
 
 \N{Inner automorphisms are inner automorphisms}
 We can relate the notion of an [[inner Automorphism of G]] with elements
@@ -172,6 +157,7 @@ theorem Th14:
 proof
   let G be strict Group;
   let f be object;
+  A1: f is Automorphism of G implies f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   thus (f in InnAut G) implies (f is inner Automorphism of G)
   <<Proof $f$ is in [[InnAut G]] $\implies$ ($f$ is inner automorphism)>>
   thus (f is inner Automorphism of G) implies (f in InnAut G)
@@ -187,14 +173,13 @@ Automorphism of $G$ thanks to our handy-dandy lemma.
 
 <<Proof $f$ is in [[InnAut G]] $\implies$ ($f$ is inner automorphism)>>=
 proof
-  assume A1: f in InnAut G;
+  assume B1: f in InnAut G;
   then f is Automorphism of G by Lm4;
   then reconsider f as Automorphism of G;
-  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-  then consider a being Element of G such that
-  A2: for x being Element of G holds f.x = x |^ a
-  by A1,AUTGROUP:def 4;
-  f is inner Automorphism of G by Def5,A2;
+  consider a being Element of G such that
+  B2: for x being Element of G holds f.x = x |^ a
+  by A1,B1,AUTGROUP:def 4;
+  f is inner Automorphism of G by Def5,B2;
   hence thesis;
 end;
 
@@ -212,8 +197,7 @@ proof
   then consider a being Element of G such that
   B2: for x being Element of G holds f.x = x |^ a
   by B1,Def5;
-  f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-  then f in InnAut G by B2,AUTGROUP:def 4;
+  f in InnAut G by A1,B2,AUTGROUP:def 4;
   hence thesis;
 end;
 
@@ -233,7 +217,6 @@ proof
   let G be strict Group;
   let f be Element of InnAut G;
   f is Element of Aut G by AUTGROUP:12;
-  then f in Aut G;
   hence f is Automorphism of G by Th13;
 end;
 
@@ -263,15 +246,14 @@ C1: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
-    then Z1: f.h = (f|H).h by Lm3;
-    f.h = h |^ a by A1;
-    hence (f|H).h = h |^ a by Z1;
+    hence (f|H).h = f.h by Lm3
+                 .= h |^ a by A1;
   end;
 
 C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
   <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>
 C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
-  <<Proof $\forall y\in G, y \in H^{a}\implies y\in f(H)$>>
+  <<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>
   for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
   then (H |^ a) = Image(f|H) by GROUP_2:def 6;
   hence thesis;
@@ -279,41 +261,40 @@ end;
 
 @ %def Th15
 
+\M The forward direction amounts to unwrapping the definition of $f(h) = h^{a}$.
+
 <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>=
 proof
   let y be Element of G;
   assume y in Image(f|H);
   then consider h being Element of H such that
-  AA1: (f|H).h = y by GROUP_6:45;
-  h is Element of G by GROUP_2:42;
-  then reconsider h as Element of G;
-  AA2: h in H by STRUCT_0:def 5;
-  then (f|H).h = h |^ a by C1;
-  then y = h |^ a by AA1;
-  then y = h |^ a & h in H by AA2;
-  then y in H |^ a by GROUP_3:58;
-  hence thesis;
+  B1: (f|H).h = y by GROUP_6:45;
+  reconsider h as Element of G by GROUP_2:42;
+  B2: h in H by STRUCT_0:def 5;
+  then h |^ a = (f|H).h by B2,C1
+             .= y by B1;
+  hence y in H |^ a by B2,GROUP_3:58;
 end;
 
 @
 
+\M The proof in the backwards direction begins with $y = g^{a}$ for some
+$g\in G$, and showing $y = f(g)$, which amounts to ``plug it in''.
 
-<<Proof $\forall y\in G, y \in H^{a}\implies y\in f(H)$>>=
+<<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>=
 proof
   let y be Element of G;
   assume y in H |^ a;
-  then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
   then consider g being Element of G such that
-  AB1:    y=g|^a and
-  AB2:    g in H;
+  B1:    y=g|^a and
+  B2:    g in H
+  by GROUP_3:58;
 
-AB3:  (f|H).g = f.g by Lm3,AB2
+  B3: (f|H).g = f.g by Lm3,B2
              .= g |^ a by A1
-             .= y by AB1;
-  reconsider g as Element of H by AB2,LmSubgroupElt;
-  reconsider fH = (f|H) as Homomorphism of H,G;
-  fH.g = y by AB3;
-  hence y in Image(f|H) by GROUP_6:45;
+             .= y by B1;
+  g is Element of H by B2,LmSubgroupElt;
+  hence y in Image(f|H) by B3,GROUP_6:45;
 end;
 
 @
@@ -337,43 +318,28 @@ proof
   let a be Element of G;
   let f be Endomorphism of G;
   assume A1: for x being Element of G holds f.x = x |^ a;
-C1:  for x being Element of G holds x in Ker f implies x in (1).G
+  for x being Element of G holds x in Ker f implies x in (1).G
   <<Proof $\ker(f)\subset\trivialSubgroup$>>
+  then A2: Ker f is Subgroup of (1).G by GROUP_2:58;
 
-C2:  for x being Element of G holds x in (1).G implies x in Ker f
-  <<Proof $\trivialSubgroup\subset\ker(f)$>>
-  thus Ker f = (1).G by C1,C2,GROUP_2:60;
+  A3: (1).G is Subgroup of Ker f by GROUP_2:65;
+  thus Ker f = (1).G by A2,A3,GROUP_2:55;
 end;
 
 @ %def Th16
 
-<<Proof $\trivialSubgroup\subset\ker(f)$>>=
-proof
-  let x be Element of G;
-  assume x in (1).G;
-  then x is Element of (1).G by LmSubgroupElt;
-  then x in the carrier of (1).G;
-  then x in {1_G} by GROUP_2:def 7;
-  then x = 1_G by TARSKI:def 1;
-  then f.x = 1_G by GROUP_6:31;
-  then x in Ker f by GROUP_6:41;
-  hence thesis;
-end;
-
-@
+\M Let $x\in\ker(f)$ be arbitrary, then $f(x)=1_{G}$. But this means $x=1_{G}$
+(according to \verb#GROUP_3:18#). Thus $x\in\trivialSubgroup_{G}$ by
+definition of the trivial subgroup.
 
 <<Proof $\ker(f)\subset\trivialSubgroup$>>=
 proof
   let x be Element of G;
   assume x in Ker f;
-  then f.x = 1_G by GROUP_6:41;
-  then x |^ a = 1_G by A1;
-  then B1: x = 1_G by A1,GROUP_3:18,GROUP_6:41;
-  the carrier of (1).G = {1_G} by GROUP_2:def 7;
-  then 1_G in the carrier of (1).G by TARSKI:def 1;
-  then x in the carrier of (1).G by B1;
-  then x in (1).G by STRUCT_0:def 5;
-  hence thesis;
+  then 1_G = f.x by GROUP_6:41
+          .= x |^ a by A1;
+  then x = 1_G by GROUP_3:18;
+  hence x in (1).G by GROUP_2:46;
 end;
 
 @
@@ -393,16 +359,15 @@ theorem Th17:
 proof
   let a be Element of G;
   let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
+  assume A1: for x being Element of G holds f.x = x |^ a;
   then Ker f = (1).G by Th16;
-  then
-C0: f is one-to-one by GROUP_6:56;
-C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
+  then A2: f is one-to-one by GROUP_6:56;
+  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   <<Proof an endomorphism $f^{-1}$ exists>>
 
   then rng f = the carrier of G by FUNCT_2:18;
   then f is onto by GROUP_6:58;
-  then f is bijective by C0;
+  then f is bijective by A2;
   then f is Automorphism of G;
   hence thesis;
 end;
@@ -417,9 +382,8 @@ detail.
 proof
   deffunc F(Element of G) = ($1) |^ a";
   consider fInv be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
-  fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-A2: <<Establish $f^{-1}$ is an Endomorphism>>
+  A3: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
+  <<Establish $f^{-1}$ is an Endomorphism>>
   <<Establish $f^{-1}$ is the inverse function of $f$>>
   hence thesis;
 end;
@@ -436,8 +400,8 @@ for x being Element of G holds (f*fInv).x = (id the carrier of G).x
 proof
   let x be Element of G;
   (f * fInv).x = f.(fInv.x) by FUNCT_2:15
-              .= f.(x |^ a") by A1
-              .= (x |^ a") |^ a by A0
+              .= f.(x |^ a") by A3
+              .= (x |^ a") |^ a by A1
               .= x |^ (a" * a) by GROUP_3:24
               .= x |^ 1_G by GROUP_1:def 5
               .= x by GROUP_3:19
@@ -457,10 +421,10 @@ been done in [[GROUP_3]].
 for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
 proof
   let x1,x2 be Element of G;
-  A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
-  fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
+  A4: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A3;
+  fInv.(x1 * x2) = (x1 * x2) |^ a" by A3
                 .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
-                .= fInv.x1 * fInv.x2 by A21;
+                .= fInv.x1 * fInv.x2 by A4;
   hence thesis;
 end;
 then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
@@ -484,10 +448,9 @@ theorem Th18:
 proof
   let a be Element of G;
   let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
+  assume A1: for x being Element of G holds f.x = x |^ a;
   then f is Automorphism of G by Th17;
-  then f is inner Automorphism of G by A0,Def5;
-  hence thesis;
+  hence f is inner Automorphism of G by A1,Def5;
 end;
 
 @ %def Th18
@@ -523,8 +486,8 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
   then f is Endomorphism of G;
   then reconsider f as Endomorphism of G;
-C1: f is inner Automorphism of G by A1,Th18;
-  for x being Element of G holds f.x = x |^ a by A1;
+  for x being Element of G holds f.x = x |^ a & f is inner Automorphism of G
+  by A1,Th18;
   hence thesis by C1;
 end;
 
@@ -549,9 +512,12 @@ theorem Th20:
   holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
 proof
   let H be strict Subgroup of G;
+  A1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
   <<Proof: normal implies fixed by inner automorphisms>>
+  A2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
+  implies contradiction
   <<Proof by contradiction: fixed by inner automorphisms implies normal>>
-  thus thesis by C1,C2;
+  thus thesis by A1,A2;
 end;
 
 @ %def Th20
@@ -566,18 +532,16 @@ $N\normalSubgroup G$ is [[strict]] normal implies $K\normalSubgroup G$.''
 \end{remark}
 
 <<Proof: normal implies fixed by inner automorphisms>>=
-C1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
 proof
-  assume A0: H is normal;
+  assume B1: H is normal;
   let f be inner Automorphism of G;
   consider a being Element of G such that
-  A1: for x being Element of G holds f.x = x |^ a
+  B2: for x being Element of G holds f.x = x |^ a
   by Def5;
-  A2: Image(f|H) = H |^ a by A1,Th15;
-  H |^ a = the multMagma of H by A0,GROUP_3:def 13
-        .= H by GROUP_2:def 6;
-  then Image(f|H)=H by A2;
-  hence thesis;
+  Image(f|H) = H |^ a by B2,Th15
+            .= the multMagma of H by B1,GROUP_3:def 13
+            .= H by GROUP_2:def 6;
+  hence Image(f|H)=H;
 end;
 
 @
@@ -588,8 +552,6 @@ Q)\implies\bot$. The proof we offer is about as satisfying as any other
 proof by contradiction.
 
 <<Proof by contradiction: fixed by inner automorphisms implies normal>>=
-C2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
-    implies contradiction
 proof
   assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
   assume not H is normal;
