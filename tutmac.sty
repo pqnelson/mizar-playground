@@ -119,25 +119,34 @@
 
 % theorems
 %\swapnumbers
-\theoremstyle{theoremstyle}
-\newtheorem{theorem}{Theorem}[section]
+
+\numberwithin{section}{chapter}
+\numberwithin{equation}{chapter}
+\def\th@remarkstyle{%
+  \thm@headfont{\scshape}%
+  \textrm % body font
+}
+% \theoremstyle{theoremstyle}
+\newtheorem{theorem}{Theorem}[chapter]%[section]
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{exercise}[theorem]{Exercise}
 
-\theoremstyle{remarkstyle}
+\theoremstyle{remark}
 \newtheorem{remark}{Remark}[theorem]
+%\newtheorem{remark}[theorem]{Remark}
 \newtheorem{note}[theorem]{Note}
 
-\theoremstyle{definitionstyle}
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{registration}[theorem]{Registration}
 \newtheorem{reserve}[theorem]{Reserve}
-\newtheorem{voc}[remark]{Vocabular}
+\newtheorem{voc}[remark]{Vocabulary}
+%\newtheorem{voc}[theorem]{Vocabulary}
 
-\renewcommand\thetheorem{\thechapter.\thesection.\arabic{theorem}}
+%\%renewcommand\thetheorem{\thechapter.\thesection.\arabic{theorem}}
 
 %%% Dangerous bend environments
 \font\manual=manfnt
