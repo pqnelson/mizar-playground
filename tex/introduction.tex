@@ -117,10 +117,11 @@ proof
   :: proof of Phi
 end;
 \end{mizar}
+
 This corresponds to the natural deduction rule of inference for
 $\Longrightarrow$-introduction:
 \begin{equation}
-  \infer[\mathtt{assume}~\Psi]{\Gamma\vdash\Psi\implies\Phi}{\Gamma,\Psi\vdash\Phi}.
+  \vcenter{\infer[\mathtt{assume}~\Psi]{\Gamma\vdash\Psi\implies\Phi}{\Gamma,\Psi\vdash\Phi}}.
 \end{equation}
 Remember, we read this from bottom to top, so if we want to prove
 the claim $\Psi\implies\Phi$ (having established the results $\Gamma$),
@@ -198,8 +199,8 @@ statements (referring to labels~\S\ref{par:introduction:referring-to-labels}).
 
 This corresponds to the $\land$-introduction rule in natural deduction:
 \begin{equation}
-  \infer[\mathtt{thus}~\Phi]{\Gamma\vdash\Phi\land\Psi}{
-    \Gamma\vdash\Phi &\qquad \Gamma\vdash\Psi}
+  \vcenter{\infer[\mathtt{thus}~\Phi]{\Gamma\vdash\Phi\land\Psi}{
+    \Gamma\vdash\Phi &\qquad \Gamma\vdash\Psi}}
 \end{equation}
 where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
 and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
@@ -231,7 +232,7 @@ end;
 
 This corresponds to the inference rule
 \begin{equation}
-\infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}
+\vcenter{\infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}}
 \end{equation}
 
 \subsection{Consider: $\exists$-elimination}\index{Consider@\texttt{consider}}
@@ -246,12 +247,12 @@ proof
   :: proof of Phi involving x
   thus Phi by ...;
 end;
-\end{mizar}
+\end{mizar}\medskip
 This corresponds to the inference rule:
 \begin{equation}
-\infer[\mathtt{consider}~x~\mathtt{such~that}~\Psi(x)]{\Gamma\vdash\Phi}{%
+\vcenter{\infer[\mathtt{consider}~x~\mathtt{such~that}~\Psi(x)]{\Gamma\vdash\Phi}{%
   \Gamma\vdash\exists x,\Psi(x)
-  &\qquad\Gamma,x,\Psi(x)\vdash\Phi}
+  &\qquad\Gamma,x,\Psi(x)\vdash\Phi}}
 \end{equation}
 The justification for this step refers to the derivation of the upper
 left subgoal.
@@ -271,7 +272,7 @@ end;
 \end{mizar}
 This corresponds to the natural deduction rule of inference:
 \begin{equation}
-  \infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}.
+  \vcenter{\infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}}.
 \end{equation}
 
 \subsection{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
@@ -296,11 +297,11 @@ end;
 \end{mizar}
 This corresponds to the natural deduction rule
 \begin{equation}
-  \infer[\mathtt{per~cases}]{\Gamma\vdash \Phi}{%
+  \vcenter{\infer[\mathtt{per~cases}]{\Gamma\vdash \Phi}{%
     \Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}
     & \qquad\Gamma,\Psi_{1}\vdash\Phi
     & \dots
-    & \Gamma,\Psi_{n}\vdash\Phi}
+    & \Gamma,\Psi_{n}\vdash\Phi}}
 \end{equation}
 Here the justification cited in the ``\verb#per cases by...#'' is the
 label for the upper-left inference, that $\Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}$.
