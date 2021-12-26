@@ -1,3 +1,14 @@
+:: Characteristic Subgroups.
+::  by Alex Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
+
 environ
 
  vocabularies MOD_4, TMP, MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1,
@@ -5,29 +16,28 @@ environ
    GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6, BINOP_1, BINOP_2,
    ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP , NEWTON, PRE_TOPC, GROUP_3 ;
 
-constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-  RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS , BINOP_1,
-  BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2, GROUP_3,
-  GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP;
+ constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS , BINOP_1,
+   BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2, GROUP_3,
+   GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP ;
 
  notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS, BINOP_1,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS , BINOP_1,
    BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2, GROUP_3,
    GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP;
 
- registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2 ,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
-
  requirements BOOLE, SUBSET;
  definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, AUTGROUP;
  equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0;
  expansions BINOP_1, FUNCT_2;
 
  theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2,
-   ZFMISC_1, XBOOLE_0, RELAT_1, GROUP_1, GROUP_2, GROUP_3, GROUP_5,
-   GROUP_6, REALSET1, STRUCT_0, GRSOLV_1, AUTGROUP ;
-
+   ZFMISC_1, XBOOLE_0, RELAT_1 , GROUP_1, GROUP_2, GROUP_3, GROUP_5,
+   GROUP_6, REALSET1, STRUCT_0, GRSOLV_1, AUTGROUP;
  schemes BINOP_1, FUNCT_2;
+
 
 begin :: preparatory work
 reserve X for set;
@@ -42,11 +52,13 @@ proof
   let f be Function of X,Y;
   assume A1: f is onto;
   dom f = X by FUNCT_2:def 1;
-  then A2: (for y being object
+  then
+  A2: (for y being object
   holds y in rng f iff ex x being object st x in X & y = f.x) &
-  (for y being object holds y in (f .: X) iff
-  ex x being object st x in X & x in X & y = f.x)
-  by FUNCT_1:def 3,def 6;
+  (for y being object
+  holds y in (f .: X) iff ex x being object st x in X & x in X & y = f.x)
+  by FUNCT_1:def 3,def 6
+;
 
   C1: for y being object holds y in (f .: X) implies y in rng f
   proof
@@ -58,6 +70,7 @@ proof
     thus y in rng f by A2,B1,B2;
   end;
 
+
   C2: for y being object holds y in rng f implies y in (f .: X)
   proof
     let y be object;
@@ -67,6 +80,7 @@ proof
     by A2;
     thus y in (f .: X) by A2,B1,B2;
   end;
+
 
   for y being object holds y in rng f iff y in (f .: X) by C1,C2;
   hence f .: X = rng f by TARSKI:2
@@ -171,7 +185,7 @@ proof
   let G1,G2 be Group;
   let f be Homomorphism of G1,G2;
   assume A1: f is onto;
-  reconsider GG = Image(f) as strict Group;
+  reconsider GG = Image(f) as Group;
   A2: the carrier of G2 = rng(f) by A1
                        .= the carrier of Image(f) by GROUP_6:44
                        .= the carrier of GG;
@@ -298,7 +312,7 @@ proof
     let y be object;
     assume Z1: y in Y;
     then (f*g).y=f.(g.y) by FUNCT_2:15
-               .= y by A2,A3,A4,Z1,FUNCT_2:26
+               .= y by A2,A3,A4,Z1, FUNCT_2:26
                .= (id Y).y by Z1,FUNCT_1:18;
     hence thesis by A2;
   end;
@@ -321,10 +335,10 @@ end;
 
 
 
-
 begin
 
 reserve G for Group;
+reserve H for Subgroup of G;
 
 definition :: Def1
   let G;
@@ -349,6 +363,8 @@ definition :: Def2
   mode Automorphism of G is bijective Endomorphism of G;
 end;
 
+reserve phi for Automorphism of G;
+
 theorem Th1:
   Image (f|(1).G) = (1).G
 proof
@@ -360,10 +376,8 @@ end;
 :: In particular, the trivial proper subgroup (1).G of G is invariant
 :: under inner automorphisms, and thus is a characteristic subgroup.
 theorem Th2:
-  for phi being Automorphism of G
-  holds Image(phi|(1).G) is Subgroup of (1).G
+  Image(phi|(1).G) is Subgroup of (1).G
 proof
-  let phi be Automorphism of G;
   (1).G is Subgroup of (1).G by GROUP_2:54;
   hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
 end;
@@ -378,6 +392,7 @@ proof
   let f be Homomorphism of G1,G2;
   let H be Subgroup of G1;
   A1: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
+  Ker(f) is Subgroup of G1;
   for g being Element of G1
   st g in Ker(f|H)
   holds g in Ker(f)
@@ -398,22 +413,16 @@ proof
   hence thesis;
 end;
 
-Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
+Lm8: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
-  let H be Subgroup of G;
   assume H is Subgroup of (1).G;
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
 Lm9:
-for H being Subgroup of G
-for phi being Automorphism of G
-holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
+(phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
@@ -424,15 +433,11 @@ proof
 end;
 
 theorem Th6:
-  for H being Subgroup of G
-  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-  for phi being Automorphism of G
-  holds ex psi being Automorphism of G
+  (for f being Automorphism of G holds Image(f|H) is Subgroup of H) implies
+  ex psi being Automorphism of G
   st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
 proof
-  let H be Subgroup of G;
   assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
@@ -443,15 +448,9 @@ proof
 end;
 
 theorem Th7:
-  for H being Subgroup of G
-  st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-  for phi being Automorphism of G
-  holds ex psi being Automorphism of G
+  ex psi being Automorphism of G
   st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
 proof
-  let H be Subgroup of G;
-  assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
@@ -466,16 +465,20 @@ proof
       M1: a in Image(psi|H) & a is Element of G by STRUCT_0:def 5,GROUP_2:42;
       then B2: phi.a = (phi|Image(psi|H)).a by Lm3
                     .= g by B1;
+
       consider b being Element of H such that
       B3: a = (psi|H).b
       by M1,GROUP_6:45;
       M2: b in H & b is Element of G by STRUCT_0:def 5, GROUP_2:42;
+
       then b = phi.(psi.b) by Lm11
             .= phi.((psi|H).b) by M2,Lm3
             .= phi.a by B3
             .= g by B2;
       hence g in H by M2;
     end;
+
+
     thus g in H implies g in Image(phi|Image(psi|H))
     proof
       assume B1: g in H;
@@ -489,8 +492,11 @@ proof
         then (psi|H).g in Image(psi|H) by STRUCT_0:def 5;
         hence a in Image(psi|H);
       end;
+
+
       set K = Image(psi|H);
       set b = (phi|Image(psi|H)).a;
+
       B3: b in Image(phi|Image(psi|H))
       proof
         dom(phi|K) = the carrier of K by FUNCT_2:def 1;
@@ -500,6 +506,7 @@ proof
         then (phi|K).a in Image(phi|K) by STRUCT_0:def 5;
         hence b in Image(phi|K);
       end;
+
       thus g in Image(phi|K)
       proof
         H is Subgroup of G & g in H & g is Element of G by B1,GROUP_2:42;
@@ -516,20 +523,44 @@ proof
               .= g by B4,B6;
         hence thesis by B3;
       end;
+
     end;
+
     thus thesis;
   end;
+
   hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
 
+theorem Th7b:
+  for H being strict Subgroup of G
+  for K being Subgroup of G
+  st Image(phi|H) is Subgroup of K
+  holds ex psi being Automorphism of G
+  st psi = phi" & H is Subgroup of Image(psi|K)
+proof
+  let H be strict Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: Image(phi|H) is Subgroup of K;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  take psi;
+  thus psi = phi";
+  A2: psi" = phi by Lm10;
+  consider phi0 being Automorphism of G such that
+  A3: phi0 = psi" and
+  A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
+  by Th7;
+  phi = phi0 by A2,A3;
+  then A5: Image(psi|Image(phi|H)) = H by A4;
+  psi .: Image(phi|H) is Subgroup of psi .: K by A1,GRSOLV_1:12;
+  then Image(psi|Image(phi|H)) is Subgroup of psi .: K by GRSOLV_1:def 3;
+  then Image(psi|Image(phi|H)) is Subgroup of Image(psi|K) by GRSOLV_1:def 3;
+  hence H is Subgroup of Image(psi|K) by A5;
+end;
 
 theorem Th8:
-  for H being Subgroup of G
-  for phi being Automorphism of G
-  holds H,phi .: H are_isomorphic
+  H,phi .: H are_isomorphic
 proof
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
   reconsider H2 = phi .: H as Subgroup of G;
   Image(phi|H) = H2 by GRSOLV_1:def 3;
   phi|H is one-to-one by Lm9;
@@ -589,12 +620,10 @@ registration let G;
 end;
 
 theorem Th11:
-  for H being strict Subgroup of G
   for f being Automorphism of G
   st Image(f|H) = H
   holds f|H is Automorphism of H
 proof
-  let H be strict Subgroup of G;
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
@@ -608,6 +637,7 @@ proof
     then f|H is onto Homomorphism of H,H by C1;
     hence thesis;
   end;
+
   then f|H is bijective Homomorphism of H,H by C2;
   then f|H is Automorphism of H;
   hence thesis;
@@ -685,7 +715,8 @@ theorem Th14:
 proof
   let G be strict Group;
   let f be object;
-  A1: f is Automorphism of G implies f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
+  A1: f is Automorphism of G implies
+      f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
   thus (f in InnAut G) implies (f is inner Automorphism of G)
   proof
     assume B1: f in InnAut G;
@@ -713,14 +744,12 @@ proof
 end;
 
 theorem Th15:
-  for H being Subgroup of G
   for a being Element of G
   for f being inner Automorphism of G
   st (for x being Element of G holds f.x = x |^ a)
   holds Image(f|H) = H |^ a
 proof
-  let H be Subgroup of G,
-      a be Element of G,
+  let a be Element of G,
       f be inner Automorphism of G;
   assume
 A1: for x being Element of G holds f.x = x |^ a;
@@ -762,7 +791,8 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   end;
 
   for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
-  hence (H |^ a) = Image(f|H) by GROUP_2:def 6;
+  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
+  hence thesis;
 end;
 
 theorem Th16:
@@ -783,10 +813,11 @@ proof
     then x = 1_G by GROUP_3:18;
     hence x in (1).G by GROUP_2:46;
   end;
-  then B2: Ker f is Subgroup of (1).G by GROUP_2:58;
 
-  B1: (1).G is Subgroup of Ker f by GROUP_2:65;
-  thus Ker f = (1).G by B1,B2,GROUP_2:55;
+  then A2: Ker f is Subgroup of (1).G by GROUP_2:58;
+
+  A3: (1).G is Subgroup of Ker f by GROUP_2:65;
+  thus Ker f = (1).G by A2,A3,GROUP_2:55;
 end;
 
 theorem Th17:
@@ -809,11 +840,14 @@ proof
     proof
       let x1,x2 be Element of G;
       A4: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A3;
-      hence fInv.(x1 * x2) = (x1 * x2) |^ a" by A3
-                          .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
-                          .= fInv.x1 * fInv.x2 by A4;
+      fInv.(x1 * x2) = (x1 * x2) |^ a" by A3
+                    .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
+                    .= fInv.x1 * fInv.x2 by A4;
+      hence thesis;
     end;
-    then reconsider fInv as Endomorphism of G by GROUP_3:23, GROUP_6:def 6;
+    then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
+    then fInv is Endomorphism of G;
+    then reconsider fInv as Endomorphism of G;
 
     for x being Element of G holds (f*fInv).x = (id the carrier of G).x
     proof
@@ -828,6 +862,7 @@ proof
       hence thesis;
     end;
     then f*fInv = id the carrier of G by FUNCT_1:2;
+
     hence thesis;
   end;
 
@@ -847,9 +882,9 @@ theorem Th18:
 proof
   let a be Element of G;
   let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
+  assume A1: for x being Element of G holds f.x = x |^ a;
   then f is Automorphism of G by Th17;
-  hence f is inner Automorphism of G by A0,Def5;
+  hence f is inner Automorphism of G by A1,Def5;
 end;
 
 theorem Th19:
@@ -860,7 +895,7 @@ proof
   let a be Element of G;
   deffunc F(Element of G) = ($1) |^ a;
   consider f be Function of the carrier of G, the carrier of G such that
-  A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
+A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
   for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
   proof
@@ -898,7 +933,7 @@ proof
   end;
 
   A2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
-      implies contradiction
+  implies contradiction
   proof
     assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
     assume not H is normal;
@@ -926,10 +961,8 @@ definition :: Def9
   holds Image (f|IT) = IT;
 end;
 
-Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
+Lm5: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
-  let H be Subgroup of G;
   assume A1: H is Subgroup of (1).G;
   then reconsider H as Subgroup of (1).G;
   (1).G is Subgroup of H by GROUP_2:65;
@@ -955,9 +988,8 @@ A1:  for f being Automorphism of G
 end;
 
 
-
 theorem Th21:
-  ex H being Subgroup of G st H is characteristic
+  ex H st H is characteristic
 proof
   take H = (1).G;
   H is characteristic by Lm6;
@@ -970,6 +1002,8 @@ registration
   existence by Th21;
 end;
 
+reserve K for characteristic Subgroup of G;
+
 registration
   let G be Group;
   cluster strict characteristic for Subgroup of G;
@@ -981,10 +1015,8 @@ registration
 end;
 
 theorem Th22:
-  for K being characteristic Subgroup of G
-  holds K is normal Subgroup of G
+  K is normal Subgroup of G
 proof
-  let K be characteristic Subgroup of G;
 A1:  for a being Element of G holds K |^ a = K
   proof
     let a be Element of G;
@@ -1170,31 +1202,27 @@ proof
   hence thesis;
 end;
 
-
 theorem Th27:
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
-  (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+  (for phi holds Image(phi|H) is Subgroup of H)
 proof
   let H be strict Subgroup of G;
-  thus H is characteristic Subgroup of G implies (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+  thus H is characteristic Subgroup of G implies
+       (for phi holds Image(phi|H) is Subgroup of H)
   proof
-    assume A1: H is characteristic Subgroup of G;
-    thus for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
-    proof
-      let phi be Automorphism of G;
-      Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,A1,Def9;
-      hence Image(phi|H) is Subgroup of H;
-    end;
+    assume H is characteristic Subgroup of G;
+    then Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,Def9;
+    hence Image(phi|H) is Subgroup of H;
   end;
 
-  thus (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H) implies H is characteristic Subgroup of G
+
+  thus (for phi holds Image(phi|H) is Subgroup of H)
+       implies H is characteristic Subgroup of G
   proof
-    assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
-    A2: for phi being Automorphism of G
-    holds H is Subgroup of Image(phi|H)
+    assume A1: Image(phi|H) is Subgroup of H;
+    A2: H is Subgroup of Image(phi|H)
     proof
-      let phi be Automorphism of G;
       consider psi being Automorphism of G such that
       B1: psi = phi" and
       B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th6;
@@ -1204,10 +1232,9 @@ proof
       psi2 = psi by B1,B3;
       hence H is Subgroup of Image(phi|H) by B2,B4;
     end;
-    for phi being Automorphism of G
-    holds H = Image(phi|H)
+
+    H = Image(phi|H)
     proof
-      let phi be Automorphism of G;
       H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
       H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
       by A1,A2;
@@ -1217,19 +1244,19 @@ proof
     hence H is characteristic Subgroup of G by Def9;
   end;
 
+
   thus thesis;
 end;
+
 
 theorem Th28:
   center G is characteristic Subgroup of G
 proof
   set Z = center G;
-  A1: for phi being Automorphism of G
-  for y,z being Element of G
+  A1: for y,z being Element of G
   st z in Z
   holds (phi.z)*y = y*phi.z
   proof
-    let phi be Automorphism of G;
     let y,z be Element of G;
     assume B1: z in Z;
     phi" is Automorphism of G by GROUP_6:62;
@@ -1242,12 +1269,11 @@ proof
              .= y*(phi.z) by B2, Lm11;
     hence thesis;
   end;
-A2:  for phi being Automorphism of G
-  for z being Element of G
+
+  A2: for z being Element of G
   st z in Z
   holds (phi|Z).z in Z
   proof
-    let phi be Automorphism of G;
     let z be Element of G;
     assume B1: z in Z;
     then for y being Element of G holds (phi.z)*y=y*(phi.z) by A1;
@@ -1255,10 +1281,9 @@ A2:  for phi being Automorphism of G
     phi.z = (phi|Z).z by B1,Lm3;
     hence ((phi|Z).z) in Z by B2;
   end;
-A3: for phi being Automorphism of G
-  holds Image(phi|Z) is Subgroup of Z
+
+  A3: Image(phi|Z) is Subgroup of Z
   proof
-    let phi be Automorphism of G;
     B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
     for w being Element of G st w in rng(phi|Z) holds w in Z
     proof
@@ -1272,11 +1297,15 @@ A3: for phi being Automorphism of G
       then (phi|Z).z in Z by A2,STRUCT_0:def 5;
       hence w in Z by C2;
     end;
+
     then for w being Element of G st w in rng(phi|Z) holds w in the carrier of Z
     by STRUCT_0:def 5;
     then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
     hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
+
+
+
   hence Z is characteristic Subgroup of G by Th27;
 end;

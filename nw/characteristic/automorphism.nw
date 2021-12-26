@@ -38,10 +38,13 @@ Note we just used the symbol [[G]] for a generic group, so we add to
 the reserved symbols this association. Most of our theorems will no
 longer state ``Let $G$ be a group'', it will be implicitly assumed
 unless otherwise stated.
+
+Likewise, we reserve [[H]] for a subgroup of [[G]].
 \end{reserve}
 
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve G for Group;
+reserve H for Subgroup of G;
 
 @
 
@@ -111,6 +114,19 @@ end;
 
 @ %def Automorphism
 
+\begin{reserve}
+  We will henceforth generically use $\varphi$ as an Automorphism of $G$
+  unless otherwise stated. This means, for most theorems, we can omit
+  explicitly stating, ``For any automorphism $\varphi$ of $G$, \dots'';
+  and for most proofs, we can omit the line, ``Let $\varphi$ be an
+  Automorphism of $G$''.
+\end{reserve}
+
+<<Define [[Automorphism]]>>=
+reserve phi for Automorphism of G;
+
+@
+
 \begin{proposition}
 For any automorphism $\varphi\colon G\to G$, its inverse $\varphi^{-1}$
 is also an automorphism.
@@ -175,10 +191,8 @@ proves that $G$ is a subgroup of itself in Theorem~[[Th54]].\MizThm{GROUP\_2}{54
 :: In particular, the trivial proper subgroup (1).G of G is invariant
 :: under inner automorphisms, and thus is a characteristic subgroup.
 theorem Th2:
-  for phi being Automorphism of G
-  holds Image(phi|(1).G) is Subgroup of (1).G
+  Image(phi|(1).G) is Subgroup of (1).G
 proof
-  let phi be Automorphism of G;
   (1).G is Subgroup of (1).G by GROUP_2:54;
   hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
 end;
@@ -195,10 +209,8 @@ $\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
 \end{proof}
 
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
-Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
+Lm8: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
-  let H be Subgroup of G;
   assume H is Subgroup of (1).G;
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
@@ -224,12 +236,8 @@ $\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
 Lm9:
-for H being Subgroup of G
-for phi being Automorphism of G
-holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
+(phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   phi is one-to-one;
   then Ker(phi) = (1).G by GROUP_6:56;
@@ -257,15 +265,11 @@ the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
 
 <<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>=
 theorem Th6:
-for H being Subgroup of G
-st (for f being Automorphism of G holds Image(f|H) is Subgroup of H)
-for phi being Automorphism of G
-holds ex psi being Automorphism of G
-st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
+  (for f being Automorphism of G holds Image(f|H) is Subgroup of H) implies
+  ex psi being Automorphism of G
+  st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
 proof
-  let H be Subgroup of G;
   assume A1: for f being Automorphism of G holds Image(f|H) is Subgroup of H;
-  let phi be Automorphism of G;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
@@ -295,13 +299,9 @@ The result then follows that they are equal as groups using theorem \verb#GROUP_
 
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
 theorem Th7:
-  for H being Subgroup of G
-  for phi being Automorphism of G
-  holds ex psi being Automorphism of G
+  ex psi being Automorphism of G
   st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
 proof
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
@@ -341,7 +341,7 @@ $g = b$ which proves the claim.
 
 <<Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$>>=
 proof
-  assume B1: g in Image(phi|Image(psi|H));
+  assume g in Image(phi|Image(psi|H));
   <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>
   <<$\exists b\in H, a = \varphi^{-1}(b)$>>
   then b = phi.(psi.b) by Lm11
@@ -483,14 +483,12 @@ I need to work on my numbering scheme\dots
 theorem Th7b:
   for H being strict Subgroup of G
   for K being Subgroup of G
-  for phi being Automorphism of G
   st Image(phi|H) is Subgroup of K
   holds ex psi being Automorphism of G
   st psi = phi" & H is Subgroup of Image(psi|K)
 proof
   let H be strict Subgroup of G;
   let K be Subgroup of G;
-  let phi be Automorphism of G;
   assume A1: Image(phi|H) is Subgroup of K;
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
@@ -523,12 +521,8 @@ injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-
 
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
 theorem Th8:
-  for H being Subgroup of G
-  for phi being Automorphism of G
-  holds H,phi .: H are_isomorphic
+  H,phi .: H are_isomorphic
 proof
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
   reconsider H2 = phi .: H as Subgroup of G;
   Image(phi|H) = H2 by GRSOLV_1:def 3;
   phi|H is one-to-one by Lm9;
@@ -765,12 +759,10 @@ This result isn't surprising, but proving surjectivity was surprisingly
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
 theorem Th11:
-  for H being strict Subgroup of G
   for f being Automorphism of G
   st Image(f|H) = H
   holds f|H is Automorphism of H
 proof
-  let H be strict Subgroup of G;
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
@@ -809,4 +801,10 @@ proof
   hence thesis;
 end;
 
+@
+
+<<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>=
+theorem
+  for H being Subgroup of G
+  for phi being Automorphism of G
 @

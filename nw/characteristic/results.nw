@@ -81,10 +81,8 @@ I think I prove this result several times, I should refactor my code accordingly
 \end{lem-remark}
 
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
-Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
+Lm5: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
-  let H be Subgroup of G;
   assume A1: H is Subgroup of (1).G;
   then reconsider H as Subgroup of (1).G;
   (1).G is Subgroup of H by GROUP_2:65;
@@ -105,7 +103,7 @@ characteristic. Thus the result.
 <<Theorem: Existence of characteristic subgroups>>=
 
 theorem Th21:
-  ex H being Subgroup of G st H is characteristic
+  ex H st H is characteristic
 proof
   take H = (1).G;
   H is characteristic by Lm6;
@@ -125,6 +123,17 @@ registration
   cluster characteristic for Subgroup of G;
   existence by Th21;
 end;
+
+@
+
+\begin{reserve}
+We will henceforth use the symbol $K$ to refer to characteristic
+subgroups of $G$, unless otherwise stated.
+\end{reserve}
+
+
+<<Register [[characteristic]] as attribute for Subgroup>>=
+reserve K for characteristic Subgroup of G;
 
 @
 
@@ -159,10 +168,8 @@ have $K^{a}=K$. Then $K\normalSubgroup G$.
 
 <<Theorem: characteristic subgroups are normal>>=
 theorem Th22:
-  for K being characteristic Subgroup of G
-  holds K is normal Subgroup of G
+  K is normal Subgroup of G
 proof
-  let K be characteristic Subgroup of G;
 A1:  for a being Element of G holds K |^ a = K
   <<Sub-proof: characteristic subgroups invariant under conjugation>>
   for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
@@ -537,14 +544,14 @@ characteristic subgroup of $G$.
 theorem Th27:
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
-  (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+  (for phi holds Image(phi|H) is Subgroup of H)
 proof
   let H be strict Subgroup of G;
   thus H is characteristic Subgroup of G implies
-       (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+       (for phi holds Image(phi|H) is Subgroup of H)
   <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 
-  thus (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
+  thus (for phi holds Image(phi|H) is Subgroup of H)
        implies H is characteristic Subgroup of G
   <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 
@@ -561,13 +568,9 @@ $H\subgroup H$ then applying the definition of characteristic subgroup.
 
 <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
-  assume A1: H is characteristic Subgroup of G;
-  thus for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
-  proof
-    let phi be Automorphism of G;
-    Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,A1,Def9;
-    hence Image(phi|H) is Subgroup of H;
-  end;
+  assume H is characteristic Subgroup of G;
+  then Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,Def9;
+  hence Image(phi|H) is Subgroup of H;
 end;
 
 @
@@ -586,12 +589,11 @@ have the hypothesis that $H$ is a strict subgroup of $G$.
 
 <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
-  assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
-  A2: for phi being Automorphism of G holds H is Subgroup of Image(phi|H)
+  assume A1: Image(phi|H) is Subgroup of H;
+  A2: H is Subgroup of Image(phi|H)
   <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>
-  for phi being Automorphism of G holds H = Image(phi|H)
+  H = Image(phi|H)
   proof
-    let phi be Automorphism of G;
     H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
     H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
     by A1,A2;
@@ -616,7 +618,6 @@ This suffices to infer $H\subgroup\varphi(H)$.
 
 <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>=
 proof
-  let phi be Automorphism of G;
   consider psi being Automorphism of G such that
   B1: psi = phi" and
   B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th6;
@@ -688,12 +689,10 @@ present, then dismiss the rest of the proof as ``trivial'' or
 
 
 <<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>=
-A1: for phi being Automorphism of G
-for y,z being Element of G
+A1: for y,z being Element of G
 st z in Z
 holds (phi.z)*y = y*phi.z
 proof
-  let phi be Automorphism of G;
   let y,z be Element of G;
   assume B1: z in Z;
   phi" is Automorphism of G by GROUP_6:62;
@@ -715,12 +714,10 @@ unfolding definitions.
 \end{proof}
 
 <<Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>=
-A2: for phi being Automorphism of G
-for z being Element of G
+A2: for z being Element of G
 st z in Z
 holds (phi|Z).z in Z
 proof
-  let phi be Automorphism of G;
   let z be Element of G;
   assume B1: z in Z;
   then for y being Element of G holds (phi.z)*y=y*(phi.z) by A1;
@@ -740,10 +737,8 @@ $w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
 \end{proof}
 
 <<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
-A3: for phi being Automorphism of G
-holds Image(phi|Z) is Subgroup of Z
+A3: Image(phi|Z) is Subgroup of Z
 proof
-  let phi be Automorphism of G;
   B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
   for w being Element of G st w in rng(phi|Z) holds w in Z
   <<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>
