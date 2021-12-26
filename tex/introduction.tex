@@ -205,11 +205,11 @@ This corresponds to the $\land$-introduction rule in natural deduction:
 where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
 and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
 
-\begin{remark}[Mizar idiom]\index{Thesis@\texttt{thesis}}\index{Idiom!\texttt{thus thesis}}
+\begin{idiom}\index{Thesis@\texttt{thesis}}\index{Idiom!\texttt{thus thesis}}
 Some Mizar code adheres to the idiom of concluding proofs, all proofs,
 with the statement ``\verb#thus thesis#''. Here ``\verb#thesis#'' is the
 special formula representing what remains to be proven.
-\end{remark}
+\end{idiom}
 
 \begin{exercise}[Proving ``if and only if'' claims]
 Frequently we have logical equivalences $\Phi\iff\Psi$, how would we
@@ -228,8 +228,7 @@ proof
   :: proof of Phi
   thus Phi;
 end;
-\end{mizar}
-
+\end{mizar}%\medskip
 This corresponds to the inference rule
 \begin{equation}
 \vcenter{\infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}}
@@ -247,13 +246,13 @@ proof
   :: proof of Phi involving x
   thus Phi by ...;
 end;
-\end{mizar}\medskip
+\end{mizar}%\medskip
 This corresponds to the inference rule:
 \begin{equation}
 \vcenter{\infer[\mathtt{consider}~x~\mathtt{such~that}~\Psi(x)]{\Gamma\vdash\Phi}{%
   \Gamma\vdash\exists x,\Psi(x)
   &\qquad\Gamma,x,\Psi(x)\vdash\Phi}}
-\end{equation}
+\end{equation}{
 The justification for this step refers to the derivation of the upper
 left subgoal.
 
@@ -269,7 +268,7 @@ proof
   :: proof of Phi
   thus Phi;
 end;
-\end{mizar}
+\end{mizar}%\medskip
 This corresponds to the natural deduction rule of inference:
 \begin{equation}
   \vcenter{\infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}}.
@@ -294,7 +293,7 @@ proof
     :: proof of Phi from Psi_n
     thus Phi by ...;
 end;
-\end{mizar}
+\end{mizar}%\medskip
 This corresponds to the natural deduction rule
 \begin{equation}
   \vcenter{\infer[\mathtt{per~cases}]{\Gamma\vdash \Phi}{%
@@ -401,11 +400,11 @@ notions of ``group isomorphism''). I will make bold the differences:
   \end{enumerate}
 \end{definition}
 
-\begin{remark}
+\begin{def-remark}
 I will adopt modern terminology, and simply refer to a group
 homomorphism as a ``\emph{group morphism}'', or more tersely as just a
 morphism.
-\end{remark}
+\end{def-remark}
 
 \index{Magma|(} Mizar takes the first version as its definition. Implicit in its
 definition is a notion of a ``\verb#multMagma#'', a magma with a
@@ -429,11 +428,11 @@ end;
 \end{mizar}
 
 Let us unpack what is going on in this code. We are defining a
-\verb#struct#,\index{Struct@\texttt{struct}} a mathematical structure which is usually presented in
-ordinary mathematics as a tuple of some kind $\langle\dots\rangle$. For
-example, a field might be presented as $\langle F, +, \cdot, 0, 1\rangle$
-consisting of a set $F$, a couple binary operators, and a couple of
-selected elements of $F$.
+\verb#struct#,\index{Struct@\texttt{struct}} a mathematical structure
+which is usually presented in ordinary mathematics as a tuple of some
+kind $\struct{\dots}$. For example, a field might be presented as
+$\struct{F, +, \cdot, 0, 1}$ consisting of a set $F$, a couple binary
+operators, and a couple of selected elements of $F$.
 
 Mizar's grammar for defining a structure is:
 \begin{equation}
@@ -458,7 +457,7 @@ We see that ``\texttt{multMagma}'' has two fields:
 \end{enumerate}
 This matches Bourbaki's definition of a magma.\index{Magma|)}
 
-\begin{remark}[Accessing fields of a structure]
+\begin{notation}[Accessing fields of a structure]
 We can refer to, e.g., the ``\verb#multF#'' of a given instance of a
 ``\verb#multMagma#'' by writing
 ``\verb#the multF of <instance>#''. These are called accessor
@@ -466,22 +465,25 @@ functors. Sometimes we want to access ``the underlying magma'' of an
 algebraic gadget, and a horrible pun used to describe this is the
 \emph{forgetful functor}\index{Functor!Forgetful}. We discuss more about
 functors later on (\S\ref{par:introduction:functor-one-g}).
-\end{remark}
+\end{notation}
 
-\begin{remark}[Multiplication operator]\label{rmk:introduction:multiplication-operator}\index{\texttt{x * y}}
+\begin{aside}[Multiplication operator]\label{rmk:introduction:multiplication-operator}\index{\texttt{x * y}}
 Before continuing on too far, I should note that for a
 ``\texttt{M being multMagma}'' we have an infix binary operator
 ``\texttt{x*y = (the multF of M).(x,y)}''. This is defined in
 \verb#ALGSTR_0:def 19#.\MizDef{ALGSTR\_0}{19}
-\end{remark}
+\end{aside}
 
 \subsection{Equality of Instances of Structures}
-If we a structure $\mathtt{Foo} \langle \mathsf{F}_{1},\dots,\mathsf{F}_{n}\rangle$
+If we a structure $\struct[Foo]{\mathsf{F}_{1},\dots,\mathsf{F}_{n}}$
 with $n$ fields $\mathsf{F}_{j}$, then we can make an instance of it
-using notation ``\verb$Foo(# F1, ..., Fn #)$''. Equality of two
+using notation ``\verb$Foo(# F1, ..., Fn #)$'' where ``\verb$(#$'' is an
+ASCII approximation to ``$\langle\!\langle$'', and ``\verb$#)$'' approximates
+``$\rangle\!\rangle$''. Equality of two
 instances follows the same axiomatic behavior as ordered $n$-tuples:
-\verb$Foo(# E1, ..., En #) = Foo(# F1, ..., Fn #)$ if and only if
-\verb#E1# = \verb#F1# and \dots and \verb#En# = \verb#Fn#. If we tried
+\verb$Foo(# E1, ..., En #) = Foo(# F1, ..., Fn #)$ if and only if each
+pair of fields are equal
+\verb#E1# = \verb#F1#, \dots, and \verb#En# = \verb#Fn#. If we tried
 to assert two \emph{different} structures are equal --- e.g.,
 \verb$Foo(# E1, ..., En #) = Bar(# F1, ..., Fm #)$ --- well, this is not
 allowed, Mizar will reject it.
@@ -548,27 +550,27 @@ end;
 \end{mizar}
 \index{Associative@\texttt{associative}|)}\index{Group-like@\texttt{Group-like}|)}\index{Unital@\texttt{unital}|)}\index{Group@\texttt{Group}|textbf}
 
-\begin{remark}[Mizar Idiom]\label{rmk:introduction:idiom-it-in-attributes}\index{Idiom!IT in Attributes}
+\begin{idiom}\label{rmk:introduction:idiom-it-in-attributes}\index{Idiom!IT in Attributes}\index{IT@\texttt{IT}}
 Whenever defining an attribute in Mizar, we have an ambient
 ``\verb#IT#'' object for which the attribute will be defined upon. For
 example, these attributes appearing in \verb#GROUP_1:def 1# are defined
 on a \verb#multMagma#.
-\end{remark}
+\end{idiom}
 
-\begin{remark}[Registering attributes]\index{Registration}
+\begin{aside}[Registering attributes as adjectives]\index{Registration}
 Once we have defined attributes, we cannot use them as adjectives for
 types until we ``\verb#register#'' them. Without registration, writing
 something like ``\texttt{let x be associative multMagma}'' would confuse
 Mizar, and it would throw an error. Until registered, we would have to
 write something like ``\texttt{let x be multMagma; assume x is associative}''
 or ``\texttt{let x be multMagma such that x is associative}''.
-\end{remark}
+\end{aside}
 
 Observe that a more faithful translation of Mizar's definition would
 be:
 
 \begin{quote}
-  \textbf{Definition.} A \emph{Group} $\langle G,\cdot\rangle$ is a set of
+  \textbf{Definition.} A \emph{Group} $\struct{G,\cdot}$ is a set of
   elements with a binary operator $\cdot\colon G\times G\to G$
   satisfying the following conditions:
   \begin{enumerate}
@@ -608,7 +610,7 @@ A3: for h being Element of G holds h * e2 = h & e2 * h = h;
 end;
 \end{mizar}
 
-\subsection{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
+\subsubsection{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
 ``functor'' (a logical function, i.e., parametrized term) denoted
 ``\verb#1_#'' which produces the unit element for the given magma.
 Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
@@ -621,7 +623,7 @@ definiendum (the term being defined, i.e., ``\verb#1_G#''). Whenever
 functors are defined, their defining properties will involve
 ``\verb#it#'' satisfying some formula.\footnote{The ``\texttt{IT}''
 appearing in definitions of attributes play an analogous role, hence the
-idiom noted in Remark~\ref{rmk:introduction:idiom-it-in-attributes}.}
+idiom noted in Idiom~\ref{rmk:introduction:idiom-it-in-attributes}.}
 
 Mizar demands we prove such a thing exists, and then a proof of
 uniqueness is supplied. This coincides with the usual practice in
@@ -629,7 +631,7 @@ mathematical logic, when considering a ``function term'' in first-order
 logic, which has [existence] exactly one [uniqueness] output for each
 possible argument configuration.
 
-\begin{remark}[Functors in Mizar]\index{Functor!In Mizar|(}
+\begin{aside}[Functors in Mizar]\index{Functor!In Mizar|(}
 A functor in Mizar is the only way to construct a term. Rudnicki and
 friends~\cite{rudnicki2001commutative} cite the term originating from
 Rasiowa and Sikorski~\cite[see p.148]{rasiowa1963mathematics},
@@ -642,10 +644,11 @@ objects ($m = 1, 2, \dots$)''.
 \emph{\textbf{This has absolutely no relation to functors in category theory},
 and in my opinion is an extremely poor
 choice of terminology due entirely to the ironies of history.}
-\index{Functor!In Mizar|)}\end{remark}
+\index{Functor!In Mizar|)}%
+\end{aside}
 
 \subsection{Inverse operator for group elements}
-When we have a group $\langle G,\cdot\rangle$, we also have the ability
+When we have a group $\struct{G,\cdot}$, we also have the ability
 to invert any given element $g\in G$. Mizar denotes this by
 ``\verb#g"#'', which is what the ``Rosette stone'' of notation suggests
 (since mathematicians would write $g^{-1}$). This is handled in
@@ -653,11 +656,11 @@ to invert any given element $g\in G$. Mizar denotes this by
 A formal ``\verb#inverse_op(G)#''\mizindex{Inverse Op(G)@$\mathtt{inverse\_op(G)}$} is given in
 ``\verb#GROUP_1:def 6#''.\MizDef{GROUP\_1}[06]{6}
 
-\begin{remark}[Inverse operator for subsets of $G$]
+\begin{notation}[Inverse operator for subsets of $G$]
 We generalize this notation in group theory to write, if $A\subset G$ is
 some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
 notation in \verb#GROUP_2:def 1#.\MizDef{GROUP\_2}[01]{1}
-\end{remark}
+\end{notation}
 
 \subsection{Power operator}
 For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
@@ -726,9 +729,9 @@ such that its carrier is a subset of the underlying set of $G$, and the
 Subgroup's multiplication operator is the multiplication from $G$
 restricted to the Subgroup.
 
-\begin{remark}[Notation]
+\begin{notation}
 We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
-\end{remark}
+\end{notation}
 
 \subsection{Equality of Subgroups}\label{par:introduction:subgroup-equality}
 For reasons which are not well documented, \verb#GROUP_2:def 6#
@@ -742,15 +745,26 @@ When the user knows both subgroups are strict, they can set ``\texttt{H1 = H2}''
 
 
 
-\begin{remark}[On ``strict'' mathematical gadgets]\index{strict@\texttt{strict}|textbf}
+\begin{aside}[On ``strict'' mathematical gadgets]\index{strict@\texttt{strict}|textbf}
 Mizar has a notion of a ``\texttt{strict}'' attribute. What does it mean?
 Well, sometimes a mathematical gadget is ``composite''; like a vector
 space over a field is an Abelian group with vector addition, but it also
 has other stuff (like scalar multiplication). This ``other stuff''
 prevents it from being a ``bald-faced Abelian group''. Just as black
 holes have no hair, strict groups have no hair: it's just a
-``\texttt{multMagma}'' satisfying the group properties (in Mizar, at least).
-\end{remark}
+``\texttt{multMagma}'' satisfying the group properties (in Mizar, at
+least).
+
+We can always coerce a gadget into a strict version by manually
+constructing it from the relevant fields. For example, given any group
+$G$, we can construct a strict group as follows:
+\begin{mizar}
+:: given some non-strict Group G
+reconsider strict_G = multMagma (# the carrier of G, the multF of G #)
+as strict Group;
+:: now use strict_G to prove results
+\end{mizar}
+\end{aside}
 
 \subsection{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
 For any group $G$, $\trivialSubgroup_{G}$ is the trivial subgroup
