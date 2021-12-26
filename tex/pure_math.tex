@@ -9,7 +9,8 @@ of the tools necessary for proving the classification of quasithin groups~\cite{
 For a summary of finite simple groups with pointers to the literature,
 Wilson~\cite{wilson2009finite} does a great job.
 
-\begin{remark}[Notation]
+
+\begin{notation}
 Most notation is following the literature, but just to
 review them here:
 \begin{itemize}%\setlength\itemsep{0em}
@@ -29,9 +30,9 @@ non-negative integers, I write $\NN_{0}=\{0\}\cup\NN$.
 \item The other number systems are with the usual notation ($\ZZ$ for
   integers, $\QQ$ for rationals, $\RR$ for reals, $\CC$ for complex numbers).
 \end{itemize}
-\end{remark}
+\end{notation}
 
-\begin{definition}\index{$Z(G)$}\index{Center}\index{Group!Center}
+\begin{definition}[{\texttt{GROUP\_5:10}}]\mizindex{Center@\texttt{center}|see{$\mathtt{GROUP\_5:def 10}$}}\index{$Z(G)$}\index{Center}\index{Group!Center}
 Let $G$ be a group. Its \define{Center} is the Subgroup $Z(G)\subgroup G$
 consisting of all elements which commute with all of $G$:
 \begin{equation*}
@@ -39,29 +40,16 @@ Z(G) = \{z\in Z(G) | \forall g\in G, zg=gz\}
 \end{equation*}
 \end{definition}
 
-\begin{remark}
-This is defined in Mizar in
-\verb#GROUP_5:def 10#.\MizDef{GROUP\_5}{10}\mizindex{Center@\texttt{center}|see{$\mathtt{GROUP\_5:def 10}$}}
-\end{remark}
-
-\begin{theorem}
+\begin{theorem}[{\texttt{GROUP\_6:Th41}}]\MizThm{GROUP\_6}{41}
   Let $\varphi\colon G_{1}\to G_{2}$ is a group morphism, and
   $e_{G_{2}}\in G_{2}$ be the identity element.
   Then $g\in\ker(h)$ iff $\varphi(g)=e_{G_{2}}$.
 \end{theorem}
 
-\begin{remark}
-Mizar proves this in theorem \verb#GROUP_6:Th41#.\MizThm{GROUP\_6}{41}
-\end{remark}
-
-\begin{theorem}
+\begin{theorem}[{\texttt{GROUP\_6:Th56}}]\MizThm{GROUP\_6}{56}
   Let $\varphi\colon G_{1}\to G_{2}$ is a group morphism.
   Then $\varphi$ is injective if and only if $\ker(\varphi)=\trivialSubgroup$.
 \end{theorem}
-
-\begin{remark}
-Mizar proves this in theorem \verb#GROUP_6:Th56#.\MizThm{GROUP\_6}{56}
-\end{remark}
 
 \begin{theorem}[{Dummit and Foote~\cite[Cor.~4.14]{dummit-foote}}]
   If $H\subgroup G$ is any subgroup and $g\in G$, then
@@ -69,7 +57,7 @@ Mizar proves this in theorem \verb#GROUP_6:Th56#.\MizThm{GROUP\_6}{56}
   order. Conjugate subgroups have the same order.
 \end{theorem}
 
-\begin{remark}
+\begin{thm-remark}
 Mizar has the following results:
 \begin{itemize}
 \item \verb#GROUP_3:Th28#\MizTh{GROUP\_3}{28} state, for any group elements $a,b\in G$ and
@@ -82,7 +70,7 @@ Mizar has the following results:
   as $A$\dots which should imply conjugate subgroups have the same
   order, too.
 \end{itemize}
-\end{remark}
+\end{thm-remark}
 
 \begin{theorem}\label{thm:pure-math:iso-subgroups-have-same-order}
   Let $\varphi\in\Aut(G)$ be any automorphism of a group $G$.
@@ -94,10 +82,10 @@ Mizar has the following results:
 This follows from $\varphi$ being a bijection.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 Mizar as a stronger result, since \verb#GROUP_6:73#\MizTh{GROUP\_6}{73} proves isomorphic
 groups have the same order.
-\end{remark}
+\end{thm-remark}
 
 \begin{theorem}[{Gorenstein~\cite[{Th.1.5} of {ch.2}\,\S1]{gorenstein1980finite}}]
   If $H$ is a minimal normal subgroup of $G$ (i.e., $H\normalSubgroup G$
@@ -110,7 +98,7 @@ groups have the same order.
 
 \section{Commutators}
 
-\begin{definition}\index{Commutator}
+\begin{definition}[{\texttt{GROUP\_5:def 2,3}}]\index{Commutator}
   Let $G$ be a group and let $x$, $y\in G$ be arbitrary.
   Then the \define{Commutator} of $x$ with $y$ is
   \begin{equation*}
@@ -120,12 +108,12 @@ groups have the same order.
   $[w,x,y,z] = [{[w,x,y]},z]$, and so on.
 \end{definition}
 
-\begin{remark}
+\begin{def-remark}
 Mizar defines its commutators, $[x,y]$ in \verb#GROUP_5:def 2#\MizDef{GROUP\_5}[002]{2}, and
 $[x,y,z]$ in \verb#GROUP_5:def 3#.\MizDef{GROUP\_5}[003]{3}
-\end{remark}
+\end{def-remark}
 
-\begin{remark}
+\begin{def-remark}
 This convention, while used in Mizar (see definition 2 in \verb#GROUP_5#,
 lines 329--334) and finite group theory, clashes with the convention
 with Lie groups where they have $[X,Y]_{\text{Lie}}=XYX^{-1}Y^{-1}$ to
@@ -134,7 +122,7 @@ commutator $[x,y] = xy - yx$. However, one advantage of the finite group
 version is that $[g,h] = g^{-1}g^{h}$ where $g^{h}=h^{-1}gh$ is
 conjugation of $g$ by $h$. \emph{Extreme care must be taken when working
 with finite groups of Lie type!}
-\end{remark}
+\end{def-remark}
 
 \begin{definition}\index{$G'$}\index{Subgroup!Derived}\index{$[G,G]$}
 Let $G$ be a group. The \define{Derived Subgroup} of $G$ is the subgroup
@@ -147,13 +135,13 @@ We also use the notation $[X,Y,Z] = [\,{[X,Y]},Z]$, $[W,X,Y,Z] = [\,{[W,X,Y]},Z]
 and so on. In particular, $[X,Y,Z] = \langle [a,z] : a\in[X,Y], z\in Z\rangle$.
 \end{definition}
 
-\begin{remark}
+\begin{def-remark}
 This is defined for arbitrary subsets $A\subset G$ and $B\subset G$ in
 \verb#GROUP_5:def 7#,\MizDef{GROUP\_5}[07]{7} and for subgroups $H_{1}\subgroup G$ and
 $H_{2}\subgroup G$ in \verb#GROUP_5:def 8#.\MizDef{GROUP\_5}[08]{8} The derived subgroup is
 denoted ``\verb#G `#'' (that is the letter G followed by a
 backtick/back-quote [grave accent]) and defined in \verb#GROUP_5:def 9#.\MizDef{GROUP\_5}[09]{9}\mizindex{G'@\texttt{G`}}
-\end{remark}
+\end{def-remark}
 
 
 \begin{theorem}[Hall's Three Subgroup Lemma]
@@ -192,13 +180,19 @@ Theorem~\ref{thm:pure-math:iso-subgroups-have-same-order}, but we
 assumed there is only one (namely, $H$).
 \end{proof}
 
-\begin{theorem}[{Gorenstein~\cite[Th.1.3 of ch.2\S1]{gorenstein1980finite}}]
+\begin{theorem}[{Gorenstein~\cite[Th.2.1.3]{gorenstein1980finite}}]
 Let $G$ be a group. If a normal subgroup $H\normalSubgroup G$ whose
 order and index are coprime
 \begin{equation*}
 \gcd(|H|, [G:H])=1,
 \end{equation*}
 then $H$ is a characteristic subgroup of $G$.
+\end{theorem}
+
+\begin{theorem}[{Gorenstein~\cite[Th.2.1.3(iv)]{gorenstein1980finite}}]
+If  $H\subgroup K$ are both subgroups of $G$ such that $H$ is
+a characteristic subgroup of $G$, and if $K/H$ is characteristic in
+$G/H$, \emph{then} $K$ is characteristic in $G$.
 \end{theorem}
 
 \begin{definition}\index{$\SylowSubgroups{p}{G}$}\index{p-Core@$p$-Core}\index{$\pCore{p}{G}$}\index{$\pCore{p}{G}$|see{$p$-Core}}

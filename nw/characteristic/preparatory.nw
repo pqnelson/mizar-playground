@@ -49,16 +49,16 @@ reserve X for set;
 <<Lemma: Morphism is surjective if its image is its codomain>>
 <<Lemma: $\varphi\colon G_{1}\onto G_{2}$ is surjective implies $\varphi(G_{1})=G_{2}$>>
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>
-<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
-<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
-<<Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
-<<Theorem: bijections have inverses>>
+<<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
+<<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
+<<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
+<<Lemma: bijections have inverses>>
 
 @
 
-\begin{theorem}
+\begin{lemma}
 If $f\colon X\onto Y$ is a surjective function of sets, then $f(X)=Y$.
-\end{theorem}
+\end{lemma}
 
 \begin{proof}[Proof outline]
   Assume $f\colon X\onto Y$ is surjective. Then by definition its range
@@ -67,12 +67,12 @@ If $f\colon X\onto Y$ is a surjective function of sets, then $f(X)=Y$.
   implies $\rng(f)$.
 \end{proof}
 
-\begin{remark}[Note to Alex]
+\begin{lem-remark}[Note to Alex]
 This should be refactored out into another theorem, namely
 $\rng(f)=f(X)$. The result claimed follows immediately.
-\end{remark}
+\end{lem-remark}
 
-\begin{remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
+\begin{lem-remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
 We should caution Mizar's notation for writing something like, if
 $f\colon X\to Y$ is a function of sets and $A\subset X$, then
 $f(A)=\{f(a)\in Y|a\in A\}$ is denoted as [[f.:A]] instead of $f(A)$,
@@ -80,7 +80,7 @@ and [[f.a]] instead of $f(a)$. This is because $f$ is a set theoretic
 function, a collection of ``(input, output)'' ordered pairs. Mizar
 distinguishes $f(x)$ as function application from ``functors'' (i.e.,
 parametrized terms) by using $f(x)=\mathtt{f.x}$ for mathematical functions.
-\end{remark}
+\end{lem-remark}
 
 <<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>=
 LmOntoMapsEverything:
@@ -185,12 +185,12 @@ We also need to prove that, if we have a subgroup $H\subgroup G$ and
 $h\in G$ is an arbitrary element of the underlying set, then $h\in H$
 implies the typing judgement ``[[h is Element of H]]''.
 
-\begin{remark}\index{\texttt{h in H}!Mizar for $h\in H$}
+\begin{lem-remark}\index{\texttt{h in H}!Mizar for $h\in H$}
 Mizar writes ``[[h in H]]'' instead of ``$h\in H$''. The statement
 ``[[h is Element of H]]'' is a typing declaration roughly analogous to
 ``$h{:}H$''; strictly speaking, it's a predicate in the object language,
 not a judgement in the metalanguage.
-\end{remark}
+\end{lem-remark}
 
 <<Lemma: A group element in the subgroup is a subgroup element>>=
 LmSubgroupElt:
@@ -236,12 +236,12 @@ end;
 
 @ %def LmSubgroupEltTrans
 
-\begin{lemma}[{Restriction of Group Morphisms to Subgroups}]
+\begin{lemma}[{Restriction of Group Morphisms to Subgroups}]\label{lemma:characteristic:preparatory:restrict-group-morphism-to-subgroups}
 If $f\colon G_{1}\to G_{2}$ is a group morphism and $H\subgroup G_{1}$
 is a subgroup, then for any $h\in H$ we have $f(h) = f|_{H}(h)$.
 \end{lemma}
 
-\begin{remark}
+\begin{lem-remark}
 Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
 $A\subset X$ is an arbitrary subset, then $\forall a\in X$ we have
 $a\in A\implies f|_{A}(a)=f(a)$. But this doesn't generalize to
@@ -254,7 +254,7 @@ we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
 always look at the set-theoretic function $U(f)$ underlying $f$, then
 piggie-back off earlier results establishing the desired claim
 (Theorem~49 of [[FUNCT_1]]\MizThm{FUNCT\_1}{49}, to be precise).
-\end{remark}
+\end{lem-remark}
 
 
 <<Lemma: restriction of group morphism acts on elements like the original>>=
@@ -284,9 +284,9 @@ If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
 $H_{1}=H_{2}$.
 \end{lemma}
 
-\begin{remark}
+\begin{lem-remark}
 Pretty simple, right? \dots I'm not sure I'll need this, but here it is if I do.
-\end{remark}
+\end{lem-remark}
 
 <<Lemma: Sandwich Subgroup Equality Theorem>>=
 LmSandwich: for H1 being strict Subgroup of G
@@ -303,15 +303,15 @@ end;
 
 @ %def LmSandwich
 
-\begin{lemma}
+\begin{lemma}\label{lemma:characteristic:preparatory:normal-subgroup}
 Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
 Then $H\normalSubgroup G$ is a normal subgroup.
 \end{lemma}
 
-\begin{remark}
+\begin{lem-remark}
 The current theorems in [[GROUP_3]] require $H$ to be a \emph{strict}
 subgroup, but this strictness condition is not necessary.
-\end{remark}
+\end{lem-remark}
 
 
 <<Lemma: Subgroups invariant under conjugation are normal>>=
@@ -331,10 +331,10 @@ end;
 
 @ %def LmNormalSubgroup
 
-\begin{theorem}
+\begin{lemma}
   Let $\varphi\colon G_{1}\to G_{2}$ be a group morphism.
   If $\varphi(G_{1})=G_{2}$, then $\varphi$ is surjective.
-\end{theorem}
+\end{lemma}
 
 Mizar has this lemma in its library, but it has a more stringent
 requirement that $G_{2}$ be a [[strict Group]], which is totally
@@ -359,10 +359,10 @@ end;
 
 @ %def LmEpi
 
-\begin{theorem}
+\begin{lemma}
   If $\varphi\colon G_{1}\onto G_{2}$ is a surjective group morphism,
   then $\varphi(G_{1}) = G_{2}$.
-\end{theorem}
+\end{lemma}
 
 The only subtlety to this claim is that we either require $G_{2}$ being
 a \emph{strict} group, or we prove [[the multMagma of G2 = the multMagma of Image(f)]].
@@ -394,10 +394,10 @@ be subgroups. If $f\colon G_{1}\to G_{2}$ is a group morphism, then
 $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
 \end{lemma}
 
-\begin{remark}
+\begin{lem-remark}
 Something like this was proven in [[FUNCT_1:50]]\MizThm{FUNCT\_1}{50},
 but I couldn't apply that theorem (not even to functions of sets).
-\end{remark}
+\end{lem-remark}
 
 <<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>=
 LmRestrictCollapse:
@@ -433,7 +433,7 @@ function from $Y$ to $X$. And $h=g^{-1}$ is a bijective function from
 $X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
 \end{proof}
 
-<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
+<<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
 Lm10:
 for X,Y being non empty set
 for f being Function of X,Y
@@ -499,7 +499,7 @@ end;
 
 @
 
-\begin{lemma}
+\begin{lemma}\label{lemma:characteristic:preparatory:f-finv-y-is-y}
 If $f\colon X\to Y$ is a bijective function of sets, then for any $y\in Y$
 we have $f(f^{-1}(y))=y$.
 \end{lemma}
@@ -512,12 +512,12 @@ Lemma~\ref{lm:characteristic:preparatory:lm10} to transform
 $(f^{-1})^{-1}=f$, together gives the result.
 \end{proof}
 
-\begin{remark}
+\begin{lem-remark}
 Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#\MizThm{FUNCT\_2}{26}
 states that $f^{-1}(f(x))=x$ provided $f$ is injective.
-\end{remark}
+\end{lem-remark}
 
-<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
+<<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
 Lm11:
 for X,Y being non empty set
 for f being Function of X,Y
@@ -553,7 +553,7 @@ other result follows from, for any $x\in X$, that $f^{-1}(f(x))=x$ which
 implies $f^{-1}\circ f=\id_{X}$.
 \end{proof}
 
-<<Theorem: bijections have inverses>>=
+<<Lemma: bijections have inverses>>=
 Lm12:
 for X,Y being non empty set
 for f being Function of X,Y
@@ -612,10 +612,10 @@ end;
 
 @
 
-\begin{theorem}
+\begin{lemma}
 If $f\colon X\to Y$ is bijective, then there exists an inverse function
 $f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
-\end{theorem}
+\end{lemma}
 
 \begin{proof}[Proof sketch]
 This follows from theorem\MizThm{GROUP\_6}{63} \verb#GROUP_6:63# which
@@ -624,7 +624,7 @@ bijective. We just need to prove the existence of $g=f^{-1}$, which is
 handled by theorem\MizThm{FUNCT\_2}{25} \verb#FUNCT_2:25#.
 \end{proof}
 
-<<Theorem: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
+<<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
 Lm13:
 for X,Y being non empty set
 for f being Function of X,Y

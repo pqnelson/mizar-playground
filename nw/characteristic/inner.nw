@@ -23,11 +23,11 @@ group element $g\in G$ such that for all $x\in G$ we have $f(x) = x^{g} = g^{-1}
 That is, $f$ is just conjugation by a fixed group element.
 \end{definition}
 
-\begin{remark}[Notation: $\Inn(G)$]\index{$\Inn(G)$}
+\begin{def-remark}[Notation: $\Inn(G)$]\index{$\Inn(G)$}
 We denote the set of inner automorphisms of $G$ by $\Inn(G)$ and
 informally we know $\Inn(G)\subset\Aut(G)$. (We will prove
 $\Inn(G)\subset\Aut(G)$ later, I think.)
-\end{remark}
+\end{def-remark}
 
 <<Define [[inner]] for Automorphism>>=
 definition :: Def5
@@ -42,10 +42,10 @@ end;
 
 @ %def Def5 inner
 
-\begin{definition}\index{Automorphism!outer}
+\begin{notation}\index{Automorphism!outer}
 We also recall that an automorphism is called \define{Outer} if it is
 not inner.
-\end{definition}
+\end{notation}
 
 Mizar let's us do this with the [[antonym]] construct within a
 [[notation]] block.
@@ -128,11 +128,11 @@ For any $\varphi$, we have $\varphi\in\Aut(G)$ if and only if
 $\varphi\colon G\to G$ is an automorphism.
 \end{theorem}
 
-\begin{remark}
+\begin{thm-remark}
 Mizar has [[AUTGROUP]], an article which defines [[Aut G]] the
 collection of functions on the underlying set $U(G)$ of a group $G$. We
 can prove that $f\in\aut(G)$ if and only if $f$ is [[Automorphism of G]].
-\end{remark}
+\end{thm-remark}
 
 \begin{proof}[Proof outline]
   Like any ``if{}f'' statement, we have two steps to this proof:
@@ -195,12 +195,11 @@ Automorphism of $G$.
   Then the result follows.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 We can relate the notion of an [[inner Automorphism of G]] with elements
 of [[InnAut G]] from [[AUTGROUP]]. The only peculiarity is that
 [[AUTGROUP]] requires $G$ to be a \emph{strict} group.
-\end{remark}
-
+\end{thm-remark}
 
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>=
 <<Lemma: Elements of [[InnAut G]] are automorphisms>>
@@ -283,7 +282,7 @@ end;
 
 @ %def Lm4
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:inner:image-of-inner-automorphism-on-subgroup}
 Given any element $a\in G$, and any inner automorphism $\varphi$ of $G$ such
 that $\forall x\in G, f(x) = x^{a} = a^{-1}xa$, it follows that the
 image of a subgroup under $f$ is the conjugate of that subgroup
@@ -373,7 +372,7 @@ end;
 
 @
 
-\begin{theorem}[Kernel of inner automorphism is trivial]
+\begin{theorem}[Kernel of inner automorphism is trivial]\label{thm:characteristic:inner:ker-of-inner-is-trivial}
 Let $G$ be a group, $\varphi\in\End(G)$ be defined by $\forall x\in
 G,\varphi(x)=x^{a}$ for some fixed $a\in G$.
 Then $\ker(\varphi)=\trivialSubgroup_{G}$.
@@ -430,7 +429,7 @@ end;
 
 @
 
-\begin{theorem}[{Conjugation by fixed element is an automorphism}]
+\begin{theorem}[{Conjugation by fixed element is an automorphism}]\label{thm:characteristic:inner:conjugation-by-fixed-element-is-an-automorphism}
 Let $G$ be a group, $a\in G$ a fixed element.
 The endomorphism $\varphi\colon G\to G$ defined by $\varphi(x)=x^{a}$ is, in fact,
 an automorphism of $G$.
@@ -438,7 +437,7 @@ an automorphism of $G$.
 
 \begin{proof}[Proof outline]
 We establish $\varphi$ is injective because it has a trivial kernel
-(thanks to [[Th16]] and theorem [[GROUP_6:56]]\MizThm{GROUP\_6}{56}).
+(thanks to Theorem~\ref{thm:characteristic:inner:ker-of-inner-is-trivial} and theorem [[GROUP_6:56]]\MizThm{GROUP\_6}{56}).
 We then prove $\psi\in\End(G)$ exists such that $\varphi\circ\psi=\id_{G}$.
 The existence of such a $\psi$ implies $\rng(\varphi)=G$, which implies
 $\varphi$ is surjective. We then have $\varphi$, being both injective
@@ -533,14 +532,14 @@ then reconsider fInv as Endomorphism of G;
 
 @
 
-\begin{corollary}
+\begin{corollary}\label{thm:characteristic:inner:conjugation-as-endomorphism-is-inner-automorphism}
 Given a group element $a\in G$, we can always construct an
 inner automorphism $f\in\Inn(G)$ defined by
 $\forall x\in G,f(x)=x^{a}=a^{-1}xa$ conjugation by $a$.
 \end{corollary}
 
 \begin{proof}
-We have shown in [[Th17]] that conjugation is an automorphism, and by
+We have shown in Theorem~\ref{thm:characteristic:inner:conjugation-by-fixed-element-is-an-automorphism} that conjugation is an automorphism, and by
 definition it is inner.
 \end{proof}
 
@@ -571,17 +570,17 @@ underlying set of $G$ to itself $\varphi\colon G\to G$ defined by
 $\forall x\in G, \varphi(x)=x^{a}$. We have to show this is an
 endomorphism, i.e., for any $x_{1},x_{2}\in G$ that
 $\varphi(x_{1}x_{2})=\varphi(x_{1})\varphi(x_{2})$. The result follows
-thanks to [[Th18]].
+thanks to Corollary~\ref{thm:characteristic:inner:conjugation-as-endomorphism-is-inner-automorphism}.
 \end{proof}
 
-\begin{remark}[Motivation]
+\begin{thm-remark}[Motivation]
 Given a group $G$ and suppose we have an element $a\in G$, can we
 construct an inner automorphism $f\in\Inn(G)$ such that
 $\forall x\in G, f(x) = x^{a}$? Yes, we can do it!
 A wiser way to organize these results may be to first show such an $f$
 is an Endomorphism and it exists, then use that result in the proof that
 it's an automorphism, and so on.
-\end{remark}
+\end{thm-remark}
 
 <<Theorem: constructing inner automorphisms from group elements>>=
 theorem Th19:
@@ -613,29 +612,29 @@ end;
 
 @ %def Th19
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:inner:subgroup-is-normal-iff-invariant-under-every-inner-automorphism}
   Let $H\subgroup G$ be an arbitrary subgroup.
   Then $\forall\varphi\in\Inn(G),\varphi(H)=H$ if and only if
   $H\normalSubgroup G$.
 \end{theorem}
 
-\begin{remark}
+\begin{thm-remark}
 This is another, ``Well, I guess Mizar should have this, but I can't
 find it, so here we go!''-type proof. The only quirk is the use of
 [[strict Subgroup]], which is necessary because otherwise [[H |^ a]] is
 strictly speaking a [[multMagma]], not a subgroup. And to assert two
 subgroups are equal, we need a [[strict]] subgroup, which requires
 adding a [[strict]] hypothesis.
-\end{remark}
+\end{thm-remark}
 
-\begin{remark}[On \texttt{strict} hypothesis]
+\begin{thm-remark}[On \texttt{strict} hypothesis]
 The [[strict]] condition is necessary to prove $H\normalSubgroup G$
 implies $\forall\varphi\in\Inn(G),\varphi(H)=H$. Otherwise, we end up
 with the slightly peculiar situation where $\varphi(H) = $
 [[the multMagma of ]]$H$, which isn't terrible, but requires additional
 steps later on in proving ``$K\subgroup N$ is characteristic and
 $N\normalSubgroup G$ is [[strict]] normal implies $K\normalSubgroup G$.''
-\end{remark}
+\end{thm-remark}
 
 <<Theorem: inner Automorphisms fix only normal Subgroups>>=
 theorem Th20:
@@ -657,7 +656,7 @@ end;
 Assume $H\normalSubgroup G$ is a normal subgroup. Let
 $\varphi\in\Inn(G)$ be an arbitrary inner automorphism. We have
 $\varphi(x)=x^{a}$ for some fixed $a\in G$ and for any $x\in G$. Then
-$\varphi(H) = H^{a}$ by [[Th15]] and $H^{a}=H$ by definition
+$\varphi(H) = H^{a}$ by Theorem~\ref{thm:characteristic:inner:image-of-inner-automorphism-on-subgroup} and $H^{a}=H$ by definition
 [[GROUP_3:def 13]]\MizDef{GROUP\_3}{13} and definition of equality for
 subgroups [[GROUP_2:def 6]]\MizDef{GROUP\_2}{6}. Thus the result.
 \end{proof}
@@ -684,12 +683,12 @@ into the situation where $\varphi(H) = H^{a} = H$. But a subgroup is
 normal if and only if $H^{a}=H$. Thus the contradiction.
 \end{proof}
 
-\begin{remark}[Proof by contradiction in Mizar]\index{Proof!by Contradiction}
+\begin{thm-remark}[Proof by contradiction in Mizar]\index{Proof!by Contradiction}
 Mizar's proof by contradiction is rather curious. If we want to prove
 $P\implies Q$ by contradiction, we assert $\neg(P\implies
 Q)\implies\bot$. The proof we offer is about as satisfying as any other
 proof by contradiction.
-\end{remark}
+\end{thm-remark}
 
 <<Proof by contradiction: fixed by inner automorphisms implies normal>>=
 proof

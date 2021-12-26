@@ -50,15 +50,15 @@ Let $G$ be a group. An \define{Endomorphism} of $G$ is a group morphism
 $f\colon G\to G$.
 \end{definition}
 
-\begin{remark}\index{$\End(G)$}
+\begin{def-remark}\index{$\End(G)$}
 We denote the collection of endomorphisms of $G$ as $\End(G)$.
-\end{remark}
+\end{def-remark}
 
-\begin{remark}
+\begin{def-remark}
 Mizar uses the archaic word ``homomorphism'' instead of the more modern
 conventional term ``morphism''. I will use the two interchangeably. And,
 unless stated otherwise, it is understood these are group morphisms.
-\end{remark}
+\end{def-remark}
 
 <<Define [[Endomorphism]]>>=
 definition :: Def1
@@ -99,9 +99,9 @@ bijective endomorphism $f\colon G\to G$. In particular, an inverse
 $f^{-1}\colon G\to G$ exists and is a group morphism.
 \end{definition}
 
-\begin{remark}\index{$\Aut(G)$}
+\begin{def-remark}\index{$\Aut(G)$}
 We denote the collection of automorphisms of $G$ as $\Aut(G)$.
-\end{remark}
+\end{def-remark}
 
 <<Define [[Automorphism]]>>=
 definition :: Def2
@@ -111,10 +111,10 @@ end;
 
 @ %def Automorphism
 
-\begin{theorem}
+\begin{proposition}
 For any automorphism $\varphi\colon G\to G$, its inverse $\varphi^{-1}$
 is also an automorphism.
-\end{theorem}
+\end{proposition}
 
 This is proven in \verb#GROUP_6:62#.\MizThm{GROUP\_6}{62} We have, for
 example, the following accepted by Mizar:
@@ -125,7 +125,7 @@ for phi being Automorphism of G
 holds phi" is Automorphism of G by GROUP_6:62;
 \end{mizar}
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:automorphism:trivial-subgroup-invariant-under-automorphisms}
 For any group $G$ and endomorphism $f\in\End(G)$, we have the trivial
 subgroup $\trivialSubgroup\subgroup G$ be preserved under $f$; i.e.,
 $f(\trivialSubgroup)=\trivialSubgroup$.
@@ -166,7 +166,7 @@ For any automorphism $\varphi\in\Aut(G)$, we have $\varphi(\trivialSubgroup_{G})
 If $\phi$ is an automorphism of a group $G$, then
 the image of the trivial subgroup under $\phi$ is a subgroup of itself
 $\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
-Theorem~[[Th1]], that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
+Theorem~\ref{thm:characteristic:automorphism:trivial-subgroup-invariant-under-automorphisms}, that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
 $\phi$ (being an automorphism) is also an endomorphism. And [[GROUP_2]]
 proves that $G$ is a subgroup of itself in Theorem~[[Th54]].\MizThm{GROUP\_2}{54}
 \end{proof}
@@ -206,7 +206,7 @@ end;
 
 @ %def Lm8
 
-\begin{lemma}
+\begin{lemma}\label{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
 $G$, we have $\varphi|_{H}\colon H\into\varphi(H)$ be an injective group morphism.
 \end{lemma}
@@ -241,7 +241,7 @@ end;
 
 @ %def Lm9
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}
 Let $H\subgroup G$ be a subgroup such that
 $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$.
 Then any automorphism $\varphi$ of $G$ has an inverse which satisfies
@@ -277,7 +277,7 @@ end;
 
 @ %def Th6
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:automorphism:phi-phiInv-H-is-H}
   Let $G$ be a group, and $H\subgroup G$ be a subgroup.
   Then for any automorphism $\varphi\in\Aut(G)$, we have
   $\varphi[\varphi^{-1}(H)]=H$.
@@ -335,7 +335,7 @@ We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
 some [[M1:]] $a\in\varphi^{-1}(H)$ such that [[B2:]] $g=\varphi(a)$. And
 then we have, by the same line of reasoning applied to $a$, there is
 some [[M2:]] $b\in H$ such that [[B3:]] $\varphi^{-1}|_{H}(b)=a$. It
-follows that $g = \varphi(\varphi^{-1}(b))$, and by [[Lm11]] we have
+follows that $g = \varphi(\varphi^{-1}(b))$, and by Lemma~\ref{lemma:characteristic:preparatory:f-finv-y-is-y} we have
 $g = b$ which proves the claim.
 \end{proof}
 
@@ -471,13 +471,13 @@ be an automorphism of G. If $\varphi(H)\subgroup K$, then $H\subgroup\varphi^{-1
 
 
 \begin{proof}[Proof sketch]
-The argument basically applies [[Th7]] to $\varphi^{-1}$, then unfolds
+The argument basically applies Theorem~\ref{thm:characteristic:automorphism:phi-phiInv-H-is-H} to $\varphi^{-1}$, then unfolds
 definitions.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 I need to work on my numbering scheme\dots
-\end{remark}
+\end{thm-remark}
 
 <<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>=
 theorem Th7b:
@@ -518,7 +518,7 @@ $\varphi$ is isomorphic to $H$ itself, i.e., $H\iso\varphi(H)$.
 
 \begin{proof}[Proof outline]
 Let $H_{2}=\varphi(H)$ be a subgroup of $G$. We know $\varphi|_{H}$ is
-injective by [[Lm9]]. This gives us our result.
+injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}. This gives us our result.
 \end{proof}
 
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
@@ -575,7 +575,7 @@ end;
 
 \begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
 Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
-But $\varphi|_{H}(g)=\varphi(g)$ by [[Lm3]]. So we have
+But $\varphi|_{H}(g)=\varphi(g)$ by Lemma~\ref{lemma:characteristic:preparatory:restrict-group-morphism-to-subgroups}. So we have
 $\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by theorem \verb#GROUP_6:41#\MizThm{GROUP\_6}{41}.
 \end{proof}
 
@@ -599,10 +599,10 @@ Let $G$ be a group. The \define{Identity endomorphism} of $G$ is defined
 to be $\Id_{G}\in\End(G)$ such that for any $x\in G$, $\Id_{G}(x)=x$.
 \end{definition}
 
-\begin{remark}
+\begin{def-remark}
 I found it tedious to write [[id (the carrier of G)]] over and over
 again, so I wrote a shortcut [[Id_G]] for $\Id_{G}$.
-\end{remark}
+\end{def-remark}
 
 <<Define $\Id_{G}$>>=
 definition :: Def3
@@ -739,7 +739,7 @@ end;
 
 @ %def Lm2
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}
   Let $H\subgroup G$ be any subgroup.
   If $\varphi\in\Aut(G)$ is an automorphism such that $\varphi(H)=H$ it
   leaves $H$ invariant, then its restriction to $H$ is an automorphism
@@ -756,7 +756,7 @@ This result isn't surprising, but proving surjectivity was surprisingly
   \end{equation*}
   be a morphism $\varphi|_{H}\colon H\to H$ by theorem
   [[GROUP_6:49]]\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
-  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by [[Lm9]]
+  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
   and hypothesis $A_{1}$.
 
   The nontrivial part of the proof is establishing $\varphi|_{H}$ is
@@ -796,10 +796,10 @@ so I just ``forgot'' it was a morphism, proved surjectivity, then
 ``remembered'' it was a group morphism after all.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 I am starting to think that the claim [[f is onto]] is different than
 [[f is onto Homomorphism of G1,G2]].
-\end{remark}
+\end{thm-remark}
 
 <<Proof: $\varphi|_{H}$ is surjective>>=
 proof

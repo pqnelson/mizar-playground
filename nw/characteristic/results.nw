@@ -24,11 +24,11 @@ denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
 itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
 \end{definition}
 
-\begin{remark}
+\begin{def-remark}
 The other definition which is routinely given is that $H$ is a
 characteristic subgroup of $G$ if for any $\varphi\in\Aut(G)$ we have
 $\varphi(H)\subgroup H$. We prove this later as equivalent (\S\ref{thm:results:alt-def-of-char-subgroup}).
-\end{remark}
+\end{def-remark}
 
 <<Define [[characteristic]] attribute>>=
 definition :: Def9
@@ -72,13 +72,13 @@ For any subgroup $H\subgroup G$, if $\trivialSubgroup_{G}\subgroup H$
 and $H\subgroup\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
 \end{lemma}
 
-\begin{remark}
+\begin{lem-remark}
 I couldn't quite find this anywhere in the MML, so I had to prove it
 myself.
-\end{remark}
-\begin{remark}[To do]
+\end{lem-remark}
+\begin{lem-remark}[To do]
 I think I prove this result several times, I should refactor my code accordingly.
-\end{remark}
+\end{lem-remark}
 
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
 Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
@@ -260,13 +260,13 @@ This corresponds to an inner Automorphism of $G$, $\varphi\in\Inn(G)$, and an
 automorphism $\varphi|_{N}\in\Aut(N)$ of $N$. But since $K$ is
 characteristic in $N$, it follows $\varphi|_{N}(K)=K$. Then $K$,
 considered as a subgroup of $G$, must be invariant under $\varphi$ and
-therefore a normal subgroup of $G$ by [[LmNormalSubgroup]].
+therefore a normal subgroup of $G$ by Lemma~\ref{lemma:characteristic:preparatory:normal-subgroup}.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 The [[strict]] hypothesis on [[N]] is necessary, since [[GROUP_2:def 6]]\MizDef{GROUP\_2}[06]{6}
 defines equality only on \emph{strict} subgroups.
-\end{remark}
+\end{thm-remark}
 
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>=
 <<Lemma: two group morphisms which coincide on subgroup have the same image>>
@@ -289,7 +289,9 @@ end;
 \begin{proof}[Sub-proof ($\forall a\in G, K^{a}=K$)]
 Given an arbitrary $a\in G$, we construct an inner automorphism
 $\varphi\in\Inn(G)$ defined by $\varphi(x)=x^{a}$. Then $\varphi(N)=N$
-by [[Th20]] which implies $\varphi|_{N}\in\Aut(N)$ by [[Th11]]. Viewed
+by Theorem~\ref{thm:characteristic:inner:subgroup-is-normal-iff-invariant-under-every-inner-automorphism}
+which implies $\varphi|_{N}\in\Aut(N)$ by Theorem~\ref{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}.
+Viewed
 as an automorphism of $N$, $\varphi|_{N}=:\psi\in\Aut(N)$, we must have
 $\psi(K)=K$ by virtue of $K$ being characteristic subgroup of $N$. But
 $\psi(K)=\varphi(K)$ due to a sub-sub-proof that $\forall k\in K,\psi(k)=\varphi(k)$.
@@ -356,7 +358,7 @@ image of the morphisms on this shared subgroup should coincide.
 \end{proof}
 
 
-\begin{remark}
+\begin{thm-remark}
 The heavy lifting is done by a straightforward and intuitive result.
 
 Initially, I had a more conservative result: let $\varphi,\psi\in\Aut(G)$
@@ -365,7 +367,7 @@ $\varphi(H)=\psi(H)$. Then I realized this didn't describe the situation
 I was facing, so I revised it to fit. Then I realized I didn't need the
 hypothesis that $\varphi$ and $\psi$ were automorphisms, they could be
 generic morphisms.
-\end{remark}
+\end{thm-remark}
 
 <<Lemma: two group morphisms which coincide on subgroup have the same image>>=
 theorem Th24:
@@ -605,9 +607,9 @@ end;
 This is a slick argument, which is confusing until one realizes
 what's going on.  We use the facts that, for any $\varphi,\psi\in\Aut(G)$,
 \begin{itemize}
-\item[{[[A1]]}:] $\psi(H)\subgroup H$;
-\item[{[[Th6]]}:] for $\psi=\varphi^{-1}$, we have $\varphi[\psi(H)]\subgroup\varphi(H)$; and
-\item[{[[Th7]]}:] for $\psi=\varphi^{-1}$, the underlying magmas of $H$ and $\varphi[\psi(H)]$ are equal.
+\item Hypothesis [[A1]]: $\psi(H)\subgroup H$;
+\item Theorem~\ref{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}: for $\psi=\varphi^{-1}$, we have $\varphi[\psi(H)]\subgroup\varphi(H)$; and
+\item Theorem~\ref{thm:characteristic:automorphism:phi-phiInv-H-is-H}: for $\psi=\varphi^{-1}$, the underlying magmas of $H$ and $\varphi[\psi(H)]$ are equal.
 \end{itemize}
 This suffices to infer $H\subgroup\varphi(H)$.
 \end{proof}
@@ -647,10 +649,10 @@ Then we have $\varphi(Z(G))$ be a subgroup of $Z(G)$, which let's us use
 the previous theorem.
 \end{proof}
 
-\begin{remark}
+\begin{thm-remark}
 The [[center]]\mizindex{Center@\texttt{center}} functor is defined in
 [[GROUP_5:def 10]]\MizDef{GROUP\_5}{10}.
-\end{remark}
+\end{thm-remark}
 
 <<Theorem: $Z(G)$ is characteristic subgroup>>=
 

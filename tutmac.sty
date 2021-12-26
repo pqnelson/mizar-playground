@@ -127,24 +127,45 @@
   \textrm % body font
 }
 % \theoremstyle{theoremstyle}
-\newtheorem{theorem}{Theorem}[chapter]%[section]
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{exercise}[theorem]{Exercise}
+\iffalse
+  \newtheorem{theorem}{Theorem}[chapter]%[section]
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{exercise}[theorem]{Exercise}
 
-\theoremstyle{remark}
-\newtheorem{remark}{Remark}[theorem]
-%\newtheorem{remark}[theorem]{Remark}
-\newtheorem{note}[theorem]{Note}
+  \theoremstyle{remark}
+  \newtheorem{remark}{Remark}[theorem]
+  \newtheorem{note}[theorem]{Note}
 
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{registration}[theorem]{Registration}
-\newtheorem{reserve}[theorem]{Reserve}
-\newtheorem{voc}[remark]{Vocabulary}
-%\newtheorem{voc}[theorem]{Vocabulary}
+  \theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{example}[theorem]{Example}
+  \newtheorem{registration}[theorem]{Registration}
+  \newtheorem{reserve}[theorem]{Reserve}
+  \newtheorem{voc}[remark]{Vocabulary}
+\else
+  \newtheorem{theorem}{Theorem}[chapter]               % counter 1
+  \newtheorem{corollary}[theorem]{Corollary}           % counter 1
+  \newtheorem{lemma}{Lemma}[chapter]                   % counter 2
+  \newtheorem{proposition}{Proposition}[chapter]       % counter 3
+  \newtheorem{exercise}[proposition]{Exercise}         % counter 3
+
+  \theoremstyle{definition}
+  \newtheorem{example}[proposition]{Example}           % counter 3
+  \newtheorem{registration}[proposition]{Registration} % counter 3
+  \newtheorem{reserve}[proposition]{Reserve}           % counter 3
+  \newtheorem{voc}[proposition]{Vocabulary}            % counter 3
+  \newtheorem{definition}{Definition}[chapter]         % counter 4
+
+  \theoremstyle{remark}
+  \newtheorem{note}[proposition]{Note}                 % counter 3
+  \newtheorem{notation}[proposition]{Notation}         % counter 3
+  \newtheorem{remark}{Remark}[proposition]
+  \newtheorem{def-remark}{Remark}[definition]
+  \newtheorem{thm-remark}{Remark}[theorem]
+  \newtheorem{lem-remark}{Remark}[lemma]
+\fi
 
 %\%renewcommand\thetheorem{\thechapter.\thesection.\arabic{theorem}}
 
