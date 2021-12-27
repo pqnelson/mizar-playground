@@ -1396,19 +1396,130 @@ registration
   end;
 end;
 
+registration
+  let G be non trivial Group;
+  let H be non trivial Subgroup of G;
+  cluster non trivial for non trivial Subgroup of H;
+  existence
+  proof
+    A1: the carrier of G <> {1_G} by GROUP_6:def 2;
+    reconsider H=G as Subgroup of G by GROUP_2:54;
+    the carrier of H <> {1_G} by A1;
+    hence thesis;
+  end;
+end;
+
+LmExistenceProper:
+for G being non trivial Group
+holds ex H being Subgroup of G st H is proper
+proof
+  let G be non trivial Group;
+  take H=(1).G;
+  G is non trivial;
+  then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
+  then the carrier of G <> {1_G};
+  then the carrier of G <> the carrier of H;
+  hence H is proper;
+end;
+
+
+:: Lm99:
+:: H is proper iff the carrier of H <> the carrier of G
+
+
 
 registration
   let G be non trivial Group;
   cluster proper for Subgroup of G;
-  existence
+  existence by LmExistenceProper;
+end;
+
+
+
+Lm101:
+for H being Subgroup of G
+st H is proper :: Subgroup of G
+holds ex x being Element of G st not (x in H)
+proof
+  let H be Subgroup of G;
+  assume A1: H is proper; :: Subgroup of G;
+  then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
+  then consider x being object such that
+  A2: x in (the carrier of G) \ (the carrier of H)
+  by XBOOLE_0:def 1;
+  reconsider x as Element of G by A2, STRUCT_0:def 5;
+  take x;
+  thus not (x in H) by A2, STRUCT_0:def 5, XBOOLE_0:def 5;
+end;
+
+LmTransitivityOfProper:
+for G being non trivial Group
+for K being non trivial Subgroup of G
+st K is proper
+for H being non trivial Subgroup of K
+st H is proper
+holds H qua Subgroup of G is proper
+proof
+  let G be non trivial Group;
+  let K be non trivial Subgroup of G;
+  assume A1: K is proper;
+  then the carrier of K <> the carrier of G by Lm99;
+  let H be non trivial Subgroup of K;
+  assume A2: H is proper;
+  consider x being Element of G such that
+  A3: not (x in K)
+  by A1,Lm101;
+  the carrier of H c= the carrier of K & the carrier of H <> the carrier of K
+  by GROUP_2:def 5,A2,Lm99;
+  then not (x in H) by A3;
+  then the carrier of H <> the carrier of G;
+  hence H qua Subgroup of G is proper;
+end;
+
+LmExistenceOfProperGrandchild:
+for G being non trivial Group
+for H being non trivial Subgroup of G
+holds ex K being Subgroup of H st K is proper
+proof
+  let G be non trivial Group;
+  let H be non trivial Subgroup of G;
+  consider K being Subgroup of H such that
+  A1: K is proper
+  by LmExistenceProper;
+  take K;
+  thus K is proper by A1;
+end;
+
+
+registration
+  let G be non trivial Group;
+  let H be non trivial Subgroup of G;
+  cluster proper for Subgroup of H;
+  existence by LmExistenceOfProperGrandchild;
+end;
+
+LmCoherentProperGrandchildren:
+for G being non trivial Group
+for H being non trivial Subgroup of G
+for K being proper Subgroup of H
+holds K is proper Subgroup of G
+proof
+  let G be non trivial Group;
+  let H be non trivial Subgroup of G;
+  let K be proper Subgroup of H;
+  consider x being Element of H such that
+  A1: not (x in K)
+  by Lm101;
+  A2: K is Subgroup of G by GROUP_2:55;
+  reconsider x as Element of G by GROUP_2:42;
+  A3: ex g being Element of G st not g in K
   proof
-    take (1).G;
-    G is non trivial;
-    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
-    then the carrier of G <> {1_G};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is proper;
+    take x;
+    thus thesis by A1;
   end;
+  the carrier of K <> the carrier of G by A3;
+  then the multMagma of K <> the multMagma of G;
+  hence K is proper Subgroup of G by A2,Def10;
 end;
 
 reserve G for non trivial Group;
@@ -1427,22 +1538,6 @@ proof
   hence H is proper by Def10,GROUP_4:def 6;
 end;
 
-
-Lm101:
-for H being Subgroup of G
-st H is proper Subgroup of G
-holds ex x being Element of G st not (x in H)
-proof
-  let H be Subgroup of G;
-  assume A1: H is proper Subgroup of G;
-  then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
-  then consider x being object such that
-  A2: x in (the carrier of G) \ (the carrier of H)
-  by XBOOLE_0:def 1;
-  reconsider x as Element of G by A2, STRUCT_0:def 5;
-  take x;
-  thus not (x in H) by A2, STRUCT_0:def 5, XBOOLE_0:def 5;
-end;
 
 Lm80:
 for X,Y being non empty set
@@ -1475,7 +1570,7 @@ st (ex x being Element of G st not (x in H))
 holds H is proper Subgroup of G
 proof
   let H be Subgroup of G;
-  given x being Element of G such that 
+  given x being Element of G such that
   A1: not (x in H);
   set UG = the carrier of G;
   set UH = the carrier of H;
@@ -1523,20 +1618,22 @@ proof
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
 
-H is maximal implies phi .: H is maximal
+for H being strict Subgroup of G
+holds H is maximal implies phi .: H is maximal
 proof
+  let H be strict Subgroup of G;
   assume A1: H is maximal;
   then A2: H is proper by Lm98;
   set H2 = phi .: H;
-  H2 = Image(phi|H) by GRSOLV_1:def 3;
-  then A3: H2 is proper Subgroup of G by A2,Lm102;
+  A3: H2 = Image(phi|H) by GRSOLV_1:def 3;
+  then A4: H2 is proper Subgroup of G by A2,Lm102;
 
   not (H2 is maximal) implies contradiction
   proof
     assume B1: not H2 is maximal;
     then not (for K being strict Subgroup of G st
     the multMagma of H2 <> K & H2 is Subgroup of
-    K holds K = the multMagma of G) by Def10,A3,GROUP_4:def 6;
+    K holds K = the multMagma of G) by Def10,A4,GROUP_4:def 6;
     then consider K being strict Subgroup of G such that
     B2: the multMagma of H2 <> K and
     B3: H2 is Subgroup of K and
@@ -1563,6 +1660,28 @@ proof
     let K be Subgroup of G;
     assume B1: H2 is Subgroup of K;
     assume B2: not H2 = K;
+    consider psi being Automorphism of G such that
+    B3: psi = phi" and
+    B4: the multMagma of Image(phi|Image(psi|H2)) = H2
+    by Th7;
+    consider phi2 being Automorphism of G such that
+    B5: phi2 = psi" and
+    B6: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
+    by Th7;
+    phi is bijective & phi is Function of the carrier of G, the carrier of G & the carrier of G is non empty;
+    then B7: phi = (phi")" by Lm10
+    .= psi" by B3
+    .= phi2 by B5;
+    then B8: phi2 = phi;
+    Image(phi2|H) = Image(phi|H) by B8
+    .= H2 by A3;
+    then B9: Image(psi|H2) = the multMagma of H by B4,B6;
+    psi .: H2 is Subgroup of psi .: K by B1, GRSOLV_1:12;
+    then Image(psi|H2) is Subgroup of psi .: K by GRSOLV_1:def 3;
+    then Image(psi|H2) is Subgroup of Image(psi|K) by GRSOLV_1:def 3;
+    then B10: H is Subgroup of Image(psi|K) by B9;
+    H is proper Subgroup of Image(psi|K) by B2;
+::>                    *136
     thus the multMagma of G = the multMagma of K;
 ::>                                            *4
   end;
@@ -1570,5 +1689,5 @@ proof
   hence H2 is maximal;
 ::>                 *4
 end;
-
 ::> 4: This inference is not accepted
+::> 136: Non registered cluster
