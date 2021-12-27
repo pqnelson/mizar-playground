@@ -54,7 +54,7 @@ Similarly, [[MOD_4]] introduces the tokens [[Endomorphism]] and
 [[Automorphism]], which I want to use, so I add them, too.
 
 <<[[char.miz]] vocabularies>>=
-vocabularies MOD_4, TMP,
+vocabularies MOD_4, CHAR,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
   <<Group conjugation and normal subgroups tokens>>
@@ -76,9 +76,12 @@ begin with importing the usual suspects. For [[bijective]] and [[onto]],
 we need [[FUNCT_2]]. We will also be proving properties concerning the
 cardinality of subgroups, so we load [[CARD_1]].
 
+We'll also make use of the fact that the real numbers form a group, and
+some basics of arithmetic (the [[ARYTM_]] supply us with what we need).
+
 <<Functions and subset tokens>>=
-MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, NUMBERS, WELLORD1,
-SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
+MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, ARYTM_3, ARYTM_2,
+FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
 
 @
 
@@ -136,11 +139,12 @@ The basics of Tarski--Grothendieck set theory may be found in
 operations applied to functions [[FUNCOP_1]] will be necessary later
 on. And fancy functions from sets to sets, like [[Permutation]], is
 defined in [[FUNCT_2]]. There are few random odds and ends, like
-[[NUMBERS]] for subsets of complex numbers
+[[NUMBERS]] for subsets of complex numbers and [[XXREAL_0]] for the real
+numbers.
 
 <<set theoretic notation for [[char.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS
+RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0
 
 @
 
@@ -151,8 +155,8 @@ The group theoretic notions are a grab bag of binary operators
 ([[REALSET1]]), and the relevant group theory articles.
 
 <<group theoretic notation for [[char.miz]]>>=
-BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
-GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
+BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
+GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
 
 @
 
@@ -177,7 +181,8 @@ The clusters we want to use from set theory are defined in the ``same''
 scattering of places.
 
 <<Register set theoretic clusters>>=
-XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
+XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, ARYTM_2,
+NUMBERS, FINSET_1
 
 @
 
@@ -211,7 +216,7 @@ Arguably, we want to be using basic predicates concerning subsets
 ([[TARSKI]]), so let's just add them.
 
 <<Include set theoretic definitions>>=
-SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
+SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, ARYTM_2
 
 @
 
@@ -220,7 +225,7 @@ But we also want to use facts concerning normal subgroups ([[GROUP_3]])
 and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
 <<Include group theoretic definitions>>=
-GROUP_3, AUTGROUP
+GROUP_1, GROUP_3, GROUP_4, GROUP_6, AUTGROUP
 
 @
 
@@ -240,17 +245,20 @@ theorems
 @
 
 %\M
-We have the usual cast of set theoretic characters.
+We have the usual cast of set theoretic characters. There are a large
+number of articles we refer to for using the real numbers.
+
 <<Import set-theoretic theorems>>=
 TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
-XBOOLE_0, RELAT_1
+XBOOLE_0, XBOOLE_1, FINSET_1, CARD_1, XREAL_1, COMPLEX1, XXREAL_0,
+ORDINAL1, NAT_D, XREAL_0, RELAT_1
 
 @
 
 %\M
 Again, we import the usual group theoretic theorems.
 <<Import group-theoretic theorems>>=
-GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
+GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
 GRSOLV_1, AUTGROUP
 
 @
@@ -273,7 +281,7 @@ Expansions of terms defined by [[equals]] are imported by a new
 [[environ]] directive [[equalities]].
 
 <<[[char.miz]] equalities>>=
-equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
+equalities FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2, GROUP_3, ALGSTR_0
 
 @
 
@@ -282,7 +290,7 @@ Import expansions of predicates and adjectives from the specified
 articles.
 
 <<[[char.miz]] expansions>>=
-expansions BINOP_1, FUNCT_2
+expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2 
 
 @
 

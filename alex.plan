@@ -342,7 +342,7 @@ Currently on my to-do list:
 - [ ] Rework the theorem numbers
 - [ ] Prove: if $H$ is a maximal subgroup of $G$, then for any
       automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
-      maxiaml subgroup of $G$.
+      maximal subgroup of $G$.
 - [ ] Prove: if $H$ is a proper subgroup of $G$, then under any
       automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
       proper subgroup
@@ -368,3 +368,162 @@ Now the notes stand at 88 pages long.
 Actually, it seems like bad spacing makes this much longer. By tweaking
 the margins slightly, and modifying the `\nwendcode` to be just
 `{\endtrivlist\endgroup}`, we can break noweb code chunks across pages.
+
+
+# 2021-12-27
+
+I'm now up to 84 pages in my notes. I've since made them full page with
+one inch margins. 
+
+------
+
+## Literate Code Uses Mizar-Numbering System
+
+Also, I am no longer Knuth-style "numbered paragraphs", but more modern
+"mathematical registers" (definitions, theorems, lemmas, etc.). To make
+life more convenient, I've opted to make the numbering scheme mirror
+Mizar's, so that means 4 independent counters:
+
+- Theorems are numbered within each chapter
+  - Corollaries are synonymous with theorems in this scheme, and so they
+    share the same counter.
+- Definitions are numbered (independently from theorems) within each
+  chapters
+- Lemmas are numbered (independently from theorems and definitions)
+  within each chapter
+- Everything else (examples, notes, registrations, propositions,
+  exercises, asides, idioms, notation remarks, etc.) is numbered using
+  the same counter, independently of the previous three counters. 
+  
+The only exception is that remarks are "sub-numbered" off of whatever is
+being discussed.
+
+I'm also thinking about organizing my notes more along the lines of
+"collected writings"-style, which collate articles into a coherent
+story. Each chapter corresponds to a Mizar article as literate
+programmed. Each `part` would correspond to a major divisional
+achievement. Then it becomes a question of organizing parts among
+themselves, and chapters within parts. Perhaps there is some
+"dependency-tree code" in LaTeX which has ways to help me here...
+
+---
+
+## Updating my old to do list
+
+- [X] Rework the theorem numbers
+  - OK, so I didn't rework the theorem numbers, but I have reworked how
+    I print theorems in LaTeX, and now I can just copy that numbering
+    scheme. So I am marking this off as a "win".
+- [ ] Prove: if $H$ is a maximal subgroup of $G$, then for any
+      automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
+      maximal subgroup of $G$.
+- [X] Prove: if $H$ is a proper subgroup of $G$, then under any
+      automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
+      proper subgroup
+- [ ] Prove: the Frattini subgroup is characteristic
+- [ ] Prove: the derived subgroup ``G` `` is characteristic
+- [X] Think about introducing attribute `trivial` for Groups, `proper`
+      for subgroups,
+  - `maximal` was introduced in `group_4:def 6`
+  - `trivial` was introduced in `group_6:def 2`
+  - `proper` was not introduced in groups, so I added it and some
+    preparatory work surrounding it.
+
+---
+
+## Thinking about the next "act": Finite Groups of Lie Type
+
+Here are cursory thoughts about finite groups of Lie type...
+
+**Thought 1: "Source of Truth" for Definitions.**
+I think the _Encyclopedia of Mathematics_ may be a good source for
+definitions, when there is doubt or disagreement among sources. For
+example, the [General Linear Group](https://encyclopediaofmath.org/wiki/General_linear_group) is
+defined over an associative ring. If that ring is commutative, then the
+special linear subgroup can be defined using the unit determinant
+condition. These are good to know. 
+
+I should double check if I "need" to be this general, whether I can
+start with the general linear group over a field (since I only need
+finite fields for my work).
+
+**Thought 2: Matrix groups suffice?**
+Looking ahead, I may need to "hack" a definition of finite groups of Lie
+type by defining matrix groups. The finite groups of Lie type are just
+the matrix groups over finite fields, and subgroups of them.
+
+**Thought 3: Finite Groups of Lie Type = Exceptional + Classical Groups.**
+This division is kind of tautological, but Robert Wilson points it out.
+
+Classical groups of finite type can be presented as the symmetries of a
+"[bilinear] form" on a vector space over finite fields. Wilson does this
+in chapter 3 of _The Finite Simple Groups_.
+
+
+**Thought 4: Constructing Exceptional Lie Type Finite Groups. Use Lie Algebras.**
+The exceptional groups are trouble. There are three ways to construct
+them:
+
+1. Roger W. Carter's _Simple Groups of Lie Type_ constructs finite
+   groups of Lie type by their action on Lie algebras. There's an idea!
+   I'll look at other ways to achieve the same result. But Lie algebras
+   can be presented independent of Lie groups (so I can avoid the need
+   to do differential geometry) and entirely algebraically.
+2. Using the Octonions (following Valdekamp and Springer's book 
+   _Octonions, Jordan Algebras and Exceptional Groups_, or Wilson)
+3. Using algebraic groups (following Geck's book _Introduction to
+   Algebraic Geometry and Algebraic Groups_, for example)
+
+I have to "go to war with the army I've got", so I should be mindful of
+what's currently _in_ the Mizar Mathematical Library. My thought process
+is as follows:
+
+- I think Mizar has very little algebraic geometry formalized, which
+  will make route #3 difficult (perhaps even untenable). So we should
+  eliminate the algebraic geometric approach as a contender.
+- Wilson remarks in his book hos the Octonionic approach cannot "reuse"
+  parts from constructing exceptional groups, we've got to do it fresh
+  each time. That sounds tedious. I'd rather leave that for someone
+  who's excited about the octonions. 
+- That leaves only the first route, using Carter's approach constructing
+  finite groups of Lie type using Lie algebras.
+  
+One difficulty with this approach may be that the commutator for group
+elements in Mizar is defined in the opposite manner as the definition
+we'd hope for in Lie groups. But I'd rather deal with that than
+formalizing algebraic geometry!
+
+**Thought 5: Look at formalizing Lie algebras.**
+This will be fun. All I need is a vector space and equip it with a Lie
+bracket. I can probably get away with this definition, Bourbaki uses a
+module over a ring (but I think that's a bit too general).
+
+-------
+
+## Current TODO List
+
+- [ ] Prove: if $H$ is a maximal subgroup of $G$, then for any
+      automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
+      maximal subgroup of $G$. (This is critical to finish before
+      proving the Frattini subgroup is characteristic.)
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
+- [ ] Prove: the Frattini subgroup is characteristic
+- [ ] Prove: the derived subgroup ``G` `` is characteristic
+- [ ] Define the p-core for a group
+  - [ ] Prove the p-core is characteristic
+- [ ] Research the related constructs, specifically if this is a bridge
+      too far for characteristic subgroups. Right now we're at about
+      1600 lines in the Mizar article, adding too much about p-cores
+      (and friends) may push us over into too large an article
+  - [ ] p'-core, which is the largest normal subgroup of G whose order
+        is coprime to p, can we define `'-core` as a functor?
+  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
+        functor? 
+  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
+        analogy to what we have?
+- [ ] Start researching Lie algebras with an eye towards formalizing
+      them.
+- [ ] Consider purchasing Wanda Szmielew, _From Affine to Euclidean Geometry_

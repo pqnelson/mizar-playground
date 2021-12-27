@@ -7,9 +7,8 @@
 \RequirePackage{upquote}
 \RequirePackage{enumitem}
 \setlist{nosep}
-\RequirePackage{datetime}
+\RequirePackage{datetime} % for \pdftime
 \RequirePackage{datetime2}
-\RequirePackage{ifpdf}
 \RequirePackage{amssymb,amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{bm}
@@ -23,14 +22,11 @@
   \RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc,headheight=13.6pt]{geometry}
   \RequirePackage[nottoc,notlot,notlof]{tocbibind}
 }
+\RequirePackage{ifpdf}
+\RequirePackage[\ifpdf\else dvipdfmx\fi]{hyperref}
 
+% eTeX uses this color for links, it's better than BrickRed imho
 \definecolor{linkRed}{cmyk}{0.28, 1, 1, 0.35}
-\ifpdf
-  \RequirePackage{hyperref}
-\else
-  % eTeX uses this color for links, it's better than BrickRed imho
-  \RequirePackage[dvipdfmx]{hyperref}
-\fi
 \hypersetup{colorlinks=true,
     linkcolor=linkRed,
     citecolor=linkRed,
@@ -127,30 +123,10 @@
   \textrm % body font
 }
 % \theoremstyle{theoremstyle}
-\iffalse
-  % my personal numbering system
-  \newtheorem{theorem}{Theorem}[chapter]
-  \newtheorem{corollary}[theorem]{Corollary}
-  \newtheorem{proposition}[theorem]{Proposition}
-  \newtheorem{lemma}[theorem]{Lemma}
-  \newtheorem{exercise}[theorem]{Exercise}
+\newif\ifusemizarnumbers
+\usemizarnumberstrue
 
-  \theoremstyle{remark}
-  \newtheorem{remark}{Remark}[theorem]
-  \newtheorem{def-remark}{Remark}[theorem]
-  \newtheorem{thm-remark}{Remark}[theorem]
-  \newtheorem{lem-remark}{Remark}[theorem]
-  \newtheorem{note}[theorem]{Note}
-  \newtheorem{idiom}[theorem]{Idiom}
-  \newtheorem{aside}[theorem]{Aside}
-
-  \theoremstyle{definition}
-  \newtheorem{definition}[theorem]{Definition}
-  \newtheorem{example}[theorem]{Example}
-  \newtheorem{registration}[theorem]{Registration}
-  \newtheorem{reserve}[theorem]{Reserve}
-  \newtheorem{voc}[remark]{Vocabulary}
-\else
+\ifusemizarnumbers
   % Mizar's numbering system
   \newtheorem{theorem}{Theorem}[chapter]               % counter 1
   \newtheorem{corollary}[theorem]{Corollary}           % counter 1
@@ -174,9 +150,31 @@
   \newtheorem{def-remark}{Remark}[definition]
   \newtheorem{thm-remark}{Remark}[theorem]
   \newtheorem{lem-remark}{Remark}[lemma]
+\else
+  % my personal numbering system
+  \newtheorem{theorem}{Theorem}[chapter]
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{exercise}[theorem]{Exercise}
+
+  \theoremstyle{remark}
+  \newtheorem{remark}{Remark}[theorem]
+  \newtheorem{def-remark}{Remark}[theorem]
+  \newtheorem{thm-remark}{Remark}[theorem]
+  \newtheorem{lem-remark}{Remark}[theorem]
+  \newtheorem{note}[theorem]{Note}
+  \newtheorem{idiom}[theorem]{Idiom}
+  \newtheorem{aside}[theorem]{Aside}
+
+  \theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{example}[theorem]{Example}
+  \newtheorem{registration}[theorem]{Registration}
+  \newtheorem{reserve}[theorem]{Reserve}
+  \newtheorem{voc}[remark]{Vocabulary}
 \fi
 
-%\%renewcommand\thetheorem{\thechapter.\thesection.\arabic{theorem}}
 
 %%% Dangerous bend environments
 \font\manual=manfnt
@@ -209,7 +207,7 @@
 
 \numberwithin{equation}{chapter}
 
-\def\define#1{\textbf{``#1''}}
+\newcommand\define[1]{\textbf{``#1''}}
 \newcommand{\Caret}{\char`\^}
 
 \input{notation}

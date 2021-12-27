@@ -53,6 +53,20 @@ reserve X for set;
 <<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
 <<Lemma: bijections have inverses>>
+<<Register: non trivial for Group>>
+<<Register: non trivial for Subgroup>>
+<<Definition: proper subgroup>>
+<<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>
+<<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
+<<Register: proper subgroup for nontrivial groups>>
+<<Lemma: maximal subgroups are proper>>
+<<Register: maximal subgroups are proper>>
+<<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>
+<<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>
+<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
+<<Lemma: trivial groups look like $\trivialSubgroup$>>
+<<Lemma: Trivial groups have no proper subgroups>>
+<<Lemma: Trivial groups have no maximal subgroup>>
 
 @
 
@@ -643,3 +657,451 @@ proof
 end;
 
 @ %def Lm13
+
+\subsection{Nontrivial Groups}
+We will be using nontrivial groups later. Recall, a group $G$ is
+nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
+\emph{overloaded}) in \verb#GROUP_6:def 2#\MizDef{GROUP\_6}[02]{2}:
+
+\begin{mizar}
+definition
+  let G be non empty 1-sorted;
+  redefine attr G is trivial means
+  :Def2:
+  ex x being object st the carrier of G = {x};
+  compatibility
+  :: ...
+end;
+\end{mizar}
+
+We register the negated version ``\texttt{non trivial}'' for groups and
+subgroups.
+
+
+\begin{proposition}[{\texttt{GROUP\_1:3}\MizThm{GROUP\_1}[03]{3}}]
+The real numbers equipped with addition form a group.
+\end{proposition}
+
+\begin{remark}
+We will need this to prove the existence of nontrivial groups and, later,
+serve as an example of a nontrivial group with a proper subgroup.
+\end{remark}
+
+\begin{registration}
+We have a notion of ``\texttt{non trivial}'' groups, and at least one
+exists (namely, the real numbers as an Abelian group).
+\end{registration}
+
+<<Register: non trivial for Group>>=
+registration
+  cluster non trivial for Group;
+  existence
+  proof
+    reconsider G = multMagma (# REAL, addreal #) as Group by GROUP_1:3;
+    take G;
+    the carrier of G <> {1_G};
+    hence not (G is trivial);
+  end;
+end;
+
+@ %def non trivial
+
+\begin{registration}
+For any non trivial group $G$, we can find a nontrivial subgroup
+$H\subgroup G$, namely $G$ itself.
+\end{registration}
+
+<<Register: non trivial for Subgroup>>=
+registration
+  let G be non trivial Group;
+  cluster non trivial for Subgroup of G;
+  existence
+  proof
+    A1: the carrier of G <> {1_G} by GROUP_6:def 2;
+    reconsider H=G as Subgroup of G by GROUP_2:54;
+    the carrier of H <> {1_G} by A1;
+    hence thesis;
+  end;
+end;
+
+@
+
+\subsection{Proper Subgroups}
+When we have a [nontrivial] group $G$, we can discuss the notion of a
+proper subgroup $H\properSubgroup G$ in analogy to the notion of a
+proper subset $X\properSubset Y$.
+
+
+\begin{definition}
+Let $G$ be a group. We call a subgroup $H\subgroup G$ \define{Proper} if
+$H\neq G$. We typically denote $H\properSubgroup G$ to reflect it is proper.
+\end{definition}
+
+\begin{def-remark}
+The implementation for Mizar is a bit quirky. I looked at how maximal
+subgroups were defined, because maximal subgroups are necessarily
+proper. Maximal subgroups were defined (\texttt{GROUP\_4:def 6}\MizDef{GROUP\_4}[06]{6})
+using the condition \lstinline|the multMagma of H <> the multMagma of G|.
+\end{def-remark}
+
+<<Definition: proper subgroup>>=
+definition
+  let G be Group;
+  let IT be Subgroup of G;
+  attr IT is proper means
+  :Def10:
+  the multMagma of IT <> the multMagma of G;
+end;
+reserve G for Group;
+reserve H for Subgroup of G;
+
+@ %def Def10 proper
+
+\begin{registration}
+For any nontrivial group $G$, we can find a proper subgroup $H\subgroup G$,
+namely the trivial subgroup $H=\trivialSubgroup_{G}$.
+\end{registration}
+
+<<Register: proper subgroup for nontrivial groups>>=
+
+registration
+  let G be non trivial Group;
+  cluster proper for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    G is non trivial;
+    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
+    then the carrier of G <> {1_G};
+    then the carrier of G <> the carrier of (1).G;
+    hence (1).G is proper;
+  end;
+end;
+
+reserve G for non trivial Group;
+reserve H for Subgroup of G;
+
+@
+
+\begin{lemma}
+Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
+and only if the underlying set of $G$ differs from the underlying set of $H$.
+\end{lemma}
+
+\begin{proof}[Proof outline]
+The only way a group could be different, since they are magmas
+satisfying some properties, is either if the underlying set differs or
+if the group operation differs. But since we know $H$ is a subgroup of
+$G$, we know the group operation for $H$ is just the restricted version
+of the group operation for $G$. Thus we are forced to accept the
+underlying sets must be different. This argument works backwards as well
+as forwards.
+\end{proof}
+
+<<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>=
+Lm99:
+  H is proper iff the carrier of H <> the carrier of G
+proof
+  H is Subgroup of G;
+  then (the carrier of H c= the carrier of G) & (the multF of H =
+  (the multF of G)||(the carrier of H)) by GROUP_2:def 5;
+  hence thesis;
+end;
+
+@ %def Lm99
+
+\begin{lemma}
+  Let $H\subgroup G$ be a subgroup.
+  Then $H$ is a proper subgroup if and only if the set difference is nonempty
+  $G\setminus H\neq\emptyset$.
+\end{lemma}
+
+\begin{lem-remark}
+This version, as stated, is a little sloppy. We should more precisely
+state the set difference of the underlying set $U(G)$ of $G$ with the
+underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
+\end{lem-remark}
+
+<<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>=
+reserve h,x,y for object;
+
+Lm100:
+  H is proper iff (the carrier of G) \ (the carrier of H) is non empty set
+proof
+  set UG = the carrier of G;
+  set UH = the carrier of H;
+  thus H is proper implies (the carrier of G) \ (the carrier of H) is non empty set
+  <<Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$>>
+  thus (the carrier of G) \ (the carrier of H) is non empty set implies H is proper
+  <<Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$>>
+  thus thesis;
+end;
+
+@ %def Lm100
+
+\begin{proof}[Sub-proof outline]
+  If $H\properSubgroup G$ is a proper subgroup, then the underlying set
+  $U(H)$ of $H$ is a subset of the underlying set $U(G)$ of $G$ --- i.e.,
+  $U(H)\subset U(G)$ --- and $U(H)\neq U(G)$. Then there is some element
+  $g\in G$ for which $g\notin H$. Then $U(G)\setminus U(H)\neq\emptyset$.
+\end{proof}
+
+<<Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$>>=
+proof
+  assume A1: H is proper;
+  UH c= UG & UH <> UG by A1,Lm99, GROUP_2:def 5;
+  then (for x holds x in UH implies x in UG) &
+  the carrier of H <> the carrier of G by TARSKI:def 3;
+  then (for x holds x in UH implies x in UG) &
+  not (for x holds x in UH iff x in UG) by TARSKI:2;
+  hence (the carrier of G) \ (the carrier of H) is non empty set
+  by XBOOLE_0:def 5;
+end;
+  
+@ 
+
+\begin{proof}[Sub-proof outline]
+Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
+G\setminus H$, i.e., $y\in G$ and $y\notin H$. But we've found an
+element in $G$ that's not in $H$. So by the extensional notion of set
+equality, these are clearly different sets. Thus $H\properSubgroup G$
+\end{proof}
+
+<<Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$>>=
+proof
+  assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
+  set GH = UG \ UH;
+  A2: UH c= UG by GROUP_2:def 5;
+  not (GH is empty) by A1;
+  then A3: ex x st x in GH by XBOOLE_0:def 1;
+  then consider y such that
+  A4: y in GH;
+  y in UG & not y in UH by A4, XBOOLE_0:def 5;
+  then UG <> UH by TARSKI:2;
+  then the multMagma of G <> the multMagma of H by GROUP_2:def 5;
+  hence H is proper by Def10;
+end;
+
+@
+
+\begin{registration}
+For any nontrivial group $G$, we can call \define{Proper Subgroup} of
+$G$ a subgroup which is proper.
+\end{registration}
+
+<<Register: proper subgroup for nontrivial groups>>=
+registration
+  let G be non trivial Group;
+  cluster proper for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    G is non trivial;
+    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
+    then the carrier of G <> {1_G};
+    then the carrier of G <> the carrier of (1).G;
+    hence (1).G is proper;
+  end;
+end;
+
+@
+
+\begin{lemma}
+Maximal subgroups are also proper subgroups.
+\end{lemma}
+
+The proof is literally, ``Look at the definitions!''
+
+<<Lemma: maximal subgroups are proper>>=
+Lm98:
+  for G being Group
+  for H being Subgroup of G
+  st H is maximal
+  holds H is proper
+proof
+  let H be Subgroup of G;
+  assume H is maximal;
+  hence H is proper by Def10,GROUP_4:def 6;
+end;
+
+@ %def Lm98
+
+\begin{registration}
+We can now automatically take advantage of the fact that, a maximal
+subgroup for a nontrivial group is implicitly a proper subgroup.
+\end{registration}
+
+<<Register: maximal subgroups are proper>>=
+registration
+  let G be non trivial Group;
+  cluster maximal -> proper for Subgroup of G;
+  coherence by Lm98;
+end;
+
+@ 
+
+\begin{lemma}
+If $H\properSubgroup G$ is a proper subgroup, then there exists some
+$x\in G$ such that $x\notin H$.
+\end{lemma}
+
+<<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>=
+Lm101:
+  for H being Subgroup of G
+  st H is proper Subgroup of G
+  holds ex x being Element of G st not (x in H)
+proof
+  let H be Subgroup of G;
+  assume A1: H is proper Subgroup of G;
+  then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
+  then consider x being object such that
+  A2: x in (the carrier of G) \ (the carrier of H)
+  by XBOOLE_0:def 1;
+  reconsider x as Element of G by A2, STRUCT_0:def 5;
+  take x;
+  thus not (x in H) by A2, STRUCT_0:def 5, XBOOLE_0:def 5;
+end;
+
+@ %def Lm101
+
+\begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
+Let $f\colon X\into Y$ be an injective function of non-empty sets, let
+$A\subset X$ be a non-empty subset, let $x\in X$ be any element such
+that $x\notin A$. Then $f(x)\notin f(A)$.
+\end{lemma}
+
+<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
+Lm18:
+  for X,Y being non empty set
+  for A being non empty Subset of X
+  for x being Element of X
+  st not x in A
+  for f being Function of X,Y
+  st f is one-to-one
+  holds not f.x in (f .: A)
+proof
+  let X,Y be non empty set;
+  let A be non empty Subset of X;
+  let x be Element of X;
+  assume A1: not x in A;
+  let f be Function of X,Y;
+  assume f is one-to-one;
+  then A2: not ex y being object st x in dom f & y in dom f & y in A & f.y = f.x
+  by A1, FUNCT_1:def 4;
+  dom f = X by FUNCT_2:def 1;
+  then A3: x in dom f;
+  f.x in (f .: A) iff ex a being object st a in dom f & a in A & f.x = f.a
+  by FUNCT_1:def 6;
+  then f.x in (f .: A) implies contradiction by A2,A3;
+  hence not (f.x in (f .: A));
+end;
+
+@ %def Lm18
+
+\begin{lemma}
+If $H\subgroup G$ is a subgroup such that there is an $x\in G$ but
+$x\notin H$, then $H$ is a proper subgroup of $G$.
+\end{lemma}
+
+<<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>=
+Lm101:
+  for H being Subgroup of G
+  st (ex x being Element of G st not (x in H))
+  holds H is proper Subgroup of G
+proof
+  let H be Subgroup of G;
+  given x being Element of G such that
+  A1: not (x in H);
+  set UG = the carrier of G;
+  set UH = the carrier of H;
+  x in G & not (x in H) by A1,STRUCT_0:def 5;
+  then x in UG & not (x in UH);
+  then x in (UG \ UH) by XBOOLE_0:def 5;
+  then (UG \ UH) is non empty by XBOOLE_0:def 1;
+  hence H is proper Subgroup of G by Lm100;
+end;
+
+@ %def Lm101
+
+<<Lemma: trivial groups look like $\trivialSubgroup$>>=
+LmGroupIsTrivialIff1:
+  for G being Group
+  holds G is trivial iff the multMagma of G = (1).G
+proof
+  let G be Group;
+  thus G is trivial implies the multMagma of G = (1).G
+  proof
+    assume G is trivial;
+    then consider x being object such that
+    A1: the carrier of G = {x}
+    by GROUP_6:def 2;
+    :: prove x = 1_G
+    1_G in G;
+    then x = 1_G by A1, TARSKI:def 1, STRUCT_0:def 5;
+    then the carrier of G = {1_G} by A1;
+    then the carrier of G = the carrier of (1).G by GROUP_2:def 7, TARSKI:2;
+    hence the multMagma of G = (1).G by GROUP_2:61;
+  end;
+  thus the multMagma of G = (1).G implies G is trivial by GROUP_6:10;
+  thus thesis;
+end;
+
+@
+
+\begin{lemma}
+If $G=\trivialSubgroup$ is trivial, then it has no proper subgroups.
+\end{lemma}
+
+\begin{lem-remark}
+The argument that two sets $X$ and $Y$ are equal iff they are subsets of
+each other $X\subset Y\land Y\subset X$ is precisely what
+\verb#XBOOLE_0:def 10#\MizDef{XBOOLE\_0}{10} offers.
+\end{lem-remark}
+
+<<Lemma: Trivial groups have no proper subgroups>>=
+LmTrivHasNoProperSubgroups:
+  for G being Group
+  st G is trivial
+  holds not (ex H being Subgroup of G st H is proper)
+proof
+  let G be Group;
+  assume A1: G is trivial;
+  then A2: the multMagma of G = (1).G
+  by LmGroupIsTrivialIff1;
+  then A3: the carrier of G = {1_G} by GROUP_2:def 7;
+  A4: for H being Subgroup of G holds not H is proper
+  proof
+    let H be Subgroup of G;
+    B1: the carrier of H c= {1_G} by A3, GROUP_2:def 5;
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    then {1_G} c= the carrier of H & the carrier of H c= {1_G} by B1;
+    then the carrier of H = {1_G} by XBOOLE_0:def 10;
+    then the carrier of H = the carrier of G by A3;
+    hence not H is proper by Lm99;
+  end;
+  hence not (ex H being Subgroup of G st H is proper);
+end;
+
+@
+
+\begin{lemma}
+If $G$ is trivial, then it cannot have a maximal subgroup.
+\end{lemma}
+
+Certainly, if there is no hope for $G$ having a proper subgroup, we
+should have no hope for maximal subgroups.
+
+<<Lemma: Trivial groups have no maximal subgroup>>=
+for G being Group
+st G is trivial
+holds not (ex H being Subgroup of G st H is maximal)
+proof
+  let G be Group;
+  assume A1: G is trivial;
+  then not (ex H being Subgroup of G st H is proper) by LmTrivHasNoProperSubgroups;
+  hence not (ex H being Subgroup of G st H is maximal) by Lm98;
+end;
+
+@ 

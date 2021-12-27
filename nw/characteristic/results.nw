@@ -18,7 +18,7 @@ We now arrive at the meat of the matter: characteristic subgroups!
 
 @
 
-\begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}
+\begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}\label{defn:characteristic:results:characteristic-subgroup}
 A subgroup $H$ of $G$ is called \define{Characteristic} in $G$, usually
 denoted $H~\mathrm{char}~G$, if every Automorphism of $G$ maps $H$ to
 itself; i.e., $\sigma(H)=H$ for all $\sigma\in\aut(G)$.
@@ -42,6 +42,19 @@ end;
 
 @ %def characteristic Def9
 
+\begin{voc}
+Before rushing off to prove properties concerning characteristic
+subgroups, we have to tell Mizar that \lstinline|characteristic| is now
+a token that should be associated with Definition~\ref{defn:characteristic:results:characteristic-subgroup}.
+\end{voc}
+
+<<DICT/CHAR.VOC>>=
+Vcharacteristic
+
+@
+
+
+
 \begin{lemma}
   For any group $G$, its trivial subgroup $\trivialSubgroup$ is characteristic.
 \end{lemma}
@@ -49,7 +62,7 @@ end;
 <<Lemma: trivial subgroup is [[characteristic]]>>=
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>
 
-Lm6: (1).G is characteristic
+Lm25: (1).G is characteristic
 proof
 A1:  for f being Automorphism of G
      holds Image (f|(1).G) is Subgroup of (1).G by Th2;
@@ -57,7 +70,7 @@ A1:  for f being Automorphism of G
   proof
     let f be Automorphism of G;
     reconsider I = Image(f|(1).G) as Subgroup of (1).G by A1;
-    (1).G = I by Lm5;
+    (1).G = I by Lm26;
     then Image(f|(1).G) = (1).G by A1;
     hence thesis;
   end;
@@ -65,7 +78,7 @@ A1:  for f being Automorphism of G
   hence thesis;
 end;
 
-@ %def Lm6
+@ %def Lm25
 
 \begin{lemma}
 For any subgroup $H\subgroup G$, if $\trivialSubgroup_{G}\subgroup H$
@@ -81,7 +94,7 @@ I think I prove this result several times, I should refactor my code accordingly
 \end{lem-remark}
 
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
-Lm5: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
+Lm26: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
   assume A1: H is Subgroup of (1).G;
   then reconsider H as Subgroup of (1).G;
@@ -90,7 +103,7 @@ proof
   hence thesis by GROUP_2:55;
 end;
 
-@ %def Lm5
+@ %def Lm26
 
 \begin{theorem}[Existence of a characteristic subgroup]
 For any group $G$, there exists a subgroup $H\subgroup G$ which is characteristic.
@@ -106,7 +119,7 @@ theorem Th21:
   ex H st H is characteristic
 proof
   take H = (1).G;
-  H is characteristic by Lm6;
+  H is characteristic by Lm25;
   hence thesis;
 end;
 
@@ -149,7 +162,7 @@ registration
   existence
   proof
     take (1).G;
-    thus thesis by Lm6;
+    thus thesis by Lm25;
   end;
 end;
 
