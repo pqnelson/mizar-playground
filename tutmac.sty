@@ -1,6 +1,15 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{tutmac}[2021/12/11 Mizar Tutorial Macros Package]
 
+\newif\ifamscls
+\amsclsfalse
+\@ifclassloaded{amsproc}{
+  \amsclstrue
+}{}
+\@ifclassloaded{amsbook}{
+  \amsclstrue
+}{}
+
 \RequirePackage{manfnt}
 \RequirePackage{proof}
 \RequirePackage{ssqquote}
@@ -13,15 +22,14 @@
 \RequirePackage{amsthm}
 \RequirePackage{bm}
 \RequirePackage[dvipsnames]{xcolor}
-\@ifclassloaded{amsbook}{
-  \RequirePackage{amsmidx}
-  \RequirePackage[inner=6pc,outer=6pc,bottom=6pc,top=6pc,headheight=13.6pt]{geometry}
-}{
+\RequirePackage[inner=6pc,outer=6pc,bottom=6pc,top=6pc,headheight=13.6pt]{geometry}
+\ifamscls
+  \RequirePackage{amsmidx}  
+\else
   \RequirePackage{makeidx}
   \RequirePackage{titlesec}
-  \RequirePackage[inner=5.67pc,outer=11.33pc,marginpar=10pc,headheight=13.6pt]{geometry}
   \RequirePackage[nottoc,notlot,notlof]{tocbibind}
-}
+\fi
 \RequirePackage{ifpdf}
 \RequirePackage[\ifpdf\else dvipdfmx\fi]{hyperref}
 
@@ -41,11 +49,8 @@
 
 %%% Format author stuff nicely
 %%%
-\@ifclassloaded{amsbook}{
+\ifamscls
   \email{pqnelson@gmail.com}
-}{}
-
-\@ifclassloaded{amsbook}{
   \makeindex{driver}
   \makeindex{mizar}
   \makeindex{mizar}
@@ -54,19 +59,18 @@
   \gdef\index#1{\ams@index{driver}{#1}}
   \gdef\printindices{\Printindex{driver}{Index}
     \Printindex{mizar}{Mizar References}}
-}{
+\else
   \gdef\mizindex#1{\index{#1}}
   \makeindex
   \gdef\printindices{\printindex}
-}
+\fi
 \noweboptions{longxref,english,breakcode,externalindex}
 
 % This should be evaluated \emph{once}.
 \xdef\compiledTimestamp{Compiled:~\DTMnow}
 
-\@ifclassloaded{amsbook}{
-  \relax
-}{
+\ifamscls
+\else
   % based on Knuth's taocpmac.tex
   \titleformat{\section}
     {\large\sffamily\bfseries}
@@ -85,14 +89,14 @@
     {\thesubsubsection}
     {1em}
     {}
-}
+\fi
 
 
-\@ifclassloaded{amsbook}{
+\ifamscls
   \newcommand\preface{\chapter*{Preface}}
-}{
+\else
   \newcommand\preface{\chapter{Preface}}
-}
+\fi
 
 % Poor man's chunks, \'a la Knuth's WEB
 \counterwithout*{paragraph}{subsubsection}
