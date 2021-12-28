@@ -49,6 +49,7 @@ without_bib:
 
 with_bib: without_bib
 	$(BIB) $(BOOK)
+	$(BIB) mml
 	$(TEX) $(BOOK)
 	$(TEX) $(BOOK)
 
