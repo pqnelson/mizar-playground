@@ -1,6 +1,5 @@
 \chapter{Pure Math}\label{chapter:pure-math}
 
-
 This is just a grab bag of random results from the literature. A good
 introduction to finite group theory would be I.~Martin
 Isaacs~\cite{isaacs2008finite} for readers who have taken introductory
@@ -96,6 +95,9 @@ groups have the same order.
   non-Abelian simple groups.
 \end{theorem}
 
+The class formula\index{Class Formula} for groups is proven in
+\verb#WEDDWITT#.\footnote{See, e.g., \url{https://fm.mizar.org/2004-12/pdf12-1/weddwitt.pdf}}~\citemml{arneson2003witt}
+
 \section{Commutators}
 
 \begin{definition}[{\texttt{GROUP\_5:def 2,3}}]\index{Commutator}
@@ -123,6 +125,12 @@ version is that $[g,h] = g^{-1}g^{h}$ where $g^{h}=h^{-1}gh$ is
 conjugation of $g$ by $h$. \emph{Extreme care must be taken when working
 with finite groups of Lie type!}
 \end{def-remark}
+
+\begin{notation}
+  Mizar denotes the commutator $[x,y]$ as \lstinline![.x,y.]! where
+  ``\verb#[.#'' and ``\verb#.]#'' are left and right functor brackets
+  introduced in the ``\verb#XXREAL_1#'' vocabulary.
+\end{notation}
 
 \begin{definition}\index{$G'$}\index{Subgroup!Derived}\index{$[G,G]$}
 Let $G$ be a group. The \define{Derived Subgroup} of $G$ is the subgroup
@@ -207,3 +215,13 @@ is the Subgroup given by the intersection of all the Sylow $p$-subgroups
 \begin{theorem}
 The $p$-core for any group $G$ is a characteristic subgroup.
 \end{theorem}
+
+\section{Finite Fields}
+
+It seems that Galois Fields\index{Field!Galois} are not defined in
+general, not anywhere I could find.
+
+\begin{example}[{$\FF_{3}$, \texttt{MOD\_2:def 20}\MizDef{MOD\_2}{20}}]
+The field with three elements $\FF_{3}$ is defined as \lstinline!Z_3!
+in \texttt{MOD\_2:def 20}\MizDef{MOD\_2}{20}.
+\end{example}
