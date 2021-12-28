@@ -373,7 +373,7 @@ the margins slightly, and modifying the `\nwendcode` to be just
 # 2021-12-27
 
 I'm now up to 82 pages in my notes. I've since made them full page with
-one inch margins. 
+one inch margins.
 
 ------
 
@@ -393,8 +393,8 @@ Mizar's, so that means 4 independent counters:
   within each chapter
 - Everything else (examples, notes, registrations, propositions,
   exercises, asides, idioms, notation remarks, etc.) is numbered using
-  the same counter, independently of the previous three counters. 
-  
+  the same counter, independently of the previous three counters.
+
 The only exception is that remarks are "sub-numbered" off of whatever is
 being discussed.
 
@@ -441,7 +441,7 @@ definitions, when there is doubt or disagreement among sources. For
 example, the [General Linear Group](https://encyclopediaofmath.org/wiki/General_linear_group) is
 defined over an associative ring. If that ring is commutative, then the
 special linear subgroup can be defined using the unit determinant
-condition. These are good to know. 
+condition. These are good to know.
 
 I should double check if I "need" to be this general, whether I can
 start with the general linear group over a field (since I only need
@@ -469,7 +469,7 @@ them:
    I'll look at other ways to achieve the same result. But Lie algebras
    can be presented independent of Lie groups (so I can avoid the need
    to do differential geometry) and entirely algebraically.
-2. Using the Octonions (following Valdekamp and Springer's book 
+2. Using the Octonions (following Valdekamp and Springer's book
    _Octonions, Jordan Algebras and Exceptional Groups_, or Wilson)
 3. Using algebraic groups (following Geck's book _Introduction to
    Algebraic Geometry and Algebraic Groups_, for example)
@@ -484,10 +484,10 @@ is as follows:
 - Wilson remarks in his book hos the Octonionic approach cannot "reuse"
   parts from constructing exceptional groups, we've got to do it fresh
   each time. That sounds tedious. I'd rather leave that for someone
-  who's excited about the octonions. 
+  who's excited about the octonions.
 - That leaves only the first route, using Carter's approach constructing
   finite groups of Lie type using Lie algebras.
-  
+
 One difficulty with this approach may be that the commutator for group
 elements in Mizar is defined in the opposite manner as the definition
 we'd hope for in Lie groups. But I'd rather deal with that than
@@ -521,9 +521,41 @@ module over a ring (but I think that's a bit too general).
   - [ ] p'-core, which is the largest normal subgroup of G whose order
         is coprime to p, can we define `'-core` as a functor?
   - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
-        functor? 
+        functor?
   - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
         analogy to what we have?
 - [ ] Start researching Lie algebras with an eye towards formalizing
       them.
 - [ ] Consider purchasing Wanda Szmielew, _From Affine to Euclidean Geometry_
+
+---
+
+**Addendum:** After thinking about the earlier remark I made today about
+uses `\part` to cluster `\chapter`s together (and each `\chapter` wraps
+around a Mizar article), I started thinking about using branches to
+develop each article independently, in case I get bored and stall out,
+or find I need to develop something else first. The best review of using
+git branches seems to be [this one](https://nvie.com/posts/a-successful-git-branching-model/).
+The principles underlying that workflow are sound for engineering
+purposes, but for proofs and math, I think we can treat `master` and
+`develop` as one? The scheme would be:
+
+- new articles fork off `master` and merge back into `master` as they
+  are accepted into the MML
+
+Or:
+
+- Have `develop` branch the only branch which can be merged into
+  `master`
+  - The HEAD of `origin/develop` reflects the current state of delivered
+    changes for the next submission
+  - When stable and/or published into the MML, the `develop` branch is
+    merged back into master
+- Every article starts on its own branch, which is forked from `develop`
+  and, upon finishing, merges back into `develop`
+
+This supposes that the LaTeX macros are robust enough, at present, for
+whatever I will need in the future (if I faithfully adhere to this
+scheme --- I could also make changes to the LaTeX macros its own
+"feature branch", merge it back into the `develop` branch, then have all
+my articles pull them).
