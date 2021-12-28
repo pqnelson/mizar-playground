@@ -26,22 +26,25 @@ Every Mizar article looks like:
 \nwnotused{TEXT/char.miz}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
 \bigskip
-Each Mizar article has an associated ``vocabular file'' which lists the
-\emph{new} terms introduced. It's stored in a {\Tt{}DICT/\nwendquote}
+\index{Vocabulary!File|(}
+Each Mizar article has an associated ``vocabulary file'' which lists the
+\emph{new} terms introduced. It's stored in a {\Tt{}DICT/\nwendquote}\index{Dict@\texttt{DICT/}}
 subdirectory. Terms are prefixed with the following:
 \begin{itemize}
-\item {\Tt{}R\nwendquote} for predicate (like {\Tt{}Rare{\_}isomorphic\nwendquote} for a new predicate {\Tt{}are{\_}isomorphic\nwendquote})
-\item {\Tt{}O\nwendquote} for functor (e.g., {\Tt{}Oid\nwendquote} for {\Tt{}id\nwendquote})
-\item {\Tt{}M\nwendquote} for mode (e.g., {\Tt{}MSubgroup\nwendquote} for {\Tt{}Subgroup\nwendquote})
-\item {\Tt{}G\nwendquote} for structure (e.g., {\Tt{}GmultLoopStr{\_}0\nwendquote} for {\Tt{}multLoopStr{\_}0\nwendquote})
-\item {\Tt{}U\nwendquote} for selectors (e.g., {\Tt{}Ucarrier\nwendquote} in {\Tt{}STRUCT{\_}0\nwendquote} gives us a
+\item\index{R@\texttt{R}|see{Vocabulary, File}} {\Tt{}R\nwendquote} for predicate (like {\Tt{}Rare{\_}isomorphic\nwendquote} for a new predicate {\Tt{}are{\_}isomorphic\nwendquote})
+\item\index{O@\texttt{O}|see{Vocabulary, File}} {\Tt{}O\nwendquote} for functor (e.g., {\Tt{}Oid\nwendquote} for {\Tt{}id\nwendquote})
+\item\index{M@\texttt{M}|see{Vocabulary, File}} {\Tt{}M\nwendquote} for mode (e.g., {\Tt{}MSubgroup\nwendquote} for {\Tt{}Subgroup\nwendquote})
+\item\index{G@\texttt{G}|see{Vocabulary, File}} {\Tt{}G\nwendquote} for structure (e.g., {\Tt{}GmultLoopStr{\_}0\nwendquote} for {\Tt{}multLoopStr{\_}0\nwendquote})
+\item\index{U@\texttt{U}|see{Vocabulary, File}} {\Tt{}U\nwendquote} for selectors (e.g., {\Tt{}Ucarrier\nwendquote} in {\Tt{}STRUCT{\_}0\nwendquote} gives us a
   way to write {\Tt{}the\ carrier\ of\ X\nwendquote})
-\item {\Tt{}V\nwendquote} for attributes (so {\Tt{}Vcharacteristic\nwendquote} is a new attribute ``characteristic'')
-\item {\Tt{}K\nwendquote} for left functor brackets (like \verb#[:# in {\Tt{}ZFMISC{\_}1\nwendquote})
-\item {\Tt{}L\nwendquote} for right functor brackets (like the corresponding \verb#:]#
+\item\index{V@\texttt{V}|see{Vocabulary, File}} {\Tt{}V\nwendquote} for attributes (so {\Tt{}Vcharacteristic\nwendquote} is a new attribute ``characteristic'')
+\item\index{K@\texttt{K}|see{Vocabulary, File}} {\Tt{}K\nwendquote} for left functor brackets (like \verb#[:# in {\Tt{}ZFMISC{\_}1\nwendquote})
+\item\index{L@\texttt{L}|see{Vocabulary, File}} {\Tt{}L\nwendquote} for right functor brackets (like the corresponding \verb#:]#
   in {\Tt{}ZFMISC{\_}1\nwendquote})
 \end{itemize}
+\index{Vocabulary!File|)}
 
+\iffalse
 For our immediate purposes, we want to prove theorems concerning
 characteristic subgroups. We can start with checking if the vocabulary
 word ``characteristic'' has been introduced by running on the command
@@ -49,12 +52,14 @@ line ``\verb#findvoc -w "characteristic"#'' to see if any article has
 already introduced it. (None has, so far.) Since we want to describe
 ``characteristic Subgroups'' and ``Subgroup'' is a mode defined in
 {\Tt{}GROUP{\_}2\nwendquote}, it seems reasonable to introduce a new adjective
-[attribute] ``characteristic'' Thus we begin:
+[attribute] ``characteristic''. Thus we begin:
 
-\nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-9L8EQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\moddef{DICT/TMP.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-9L8EQ-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW1Nnu7l-4FyAEL-1}\nwenddeflinemarkup
 Vcharacteristic
 
-\nwnotused{DICT/TMP.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+\nwalsodefined{\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+
+\fi
 \nwenddocs{}\nwfilename{nw/characteristic/environ.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
@@ -118,11 +123,11 @@ vocabularies MOD_4, CHAR,
 
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
-\begin{remark}[VOC file]
+\begin{remark}[VOC file]\index{Voc File@\texttt{.VOC} File}
 For our article, we will need to define new tokens. They are placed in
 {\Tt{}./DICT/CHAR.VOC\nwendquote} (relative to whatever directory we have made our
 Mizar workstation). As we introduce new terms, we will check if it
-exists already in Mizar by running ``{\Tt{}findvoc\ -w\ "term"\nwendquote}''. If Mizar
+exists already in Mizar by running ``{\Tt{}findvoc\ -w\ "term"\nwendquote}''.\index{Findvoc@\texttt{findvoc}} If Mizar
 is unfamiliar with the term, then nothing will be reported, and we will
 have to add it to our {\Tt{}VOC\nwendquote} file. Otherwise, if {\Tt{}term\nwendquote} is introduced
 in another article, we add it to our {\Tt{}vocabularies\nwendquote} environ directive.
@@ -469,12 +474,12 @@ parametrized terms) by using $f(x)=\mathtt{f.x}$ for mathematical functions.
 
 \nwenddocs{}\nwbegincode{5}\sublabel{NW18nMBU-3LADMa-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3LADMa-1}}}\moddef{Lemma: $f\colon X\onto Y\implies f(X)=Y$~{\nwtagstyle{}\subpageref{NW18nMBU-3LADMa-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{LmOntoMapsEverything}{NW18nMBU-3LADMa-1}:
-for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+for X,Y being non empty set
 for f being Function of X,Y
 st f is onto
 holds f .: X = Y
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is onto;
   dom f = X by FUNCT_2:def 1;
@@ -493,7 +498,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}{NW18nMBU-3LADMa-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}}}\nwidentuses{\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-3LADMa-1}\nwendcode{}\nwbegindocs{6}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{LmOntoMapsEverything}}{LmOntoMapsEverything}}}\nwendcode{}\nwbegindocs{6}\nwdocspar
 \begin{proof}[Proof step (conditions for $\rng(f)$, $f(X)$)]
 We can look up the definitions for {\Tt{}rng\ f\nwendquote} and {\Tt{}f\ .:\ X\nwendquote}, which
 give the logical equivalences:
@@ -821,12 +826,12 @@ $X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
 
 \nwenddocs{}\nwbegincode{31}\sublabel{NW18nMBU-34x7vU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-34x7vU-1}}}\moddef{Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$~{\nwtagstyle{}\subpageref{NW18nMBU-34x7vU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1}:
-for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
 holds (f")" = f
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
   then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
@@ -846,7 +851,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm10}}{Lm10}{NW18nMBU-34x7vU-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm10}}{Lm10}}}\nwidentuses{\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-34x7vU-1}\nwendcode{}\nwbegindocs{32}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm10}}{Lm10}}}\nwendcode{}\nwbegindocs{32}\nwdocspar
 \begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
   Let $x\in X$ be arbitrary. Consider
   \begin{subequations}\label{eq:characteristic:preparatory:lm-finvinv-is-inv}
@@ -905,13 +910,13 @@ states that $f^{-1}(f(x))=x$ provided $f$ is injective.
 
 \nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-2GAoBc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2GAoBc-1}}}\moddef{Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$~{\nwtagstyle{}\subpageref{NW18nMBU-2GAoBc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1}:
-for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
 for y being Element of Y
 holds f.((f").y) = y
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
   let y be Element of Y;
@@ -925,7 +930,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm11}}{Lm11}{NW18nMBU-2GAoBc-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm11}}{Lm11}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-2GAoBc-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-2GAoBc-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm11}}{Lm11}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-2GAoBc-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
 \begin{lemma}
   If $f\colon X\to Y$ is a bijective function of sets,
   then its inverse function $f^{-1}\colon Y\to X$ exists (as defined by
@@ -941,12 +946,12 @@ implies $f^{-1}\circ f=\id_{X}$.
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-1VchCJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1VchCJ-1}}}\moddef{Lemma: bijections have inverses~{\nwtagstyle{}\subpageref{NW18nMBU-1VchCJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm12}{NW18nMBU-1VchCJ-1}:
-for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
 holds f*(f") = id Y & (f")*f = id X
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
   then consider g being Function of Y,X such that
@@ -965,7 +970,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm12}}{Lm12}{NW18nMBU-1VchCJ-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm12}}{Lm12}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm13}}{Lm13}}\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-1VchCJ-1}\nwindexuse{\nwixident{Lm13}}{Lm13}{NW18nMBU-1VchCJ-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-1VchCJ-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm12}}{Lm12}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm13}}{Lm13}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-1VchCJ-1}\nwindexuse{\nwixident{Lm13}}{Lm13}{NW18nMBU-1VchCJ-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
 \begin{proof}[Proof step ($\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$)]
 The result follows from $(f\circ f^{-1})(y)=f(f^{-1}(y))=y$.
 \end{proof}
@@ -1012,12 +1017,12 @@ handled by theorem\MizThm{FUNCT\_2}{25} \verb#FUNCT_2:25#.
 
 \nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-3Sa9s5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}}\moddef{Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective~{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm13}{NW18nMBU-3Sa9s5-1}:
-for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
 holds ex g being Function of Y,X st g = f" & g is bijective
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  let X,Y be non empty set;
   let f be Function of X,Y;
   assume A1: f is bijective;
   then dom f = X & rng f = Y & f is one-to-one & f is onto by FUNCT_2:def 3,def 1;
@@ -1028,7 +1033,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm13}}{Lm13}{NW18nMBU-3Sa9s5-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm13}}{Lm13}}}\nwidentuses{\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-3Sa9s5-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm13}}{Lm13}}}\nwendcode{}\nwbegindocs{44}\nwdocspar
 \subsection{Nontrivial Groups}
 We will be using nontrivial groups later. Recall, a group $G$ is
 nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
@@ -1065,7 +1070,7 @@ exists (namely, the real numbers as an Abelian group).
 
 \nwenddocs{}\nwbegincode{45}\sublabel{NW18nMBU-47kVo6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\moddef{Register: non trivial for Group~{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
-  cluster \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Group;
+  cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Group;
   existence
   proof
     reconsider G = multMagma (# REAL, addreal #) as Group by GROUP_1:3;
@@ -1075,8 +1080,8 @@ registration
   end;
 end;
 
-\nwindexdefn{\nwixident{non}}{non}{NW18nMBU-47kVo6-1}\nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-47kVo6-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{non}}{non}}\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-47kVo6-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{46}\nwdocspar
 \begin{registration}
 For any non trivial group $G$, we can find a nontrivial subgroup
 $H\subgroup G$, namely $G$ itself.
@@ -1084,8 +1089,8 @@ $H\subgroup G$, namely $G$ itself.
 
 \nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-2RiGxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\moddef{Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
-  let G be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
-  cluster \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
   existence
   proof
     A1: the carrier of G <> \{1_G\} by GROUP_6:def 2;
@@ -1095,7 +1100,7 @@ registration
   end;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{non}}{non}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-2RiGxf-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
 
 \subsection{Proper Subgroups}
 When we have a [nontrivial] group $G$, we can discuss the notion of a
@@ -1136,12 +1141,12 @@ namely the trivial subgroup $H=\trivialSubgroup_{G}$.
 \nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
 
 registration
-  let G be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
   existence
   proof
     take (1).G;
-    G is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
     then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
     then the carrier of G <> \{1_G\};
     then the carrier of G <> the carrier of (1).G;
@@ -1149,10 +1154,10 @@ registration
   end;
 end;
 
-reserve G for \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
 
-\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
+\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
 
 \begin{lemma}
 Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
@@ -1197,19 +1202,19 @@ underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
 reserve h,x,y for object;
 
 \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1}:
-  H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+  H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff (the carrier of G) \\ (the carrier of H) is non empty set
 proof
   set UG = the carrier of G;
   set UH = the carrier of H;
-  thus H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} implies (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+  thus H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} implies (the carrier of G) \\ (the carrier of H) is non empty set
   \LA{}Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}\RA{}
-  thus (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set implies H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1}
+  thus (the carrier of G) \\ (the carrier of H) is non empty set implies H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1}
   \LA{}Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}\RA{}
   thus thesis;
 end;
 
 \nwindexdefn{\nwixident{Lm100}}{Lm100}{NW18nMBU-2cWeD5-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm100}}{Lm100}}}\nwidentuses{\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-2cWeD5-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm100}}{Lm100}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
   $U(H)$ of $H$ is a subset of the underlying set $U(G)$ of $G$ --- i.e.,
@@ -1225,11 +1230,11 @@ proof
   the carrier of H <> the carrier of G by TARSKI:def 3;
   then (for x holds x in UH implies x in UG) &
   not (for x holds x in UH iff x in UG) by TARSKI:2;
-  hence (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
+  hence (the carrier of G) \\ (the carrier of H) is non empty set
   by XBOOLE_0:def 5;
 end;
   
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
 
 \begin{proof}[Sub-proof outline]
 Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
@@ -1240,7 +1245,7 @@ equality, these are clearly different sets. Thus $H\properSubgroup G$
 
 \nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
 proof
-  assume A1: (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
+  assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
   set GH = UG \\ UH;
   A2: UH c= UG by GROUP_2:def 5;
   not (GH is empty) by A1;
@@ -1253,7 +1258,7 @@ proof
   hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by \nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
 end;
 
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$, we can call \define{Proper Subgroup} of
@@ -1262,12 +1267,12 @@ $G$ a subgroup which is proper.
 
 \nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
 registration
-  let G be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
   existence
   proof
     take (1).G;
-    G is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
     then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
     then the carrier of G <> \{1_G\};
     then the carrier of G <> the carrier of (1).G;
@@ -1275,7 +1280,7 @@ registration
   end;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}
 
 \nwixlogsorted{c}{{$\exists a\in\varphi^{-1}(H),g=\varphi(a)$}{NW1Nnu7l-41Hbi6-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-41Hbi6-1}}}%
 \nwixlogsorted{c}{{$\exists b\in H, a = \varphi^{-1}(b)$}{NW1Nnu7l-2rS80d-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-2rS80d-1}}}%
@@ -1303,8 +1308,7 @@ end;
 \nwixlogsorted{c}{{Define \code{}inner\edoc{} for Automorphism}{NW3Mfp8C-13QmRM-1}{\nwixu{NW3Mfp8C-gMHRo-1}\nwixd{NW3Mfp8C-13QmRM-1}}}%
 \nwixlogsorted{c}{{Defining formulas for $\rng(f)$ and $f(X)$}{NW18nMBU-24g6aa-1}{\nwixu{NW18nMBU-3LADMa-1}\nwixd{NW18nMBU-24g6aa-1}}}%
 \nwixlogsorted{c}{{Definition: proper subgroup}{NW18nMBU-RKCxZ-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-RKCxZ-1}}}%
-\nwixlogsorted{c}{{DICT/CHAR.VOC}{NW1Nnu7l-4FyAEL-1}{\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
-\nwixlogsorted{c}{{DICT/TMP.VOC}{NWoaARJ-9L8EQ-1}{\nwixd{NWoaARJ-9L8EQ-1}}}%
+\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
 \nwixlogsorted{c}{{Environment for \code{}char.miz\edoc{}}{NW4bbsBH-3ZQoFX-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NW4bbsBH-3ZQoFX-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is an Endomorphism}{NW3Mfp8C-lTiQo-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-lTiQo-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is the inverse function of $f$}{NW3Mfp8C-oixct-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-oixct-1}}}%
@@ -1467,7 +1471,6 @@ end;
 \nwixlogsorted{i}{{\nwixident{LmSandwich}}{LmSandwich}}%
 \nwixlogsorted{i}{{\nwixident{LmSubgroupElt}}{LmSubgroupElt}}%
 \nwixlogsorted{i}{{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}}%
-\nwixlogsorted{i}{{\nwixident{non}}{non}}%
 \nwixlogsorted{i}{{\nwixident{outer}}{outer}}%
 \nwixlogsorted{i}{{\nwixident{proper}}{proper}}%
 \nwixlogsorted{i}{{\nwixident{Th1}}{Th1}}%
@@ -1526,12 +1529,12 @@ subgroup for a nontrivial group is implicitly a proper subgroup.
 
 \nwenddocs{}\nwbegincode{65}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
-  let G be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster maximal -> \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
   coherence by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
 
 \begin{lemma}
 If $H\properSubgroup G$ is a proper subgroup, then there exists some
@@ -1546,7 +1549,7 @@ $x\in G$ such that $x\notin H$.
 proof
   let H be Subgroup of G;
   assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G;
-  then (the carrier of G) \\ (the carrier of H) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
+  then (the carrier of G) \\ (the carrier of H) is non empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
   then consider x being object such that
   A2: x in (the carrier of G) \\ (the carrier of H)
   by XBOOLE_0:def 1;
@@ -1556,7 +1559,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm101}}{Lm101}{NW18nMBU-1JdoT3-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-1JdoT3-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-1JdoT3-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1JdoT3-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-1JdoT3-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1JdoT3-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
 Let $f\colon X\into Y$ be an injective function of non-empty sets, let
 $A\subset X$ be a non-empty subset, let $x\in X$ be any element such
@@ -1565,16 +1568,16 @@ that $x\notin A$. Then $f(x)\notin f(A)$.
 
 \nwenddocs{}\nwbegincode{69}\sublabel{NW18nMBU-41PUYF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\moddef{Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1}:
-  for X,Y being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set
-  for A being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty Subset of X
+  for X,Y being non empty set
+  for A being non empty Subset of X
   for x being Element of X
   st not x in A
   for f being Function of X,Y
   st f is one-to-one
   holds not f.x in (f .: A)
 proof
-  let X,Y be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty set;
-  let A be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty Subset of X;
+  let X,Y be non empty set;
+  let A be non empty Subset of X;
   let x be Element of X;
   assume A1: not x in A;
   let f be Function of X,Y;
@@ -1590,7 +1593,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm18}}{Lm18}{NW18nMBU-41PUYF-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm18}}{Lm18}}}\nwidentuses{\\{{\nwixident{non}}{non}}}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-41PUYF-1}\nwendcode{}\nwbegindocs{70}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm18}}{Lm18}}}\nwendcode{}\nwbegindocs{70}\nwdocspar
 \begin{lemma}
 If $H\subgroup G$ is a subgroup such that there is an $x\in G$ but
 $x\notin H$, then $H$ is a proper subgroup of $G$.
@@ -1610,12 +1613,12 @@ proof
   x in G & not (x in H) by A1,STRUCT_0:def 5;
   then x in UG & not (x in UH);
   then x in (UG \\ UH) by XBOOLE_0:def 5;
-  then (UG \\ UH) is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty by XBOOLE_0:def 1;
+  then (UG \\ UH) is non empty by XBOOLE_0:def 1;
   hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
 end;
 
 \nwindexdefn{\nwixident{Lm101}}{Lm101}{NW18nMBU-yfmiK-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-yfmiK-1}\nwindexuse{\nwixident{non}}{non}{NW18nMBU-yfmiK-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-yfmiK-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-yfmiK-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-yfmiK-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
 \nwenddocs{}\nwbegincode{73}\sublabel{NW18nMBU-NeCDP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\moddef{Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 LmGroupIsTrivialIff1:
   for G being Group
@@ -2317,10 +2320,10 @@ end;
 We need to add {\Tt{}\nwlinkedidentq{Id{\_}}{NW1Nnu7l-27i33n-1}\nwendquote} to our vocabulary.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-4FyAEL-1}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
 OId_
 
-\nwalsodefined{\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwendcode{}\nwbegindocs{54}\nwdocspar
 
 \begin{proof}[Proof sketch (Existence of $\Id_{G}$)]
 Similar to the proof of existence in Registration~\ref{par:characteristic:register-bijective-for-endomorphism}, the proof that $\Id_{G}$
@@ -2512,21 +2515,21 @@ $\varphi(H)\properSubgroup G$.
 
 \nwenddocs{}\nwbegincode{71}\sublabel{NW1Nnu7l-39h8sj-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-39h8sj-1}}}\moddef{Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-39h8sj-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{ThAutoProper}{NW1Nnu7l-39h8sj-1}:
-  for G being \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group
+  for G being non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group
   for H being Subgroup of G
   for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G
   st H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G
   holds Image(phi|H) is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G
 proof
-  let G be \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   let H be Subgroup of G;
   let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   set UH = the carrier of H;
   set UG = the carrier of G;
-  A1: phi is one-to-one & phi is onto & UH is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty Subset of UG &
+  A1: phi is one-to-one & phi is onto & UH is non empty Subset of UG &
       phi is Function of UG,UG by GROUP_2:def 5;
   assume H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G;
-  then UG \\ UH is \nwlinkedidentc{non}{NW18nMBU-47kVo6-1} empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
+  then UG \\ UH is non empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
   then consider x such that
   A2: x in UG \\ UH by XBOOLE_0:def 1;
   A3: x in G & not x in H by A2,XBOOLE_0:def 5, STRUCT_0:def 5;
@@ -2539,7 +2542,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{ThAutoProper}}{ThAutoProper}{NW1Nnu7l-39h8sj-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{ThAutoProper}}{ThAutoProper}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{Lm101}}{Lm101}}\\{{\nwixident{non}}{non}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm101}}{Lm101}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{non}}{non}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39h8sj-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{ThAutoProper}}{ThAutoProper}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{Lm101}}{Lm101}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm101}}{Lm101}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39h8sj-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
 \begin{proof}[Proof step ($\varphi(x)\notin\varphi(H)$)]
 Since $x\in G$ and $x\notin H$, it follows that $\varphi(x)\notin\varphi(H)$
 thanks to Lemma~\ref{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}. 
@@ -2671,7 +2674,7 @@ Before rushing off to prove properties concerning inner and outer
 automorphisms, we should add the attributes to our vocabulary file.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{7}\sublabel{NW3Mfp8C-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW1Nnu7l-4FyAEL-1}{NW47t2dy-4FyAEL-1}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{7}\sublabel{NW3Mfp8C-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW1Nnu7l-4FyAEL-1}{NW47t2dy-4FyAEL-1}\nwenddeflinemarkup
 Vinner
 Vouter
 
@@ -3361,7 +3364,7 @@ subgroups, we have to tell Mizar that \lstinline|characteristic| is now
 a token that should be associated with Definition~\ref{defn:characteristic:results:characteristic-subgroup}.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{\relax}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{\relax}\nwenddeflinemarkup
 Vcharacteristic
 
 \nwendcode{}\nwbegindocs{6}\nwdocspar
