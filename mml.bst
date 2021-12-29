@@ -1124,7 +1124,7 @@ FUNCTION {editor.key.organization.label}
 FUNCTION {capify}
 { duplicate$ empty$
     { pop$ "" }
-    { "{\scshape " swap$ * "}" * }
+    { "\mmlArticleStyle{" swap$ * "}" * }
   if$
 }
 
