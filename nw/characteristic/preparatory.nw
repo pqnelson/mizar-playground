@@ -54,6 +54,7 @@ reserve X for set;
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
 <<Lemma: bijections have inverses>>
 <<Register: non trivial for Group>>
+<<Register: trivial groups and trivial subgroups>>
 <<Register: non trivial for Subgroup>>
 <<Definition: proper subgroup>>
 <<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>
@@ -701,6 +702,33 @@ registration
     take G;
     the carrier of G <> {1_G};
     hence not (G is trivial);
+  end;
+end;
+
+@ %def trivial
+
+\begin{registration}\index{Trivial!Subgroup}\index{Trivial!Group}
+We need to register the adjective ``trivial'' for groups and
+subgroups. \emph{Every} group --- strict or not, trivial or not, hairy
+or bald --- has a trivial subgroup. Similarly, \emph{every} subgroup has
+a trivial subgroup.
+\end{registration}
+
+<<Register: trivial groups and trivial subgroups>>=
+registration
+  let G be Group;
+  cluster trivial for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus thesis by GROUP_6:10;
+  end;
+  let H be Subgroup of G;
+  cluster trivial for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    thus thesis by GROUP_6:10;
   end;
 end;
 

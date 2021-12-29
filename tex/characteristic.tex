@@ -44,6 +44,13 @@ subdirectory. Terms are prefixed with the following:
 \end{itemize}
 \index{Vocabulary!File|)}
 
+Right now, we have just started, so we need an empty vocabulary file:
+
+\nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NWoaARJ-4FyAEL-2}\nwenddeflinemarkup
+
+\nwalsodefined{\\{NWoaARJ-4FyAEL-2}\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+
+
 \iffalse
 For our immediate purposes, we want to prove theorems concerning
 characteristic subgroups. We can start with checking if the vocabulary
@@ -54,10 +61,10 @@ already introduced it. (None has, so far.) Since we want to describe
 {\Tt{}GROUP{\_}2\nwendquote}, it seems reasonable to introduce a new adjective
 [attribute] ``characteristic''. Thus we begin:
 
-\nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW1Nnu7l-4FyAEL-1}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{5}\sublabel{NWoaARJ-4FyAEL-2}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-2}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-4FyAEL-1}{NW1Nnu7l-4FyAEL-1}\nwenddeflinemarkup
 Vcharacteristic
 
-\nwalsodefined{\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+\nwendcode{}\nwbegindocs{6}\nwdocspar
 
 \fi
 \nwenddocs{}\nwfilename{nw/characteristic/environ.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
@@ -430,6 +437,7 @@ reserve X for set;
 \LA{}Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective~{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}\RA{}
 \LA{}Lemma: bijections have inverses~{\nwtagstyle{}\subpageref{NW18nMBU-1VchCJ-1}}\RA{}
 \LA{}Register: non trivial for Group~{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}\RA{}
+\LA{}Register: trivial groups and trivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}\RA{}
 \LA{}Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}\RA{}
 \LA{}Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}\RA{}
 \LA{}Lemma: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}\RA{}
@@ -1082,12 +1090,39 @@ end;
 
 \nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-47kVo6-1}\eatline
 \nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\begin{registration}\index{Trivial!Subgroup}\index{Trivial!Group}
+We need to register the adjective ``trivial'' for groups and
+subgroups. \emph{Every} group --- strict or not, trivial or not, hairy
+or bald --- has a trivial subgroup. Similarly, \emph{every} subgroup has
+a trivial subgroup.
+\end{registration}
+
+\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-1APuWV-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\moddef{Register: trivial groups and trivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+registration
+  let G be Group;
+  cluster \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus thesis by GROUP_6:10;
+  end;
+  let H be Subgroup of G;
+  cluster \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    thus thesis by GROUP_6:10;
+  end;
+end;
+
+\nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-1APuWV-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{48}\nwdocspar
 \begin{registration}
 For any non trivial group $G$, we can find a nontrivial subgroup
 $H\subgroup G$, namely $G$ itself.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-2RiGxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\moddef{Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-2RiGxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\moddef{Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
@@ -1100,7 +1135,7 @@ registration
   end;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
 
 \subsection{Proper Subgroups}
 When we have a [nontrivial] group $G$, we can discuss the notion of a
@@ -1120,7 +1155,7 @@ proper. Maximal subgroups were defined (\mml[def 6]{group4}\MizDef{GROUP\_4}[06]
 using the condition \lstinline|the multMagma of H <> the multMagma of G|.
 \end{def-remark}
 
-\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 definition
   let G be Group;
   let IT be Subgroup of G;
@@ -1132,13 +1167,13 @@ reserve G for Group;
 reserve H for Subgroup of G;
 
 \nwindexdefn{\nwixident{Def10}}{Def10}{NW18nMBU-RKCxZ-1}\nwindexdefn{\nwixident{proper}}{proper}{NW18nMBU-RKCxZ-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{50}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{52}\nwdocspar
 \begin{registration}
 For any nontrivial group $G$, we can find a proper subgroup $H\subgroup G$,
 namely the trivial subgroup $H=\trivialSubgroup_{G}$.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
 
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
@@ -1157,7 +1192,7 @@ end;
 reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
 
-\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
+\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 
 \begin{lemma}
 Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
@@ -1174,7 +1209,7 @@ underlying sets must be different. This argument works backwards as well
 as forwards.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-2LrGAr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-2LrGAr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}:
   H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff the carrier of H <> the carrier of G
 proof
@@ -1185,7 +1220,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm99}}{Lm99}{NW18nMBU-2LrGAr-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm99}}{Lm99}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2LrGAr-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm99}}{Lm99}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2LrGAr-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 \begin{lemma}
   Let $H\subgroup G$ be a subgroup.
   Then $H$ is a proper subgroup if and only if the set difference is nonempty
@@ -1198,7 +1233,7 @@ state the set difference of the underlying set $U(G)$ of $G$ with the
 underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
 \end{lem-remark}
 
-\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-2cWeD5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-2cWeD5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 reserve h,x,y for object;
 
 \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1}:
@@ -1214,7 +1249,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm100}}{Lm100}{NW18nMBU-2cWeD5-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm100}}{Lm100}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm100}}{Lm100}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
   $U(H)$ of $H$ is a subset of the underlying set $U(G)$ of $G$ --- i.e.,
@@ -1222,7 +1257,7 @@ end;
   $g\in G$ for which $g\notin H$. Then $U(G)\setminus U(H)\neq\emptyset$.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
 proof
   assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
   UH c= UG & UH <> UG by A1,\nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}, GROUP_2:def 5;
@@ -1234,7 +1269,7 @@ proof
   by XBOOLE_0:def 5;
 end;
 
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
 
 \begin{proof}[Sub-proof outline]
 Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
@@ -1243,7 +1278,7 @@ element in $G$ that's not in $H$. So by the extensional notion of set
 equality, these are clearly different sets. Thus $H\properSubgroup G$
 \end{proof}
 
-\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
 proof
   assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
   set GH = UG \\ UH;
@@ -1258,29 +1293,7 @@ proof
   hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by \nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
 end;
 
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
-
-\begin{registration}
-For any nontrivial group $G$, we can call \define{Proper Subgroup} of
-$G$ a subgroup which is proper.
-\end{registration}
-
-\nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
-registration
-  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
-  cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
-  existence
-  proof
-    take (1).G;
-    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
-    then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
-    then the carrier of G <> \{1_G\};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
-  end;
-end;
-
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}
 
 \nwixlogsorted{c}{{$\exists a\in\varphi^{-1}(H),g=\varphi(a)$}{NW1Nnu7l-41Hbi6-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-41Hbi6-1}}}%
 \nwixlogsorted{c}{{$\exists b\in H, a = \varphi^{-1}(b)$}{NW1Nnu7l-2rS80d-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-2rS80d-1}}}%
@@ -1308,7 +1321,7 @@ end;
 \nwixlogsorted{c}{{Define \code{}inner\edoc{} for Automorphism}{NW3Mfp8C-13QmRM-1}{\nwixu{NW3Mfp8C-gMHRo-1}\nwixd{NW3Mfp8C-13QmRM-1}}}%
 \nwixlogsorted{c}{{Defining formulas for $\rng(f)$ and $f(X)$}{NW18nMBU-24g6aa-1}{\nwixu{NW18nMBU-3LADMa-1}\nwixd{NW18nMBU-24g6aa-1}}}%
 \nwixlogsorted{c}{{Definition: proper subgroup}{NW18nMBU-RKCxZ-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-RKCxZ-1}}}%
-\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
+\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NWoaARJ-4FyAEL-2}\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
 \nwixlogsorted{c}{{Environment for \code{}char.miz\edoc{}}{NW4bbsBH-3ZQoFX-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NW4bbsBH-3ZQoFX-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is an Endomorphism}{NW3Mfp8C-lTiQo-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-lTiQo-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is the inverse function of $f$}{NW3Mfp8C-oixct-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-oixct-1}}}%
@@ -1394,8 +1407,9 @@ end;
 \nwixlogsorted{c}{{Register: non trivial for Subgroup}{NW18nMBU-2RiGxf-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-2RiGxf-1}}}%
 \nwixlogsorted{c}{{Register: proper subgroup for nontrivial groups}{NW18nMBU-1x35KZ-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-1x35KZ-1}\nwixd{NW18nMBU-1x35KZ-2}}}%
 \nwixlogsorted{c}{{Register: the identity function is surjective and bijective}{NW18nMBU-1ouPZe-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-1ouPZe-1}}}%
+\nwixlogsorted{c}{{Register: trivial groups and trivial subgroups}{NW18nMBU-1APuWV-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-1APuWV-1}}}%
 \nwixlogsorted{c}{{Reserve symbols for inner and outer automorphisms}{NW1Nnu7l-1LL7AC-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-1LL7AC-1}}}%
-\nwixlogsorted{c}{{Results and definition for Inner automorphisms}{NW3Mfp8C-gMHRo-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW3Mfp8C-gMHRo-1}}}%
+\nwixlogsorted{c}{{Results and definition for Inner automorphisms}{NW3Mfp8C-gMHRo-1}{\nwixd{NW3Mfp8C-gMHRo-1}}}%
 \nwixlogsorted{c}{{set theoretic notation for \code{}char.miz\edoc{}}{NW4bbsBH-MR2Mf-1}{\nwixu{NW4bbsBH-45oKpZ-1}\nwixu{NW4bbsBH-40mYXi-1}\nwixd{NW4bbsBH-MR2Mf-1}}}%
 \nwixlogsorted{c}{{Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$}{NW47t2dy-3ZyLrF-1}{\nwixu{NW47t2dy-1dPqXM-1}\nwixd{NW47t2dy-3ZyLrF-1}}}%
 \nwixlogsorted{c}{{Step 1: $g\in\varphi[\varphi^{-1}(H)]\implies g\in H$}{NW1Nnu7l-47FJLD-1}{\nwixu{NW1Nnu7l-1ZaFZM-1}\nwixd{NW1Nnu7l-47FJLD-1}}}%
@@ -1502,13 +1516,35 @@ end;
 \nwixlogsorted{i}{{\nwixident{trivial}}{trivial}}%
 \nwbegindocs{62}\nwdocspar
 
+\begin{registration}
+For any nontrivial group $G$, we can call \define{Proper Subgroup} of
+$G$ a subgroup which is proper.
+\end{registration}
+
+\nwenddocs{}\nwbegincode{63}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
+registration
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+    then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
+    then the carrier of G <> \{1_G\};
+    then the carrier of G <> the carrier of (1).G;
+    hence (1).G is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
+  end;
+end;
+
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{64}\nwdocspar
+
 \begin{lemma}
 Maximal subgroups are also proper subgroups.
 \end{lemma}
 
 The proof is literally, ``Look at the definitions!''
 
-\nwenddocs{}\nwbegincode{63}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{65}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1}:
   for G being Group
   for H being Subgroup of G
@@ -1521,27 +1557,27 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm98}}{Lm98}{NW18nMBU-KtuAy-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm98}}{Lm98}}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-KtuAy-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{64}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm98}}{Lm98}}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-KtuAy-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
 \begin{registration}
 We can now automatically take advantage of the fact that, a maximal
 subgroup for a nontrivial group is implicitly a proper subgroup.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{65}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{67}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster maximal -> \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
   coherence by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
 
 \begin{lemma}
 If $H\properSubgroup G$ is a proper subgroup, then there exists some
 $x\in G$ such that $x\notin H$.
 \end{lemma}
 
-\nwenddocs{}\nwbegincode{67}\sublabel{NW18nMBU-1JdoT3-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1JdoT3-1}}}\moddef{Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$~{\nwtagstyle{}\subpageref{NW18nMBU-1JdoT3-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{69}\sublabel{NW18nMBU-1JdoT3-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1JdoT3-1}}}\moddef{Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$~{\nwtagstyle{}\subpageref{NW18nMBU-1JdoT3-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm101}{NW18nMBU-1JdoT3-1}:
   for H being Subgroup of G
   st H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G
@@ -1559,14 +1595,14 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm101}}{Lm101}{NW18nMBU-1JdoT3-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-1JdoT3-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1JdoT3-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-1JdoT3-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1JdoT3-1}\nwendcode{}\nwbegindocs{70}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
 Let $f\colon X\into Y$ be an injective function of non-empty sets, let
 $A\subset X$ be a non-empty subset, let $x\in X$ be any element such
 that $x\notin A$. Then $f(x)\notin f(A)$.
 \end{lemma}
 
-\nwenddocs{}\nwbegincode{69}\sublabel{NW18nMBU-41PUYF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\moddef{Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{71}\sublabel{NW18nMBU-41PUYF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\moddef{Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1}:
   for X,Y being non empty set
   for A being non empty Subset of X
@@ -1593,13 +1629,13 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm18}}{Lm18}{NW18nMBU-41PUYF-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm18}}{Lm18}}}\nwendcode{}\nwbegindocs{70}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm18}}{Lm18}}}\nwendcode{}\nwbegindocs{72}\nwdocspar
 \begin{lemma}
 If $H\subgroup G$ is a subgroup such that there is an $x\in G$ but
 $x\notin H$, then $H$ is a proper subgroup of $G$.
 \end{lemma}
 
-\nwenddocs{}\nwbegincode{71}\sublabel{NW18nMBU-yfmiK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-yfmiK-1}}}\moddef{Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper~{\nwtagstyle{}\subpageref{NW18nMBU-yfmiK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{73}\sublabel{NW18nMBU-yfmiK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-yfmiK-1}}}\moddef{Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper~{\nwtagstyle{}\subpageref{NW18nMBU-yfmiK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm101}{NW18nMBU-1JdoT3-1}:
   for H being Subgroup of G
   st (ex x being Element of G st not (x in H))
@@ -1618,8 +1654,8 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Lm101}}{Lm101}{NW18nMBU-yfmiK-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-yfmiK-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-yfmiK-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
-\nwenddocs{}\nwbegincode{73}\sublabel{NW18nMBU-NeCDP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\moddef{Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm101}}{Lm101}}}\nwidentuses{\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW18nMBU-yfmiK-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-yfmiK-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
+\nwenddocs{}\nwbegincode{75}\sublabel{NW18nMBU-NeCDP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\moddef{Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 LmGroupIsTrivialIff1:
   for G being Group
   holds G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} iff the multMagma of G = (1).G
@@ -1642,7 +1678,7 @@ proof
   thus thesis;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-NeCDP-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-NeCDP-1}\nwendcode{}\nwbegindocs{76}\nwdocspar
 
 \begin{lemma}
 If $G=\trivialSubgroup$ is trivial, then it has no proper subgroups.
@@ -1654,7 +1690,7 @@ each other $X\subset Y\land Y\subset X$ is precisely what
 \mml[def10]{xboole0}\MizDef{XBOOLE\_0}{10} offers.
 \end{lem-remark}
 
-\nwenddocs{}\nwbegincode{75}\sublabel{NW18nMBU-2Lh20A-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2Lh20A-1}}}\moddef{Lemma: Trivial groups have no proper subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-2Lh20A-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{77}\sublabel{NW18nMBU-2Lh20A-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2Lh20A-1}}}\moddef{Lemma: Trivial groups have no proper subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-2Lh20A-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 LmTrivHasNoProperSubgroups:
   for G being Group
   st G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1}
@@ -1680,7 +1716,7 @@ proof
   hence not (ex H being Subgroup of G st H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1});
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-2Lh20A-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2Lh20A-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2Lh20A-1}\nwendcode{}\nwbegindocs{76}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-2Lh20A-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2Lh20A-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2Lh20A-1}\nwendcode{}\nwbegindocs{78}\nwdocspar
 
 \begin{lemma}
 If $G$ is trivial, then it cannot have a maximal subgroup.
@@ -1689,7 +1725,7 @@ If $G$ is trivial, then it cannot have a maximal subgroup.
 Certainly, if there is no hope for $G$ having a proper subgroup, we
 should have no hope for maximal subgroups.
 
-\nwenddocs{}\nwbegincode{77}\sublabel{NW18nMBU-ZbLuj-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-ZbLuj-1}}}\moddef{Lemma: Trivial groups have no maximal subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-ZbLuj-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{79}\sublabel{NW18nMBU-ZbLuj-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-ZbLuj-1}}}\moddef{Lemma: Trivial groups have no maximal subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-ZbLuj-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 for G being Group
 st G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1}
 holds not (ex H being Subgroup of G st H is maximal)
@@ -1700,7 +1736,7 @@ proof
   hence not (ex H being Subgroup of G st H is maximal) by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-ZbLuj-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-ZbLuj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-ZbLuj-1}\nwendcode{}\nwbegindocs{78}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-ZbLuj-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-ZbLuj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-ZbLuj-1}\nwendcode{}\nwbegindocs{80}\nwdocspar
 \nwenddocs{}\nwfilename{nw/characteristic/automorphism.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Automorphisms}
 Now, we have a section for defining inner and outer group
@@ -1732,8 +1768,8 @@ begin
 \LA{}Theorem: \code{}Id{\_}G\edoc{} is the same as \code{}id\ the\ carrier\ of\ G\edoc{}~{\nwtagstyle{}\subpageref{NW1Nnu7l-4SFZrK-1}}\RA{}
 \LA{}Register \code{}Id{\_}G\edoc{} is bijective~{\nwtagstyle{}\subpageref{NW1Nnu7l-37g7e5-1}}\RA{}
 \LA{}Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1QHEJY-1}}\RA{}
-\LA{}Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-39h8sj-1}}\RA{}
-\LA{}Results and definition for Inner automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-gMHRo-1}}\RA{}
+\LA{}Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-39h8sj-1}}\RA{}<
+<Results and definition for Inner automorphisms>>
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
@@ -2321,7 +2357,7 @@ end;
 We need to add {\Tt{}\nwlinkedidentq{Id{\_}}{NW1Nnu7l-27i33n-1}\nwendquote} to our vocabulary.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-4FyAEL-1}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NWoaARJ-4FyAEL-2}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
 OId_
 
 \nwendcode{}\nwbegindocs{54}\nwdocspar
@@ -2613,7 +2649,7 @@ theorem
 \section{Inner Automorphisms}
 We can now organize our treatment of inner automorphisms.
 
-\nwenddocs{}\nwbegincode{1}\sublabel{NW3Mfp8C-gMHRo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-gMHRo-1}}}\moddef{Results and definition for Inner automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-gMHRo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{1}\sublabel{NW3Mfp8C-gMHRo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-gMHRo-1}}}\moddef{Results and definition for Inner automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-gMHRo-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
 \LA{}Define \code{}inner\edoc{} for Automorphism~{\nwtagstyle{}\subpageref{NW3Mfp8C-13QmRM-1}}\RA{}
 \LA{}Theorem: \code{}Id{\_}G\edoc{} is effectively inner~{\nwtagstyle{}\subpageref{NW3Mfp8C-ATJLl-1}}\RA{}
 \LA{}Register \code{}inner\edoc{} for \code{}Automorphism\edoc{}~{\nwtagstyle{}\subpageref{NW3Mfp8C-4IjmGJ-1}}\RA{}
@@ -2626,7 +2662,7 @@ We can now organize our treatment of inner automorphisms.
 \LA{}Theorem: constructing inner automorphisms from group elements~{\nwtagstyle{}\subpageref{NW3Mfp8C-arh13-1}}\RA{}
 \LA{}Theorem: inner Automorphisms fix only normal Subgroups~{\nwtagstyle{}\subpageref{NW3Mfp8C-4Qqcti-1}}\RA{}
 
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
+\nwnotused{Results and definition for Inner automorphisms}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
 \begin{definition}\index{Automorphism!inner}\index{inner!Automorphism|see {Automorphism}}
 We call a group automorphism $f\in\Aut(G)$ \define{inner} if there is a
