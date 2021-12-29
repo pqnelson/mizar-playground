@@ -357,6 +357,7 @@ registration
   end;
 end;
 
+
 registration
   let G be non trivial Group;
   cluster non trivial for Subgroup of G;
@@ -366,6 +367,58 @@ registration
     reconsider H=G as Subgroup of G by GROUP_2:54;
     the carrier of H <> {1_G} by A1;
     hence thesis;
+  end;
+  cluster strict non trivial for Subgroup of G;
+  existence
+  proof
+    A1: the carrier of G <> {1_G} by GROUP_6:def 2;
+    set H = multMagma (#the carrier of G, the multF of G#);
+    H is Group-like
+    proof
+      reconsider t = 1_G as Element of H;
+      take t;
+      let a be Element of H;
+      reconsider x = a as Element of G;
+      thus a * t = x * 1_G .= a by GROUP_1:def 4;
+      thus t * a = 1_G * x .= a by GROUP_1:def 4;
+      reconsider s = x" as Element of H;
+      take s;
+      thus a * s = x * x" .= t by GROUP_1:def 5;
+      thus s * a = x" * x .= t by GROUP_1:def 5;
+    end;
+    then reconsider H as Group-like non empty multMagma;
+    the multF of H = (the multF of G)||the carrier of H by RELSET_1:19;
+    then H is Subgroup of G by GROUP_2:def 5;
+    then H is strict Subgroup of G & H is non trivial by A1;
+    hence thesis;
+  end;
+end;
+
+registration
+  let G be Group;
+  cluster trivial for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus thesis by GROUP_6:10;
+  end;
+  let H be Subgroup of G;
+  cluster trivial for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    thus thesis by GROUP_6:10;
+  end;
+end;
+
+registration
+  let G be non trivial Group;
+  let H be strict Subgroup of G;
+  cluster trivial for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    thus thesis by GROUP_6:10;
   end;
 end;
 
@@ -406,7 +459,7 @@ proof
     hence (the carrier of G) \ (the carrier of H) is non empty set
     by XBOOLE_0:def 5;
   end;
-    
+  
   thus (the carrier of G) \ (the carrier of H) is non empty set implies H is proper
   proof
     assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
@@ -445,15 +498,31 @@ reserve H for Subgroup of G;
 
 registration
   let G be non trivial Group;
-  cluster proper for Subgroup of G;
+  let H be non trivial Subgroup of G;
+  cluster proper for Subgroup of H;
   existence
   proof
-    take (1).G;
-    G is non trivial;
-    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
-    then the carrier of G <> {1_G};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is proper;
+    take (1).H;
+    H is non trivial;
+    then not (ex x being object st the carrier of H = {x}) by GROUP_6:def 2;
+    then the carrier of H <> {1_H};
+    then the carrier of H <> the carrier of (1).H;
+    hence (1).H is proper;
+  end;
+end;
+
+registration
+  let G be non trivial Group;
+  let H be non trivial strict Subgroup of G;
+  cluster proper for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    H is non trivial;
+    then not (ex x being object st the carrier of H = {x}) by GROUP_6:def 2;
+    then the carrier of H <> {1_H};
+    then the carrier of H <> the carrier of (1).H;
+    hence (1).H is proper;
   end;
 end;
 
@@ -931,8 +1000,6 @@ proof
         then phi.x in UG by A3, FUNCT_1:def 3;
         hence phi.x is Element of G by STRUCT_0:def 5;
       end;
-
-::  ex y being Element of G st not y in phi .: H
   ex y being Element of G st not y in phi .: H
   proof
     consider y being Element of G such that
@@ -942,10 +1009,289 @@ proof
     take y;
     thus not y in phi .: H by B2;
   end;
-    
   then phi .: H is proper by Lm101;
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
+
+theorem
+Lm109:
+  for G being Group
+  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
+proof
+  let G be Group;
+  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
+  proof
+    assume G is trivial Group;
+    then A1: ex y being object st the carrier of G = {y} by GROUP_6:def 2;
+    1_G in G;
+    then A2: the carrier of G = {1_G} by A1, TARSKI:def 1;
+    thus for x being object holds x in G iff x = 1_G
+    by A2, STRUCT_0:def 5, TARSKI:def 1;
+  end;
+  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
+  proof
+    assume A1: for x being object holds x in G iff x = 1_G;
+    then for x being object holds x in the carrier of G iff x = 1_G
+    by STRUCT_0:def 5;
+    then the carrier of G = {1_G} by TARSKI:def 1;
+    hence G is trivial Group by GROUP_6:def 2;
+  end;
+  thus thesis;
+end;
+
+Lm108:
+  for G being Group
+  for H being Subgroup of G
+  st H is trivial
+  holds the multMagma of H = (1).G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume H is trivial;
+  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
+                         .= (1).G by GROUP_2:63;
+  hence thesis;
+end;
+
+Lm107:
+  for G being Group
+  for H being trivial Subgroup of G
+  for K being trivial Subgroup of G
+  holds the multMagma of H = the multMagma of K
+proof
+  let G be Group;
+  let H be trivial Subgroup of G;
+  let K be trivial Subgroup of G;
+  the multMagma of H = (1).G by Lm108
+  .= the multMagma of K by Lm108;
+  hence thesis;
+end;
+
+Lm58:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  for x being object
+  st x in X
+  holds f .: {x} = {f.x}
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  let x be object;
+  assume A0: x in X;
+  dom f = X by FUNCT_2:def 1;
+  then A1: x in dom f by A0;
+  for y being object holds y in f.:{x} iff y in {f.x}
+  proof let y be object;
+    thus y in f.:{x} implies y in {f.x}
+    proof
+      assume y in f.:{x};
+      then consider z being object such that
+      z in dom f and
+A2:   z in {x} and
+A3:   y = f.z by FUNCT_1:def 6;
+      z = x by A2,TARSKI:def 1;
+      hence thesis by A3,TARSKI:def 1;
+    end;
+    assume y in {f.x};
+    then
+A4: y = f.x by TARSKI:def 1;
+    x in {x} by TARSKI:def 1;
+    hence thesis by A1,A4,FUNCT_1:def 6;
+  end;
+  hence f .: {x} = {f.x} by TARSKI:2;
+end;
+
+LmAutoGrSub:
+for G being Group
+for H being Subgroup of G
+st H is trivial Group
+holds H is trivial Subgroup of G;
+
+
+theorem ThAutoTriv:
+  for G being Group
+  for phi being Automorphism of G
+  for H being trivial Subgroup of G
+  holds Image(phi|H) is trivial Subgroup of G
+proof
+  let G be Group;
+  let phi be Automorphism of G;
+  let H be trivial Subgroup of G;
+  the multMagma of H = (1).G by Lm108;
+  then A1: the carrier of H = {1_G} by GROUP_2:def 7;
+  1_G in the carrier of G;
+  then A2: 1_G in dom phi by FUNCT_2:def 1;
+  the carrier of (phi .: H) = phi .: (the carrier of H) by GRSOLV_1:8
+  .= phi .: {1_G} by A1
+  .= {phi.(1_G)} by A2,Lm58
+  .= {1_G} by GROUP_6:31
+  .= the carrier of (1).G by GROUP_2:def 7;
+  then the carrier of (phi .: H) = the carrier of (1).G;
+  then the multMagma of (phi .: H) = (1).G by GROUP_2:59;
+  then phi .: H is trivial by LmGroupIsTrivialIff1;
+  then Image(phi|H) is trivial by GRSOLV_1:def 3;
+  hence thesis;
+end;
+
+
+Lm106:
+  for G being Group
+  for K being trivial Subgroup of G
+  for H being Subgroup of G
+  st H is Subgroup of K
+  holds H is trivial Subgroup of G
+proof
+  let G be Group;
+  let K be trivial Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  A2: the carrier of H = {1_G}
+  proof
+    the multMagma of K = (1).G by Lm108;
+    then the carrier of K = {1_G} by GROUP_2:def 7;
+    then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
+  end;
+  then ex x being object st the carrier of H = {x};
+  hence H is trivial Subgroup of G by GROUP_6:def 2;
+end;
+
+
+
+Lm110:
+  for G being non trivial Group
+  for H being proper Subgroup of G
+  for K being Subgroup of G
+  st H is Subgroup of K & the multMagma of H <> the multMagma of K
+  holds K is non trivial Subgroup of G
+proof
+  let G be non trivial Group;
+  let H be proper Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  assume A2: the multMagma of H <> the multMagma of K;
+  not (K is non trivial Subgroup of G) implies contradiction
+  proof
+    assume B1: not K is non trivial Subgroup of G;
+    then K is trivial Subgroup of G;
+    then H is trivial Subgroup of G by A1,Lm106;
+    then the multMagma of H = the multMagma of K by B1,Lm107;
+    hence contradiction by A2;
+  end;
+  hence K is non trivial Subgroup of G;
+end;
+
+theorem
+  for G being non trivial Group
+  for H being strict Subgroup of G
+  for phi being Automorphism of G
+  st H is maximal
+  holds Image(phi|H) is maximal
+proof
+  let G be non trivial Group;
+  let H be strict Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H is maximal;
+  then A2: H is proper Subgroup of G by Lm98;
+  then A3: Image(phi|H) is proper Subgroup of G by ThAutoProper;
+  then P1: the multMagma of Image(phi|H) <> the multMagma of G by Def10;
+  set UG = the carrier of G;
+  set UH = the carrier of H;
+  P2: for K being strict Subgroup of G
+  st Image(phi|H) <> K & Image(phi|H) is Subgroup of K
+  holds K = the multMagma of G
+  proof
+    let K be strict Subgroup of G;
+    assume B1: Image(phi|H) <> K;
+    assume B2: Image(phi|H) is Subgroup of K;
+    then consider psi being Automorphism of G such that
+    B3: psi = phi" and
+    B4: H is Subgroup of Image(psi|K)
+    by Th7b;
+    set UK = the carrier of K;
+    K is non trivial Subgroup of G by A3,B1,B2,Lm110;
+    then reconsider K as non trivial strict Subgroup of G;
+    
+    B5: Image(phi|H) is proper Subgroup of K by B1,B2,Def10;
+    then (the carrier of K) \ (the carrier of Image(phi|H)) is non empty
+    by Lm100;
+    then consider k being object such that
+    B6: k in (the carrier of K) \ (the carrier of Image(phi|H))
+    by XBOOLE_0:def 1;
+    reconsider k as Element of K by B6;
+    B7: not (k in Image(phi|H)) by B6, STRUCT_0:def 5, XBOOLE_0:def 5;
+    set L = Image(psi|K);
+    B8: psi.k in L
+    proof
+      H is Subgroup of L by B4;
+      C1: k in K;
+      then C0: k in G by GROUP_2:41;
+      dom(psi|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+      then C2: k in dom(psi|K);
+      then consider l being object such that
+      C3: l = psi.k;
+      k is Element of G by GROUP_2:42;
+      then C4: (psi|K).k = psi.k by C1,Lm3;
+      dom psi = the carrier of G by FUNCT_2:def 1;
+      then l in psi .: (the carrier of K) by C0,C1,C2,C3,C4,FUNCT_1:def 6;
+      then l in the carrier of (psi .: K) by GRSOLV_1:8;
+      then l in the carrier of Image(psi|K) by GRSOLV_1:def 3;
+      then psi.k in Image(psi|K) by C3;
+      hence thesis;
+    end;
+    B9: the multMagma of H <> L
+    proof
+      k is Element of G by GROUP_2:42;
+      set UPH = the carrier of Image(phi|H);
+      C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
+      phi is Function of UG,UG by GROUP_2:def 5;
+      C2: k in G & not k in Image(phi|H) by B7, GROUP_2:41;
+      then C3: not psi.k in (psi .: UPH)
+      by C1,Lm18;
+      consider phi2 being Automorphism of G such that
+      C4: phi2 = psi" and
+      C5: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
+      by Th7;
+      phi2=phi by C4,B3, Lm10;
+      then C6: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C5;
+      psi .: (the carrier of Image(phi|H))
+      = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
+      .= the carrier of Image(psi|Image(phi|H)) by GRSOLV_1:def 3;
+      then not psi.k in H by C3,C6;
+      then the carrier of H <> the carrier of L by B8;
+      hence thesis;
+    end;
+    then B10: L = the multMagma of G by A1,B4,GROUP_4:def 6;
+    then phi is Function of UG,UG & phi is onto & the carrier of L = UG;
+    then phi .: the carrier of L = phi .: UG
+                                .= rng phi by RELSET_1:22,FUNCT_2:def 3
+                                .= UG by FUNCT_2:def 3,FUNCT_2:def 1;
+    then UG = phi .: (the carrier of L)
+           .= the carrier of (phi .: L) by GRSOLV_1:8
+           .= the carrier of Image(phi|L) by GRSOLV_1:def 3;
+    then the carrier of Image(phi|L) = the carrier of G;
+    then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
+    then B11: Image(phi|L) = the multMagma of G;
+    Image(phi|L) = K
+    proof
+      Image(phi|L) = Image(phi|Image(psi|K));
+      consider psi2 being Automorphism of G such that
+      C1: psi2 = phi" and
+      C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
+      by Th7;
+      psi2 = psi by C1,B3;
+      then the multMagma of Image(phi|Image(psi|K)) = the multMagma of K by C2;
+      then Image(phi|Image(psi|K)) = K;
+      hence thesis;
+    end;
+    hence thesis by B11;
+  end;
+  thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
+end;
+
 
 definition :: Def5
   let G;
