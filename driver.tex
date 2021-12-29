@@ -6,12 +6,24 @@
 \usepackage{tutmac}
 \newcites{mml}{MML References}
 % hack to make the \citemml style different
-\DeclareRobustCommand\makesnakeletter{\catcode`\_11\relax}
-\DeclareRobustCommand\makesnakesubscript{\catcode`\_8\relax}
+%\def\makesnakeletter{\catcode`\_11\relax}
+%\def\makesnakesubscript{\catcode`\_8\relax}
 
-\newcommand\mmlArticleStyle[1]{\makesnakeletter\texttt{\scshape #1}\makesnakesubscript}
+% and both can be put together:
+%\def\mib{\bgroup\tt\catcode`\_=12\@ifnextchar\bgroup{\let\@junk=}
+%  {\@latexerr{Missing left brace}{\@ehc}}}
+
+
+\def\mmlArticleStyle#1{\texttt{\scshape #1}}
 \let\oldcitemml\citemml
-\renewcommand\citemml[1]{\begingroup\def\citeform##1{\mmlArticleStyle{##1}}\oldcitemml{#1}\endgroup}
+\makeatletter
+\renewcommand\citemml[2][\@empty]{\bgroup
+  \def\citeform##1{\mmlArticleStyle{##1}}% hack #1 use custom style
+  \def\@cite##1##2{{% hack #2: treat \citemml[def 3]{foo} as foo:def 3
+      \@citestyle[\citeform{##1}\if@tempswa\texttt{##2}\fi]}}%
+  \ifx#1\@empty\oldcitemml{#2}\else\oldcitemml[#1]{#2}\fi%
+  \egroup}
+\makeatother
 % Note to self: this tex document follows the hack discussed by Cameron Smith
 % http://www.literateprogramming.com/best/nowebfi.html
 %
@@ -32,11 +44,12 @@
 This is a collection of articles endeavoring to formalize finite group
 theory, with an eye towards the classification of quasithin groups.
 \end{abstract}
+
+
 \frontmatter
 \maketitle\setcounter{page}{2}
 \include{tex/preface}
 \tableofcontents
-
 \mainmatter
 
 \include{tex/introduction}
