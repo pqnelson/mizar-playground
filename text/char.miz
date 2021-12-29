@@ -1184,7 +1184,7 @@ proof
   hence K is non trivial Subgroup of G;
 end;
 
-theorem
+theorem Th31:
   for G being non trivial Group
   for H being strict Subgroup of G
   for phi being Automorphism of G
@@ -1954,12 +1954,126 @@ proof
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
     hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
-
-
-
   hence Z is characteristic Subgroup of G by Th27;
+end;
+
+:: The Frattini subgroup is characteristic
+::theorem Th31:
+::  for G being non trivial Group
+::  for H being strict Subgroup of G
+::  for phi being Automorphism of G
+::  st H is maximal
+::  holds Image(phi|H) is maximal
+
+reserve G for non trivial Group;
+reserve H,K for Subgroup of G;
+theorem
+  Phi(G) is characteristic Subgroup of G
+proof
+  set M = {K where K is Element of Subgroups G : ex H being strict Subgroup of G st
+  H is maximal & H=K};
+  set M2 = {A where A is Subset of G : ex H being strict Subgroup of G st
+            A = the carrier of H & H in M};
+  for phi being Automorphism of G
+  holds ex f being Permutation of M st
+  (for H being strict Subgroup of G st H in M holds f.H = Image(phi|H))
+  proof
+    let phi be Automorphism of G;
+    deffunc F(Automorphism of G, strict Subgroup of G) = Image(($1)|($2));
+    
+    for H being strict Subgroup of G st H is maximal holds H in M
+    proof
+      let H be strict Subgroup of G;
+      assume A1: H is maximal;
+      H is Element of Subgroups G by GROUP_3:def 1;
+      hence H in M by A1,STRUCT_0:def 5;
+    end;
+    for H being object
+    st H in M
+    holds ex K being strict Subgroup of G st H=K & K is maximal
+    proof
+      let H be object;
+      assume A1: H in M;
+      consider K being Element of Subgroups G such that
+      A2: K = H and
+      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=K
+      by A1;
+      H in Subgroups G by A2;
+      reconsider K as strict Subgroup of G by GROUP_3:def 1;
+      consider K2 being strict Subgroup of G such that
+      A4: K2 is maximal and
+      A5: K2=K
+      by A3;
+      A6: H = K2 & K2 is strict Subgroup of G by A2,A5;
+      then A7: H is strict Subgroup of G;
+      H is Element of M by A1;
+      take K2;
+      thus H = K2 & K2 is maximal by A4,A6;
+    end;
+
+    B1: for H1,H2 being strict Subgroup of G
+    st H2 = F(phi,H1) & H1 is maximal
+    holds H2 in M
+    proof
+      let H1,H2 be strict Subgroup of G;
+      assume A1: H2 = F(phi,H1);
+      assume A2: H1 is maximal;
+      G is non trivial Group & H1 is strict Subgroup of G
+      & phi is Automorphism of G & H1 is maximal by A2;
+      then A3: Image(phi|H1) is maximal by Th31;
+      H2=Image(phi|H1) by A1;
+      then A4: H2 is maximal by A3;
+      H2 is Element of Subgroups G by GROUP_3:def 1;
+      hence H2 in M by A2,A4,STRUCT_0:def 5;
+    end;
+    for K1 being Element of M
+    holds (ex H being strict Subgroup of G
+    st K1=H & F(phi,H) in M)
+    proof
+      let K1 be Element of M;
+::      A1: K1 in M by SUBSET_1:def 1;
+      consider H being Element of Subgroups G such that
+      A2: K1 = H and
+      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=H;
+::>                                                              *4
+::      by A1;
+      take H = K1;
+::>              *57
+::      consider H being strict Subgroup of G such that
+::      A1: K1=H;
+      H is maximal by A1;
+::>              *106  *144
+      thus F(phi,H) in M;
+::>        *123
+    end;
+
+
+
+    ::Image(phi|H) is maximal by Th31;
+    consider f being Permutation of M such that
+    B1: for K,K2 being Element of M holds
+    (ex H1,H2 being strict Subgroup of G st H1=K & H2=F(phi,H1) & H2=K2 & f.K = K2)
+    from FUNCT_2:sch 4;
+::>    *26
+    take f;
+    let H be strict Subgroup of G;
+    assume A1: H in M;
+    thus f.H = Image(phi|H) by A1,B1;
+::>                          *4
+  end;
+
+  :: Prove rng f = M
+  :: thus Phi(G) invariant under automorphisms
+  thus Phi(G) is characteristic Subgroup of G;
+::>                                         *4
 end;
 
 
 
 
+::> 4: This inference is not accepted
+::> 26: Substituted constant does not expand properly
+::> 57: The type of the instatiated term doesn't widen properly
+::> 106: Unknown attribute
+::> 123: Disagreement of argument types
+::> 144: Unknown label
