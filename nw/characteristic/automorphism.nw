@@ -8,7 +8,7 @@ is its domain.
 Remember (\S\ref{par:characteristic:vocabularies}), although we are
 defining new terms [[Endomorphism]] and [[Automorphism]], we do not need
 to add them to our [[DICT/CHAR.VOC]] file. Why not? Because the tokens
-are already included from [[MOD_4]].
+are already included from \mml{mod4}.
 
 <<Inner and outer automorphisms>>=
 begin
@@ -76,7 +76,7 @@ end;
 We begin by registering the attribute [[bijective]] for group
 endomorphisms. This will effectively create a subtype of [[Endomorphism of G]],
 the aptly named [[bijective Endomorphism of G]]. Most of our work has
-been done in article [[GROUP_6]] by Theorem~38\MizThm{GROUP\_6}{38}
+been done in Theorem~\mml[Th38]{group6}\MizThm{GROUP\_6}{38}
 (which effectively states the function on the underlying set
 [[id (the carrier of G)]] is a multiplicative function and so nearly a
 group morphism that we can reconsider it as an [[Endomorphism]]), and
@@ -133,7 +133,7 @@ For any automorphism $\varphi\colon G\to G$, its inverse $\varphi^{-1}$
 is also an automorphism.
 \end{proposition}
 
-This is proven in \verb#GROUP_6:62#.\MizThm{GROUP\_6}{62} We have, for
+This is proven in Theorem~\mml[Th62]{group6}.\MizThm{GROUP\_6}{62} We have, for
 example, the following accepted by Mizar:
 
 \begin{mizar}
@@ -184,8 +184,9 @@ If $\phi$ is an automorphism of a group $G$, then
 the image of the trivial subgroup under $\phi$ is a subgroup of itself
 $\phi(\trivialSubgroup)\subgroup\trivialSubgroup$. We have, from
 Theorem~\ref{thm:characteristic:automorphism:trivial-subgroup-invariant-under-automorphisms}, that $\phi(\trivialSubgroup)=\trivialSubgroup$ since
-$\phi$ (being an automorphism) is also an endomorphism. And [[GROUP_2]]
-proves that $G$ is a subgroup of itself in Theorem~[[Th54]].\MizThm{GROUP\_2}{54}
+$\phi$ (being an automorphism) is also an endomorphism. And
+Theorem~\mml[Th54]{group2}\MizThm{GROUP\_2}{54}
+proves that $G$ is a subgroup of itself.
 \end{proof}
 
 <<Theorem: Automorphisms map trivial subgroups to themselves>>=
@@ -259,7 +260,7 @@ $\varphi[\varphi^{-1}(H)]\subgroup\varphi(H)$.
 
 \begin{proof}
 Let $\psi=\varphi^{-1}\in\Aut(G)$ be an automorphism (which follows from
-theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). We have
+Theorem~\mml[Th62]{group6}\MizThm{GROUP\_6}{62}). We have
 $\psi(H)=\psi|_{H}(H)\subgroup H$ since the image of a morphism is a subgroup of
 the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
 \end{proof}
@@ -292,10 +293,10 @@ This is an obvious result which is usually taken for granted.
 
 \begin{proof}[Proof outline]
 Let $\psi=\varphi^{-1}\in\Aut(G)$ (which follows from
-theorem \verb#GROUP_6:62#\MizThm{GROUP\_6}{62}). Then we establish any
+Theorem~\mml[Th62]{group6}\MizThm{GROUP\_6}{62}). Then we establish any
 group element $g$ is a member of $\varphi(\psi(H))$ if and only if $g$
 is a member of $H$.
-The result then follows that they are equal as groups using theorem \verb#GROUP_2:60#\MizThm{GROUP\_2}{60}.
+The result then follows that they are equal as groups using Theorem~\mml[Th60]{group2}\MizThm{GROUP\_2}{60}.
 \end{proof}
 
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
@@ -571,7 +572,7 @@ end;
 \begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
 Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
 But $\varphi|_{H}(g)=\varphi(g)$ by Lemma~\ref{lemma:characteristic:preparatory:restrict-group-morphism-to-subgroups}. So we have
-$\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by theorem \verb#GROUP_6:41#\MizThm{GROUP\_6}{41}.
+$\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by Theorem~\mml[Th41]{group6}.\MizThm{GROUP\_6}{41}
 \end{proof}
 
 <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>=
@@ -624,8 +625,7 @@ OId_
 
 \begin{proof}[Proof sketch (Existence of $\Id_{G}$)]
 Similar to the proof of existence in Registration~\ref{par:characteristic:register-bijective-for-endomorphism}, the proof that $\Id_{G}$
-exists amounts to reconsidering [[id]] as an endomorphism. Using theorem
-\verb#FUNCT_1:17#\MizThm{FUNCT\_1}{17} the identity
+exists amounts to reconsidering [[id]] as an endomorphism. Using Theorem~\cite[Th17]{funct1}\MizThm{FUNCT\_1}{17} the identity
 function satisfies $\forall x\in X, \id_{X}(x)=x$.
 \end{proof}
 
@@ -644,8 +644,8 @@ The usual strategy is to consider two arbitrary endomorphisms
 $\Id^{(1)}_{G}$ and $\Id^{(2)}_{G}$ satisfying the definition of
 [[Id_]], then prove $\Id^{(1)}_{G} = \Id^{(2)}_{G}$.
 
-If we wanted to be completely pedantic, we could cite Theorem
-[[FUNCT_2:12]]\MizThm{FUNCT\_2}{12} which states for any functions of sets
+If we wanted to be completely pedantic, we could cite Theorem~\mml[Th12]{funct2}%
+\MizThm{FUNCT\_2}{12} which states for any functions of sets
 $f_{1}$, $f_{2}\colon X\to Y$ we have $\forall x\in X, f_{1}(x)=f_{2}(x)$
 implies $f_{1}=f_{2}$.
 \end{proof}
@@ -748,8 +748,8 @@ This result isn't surprising, but proving surjectivity was surprisingly
   \begin{equation*}
     \tag{$A_{1}$} \varphi|_{H}(H)=H
   \end{equation*}
-  be a morphism $\varphi|_{H}\colon H\to H$ by theorem
-  [[GROUP_6:49]]\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
+  be a morphism $\varphi|_{H}\colon H\to H$ by Theorem~\mml[Th49]{group6}%
+\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
   Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
   and hypothesis $A_{1}$.
 
@@ -842,7 +842,7 @@ end;
 
 \begin{proof}[Proof step ($\varphi(x)\notin\varphi(H)$)]
 Since $x\in G$ and $x\notin H$, it follows that $\varphi(x)\notin\varphi(H)$
-thanks to Lemma~\ref{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}. 
+thanks to Lemma~\ref{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}.
 We also need an extra step since $\varphi$ is considered first as a
 function on the underlying set $U(H)$ of $H$, then we need to remember
 that this is the same as $\varphi$ applied to the subgroup $H$.
@@ -860,7 +860,7 @@ end;
 We need to make explicit that $\varphi(x)$ is not just ``some object'',
 but an element of the group $G$. This follows from the fact $\varphi(x)$
 is in the range of $\varphi$ by definition of the range of a function
-(i.e., \verb#FUNCT_1:def 3#\MizDef{FUNCT\_1}[03]{3}). Since $\varphi$ is
+(i.e., \mml[def3]{funct1}\MizDef{FUNCT\_1}[03]{3}). Since $\varphi$ is
 an automorphism, in particular surjective, it follows that the set
 underlying $\varphi(G)$ is the set underlying $G$, i.e., $U(G)$.
 Then $\varphi(x)\in G$.
@@ -880,7 +880,7 @@ end;
 We can prove there is some $y\in G$ for which $y\notin\varphi(H)$ by
 simply taking $y=\varphi(x)$. We've proven it's not in the image of
 $\varphi(H)$, so we're done after referencing our earlier steps in the
-proof. 
+proof.
 \end{proof}
 
 <<Proof: $\exists y\in G, y\notin\varphi(H)$>>=
@@ -892,8 +892,8 @@ proof
   take y;
   thus not y in phi .: H by B2;
 end;
-  
-@ 
+
+@
 
 \begin{theorem}
   Let $G$ be a group, $\varphi\in\Aut(G)$ an arbitrary automorphism.

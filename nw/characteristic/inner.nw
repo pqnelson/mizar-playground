@@ -79,7 +79,7 @@ Automorphism of $G$. I've found the trivial examples are often best for
 establishing the existence of such things, so we will prove [[Id G]] is
 an inner Automorphism. This uses the fact, if $e\in G$ is the identity
 element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
-(proven in Theorem~19 of [[GROUP_3]]).\MizThm{GROUP\_3}{19}
+(proven in Theorem~\mml[Th19]{group3}).\MizThm{GROUP\_3}{19}
 
 <<Theorem: [[Id_G]] is effectively inner>>=
 theorem Th12:
@@ -129,7 +129,7 @@ $\varphi\colon G\to G$ is an automorphism.
 \end{theorem}
 
 \begin{thm-remark}
-Mizar has [[AUTGROUP]], an article which defines [[Aut G]] the
+Mizar has~\cite{autgroup}, an article which defines [[Aut G]] the
 collection of functions on the underlying set $U(G)$ of a group $G$. We
 can prove that $f\in\aut(G)$ if and only if $f$ is [[Automorphism of G]].
 \end{thm-remark}
@@ -187,7 +187,7 @@ Automorphism of $G$.
 \begin{proof}[Proof outline]
   We have two steps to our proof.
 
-  Step 1: $\varphi\in\Inn\Aut(G)$ (in the sense of [[AUTGROUP:def 4]]\MizDef{AUTGROUP}{4})
+  Step 1: $\varphi\in\Inn\Aut(G)$ (in the sense of Definition~\mml[def4]{autgroup}\MizDef{AUTGROUP}{4})
   imply $\varphi$ is an inner automorphism of $G$.
 
   Step 2: $\varphi$ is an inner automorphism of $G$ implies $\varphi\in\Inn\Aut(G)$.
@@ -197,8 +197,8 @@ Automorphism of $G$.
 
 \begin{thm-remark}
 We can relate the notion of an [[inner Automorphism of G]] with elements
-of [[InnAut G]] from [[AUTGROUP]]. The only peculiarity is that
-[[AUTGROUP]] requires $G$ to be a \emph{strict} group.
+of [[InnAut G]] from \mml{autgroup}. The only peculiarity is that
+\mml{autgroup} requires $G$ to be a \emph{strict} group.
 \end{thm-remark}
 
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>=
@@ -293,7 +293,7 @@ $\varphi(H) = H^{a}$.
 Let $\varphi\in\End(G)$ be defined by hypothesis as $\varphi(x)=x^{a}$
 for some fixed $a\in G$. We have $\varphi|_{H}(h)= h^{a}$ for any $h\in H$.
 We show $y\in\varphi|_{H}(H)\iff y\in H^{a}$ in two sub-proofs. Then it
-follows that $\varphi(H)=H^{a}$ by theorem [[GROUP_2:def 6]]\MizDef{GROUP\_2}{6}.
+follows that $\varphi(H)=H^{a}$ by Definition~\mml[def6]{group2}\MizDef{GROUP\_2}{6}.
 \end{proof}
 
 <<Theorem: inner automorphism acting on subgroup is conjugate of argument>>=
@@ -328,7 +328,7 @@ end;
 
 \begin{proof}[{Proof step 1 ($\forall y\in G, y\in f(H)\implies y\in H^{a}$)}.]
 The forward direction amounts to unwrapping the definition of $f(h) = h^{a}$.
-Since $h\in H$, it follows $h^{a}\in H^{a}$ by theorem [[GROUP_3:58]]\MizThm{GROUP\_3}{58}.
+Since $h\in H$, it follows $h^{a}\in H^{a}$ by Theorem~\mml[Th58]{group3}\MizThm{GROUP\_3}{58}.
 \end{proof}
 
 <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>=
@@ -348,7 +348,7 @@ end;
 
 \begin{proof}[{Proof step 2 ($\forall y\in G, y \in f(H)\impliedby y\in H^{a}$)}.]
 The proof in the backwards direction begins with $y\in H^{a}$ must look
-like $y = g^{a}$ for some $g\in H$ by theorem [[GROUP_3:58]]\MizThm{GROUP\_3}{58},
+like $y = g^{a}$ for some $g\in H$ by Theorem~\mml[Th58]{group3}\MizThm{GROUP\_3}{58},
 and showing $y = f(g)$, which amounts to ``plug it in''.
 \end{proof}
 
@@ -383,10 +383,10 @@ $f(x)=x^{a}$ (for some fixed $a\in G$) will have a trivial kernel.
 \begin{proof}[Proof outline]
 If $\varphi\in\End(G)$ is defined as $\forall x\in G,\varphi(x)=x^{a}$
 for some fixed $a\in G$, then we will prove
-$\ker(\varphi)\subgroup\trivialSubgroup_{G}$. We know from theorem
-[[GROUP_2:65]]\MizThm{GROUP\_2}{65} that $\trivialSubgroup_{G}\subgroup\ker(\varphi)$.
+$\ker(\varphi)\subgroup\trivialSubgroup_{G}$. We know from Theorem~\mml[Th65]{group2}%
+\MizThm{GROUP\_2}{65} that $\trivialSubgroup_{G}\subgroup\ker(\varphi)$.
 Since one is subgroup of the other (and vice-versa), we know from
-theorem [[GROUP_2:55]]\MizThm{GROUP\_2}{55} they must be equal as subgroups.
+Theorem~\mml[Th55]{group2}\MizThm{GROUP\_2}{55} they must be equal as subgroups.
 \end{proof}
 
 <<Theorem: Kernel of conjugation as endomorphism>>=
@@ -411,7 +411,7 @@ end;
 
 \begin{proof}[Sub-proof ($\ker(f)\subset\trivialSubgroup$)]
 Let $x\in\ker(f)$ be arbitrary, then $f(x)=1_{G}$. But this means $x=1_{G}$
-(according to \verb#GROUP_3:18#\MizThm{GROUP\_3}{18}). Thus
+(according to Theorem~\mml[Th18]{group3}\MizThm{GROUP\_3}{18}). Thus
 $x\in\trivialSubgroup_{G}$ by definition of the trivial subgroup.
 \end{proof}
 
@@ -435,7 +435,8 @@ an automorphism of $G$.
 
 \begin{proof}[Proof outline]
 We establish $\varphi$ is injective because it has a trivial kernel
-(thanks to Theorem~\ref{thm:characteristic:inner:ker-of-inner-is-trivial} and theorem [[GROUP_6:56]]\MizThm{GROUP\_6}{56}).
+(thanks to Theorem~\ref{thm:characteristic:inner:ker-of-inner-is-trivial} and
+Theorem~\mml[Th56]{group6}\MizThm{GROUP\_6}{56}).
 We then prove $\psi\in\End(G)$ exists such that $\varphi\circ\psi=\id_{G}$.
 The existence of such a $\psi$ implies $\rng(\varphi)=G$, which implies
 $\varphi$ is surjective. We then have $\varphi$, being both injective
@@ -511,7 +512,7 @@ then f*fInv = id the carrier of G by FUNCT_1:2;
 
 \begin{proof}[Sub-proof ($\psi$ is an endomorphism)]
 We need to show $\psi(x_{1}x_{2})=\psi(x_{1})\psi(x_{2})$, which follows
-from the results of conjugation from the article [[GROUP_3]].
+from the results of conjugation from the article~\mml{group3}.
 \end{proof}
 
 <<Establish $f^{-1}$ is an Endomorphism>>=
@@ -654,9 +655,9 @@ end;
 Assume $H\normalSubgroup G$ is a normal subgroup. Let
 $\varphi\in\Inn(G)$ be an arbitrary inner automorphism. We have
 $\varphi(x)=x^{a}$ for some fixed $a\in G$ and for any $x\in G$. Then
-$\varphi(H) = H^{a}$ by Theorem~\ref{thm:characteristic:inner:image-of-inner-automorphism-on-subgroup} and $H^{a}=H$ by definition
-[[GROUP_3:def 13]]\MizDef{GROUP\_3}{13} and definition of equality for
-subgroups [[GROUP_2:def 6]]\MizDef{GROUP\_2}{6}. Thus the result.
+$\varphi(H) = H^{a}$ by Theorem~\ref{thm:characteristic:inner:image-of-inner-automorphism-on-subgroup} and $H^{a}=H$ by Definition~\mml[def13]{group3}%
+\MizDef{GROUP\_3}{13} and definition of equality for
+subgroups \mml[def6]{group2}\MizDef{GROUP\_2}{6}. Thus the result.
 \end{proof}
 
 <<Proof: normal implies fixed by inner automorphisms>>=

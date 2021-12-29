@@ -1157,7 +1157,7 @@ FUNCTION {capify}
 { duplicate$ empty$
     { pop$ "" }
     { "\mmlArticleStyle{"
-      swap$ "_" "\_" find.replace
+      swap$ "_" "\char`_" find.replace
       * "}" * }
   if$
 }

@@ -172,7 +172,7 @@ end;
 
 \begin{registration}
 We begin by registering the identity function as being surjective and
-bijective. This should have been done in [[FUNCT_2]], but hey, what can
+bijective. This should have been done in \mml{funct2}, but hey, what can
 you do?
 \end{registration}
 
@@ -268,7 +268,7 @@ for any group morphism $f\colon G_{1}\to G_{2}$, and for arbitrary $h\in G_{1}$,
 we have $h\in H\implies f|_{H}(h) = f(h)$. The reasoning is that we can
 always look at the set-theoretic function $U(f)$ underlying $f$, then
 piggie-back off earlier results establishing the desired claim
-(Theorem~49 of [[FUNCT_1]]\MizThm{FUNCT\_1}{49}, to be precise).
+(Theorem~\mml[Th49]{funct1}\MizThm{FUNCT\_1}{49}, to be precise).
 \end{lem-remark}
 
 
@@ -324,7 +324,7 @@ Then $H\normalSubgroup G$ is a normal subgroup.
 \end{lemma}
 
 \begin{lem-remark}
-The current theorems in [[GROUP_3]] require $H$ to be a \emph{strict}
+The current theorems in~\mml{group3} require $H$ to be a \emph{strict}
 subgroup, but this strictness condition is not necessary.
 \end{lem-remark}
 
@@ -410,7 +410,7 @@ $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
 \end{lemma}
 
 \begin{lem-remark}
-Something like this was proven in [[FUNCT_1:50]]\MizThm{FUNCT\_1}{50},
+Something like this was proven in Theorem~\mml[Th50]{funct1}\MizThm{FUNCT\_1}{50},
 but I couldn't apply that theorem (not even to functions of sets).
 \end{lem-remark}
 
@@ -528,7 +528,7 @@ $(f^{-1})^{-1}=f$, together gives the result.
 \end{proof}
 
 \begin{lem-remark}
-Mizar has the opposite result in its library, namely, \verb#FUNCT_2:26#\MizThm{FUNCT\_2}{26}
+Mizar has the opposite result in its library, namely, Theorem~\mml[Th26]{funct2}\MizThm{FUNCT\_2}{26}
 states that $f^{-1}(f(x))=x$ provided $f$ is injective.
 \end{lem-remark}
 
@@ -633,10 +633,10 @@ $f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
 \end{lemma}
 
 \begin{proof}[Proof sketch]
-This follows from theorem\MizThm{GROUP\_6}{63} \verb#GROUP_6:63# which
+This follows from Theorem~\mml[Th63]{group6}\MizThm{GROUP\_6}{63} which
 asserts $f$ is bijective and $g=f^{-1}$ together implies $g$ is
 bijective. We just need to prove the existence of $g=f^{-1}$, which is
-handled by theorem\MizThm{FUNCT\_2}{25} \verb#FUNCT_2:25#.
+handled by Theorem~\mml[Th25]{funct2}.\MizThm{FUNCT\_2}{25}
 \end{proof}
 
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
@@ -661,7 +661,7 @@ end;
 \subsection{Nontrivial Groups}
 We will be using nontrivial groups later. Recall, a group $G$ is
 nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
-\emph{overloaded}) in \verb#GROUP_6:def 2#\MizDef{GROUP\_6}[02]{2}:
+\emph{overloaded}) in \mml[def2]{group6}\MizDef{GROUP\_6}[02]{2}:
 
 \begin{mizar}
 definition
@@ -678,7 +678,7 @@ We register the negated version ``\texttt{non trivial}'' for groups and
 subgroups.
 
 
-\begin{proposition}[{\texttt{GROUP\_1:3}\MizThm{GROUP\_1}[03]{3}}]
+\begin{proposition}[{\mml[Th3]{group1}\MizThm{GROUP\_1}[03]{3}}]
 The real numbers equipped with addition form a group.
 \end{proposition}
 
@@ -740,7 +740,7 @@ $H\neq G$. We typically denote $H\properSubgroup G$ to reflect it is proper.
 \begin{def-remark}
 The implementation for Mizar is a bit quirky. I looked at how maximal
 subgroups were defined, because maximal subgroups are necessarily
-proper. Maximal subgroups were defined (\texttt{GROUP\_4:def 6}\MizDef{GROUP\_4}[06]{6})
+proper. Maximal subgroups were defined (\mml[def 6]{group4}\MizDef{GROUP\_4}[06]{6})
 using the condition \lstinline|the multMagma of H <> the multMagma of G|.
 \end{def-remark}
 
@@ -857,8 +857,8 @@ proof
   hence (the carrier of G) \ (the carrier of H) is non empty set
   by XBOOLE_0:def 5;
 end;
-  
-@ 
+
+@
 
 \begin{proof}[Sub-proof outline]
 Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
@@ -938,7 +938,7 @@ registration
   coherence by Lm98;
 end;
 
-@ 
+@
 
 \begin{lemma}
 If $H\properSubgroup G$ is a proper subgroup, then there exists some
@@ -1055,7 +1055,7 @@ If $G=\trivialSubgroup$ is trivial, then it has no proper subgroups.
 \begin{lem-remark}
 The argument that two sets $X$ and $Y$ are equal iff they are subsets of
 each other $X\subset Y\land Y\subset X$ is precisely what
-\verb#XBOOLE_0:def 10#\MizDef{XBOOLE\_0}{10} offers.
+\mml[def10]{xboole0}\MizDef{XBOOLE\_0}{10} offers.
 \end{lem-remark}
 
 <<Lemma: Trivial groups have no proper subgroups>>=
@@ -1104,4 +1104,4 @@ proof
   hence not (ex H being Subgroup of G st H is maximal) by Lm98;
 end;
 
-@ 
+@

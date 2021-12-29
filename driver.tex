@@ -5,6 +5,7 @@
 \usepackage{multibib}
 \usepackage{tutmac}
 \newcites{mml}{MML References}
+\def\mml{\citemml}
 % hack to make the \citemml style different
 %\def\makesnakeletter{\catcode`\_11\relax}
 %\def\makesnakesubscript{\catcode`\_8\relax}
@@ -20,7 +21,7 @@
 \renewcommand\citemml[2][\@empty]{\bgroup
   \def\citeform##1{\mmlArticleStyle{##1}}% hack #1 use custom style
   \def\@cite##1##2{{% hack #2: treat \citemml[def 3]{foo} as foo:def 3
-      \@citestyle[\citeform{##1}\if@tempswa\texttt{##2}\fi]}}%
+      \@citestyle[\citeform{##1}\if@tempswa\texttt{:##2}\fi]}}%
   \ifx#1\@empty\oldcitemml{#2}\else\oldcitemml[#1]{#2}\fi%
   \egroup}
 \makeatother

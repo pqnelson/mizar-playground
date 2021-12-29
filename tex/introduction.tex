@@ -80,8 +80,8 @@ notation, see: \url{http://markun.cs.shinshu-u.ac.jp/kiso/projects/proofchecker/
 \item\index{\texttt{f \mid A}@{\texttt{f"|"A}}!Mizar for $f\vert_{A}$} If $f\colon X\to Y$ is a function of sets, and $A\subset X$, then
   we write the restriction of $f$ to $A$ as $f|_{A}\colon A\to X$
   defined by $\forall a\in A, f(a)=f|_{A}(a)$. In Mizar, this
-  restriction is denoted ``\verb#f|A#'' and function application with it
-  is ``\verb#(f|A).x#'' for $f|_{A}(x)$.
+  restriction is denoted ``\lstinline{f|A}'' and function application with it
+  is ``\lstinline{(f|A).x}'' for $f|_{A}(x)$.
 \item\index{\texttt{h in H}!Mizar for $h\in H$} Set membership $x\in X$ is
   denoted in Mizar by the formula ``\verb#x in X#''.
 \end{enumerate}
@@ -553,7 +553,7 @@ end;
 \begin{idiom}\label{rmk:introduction:idiom-it-in-attributes}\index{Idiom!IT in Attributes}\index{IT@\texttt{IT}}
 Whenever defining an attribute in Mizar, we have an ambient
 ``\verb#IT#'' object for which the attribute will be defined upon. For
-example, these attributes appearing in \verb#GROUP_1:def 1# are defined
+example, these attributes appearing in \mml[def 1]{group1} are defined
 on a \verb#multMagma#.
 \end{idiom}
 
@@ -651,41 +651,39 @@ choice of terminology due entirely to the ironies of history.}
 When we have a group $\struct{G,\cdot}$, we also have the ability
 to invert any given element $g\in G$. Mizar denotes this by
 ``\verb#g"#'', which is what the ``Rosette stone'' of notation suggests
-(since mathematicians would write $g^{-1}$). This is handled in
-``\verb#GROUP_1:def 5#''.\MizDef{GROUP\_1}[05]{5}
-A formal ``\verb#inverse_op(G)#''\mizindex{Inverse Op(G)@$\mathtt{inverse\_op(G)}$} is given in
-``\verb#GROUP_1:def 6#''.\MizDef{GROUP\_1}[06]{6}
+(since mathematicians would write $g^{-1}$). This is handled in~\mml[def 5]{group1}.\MizDef{GROUP\_1}[05]{5}
+A formal ``\verb#inverse_op(G)#''\mizindex{Inverse Op(G)@$\mathtt{inverse\_op(G)}$} is given in~\mml[def 6]{group1}.\MizDef{GROUP\_1}[06]{6}
 
 \begin{notation}[Inverse operator for subsets of $G$]
 We generalize this notation in group theory to write, if $A\subset G$ is
 some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
-notation in \verb#GROUP_2:def 1#.\MizDef{GROUP\_2}[01]{1}
+notation in \mml[def 1]{group2}.\MizDef{GROUP\_2}[01]{1}
 \end{notation}
 
 \subsection{Power operator}
 For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
 understanding this stands for $g^{0}=1_{G}$ and $g^{n+1}=g^{n}\cdot g$.
-This is defined in ``\verb#GROUP_1:def 7#''\MizDef{GROUP\_1}[07]{7}. But we generalize this in
+This is defined in~\mml[def 7]{group1}\MizDef{GROUP\_1}[07]{7}. But we generalize this in
 mathematics to let $n\in\ZZ$, allowing the case when $n<0$ to be defined
 by $g^{n} = (g^{|n|})^{-1}$.
 
-Mizar does this in
-``\verb#GROUP_1:def 8#'',\MizDef{GROUP\_1}[08]{8} following the conventions
-taken by earlier articles in Mizar that $x^{y}$ is denoted by
-``\verb#x |^ y#''.\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
-For the sake of consistency, Mizar explicitly states in
-``\verb#GROUP_1:def 8#'' when $g\in G$ and $n\esti \NN_{0}$, it follows
+Mizar does this in~\mml[def 8]{group1},\MizDef{GROUP\_1}[08]{8}
+following the conventions taken by earlier articles in Mizar that
+$x^{y}$ is denoted by ``\verb#x |^ y#''.\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
+For the sake of consistency, Mizar explicitly states in~\mml[def 8]{group1}
+when $g\in G$ and $n\esti \NN_{0}$, it follows
 that ``\verb#g |^ n#'' coincides with what we expect (i.e., $g^{n}$).
 
 \subsection{Order of Group Element (and Group Order)}
 If $h\in G$, then we say $h$ is of order 0 if the only $n\in\NN_{0}$
-satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute in
-``\verb#GROUP_1:def 10#''\MizDef{GROUP\_1}{10} as ``\verb#being_of_order_0#''\index{Being of Order 0@$\mathtt{being\_of\_order\_0}$}\mizindex{Being of Order 0@$\mathtt{being\_of\_order\_0}$}.
+satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute
+in~\mml[def 10]{group1}\MizDef{GROUP\_1}{10} as ``\verb#being_of_order_0#''\index{Being of Order 0@$\mathtt{being\_of\_order\_0}$}\mizindex{Being of Order 0@$\mathtt{being\_of\_order\_0}$}.
 This segues into defining the notion of the order for an element $g\in G$
 as the smallest natural number $|g|=n\in\NN_{0}$ for which $g^{n}=1_{G}$
 (provided $g$ is not of order zero, in which case we specially define
 its order to be $|g|=0$). Mizar defines this as
-``\verb#ord g#''\index{Order!\texttt{ord g}}\mizindex{ord g@$\mathtt{ord~g}$} in ``\verb#GROUP_1:def 11#''.\MizDef{GROUP\_1}{11}
+``\verb#ord g#''\index{Order!\texttt{ord g}}\mizindex{ord g@$\mathtt{ord~g}$}
+in~\mml[def 11]{group1}.\MizDef{GROUP\_1}{11}
 
 The order of the group, Mizar overloads the cardinality operator (again,
 matching mathematical practice). Specifically,
@@ -695,7 +693,7 @@ of the underlying set.
 
 \subsection{Abelian Groups}
 Sadly, Mizar departs from mathematical practice, and defines an
-attribute in ``\verb#GROUP_1:def 12#''\MizDef{GROUP\_1}{12} for a \verb#multMagma# to be
+attribute in~\mml[def 12]{group1}\MizDef{GROUP\_1}{12} for a \verb#multMagma# to be
 ``\verb#commutative#''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}\mizindex{Commutative@\texttt{commutative}}
 This demands the expected property
 \begin{equation*}
@@ -704,12 +702,12 @@ This demands the expected property
 
 \begin{example}
   The real numbers equipped with addition are proven to be a group in
-  Theorem~\verb#GROUP_1:3#.
+  Theorem~\mml[Th3]{group1}.
 \end{example}
 
 \begin{example}
 The integers, as an additive group, are defined as \lstinline|INT.Group|\mizindex{Integers@\texttt{INT.Group}}
-in Definition \verb#GR_CY_1:def 1#.
+in Definition~\mml[def 1]{gr_cy_1}.
 \end{example}
 
 \section{Subgroups}
@@ -718,22 +716,22 @@ in Definition \verb#GR_CY_1:def 1#.
 We have $A,B\subset G$ be subsets of the carrier set underlying a
 non-empty magma $G$. Then we can define ``\verb#A*B#'' as the set of
 elements of the form $ab$ for $a\in A$ and $b\in B$. This was done in
-\verb#GROUP_2:def 2#\MizDef{GROUP\_2}[02]{2}. Similarly (in definitions
+\mml[def 2]{group2}\MizDef{GROUP\_2}[02]{2}. Similarly (in definitions
 3 and 4\MizDef{GROUP\_2}[03]{3}\MizDef{GROUP\_2}[04]{4}) we can define
 for any subset $A\subset G$ and any $g\in G$ the product $Ag$ and $gA$
 in the obvious way.
 
 For any subgroup $H\subgroup G$ and subset $A\subset G$,
-\verb#GROUP_2:def 11#\MizDef{GROUP\_2}{11} defines \verb$A*H$ and
+\mml[def 11]{group2}\MizDef{GROUP\_2}{11} defines \verb$A*H$ and
 \verb$H*A$ \emph{as subsets of the carrier of $G$} using the set
 underlying $H$, then using the earlier definitions (from
-\verb#GROUP_2:def 2#).
+\mml[def 2]{group2}).
 
 Similarly, for any subgroup $H\subgroup G$ and $g\in G$, we have
 \verb#g*H# and \verb#H*g# be defined using the underlying set of $H$.
 
 \subsection{Subgroup}
-For a group $G$, \verb#GROUP_2:def 5#\MizDef{GROUP\_2}[05]{5} defines a
+For a group $G$, \mml[def 5]{group2}\MizDef{GROUP\_2}[05]{5} defines a
 ``\verb#Subgroup of G#'' to be a Group-like non-empty \verb#multMagma#
 such that its carrier is a subset of the underlying set of $G$, and the
 Subgroup's multiplication operator is the multiplication from $G$
@@ -744,7 +742,7 @@ We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
 \end{notation}
 
 \subsection{Equality of Subgroups}\label{par:introduction:subgroup-equality}
-For reasons which are not well documented, \verb#GROUP_2:def 6#
+For reasons which are not well documented, \mml[def 6]{group2}
 redefines equality for \emph{strict} Subgroups. Non-strict subgroups
 cannot be equal (not as subgroups).
 
@@ -779,32 +777,33 @@ as strict Group;
 \subsection{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
 For any group $G$, $\trivialSubgroup_{G}$ is the trivial subgroup
 consisting of the identity element \verb#1_G# and nothing else. This is
-defined in \verb#GROUP_2:def 7#\MizDef{GROUP\_2}[07]{7} and denoted \verb#(1).G#\mizindex{1.G@$\mathtt{(1).G}$}. The other
+defined in \mml[def 7]{group2}\MizDef{GROUP\_2}[07]{7} and denoted \verb#(1).G#\mizindex{1.G@$\mathtt{(1).G}$}. The other
 trivial subgroup is denoted by mathematicians as $G$ itself, but Mizar
 distinguishes this trivial improper subgroup as $\Omega_{G}$\index{$\Omega_{G}$} in
-\verb#GROUP_2:def 8#\MizDef{GROUP\_2}[08]{8}.\mizindex{Omega.G@$\mathtt{(Omega).G}$}
+\mml[def 8]{group2}\MizDef{GROUP\_2}[08]{8}.\mizindex{Omega.G@$\mathtt{(Omega).G}$}
 
 \subsection{Intersection of Subgroups}
 If $H_{1}\subgroup G$ and $H_{2}\subgroup G$, then $H_{1}\cap H_{2}$ is
 a subgroup of $G$, too. Mizar denotes this by
 \texttt{H1 /\char`\\{} H2}\index{\texttt{H1 /\char`\\{} H2}}. Its
-defined in \verb#GROUP_2:def 10#\MizDef{GROUP\_2}{10} as the group whose
+defined in \mml[def 10]{group2}\MizDef{GROUP\_2}{10} as the group whose
 underlying set is the intersection of the sets underlying $H_{1}$ and $H_{2}$.
 
 \subsection{Cosets}
 For any subgroup $H\subgroup G$, we can consider the left (or right)
 cosets of $H$ as the family of subsets of $G$ of the form
 $\{gH|g\in G\}$ (resp., $\{Hg|g\in G\}$). This is defined in
-\verb#GROUP_2:def 15,16#.\MizDef{GROUP\_2}{15}\MizDef{GROUP\_2}{16}\mizindex{Right Cosets@$\mathtt{Right\_Cosets}$}\mizindex{Left Cosets@$\mathtt{Left\_Cosets}$}
+\mml[def 15,16]{group2}.\MizDef{GROUP\_2}{15}\MizDef{GROUP\_2}{16}\mizindex{Right Cosets@$\mathtt{Right\_Cosets}$}\mizindex{Left Cosets@$\mathtt{Left\_Cosets}$}
 
 This naturally leads to a notion of the index of a subgroup $H\subgroup G$,
-which Mizar defines as \verb#Index H#\mizindex{Index@\texttt{Index}} in \verb#GROUP_2:def 17#\MizDef{GROUP\_2}{17} as the
+which Mizar defines as \verb#Index H#\mizindex{Index@\texttt{Index}} in
+\mml[def 17]{group2}\MizDef{GROUP\_2}{17} as the
 cardinality of the collection of left cosets of $H$ in $G$. This is
 proven to be the same as the same definition using right cosets in
-\verb#GROUP_2:Th 145#.\MizThm{GROUP\_2}{145}
+\mml[Th 145]{group2}.\MizThm{GROUP\_2}{145}
 
 More generally, the collection of all possible subgroups of $G$ is given
-in \verb#GROUP_3:def 1#\MizDef{GROUP\_3}[01]{1} as
+in \mml[def 1]{group3}\MizDef{GROUP\_3}[01]{1} as
 ``\verb#Subgroups G#''\mizindex{Subgroups@\texttt{Subgroups}}.
 
 \subsection{Conjugation}
@@ -821,7 +820,7 @@ is given by $H^{\{a\}}$.
 We have a predicate to assert two elements $a,b\in G$ are
 conjugate. Namely, ``\verb#a,b are_conjugated#''\mizindex{Are Conjugated@$\mathtt{are\_conjugated}$} if there exists some
 $g\in G$ such that $a = b^{g}$. This is done in
-\verb#GROUP_2:def 7#\MizDef{GROUP\_2}[07]{7}. We generalize this
+\mml[def7]{group2}\MizDef{GROUP\_2}[07]{7}. We generalize this
 definition to arbitrary subsets $A$, $B\subset G$ \verb#are_conjugated# if
 there is a $g\in G$ such that $A = B^{g}$. Similarly, two subgroups
 $H_{1}$, $H_{2}\subgroup G$ \verb#are_conjugated# if there is a $g\in G$
@@ -843,15 +842,15 @@ such that $A = B^{g}$);
 Having thus described conjugation of elements, subsets, and subgroups by
 elements, subsets, and subgroups, we have enough infrastructure to
 define a notion of ``normal subgroup''. Mizar's
-\verb#GROUP_2:def 13#\MizDef{GROUP\_2}{13} defines an attribute for a subgroup
+\mml[def13]{group2}\MizDef{GROUP\_2}{13} defines an attribute for a subgroup
 $N\subgroup G$ is \verb#normal#\mizindex{Normal@\texttt{normal}} if for
 every $a\in G$, we have $N^{a}$ and $N$ \verb#are_conjugated# (more
 literally, $N^{a} = \mathtt{the~multMagma~of~}N$).
 
 For any subset $A\subset G$, the \verb#Normalizer#\mizindex{Normalizer@\texttt{Normalizer}} of $A$ is defined in
-\verb#GROUP_2:def 14#\MizDef{GROUP\_2}{14} as the subgroup of $G$ whose
+\mml[def14]{group2}\MizDef{GROUP\_2}{14} as the subgroup of $G$ whose
 underlying set is $\{h \mid A^{h} = A\}$. We generalize this notion in
-\verb#GROUP_2:def 15# to subgroups $H\subgroup G$ by just taking the
+\mml[def15]{group2}\MizDef{GROUP\_2}{15} to subgroups $H\subgroup G$ by just taking the
 normalizer of the underlying set of $H$.
 
 \subsection{Group generated by a subset}
@@ -859,27 +858,26 @@ For $A\subset G$, we define\index{$\langle A\rangle$}
 \begin{equation}
 \langle A\rangle = \bigcap_{A\subset H\subgroup G} H.
 \end{equation}
-Mizar defines this in \verb#GROUP_3:def 4#\MizDef{GROUP\_3}[04]{4} as
+Mizar defines this in \mml[def4]{group3}\MizDef{GROUP\_3}[04]{4} as
 ``\verb#gr A#''\mizindex{Gr A@\texttt{gr A}}. In fact, this defining
-property of $\langle A\rangle$ is proven in
-\verb#GROUP_3:Th34#\MizThm{GROUP\_3}{34}.
+property of $\langle A\rangle$ is proven in Theorem~\mml[Th34]{group3}\MizThm{GROUP\_3}{34}.
 
 \subsection{Element is Generating}
 We call an element $a\in G$ \emph{generating} if there is an $A\subset G$
 such that $\langle A\rangle = G$ (i.e., \texttt{gr A = G}) and
 $\langle A\setminus\{a\}\rangle\neq G$ (i.e., \texttt{gr(A \ \{a\}) = G}).
-Mizar provides this in \verb#GROUP_3:def 5#\MizDef{GROUP\_3}[05]{5} as
+Mizar provides this in \mml[def5]{group3}\MizDef{GROUP\_3}[05]{5} as
 an attribute \verb#generating#\mizindex{Generating@\texttt{generating}}.
 
 \subsection{Frattini Subgroup}\index{Frattini Subgroup}\index{$\Phi(G)$}
 We define a maximal subgroup as one which is proper and not contained in
 any other proper subgroup (Mizar defines this as an attribute for a
-subgroup $H\subgroup G$ in \verb#GROUP_3:def 6#\MizDef{GROUP\_3}[06]{6}\mizindex{Mazimal@\texttt{maximal}}).
+subgroup $H\subgroup G$ in \mml[def6]{group3}\MizDef{GROUP\_3}[06]{6}\mizindex{Mazimal@\texttt{maximal}}).
 This is necessary to define the Frattini subgroup $\Phi(G)$ as the
 intersection of all proper maximal subgroups of $G$ when $G$ is finite
 and nontrivial (when $G=\trivialSubgroup$ or $G$ is infinite, then
 $\Phi(G)=G$). Mizar uses this very definition in
-\verb#GROUP_3:def 7#\MizDef{GROUP\_3}[07]{7} to define \texttt{Phi(G)}\mizindex{Phi(G)@\texttt{Phi(G)}}
+\mml[def7]{group3}\MizDef{GROUP\_3}[07]{7} to define \texttt{Phi(G)}\mizindex{Phi(G)@\texttt{Phi(G)}}
 as a functor.
 
 Coincidentally, this is a characteristic subgroup of $G$.
