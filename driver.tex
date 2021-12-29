@@ -5,6 +5,10 @@
 \usepackage{multibib}
 \usepackage{tutmac}
 \newcites{mml}{MML References}
+% hack to make the \citemml style different
+\newcommand\citemmlstyle[1]{\texttt{#1}}
+\let\oldcitemml\citemml
+\renewcommand\citemml[1]{\begingroup\def\citeform##1{\citemmlstyle{##1}}\oldcitemml{#1}\endgroup}
 % Note to self: this tex document follows the hack discussed by Cameron Smith
 % http://www.literateprogramming.com/best/nowebfi.html
 %

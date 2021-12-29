@@ -1121,6 +1121,13 @@ FUNCTION {editor.key.organization.label}
   if$
 }
 
+FUNCTION {capify}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "{\scshape " swap$ * "}" * }
+  if$
+}
+
 FUNCTION {calc.label}
 { key empty$
   { type$ "book" =
@@ -1145,7 +1152,7 @@ FUNCTION {calc.label}
     *
     sortify 'sort.label :=
   }
-  { key 'label :=
+  { key capify 'label :=
     key sortify 'sort.label :=
   }
   if$
@@ -1334,6 +1341,7 @@ FUNCTION {reverse.pass}
   label width$ longest.label.width >
     { label 'longest.label :=
       label width$ 'longest.label.width :=
+      "" 'longest.label :=
     }
     'skip$
   if$
