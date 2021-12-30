@@ -1,0 +1,262 @@
+\section{Natural Deduction in Mizar}
+
+Arguably, Mizar consists of three domain specific languages: one for
+proofs, another for definitions, and a third for stating formulas. We
+have summarized Mizar's syntax for formulas. Let us now consider how
+Mizar handles proofs. We basically follow Grabowski and
+friends~\cite{grabowski2010mizar} in presenting ``proof skeletons'' to
+summarize the semantics of the various proof steps, and
+Wiedijk~\cite{wiedijk2000mv} in relating the Mizar proof steps to
+natural deduction rules of inference.
+
+Remember, in natural deduction for logic, the basic judgements we're
+working with are sequents of the form $\Gamma\vdash\Phi$ where $\Gamma$
+is a (possibly empty) list of formulas, and $\Phi$ is proven from
+them. We have inference rules, which look like fractions, describing how
+to transform such judgements. Inference rules should be read ``from
+bottom to top''.
+
+\subsection{Assume: $\Longrightarrow$-introduction}\index{Assume@\texttt{assume}}
+When we want to prove a formula of the form $\Psi\implies\Phi$, we begin
+with stipulating $\Psi$ holds. That is to say, we ``\verb#assume# $\Psi$''.
+In Mizar:
+
+\begin{mizar}
+Psi implies Phi
+proof
+  :: preliminatry steps
+  assume Psi;
+  :: proof of Phi
+end;
+\end{mizar}
+
+This corresponds to the natural deduction rule of inference for
+$\Longrightarrow$-introduction:
+\begin{equation}
+  \vcenter{\infer[\mathtt{assume}~\Psi]{\Gamma\vdash\Psi\implies\Phi}{\Gamma,\Psi\vdash\Phi}}.
+\end{equation}
+Remember, we read this from bottom to top, so if we want to prove
+the claim $\Psi\implies\Phi$ (having established the results $\Gamma$),
+then the statement ``\verb#assume# $\Psi$'' transforms our proof
+obligation to $\Gamma,\Psi\vdash\Phi$ (i.e., proving $\Phi$ from the
+list $\Gamma$ with $\Psi$ appended to $\Gamma$).
+
+\subsection{Assume: proof by contradiction}
+Sometimes we want to prove a claim by showing its negation leads to
+calamity. This is done routinely in mathematics, since $\neg\Phi$ is
+logically equivalent to $\Phi\implies\contradiction$, so double negation
+would be equivalent to $\Phi$, right? Right! We have the tautology
+$\Phi\iff(\neg\Phi\implies\contradiction)$.
+
+\begin{mizar}
+not Psi implies contradiction
+proof
+  :: preliminatry steps
+  assume not Psi;
+  :: proof leading to contradiction
+end;
+\end{mizar}
+
+\subsection{Assume: proving disjunction}\index{Idiom!Proving $\Phi\lor\Psi$}
+The idiomatic way to prove the claim $\Phi\lor\Psi$ in Mizar is to
+assume the negation of one of the disjuncts (usually the first, i.e.,
+to ``\verb#assume# $\neg\Phi$'') and then prove $\Psi$ holds.
+\begin{mizar}
+Phi or Psi
+proof
+  assume not Phi;
+  :: proof of Psi
+  thus Psi;
+end;
+\end{mizar}
+
+\begin{ddanger}
+  The reader may wonder if they may instead start the proof with
+  ``\verb#assume not Psi#'', since that's \emph{logically equivalent}, right?
+  The Mizar prover translates formulas and proof steps into a normal
+  form (called ``semantic correlates''\index{Semantic Correlate}).
+  Unfortunately, starting with ``\verb#assume not Psi#'' translates into
+  a \emph{different} semantic correlate. One would have to change the
+  claim to ``\verb#Psi or Phi#''.
+\end{ddanger}
+
+\subsection{Thus: $\land$-introduction}\index{Thus@\texttt{thus}}
+Whenever we want to prove a claim $\Phi$, we conclude the proof with
+``\texttt{thus} $\Phi$''. In Mizar, this looks like (with the
+preliminary steps omitted with a comment ``\verb#:: proof of ...#''):
+
+\begin{mizar}
+Phi
+proof
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}
+
+For proving \emph{multiple} claims (i.e., a conjunction), the proof
+looks like:
+
+\begin{mizar}
+Phi & Psi
+proof
+  :: proof of Phi
+  thus Phi by ...;
+  :: proof of Psi
+  thus Psi by...;
+end;
+\end{mizar}
+There is some justification for stating ``\verb#thus# $\Phi$'' or
+``\verb#thus# $\Psi$'', which are the ``\verb#by ...#'' suffix to the
+statements (referring to labels~\S\ref{par:introduction:referring-to-labels}).
+
+This corresponds to the $\land$-introduction rule in natural deduction:
+\begin{equation}
+  \vcenter{\infer[\mathtt{thus}~\Phi]{\Gamma\vdash\Phi\land\Psi}{
+    \Gamma\vdash\Phi &\qquad \Gamma\vdash\Psi}}
+\end{equation}
+where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
+and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
+
+\begin{idiom}\index{Thesis@\texttt{thesis}}\index{Idiom!\texttt{thus thesis}}
+Some Mizar code adheres to the idiom of concluding proofs, all proofs,
+with the statement ``\verb#thus thesis#''. Here ``\verb#thesis#'' is the
+special formula representing what remains to be proven.
+\end{idiom}
+
+\begin{exercise}[Proving ``if and only if'' claims]
+Frequently we have logical equivalences $\Phi\iff\Psi$, how would we
+prove it in Mizar? Well, recall, by definition this is
+$(\Phi\implies\Psi)\land(\Phi\impliedby\Psi)$.
+\end{exercise}
+
+\subsection{Let: $\forall$-introduction}\index{Let@\texttt{let}}
+The most common proof step which starts nearly every proof, introducing
+variables.
+
+\begin{mizar}
+for a being T holds Phi
+proof
+  let a be T;
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}%\medskip
+This corresponds to the inference rule
+\begin{equation}
+\vcenter{\infer[\mathtt{let}~y]{\Gamma,y\vdash P(y)}{\Gamma\vdash\forall x,P(x)}}
+\end{equation}
+
+\subsection{Consider: $\exists$-elimination}\index{Consider@\texttt{consider}}
+When we want to apply the fact $\exists x,\Psi(x)$, we introduce a
+``fresh'' variable which satisfies the given condition. In Mizar, this
+proof skeleton looks like
+\begin{mizar}
+Phi
+proof
+  :: preliminary steps
+  consider x such that Psi by ...;
+  :: proof of Phi involving x
+  thus Phi by ...;
+end;
+\end{mizar}%\medskip
+This corresponds to the inference rule:
+\begin{equation}
+\vcenter{\infer[\mathtt{consider}~x~\mathtt{such~that}~\Psi(x)]{\Gamma\vdash\Phi}{%
+  \Gamma\vdash\exists x,\Psi(x)
+  &\qquad\Gamma,x,\Psi(x)\vdash\Phi}}
+\end{equation}{
+The justification for this step refers to the derivation of the upper
+left subgoal.
+
+\subsection{Take: $\exists$-introduction}\index{Take@\texttt{take}}
+If we want to prove the claim ``$\exists x,\Phi(x)$'', then we need to
+``\verb#take# $t$'' (where $t$ is a term). We can take an explicit term,
+like ``\verb#take# $t = f(x)$''. The proof skeleton looks like:
+\begin{mizar}
+ex t being T st Phi
+proof
+  :: preliminary steps
+  take t;
+  :: proof of Phi
+  thus Phi;
+end;
+\end{mizar}%\medskip
+This corresponds to the natural deduction rule of inference:
+\begin{equation}
+  \vcenter{\infer[\mathtt{take}~t]{\Gamma\vdash\exists x,\Phi(x)}{\Gamma\vdash P(t)}}.
+\end{equation}
+
+\subsection{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
+When we want to prove $\Psi_{1}\lor\dots\lor\Psi_{n}\implies \Phi$,
+we simply prove $\Psi_{1}\implies\Phi$, \dots, $\Psi_{n}\implies\Phi$.
+But instead of using the ``\verb#assume#'' step for each of these
+proofs, we use the special ``\verb#suppose#'' step to introduce a
+subproof.
+\begin{mizar}
+Phi
+proof
+  :: preliminary steps
+  per cases by ...;
+  suppose Psi_1:
+    :: proof of Phi from Psi_1
+    thus Phi by ...;
+  :: suppose Psi_2, ..., Psi_(n-1)
+  suppose Psi_n:
+    :: proof of Phi from Psi_n
+    thus Phi by ...;
+end;
+\end{mizar}%\medskip
+This corresponds to the natural deduction rule
+\begin{equation}
+  \vcenter{\infer[\mathtt{per~cases}]{\Gamma\vdash \Phi}{%
+    \Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}
+    & \qquad\Gamma,\Psi_{1}\vdash\Phi
+    & \dots
+    & \Gamma,\Psi_{n}\vdash\Phi}}
+\end{equation}
+Here the justification cited in the ``\verb#per cases by...#'' is the
+label for the upper-left inference, that $\Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}$.
+Each ``\verb#suppose# $\Psi_{j}$; \dots; \verb#thus# $\Phi$'' block
+corresponds to the derivation $\Gamma,\Psi_{j}\vdash\Phi$.
+
+\subsection{Justification, nested subproofs}\index{By@\texttt{by}}\index{Proof!Nested}
+I have been trying to include ``\verb#by ...#'' explicitly in proof
+steps to reflect which steps require justification. This can be done in
+one of two ways:
+\begin{enumerate}
+\item cite theorems, definitions, and/or labeled steps which occur in
+  the proof (as discussed in~\S\ref{par:introduction:referring-to-labels}); or
+\item have a subproof, i.e., instead of writing ``\verb#by ...#'', we
+  could have a proof on the next line.
+\end{enumerate}
+There is also syntactic sugar, if one wishes to cite \emph{the previous step},
+simply prepend the step with ``\verb#then ...#''. So instead of
+\begin{mizar}
+proof
+  :: A1,A2 omitted but exist
+  assume A3: Psi;
+  consider x such that Phi by A1,A2,A3;
+  :: ...
+end;
+\end{mizar}
+We could equivalently write:
+\begin{mizar}
+proof
+  :: ....
+  assume Psi;
+  then consider x such that Phi by A2,A3;
+  :: ...
+end;
+\end{mizar}
+The two are equivalent.
+
+\begin{ddanger}
+  There are two caveats to this rule of prepending ``\verb#then#'' to
+  statements: (1) the step ``\verb#then thus# $\Phi$'' looks awkward, so
+  Mizar has this be ``\verb#hence# $\Phi$''\index{Hence@\texttt{hence}};
+  (2) if we have two statements
+  ``\verb#assume ex x st Phi;# \verb#then consider x such that Phi;#'' is
+  contracted into a single step
+  ``\verb#given x such that Phi;#''\index{Given@\texttt{given}} since
+  that resembles working mathematics.
+\end{ddanger}
