@@ -1,6 +1,15 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-% ===> this file was generated automatically by noweave --- better not edit it
 \chapter{Characteristic Subgroups}
 
+We will begin with formalizing results concerning characteristic
+subgroups. In section 1 we will briefly discuss the environment part of
+a Mizar article. In section 2 we will formalize preliminary material,
+including trivial subgroups and proper subgroups. In section 3, we
+formalize automorphisms and inner automorphisms. In section 4, we
+formalize the notion of a characteristic subgroup, prove the center
+subgroup is characteristic, among other results.
+
+\subsection*{Mizar Article}
 We call a Mizar file/script an ``article''. While developing a Mizar
 article, the main body is stored in a {\Tt{}TEXT/\nwendquote} subdirectory. As I
 understand it, the casing of the directory matters (because there are
@@ -8,25 +17,15 @@ DOS computers which have case-sensitive file systems\dots or something).
 Every Mizar article looks like:
 
 \nwfilename{nw/characteristic.nw}\nwbegincode{1}\sublabel{NWoaARJ-2sCaVS-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-2sCaVS-1}}}\moddef{TEXT/char.miz~{\nwtagstyle{}\subpageref{NWoaARJ-2sCaVS-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
-:: Characteristic Subgroups.
-::  by Alex Nelson
-::
-:: This code can be distributed under the GNU General Public Licence
-:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
-:: License version 3.0 or later, subject to the binding interpretation
-:: detailed in file COPYING.interpretation.
-:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
-:: licenses, or see http://www.gnu.org/licenses/gpl.html and
-:: http://creativecommons.org/licenses/by-sa/3.0/.
-
+\LA{}License~{\nwtagstyle{}\subpageref{NWoaARJ-1lOApn-1}}\RA{}
 \LA{}Environment for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW4bbsBH-3ZQoFX-1}}\RA{}
-
 \LA{}\code{}char.miz\edoc{} article body~{\nwtagstyle{}\subpageref{NW18nMBU-2TX9wk-1}}\RA{}
 
 \nwnotused{TEXT/char.miz}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
 \bigskip
 \index{Vocabulary!File|(}
+\subsection*{Vocabulary File}
 Each Mizar article has an associated ``vocabulary file'' which lists the
 \emph{new} terms introduced. It's stored in a {\Tt{}DICT/\nwendquote}\index{Dict@\texttt{DICT/}}
 subdirectory. Terms are prefixed with the following:
@@ -49,6 +48,24 @@ Right now, we have just started, so we need an empty vocabulary file:
 \nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW1Nnu7l-4FyAEL-1}\nwenddeflinemarkup
 
 \nwalsodefined{\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+
+\subsection*{License}
+The license for the MML seems to be the same for each article, I will
+just copy it over.
+
+\nwenddocs{}\nwbegincode{5}\sublabel{NWoaARJ-1lOApn-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-1lOApn-1}}}\moddef{License~{\nwtagstyle{}\subpageref{NWoaARJ-1lOApn-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NWoaARJ-2sCaVS-1}}\nwenddeflinemarkup
+:: Characteristic Subgroups.
+::  by Alex Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
+
+\nwused{\\{NWoaARJ-2sCaVS-1}}\nwendcode{}\nwbegindocs{6}\nwdocspar
 \nwenddocs{}\nwfilename{nw/characteristic/environ.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
@@ -1379,6 +1396,7 @@ end;
 \nwixlogsorted{c}{{Lemma: trivial groups look like $\trivialSubgroup$}{NW18nMBU-NeCDP-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-NeCDP-1}}}%
 \nwixlogsorted{c}{{Lemma: trivial subgroup is \code{}characteristic\edoc{}}{NW47t2dy-HjATr-1}{\nwixu{NW47t2dy-3N17ED-1}\nwixd{NW47t2dy-HjATr-1}}}%
 \nwixlogsorted{c}{{Lemma: two group morphisms which coincide on subgroup have the same image}{NW47t2dy-475WvU-1}{\nwixu{NW47t2dy-4WQdGY-1}\nwixd{NW47t2dy-475WvU-1}}}%
+\nwixlogsorted{c}{{License}{NWoaARJ-1lOApn-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NWoaARJ-1lOApn-1}}}%
 \nwixlogsorted{c}{{Outer as antonym of inner}{NW3Mfp8C-RgKDM-1}{\nwixu{NW3Mfp8C-13QmRM-1}\nwixd{NW3Mfp8C-RgKDM-1}}}%
 \nwixlogsorted{c}{{Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$}{NW3Mfp8C-1b1ocA-1}{\nwixu{NW3Mfp8C-2zspfg-1}\nwixd{NW3Mfp8C-1b1ocA-1}}}%
 \nwixlogsorted{c}{{Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$}{NW3Mfp8C-1BjobC-1}{\nwixu{NW3Mfp8C-2zspfg-1}\nwixd{NW3Mfp8C-1BjobC-1}}}%
