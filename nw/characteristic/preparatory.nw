@@ -54,6 +54,7 @@ reserve X for set;
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
 <<Lemma: bijections have inverses>>
 <<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>
+<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
 
 <<Register: non trivial for Group>>
 <<Register: trivial groups and trivial subgroups>>
@@ -73,7 +74,6 @@ reserve X for set;
 <<Register: maximal subgroups are proper>>
 <<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>
 <<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>
-<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
 <<Lemma: Trivial groups have no proper subgroups>>
 <<Lemma: Trivial groups have no maximal subgroup>>
 <<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
@@ -669,6 +669,11 @@ end;
 
 @ %def Lm13
 
+\begin{lemma}
+If $f\colon X\to Y$ is a function of sets and $x\in X$ is arbitrary,
+then $f(\{x\})=\{f(x)\}$.
+\end{lemma}
+
 <<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>=
 Lm58:
   for X,Y being non empty set
@@ -706,12 +711,53 @@ end;
 
 @ %def Lm58
 
+\begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
+Let $f\colon X\into Y$ be an injective function of non-empty sets, let
+$A\subset X$ be a non-empty subset, let $x\in X$ be any element such
+that $x\notin A$. Then $f(x)\notin f(A)$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+We prove that, if $f(x)\in f(A)$, then we get a contradiction with the
+hypothesis $x\notin A$ or $f$ is injective.
+\end{proof}
+
+<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
+Lm18:
+  for X,Y being non empty set
+  for A being non empty Subset of X
+  for x being Element of X
+  st not x in A
+  for f being Function of X,Y
+  st f is one-to-one
+  holds not f.x in (f .: A)
+proof
+  let X,Y be non empty set;
+  let A be non empty Subset of X;
+  let x be Element of X;
+  assume A1: not x in A;
+  let f be Function of X,Y;
+  assume f is one-to-one;
+  then A2: not ex a being object st x in dom f & a in dom f & a in A & f.a = f.x
+  by A1, FUNCT_1:def 4;
+  dom f = X by FUNCT_2:def 1;
+  then A3: x in dom f;
+  f.x in (f .: A) iff ex a being object st a in dom f & a in A & f.x = f.a
+  by FUNCT_1:def 6;
+  then f.x in (f .: A) implies contradiction by A2,A3;
+  hence not (f.x in (f .: A));
+end;
+
+@ %def Lm18
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Nontrivial Groups}
+\section{Nontrivial Groups}
 We will be using nontrivial groups later. Recall, a group $G$ is
 nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
 \emph{overloaded}) in \mml[def2]{group6}\MizDef{GROUP\_6}[02]{2}:
@@ -847,6 +893,16 @@ A subgroup $H\subgroup G$ is trivial if and only if for any $g\in G$ we
 have $g\in H\iff g=1_{G}$.
 \end{lemma}
 
+\begin{proof}[Proof outline]
+
+  ($\Longrightarrow$) Suppose $G$ is trivial. Then $\exists y,G=\{y\}$.
+This must mean $G=\{1_{G}\}$ is the identity element.
+  
+  ($\Longleftarrow$) Suppose $\forall x, x\in G\iff x=1_{G}$. Then by
+definition~\mml[def 1]{tarski}, the set underlying $G$ is $\{1_{G}\}$
+and thus trivial.
+\end{proof}
+
 <<Lemma: $H\subgroup G$ is trivial iff $\forall x\in G, x\in H\iff x = 1_{G}$>>=
 Lm109:
   for G being Group
@@ -875,6 +931,14 @@ end;
 
 @ %def Lm109
 
+\begin{lemma}\label{lemma:characteristic:preparatory:trivial-subgroups-look-like-1}
+If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
+\end{lemma}
+
+\begin{proof}
+\emph{Trivial}, thanks to Lemma~\ref{lemma:preparatory:trivialIff1}.
+\end{proof}
+
 <<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>=
 Lm108:
   for G being Group
@@ -893,6 +957,14 @@ end;
 
 @ %def Lm108
 
+\begin{lemma}
+If $H\subgroup G$ and $K\subgroup G$ are both trivial, then $H=K$ as groups.
+\end{lemma}
+
+\begin{proof}
+If $H$ and $K$ are both trivial, then by Lemma~\ref{lemma:characteristic:preparatory:trivial-subgroups-look-like-1} they both look like $\trivialSubgroup$
+and thus are equal to each other as groups.
+\end{proof}
 
 <<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>=
 Lm107:
@@ -911,6 +983,17 @@ end;
 
 @ %def Lm107
 
+\begin{lemma}
+If $H\subgroup K$ and $K\subgroup G$ and $K=\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
+\end{lemma}
+
+\begin{proof}
+We have $\trivialSubgroup\subgroup H\subgroup\trivialSubgroup$ imply
+$H=\trivialSubgroup$. But since we didn't use strict subgroups, we need
+to work with their underlying sets and the fact $\{1_{G}\}\subset
+H\subset\{1_{G}\}$ implies $H=\{1_{G}\}$ by Definition~\mml[def10]{xboole0}.
+\end{proof}
+
 <<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>=
 Lm106:
   for G being Group
@@ -923,7 +1006,7 @@ proof
   let K be trivial Subgroup of G;
   let H be Subgroup of G;
   assume A1: H is Subgroup of K;
-  A2: the carrier of H = {1_G}
+  the carrier of H = {1_G}
   proof
     the multMagma of K = (1).G by Lm108;
     then the carrier of K = {1_G} by GROUP_2:def 7;
@@ -943,7 +1026,7 @@ end;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Proper Subgroups}\index{Subgroup!Proper}
+\section{Proper Subgroups}\index{Subgroup!Proper}
 When we have a [nontrivial] group $G$, we can discuss the notion of a
 proper subgroup $H\properSubgroup G$ in analogy to the notion of a
 proper subset $X\properSubset Y$.
@@ -1027,7 +1110,7 @@ end;
 
 @ %def Lm99
 
-\begin{lemma}
+\begin{lemma}\label{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
   Let $H\subgroup G$ be a subgroup.
   Then $H$ is a proper subgroup if and only if the set difference is nonempty
   $G\setminus H\neq\emptyset$.
@@ -1038,6 +1121,14 @@ This version, as stated, is a little sloppy. We should more precisely
 state the set difference of the underlying set $U(G)$ of $G$ with the
 underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
 \end{lem-remark}
+
+\begin{proof}[Proof outline]
+  There are two sub-proofs:
+  \begin{enumerate}
+  \item $H$ is proper implies $U(G)\setminus U(H)\neq\emptyset$
+  \item $U(G)\setminus U(H)\neq\emptyset$ implies $H$ is proper.\qedhere
+  \end{enumerate}
+\end{proof}
 
 <<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>=
 reserve h,x,y for object;
@@ -1189,6 +1280,14 @@ If $H\properSubgroup G$ is a proper subgroup, then there exists some
 $x\in G$ such that $x\notin H$.
 \end{lemma}
 
+\begin{proof}[Proof sketch]
+If $H\properSubgroup G$ is proper, then by Lemma~\ref{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
+their underlying sets satisfy $U(G)\setminus U(H)\neq\emptyset$.
+Consider $x\in U(G)\setminus U(H)$ since it's nonempty. Then by
+Definition~\mml[def5]{xboole0} of the set difference, $x\in G$ and
+$x\notin H$.
+\end{proof}
+
 <<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>=
 Lm101:
   for H being Subgroup of G
@@ -1196,51 +1295,17 @@ Lm101:
   holds ex x being Element of G st not (x in H)
 proof
   let H be Subgroup of G;
-  assume A1: H is proper Subgroup of G;
+  assume H is proper Subgroup of G;
   then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
   then consider x being object such that
-  A2: x in (the carrier of G) \ (the carrier of H)
+  A1: x in (the carrier of G) \ (the carrier of H)
   by XBOOLE_0:def 1;
-  reconsider x as Element of G by A2, STRUCT_0:def 5;
+  reconsider x as Element of G by A1, STRUCT_0:def 5;
   take x;
-  thus not (x in H) by A2, STRUCT_0:def 5, XBOOLE_0:def 5;
+  thus not (x in H) by A1, STRUCT_0:def 5, XBOOLE_0:def 5;
 end;
 
 @ %def Lm101
-
-\begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
-Let $f\colon X\into Y$ be an injective function of non-empty sets, let
-$A\subset X$ be a non-empty subset, let $x\in X$ be any element such
-that $x\notin A$. Then $f(x)\notin f(A)$.
-\end{lemma}
-
-<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
-Lm18:
-  for X,Y being non empty set
-  for A being non empty Subset of X
-  for x being Element of X
-  st not x in A
-  for f being Function of X,Y
-  st f is one-to-one
-  holds not f.x in (f .: A)
-proof
-  let X,Y be non empty set;
-  let A be non empty Subset of X;
-  let x be Element of X;
-  assume A1: not x in A;
-  let f be Function of X,Y;
-  assume f is one-to-one;
-  then A2: not ex y being object st x in dom f & y in dom f & y in A & f.y = f.x
-  by A1, FUNCT_1:def 4;
-  dom f = X by FUNCT_2:def 1;
-  then A3: x in dom f;
-  f.x in (f .: A) iff ex a being object st a in dom f & a in A & f.x = f.a
-  by FUNCT_1:def 6;
-  then f.x in (f .: A) implies contradiction by A2,A3;
-  hence not (f.x in (f .: A));
-end;
-
-@ %def Lm18
 
 \begin{lemma}
 If $H\subgroup G$ is a subgroup such that there is an $x\in G$ but
@@ -1266,6 +1331,17 @@ proof
 end;
 
 @ %def Lm101
+
+\begin{lemma}\label{lemma:preparatory:trivialIff1}
+A group $G$ is trivial if $G=\trivialSubgroup$.
+\end{lemma}
+
+One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
+need to prove the forward direction.
+
+\begin{proof}[Proof sketch]
+
+\end{proof}
 
 <<Lemma: trivial groups look like $\trivialSubgroup$>>=
 LmGroupIsTrivialIff1:
@@ -1349,6 +1425,17 @@ proof
 end;
 
 @
+
+\begin{lemma}
+If $H\properSubgroup K$ is proper and $K\subgroup G$ and $H\neq K$, then
+$K$ is a nontrivial group.
+\end{lemma}
+
+\begin{proof}[Proof outline]
+  Assume for contradiction that $K=\trivialSubgroup$.
+  Then combined with $H\properSubgroup K$ and $H\neq K$ implies
+  $H=\trivialSubgroup$ and this contradicts $H\properSubgroup K$ proper.
+\end{proof}
 
 <<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
 Lm110:
