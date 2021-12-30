@@ -595,7 +595,7 @@ More generally, the collection of all possible subgroups of $G$ is given
 in \mml[def 1]{group3}\MizDef{GROUP\_3}[01]{1} as
 ``\verb#Subgroups G#''\mizindex{Subgroups@\texttt{Subgroups}}.
 
-\subsection{Conjugation}
+\section{Conjugation}
 For any $a,b\in G$ the conjugate of $a$ by $b$ defined as $a^{b}$ (or
 using Mizar syntax ``\verb#a |^ b#''\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}\mizindex{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}})
 for $b^{-1}ab$. For subsets $A,B\subset G$, we define
@@ -626,6 +626,28 @@ such that $A = B^{g}$);
 \item a subgroup $H\subgroup G$ in Definition~\mml[def12]{group3} as the
   collection of all subgroups which are conjugate to $H$
 \end{enumerate}
+
+\begin{theorem}[{Dummit and Foote~\cite[Cor.~4.14]{dummit-foote}}]
+  If $H\subgroup G$ is any subgroup and $g\in G$, then
+  $H$ and $gHg^{-1}$ are isomorphic. Conjugate elements have the same
+  order. Conjugate subgroups have the same order.
+\end{theorem}
+
+\begin{thm-remark}
+Mizar has the following results:
+\begin{itemize}
+\item \mml[Th28]{group3}\MizTh{GROUP\_3}{28} states, for any group elements $a,b\in G$ and
+  any integer $k\in\ZZ$, we have $(b^{-1}ab)^{k} = b^{-1}(a^{k})b$;
+\item \mml[Th64]{group3}\MizTh{GROUP\_3}{64} proves conjugate subgroups have the same order;
+\item \mml[Th71]{group3}\MizTh{GROUP\_3}{71} proves conjugate subgroups in $G$ have the
+  same index;
+\item \mml[Th16]{group8}\MizTh{GROUP\_8}{16} proves, for any nonempty subset $A\subset G$,
+  its conjugates $g^{-1}Ag$ (for any $g\in G$) has the same cardinality
+  as $A$\dots which should imply conjugate subgroups have the same
+  order, too.
+\end{itemize}
+\end{thm-remark}
+
 
 \subsection{Normal Subgroups}
 Having thus described conjugation of elements, subsets, and subgroups by
@@ -801,6 +823,16 @@ For any $x,y,z\in G$, we have $[x,y]^{z} = [x^{z},y^{z}]$.
 \end{theorem}
 
 This was not proven in Mizar, but it seems do-able.
+
+
+\begin{definition}[{\mml[def 10]{group5}}]\mizindex{Center@\texttt{center}|see{$\mathtt{GROUP\_5:def 10}$}}\index{$Z(G)$}\index{Center}\index{Group!Center}
+Let $G$ be a group. Its \define{Center} is the Subgroup $Z(G)\subgroup G$
+consisting of all elements which commute with all of $G$:
+\begin{equation*}
+Z(G) = \{z\in Z(G) | \forall g\in G, zg=gz\}
+\end{equation*}
+\end{definition}
+
 
 \subsection{Simple Group}
 Definition~\mml[def12]{group9} defines a group to be
