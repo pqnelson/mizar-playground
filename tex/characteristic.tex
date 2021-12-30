@@ -1462,9 +1462,14 @@ end;
 \nwixlogsorted{c}{{Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$}{NW18nMBU-45FeqA-1}{\nwixu{NW18nMBU-1VchCJ-1}\nwixd{NW18nMBU-45FeqA-1}}}%
 \nwixlogsorted{c}{{Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$}{NW18nMBU-2pd9SK-1}{\nwixu{NW18nMBU-1VchCJ-1}\nwixd{NW18nMBU-2pd9SK-1}}}%
 \nwixlogsorted{c}{{Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$}{NW47t2dy-2AHwGO-1}{\nwixu{NW47t2dy-1WVJgD-1}\nwixd{NW47t2dy-2AHwGO-1}}}%
+\nwixlogsorted{c}{{Proof: $\psi(k)\in L$}{NW1Nnu7l-rcjUo-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-rcjUo-1}}}%
+\nwixlogsorted{c}{{Proof: $\varphi(L) = K$}{NW1Nnu7l-3oqpnZ-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-3oqpnZ-1}}}%
+\nwixlogsorted{c}{{Proof: $\varphi(L)=G$}{NW1Nnu7l-13ZzHL-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-13ZzHL-1}}}%
 \nwixlogsorted{c}{{Proof: $\varphi|_{H}$ is surjective}{NW1Nnu7l-41Pxbq-1}{\nwixu{NW1Nnu7l-1QHEJY-1}\nwixd{NW1Nnu7l-41Pxbq-1}}}%
+\nwixlogsorted{c}{{Proof: $H$ is maximal implies $K=G$}{NW1Nnu7l-2sFwyR-1}{\nwixu{NW1Nnu7l-39Q49p-1}\nwixd{NW1Nnu7l-2sFwyR-1}}}%
 \nwixlogsorted{c}{{Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$}{NW47t2dy-1WVJgD-1}{\nwixu{NW47t2dy-4Z20G4-1}\nwixd{NW47t2dy-1WVJgD-1}}}%
 \nwixlogsorted{c}{{Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$}{NW47t2dy-ikrOm-1}{\nwixu{NW47t2dy-4Z20G4-1}\nwixd{NW47t2dy-ikrOm-1}}}%
+\nwixlogsorted{c}{{Proof: $H\neq L$}{NW1Nnu7l-aXEjM-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-aXEjM-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(K)\iff y\in g(K)$}{NW47t2dy-1JehLA-1}{\nwixu{NW47t2dy-475WvU-1}\nwixd{NW47t2dy-1JehLA-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(K)\implies y\in g(K)$}{NW47t2dy-1yCGg9-1}{\nwixu{NW47t2dy-1JehLA-1}\nwixd{NW47t2dy-1yCGg9-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(X)\impliedby y\in\rng(f)$}{NW18nMBU-3EwHBf-1}{\nwixu{NW18nMBU-3LADMa-1}\nwixd{NW18nMBU-3EwHBf-1}}}%
@@ -3016,6 +3021,14 @@ end;
   $\varphi(H)\properSubgroup G$ is also maximal.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+  Since $H\properSubgroup G$ is maximal, if $\varphi(H)$ were not
+  maximal, there would be a subgroup $K\properSubgroup G$ such that
+  $\varphi(H)\properSubgroup K$. In that case, $\varphi^{-1}(K)=L$ would
+  be a proper subgroup which contains $H$ as a proper subgroup, which is
+  impossible. Thus $\varphi(H)$ must be maximal.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{81}\sublabel{NW1Nnu7l-39Q49p-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-39Q49p-1}}}\moddef{Theorem: Automorphisms map maximal subgroups to maximal subgroups~{\nwtagstyle{}\subpageref{NW1Nnu7l-39Q49p-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th31}{NW1Nnu7l-39Q49p-1}:
   for G being non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group
@@ -3028,105 +3041,156 @@ proof
   let H be strict Subgroup of G;
   let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   assume A1: H is maximal;
-  then A2: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
-  then A3: Image(phi|H) is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G by \nwlinkedidentc{ThAutoProper}{NW1Nnu7l-39h8sj-1};
+  then H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
+  then A2: Image(phi|H) is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G by \nwlinkedidentc{ThAutoProper}{NW1Nnu7l-39h8sj-1};
   then P1: the multMagma of Image(phi|H) <> the multMagma of G by \nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
   set UG = the carrier of G;
   set UH = the carrier of H;
   P2: for K being strict Subgroup of G
   st Image(phi|H) <> K & Image(phi|H) is Subgroup of K
   holds K = the multMagma of G
-  proof
-    let K be strict Subgroup of G;
-    assume B1: Image(phi|H) <> K;
-    assume B2: Image(phi|H) is Subgroup of K;
-    then consider psi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
-    B3: psi = phi" and
-    B4: H is Subgroup of Image(psi|K)
-    by Th7b;
-    set UK = the carrier of K;
-    K is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G by A3,B1,B2,\nwlinkedidentc{Lm110}{NW18nMBU-1gsRKB-1};
-    then reconsider K as non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} strict Subgroup of G;
-
-    B5: Image(phi|H) is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of K by B1,B2,\nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
-    then (the carrier of K) \\ (the carrier of Image(phi|H)) is non empty
-    by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
-    then consider k being object such that
-    B6: k in (the carrier of K) \\ (the carrier of Image(phi|H))
-    by XBOOLE_0:def 1;
-    reconsider k as Element of K by B6;
-    B7: not (k in Image(phi|H)) by B6, STRUCT_0:def 5, XBOOLE_0:def 5;
-    set L = Image(psi|K);
-    B8: psi.k in L
-    proof
-      H is Subgroup of L by B4;
-      C1: k in K;
-      then C0: k in G by GROUP_2:41;
-      dom(psi|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-      then C2: k in dom(psi|K);
-      then consider l being object such that
-      C3: l = psi.k;
-      k is Element of G by GROUP_2:42;
-      then C4: (psi|K).k = psi.k by C1,\nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1};
-      dom psi = the carrier of G by FUNCT_2:def 1;
-      then l in psi .: (the carrier of K) by C0,C1,C2,C3,C4,FUNCT_1:def 6;
-      then l in the carrier of (psi .: K) by GRSOLV_1:8;
-      then l in the carrier of Image(psi|K) by GRSOLV_1:def 3;
-      then psi.k in Image(psi|K) by C3;
-      hence thesis;
-    end;
-    B9: the multMagma of H <> L
-    proof
-      k is Element of G by GROUP_2:42;
-      set UPH = the carrier of Image(phi|H);
-      C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
-      phi is Function of UG,UG by GROUP_2:def 5;
-      C2: k in G & not k in Image(phi|H) by B7, GROUP_2:41;
-      then C3: not psi.k in (psi .: UPH)
-      by C1,\nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1};
-      consider phi2 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
-      C4: phi2 = psi" and
-      C5: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
-      by \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1};
-      phi2=phi by C4,B3, \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1};
-      then C6: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C5;
-      psi .: (the carrier of Image(phi|H))
-      = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
-      .= the carrier of Image(psi|Image(phi|H)) by GRSOLV_1:def 3;
-      then not psi.k in H by C3,C6;
-      then the carrier of H <> the carrier of L by B8;
-      hence thesis;
-    end;
-    then B10: L = the multMagma of G by A1,B4,GROUP_4:def 6;
-    then phi is Function of UG,UG & phi is onto & the carrier of L = UG;
-    then phi .: the carrier of L = phi .: UG
-                                .= rng phi by RELSET_1:22,FUNCT_2:def 3
-                                .= UG by FUNCT_2:def 3,FUNCT_2:def 1;
-    then UG = phi .: (the carrier of L)
-           .= the carrier of (phi .: L) by GRSOLV_1:8
-           .= the carrier of Image(phi|L) by GRSOLV_1:def 3;
-    then the carrier of Image(phi|L) = the carrier of G;
-    then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
-    then B11: Image(phi|L) = the multMagma of G;
-    Image(phi|L) = K
-    proof
-      Image(phi|L) = Image(phi|Image(psi|K));
-      consider psi2 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
-      C1: psi2 = phi" and
-      C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
-      by \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1};
-      psi2 = psi by C1,B3;
-      then the multMagma of Image(phi|Image(psi|K)) = the multMagma of K by C2;
-      then Image(phi|Image(psi|K)) = K;
-      hence thesis;
-    end;
-    hence thesis by B11;
-  end;
+  \LA{}Proof: $H$ is maximal implies $K=G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2sFwyR-1}}\RA{}
   thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
 end;
 
 \nwindexdefn{\nwixident{Th31}}{Th31}{NW1Nnu7l-39Q49p-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th31}}{Th31}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{Lm110}}{Lm110}}\\{{\nwixident{Lm18}}{Lm18}}\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{Th7}}{Th7}}\\{{\nwixident{ThAutoProper}}{ThAutoProper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm110}}{Lm110}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm18}}{Lm18}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{ThAutoProper}}{ThAutoProper}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39Q49p-1}\nwendcode{}\nwfilename{nw/characteristic/inner.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th31}}{Th31}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{ThAutoProper}}{ThAutoProper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{ThAutoProper}}{ThAutoProper}{NW1Nnu7l-39Q49p-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39Q49p-1}\nwendcode{}\nwbegindocs{82}\nwdocspar
+\begin{proof}[Sub-proof outline ($H$ is maximal implies $K=G$).]
+Let $K$ be an arbitrary subgroup of $G$ such that $\varphi(H)\properSubgroup K$.
+We can consider $\psi\in\Aut(G)$ defined by $\psi(x)=\varphi^{-1}(x)$
+for all $x\in G$. Since $H\properSubgroup K\properSubgroup G$, we can
+find some $k\in K$ but $k\notin K$. Then $\psi(k)\in\psi(K)$. Since $H$
+is maximal, $\varphi(\psi(K))=G$. But also $\varphi(\psi(K))=K$. Hence $K=G$.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{83}\sublabel{NW1Nnu7l-2sFwyR-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2sFwyR-1}}}\moddef{Proof: $H$ is maximal implies $K=G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2sFwyR-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-39Q49p-1}}\nwenddeflinemarkup
+proof
+  let K be strict Subgroup of G;
+  assume B1: Image(phi|H) <> K;
+  assume B2: Image(phi|H) is Subgroup of K;
+  then consider psi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
+  B3: psi = phi" and
+  B4: H is Subgroup of Image(psi|K)
+  by Th7b;
+  set UK = the carrier of K;
+  reconsider K as non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} strict Subgroup of G by A2,B1,B2,\nwlinkedidentc{Lm110}{NW18nMBU-1gsRKB-1};
+
+  B5: Image(phi|H) is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of K by B1,B2,\nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
+  then UK \\ (the carrier of Image(phi|H)) is non empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
+  then consider k being object such that
+  B6: k in UK \\ (the carrier of Image(phi|H))
+  by XBOOLE_0:def 1;
+  reconsider k as Element of K by B6;
+  B7: not (k in Image(phi|H)) by B6, STRUCT_0:def 5, XBOOLE_0:def 5;
+  set L = Image(psi|K);
+  B8: psi.k in L
+  \LA{}Proof: $\psi(k)\in L$~{\nwtagstyle{}\subpageref{NW1Nnu7l-rcjUo-1}}\RA{}
+  B9: the multMagma of H <> L
+  \LA{}Proof: $H\neq L$~{\nwtagstyle{}\subpageref{NW1Nnu7l-aXEjM-1}}\RA{}
+  B10: Image(phi|L) = the multMagma of G
+  \LA{}Proof: $\varphi(L)=G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-13ZzHL-1}}\RA{}
+  Image(phi|L) = K
+  \LA{}Proof: $\varphi(L) = K$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3oqpnZ-1}}\RA{}
+  hence thesis by B10;
+end;
+
+\nwused{\\{NW1Nnu7l-39Q49p-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{Lm110}}{Lm110}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm110}}{Lm110}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-2sFwyR-1}\nwendcode{}\nwbegindocs{84}\nwdocspar
+
+\begin{proof}[Proof step ($\psi(k)\in L$).]
+Since $k\in K$ and $L=\psi(K)$, the result follows from unfolding definitions.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{85}\sublabel{NW1Nnu7l-rcjUo-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-rcjUo-1}}}\moddef{Proof: $\psi(k)\in L$~{\nwtagstyle{}\subpageref{NW1Nnu7l-rcjUo-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2sFwyR-1}}\nwenddeflinemarkup
+proof
+  H is Subgroup of L by B4;
+  C1: k in K;
+  then C0: k in G by GROUP_2:41;
+  dom(psi|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+  then C2: k in dom(psi|K);
+  then consider l being object such that
+  C3: l = psi.k;
+  k is Element of G by GROUP_2:42;
+  then C4: (psi|K).k = psi.k by C1,\nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1};
+  dom psi = the carrier of G by FUNCT_2:def 1;
+  then l in psi .: (the carrier of K) by C0,C1,C2,C3,C4,FUNCT_1:def 6;
+  then l in the carrier of (psi .: K) by GRSOLV_1:8;
+  then l in the carrier of Image(psi|K) by GRSOLV_1:def 3;
+  then psi.k in Image(psi|K) by C3;
+  hence thesis;
+end;
+
+\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-rcjUo-1}\nwendcode{}\nwbegindocs{86}\nwdocspar
+
+\begin{proof}[Proof step ($H\neq L$).]
+Since $k\in K\setminus\varphi(H)$, it follows
+$\psi(k)\in\psi(K)\setminus H$.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{87}\sublabel{NW1Nnu7l-aXEjM-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-aXEjM-1}}}\moddef{Proof: $H\neq L$~{\nwtagstyle{}\subpageref{NW1Nnu7l-aXEjM-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2sFwyR-1}}\nwenddeflinemarkup
+proof
+  k is Element of G by GROUP_2:42;
+  set UPH = the carrier of Image(phi|H);
+  C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
+  phi is Function of UG,UG by GROUP_2:def 5;
+  k in G & not k in Image(phi|H) by B7, GROUP_2:41;
+  then C2: not psi.k in (psi .: UPH) by C1,\nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1};
+  consider phi2 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
+  C3: phi2 = psi" and
+  C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
+  by \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1};
+  phi2=phi by C3,B3, \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1};
+  then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
+  set UPH = the carrier of Image(phi|H);
+  psi .: UPH = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
+            .= the carrier of Image(psi|Image(phi|H)) by GRSOLV_1:def 3;
+  then not psi.k in H by C2,C5;
+  then the carrier of H <> the carrier of L by B8;
+  hence thesis;
+end;
+
+\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm18}}{Lm18}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm18}}{Lm18}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-aXEjM-1}\nwendcode{}\nwbegindocs{88}\nwdocspar
+
+\begin{proof}[Proof step ($\varphi(L)=G$).]
+Since $H\neq L$, and $H$ is maximal, it follows that $L=G$. Then
+$\varphi(L)=\varphi(G)$ and $\varphi(G)=G$ gives the result.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{89}\sublabel{NW1Nnu7l-13ZzHL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-13ZzHL-1}}}\moddef{Proof: $\varphi(L)=G$~{\nwtagstyle{}\subpageref{NW1Nnu7l-13ZzHL-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2sFwyR-1}}\nwenddeflinemarkup
+proof
+  L = the multMagma of G by A1,B4,B9,GROUP_4:def 6;
+  then phi is Function of UG,UG & phi is onto & the carrier of L = UG;
+  then phi .: the carrier of L = phi .: UG
+                              .= rng phi by RELSET_1:22,FUNCT_2:def 3
+                              .= UG by FUNCT_2:def 3,FUNCT_2:def 1;
+  then UG = phi .: (the carrier of L)
+         .= the carrier of (phi .: L) by GRSOLV_1:8
+         .= the carrier of Image(phi|L) by GRSOLV_1:def 3;
+  then the carrier of Image(phi|L) = the carrier of G;
+  then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
+  hence thesis;
+end;
+
+\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwendcode{}\nwbegindocs{90}\nwdocspar
+
+\begin{proof}[Proof step ($\varphi(L)=K$).]
+From $L=\psi(K)$, it follows $\varphi(L)=K$.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{91}\sublabel{NW1Nnu7l-3oqpnZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3oqpnZ-1}}}\moddef{Proof: $\varphi(L) = K$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3oqpnZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2sFwyR-1}}\nwenddeflinemarkup
+proof
+  Image(phi|L) = Image(phi|Image(psi|K));
+  consider psi2 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
+  C1: psi2 = phi" and
+  C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
+  by \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1};
+  psi2 = psi by C1,B3;
+  then the multMagma of Image(phi|Image(psi|K)) = the multMagma of K by C2;
+  then Image(phi|Image(psi|K)) = K;
+  hence thesis;
+end;
+
+\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-3oqpnZ-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-3oqpnZ-1}\nwendcode{}\nwbegindocs{92}\nwdocspar
+\nwenddocs{}\nwfilename{nw/characteristic/inner.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Inner Automorphisms}
 We can now organize our treatment of inner automorphisms.
 
