@@ -40,7 +40,6 @@ environ
 
  equalities FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2, GROUP_3,
    ALGSTR_0;
-
  expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2;
 
  theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2,
@@ -346,6 +345,41 @@ proof
   hence (f")*f = id X by A2,FUNCT_2:12;
 end;
 
+Lm58:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  for x being object
+  st x in X
+  holds f .: {x} = {f.x}
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  let x be object;
+  assume A0: x in X;
+  dom f = X by FUNCT_2:def 1;
+  then A1: x in dom f by A0;
+  for y being object holds y in f.:{x} iff y in {f.x}
+  proof let y be object;
+    thus y in f.:{x} implies y in {f.x}
+    proof
+      assume y in f.:{x};
+      then consider z being object such that
+      z in dom f and
+A2:   z in {x} and
+A3:   y = f.z by FUNCT_1:def 6;
+      z = x by A2,TARSKI:def 1;
+      hence thesis by A3,TARSKI:def 1;
+    end;
+    assume y in {f.x};
+    then
+A4: y = f.x by TARSKI:def 1;
+    x in {x} by TARSKI:def 1;
+    hence thesis by A1,A4,FUNCT_1:def 6;
+  end;
+  hence f .: {x} = {f.x} by TARSKI:2;
+end;
+
+
 registration
   cluster non trivial for Group;
   existence
@@ -357,6 +391,22 @@ registration
   end;
 end;
 
+registration
+  let G be Group;
+  cluster trivial for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus thesis by GROUP_6:10;
+  end;
+  let H be Subgroup of G;
+  cluster trivial for Subgroup of H;
+  existence
+  proof
+    take (1).H;
+    thus thesis by GROUP_6:10;
+  end;
+end;
 
 registration
   let G be non trivial Group;
@@ -368,6 +418,7 @@ registration
     the carrier of H <> {1_G} by A1;
     hence thesis;
   end;
+
   cluster strict non trivial for Subgroup of G;
   existence
   proof
@@ -392,35 +443,110 @@ registration
     then H is strict Subgroup of G & H is non trivial by A1;
     hence thesis;
   end;
+
 end;
 
-registration
+LmGroupIsTrivialIff1:
+  for G being Group
+  holds G is trivial iff the multMagma of G = (1).G
+proof
   let G be Group;
-  cluster trivial for Subgroup of G;
-  existence
+  thus G is trivial implies the multMagma of G = (1).G
   proof
-    take (1).G;
-    thus thesis by GROUP_6:10;
+    assume G is trivial;
+    then consider x being object such that
+    A1: the carrier of G = {x}
+    by GROUP_6:def 2;
+    :: prove x = 1_G
+    1_G in G;
+    then x = 1_G by A1, TARSKI:def 1, STRUCT_0:def 5;
+    then the carrier of G = {1_G} by A1;
+    then the carrier of G = the carrier of (1).G by GROUP_2:def 7, TARSKI:2;
+    hence the multMagma of G = (1).G by GROUP_2:61;
   end;
-  let H be Subgroup of G;
-  cluster trivial for Subgroup of H;
-  existence
-  proof
-    take (1).H;
-    thus thesis by GROUP_6:10;
-  end;
+  thus the multMagma of G = (1).G implies G is trivial by GROUP_6:10;
+  thus thesis;
 end;
 
-registration
-  let G be non trivial Group;
-  let H be strict Subgroup of G;
-  cluster trivial for Subgroup of H;
-  existence
+Lm109:
+  for G being Group
+  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
+proof
+  let G be Group;
+  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
   proof
-    take (1).H;
-    thus thesis by GROUP_6:10;
+    assume G is trivial Group;
+    then A1: ex y being object st the carrier of G = {y} by GROUP_6:def 2;
+    1_G in G;
+    then A2: the carrier of G = {1_G} by A1, TARSKI:def 1;
+    thus for x being object holds x in G iff x = 1_G
+    by A2, STRUCT_0:def 5, TARSKI:def 1;
   end;
+  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
+  proof
+    assume A1: for x being object holds x in G iff x = 1_G;
+    then for x being object holds x in the carrier of G iff x = 1_G
+    by STRUCT_0:def 5;
+    then the carrier of G = {1_G} by TARSKI:def 1;
+    hence G is trivial Group by GROUP_6:def 2;
+  end;
+  thus thesis;
 end;
+
+Lm108:
+  for G being Group
+  for H being Subgroup of G
+  st H is trivial
+  holds the multMagma of H = (1).G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume H is trivial;
+  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
+                         .= (1).G by GROUP_2:63;
+  hence thesis;
+end;
+
+
+Lm107:
+  for G being Group
+  for H being trivial Subgroup of G
+  for K being trivial Subgroup of G
+  holds the multMagma of H = the multMagma of K
+proof
+  let G be Group;
+  let H be trivial Subgroup of G;
+  let K be trivial Subgroup of G;
+  the multMagma of H = (1).G by Lm108
+  .= the multMagma of K by Lm108;
+  hence thesis;
+end;
+
+Lm106:
+  for G being Group
+  for K being trivial Subgroup of G
+  for H being Subgroup of G
+  st H is Subgroup of K
+  holds H is trivial Subgroup of G
+proof
+  let G be Group;
+  let K be trivial Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  A2: the carrier of H = {1_G}
+  proof
+    the multMagma of K = (1).G by Lm108;
+    then the carrier of K = {1_G} by GROUP_2:def 7;
+    then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
+  end;
+  then ex x being object st the carrier of H = {x};
+  hence H is trivial Subgroup of G by GROUP_6:def 2;
+end;
+
 
 definition
   let G be Group;
@@ -459,7 +585,7 @@ proof
     hence (the carrier of G) \ (the carrier of H) is non empty set
     by XBOOLE_0:def 5;
   end;
-  
+
   thus (the carrier of G) \ (the carrier of H) is non empty set implies H is proper
   proof
     assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
@@ -498,22 +624,24 @@ reserve H for Subgroup of G;
 
 registration
   let G be non trivial Group;
-  let H be non trivial Subgroup of G;
-  cluster proper for Subgroup of H;
+  cluster proper for Subgroup of G;
   existence
   proof
-    take (1).H;
-    H is non trivial;
-    then not (ex x being object st the carrier of H = {x}) by GROUP_6:def 2;
-    then the carrier of H <> {1_H};
-    then the carrier of H <> the carrier of (1).H;
-    hence (1).H is proper;
+    take (1).G;
+    G is non trivial;
+    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
+    then the carrier of G <> {1_G};
+    then the carrier of G <> the carrier of (1).G;
+    hence (1).G is proper;
   end;
 end;
 
+reserve G for non trivial Group;
+reserve H for Subgroup of G;
+
 registration
   let G be non trivial Group;
-  let H be non trivial strict Subgroup of G;
+  let H be non trivial Subgroup of G;
   cluster proper for Subgroup of H;
   existence
   proof
@@ -602,28 +730,6 @@ proof
   hence not (f.x in (f .: A));
 end;
 
-LmGroupIsTrivialIff1:
-  for G being Group
-  holds G is trivial iff the multMagma of G = (1).G
-proof
-  let G be Group;
-  thus G is trivial implies the multMagma of G = (1).G
-  proof
-    assume G is trivial;
-    then consider x being object such that
-    A1: the carrier of G = {x}
-    by GROUP_6:def 2;
-    :: prove x = 1_G
-    1_G in G;
-    then x = 1_G by A1, TARSKI:def 1, STRUCT_0:def 5;
-    then the carrier of G = {1_G} by A1;
-    then the carrier of G = the carrier of (1).G by GROUP_2:def 7, TARSKI:2;
-    hence the multMagma of G = (1).G by GROUP_2:61;
-  end;
-  thus the multMagma of G = (1).G implies G is trivial by GROUP_6:10;
-  thus thesis;
-end;
-
 LmTrivHasNoProperSubgroups:
   for G being Group
   st G is trivial
@@ -658,6 +764,30 @@ proof
   then not (ex H being Subgroup of G st H is proper) by LmTrivHasNoProperSubgroups;
   hence not (ex H being Subgroup of G st H is maximal) by Lm98;
 end;
+
+Lm110:
+  for G being non trivial Group
+  for H being proper Subgroup of G
+  for K being Subgroup of G
+  st H is Subgroup of K & the multMagma of H <> the multMagma of K
+  holds K is non trivial Subgroup of G
+proof
+  let G be non trivial Group;
+  let H be proper Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  assume A2: the multMagma of H <> the multMagma of K;
+  not (K is non trivial Subgroup of G) implies contradiction
+  proof
+    assume B1: not K is non trivial Subgroup of G;
+    then K is trivial Subgroup of G;
+    then H is trivial Subgroup of G by A1,Lm106;
+    then the multMagma of H = the multMagma of K by B1,Lm107;
+    hence contradiction by A2;
+  end;
+  hence K is non trivial Subgroup of G;
+end;
+
 
 
 
@@ -1000,6 +1130,7 @@ proof
         then phi.x in UG by A3, FUNCT_1:def 3;
         hence phi.x is Element of G by STRUCT_0:def 5;
       end;
+
   ex y being Element of G st not y in phi .: H
   proof
     consider y being Element of G such that
@@ -1009,104 +1140,10 @@ proof
     take y;
     thus not y in phi .: H by B2;
   end;
+
   then phi .: H is proper by Lm101;
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
-
-theorem
-Lm109:
-  for G being Group
-  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
-proof
-  let G be Group;
-  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
-  proof
-    assume G is trivial Group;
-    then A1: ex y being object st the carrier of G = {y} by GROUP_6:def 2;
-    1_G in G;
-    then A2: the carrier of G = {1_G} by A1, TARSKI:def 1;
-    thus for x being object holds x in G iff x = 1_G
-    by A2, STRUCT_0:def 5, TARSKI:def 1;
-  end;
-  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
-  proof
-    assume A1: for x being object holds x in G iff x = 1_G;
-    then for x being object holds x in the carrier of G iff x = 1_G
-    by STRUCT_0:def 5;
-    then the carrier of G = {1_G} by TARSKI:def 1;
-    hence G is trivial Group by GROUP_6:def 2;
-  end;
-  thus thesis;
-end;
-
-Lm108:
-  for G being Group
-  for H being Subgroup of G
-  st H is trivial
-  holds the multMagma of H = (1).G
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  assume H is trivial;
-  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
-                         .= (1).G by GROUP_2:63;
-  hence thesis;
-end;
-
-Lm107:
-  for G being Group
-  for H being trivial Subgroup of G
-  for K being trivial Subgroup of G
-  holds the multMagma of H = the multMagma of K
-proof
-  let G be Group;
-  let H be trivial Subgroup of G;
-  let K be trivial Subgroup of G;
-  the multMagma of H = (1).G by Lm108
-  .= the multMagma of K by Lm108;
-  hence thesis;
-end;
-
-Lm58:
-  for X,Y being non empty set
-  for f being Function of X,Y
-  for x being object
-  st x in X
-  holds f .: {x} = {f.x}
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  let x be object;
-  assume A0: x in X;
-  dom f = X by FUNCT_2:def 1;
-  then A1: x in dom f by A0;
-  for y being object holds y in f.:{x} iff y in {f.x}
-  proof let y be object;
-    thus y in f.:{x} implies y in {f.x}
-    proof
-      assume y in f.:{x};
-      then consider z being object such that
-      z in dom f and
-A2:   z in {x} and
-A3:   y = f.z by FUNCT_1:def 6;
-      z = x by A2,TARSKI:def 1;
-      hence thesis by A3,TARSKI:def 1;
-    end;
-    assume y in {f.x};
-    then
-A4: y = f.x by TARSKI:def 1;
-    x in {x} by TARSKI:def 1;
-    hence thesis by A1,A4,FUNCT_1:def 6;
-  end;
-  hence f .: {x} = {f.x} by TARSKI:2;
-end;
-
-LmAutoGrSub:
-for G being Group
-for H being Subgroup of G
-st H is trivial Group
-holds H is trivial Subgroup of G;
-
 
 theorem ThAutoTriv:
   for G being Group
@@ -1131,57 +1168,6 @@ proof
   then phi .: H is trivial by LmGroupIsTrivialIff1;
   then Image(phi|H) is trivial by GRSOLV_1:def 3;
   hence thesis;
-end;
-
-
-Lm106:
-  for G being Group
-  for K being trivial Subgroup of G
-  for H being Subgroup of G
-  st H is Subgroup of K
-  holds H is trivial Subgroup of G
-proof
-  let G be Group;
-  let K be trivial Subgroup of G;
-  let H be Subgroup of G;
-  assume A1: H is Subgroup of K;
-  A2: the carrier of H = {1_G}
-  proof
-    the multMagma of K = (1).G by Lm108;
-    then the carrier of K = {1_G} by GROUP_2:def 7;
-    then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
-    (1).G is Subgroup of H by GROUP_2:65;
-    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
-    then {1_G} c= the carrier of H by GROUP_2:def 7;
-    hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
-  end;
-  then ex x being object st the carrier of H = {x};
-  hence H is trivial Subgroup of G by GROUP_6:def 2;
-end;
-
-
-
-Lm110:
-  for G being non trivial Group
-  for H being proper Subgroup of G
-  for K being Subgroup of G
-  st H is Subgroup of K & the multMagma of H <> the multMagma of K
-  holds K is non trivial Subgroup of G
-proof
-  let G be non trivial Group;
-  let H be proper Subgroup of G;
-  let K be Subgroup of G;
-  assume A1: H is Subgroup of K;
-  assume A2: the multMagma of H <> the multMagma of K;
-  not (K is non trivial Subgroup of G) implies contradiction
-  proof
-    assume B1: not K is non trivial Subgroup of G;
-    then K is trivial Subgroup of G;
-    then H is trivial Subgroup of G by A1,Lm106;
-    then the multMagma of H = the multMagma of K by B1,Lm107;
-    hence contradiction by A2;
-  end;
-  hence K is non trivial Subgroup of G;
 end;
 
 theorem Th31:
@@ -1214,7 +1200,7 @@ proof
     set UK = the carrier of K;
     K is non trivial Subgroup of G by A3,B1,B2,Lm110;
     then reconsider K as non trivial strict Subgroup of G;
-    
+
     B5: Image(phi|H) is proper Subgroup of K by B1,B2,Def10;
     then (the carrier of K) \ (the carrier of Image(phi|H)) is non empty
     by Lm100;
@@ -1291,7 +1277,6 @@ proof
   end;
   thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
 end;
-
 
 definition :: Def5
   let G;
@@ -1954,126 +1939,8 @@ proof
     then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
     hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
+
+
+
   hence Z is characteristic Subgroup of G by Th27;
 end;
-
-:: The Frattini subgroup is characteristic
-::theorem Th31:
-::  for G being non trivial Group
-::  for H being strict Subgroup of G
-::  for phi being Automorphism of G
-::  st H is maximal
-::  holds Image(phi|H) is maximal
-
-reserve G for non trivial Group;
-reserve H,K for Subgroup of G;
-theorem
-  Phi(G) is characteristic Subgroup of G
-proof
-  set M = {K where K is Element of Subgroups G : ex H being strict Subgroup of G st
-  H is maximal & H=K};
-  set M2 = {A where A is Subset of G : ex H being strict Subgroup of G st
-            A = the carrier of H & H in M};
-  for phi being Automorphism of G
-  holds ex f being Permutation of M st
-  (for H being strict Subgroup of G st H in M holds f.H = Image(phi|H))
-  proof
-    let phi be Automorphism of G;
-    deffunc F(Automorphism of G, strict Subgroup of G) = Image(($1)|($2));
-    
-    for H being strict Subgroup of G st H is maximal holds H in M
-    proof
-      let H be strict Subgroup of G;
-      assume A1: H is maximal;
-      H is Element of Subgroups G by GROUP_3:def 1;
-      hence H in M by A1,STRUCT_0:def 5;
-    end;
-    for H being object
-    st H in M
-    holds ex K being strict Subgroup of G st H=K & K is maximal
-    proof
-      let H be object;
-      assume A1: H in M;
-      consider K being Element of Subgroups G such that
-      A2: K = H and
-      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=K
-      by A1;
-      H in Subgroups G by A2;
-      reconsider K as strict Subgroup of G by GROUP_3:def 1;
-      consider K2 being strict Subgroup of G such that
-      A4: K2 is maximal and
-      A5: K2=K
-      by A3;
-      A6: H = K2 & K2 is strict Subgroup of G by A2,A5;
-      then A7: H is strict Subgroup of G;
-      H is Element of M by A1;
-      take K2;
-      thus H = K2 & K2 is maximal by A4,A6;
-    end;
-
-    B1: for H1,H2 being strict Subgroup of G
-    st H2 = F(phi,H1) & H1 is maximal
-    holds H2 in M
-    proof
-      let H1,H2 be strict Subgroup of G;
-      assume A1: H2 = F(phi,H1);
-      assume A2: H1 is maximal;
-      G is non trivial Group & H1 is strict Subgroup of G
-      & phi is Automorphism of G & H1 is maximal by A2;
-      then A3: Image(phi|H1) is maximal by Th31;
-      H2=Image(phi|H1) by A1;
-      then A4: H2 is maximal by A3;
-      H2 is Element of Subgroups G by GROUP_3:def 1;
-      hence H2 in M by A2,A4,STRUCT_0:def 5;
-    end;
-    for K1 being Element of M
-    holds (ex H being strict Subgroup of G
-    st K1=H & F(phi,H) in M)
-    proof
-      let K1 be Element of M;
-::      A1: K1 in M by SUBSET_1:def 1;
-      consider H being Element of Subgroups G such that
-      A2: K1 = H and
-      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=H;
-::>                                                              *4
-::      by A1;
-      take H = K1;
-::>              *57
-::      consider H being strict Subgroup of G such that
-::      A1: K1=H;
-      H is maximal by A1;
-::>              *106  *144
-      thus F(phi,H) in M;
-::>        *123
-    end;
-
-
-
-    ::Image(phi|H) is maximal by Th31;
-    consider f being Permutation of M such that
-    B1: for K,K2 being Element of M holds
-    (ex H1,H2 being strict Subgroup of G st H1=K & H2=F(phi,H1) & H2=K2 & f.K = K2)
-    from FUNCT_2:sch 4;
-::>    *26
-    take f;
-    let H be strict Subgroup of G;
-    assume A1: H in M;
-    thus f.H = Image(phi|H) by A1,B1;
-::>                          *4
-  end;
-
-  :: Prove rng f = M
-  :: thus Phi(G) invariant under automorphisms
-  thus Phi(G) is characteristic Subgroup of G;
-::>                                         *4
-end;
-
-
-
-
-::> 4: This inference is not accepted
-::> 26: Substituted constant does not expand properly
-::> 57: The type of the instatiated term doesn't widen properly
-::> 106: Unknown attribute
-::> 123: Disagreement of argument types
-::> 144: Unknown label

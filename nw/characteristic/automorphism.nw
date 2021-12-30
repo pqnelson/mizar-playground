@@ -30,6 +30,8 @@ begin
 <<Register [[Id_G]] is bijective>>
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>
 <<Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$>>
+<<Theorem: $\forall\varphi\in\Aut(G)$, $\varphi(\trivialSubgroup)=\trivialSubgroup$>>
+<<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>
 <<Results and definition for Inner automorphisms>>
 
 @
@@ -895,6 +897,34 @@ end;
 
 @
 
+<<Theorem: $\forall\varphi\in\Aut(G)$, $\varphi(\trivialSubgroup)=\trivialSubgroup$>>=
+theorem ThAutoTriv:
+  for G being Group
+  for phi being Automorphism of G
+  for H being trivial Subgroup of G
+  holds Image(phi|H) is trivial Subgroup of G
+proof
+  let G be Group;
+  let phi be Automorphism of G;
+  let H be trivial Subgroup of G;
+  the multMagma of H = (1).G by Lm108;
+  then A1: the carrier of H = {1_G} by GROUP_2:def 7;
+  1_G in the carrier of G;
+  then A2: 1_G in dom phi by FUNCT_2:def 1;
+  the carrier of (phi .: H) = phi .: (the carrier of H) by GRSOLV_1:8
+  .= phi .: {1_G} by A1
+  .= {phi.(1_G)} by A2,Lm58
+  .= {1_G} by GROUP_6:31
+  .= the carrier of (1).G by GROUP_2:def 7;
+  then the carrier of (phi .: H) = the carrier of (1).G;
+  then the multMagma of (phi .: H) = (1).G by GROUP_2:59;
+  then phi .: H is trivial by LmGroupIsTrivialIff1;
+  then Image(phi|H) is trivial by GRSOLV_1:def 3;
+  hence thesis;
+end;
+
+@ %def ThAutoTriv
+
 \begin{theorem}
   Let $G$ be a group, $\varphi\in\Aut(G)$ an arbitrary automorphism.
   If $H\properSubgroup G$ is a maximal subgroup, then
@@ -902,7 +932,112 @@ end;
 \end{theorem}
 
 <<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>=
-theorem
-  H is maximal implies phi .: H is maximal
+theorem Th31:
+  for G being non trivial Group
+  for H being strict Subgroup of G
+  for phi being Automorphism of G
+  st H is maximal
+  holds Image(phi|H) is maximal
+proof
+  let G be non trivial Group;
+  let H be strict Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: H is maximal;
+  then A2: H is proper Subgroup of G by Lm98;
+  then A3: Image(phi|H) is proper Subgroup of G by ThAutoProper;
+  then P1: the multMagma of Image(phi|H) <> the multMagma of G by Def10;
+  set UG = the carrier of G;
+  set UH = the carrier of H;
+  P2: for K being strict Subgroup of G
+  st Image(phi|H) <> K & Image(phi|H) is Subgroup of K
+  holds K = the multMagma of G
+  proof
+    let K be strict Subgroup of G;
+    assume B1: Image(phi|H) <> K;
+    assume B2: Image(phi|H) is Subgroup of K;
+    then consider psi being Automorphism of G such that
+    B3: psi = phi" and
+    B4: H is Subgroup of Image(psi|K)
+    by Th7b;
+    set UK = the carrier of K;
+    K is non trivial Subgroup of G by A3,B1,B2,Lm110;
+    then reconsider K as non trivial strict Subgroup of G;
 
-@
+    B5: Image(phi|H) is proper Subgroup of K by B1,B2,Def10;
+    then (the carrier of K) \ (the carrier of Image(phi|H)) is non empty
+    by Lm100;
+    then consider k being object such that
+    B6: k in (the carrier of K) \ (the carrier of Image(phi|H))
+    by XBOOLE_0:def 1;
+    reconsider k as Element of K by B6;
+    B7: not (k in Image(phi|H)) by B6, STRUCT_0:def 5, XBOOLE_0:def 5;
+    set L = Image(psi|K);
+    B8: psi.k in L
+    proof
+      H is Subgroup of L by B4;
+      C1: k in K;
+      then C0: k in G by GROUP_2:41;
+      dom(psi|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
+      then C2: k in dom(psi|K);
+      then consider l being object such that
+      C3: l = psi.k;
+      k is Element of G by GROUP_2:42;
+      then C4: (psi|K).k = psi.k by C1,Lm3;
+      dom psi = the carrier of G by FUNCT_2:def 1;
+      then l in psi .: (the carrier of K) by C0,C1,C2,C3,C4,FUNCT_1:def 6;
+      then l in the carrier of (psi .: K) by GRSOLV_1:8;
+      then l in the carrier of Image(psi|K) by GRSOLV_1:def 3;
+      then psi.k in Image(psi|K) by C3;
+      hence thesis;
+    end;
+    B9: the multMagma of H <> L
+    proof
+      k is Element of G by GROUP_2:42;
+      set UPH = the carrier of Image(phi|H);
+      C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
+      phi is Function of UG,UG by GROUP_2:def 5;
+      C2: k in G & not k in Image(phi|H) by B7, GROUP_2:41;
+      then C3: not psi.k in (psi .: UPH)
+      by C1,Lm18;
+      consider phi2 being Automorphism of G such that
+      C4: phi2 = psi" and
+      C5: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
+      by Th7;
+      phi2=phi by C4,B3, Lm10;
+      then C6: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C5;
+      psi .: (the carrier of Image(phi|H))
+      = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
+      .= the carrier of Image(psi|Image(phi|H)) by GRSOLV_1:def 3;
+      then not psi.k in H by C3,C6;
+      then the carrier of H <> the carrier of L by B8;
+      hence thesis;
+    end;
+    then B10: L = the multMagma of G by A1,B4,GROUP_4:def 6;
+    then phi is Function of UG,UG & phi is onto & the carrier of L = UG;
+    then phi .: the carrier of L = phi .: UG
+                                .= rng phi by RELSET_1:22,FUNCT_2:def 3
+                                .= UG by FUNCT_2:def 3,FUNCT_2:def 1;
+    then UG = phi .: (the carrier of L)
+           .= the carrier of (phi .: L) by GRSOLV_1:8
+           .= the carrier of Image(phi|L) by GRSOLV_1:def 3;
+    then the carrier of Image(phi|L) = the carrier of G;
+    then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
+    then B11: Image(phi|L) = the multMagma of G;
+    Image(phi|L) = K
+    proof
+      Image(phi|L) = Image(phi|Image(psi|K));
+      consider psi2 being Automorphism of G such that
+      C1: psi2 = phi" and
+      C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
+      by Th7;
+      psi2 = psi by C1,B3;
+      then the multMagma of Image(phi|Image(psi|K)) = the multMagma of K by C2;
+      then Image(phi|Image(psi|K)) = K;
+      hence thesis;
+    end;
+    hence thesis by B11;
+  end;
+  thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
+end;
+
+@ %def Th31

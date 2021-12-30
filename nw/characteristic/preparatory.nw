@@ -53,9 +53,17 @@ reserve X for set;
 <<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
 <<Lemma: bijections have inverses>>
+<<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>
+
 <<Register: non trivial for Group>>
 <<Register: trivial groups and trivial subgroups>>
 <<Register: non trivial for Subgroup>>
+<<Lemma: trivial groups look like $\trivialSubgroup$>>
+<<Lemma: $H\subgroup G$ is trivial iff $\forall x\in G, x\in H\iff x = 1_{G}$>>
+<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>
+<<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
+<<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
+
 <<Definition: proper subgroup>>
 <<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>
 <<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
@@ -66,9 +74,10 @@ reserve X for set;
 <<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>
 <<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>
 <<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
-<<Lemma: trivial groups look like $\trivialSubgroup$>>
 <<Lemma: Trivial groups have no proper subgroups>>
 <<Lemma: Trivial groups have no maximal subgroup>>
+<<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
+
 
 @
 
@@ -660,6 +669,48 @@ end;
 
 @ %def Lm13
 
+<<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>=
+Lm58:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  for x being object
+  st x in X
+  holds f .: {x} = {f.x}
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  let x be object;
+  assume A0: x in X;
+  dom f = X by FUNCT_2:def 1;
+  then A1: x in dom f by A0;
+  for y being object holds y in f.:{x} iff y in {f.x}
+  proof let y be object;
+    thus y in f.:{x} implies y in {f.x}
+    proof
+      assume y in f.:{x};
+      then consider z being object such that
+      z in dom f and
+A2:   z in {x} and
+A3:   y = f.z by FUNCT_1:def 6;
+      z = x by A2,TARSKI:def 1;
+      hence thesis by A3,TARSKI:def 1;
+    end;
+    assume y in {f.x};
+    then
+A4: y = f.x by TARSKI:def 1;
+    x in {x} by TARSKI:def 1;
+    hence thesis by A1,A4,FUNCT_1:def 6;
+  end;
+  hence f .: {x} = {f.x} by TARSKI:2;
+end;
+
+@ %def Lm58
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Nontrivial Groups}
 We will be using nontrivial groups later. Recall, a group $G$ is
 nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
@@ -791,6 +842,107 @@ end;
 
 @
 
+\begin{lemma}
+A subgroup $H\subgroup G$ is trivial if and only if for any $g\in G$ we
+have $g\in H\iff g=1_{G}$.
+\end{lemma}
+
+<<Lemma: $H\subgroup G$ is trivial iff $\forall x\in G, x\in H\iff x = 1_{G}$>>=
+Lm109:
+  for G being Group
+  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
+proof
+  let G be Group;
+  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
+  proof
+    assume G is trivial Group;
+    then A1: ex y being object st the carrier of G = {y} by GROUP_6:def 2;
+    1_G in G;
+    then A2: the carrier of G = {1_G} by A1, TARSKI:def 1;
+    thus for x being object holds x in G iff x = 1_G
+    by A2, STRUCT_0:def 5, TARSKI:def 1;
+  end;
+  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
+  proof
+    assume A1: for x being object holds x in G iff x = 1_G;
+    then for x being object holds x in the carrier of G iff x = 1_G
+    by STRUCT_0:def 5;
+    then the carrier of G = {1_G} by TARSKI:def 1;
+    hence G is trivial Group by GROUP_6:def 2;
+  end;
+  thus thesis;
+end;
+
+@ %def Lm109
+
+<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>=
+Lm108:
+  for G being Group
+  for H being Subgroup of G
+  st H is trivial
+  holds the multMagma of H = (1).G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume H is trivial;
+  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
+                         .= (1).G by GROUP_2:63;
+  hence thesis;
+end;
+
+
+@ %def Lm108
+
+
+<<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>=
+Lm107:
+  for G being Group
+  for H being trivial Subgroup of G
+  for K being trivial Subgroup of G
+  holds the multMagma of H = the multMagma of K
+proof
+  let G be Group;
+  let H be trivial Subgroup of G;
+  let K be trivial Subgroup of G;
+  the multMagma of H = (1).G by Lm108
+  .= the multMagma of K by Lm108;
+  hence thesis;
+end;
+
+@ %def Lm107
+
+<<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>=
+Lm106:
+  for G being Group
+  for K being trivial Subgroup of G
+  for H being Subgroup of G
+  st H is Subgroup of K
+  holds H is trivial Subgroup of G
+proof
+  let G be Group;
+  let K be trivial Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  A2: the carrier of H = {1_G}
+  proof
+    the multMagma of K = (1).G by Lm108;
+    then the carrier of K = {1_G} by GROUP_2:def 7;
+    then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
+  end;
+  then ex x being object st the carrier of H = {x};
+  hence H is trivial Subgroup of G by GROUP_6:def 2;
+end;
+
+@ %def Lm106
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Proper Subgroups}\index{Subgroup!Proper}
 When we have a [nontrivial] group $G$, we can discuss the notion of a
 proper subgroup $H\properSubgroup G$ in analogy to the notion of a
@@ -1010,6 +1162,7 @@ Lm98:
   st H is maximal
   holds H is proper
 proof
+  let G be Group;
   let H be Subgroup of G;
   assume H is maximal;
   hence H is proper by Def10,GROUP_4:def 6;
@@ -1196,3 +1349,29 @@ proof
 end;
 
 @
+
+<<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
+Lm110:
+  for G being non trivial Group
+  for H being proper Subgroup of G
+  for K being Subgroup of G
+  st H is Subgroup of K & the multMagma of H <> the multMagma of K
+  holds K is non trivial Subgroup of G
+proof
+  let G be non trivial Group;
+  let H be proper Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  assume A2: the multMagma of H <> the multMagma of K;
+  not (K is non trivial Subgroup of G) implies contradiction
+  proof
+    assume B1: not K is non trivial Subgroup of G;
+    then K is trivial Subgroup of G;
+    then H is trivial Subgroup of G by A1,Lm106;
+    then the multMagma of H = the multMagma of K by B1,Lm107;
+    hence contradiction by A2;
+  end;
+  hence K is non trivial Subgroup of G;
+end;
+
+@ %def Lm110
