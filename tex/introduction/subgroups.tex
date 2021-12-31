@@ -1,0 +1,95 @@
+\section{Subgroups}
+
+\subsection{Helper notation}
+We have $A,B\subset G$ be subsets of the carrier set underlying a
+non-empty magma $G$. Then we can define ``\lstinline{A*B}'' as the set of
+elements of the form $ab$ for $a\in A$ and $b\in B$. This was done in
+\mml[def 2]{group2}\MizDef{GROUP\_2}[02]{2}. Similarly (in definitions
+3 and 4\MizDef{GROUP\_2}[03]{3}\MizDef{GROUP\_2}[04]{4}) we can define
+for any subset $A\subset G$ and any $g\in G$ the product $Ag$ and $gA$
+in the obvious way.
+
+For any subgroup $H\subgroup G$ and subset $A\subset G$,
+\mml[def 11]{group2}\MizDef{GROUP\_2}{11} defines \lstinline{A*H} and
+\lstinline{H*A} \emph{as subsets of the carrier of $G$} using the set
+underlying $H$, then using the earlier definitions (from
+\mml[def 2]{group2}).
+
+Similarly, for any subgroup $H\subgroup G$ and $g\in G$, we have
+\lstinline{g*H} and \lstinline{H*g} be defined using the underlying set of $H$.
+
+\subsection{Subgroup}
+For a group $G$, \mml[def 5]{group2}\MizDef{GROUP\_2}[05]{5} defines a
+``\lstinline{Subgroup of G}'' to be a Group-like non-empty \lstinline{multMagma}
+such that its carrier is a subset of the underlying set of $G$, and the
+Subgroup's multiplication operator is the multiplication from $G$
+restricted to the Subgroup.
+
+\begin{notation}
+We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
+\end{notation}
+
+\subsection{Equality of Subgroups}\label{par:introduction:subgroup-equality}
+For reasons which are not well documented, \mml[def 6]{group2}
+redefines equality for \emph{strict} Subgroups. Non-strict subgroups
+cannot be equal (not as subgroups).
+
+There are a few useful theorems
+concerning equality of subgroups, but the idiomatic Mizar code seems to
+be to assert ``\lstinline{the multMagma of H1 = the multMagma of H2}''.
+When the user knows both subgroups are strict, they can set ``\lstinline{H1 = H2}''.
+
+
+
+\begin{aside}[On ``strict'' mathematical gadgets]\index{strict@\lstinline{strict}|textbf}
+Mizar has a notion of a ``\lstinline{strict}'' attribute. What does it mean?
+Well, sometimes a mathematical gadget is ``composite''; like a vector
+space over a field is an Abelian group with vector addition, but it also
+has other stuff (like scalar multiplication). This ``other stuff''
+prevents it from being a ``bald-faced Abelian group''. Just as black
+holes have no hair, strict groups have no hair: it's just a
+``\lstinline{multMagma}'' satisfying the group properties (in Mizar, at
+least).
+
+We can always coerce a gadget into a strict version by manually
+constructing it from the relevant fields. For example, given any group
+$G$, we can construct a strict group as follows:
+\begin{mizar}
+:: given some non-strict Group G
+reconsider strict_G = multMagma (# the carrier of G, the multF of G #)
+as strict Group;
+:: now use strict_G to prove results
+\end{mizar}
+\end{aside}
+
+\subsection{Trivial Subgroups}\index{$\trivialSubgroup_{G}$}
+For any group $G$, $\trivialSubgroup_{G}$ is the trivial subgroup
+consisting of the identity element \lstinline{1_G} and nothing else. This is
+defined in \mml[def 7]{group2}\MizDef{GROUP\_2}[07]{7} and denoted \lstinline{(1).G}\mizindex{1.G@$\mathtt{(1).G}$}. The other
+trivial subgroup is denoted by mathematicians as $G$ itself, but Mizar
+distinguishes this trivial improper subgroup as $\Omega_{G}$\index{$\Omega_{G}$} in
+\mml[def 8]{group2}\MizDef{GROUP\_2}[08]{8}.\mizindex{Omega.G@$\mathtt{(Omega).G}$}
+
+\subsection{Intersection of Subgroups}
+If $H_{1}\subgroup G$ and $H_{2}\subgroup G$, then $H_{1}\cap H_{2}$ is
+a subgroup of $G$, too. Mizar denotes this by
+\lstinline{H1 /\ H2}\index{\lstinline{H1 /\ H2}}. Its
+defined in \mml[def 10]{group2}\MizDef{GROUP\_2}{10} as the group whose
+underlying set is the intersection of the sets underlying $H_{1}$ and $H_{2}$.
+
+\subsection{Cosets}
+For any subgroup $H\subgroup G$, we can consider the left (or right)
+cosets of $H$ as the family of subsets of $G$ of the form
+$\{gH|g\in G\}$ (resp., $\{Hg|g\in G\}$). This is defined in
+\mml[def 15,16]{group2}.\MizDef{GROUP\_2}{15}\MizDef{GROUP\_2}{16}\mizindex{Right Cosets@$\mathtt{Right\_Cosets}$}\mizindex{Left Cosets@$\mathtt{Left\_Cosets}$}
+
+This naturally leads to a notion of the index of a subgroup $H\subgroup G$,
+which Mizar defines as \lstinline{Index H}\mizindex{Index@\lstinline{Index}} in
+\mml[def 17]{group2}\MizDef{GROUP\_2}{17} as the
+cardinality of the collection of left cosets of $H$ in $G$. This is
+proven to be the same as the same definition using right cosets in
+\mml[Th 145]{group2}.\MizThm{GROUP\_2}{145}
+
+More generally, the collection of all possible subgroups of $G$ is given
+in \mml[def 1]{group3}\MizDef{GROUP\_3}[01]{1} as
+``\lstinline{Subgroups G}''\mizindex{Subgroups@\lstinline{Subgroups}}.

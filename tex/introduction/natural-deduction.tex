@@ -18,7 +18,7 @@ bottom to top''.
 
 \subsection{Assume: $\Longrightarrow$-introduction}\index{Assume@\texttt{assume}}
 When we want to prove a formula of the form $\Psi\implies\Phi$, we begin
-with stipulating $\Psi$ holds. That is to say, we ``\verb#assume# $\Psi$''.
+with stipulating $\Psi$ holds. That is to say, we ``\lstinline{assume} $\Psi$''.
 In Mizar:
 
 \begin{mizar}
@@ -37,7 +37,7 @@ $\Longrightarrow$-introduction:
 \end{equation}
 Remember, we read this from bottom to top, so if we want to prove
 the claim $\Psi\implies\Phi$ (having established the results $\Gamma$),
-then the statement ``\verb#assume# $\Psi$'' transforms our proof
+then the statement ``\lstinline{assume} $\Psi$'' transforms our proof
 obligation to $\Gamma,\Psi\vdash\Phi$ (i.e., proving $\Phi$ from the
 list $\Gamma$ with $\Psi$ appended to $\Gamma$).
 
@@ -60,7 +60,7 @@ end;
 \subsection{Assume: proving disjunction}\index{Idiom!Proving $\Phi\lor\Psi$}
 The idiomatic way to prove the claim $\Phi\lor\Psi$ in Mizar is to
 assume the negation of one of the disjuncts (usually the first, i.e.,
-to ``\verb#assume# $\neg\Phi$'') and then prove $\Psi$ holds.
+to ``\lstinline{assume} $\neg\Phi$'') and then prove $\Psi$ holds.
 \begin{mizar}
 Phi or Psi
 proof
@@ -72,18 +72,18 @@ end;
 
 \begin{ddanger}
   The reader may wonder if they may instead start the proof with
-  ``\verb#assume not Psi#'', since that's \emph{logically equivalent}, right?
+  ``\lstinline{assume not Psi}'', since that's \emph{logically equivalent}, right?
   The Mizar prover translates formulas and proof steps into a normal
   form (called ``semantic correlates''\index{Semantic Correlate}).
-  Unfortunately, starting with ``\verb#assume not Psi#'' translates into
+  Unfortunately, starting with ``\lstinline{assume not Psi}'' translates into
   a \emph{different} semantic correlate. One would have to change the
-  claim to ``\verb#Psi or Phi#''.
+  claim to ``\lstinline{Psi or Phi}''.
 \end{ddanger}
 
 \subsection{Thus: $\land$-introduction}\index{Thus@\texttt{thus}}
 Whenever we want to prove a claim $\Phi$, we conclude the proof with
 ``\texttt{thus} $\Phi$''. In Mizar, this looks like (with the
-preliminary steps omitted with a comment ``\verb#:: proof of ...#''):
+preliminary steps omitted with a comment ``\lstinline{:: proof of ...}''):
 
 \begin{mizar}
 Phi
@@ -105,8 +105,8 @@ proof
   thus Psi by...;
 end;
 \end{mizar}
-There is some justification for stating ``\verb#thus# $\Phi$'' or
-``\verb#thus# $\Psi$'', which are the ``\verb#by ...#'' suffix to the
+There is some justification for stating ``\lstinline{thus} $\Phi$'' or
+``\lstinline{thus} $\Psi$'', which are the ``\lstinline{by ...}'' suffix to the
 statements (referring to labels~\S\ref{par:introduction:referring-to-labels}).
 
 This corresponds to the $\land$-introduction rule in natural deduction:
@@ -114,12 +114,12 @@ This corresponds to the $\land$-introduction rule in natural deduction:
   \vcenter{\infer[\mathtt{thus}~\Phi]{\Gamma\vdash\Phi\land\Psi}{
     \Gamma\vdash\Phi &\qquad \Gamma\vdash\Psi}}
 \end{equation}
-where $\Gamma\vdash\Psi$ is the justification for ``\verb#thus# $\Psi$'',
-and $\Gamma\vdash\Phi$ is the justification for ``\verb#thus# $\Phi$''.
+where $\Gamma\vdash\Psi$ is the justification for ``\lstinline{thus} $\Psi$'',
+and $\Gamma\vdash\Phi$ is the justification for ``\lstinline{thus} $\Phi$''.
 
 \begin{idiom}\index{Thesis@\texttt{thesis}}\index{Idiom!\texttt{thus thesis}}
 Some Mizar code adheres to the idiom of concluding proofs, all proofs,
-with the statement ``\verb#thus thesis#''. Here ``\verb#thesis#'' is the
+with the statement ``\lstinline{thus thesis}''. Here ``\lstinline{thesis}'' is the
 special formula representing what remains to be proven.
 \end{idiom}
 
@@ -170,8 +170,8 @@ left subgoal.
 
 \subsection{Take: $\exists$-introduction}\index{Take@\texttt{take}}
 If we want to prove the claim ``$\exists x,\Phi(x)$'', then we need to
-``\verb#take# $t$'' (where $t$ is a term). We can take an explicit term,
-like ``\verb#take# $t = f(x)$''. The proof skeleton looks like:
+``\lstinline{take} $t$'' (where $t$ is a term). We can take an explicit term,
+like ``\lstinline{take} $t = f(x)$''. The proof skeleton looks like:
 \begin{mizar}
 ex t being T st Phi
 proof
@@ -189,8 +189,8 @@ This corresponds to the natural deduction rule of inference:
 \subsection{Per cases: $\lor$-elimination}\index{Per Cases@\texttt{per cases}}\index{Suppose@\texttt{suppose}}
 When we want to prove $\Psi_{1}\lor\dots\lor\Psi_{n}\implies \Phi$,
 we simply prove $\Psi_{1}\implies\Phi$, \dots, $\Psi_{n}\implies\Phi$.
-But instead of using the ``\verb#assume#'' step for each of these
-proofs, we use the special ``\verb#suppose#'' step to introduce a
+But instead of using the ``\lstinline{assume}'' step for each of these
+proofs, we use the special ``\lstinline{suppose}'' step to introduce a
 subproof.
 \begin{mizar}
 Phi
@@ -214,23 +214,29 @@ This corresponds to the natural deduction rule
     & \dots
     & \Gamma,\Psi_{n}\vdash\Phi}}
 \end{equation}
-Here the justification cited in the ``\verb#per cases by...#'' is the
+Here the justification cited in the ``\lstinline{per cases by...}'' is the
 label for the upper-left inference, that $\Gamma\vdash\Psi_{1}\lor\dots\lor\Psi_{n}$.
-Each ``\verb#suppose# $\Psi_{j}$; \dots; \verb#thus# $\Phi$'' block
+Each ``\lstinline{suppose} $\Psi_{j}$; \dots; \lstinline{thus} $\Phi$'' block
 corresponds to the derivation $\Gamma,\Psi_{j}\vdash\Phi$.
 
+\begin{danger}
+  Any proof with a \lstinline{per cases} step \emph{must} make this the
+  last step of the proof. The only statements which can occur after
+  \lstinline{per cases} is each \lstinline{suppose} sub-proof.
+\end{danger}
+
 \subsection{Justification, nested subproofs}\index{By@\texttt{by}}\index{Proof!Nested}
-I have been trying to include ``\verb#by ...#'' explicitly in proof
+I have been trying to include ``\lstinline{by ...}'' explicitly in proof
 steps to reflect which steps require justification. This can be done in
 one of two ways:
 \begin{enumerate}
 \item cite theorems, definitions, and/or labeled steps which occur in
   the proof (as discussed in~\S\ref{par:introduction:referring-to-labels}); or
-\item have a subproof, i.e., instead of writing ``\verb#by ...#'', we
+\item have a subproof, i.e., instead of writing ``\lstinline{by ...}'', we
   could have a proof on the next line.
 \end{enumerate}
 There is also syntactic sugar, if one wishes to cite \emph{the previous step},
-simply prepend the step with ``\verb#then ...#''. So instead of
+simply prepend the step with ``\lstinline{then ...}''. So instead of
 \begin{mizar}
 proof
   :: A1,A2 omitted but exist
@@ -251,12 +257,12 @@ end;
 The two are equivalent.
 
 \begin{ddanger}
-  There are two caveats to this rule of prepending ``\verb#then#'' to
-  statements: (1) the step ``\verb#then thus# $\Phi$'' looks awkward, so
-  Mizar has this be ``\verb#hence# $\Phi$''\index{Hence@\texttt{hence}};
+  There are two caveats to this rule of prepending ``\lstinline{then}'' to
+  statements: (1) the step ``\lstinline{then thus} $\Phi$'' looks awkward, so
+  Mizar has this be ``\lstinline{hence} $\Phi$''\index{Hence@\texttt{hence}};
   (2) if we have two statements
-  ``\verb#assume ex x st Phi;# \verb#then consider x such that Phi;#'' is
+  ``\lstinline{assume ex x st Phi;} \lstinline{then consider x such that Phi;}'' is
   contracted into a single step
-  ``\verb#given x such that Phi;#''\index{Given@\texttt{given}} since
+  ``\lstinline{given x such that Phi;}''\index{Given@\texttt{given}} since
   that resembles working mathematics.
 \end{ddanger}

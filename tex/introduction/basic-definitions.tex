@@ -1,0 +1,415 @@
+\section{Basic Definitions}
+
+We will review the definitions germane to group theory, as inspired
+by Nakasho and friends~\cite{nakasho2014formalization}. This entire
+section is inspired by their paper.
+
+Recall, as Baez~\cite[week one]{baez2004qg-lectures}\index{Stuff, Structure, Properties} notes, there are
+two ways to define a group. These two different definitions give rise to
+\emph{different} notions of ``group homomorphism'' (but identical
+notions of ``group isomorphism''). I will make bold the differences:
+
+\begin{definition}[Version 1]\label{defn:introduction:mizar-style-group}
+  A \emph{group} consists of
+  \begin{enumerate}
+  \item a set $G$
+  \end{enumerate}
+  equipped with
+  \begin{enumerate}
+  \item a binary operator $\mu\colon G\times G\to G$
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+  \item Associativity: for any $g_{1}$, $g_{2}$, $g_{3}\in G$, we have
+    $\mu(g_{1}, \mu(g_{2},g_{3})) = \mu(\mu(g_{1},g_{2}),g_{3})$
+  \item \textbf{Existence of Unit: there exists an element $1\in G$ such
+    that for any $g\in G$ we have $\mu(g,1)=\mu(1,g)=g$}
+  \item \textbf{Existence of inverses: for each $g\in G$, there is an
+    $h\in G$ such that $\mu(g,h)=1$}
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[Version 2]
+  A \emph{group} consists of
+  \begin{enumerate}
+  \item a set $G$
+  \end{enumerate}
+  equipped with
+  \begin{enumerate}
+  \item a binary operator $\mu\colon G\times G\to G$
+  \item \textbf{a unit $1\in G$}
+  \item \textbf{an inverse operator $\iota\colon G\to G$}
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+  \item Associativity: for any $g_{1}$, $g_{2}$, $g_{3}\in G$, we have
+    $\mu(g_{1}, \mu(g_{2},g_{3})) = \mu(\mu(g_{1},g_{2}),g_{3})$
+  \item \textbf{Unit laws: for any $g\in G$ we have $\mu(g,1)=\mu(1,g)=g$}
+  \item \textbf{Inverse law: for each $g\in G$, $\mu(\iota(g),g)=1$}
+  \end{enumerate}
+\end{definition}
+
+\begin{def-remark}[Terminology: ``Morphisms'']
+I will adopt modern terminology, and simply refer to a group
+homomorphism as a ``\emph{group morphism}'', or more tersely as just a
+morphism.
+\end{def-remark}
+
+\index{Magma|(} Mizar takes the first version as its definition.
+\emph{In fact, a Group in Mizar is literally ``just a Magma'' satisfying some extra properties.} Implicit in its
+definition is a notion of a ``\lstinline{multMagma}'', a magma with a
+multiplication operator (defined in \mml{algstr0}). As Nakasho and
+friends explicate~\cite{nakasho2014formalization}, a ``\lstinline{multMagma}''
+is a magma as could be found in, e.g., Bourbaki's\index{Bourbaki, Nicholas}
+\emph{Algebra}~\cite[see Ch.I\S1.1]{bourbaki1974elements}: it
+consists of a set (which Mizar calls its ``\lstinline{carrier}'') and a
+binary operator ``\lstinline{multF}''.\index{multF@\texttt{multF}}\index{carrier@\texttt{carrier}}\index{multMagma@\texttt{multMagma}}
+
+Note: comments in Mizar are started by ``\lstinline{::}'' and continue until
+the end of the line.
+
+\begin{mizar}
+:: algstr_0.miz
+definition
+  struct (1-sorted) multMagma (# carrier -> set,
+  multF -> BinOp of the carrier
+  #);
+end;
+\end{mizar}
+
+Let us unpack what is going on in this code. We are defining a
+\lstinline{struct},\index{Struct@\texttt{struct}} a mathematical structure
+which is usually presented in ordinary mathematics as a tuple of some
+kind $\struct{\dots}$. For example, a field might be presented as
+$\struct{F, +, \cdot, 0, 1}$ consisting of a set $F$, a couple binary
+operators, and a couple of selected elements of $F$.
+
+Mizar's grammar for defining a structure is:
+\begin{equation}
+  \langle\textit{structure-definition}\rangle ::=
+  \mbox{\texttt{struct}}~(\langle\textit{ancestors}\rangle)~\langle\textit{symbol}\rangle~
+  \mbox{\texttt{(\#}}\quad
+  \langle\textit{fields}\rangle\quad
+  \mbox{\texttt{\#)}}
+  \texttt{;}
+\end{equation}
+The ancestors are optional. For ``\lstinline{multMagma}'',\index{multMagma@\texttt{multMagma}} it has one ancestor
+(namely, ``\lstinline{1-sorted}''\index{1-sorted@\texttt{1-sorted}}). Recall
+from first-order logic that a one-sorted
+structure\index{Structure!One-Sorted}\mizindex{One-Sorted Structure@\texttt{1-sorted}} means we have
+\emph{one set} equipped with extra gadgetry (as opposed to a two-sorted
+structure\index{Structure!Two-Sorted} which consists of \emph{two sets} equipped with gadgetry, like
+a topological space consisting of a set of points and a set of neighborhoods).
+The fields for a structure look like a
+comma-separated list whose entries are of the form:
+\begin{equation}
+  \langle\textit{field}\rangle ::= \langle\textit{identifier}\rangle\quad\mbox{\texttt{->}}\quad\langle\textit{type}\rangle
+\end{equation}
+We see that ``\texttt{multMagma}'' has two fields:
+\begin{enumerate}
+\item ``\texttt{carrier}'' which is a set
+\item ``\texttt{multF}'' which is a ``\texttt{BinOp}'' (binary operator)
+  acting on the ``\texttt{carrier}''.
+\end{enumerate}
+This matches Bourbaki's definition of a magma.\index{Magma|)}
+
+\begin{notation}[Accessing fields of a structure]
+We can refer to, e.g., the ``\lstinline{multF}'' of a given instance of a
+``\lstinline{multMagma}'' by writing
+``\lstinline{the multF of <instance>}''. These are called accessor
+functors. Sometimes we want to access ``the underlying magma'' of an
+algebraic gadget, and a horrible pun used to describe this is the
+\emph{forgetful functor}\index{Functor!Forgetful}. We discuss more about
+functors later on (\S\ref{par:introduction:functor-one-g}).
+\end{notation}
+
+\begin{aside}[Multiplication operator]\label{rmk:introduction:multiplication-operator}\index{\texttt{x * y}}
+Before continuing on too far, I should note that for a
+``\texttt{M being multMagma}'' we have an infix binary operator
+``\texttt{x*y = (the multF of M).(x,y)}''. This is defined in
+Definition~\mml[def19]{algstr0}.\MizDef{ALGSTR\_0}{19}
+\end{aside}
+
+\subsection{Equality of Instances of Structures}
+If we a structure $\struct[Foo]{\mathsf{F}_{1},\dots,\mathsf{F}_{n}}$
+with $n$ fields $\mathsf{F}_{j}$, then we can make an instance of it
+using notation ``\verb$Foo(# F1, ..., Fn #)$'' where ``\verb$(#$'' is an
+ASCII approximation to ``$\langle\!\langle$'', and ``\verb$#)$'' approximates
+``$\rangle\!\rangle$''. Equality of two
+instances follows the same axiomatic behavior as ordered $n$-tuples:
+\verb$Foo(# E1, ..., En #) = Foo(# F1, ..., Fn #)$ if and only if each
+pair of fields are equal
+\lstinline{E1} = \lstinline{F1}, \dots, and \lstinline{En} = \lstinline{Fn}.
+If we tried to assert two \emph{different} structures are equal --- e.g.,
+\verb$Foo(# E1, ..., En #) = Bar(# F1, ..., Fm #)$ --- well, this is not
+allowed, Mizar will reject it.
+
+One caveat to this is if we have, for example, a topological group
+$G_{1}$ (which has all the fields as a group \emph{and} a topological
+space \emph{combined}) and, say, $S_{n}$ (which has all the fields of a
+group, but nothing else), then we cannot meaningfully compare these
+two. We will need to do something like write ``\lstinline{the Group of G1 = Sn}''
+to compare the \emph{group structure} of $G_{1}$ to the \emph{Group structure}
+of $S_{n}$.
+
+\subsection{Mizar's definition of Group}
+Mizar formalizes a group following the style of
+Definition~\ref{defn:introduction:mizar-style-group}: it's a magma which
+satisfies a bunch of extra properties (as opposed to a magma equipped
+with more structure). Mizar's notion of ``extra properties'' is handled
+by a mechanism called \define{Attributes}\index{Attribute!Mizar}, which
+are adjectives we can tack onto types and they encode certain axioms or
+formulas which must hold. There are three such attributes being defined
+immediately in \mml{group1}:
+\begin{enumerate}
+\item ``\lstinline{unital}''\index{unital@\texttt{unital}} which asserts
+  $\exists_{e\esti \mathtt{IT}}\forall_{h\esti \mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h$
+\item ``\lstinline{Group-like}''\index{Group-like@\texttt{Group-like}},
+  which extends the condition of ``\lstinline{unital}'' with the assertion
+  that for any element $h$ and inverse element $g$ exists
+  $\exists_{e\esti \mathtt{IT}}\forall_{h\esti \mathtt{IT}} \mu(h,e)=h\land\mu(e,h)=h\land\exists_{g\esti \mathtt{IT}}\mu(h,g)=e\land\mu(g,h)=e$
+\item ``\lstinline{associative}''\index{associative@\texttt{associative}}
+  which corresponds to our demand of associativity
+  $\forall_{x,y,z\esti \mathtt{IT}}\mu(\mu(x,y),z)=\mu(x,\mu(y,z))$.
+\end{enumerate}
+With these attributes in hand, Mizar defines a group to be a
+``\lstinline{Group-like associative non empty multMagma}'', i.e., a magma such
+that it is associative and group-like (has an identity element and for
+each element, a corresponding inverse element exists). This is collected
+in a new type, or \define{Mode}\index{Mode!in Mizar} (as Mizar calls them).
+
+\index{Unital@\texttt{unital}|(}\index{Group-like@\texttt{Group-like}|(}\index{Associative@\texttt{associative}|(}
+\begin{mizar}
+:: group_1.miz
+definition
+  let IT be multMagma;
+
+  attr IT is unital means
+:: GROUP_1:def 1
+  ex e being Element of IT st for h being
+  Element of IT holds h * e = h & e * h = h;
+
+  attr IT is Group-like means
+:: GROUP_1:def 2
+  ex e being Element of IT st for h being Element of IT
+  holds h * e = h & e * h = h &
+        ex g being Element of IT st h * g = e & g * h = e;
+
+  attr IT is associative means
+:: GROUP_1:def 3
+  for x,y,z being Element of IT holds (x*y )*z = x*(y*z);
+end;
+
+definition
+  mode Group is Group-like associative non empty multMagma;
+end;
+\end{mizar}
+\index{Associative@\texttt{associative}|)}\index{Group-like@\texttt{Group-like}|)}\index{Unital@\texttt{unital}|)}\index{Group@\texttt{Group}|textbf}
+
+\begin{idiom}\label{rmk:introduction:idiom-it-in-attributes}\index{Idiom!IT in Attributes}\index{IT@\texttt{IT}}
+Whenever defining an attribute in Mizar, we have an ambient
+``\lstinline{IT}'' object for which the attribute will be defined upon. For
+example, these attributes appearing in \mml[def 1]{group1} are defined
+on a \lstinline{multMagma}.
+\end{idiom}
+
+\begin{remark}[Registering attributes as adjectives]\index{Registration}
+Once we have defined attributes, we cannot use them as adjectives for
+types until we ``\lstinline{register}'' them. Without registration, writing
+something like ``\lstinline{let x be associative multMagma}'' would confuse
+Mizar, and it would throw an error. Until registered, we would have to
+write something like ``\lstinline{let x be multMagma; assume x is associative}''
+or ``\lstinline{let x be multMagma such that x is associative}''.
+\end{remark}
+
+\begin{idiom}\index{Idiom!\lstinline{-like} Attributes}
+In the early 1990s, it was idiomatic to introduce an attribute
+schematically of the form ``$X$-like'' when defining a new mode $X$. We
+see this with the definition of \lstinline{Group-like} attribute for a
+\lstinline{multMagma}. This idiom can be found in about 147 occurrences
+in the Mizar mathematical library.
+\end{idiom}
+
+Observe that a more faithful translation of Mizar's definition would
+be:
+
+\begin{quote}
+  \textbf{Definition.} A \emph{Group} $\struct{G,\cdot}$ is a set of
+  elements with a binary operator $\cdot\colon G\times G\to G$
+  satisfying the following conditions:
+  \begin{enumerate}
+  \item \textbf{Associativity:} for all $a,b,c\in G$, we have $(a\cdot b)\cdot c = a\cdot(b\cdot c)$
+  \item \textbf{Identity element:} There exists an element $e$ such that
+    $e\cdot a= a\cdot e = a$ for all $a\in G$
+  \item \textbf{Inverse Element:} For all $a\in G$, there exists an
+    element $b\in G$ with $a\cdot b=b\cdot a = e$.
+  \end{enumerate}
+\end{quote}
+We stress \emph{a Group in Mizar is just a Magma} which just so happens
+to satisfy some extra properties.
+
+\begin{definition}
+Let $G$ be a group. We define its \define{Identity Element} to be the
+unique element $e_{G}\in G$
+\end{definition}
+\begin{notation}
+We denote the identity element sometimes by $1_{G}$ if $G$'s binary
+operator is denoted by multiplication, and $0_{G}$ if $G$'s binary
+operator is denoted by addition. Since generically the binary operator
+is denoted by multiplication, we usually use $1_{G}$ as the identity element.
+Mizar has a way to encode this convention, which
+is the next definition in~\mml{group1}:\MizDef{GROUP\_1}[04]{4}
+\mizindex{1G@$\mathtt{1\_G}$}
+\end{notation}
+
+
+\begin{mizar}
+definition
+  let G be multMagma such that
+A1: G is unital;
+  func 1_G -> Element of G means
+:: GROUP_1:def 4
+  for h being Element of G holds h * it = h & it * h = h;
+  existence by A1;
+  uniqueness
+  :: proof omitted
+end;
+\end{mizar}
+
+\subsubsection{Functor Definitions}\label{par:introduction:functor-one-g} What's going on here? Well, for any unital magma $G$, we have a
+``functor'' (a logical function, i.e., parametrized term) denoted
+``\lstinline{1_}'' which produces the unit element for the given magma.
+Whereas (in print) mathematicians would write $1_{G}$, in Mizar we would
+write ``\lstinline{1_G}''.
+
+Such a term is defined as $\forall h\in G, h\cdot\mathtt{it}=h\land\mathtt{it}\cdot{h}=h$.
+Here ``\lstinline{it}''\index{It@\texttt{it}} anaphorically\footnote{We have
+Lisp programmers to thank for this lovely term.} refers to the
+definiendum (the term being defined, i.e., ``\lstinline{1_G}''). Whenever
+functors are defined, their defining properties will involve
+``\lstinline{it}'' satisfying some formula.\footnote{The ``\lstinline{IT}''
+appearing in definitions of attributes play an analogous role, hence the
+idiom noted in Idiom~\ref{rmk:introduction:idiom-it-in-attributes}.}
+
+Mizar demands we prove such a thing exists, and then a proof of
+uniqueness is supplied. This coincides with the usual practice in
+mathematical logic, when considering a ``function term'' in first-order
+logic, which has [existence] exactly one [uniqueness] output for each
+possible argument configuration.
+
+\begin{aside}[Functors in Mizar]\index{Functor!In Mizar|(}
+A functor in Mizar is the only way to construct a term. Rudnicki and
+friends~\cite{rudnicki2001commutative} cite the term originating from
+Rasiowa and Sikorski~\cite[see p.148]{rasiowa1963mathematics},
+quoting: ``\dots some signs in the formalized language should correspond
+to the mappings and functions being examined. These signs are called
+\emph{functors}, or---more precisely---\emph{$m$-argument functors}
+provided they correspond to $m$-argument mappings from objects to
+objects ($m = 1, 2, \dots$)''.
+
+\emph{\textbf{This has absolutely no relation to functors in category theory},
+and in my opinion is an extremely poor
+choice of terminology due entirely to the ironies of history.}
+\index{Functor!In Mizar|)}%
+\end{aside}
+
+\subsubsection{Stuff, Structure, Properties versus Mizar Definitions}\index{Stuff, Structure, Properties|textbf}
+I grew up learning abstract algebra from the perspective of Baez--Dolan
+``Stuff, Structure, and Properties''~\cite{baez2001finite,baez2004qg-lectures,baez2006quantum,baez2010lectures}, thinking in terms of ``group objects''
+in some ambient category. Defining new gadgets could then be framed in
+terms of consisting of objects equipped with morphisms satisfying some
+commutative diagrams. As an added bonus, we get morphisms ``for free''.
+
+Mizar takes a more ``traditional'' approach, defining a
+\lstinline{struct} which loosely lists the stuff and minimul structure
+underlying a gadget. The properties are then defined as attributes. Even
+some structure are introduced using attributes (like the inverse
+operator for groups). And then the gadget is bundled together as a
+mode. Unlike the Baez--Dolan approach, we do not get morphisms for free.
+
+\subsection{Examples of Groups}
+There are not many examples of groups in Mizar, only four nontrivial
+groups (that I could find).
+
+\begin{example}
+  The real numbers equipped with addition are proven to be a group in
+  Theorem~\mml[Th3]{group1}.
+\end{example}
+
+\begin{example}\index{$\ZZ$!Group}
+The integers, as an additive group, are defined as \lstinline|INT.Group|\mizindex{Integers@\texttt{INT.Group}}
+in Definition~\mml[def 1]{gr_cy_1}.
+\end{example}
+
+\begin{example}[Cyclic group $\cyclicGroup{n}$]\label{example:introduction:cyclic-group}\index{Group!Cyclic}
+The finite cyclic group of order $n$ is defined as \lstinline|INT.Group(n)|\mizindex{Integers@\texttt{INT.Group(n)}}
+in Definition~\mml[def 5]{gr_cy_1}. The notion of a cyclic group is
+introduced in Definition~\mml[def 7]{gr_cy_1}\MizDef{gr\_cy\_1}{7}\mizindex{Cyclic@\texttt{cyclic}}, and the finite cyclic
+group is registered as cyclic.
+\end{example}
+
+\begin{example}[Symmetric Group]\index{Group!Symmetric}
+Given a non-empty set $X$, we can consider the group of bijections on
+$X$, popularly known as the \define{Symmetric Group} and denoted
+$\Sym(X)$. It's introduced in Definition~\mml[def 2]{cayley} as
+``\lstinline{SymGroup(X)}''\mizindex{SymGroup@\texttt{SymGroup(X)}}.
+This Mizar implementation is quite faithful to our mathematical
+intuition, using the definition of a \lstinline{Permutation of X} being
+a bijection $f\colon X\to X$ as defined in Definition~\mml[def 5]{funct2}. It
+does not appear to be developed anywhere further, for example: the
+alternating group is not defined anywhere.
+\end{example}
+
+
+\subsection{Inverse operator for group elements}
+When we have a group $\struct{G,\cdot}$, we also have the ability
+to invert any given element $g\in G$. Mizar denotes this by
+``\lstinline{g"}'', which is what the ``Rosette stone'' of notation suggests
+(since mathematicians would write $g^{-1}$). This is handled in~\mml[def 5]{group1}.\MizDef{GROUP\_1}[05]{5}
+A formal ``\lstinline{inverse_op(G)}''\mizindex{Inverse Op(G)@$\mathtt{inverse\_op(G)}$} is given in~\mml[def 6]{group1}.\MizDef{GROUP\_1}[06]{6}
+
+\begin{notation}[Inverse operator for subsets of $G$]
+We generalize this notation in group theory to write, if $A\subset G$ is
+some subset, $A^{-1}=\{a^{-1}\in G\mid a\in A\}$. Mizar defines this
+notation in \mml[def 1]{group2}.\MizDef{GROUP\_2}[01]{1}
+\end{notation}
+
+\subsection{Power operator}
+For any $g\in G$, and $n\in\NN_{0}$, we often write $g^{n}$ with the
+understanding this stands for $g^{0}=1_{G}$ and $g^{n+1}=g^{n}\cdot g$.
+This is defined in~\mml[def 7]{group1}\MizDef{GROUP\_1}[07]{7}. But we generalize this in
+mathematics to let $n\in\ZZ$, allowing the case when $n<0$ to be defined
+by $g^{n} = (g^{|n|})^{-1}$.
+
+Mizar does this in~\mml[def 8]{group1},\MizDef{GROUP\_1}[08]{8}
+following the conventions taken by earlier articles in Mizar that
+$x^{y}$ is denoted by ``\lstinline{x |^ y}''.\index{\texttt{x \mid\Caret y}@{\texttt{x "|"\Caret\ y}}!Mizar for $x^{y}$}
+For the sake of consistency, Mizar explicitly states in~\mml[def 8]{group1}
+when $g\in G$ and $n\esti \NN_{0}$, it follows
+that ``\lstinline{g |^ n}'' coincides with what we expect (i.e., $g^{n}$).
+
+\subsection{Order of Group Element (and Group Order)}
+If $h\in G$, then we say $h$ is of order 0 if the only $n\in\NN_{0}$
+satisfying $h^{n}=1_{G}$ is $n=0$. Mizar defines this as an attribute
+in~\mml[def 10]{group1}\MizDef{GROUP\_1}{10} as ``\lstinline{being_of_order_0}''\index{Being of Order 0@$\mathtt{being\_of\_order\_0}$}\mizindex{Being of Order 0@$\mathtt{being\_of\_order\_0}$}.
+This segues into defining the notion of the order for an element $g\in G$
+as the smallest natural number $|g|=n\in\NN_{0}$ for which $g^{n}=1_{G}$
+(provided $g$ is not of order zero, in which case we specially define
+its order to be $|g|=0$). Mizar defines this as
+``\lstinline{ord g}''\index{Order!\texttt{ord g}}\mizindex{ord g@$\mathtt{ord~g}$}
+in~\mml[def 11]{group1}.\MizDef{GROUP\_1}{11}
+
+The order of the group, Mizar overloads the cardinality operator (again,
+matching mathematical practice). Specifically,
+for $G$ being any finite 1-sorted typed object (like a group), we have
+``\lstinline{card G}''\mizindex{Card G@\texttt{card G}}\index{Cardinality@\texttt{card G}} be the cardinality
+of the underlying set.
+
+\subsection{Abelian Groups}
+Sadly, Mizar departs from mathematical practice, and defines an
+attribute in~\mml[def 12]{group1}\MizDef{GROUP\_1}{12} for a
+\lstinline{multMagma} to be ``\lstinline{commutative}''.\index{Commutative@\texttt{commutative}}\index{Abelian|see{\texttt{commutative}}}\mizindex{Commutative@\texttt{commutative}}
+This demands the expected property
+\begin{equation*}
+  \forall x,y\in G, x\cdot y=y\cdot x.
+\end{equation*}
