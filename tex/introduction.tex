@@ -107,6 +107,66 @@ notation, see: \url{http://markun.cs.shinshu-u.ac.jp/kiso/projects/proofchecker/
 \input{tex/introduction/conjugation}
 \input{tex/introduction/commutators}
 
+\section{Group Action}
+
+Mizar follows Bourbaki~\cite{bourbaki1974elements} in handling group
+actions by means of groups with operators.
+
+\begin{definition}[{\cite[I\S3.1 def 1]{bourbaki1974elements}}]
+Let $\Omega$ be a set, $E$ another set. An \define{Action} of $\Omega$
+on $E$ is a mapping $\Omega\to E^{E}$.
+\end{definition}
+
+This is a representation of $\Omega$, in modern terminology. Nowadays,
+we think of an action as either a morphism $\lambda\colon\Omega\times T\to E$
+or $\rho\colon E\times\Omega\to E$ (depending on if we want to act on
+the left or right, respectively).
+
+\begin{definition}[{\cite[I \S4.2 def 2]{bourbaki1974elements}, \mml{group9}}]
+Let $\Omega$ be some set. A \define{Group with Operators in $\Omega$}
+consists of a group $G$ equipped with an action of $\Omega$ on $G$ such
+that the action distributes over $G$'s law of composition:
+\begin{equation}
+  \forall g_{1},g_{2}\in G,\forall\omega\in\Omega,
+  (g_{1}\cdot g_{2})^{\omega} = {g_{1}}^{\omega}\cdot{g_{2}}^{\omega}.
+\end{equation}
+\end{definition}
+
+\begin{def-remark}
+From a modern perspective, we have each $\omega\in\Omega$ give us a
+group endomorphism $(-)^{\omega}\colon G\to G$. Then $\Omega$ is a
+collection of endomorphisms. If we have some way to compose these
+operators together in an associative way, then we've got a monoid
+$\Omega$ acting on a group $G$.
+\end{def-remark}
+
+\begin{def-remark}
+If we take $\Omega=\emptyset$, then the group with operators in
+$\emptyset$ over $G$ coincides with just the group itself.
+\end{def-remark}
+
+\begin{def-remark}
+It seems insane that the Jordan-H\"older theorem is given for groups
+with operators, but not for groups, when the ``with operators'' are not
+needed. I fear I will need to ``hack'' a way around this by noting for
+any group $G$ there is a unique group with operators $\Omega=\emptyset$
+and then adapt the results from \mml{group9} for groups as we know and
+love them.
+\end{def-remark}
+
+\begin{theorem}[Schreier, {\mml[th116,117]{group9}}]
+Given two composition series $\Sigma_{1}$ and $\Sigma_{2}$ for a group
+with operatos $G$, there exists two composition series $\Sigma_{1}'$ and $\Sigma_{2}'$
+such that $\Sigma_{1}'$ is finer than $\Sigma_{1}$, $\Sigma_{2}'$ is
+finer than $\Sigma_{2}$, and $\Sigma_{1}'$ is equivalent to $\Sigma_{2}'$.
+\end{theorem}
+
+\begin{thm-remark}
+This is Bourbaki's version of Schreier's theorem, found in \emph{Algebra}~\cite{bourbaki1974elements}
+chapter I \S4{.}7, Theorem~5. Compare this to the version given in
+Gorenstein~\cite{gorenstein1980finite} Theorem~1{.}2{.}7.
+\end{thm-remark}
+
 \subsection{Simple Group}
 Definition~\mml[def12]{group9} defines a group to be
 \define{Simple}\index{Simple!Group}\index{Group!Simple}
