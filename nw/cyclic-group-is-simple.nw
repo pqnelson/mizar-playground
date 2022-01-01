@@ -33,3 +33,29 @@ theorem
   holds INT.Group(p) is simple
 
 @
+
+Recall the definition of being simple:
+
+\begin{mizar}
+:: GROUP_9:def 12
+definition
+  let IT be Group;
+  attr IT is simple means
+
+  IT is not trivial & not ex H being strict
+  normal Subgroup of IT st H <> (Omega).IT & H <> (1).IT;
+end;
+\end{mizar}
+
+We also have by Theorem [[GROUP_3:116]] every subgroup of an Abelian
+group is normal:
+
+\begin{mizar}
+theorem :: GROUP_3:116
+  for H being strict Subgroup of G holds G is commutative Group implies
+  H is normal
+by Th73;
+\end{mizar}
+
+Suffices to show that a finite Abelian group is simple if its only
+subgroups are trivial.
