@@ -79,7 +79,7 @@ property of $\langle A\rangle$ is proven in Theorem~\mml[Th34]{group4}\MizThm{GR
 \subsection{Element is Generating}
 We call an element $a\in G$ \emph{generating} if there is an $A\subset G$
 such that $\langle A\rangle = G$ (i.e., \lstinline{gr A = G}) and
-$\langle A\setminus\{a\}\rangle\neq G$ (i.e., \lstinline{gr(A \ \{a\}) = G}).
+$\langle A\setminus\{a\}\rangle\neq G$ (i.e., \lstinline!gr(A \ {a}) = G!).
 Mizar provides this in \mml[def5]{group4}\MizDef{GROUP\_4}{5} as
 an attribute \lstinline{generating}\mizindex{Generating@\texttt{generating}}.
 
@@ -145,3 +145,20 @@ collection of all subgroups of $G$ as given by Definition~\mml[def1]{group3}.
 
 This may be a bit difficult to read, since Mizar uses second-order
 reasoning with schemes.
+
+\subsection{Simple Group}
+Definition~\mml[def12]{group9} defines a group to be
+\define{Simple}\index{Simple!Group}\index{Group!Simple}
+if it is not trivial and there is no [strict] normal proper Subgroup of
+it. The attribute is
+\lstinline{simple}\mizindex{Simple@\texttt{simple}}, in all lowercase.
+
+\begin{mizar}
+definition
+  let IT be Group;
+  attr IT is simple means
+  :: GROUP_9:def 12
+  IT is not trivial & not ex H being strict
+  normal Subgroup of IT st H <> (Omega).IT & H <> (1).IT;
+end;
+\end{mizar}
