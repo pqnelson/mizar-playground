@@ -4,19 +4,6 @@
 \usepackage{mizar}
 \usepackage{multibib}
 \usepackage{tutmac}
-\newcites{mml}{MML Bibliography}
-\def\mml{\citemml}
-
-\def\mmlArticleStyle#1{\texttt{\scshape #1}}
-\let\oldcitemml\citemml
-\makeatletter
-\renewcommand\citemml[2][\@empty]{\bgroup
-  \def\citeform##1{\mmlArticleStyle{##1}}% hack #1 use custom style
-  \def\@cite##1##2{{% hack #2: treat \citemml[def 3]{foo} as foo:def 3
-      \@citestyle[\citeform{##1}\if@tempswa\texttt{:##2}\fi]}}%
-  \ifx#1\@empty\oldcitemml{#2}\else\oldcitemml[#1]{#2}\fi%
-  \egroup}
-\makeatother
 % Note to self: this tex document follows the hack discussed by Cameron Smith
 % http://www.literateprogramming.com/best/nowebfi.html
 %
