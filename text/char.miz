@@ -15,40 +15,46 @@ environ
    ARYTM_3, ARYTM_2, FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0,
    FUNCT_2, CARD_1 , STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
    GROUP_6, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP ,
-   NEWTON, PRE_TOPC, GROUP_3 ;
+   NAT_1, INT_1, INT_2, ORDINAL2, XXREAL_0, GLIB_000, XCMPLX_0,
+   SETFAM_1, GROUP_9, GR_CY_1, ORDINAL1, REAL_1, XREAL_0,
+   NEWTON, PRE_TOPC, GROUP_3, GROUP_10 ;
 
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0 ,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0 ,XREAL_0, REAL_1,
+   SETFAM_1, ORDINAL1, ORDINAL2, XCMPLX_0, NAT_1, INT_1, INT_2, NAT_D, SQUARE_1,
    BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
-   AUTGROUP;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
 
  notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0 ,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0 ,XREAL_0, REAL_1,
+   SETFAM_1, ORDINAL1, ORDINAL2, XCMPLX_0, NAT_1, INT_1, INT_2, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
-   AUTGROUP;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
 
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+   INT_1, INT_2, XCMPLX_0, ARYTM_3, XREAL_0,
    ARYTM_2, NUMBERS, FINSET_1 , STRUCT_0, GROUP_1, GROUP_2, GROUP_3,
-   GROUP_6;
+   GROUP_6, GR_CY_1, NEWTON;
 
- requirements BOOLE, SUBSET;
+ requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
  definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, ARYTM_2, GROUP_1,
-   GROUP_3, GROUP_4, GROUP_6, AUTGROUP;
+   GROUP_3, GROUP_4, GROUP_6, AUTGROUP, NEWTON;
 
  equalities FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2, GROUP_3,
-   ALGSTR_0;
- expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2;
+   ALGSTR_0, NEWTON;
+
+ expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2, NEWTON;
 
  theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2,
    ZFMISC_1, XBOOLE_0, XBOOLE_1, FINSET_1, CARD_1, XREAL_1, COMPLEX1,
    XXREAL_0, ORDINAL1, NAT_D, XREAL_0, RELAT_1 , GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, REALSET1, STRUCT_0, GRSOLV_1,
-   AUTGROUP;
+   SETFAM_1, AUTGROUP, GR_CY_1, NEWTON, GROUP_10;
 
- schemes BINOP_1, FUNCT_2;
+ schemes BINOP_1, FUNCT_2, GROUP_4;
 
 
 begin :: preparatory work
@@ -1945,7 +1951,259 @@ proof
     hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
   end;
 
-
-
   hence Z is characteristic Subgroup of G by Th27;
 end;
+
+:: The Frattini subgroup is characteristic
+::theorem Th31:
+::  for G being non trivial Group
+::  for H being strict Subgroup of G
+::  for phi being Automorphism of G
+::  st H is maximal
+::  holds Image(phi|H) is maximal
+reserve G for non trivial Group;
+reserve H,K for Subgroup of G;
+reserve A for set;
+
+:: the family of maximal subgroups for a given nontrivial group
+deffunc MS(non trivial Group) = {K where K is Element of Subgroups $1 : ex H being strict Subgroup of $1 st
+  H is maximal & H=K};
+
+reserve p for prime Nat;
+reserve A for set;
+
+definition
+  let G be finite Group;
+  let p be prime Nat;
+  func p-core_of_G -> strict Subgroup of G means
+  the carrier of it = meet{A where A is Subset of G :
+  ex P being strict Subgroup of G st A = the carrier of P &
+  P is_Sylow_p-subgroup_of_prime p};
+  existence
+  proof
+    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+    A1: ex P being strict Subgroup of G st SPS[P]
+    by GROUP_10:10;
+    ex H being strict Subgroup of G st the carrier of H = meet{A where
+A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
+    from GROUP_4:sch 1(A1);
+    hence thesis by A1;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+
+for p being prime Nat
+for G being finite Group
+st card G = p
+holds G is simple;
+::>             *4
+
+:: the carrier of Phi(G) = meet {A where A is set : ex H being Element of MS(G) st A = the carrier of H} by GROUP_4:def 7;
+theorem
+  (ex H being strict Subgroup of G st H is maximal) implies
+  Phi(G) is characteristic Subgroup of G
+proof
+  given H being strict Subgroup of G such that
+  A1: H is maximal;
+
+  set X = {A where A is Subset of G: ex K being strict Subgroup of G st A =
+  the carrier of K & K is maximal};
+
+  A2: for phi being Automorphism of G
+  for H being strict Subgroup of G
+  st H is maximal
+  holds (ex H2 being strict Subgroup of G st H2 is maximal & H2 = Image(phi|H))
+  by Th31;
+
+  for phi being Automorphism of G
+  for a being Element of G
+  holds (phi.a in Phi(G) iff
+         for H being strict Subgroup of G
+         st H is maximal
+         holds phi.a in H)
+  proof
+    let phi be Automorphism of G;
+    let a be Element of G;
+    thus phi.a in Phi(G) implies for H being strict Subgroup of G st H is maximal holds phi.a in H
+    proof
+      assume B1: phi.a in Phi(G);
+      let H be strict Subgroup of G;
+      assume B2: H is maximal;
+      thus phi.a in H;
+::>                 *4
+    end;
+
+    thus (for H being strict Subgroup of G st H is maximal holds phi.a in H) implies phi.a in Phi(G)
+    proof
+      assume B1: for H being strict Subgroup of G st H is maximal holds phi.a in H;
+      then consider H2 being strict Subgroup of G such that
+      B2: H2 is maximal and
+      B3: H2 = Image(phi|H)
+      by A2;
+::>    *4
+      thus phi.a in Phi(G) by GROUP_4:38;
+::>                         *4
+    end;
+    thus thesis;
+  end;
+
+:: (a in Phi(G) iff for H being strict Subgroup of G st H is maximal holds a in H)
+
+  thus Phi(G) is characteristic Subgroup of G;
+::>                                         *4
+end;
+
+
+
+
+theorem
+  (ex H being strict Subgroup of G st H is maximal) implies
+  Phi(G) is characteristic Subgroup of G
+proof
+  set M = {K where K is Element of Subgroups G : ex H being strict Subgroup of G st
+  H is maximal & H=K};
+  set M2 = {A where A is Subset of G : ex H being strict Subgroup of G st
+            A = the carrier of H & H in M};
+  for phi being Automorphism of G
+  holds ex f being Permutation of M st
+  (for H being strict Subgroup of G st H in M holds f.H = Image(phi|H))
+  proof
+    let phi be Automorphism of G;
+    deffunc F(Automorphism of G, strict Subgroup of G) = Image(($1)|($2));
+
+    for H being strict Subgroup of G st H is maximal holds H in M
+    proof
+      let H be strict Subgroup of G;
+      assume A1: H is maximal;
+      H is Element of Subgroups G by GROUP_3:def 1;
+      hence H in M by A1,STRUCT_0:def 5;
+    end;
+    for H being object
+    st H in M
+    holds ex K being strict Subgroup of G st H=K & K is maximal
+    proof
+      let H be object;
+      assume A1: H in M;
+      consider K being Element of Subgroups G such that
+      A2: K = H and
+      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=K
+      by A1;
+      H in Subgroups G by A2;
+      reconsider K as strict Subgroup of G by GROUP_3:def 1;
+      consider K2 being strict Subgroup of G such that
+      A4: K2 is maximal and
+      A5: K2=K
+      by A3;
+      A6: H = K2 & K2 is strict Subgroup of G by A2,A5;
+      then A7: H is strict Subgroup of G;
+      H is Element of M by A1;
+      take K2;
+      thus H = K2 & K2 is maximal by A4,A6;
+    end;
+
+    B1: for H1,H2 being strict Subgroup of G
+    st H2 = F(phi,H1) & H1 is maximal
+    holds H2 in M
+    proof
+      let H1,H2 be strict Subgroup of G;
+      assume A1: H2 = F(phi,H1);
+      assume A2: H1 is maximal;
+      G is non trivial Group & H1 is strict Subgroup of G
+      & phi is Automorphism of G & H1 is maximal by A2;
+      then A3: Image(phi|H1) is maximal by Th31;
+      H2=Image(phi|H1) by A1;
+      then A4: H2 is maximal by A3;
+      H2 is Element of Subgroups G by GROUP_3:def 1;
+      hence H2 in M by A2,A4,STRUCT_0:def 5;
+    end;
+    for K1 being Element of M
+    for H being strict Subgroup of G
+    st H=K1 & H is maximal
+    holds F(phi,H) in M
+    proof
+      let K1 be Element of M;
+      let H be strict Subgroup of G;
+      assume H=K1;
+      assume H is maximal;
+      then A1: Image(phi|H) is maximal by Th31;
+      Image(phi|H) is Element of Subgroups G by GROUP_3:def 1;
+      then A2: Image(phi|H) in M by A1;
+      then F(phi,H) = phi .: H by GRSOLV_1:def 3;
+      thus F(phi,H) in M by A2;
+    end;
+    for K2 being Element of M
+    ex H being strict Subgroup of G
+    st H is Element of M &
+    K2=Image(phi|H)
+    proof
+      let K2 be Element of M;
+      consider H2 being strict Subgroup of G such that
+      A1: H2 = K2
+::>             *4
+      ;
+      take H;
+::>        *143,143
+      thus H is Element of M;
+::>                        *4
+      thus K2=Image(phi|H);
+::>                      *4
+    end;
+
+
+
+    for K1 being Element of M
+    holds (ex H being strict Subgroup of G
+    st K1=H & F(phi,H) in M)
+    proof
+      let K1 be Element of M;
+::      A1: K1 in M by SUBSET_1:def 1;
+      consider H being Element of Subgroups G such that
+      A2: K1 = H;
+::>            *4
+
+and
+::>,391
+      A3: ex K2 being strict Subgroup of G st K2 is maximal & K2=H
+      by Th31;
+::      by A1;
+      take H = K1;
+::>              *57
+::      consider H being strict Subgroup of G such that
+::      A1: K1=H;
+      H is maximal by A1;
+::>              *106  *144
+      thus F(phi,H) in M;
+::>        *123
+    end;
+
+
+
+    ::Image(phi|H) is maximal by Th31;
+    consider f being Permutation of M such that
+    B1: for K,K2 being Element of M holds
+    (ex H1,H2 being strict Subgroup of G st H1=K & H2=F(phi,H1) & H2=K2 & f.K = K2)
+    from FUNCT_2:sch 4;
+::>    *26
+    take f;
+    let H be strict Subgroup of G;
+    assume A1: H in M;
+    thus f.H = Image(phi|H) by A1,B1;
+::>                          *4
+  end;
+
+  :: Prove rng f = M
+  :: thus Phi(G) invariant under automorphisms
+  thus Phi(G) is characteristic Subgroup of G;
+::>      *51                                *4
+end;
+::> 4: This inference is not accepted
+::> 26: Substituted constant does not expand properly
+::> 51: Invalid conclusion
+::> 57: The type of the instatiated term doesn't widen properly
+::> 106: Unknown attribute
+::> 123: Disagreement of argument types
+::> 143: No implicit qualification
+::> 144: Unknown label
+::> 391: Incorrect beginning of a text item
