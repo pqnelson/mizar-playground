@@ -108,10 +108,15 @@ The $p$-core for any group $G$ is a characteristic subgroup.
 \section{Finite Fields}
 
 It seems that Galois Fields\index{Field!Galois} are not defined in
-general, not anywhere I could find. Unfolding the definitions, we have
-Definition~\mml[def10,11,12]{vectsp1} defined \lstinline{Skew-Field} as
-\lstinline{non degenerated almost_left_invertible Ring}, and
-\lstinline{Field} is \lstinline{commutative Skew-Field}.
+general, not anywhere I could find. Well, true to form, Mizar defines
+the finite rings $\ZZ/n\ZZ$ as \lstinline{INT.Ring(n)}. And as far as
+Mizar cares, a field is just a ring satisfying extra properties. So the
+finite ring \lstinline{INT.Ring(p)} is provably a field, for example.
+
+Unfolding the definitions, we have Definition~\mml[def10,11,12]{vectsp1}
+first define \lstinline{Skew-Field} as a ring satisfying extra properties
+(i.e., \lstinline{non degenerated almost_left_invertible Ring}).
+Then a \lstinline{Field} is \lstinline{commutative Skew-Field}.
 
 \begin{example}[{$\FF_{3}$}]
 The field with three elements $\FF_{3}$ is defined as \lstinline!Z_3!
@@ -121,10 +126,51 @@ in \mml[def 20]{mod2}\MizDef{MOD\_2}{20}.
 \begin{example}[{$\ZZ/n\ZZ$}]
 The integers modulo $n$ form a ring in Definition~\mml[def12]{int3} as
 \lstinline{INT.Ring(n)}. I think Theorem~\mml[Th12]{int3} suffices to
-prove \lstinline{INT.Ring(p)} is a field.
+prove \lstinline{INT.Ring(p)} is a field. Also Registration~\mml[reg14]{int3}
+associated \lstinline{INT.Ring(p)} with being\dots well, many things,
+but they combine together to make it a finite field.
 \end{example}
 
+\begin{exercise}
+Prove \lstinline{INT.Ring(p |^ n)} is a field where ``\lstinline{p |^ n}''
+is Mizar for $p^{n}$ (where $p,n\in\NN$ and $p$ is prime).
+\end{exercise}
+
 \section{Finite Simple Groups}
+
+\begin{proposition}\label{prop:pure-math:cfsg}
+There are four types of finite simple groups:
+\begin{enumerate}
+\item the finite cyclic groups of prime order;
+\item the alternating groups $A_{n}$ for $n\geq 5$;
+\item the finite groups of Lie type; and
+\item the Sporadic groups (i.e., ``the 26 whacky groups'')
+\end{enumerate}
+Moreover, any finite simple group must be one of these four types, with
+the only repetitions being:
+\begin{subequations}
+  \begin{align}
+    \PSL_{2}(4)&\iso A_{5}\\
+    \PSL_{2}(5)&\iso A_{5}\\
+    \PSL_{2}(7)&\iso\PSL_{3}(2)\\
+    \PSL_{2}(9)&\iso A_{6}
+  \end{align}
+\end{subequations}\vskip-2\belowdisplayskip\vskip-2\abovedisplayskip
+  \begin{align}
+    \PSL_{4}(2)&\iso A_{8}\\
+    \PSU_{4}(2)&\iso\PSp_{4}(3).
+  \end{align}
+\end{proposition}
+
+\begin{definition}
+We say a group $G$ is a \define{$\mathcal{K}$-Group} if it is one of the
+simple groups as listed in Proposition~\ref{prop:pure-math:cfsg}.
+\end{definition}
+
+\subsection{Sporadic Groups}
+These are the simple groups which are not finite groups of Lie type,
+cyclic, or alternating. Their construction is non-uniform, since they
+are symmetries of random exotic mathematical objects.
 
 \begin{definition}
   We call a finite group $G$ \define{Sporadic} if
@@ -154,7 +200,7 @@ the six ``pariahs'':
   $\Conway{1}$, $\Conway{2}$, $\Conway{3}$; the McLaughlin group
   $\McLaughlin$; the Higman--Sims group $\HigmanSims$; and the Janko
   group $\Janko{2}$;
-\item Third Generation (other Subgroups of the Monster): the most
+\item Third Generation (other Subgroups of the Monster $\Monster$): the most
   relevant one for quasithin classification being the Held group
   $\Held$;
 \item Pariahs: three Janko groups $\Janko{1}$, $\Janko{3}$, $\Janko{4}$;
@@ -162,7 +208,11 @@ the six ``pariahs'':
   group $\Lyons$.
 \end{enumerate}
 They are very exciting and beautiful, but I am not going to investigate
-\emph{all} of them further. According to Aschbacher and Smith~\cite{aschbacher2004classification1,aschbacher2004classification2}, the
+\emph{all} of them further.
+\end{def-remark}
+
+\begin{def-remark}[Quasithin Sporadics]
+According to Aschbacher and Smith~\cite{aschbacher2004classification1,aschbacher2004classification2}, the
 sporadic groups which are quasithin include:
 $\Mathieu{11}$, $\Mathieu{12}$, $\Mathieu{22}$,
 $\Mathieu{23}$, $\Mathieu{24}$, $\Janko{2}$, $\Janko{3}$, $\Janko{4}$,
@@ -171,7 +221,7 @@ $\HigmanSims$, $\Held$, $\Rudvalis$. Clustered by generation:
 \item all five Mathieu groups ($\Mathieu{11}$, $\Mathieu{12}$, $\Mathieu{22}$, $\Mathieu{23}$,
   $\Mathieu{24}$);
 \item a couple Leech Lattice groups ($\HigmanSims$, $\Janko{2}$);
-\item $\Held$; and
+\item from the Monster-related sporadics, only the Held group $\Held$; and
 \item $\Janko{3}$, $\Janko{4}$, $\Rudvalis$.
 \end{enumerate}
 Also note: unlike the Mathieu groups, the Conway groups, or the Fischer
@@ -179,17 +229,18 @@ groups, the Janko groups do not form a series or ``family'' --- they are
 just a few ``random'' groups constructed by the same mathematician.
 \end{def-remark}
 
-\begin{proposition}\label{prop:pure-math:cfsg}
-There are four types of finite simple groups:
+\begin{proposition}
+Finite non-Abelian simple quasithin $\mathcal{K}$-groups of even
+characteristic consist of:
 \begin{enumerate}
-\item the finite cyclic groups of prime order
-\item the alternating groups
-\item the finite groups of Lie type
-\item the Sporadic groups (i.e., ``the 26 whacky groups'')
+\item (Generic case) Groups of Lie type of characteristic 2 and Lie rank at most 2, but
+  $U_{5}(q)$ only for $q=4$
+\item (Certain groups of rank 3 or 4) $L_{4}(2)$, $L_{5}(2)$, $\Sp_{6}(2)$
+\item (Alternating groups) $A_{5}$, $A_{6}$, $A_{8}$, $A_{9}$
+\item (Lie type of odd characteristic) $L_{2}(p)$ when $p$ is a Mersenne
+  or Fermat prime, $L_{3}^{\epsilon}(3)$, $L_{4}^{\epsilon}(3)$, $G_{2}(3)$
+\item (Sporadic) $\Mathieu{11}$, $\Mathieu{12}$, $\Mathieu{22}$,
+$\Mathieu{23}$, $\Mathieu{24}$, $\Janko{2}$, $\Janko{3}$, $\Janko{4}$,
+$\HigmanSims$, $\Held$, $\Rudvalis$
 \end{enumerate}
 \end{proposition}
-
-\begin{definition}
-We say a group $G$ is a \define{$\mathcal{K}$-Group} if it is one of the
-simple groups as listed in Proposition~\ref{prop:pure-math:cfsg}.
-\end{definition}
