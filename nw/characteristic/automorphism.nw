@@ -32,6 +32,7 @@ begin :: Automorphisms
 <<Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$>>
 <<Theorem: $\forall\varphi\in\Aut(G)$, $\varphi(\trivialSubgroup)=\trivialSubgroup$>>
 <<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>
+<<Corollary: $\forall\varphi\in\Aut(G)$, $\forall K\subgroup G$, $K$ is maximal implies $\exists H\subgroup G$, $H$ is maximal and $\varphi(H)=K$>>
 <<Results and definition for Inner automorphisms>>
 
 @
@@ -925,7 +926,7 @@ end;
 
 @ %def ThAutoTriv
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:automorphism:image-of-maximal-subgroup-under-automorphism-is-maximal}
   Let $G$ be a group, $\varphi\in\Aut(G)$ an arbitrary automorphism.
   If $H\properSubgroup G$ is a maximal subgroup, then
   $\varphi(H)\properSubgroup G$ is also maximal.
@@ -1100,3 +1101,36 @@ proof
 end;
 
 @
+
+\begin{corollary}
+Let $\varphi\in\Aut(G)$ be an arbitrary automorphism of a nontrivial group $G$.
+For any maximal subgroup $K\subgroup G$, there exists another
+maximal group $H\subgroup G$ such that $\varphi(H)=K$.
+\end{corollary}
+
+\begin{proof}[Proof sketch]
+Let $\psi=\varphi^{-1}$, which is an automorphism of $G$ such that $\varphi(\psi(K))=K$.
+Take $H=\psi(K)$. Then the result follows from applying Theorem~\ref{thm:characteristic:automorphism:image-of-maximal-subgroup-under-automorphism-is-maximal}
+applied to $H$ and $\varphi$.
+\end{proof}
+
+<<Corollary: $\forall\varphi\in\Aut(G)$, $\forall K\subgroup G$, $K$ is maximal implies $\exists H\subgroup G$, $H$ is maximal and $\varphi(H)=K$>>=
+Th32:
+  for K being strict Subgroup of G
+  st K is maximal
+  for phi being Automorphism of G
+  holds (ex H being strict Subgroup of G st H is maximal & Image(phi|H) = K)
+proof
+  let K be strict Subgroup of G;
+  assume A1: K is maximal;
+  let phi be Automorphism of G;
+  consider psi being Automorphism of G such that
+  psi = phi" and
+  A2: the multMagma of Image(phi|Image(psi|K)) = the multMagma of K
+  by Th7;
+  take H = Image(psi|K);
+  thus H is maximal by A1,Th31;
+  thus Image(phi|H) = K by A2, GROUP_2:def 6;
+end;
+
+@ %def Th32
