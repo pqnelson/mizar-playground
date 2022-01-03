@@ -96,6 +96,7 @@ ENTRY
     publisher
     school
     series
+    sortkey
     title
     type
     volume
@@ -1187,7 +1188,12 @@ FUNCTION {calc.label}
     sortify 'sort.label :=
   }
   { key capify 'label :=
-    key sortify 'sort.label :=
+    sortkey empty$
+    { key sortify 'sort.label :=
+    }
+    { sortkey sortify 'sort.label :=
+    }
+    if$
   }
   if$
 }
