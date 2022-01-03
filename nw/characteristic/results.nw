@@ -16,7 +16,7 @@ begin :: Characteristic Subgroups
 <<Theorem: transitivity of characteristic subgroups>>
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 <<Theorem: $Z(G)$ is characteristic subgroup>>
-<<Scheme: if $H\subgroup G\land P[H]\implies \forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\mathcal{F}=\{H\subgroup G\mid P[H]\}$, $\forall\varphi\in\Aut(G),\varphi(\bigcap\mathcal{F})=\bigcap{\mathcal{F}}$>>
+<<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>
 
 @
@@ -802,7 +802,18 @@ be the family of sets underlying all subgroups of $G$ satisfying $P[-]$.
 Then $\varphi(\bigcap\mathcal{F})=\bigcap\mathcal{F}$.
 \end{scheme}
 
-<<Scheme: if $H\subgroup G\land P[H]\implies \forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\mathcal{F}=\{H\subgroup G\mid P[H]\}$, $\forall\varphi\in\Aut(G),\varphi(\bigcap\mathcal{F})=\bigcap{\mathcal{F}}$>>=
+\begin{proof}[Proof outline]
+Let $\mathcal{F} = \{A\subset G\mid H\subgroup G\land P[H]\}$ be the
+collection of sets underlying subgroups $H\subgroup G$ which satisfy the
+property $P[H]$. First, we need to prove $\mathcal{F}\neq\emptyset$. But
+since we have, by hypothesis, there is at least one subgroup $H\subgroup G$
+which satisfies $P[H]$\dots so $\mathcal{F}$ is nonempty. Then to prove
+$\varphi(\bigcap\mathcal{F})=\bigcap\mathcal{F}$, we establish
+$\varphi(\bigcap\mathcal{F})\subset\bigcap\mathcal{F}$ and
+$\varphi(\bigcap\mathcal{F})\supset\bigcap\mathcal{F}$. The result then follows.
+\end{proof}
+
+<<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>=
 scheme
   CharMeet{G() -> Group, P[set]} :
   for phi being Automorphism of G()
@@ -830,9 +841,10 @@ A3: P[H]
   for x being object st x in meet Fam
   holds phi0.x in meet Fam
   <<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x, x\in\bigcap\mathcal{F}\implies\varphi_{0}(x)\in\bigcap\mathcal{F}$>>
+
   for x being object st x in meet Fam
   holds x in phi .: meet Fam
-  <<Proof step: $y\in\bigcap\mathcal{F}\implies y\in\varphi(\bigcap\mathcal{F})$>>
+  <<Proof step: $x\in\bigcap\mathcal{F}\implies x\in\varphi(\bigcap\mathcal{F})$>>
   then P1: meet Fam c= phi .: meet Fam by TARSKI:def 3;
 
   for y being object st y in phi .: meet Fam
@@ -846,6 +858,12 @@ end;
 
 @ %def CharMeet
 
+\begin{proof}[Proof step: $\mathcal{F}$ is non-empty]
+Since we assumed there exists a subgroup $H\subgroup G$ such that $P[H]$
+holds, there is at least one element of $\mathcal{F}$, namely
+$H\in\mathcal{F}$. Hence $\bigcap\mathcal{F}\neq\emptyset$.
+\end{proof}
+
 <<Proof step: $\mathcal{F}\neq\emptyset$>>=
 proof
   consider A such that
@@ -856,6 +874,15 @@ proof
 end;
 
 @
+
+\begin{proof}[Proof step ($\forall\varphi_{0}\in\Aut(G),\forall x, x\in\bigcap\mathcal{F}\implies\varphi_{0}(x)\in\bigcap\mathcal{F}$).]
+Suppose $x\in\bigcap\mathcal{F}$. Then $\forall A\in\mathcal{F},x\in A$.
+Let $\varphi_{0}$ be an arbitrary automorphism of $G$.
+From the hypothesis $P[H]\implies \forall\varphi\in\Aut(G),
+P[\varphi(H)]$, we apply it to $\psi=\varphi_{0}^{-1}$. But this means $x\in\psi(A)$.
+Then $\varphi_{0}(x)\in\varphi_{0}(\psi(A))$, and $\varphi_{0}(\psi(A))=A$. Thus the
+result follows.
+\end{proof}
 
 <<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x, x\in\bigcap\mathcal{F}\implies\varphi_{0}(x)\in\bigcap\mathcal{F}$>>=
 proof
@@ -895,7 +922,16 @@ end;
 
 @
 
-<<Proof step: $y\in\bigcap\mathcal{F}\implies y\in\varphi(\bigcap\mathcal{F})$>>=
+\begin{proof}[Proof step ($x\in\bigcap\mathcal{F}\implies x\in\varphi(\bigcap\mathcal{F})$).]
+Suppose $x\in\bigcap\mathcal{F}$. Let $\varphi\in\Aut(G)$ be completely
+arbitrary, and $\psi=\varphi^{-1}$. From $x\in\bigcap\mathcal{F}$, it
+follows $\forall A\in\mathcal{F}, x \in A$. It follows from a previous
+step that $\forall A\in\mathcal{F},\psi(x)\in A$. Then applying
+$\varphi$ we find $\forall A\in\mathcal{F},\varphi(\psi(x))=x\in\varphi(A)$.
+Hence $x\in\varphi(\bigcap\mathcal{F})$.
+\end{proof}
+
+<<Proof step: $x\in\bigcap\mathcal{F}\implies x\in\varphi(\bigcap\mathcal{F})$>>=
 proof
   let x be object;
   assume B1: x in meet Fam;
@@ -903,7 +939,7 @@ proof
   then B2: x in H by STRUCT_0:def 5;
   then B3: x is Element of G() by GROUP_2:42;
   reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
-  B4: dom phi = the carrier of G() & dom psi = the carrier of G() by FUNCT_2:def 1;
+  B4: dom phi = the carrier of G() by FUNCT_2:def 1;
   B5: psi.x in meet Fam by B1,A5;
   B6: phi.(psi.x) = x by B3,Lm11;
   psi is bijective & x in G() by B2, GROUP_2:40;
@@ -915,6 +951,14 @@ end;
 
 @
 
+\begin{proof}[Proof step ($y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$).]
+  Let $\varphi\in\Aut(G)$ be arbitrary.
+Suppose $y\in\varphi(\bigcap\mathcal{F})$. Then there is an
+$x\in\bigcap\mathcal{F}$ such that $y=\varphi(x)$. Then
+$\varphi(x)\in\bigcap\mathcal{F}$ from our first proof step. Hence
+$y\in\bigcap\mathcal{F}$.
+\end{proof}
+
 <<Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$>>=
 proof
   let y be object;
@@ -922,8 +966,6 @@ proof
   then consider x being object such that
   B2: x in dom phi & x in meet Fam & y = phi.x
   by FUNCT_1:def 6;
-  reconsider psi=phi" as Automorphism of G() by GROUP_6:62;
-  psi is Automorphism of G();
   phi.x in meet Fam by B2,A5;
   then y in meet Fam by B2;
   hence thesis;
@@ -987,8 +1029,8 @@ proof
     .= phi .: meet MaxSubCarrs by A2,GROUP_4:def 7
     .= meet MaxSubCarrs by A4
     .= the carrier of Phi(G) by A2,GROUP_4:def 7;
-    then the multMagma of Image(phi|Phi(G)) = the multMagma of Phi(G) by GROUP_2:59;
-    hence Image(phi|Phi(G)) = Phi(G) by GROUP_2:def 6;
+    then Image(phi|Phi(G)) = Phi(G) by GROUP_2:59,GROUP_2:def 6;
+    hence thesis;
   end;
 
   then Phi(G) is characteristic by Def10;
