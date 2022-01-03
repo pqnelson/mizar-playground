@@ -16,6 +16,7 @@ begin :: Characteristic Subgroups
 <<Theorem: transitivity of characteristic subgroups>>
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 <<Theorem: $Z(G)$ is characteristic subgroup>>
+<<Scheme: if $H\subgroup G\land P[H]\implies \forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\mathcal{F}=\{H\subgroup G\mid P[H]\}$, $\forall\varphi\in\Aut(G),\varphi(\bigcap\mathcal{F})=\bigcap{\mathcal{F}}$>>
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>
 
 @
@@ -790,6 +791,146 @@ end;
 
 @
 
+\begin{scheme}\label{scheme:characteristic:results:intersection-invariant-under-automorphism}
+Let $P[-]$ be a predicate on subgroups of $G$ for which (1) there is at
+least one subgroup $H\subgroup G$ satisfying $P[H]$ and (2) if
+$H\subgroup G$ satisfies $P[H]$, then for any automorphism
+$\varphi\in\Aut(G)$ we have $P[\varphi(H)]$.
+
+Let $\mathcal{F} = \{A\subset G\mid \exists H\subgroup G, P[H]\land A=U(H)\}$
+be the family of sets underlying all subgroups of $G$ satisfying $P[-]$.
+Then $\varphi(\bigcap\mathcal{F})=\bigcap\mathcal{F}$.
+\end{scheme}
+
+<<Scheme: if $H\subgroup G\land P[H]\implies \forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\mathcal{F}=\{H\subgroup G\mid P[H]\}$, $\forall\varphi\in\Aut(G),\varphi(\bigcap\mathcal{F})=\bigcap{\mathcal{F}}$>>=
+scheme
+  CharMeet{G() -> Group, P[set]} :
+  for phi being Automorphism of G()
+  holds phi .: meet{A where A is Subset of G() : ex K being strict Subgroup
+  of G() st A = the carrier of K & P[K]} = meet{A where A is Subset of G() :
+  ex K being strict Subgroup of G() st A = the carrier of K & P[K]}
+provided
+A1: for phi being Automorphism of G()
+    for H being strict Subgroup of G()
+    st P[H]
+    holds P[Image(phi|H)] and
+A2: ex H being strict Subgroup of G() st P[H]
+proof
+  let phi be Automorphism of G();
+  set UG = the carrier of G();
+  set Fam = {A where A is Subset of G() : ex K being strict Subgroup
+  of G() st A = the carrier of K & P[K]};
+  consider H being strict Subgroup of G() such that
+A3: P[H]
+  by A2;
+  A4: Fam <> {}
+  <<Proof step: $\mathcal{F}\neq\emptyset$>>
+
+  A5: for phi0 being Automorphism of G()
+  for x being object st x in meet Fam
+  holds phi0.x in meet Fam
+  <<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x, x\in\bigcap\mathcal{F}\implies\varphi_{0}(x)\in\bigcap\mathcal{F}$>>
+  for x being object st x in meet Fam
+  holds x in phi .: meet Fam
+  <<Proof step: $y\in\bigcap\mathcal{F}\implies y\in\varphi(\bigcap\mathcal{F})$>>
+  then P1: meet Fam c= phi .: meet Fam by TARSKI:def 3;
+
+  for y being object st y in phi .: meet Fam
+  holds y in meet Fam
+  <<Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$>>
+  then P2: phi .: meet Fam c= meet Fam by TARSKI:def 3;
+
+  thus thesis by P1,P2,XBOOLE_0:def 10;
+
+end;
+
+@ %def CharMeet
+
+<<Proof step: $\mathcal{F}\neq\emptyset$>>=
+proof
+  consider A such that
+  B1: A = the carrier of H;
+  the carrier of H is Subset of G() by GROUP_2:def 5;
+  then A in Fam by A3, B1;
+  hence thesis;
+end;
+
+@
+
+<<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x, x\in\bigcap\mathcal{F}\implies\varphi_{0}(x)\in\bigcap\mathcal{F}$>>=
+proof
+  let phi0 be Automorphism of G();
+  let x be object;
+  assume x in meet Fam;
+  then B1: for A1 holds A1 in Fam implies x in A1 by SETFAM_1:def 1;
+  for A holds A in Fam implies phi0.x in A
+  proof
+    let A;
+    assume C1: A in Fam;
+    then C2: x in A by B1;
+    consider A0 being Subset of G() such that
+    C3: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
+    by C1;
+    consider K being strict Subgroup of G() such that
+    C4: A = the carrier of K & P[K]
+    by C3;
+    consider psi being Automorphism of G() such that
+    C5: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
+    by Th7;
+    x in K by C2,C4;
+    then x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
+    then C6: x in dom phi0 by C2,C4,GROUP_2:40;
+    P[Image(psi|K)] by C4,C5,A1;
+    then carr Image(psi|K) in Fam;
+    then x in carr Image(psi|K) by B1;
+    then phi0.x in phi0 .: (carr Image(psi|K)) by C6, FUNCT_1:def 6;
+    then phi0.x in carr (phi0 .: Image(psi|K)) by GRSOLV_1:8;
+    then phi0.x in carr Image(phi0|Image(psi|K)) by GRSOLV_1:def 3;
+    then phi0.x in carr K by C5;
+    then phi0.x in A by C4;
+    hence thesis;
+  end;
+  hence thesis by A4, SETFAM_1:def 1;
+end;
+
+@
+
+<<Proof step: $y\in\bigcap\mathcal{F}\implies y\in\varphi(\bigcap\mathcal{F})$>>=
+proof
+  let x be object;
+  assume B1: x in meet Fam;
+  then carr H in Fam & for A1 holds A1 in Fam implies x in A1 by A3,SETFAM_1:def 1;
+  then B2: x in H by STRUCT_0:def 5;
+  then B3: x is Element of G() by GROUP_2:42;
+  reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
+  B4: dom phi = the carrier of G() & dom psi = the carrier of G() by FUNCT_2:def 1;
+  B5: psi.x in meet Fam by B1,A5;
+  B6: phi.(psi.x) = x by B3,Lm11;
+  psi is bijective & x in G() by B2, GROUP_2:40;
+  then psi.x in UG by FUNCT_2:5;
+  then psi.x in dom phi by B2,B4,GROUP_2:40,STRUCT_0:def 5;
+  then phi.(psi.x) in phi .: (meet Fam) by B1,B5,FUNCT_1:def 6;
+  hence x in phi .: meet Fam by B6, A4, SETFAM_1:def 1;
+end;
+
+@
+
+<<Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$>>=
+proof
+  let y be object;
+  assume B1: y in phi .: meet Fam;
+  then consider x being object such that
+  B2: x in dom phi & x in meet Fam & y = phi.x
+  by FUNCT_1:def 6;
+  reconsider psi=phi" as Automorphism of G() by GROUP_6:62;
+  psi is Automorphism of G();
+  phi.x in meet Fam by B2,A5;
+  then y in meet Fam by B2;
+  hence thesis;
+end;
+
+@
+
 \begin{proposition}[{\mml[Th38]{group4}}]
   Let $G$ be a group. Suppose $G$ has a maximal subgroup.
   Then for any group element $a\in G$, we have
@@ -808,7 +949,7 @@ of maximal subgroups of $G$, then
 \begin{equation}
 \varphi(\Phi(G))=\varphi(\bigcap\mathcal{F})=\bigcap\varphi(\mathcal{F})=\bigcap \mathcal{F} =\Phi(G).
 \end{equation}
-We take advantage of a lemma to prove
+We take advantage of Scheme~\ref{scheme:characteristic:results:intersection-invariant-under-automorphism} to prove
 \begin{equation}
 \varphi(\bigcap\mathcal{F})=\bigcap\varphi(\mathcal{F})=\bigcap \mathcal{F}.
 \end{equation}
@@ -817,29 +958,34 @@ automorphisms.
 \end{proof}
 
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>=
-<<Lemma: if $G$ is nontrivial and has a maximal subgroup, then $\forall\varphi\in\Aut(G)$, $\varphi(U(\Phi(G))) = U(\Phi(G))$>>
 theorem Th30:
   (ex H being strict Subgroup of G st H is maximal) implies
   Phi(G) is characteristic Subgroup of G
 proof
-  ::given H being strict Subgroup of G such that A1: H is maximal;
-  assume A1: ex H being strict Subgroup of G st H is maximal;
-  then A2: the carrier of Phi(G) = meet{A
-where A is Subset of G : ex H being strict Subgroup of G st A = the carrier of
-H & H is maximal} by GROUP_4:def 7;
-  set MaxSubCarrs = {A
-where A is Subset of G : ex H being strict Subgroup of G st A = the carrier of
-H & H is maximal};
+  defpred P[Subgroup of G] means $1 is maximal;
+  assume A1: ex H being strict Subgroup of G st P[H];
+  set MaxSubCarrs = {A where A is Subset of G :
+                     ex H being strict Subgroup of G
+                     st A = the carrier of H & P[H]};
+  A2: the carrier of Phi(G) = meet MaxSubCarrs by A1,GROUP_4:def 7;
+
+  A3: for phi being Automorphism of G
+  for H being strict Subgroup of G
+  st P[H]
+  holds P[Image(phi|H)] by Th31;
+
+  A4: for phi being Automorphism of G
+  holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A3,A1);
 
   for phi being Automorphism of G
   holds Image(phi|Phi(G)) = Phi(G)
   proof
     let phi be Automorphism of G;
-    B1: the carrier of Image(phi|Phi(G))
-    = the carrier of phi .: Phi(G) by GRSOLV_1:def 3
+    the carrier of Image(phi|Phi(G))
+     = the carrier of phi .: Phi(G) by GRSOLV_1:def 3
     .= phi .: (the carrier of Phi(G)) by GRSOLV_1:8
     .= phi .: meet MaxSubCarrs by A2,GROUP_4:def 7
-    .= meet MaxSubCarrs by A1,LmMeet1
+    .= meet MaxSubCarrs by A4
     .= the carrier of Phi(G) by A2,GROUP_4:def 7;
     then the multMagma of Image(phi|Phi(G)) = the multMagma of Phi(G) by GROUP_2:59;
     hence Image(phi|Phi(G)) = Phi(G) by GROUP_2:def 6;
@@ -850,131 +996,3 @@ H & H is maximal};
 end;
 
 @ %def Th33
-
-\begin{lemma}
-Let $G$ be a nontrivial group with a maximal subgroup, let $\mathcal{F}$
-be the collection of the sets underlying the maximal subgroups of $G$.
-Then for any automorphism $\varphi\in\Aut(G)$, we have
-$\varphi(\bigcap\mathcal{F})=\bigcap \mathcal{F}$.
-\end{lemma}
-
-<<Lemma: if $G$ is nontrivial and has a maximal subgroup, then $\forall\varphi\in\Aut(G)$, $\varphi(U(\Phi(G))) = U(\Phi(G))$>>=
-LmMeet1:
-(ex H being strict Subgroup of G st H is maximal) implies
-for phi being Automorphism of G
-holds phi .: meet{A where A is Subset of G :
-                  ex H being strict Subgroup of G
-                  st A = the carrier of H & H is maximal}
-= meet{A where A is Subset of G :
-       ex H being strict Subgroup of G st A = the carrier of H & H is maximal}
-proof
-  given H being strict Subgroup of G such that
-  A1: H is maximal;
-  let phi be Automorphism of G;
-  A2: phi is one-to-one;
-  set Fam = {A where A is Subset of G :
-             ex H being strict Subgroup of G
-             st A = the carrier of H & H is maximal};
-  set UG = the carrier of G;
-  A3: Fam <> {}
-  proof
-    consider A such that
-    B1: A = the carrier of H;
-    the carrier of H is Subset of G by GROUP_2:def 5;
-    then A in Fam by A1, B1;
-    hence thesis;
-  end;
-
-  A5: for phi0 being Automorphism of G
-  for x being object st x in meet Fam
-  holds phi0.x in meet Fam
-  <<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x$, $x\in\mathcal{F}\implies\varphi_{0}(x)\in\mathcal{F}$>>
-
-  for x being object st x in meet Fam
-  holds x in phi .: meet Fam
-  <<Proof step: $\forall x$, $x\in\mathcal{F}\implies x\in\varphi(\mathcal{F})$>>
-  then P2: meet Fam c= phi .: meet Fam by TARSKI:def 3;
-
-  for y being object st y in phi .: meet Fam
-  holds y in meet Fam
-  <<Proof step: $\forall y$, $y\in\varphi(\mathcal{F})\implies y\in\mathcal{F}$>>
-  then P1: phi .: meet Fam c= meet Fam by TARSKI:def 3;
-
-  thus thesis by P1,P2,XBOOLE_0:def 10;
-end;
-
-@ %def LmMeet1
-
-<<Proof step: $\forall\varphi_{0}\in\Aut(G),\forall x$, $x\in\mathcal{F}\implies\varphi_{0}(x)\in\mathcal{F}$>>=
-proof
-  let phi0 be Automorphism of G;
-  let x be object;
-  assume x in meet Fam;
-  then B1: for A1 holds A1 in Fam implies x in A1 by SETFAM_1:def 1;
-  for A holds A in Fam implies phi0.x in A
-  proof
-    let A;
-    assume C1: A in Fam;
-    then C2: x in A by B1;
-    consider A0 being Subset of G such that
-    C3: A0=A & ex H being strict Subgroup of G st A0 = the carrier of H & H is maximal
-    by C1;
-    consider K being strict Subgroup of G such that
-    C4: A = the carrier of K & K is maximal
-    by C3;
-    consider psi being Automorphism of G such that
-    C5: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
-    by Th7;
-    x in K by C2,C4;
-    then x in G & dom phi0 = the carrier of G by GROUP_2:40,FUNCT_2:def 1;
-    then C6: x in dom phi0 by C2,C4,GROUP_2:40;
-    Image(psi|K) is maximal by C4,C5,Th31;
-    then carr Image(psi|K) in Fam;
-    then x in carr Image(psi|K) by B1;
-    then phi0.x in phi0 .: (carr Image(psi|K)) by C6, FUNCT_1:def 6;
-    then phi0.x in carr (phi0 .: Image(psi|K)) by GRSOLV_1:8;
-    then phi0.x in carr Image(phi0|Image(psi|K)) by GRSOLV_1:def 3;
-    then phi0.x in carr K by C5;
-    then phi0.x in A by C4;
-    hence thesis;
-  end;
-  hence thesis by A3, SETFAM_1:def 1;
-end;
-
-@
-
-<<Proof step: $\forall x$, $x\in\mathcal{F}\implies x\in\varphi(\mathcal{F})$>>=
-proof
-  let x be object;
-  assume B1: x in meet Fam;
-  then carr H in Fam & for A1 holds A1 in Fam implies x in A1 by A1,SETFAM_1:def 1;
-  then B2: x in H by STRUCT_0:def 5;
-  then B3: x is Element of G by GROUP_2:42;
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  B4: dom phi = UG & dom psi = UG by FUNCT_2:def 1;
-  B5: psi.x in meet Fam by B1,A5;
-  B6: phi.(psi.x) = x by B3,Lm11;
-  psi is bijective & x in G by B2, GROUP_2:40;
-  then psi.x in UG by FUNCT_2:5;
-  then psi.x in dom phi by B2,B4,GROUP_2:40,STRUCT_0:def 5;
-  then phi.(psi.x) in phi .: (meet Fam) by B1,B5,FUNCT_1:def 6;
-  hence x in phi .: meet Fam by B6, A3, SETFAM_1:def 1;
-end;
-
-@
-
-<<Proof step: $\forall y$, $y\in\varphi(\mathcal{F})\implies y\in\mathcal{F}$>>=
-proof
-  let y be object;
-  assume B1: y in phi .: meet Fam;
-  then consider x being object such that
-  B2: x in dom phi & x in meet Fam & y = phi.x
-  by FUNCT_1:def 6;
-  reconsider psi=phi" as Automorphism of G by GROUP_6:62;
-  psi is Automorphism of G;
-  phi.x in meet Fam by B2,A5;
-  then y in meet Fam by B2;
-  hence thesis;
-end;
-
-@
