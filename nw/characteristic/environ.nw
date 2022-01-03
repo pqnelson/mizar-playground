@@ -1,6 +1,8 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Environment}
 
+% TODO: notation remove 
+
 %\M
 The header, or ``environment part'', tells Mizar what mathematics needs
 to be imported from existing Mizar articles found in the MML. The idea
@@ -83,8 +85,9 @@ For proving the Frattini subgroup is characteristic, we need to use
 [[meet]] from [[SETFAM_1]]
 
 <<Functions and subset tokens>>=
-SETFAM_1, MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, ARYTM_3, ARYTM_2,
-FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
+RELAT_1, TARSKI, FUNCT_1, ZFMISC_1,
+FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0,
+FUNCT_2, CARD_1
 
 @
 
@@ -93,8 +96,8 @@ Characteristic subgroups requires recognizing tokens about\dots groups,
 and subgroups.
 
 <<Group and subgroups tokens>>=
-STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6,
-BINOP_1, BINOP_2, ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP
+STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
+GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP
 
 @
 
@@ -106,7 +109,7 @@ that [[normal]] is introduced in [[PRE_TOPC]], so we need to include
 that, as well.
 
 <<Group conjugation and normal subgroups tokens>>=
-NEWTON, PRE_TOPC, GROUP_3
+NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10
 
 @
 
@@ -122,6 +125,7 @@ so I'll just copy the constructor imports:
 
 <<[[char.miz]] constructors>>=
 constructors <<set theoretic notation for [[char.miz]]>>,
+  ARYTM_2, ORDINAL2, XREAL_0, SQUARE_1,
   <<group theoretic notation for [[char.miz]]>>
 
 @
@@ -150,8 +154,8 @@ Frattini subgroup is characteristic.
 
 <<set theoretic notation for [[char.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, ARYTM_2, NUMBERS, XXREAL_0,
-SETFAM_1
+RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS, XXREAL_0, REAL_1,
+SETFAM_1, ORDINAL1, XCMPLX_0, NAT_1, INT_1, INT_2, NAT_D
 
 @
 
@@ -163,7 +167,8 @@ The group theoretic notions are a grab bag of binary operators
 
 <<group theoretic notation for [[char.miz]]>>=
 BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
-GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
+GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
+AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON
 
 @
 
@@ -188,8 +193,9 @@ The clusters we want to use from set theory are defined in the ``same''
 scattering of places.
 
 <<Register set theoretic clusters>>=
-XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, ARYTM_2,
-NUMBERS, FINSET_1
+XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+INT_1, INT_2, XCMPLX_0, ARYTM_3, XREAL_0,
+ARYTM_2, NUMBERS, FINSET_1
 
 @
 
@@ -197,7 +203,8 @@ NUMBERS, FINSET_1
 We also need to register adjectives germane to group theory.
 
 <<Register group theoretic clusters>>=
-STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
+STRUCT_0, GROUP_1, GROUP_2, GROUP_3,
+GROUP_6, GR_CY_1, NEWTON
 
 @
 
@@ -232,7 +239,7 @@ But we also want to use facts concerning normal subgroups ([[GROUP_3]])
 and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
 <<Include group theoretic definitions>>=
-GROUP_1, GROUP_3, GROUP_4, GROUP_6, AUTGROUP
+GROUP_1, GROUP_3, GROUP_4, GROUP_6, AUTGROUP, NEWTON
 
 @
 
@@ -256,17 +263,16 @@ We have the usual cast of set theoretic characters. There are a large
 number of articles we refer to for using the real numbers.
 
 <<Import set-theoretic theorems>>=
-TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
-XBOOLE_0, XBOOLE_1, FINSET_1, CARD_1, XREAL_1, COMPLEX1, XXREAL_0,
-ORDINAL1, NAT_D, XREAL_0, RELAT_1
+TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, RELAT_1,
+SETFAM_1
 
 @
 
 %\M
 Again, we import the usual group theoretic theorems.
 <<Import group-theoretic theorems>>=
-GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
-GRSOLV_1, AUTGROUP
+GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
+AUTGROUP, GROUP_10
 
 @
 
@@ -275,7 +281,7 @@ If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the [[schemes]] portion of the environment.
 
 <<[[char.miz]] schemes>>=
-schemes BINOP_1, FUNCT_2
+schemes FUNCT_2, GROUP_4
 
 @
 
@@ -288,7 +294,8 @@ Expansions of terms defined by [[equals]] are imported by a new
 [[environ]] directive [[equalities]].
 
 <<[[char.miz]] equalities>>=
-equalities FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2, GROUP_3, ALGSTR_0
+equalities FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2, GROUP_3,
+  ALGSTR_0, NEWTON
 
 @
 
@@ -297,7 +304,7 @@ Import expansions of predicates and adjectives from the specified
 articles.
 
 <<[[char.miz]] expansions>>=
-expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2
+expansions FINSET_1, GROUP_1, STRUCT_0, BINOP_1, FUNCT_2, NEWTON
 
 @
 
@@ -316,6 +323,6 @@ in 9 easy steps''), the only possibilities for the [[requirements]] are:
 \end{remark}
 
 <<[[char.miz]] requirements>>=
-requirements BOOLE, SUBSET
+requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL
 
 @

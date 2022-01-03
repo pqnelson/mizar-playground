@@ -235,8 +235,7 @@ proof
   consider a being Element of G such that
   B2: for x being Element of G holds f.x = x |^ a
   by A1,B1,AUTGROUP:def 4;
-  f is inner Automorphism of G by Def5,B2;
-  hence thesis;
+  thus thesis by Def5,B2;
 end;
 
 @
@@ -248,14 +247,12 @@ requiring us to reconsider $f$ as an inner automorphism of $G$.
 
 <<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>=
 proof
-  assume B1: f is inner Automorphism of G;
+  assume f is inner Automorphism of G;
   then reconsider f as inner Automorphism of G;
-  f is Element of Aut G by B1,Th13;
-  then consider a being Element of G such that
-  B2: for x being Element of G holds f.x = x |^ a
-  by B1,Def5;
-  f in InnAut G by A1,B2,AUTGROUP:def 4;
-  hence thesis;
+  consider a being Element of G such that
+  B1: for x being Element of G holds f.x = x |^ a
+  by Def5;
+  thus thesis by A1,B1,AUTGROUP:def 4;
 end;
 
 @
@@ -319,9 +316,7 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
   <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>
 C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   <<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>
-  for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
-  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
-  hence thesis;
+  thus (H |^ a) = Image(f|H) by C2,C3,GROUP_2:def 6;
 end;
 
 @ %def Th15
@@ -338,8 +333,8 @@ proof
   then consider h being Element of H such that
   B1: (f|H).h = y by GROUP_6:45;
   reconsider h as Element of G by GROUP_2:42;
-  B2: h in H by STRUCT_0:def 5;
-  then h |^ a = (f|H).h by B2,C1
+  B2: h in H;
+  then h |^ a = (f|H).h by C1
              .= y by B1;
   hence y in H |^ a by B2,GROUP_3:58;
 end;
@@ -364,8 +359,7 @@ proof
   B3: (f|H).g = f.g by Lm3,B2
              .= g |^ a by A1
              .= y by B1;
-  g is Element of H by B2,LmSubgroupElt;
-  hence y in Image(f|H) by B3,GROUP_6:45;
+  thus y in Image(f|H) by B2,B3,GROUP_6:45;
 end;
 
 @
@@ -458,11 +452,8 @@ proof
   ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
   <<Proof an endomorphism $f^{-1}$ exists>>
 
-  then rng f = the carrier of G by FUNCT_2:18;
-  then f is onto by GROUP_6:58;
-  then f is bijective by A2;
-  then f is Automorphism of G;
-  hence thesis;
+  then f is onto by FUNCT_2:18;
+  hence f is Automorphism of G by A2;
 end;
 
 @ %def Th17
@@ -506,7 +497,7 @@ proof
               .= (id the carrier of G).x;
   hence thesis;
 end;
-then f*fInv = id the carrier of G by FUNCT_1:2;
+then f*fInv = id the carrier of G;
 
 @
 
@@ -525,9 +516,7 @@ proof
                 .= fInv.x1 * fInv.x2 by A4;
   hence thesis;
 end;
-then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
-then fInv is Endomorphism of G;
-then reconsider fInv as Endomorphism of G;
+then reconsider fInv as Endomorphism of G by GROUP_6:def 6;
 
 @
 
@@ -547,14 +536,7 @@ theorem Th18:
   for a being Element of G
   for f being Endomorphism of G
   st (for x being Element of G holds f.x = x |^ a)
-  holds f is inner Automorphism of G
-proof
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A1: for x being Element of G holds f.x = x |^ a;
-  then f is Automorphism of G by Th17;
-  hence f is inner Automorphism of G by A1,Def5;
-end;
+  holds f is inner Automorphism of G by Th17,Def5;
 
 @ %def Th18
 
@@ -591,7 +573,6 @@ proof
   deffunc F(Element of G) = ($1) |^ a;
   consider f be Function of the carrier of G, the carrier of G such that
 A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
-  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
   for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
   proof
     let x1,x2 be Element of G;
@@ -601,9 +582,7 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
                .= f.x1 * f.x2 by A2;
     hence thesis;
   end;
-  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
-  then f is Endomorphism of G;
-  then reconsider f as Endomorphism of G;
+  then reconsider f as Endomorphism of G by GROUP_6:def 6;
   for x being Element of G holds f.x = x |^ a & f is inner Automorphism of G
   by A1,Th18;
   hence thesis;
@@ -669,7 +648,7 @@ proof
   by Def5;
   Image(f|H) = H |^ a by B2,Th15
             .= the multMagma of H by B1,GROUP_3:def 13
-            .= H by GROUP_2:def 6;
+            .= H;
   hence Image(f|H)=H;
 end;
 

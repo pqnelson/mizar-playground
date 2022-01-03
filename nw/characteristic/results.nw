@@ -68,18 +68,14 @@ Vcharacteristic
 
 Lm25: (1).G is characteristic
 proof
-A1:  for f being Automorphism of G
-     holds Image (f|(1).G) is Subgroup of (1).G by Th2;
   for f being Automorphism of G holds Image(f|(1).G) = (1).G
   proof
     let f be Automorphism of G;
-    reconsider I = Image(f|(1).G) as Subgroup of (1).G by A1;
+    reconsider I = Image(f|(1).G) as Subgroup of (1).G by Th2;
     (1).G = I by Lm26;
-    then Image(f|(1).G) = (1).G by A1;
-    hence thesis;
+    hence Image(f|(1).G) = (1).G;
   end;
-  then (1).G is characteristic by Def9;
-  hence thesis;
+  hence (1).G is characteristic;
 end;
 
 @ %def Lm25
@@ -100,10 +96,9 @@ I think I prove this result several times, I should refactor my code accordingly
 <<Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$>>=
 Lm26: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
-  assume A1: H is Subgroup of (1).G;
+  assume H is Subgroup of (1).G;
   then reconsider H as Subgroup of (1).G;
-  (1).G is Subgroup of H by GROUP_2:65;
-  then H is Subgroup of (1).G & (1).G is Subgroup of H by A1;
+  H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
@@ -123,8 +118,7 @@ theorem Th21:
   ex H st H is characteristic
 proof
   take H = (1).G;
-  H is characteristic by Lm25;
-  hence thesis;
+  thus H is characteristic by Lm25;
 end;
 
 @ %def Th21
@@ -191,7 +185,7 @@ A1:  for a being Element of G holds K |^ a = K
   <<Sub-proof: characteristic subgroups invariant under conjugation>>
   for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
   then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
-  hence K is normal Subgroup of G by A1,GROUP_3:def 13;
+  hence K is normal Subgroup of G by GROUP_3:def 13;
 end;
 
 @ %def Th22
@@ -208,7 +202,7 @@ proof
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by Th19;
-  K = Image(f|K) by GROUP_6:57,Def9
+  K = Image(f|K) by Def9
    .= K |^ a by A2,Th15;
   hence thesis;
 end;
@@ -252,15 +246,13 @@ theorem Th23:
   holds H is characteristic
 proof
   let H be strict Subgroup of G;
-  assume A0: for K being strict Subgroup of G st card K = card H holds H = K;
+  assume A1: for K being strict Subgroup of G st card K = card H holds H = K;
   H is characteristic
   proof
     let phi be Automorphism of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then Image(phi|H),H are_isomorphic by Th8;
-    then card H = card Image(phi|H) by GROUP_6:73;
-    then Image(phi|H) = H by A0;
-    hence thesis;
+    then card H = card Image(phi|H) by Th8,GROUP_6:73;
+    hence Image(phi|H) = H by A1;
   end;
   hence thesis;
 end;
@@ -304,8 +296,7 @@ proof
   let K be characteristic Subgroup of N;
   for a being Element of G holds K |^ a = K
   <<Proof: $\forall a\in G, K^{a}=K$>>
-  then K is normal Subgroup of G by LmNormalSubgroup;
-  hence thesis;
+  hence K is normal Subgroup of G by LmNormalSubgroup;
 end;
 
 @ %def Th25
@@ -330,43 +321,18 @@ proof
   by Th19;
 
   Image(g|N) = N by Th20;
-  then g|N is Automorphism of N by Th11;
-  then reconsider f = g|N as Automorphism of N;
+  then reconsider f = g|N as Automorphism of N by Th11;
   A2: Image(f|K) = K by Def9;
 
-  for k being Element of G st k in K holds f.k = g.k
-  <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
+  for k being Element of G st k in K holds f.k = g.k by Lm3,GROUP_2:40;
   then Image(f|K) = Image(g|K) by Th24;
   then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th15;
-  then K = K |^ a by A1,Th15;
+  then K = K |^ a;
   hence thesis;
 end;
 
 @
 
-\begin{proof}[Sub-sub-proof ($\forall k\in G$, $k\in K\implies f(k)=g(k)$).]
-  We simply unfold the definitions
-  \begin{subequations}
-    \begin{align}
-      \psi|_{K}(k) &= \psi(k)\\
-      &= \varphi(k)\qedhere
-    \end{align}
-  \end{subequations}
-\end{proof}
-
-<<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>=
-proof
-  let k be Element of G;
-  assume B1: k in K;
-  then (g|K).k = g.k by Lm3;
-  B2: k in N by B1,GROUP_2:40;
-  k is Element of K by LmSubgroupElt,B1;
-  then f.k = (g|N).k
-          .= g.k by B1, B2, Lm3;
-  hence f.k = g.k;
-end;
-
-@
 
 \begin{theorem}
 If we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to
@@ -416,9 +382,7 @@ proof
   for y being object
   holds y in the carrier of Image(f|K) iff y in the carrier of Image(g|K)
   <<Proof: $y\in f(K)\iff y\in g(K)$>>
-  then the carrier of Image(f|K) = the carrier of Image(g|K) by TARSKI:2;
-  then Image(f|K) = Image(g|K) by A2,GROUP_2:59,GROUP_2:def 6;
-  hence thesis;
+  hence Image(f|K) = Image(g|K) by A2,GROUP_2:59,TARSKI:2;
 end;
 
 @ %def Th24
@@ -452,15 +416,13 @@ proof
   then consider h being Element of K such that
   B1: (f|K).h = y
   by STRUCT_0:def 5,GROUP_6:45;
-  B2: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  B2: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42;
   f.h = g.h by A1,B2
      .= (g|K).h by B2, Lm3;
   then (g|K).h = f.h
               .= (f|K).h by B2,Lm3
               .= y by B1;
-  then (g|K).h = y & h is Element of K;
-  then y in the carrier of Image(g|K) by STRUCT_0:def 5,GROUP_6:45;
-  hence thesis;
+  hence y in the carrier of Image(g|K) by STRUCT_0:def 5,GROUP_6:45;
 end;
 
 @
@@ -476,15 +438,13 @@ proof
   then consider h being Element of K such that
   C1: (g|K).h = y
   by STRUCT_0:def 5,GROUP_6:45;
-  C2: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42, STRUCT_0:def 5;
+  C2: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42;
   g.h = f.h by A1,C2
      .= (f|K).h by C2,Lm3;
   then (f|K).h = g.h
               .= (g|K).h by C2,Lm3
               .= y by C1;
-  then (f|K).h = y & h is Element of K;
-  then y in the carrier of Image(f|K) by STRUCT_0:def 5,GROUP_6:45;
-  hence thesis;
+  hence y in the carrier of Image(f|K) by STRUCT_0:def 5,GROUP_6:45;
 end;
 
 @
@@ -519,19 +479,16 @@ proof
   for g being Automorphism of G holds Image(g|K) = K
   proof
     let g be Automorphism of G;
-    A1: Image(g|N) = N by Def9;
-    then g|N is Automorphism of N by Th11;
-    then reconsider f = g|N as Automorphism of N;
-    A2: Image(f|K) = K by Def9;
+    Image(g|N) = N by Def9;
+    then reconsider f = g|N as Automorphism of N by Th11;
+    A1: Image(f|K) = K by Def9;
 
-    for k being Element of G st k in K holds f.k = g.k
-    <<Proof: $\forall k\in G$, $k\in K\implies f(k)=g(k)$>>
+    for k being Element of G st k in K holds f.k = g.k by Lm3, GROUP_2:40;
     then Image(g|K) = Image(f|K) by Th24
-                   .= K by A2;
+                   .= K by A1;
     hence Image(g|K) = K;
   end;
-  then K is characteristic Subgroup of G by Def9;
-  hence thesis;
+  hence K is characteristic Subgroup of G by Def9;
 end;
 
 @ %def Th26
@@ -611,11 +568,9 @@ proof
   <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>
   H = Image(phi|H)
   proof
-    H is strict Subgroup of G & Image(phi|H) is strict Subgroup of G;
     H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
     by A1,A2;
-    then the multMagma of H = the multMagma of Image(phi|H) by GROUP_2:55;
-    hence H = Image(phi|H) by GROUP_2:def 5;
+    hence H = Image(phi|H) by GROUP_2:55;
   end;
   hence H is characteristic Subgroup of G by Def9;
 end;
@@ -640,9 +595,8 @@ proof
   B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th6;
   consider psi2 being Automorphism of G such that
   B3: psi2 = phi" and
-  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by A1,Th7;
-  psi2 = psi by B1,B3;
-  hence H is Subgroup of Image(phi|H) by B2,B4;
+  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th7;
+  thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
 end;
 
 @
@@ -712,14 +666,12 @@ holds (phi.z)*y = y*phi.z
 proof
   let y,z be Element of G;
   assume B1: z in Z;
-  phi" is Automorphism of G by GROUP_6:62;
   set x = (phi").y;
-  B2: z*x = x*z by B1,GROUP_5:77;
   (phi.z)*y = (phi.z)*(phi.x) by Lm11
            .= phi.(z*x) by GROUP_6:def 6
-           .= phi.(x*z) by B2
+           .= phi.(x*z) by B1,GROUP_5:77
            .= (phi.x)*(phi.z) by GROUP_6:def 6
-           .= y*(phi.z) by B2, Lm11;
+           .= y*(phi.z) by Lm11;
   hence thesis;
 end;
 
@@ -738,9 +690,8 @@ proof
   let z be Element of G;
   assume B1: z in Z;
   then for y being Element of G holds (phi.z)*y=y*(phi.z) by A1;
-  then B2: (phi.z) in Z by GROUP_5:77;
-  phi.z = (phi|Z).z by B1,Lm3;
-  hence ((phi|Z).z) in Z by B2;
+  then (phi.z) in Z by GROUP_5:77;
+  hence ((phi|Z).z) in Z by B1,Lm3;
 end;
 
 @
@@ -754,7 +705,7 @@ $w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
 \end{proof}
 
 <<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
-A3: Image(phi|Z) is Subgroup of Z
+Image(phi|Z) is Subgroup of Z
 proof
   B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
   for w being Element of G st w in rng(phi|Z) holds w in Z
@@ -786,8 +737,7 @@ proof
   C2: (phi|Z).z = w by FUNCT_1:def 3;
   reconsider z as Element of Z by C1;
   z is Element of G by GROUP_2:42;
-  then (phi|Z).z in Z by A2,STRUCT_0:def 5;
-  hence w in Z by C2;
+  hence w in Z by C2,A2,STRUCT_0:def 5;
 end;
 
 @
@@ -815,6 +765,10 @@ $\varphi(\bigcap\mathcal{F})\supset\bigcap\mathcal{F}$. The result then follows.
 \end{proof}
 
 <<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>=
+reserve G for non trivial Group;
+reserve H,K for Subgroup of G;
+reserve A,A1,A2 for set;
+
 scheme
   CharMeet{G() -> Group, P[set]} :
   for phi being Automorphism of G()
@@ -895,28 +849,23 @@ proof
   proof
     let A;
     assume C1: A in Fam;
-    then C2: x in A by B1;
     consider A0 being Subset of G() such that
-    C3: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
+    C2: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
     by C1;
     consider K being strict Subgroup of G() such that
-    C4: A = the carrier of K & P[K]
-    by C3;
+    C3: A = the carrier of K & P[K]
+    by C2;
     consider psi being Automorphism of G() such that
-    C5: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
+    C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
     by Th7;
-    x in K by C2,C4;
-    then x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
-    then C6: x in dom phi0 by C2,C4,GROUP_2:40;
-    P[Image(psi|K)] by C4,C5,A1;
+    x in K by C1,B1,C3;
+    then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
+    P[Image(psi|K)] by C3,A1;
     then carr Image(psi|K) in Fam;
     then x in carr Image(psi|K) by B1;
-    then phi0.x in phi0 .: (carr Image(psi|K)) by C6, FUNCT_1:def 6;
+    then phi0.x in phi0 .: (carr Image(psi|K)) by C5, FUNCT_1:def 6;
     then phi0.x in carr (phi0 .: Image(psi|K)) by GRSOLV_1:8;
-    then phi0.x in carr Image(phi0|Image(psi|K)) by GRSOLV_1:def 3;
-    then phi0.x in carr K by C5;
-    then phi0.x in A by C4;
-    hence thesis;
+    hence phi0.x in A by C3,C4,GRSOLV_1:def 3;
   end;
   hence thesis by A4, SETFAM_1:def 1;
 end;
@@ -937,17 +886,15 @@ proof
   let x be object;
   assume B1: x in meet Fam;
   then carr H in Fam & for A1 holds A1 in Fam implies x in A1 by A3,SETFAM_1:def 1;
-  then B2: x in H by STRUCT_0:def 5;
+  then B2: x in H;
   then B3: x is Element of G() by GROUP_2:42;
   reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
   B4: dom phi = the carrier of G() by FUNCT_2:def 1;
   B5: psi.x in meet Fam by B1,A5;
   B6: phi.(psi.x) = x by B3,Lm11;
   psi is bijective & x in G() by B2, GROUP_2:40;
-  then psi.x in UG by FUNCT_2:5;
-  then psi.x in dom phi by B2,B4,GROUP_2:40,STRUCT_0:def 5;
-  then phi.(psi.x) in phi .: (meet Fam) by B1,B5,FUNCT_1:def 6;
-  hence x in phi .: meet Fam by B6, A4, SETFAM_1:def 1;
+  then psi.x in dom phi by B4, FUNCT_2:5;
+  hence x in phi .: meet Fam by B6,B5,FUNCT_1:def 6;
 end;
 
 @
@@ -963,13 +910,11 @@ $y\in\bigcap\mathcal{F}$.
 <<Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$>>=
 proof
   let y be object;
-  assume B1: y in phi .: meet Fam;
+  assume y in phi .: meet Fam;
   then consider x being object such that
-  B2: x in dom phi & x in meet Fam & y = phi.x
+  B1: x in dom phi & x in meet Fam & y = phi.x
   by FUNCT_1:def 6;
-  phi.x in meet Fam by B2,A5;
-  then y in meet Fam by B2;
-  hence thesis;
+  thus y in meet Fam by B1,A5;
 end;
 
 @
@@ -1019,15 +964,14 @@ proof
   set MaxSubCarrs = {A where A is Subset of G :
                      ex H being strict Subgroup of G
                      st A = the carrier of H & P[H]};
-  A2: the carrier of Phi(G) = meet MaxSubCarrs by A1,GROUP_4:def 7;
 
-  A3: for phi being Automorphism of G
+  A2: for phi being Automorphism of G
   for H being strict Subgroup of G
   st P[H]
   holds P[Image(phi|H)] by Th31;
 
-  A4: for phi being Automorphism of G
-  holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A3,A1);
+  A3: for phi being Automorphism of G
+  holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
 
   for phi being Automorphism of G
   holds Image(phi|Phi(G)) = Phi(G)
@@ -1036,14 +980,13 @@ proof
     the carrier of Image(phi|Phi(G))
      = the carrier of phi .: Phi(G) by GRSOLV_1:def 3
     .= phi .: (the carrier of Phi(G)) by GRSOLV_1:8
-    .= phi .: meet MaxSubCarrs by A2,GROUP_4:def 7
-    .= meet MaxSubCarrs by A4
-    .= the carrier of Phi(G) by A2,GROUP_4:def 7;
-    then Image(phi|Phi(G)) = Phi(G) by GROUP_2:59,GROUP_2:def 6;
-    hence thesis;
+    .= phi .: meet MaxSubCarrs by A1,GROUP_4:def 7
+    .= meet MaxSubCarrs by A3
+    .= the carrier of Phi(G) by A1,GROUP_4:def 7;
+    hence Image(phi|Phi(G)) = Phi(G) by GROUP_2:59;
   end;
 
-  then Phi(G) is characteristic by Def10;
+  then Phi(G) is characteristic;
   hence thesis;
 end;
 
@@ -1057,6 +1000,11 @@ Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
 \end{equation}
 given by the intersection of all Sylow $p$-subgroups of $G$.
 \end{definition}
+
+\begin{def-remark}
+We will be leaning on results from~\mml{group10} concerning Sylow's
+theorems, specifically Sylow $p$-subgroups.
+\end{def-remark}
 
 <<Definition: $p$-Core>>=
 definition
@@ -1074,7 +1022,7 @@ definition
     ex H being strict Subgroup of G st the carrier of H = meet{A where
     A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
     from GROUP_4:sch 1(A1);
-    hence thesis by A1;
+    hence thesis;
   end;
   uniqueness by GROUP_2:59;
   correctness;
@@ -1088,6 +1036,6 @@ there is a new token in town: [[-core_of_]] which should be associated with Defi
 \end{voc}
 
 <<DICT/CHAR.VOC>>=
-V-core_of_
+O-core_of_
 
 @

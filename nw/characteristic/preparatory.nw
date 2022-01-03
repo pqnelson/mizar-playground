@@ -77,7 +77,6 @@ begin :: Proper Subgroups
 <<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>
 <<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>
 <<Lemma: Trivial groups have no proper subgroups>>
-<<Lemma: Trivial groups have no maximal subgroup>>
 <<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
 
 @
@@ -127,10 +126,7 @@ proof
 
   C2: for y being object holds y in rng f implies y in (f .: X)
   <<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>
-
-  for y being object holds y in rng f iff y in (f .: X) by C1,C2;
-  hence f .: X = rng f by TARSKI:2
-              .= Y by A1;
+  thus f .: X = Y by A1,C1,C2,TARSKI:2;
 end;
 
 @ %def LmOntoMapsEverything
@@ -223,16 +219,7 @@ not a judgement in the metalanguage.
 LmSubgroupElt:
 for G being Group
 for H being Subgroup of G
-for h being Element of G st h in H holds h is Element of H
-proof
-  let G be Group,
-      H be Subgroup of G,
-      h be Element of G;
-  assume h in H;
-  then h is Element of the carrier of H by STRUCT_0:def 5;
-  then h is Element of H;
-  hence thesis;
-end;
+for h being Element of G st h in H holds h is Element of H;
 
 @ %def LmSubgroupElt
 
@@ -250,16 +237,7 @@ LmSubgroupEltTrans:
   for H1,H2 being Subgroup of G
   for g being Element of G
   st g in H1 & H1 is Subgroup of H2
-  holds g in H2
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let g be Element of G;
-  assume A1: g in H1 & H1 is Subgroup of H2;
-  then g is Element of H1 by LmSubgroupElt;
-  then g in H2 by A1, GROUP_2:40;
-  hence thesis;
-end;
+  holds g in H2 by GROUP_2:40;
 
 @ %def LmSubgroupEltTrans
 
@@ -297,10 +275,9 @@ proof
   let f be Homomorphism of G1,G2;
   let h be Element of G1;
   assume h in H;
-  then h is Element of H by LmSubgroupElt;
+  then h is Element of H;
   then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
-  then (f|H).h = f.h by GRSOLV_1:def 2;
-  hence thesis;
+  hence (f|H).h = f.h by GRSOLV_1:def 2;
 end;
 
 @ %def Lm3
@@ -373,16 +350,7 @@ LmEpi:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
   st the multMagma of Image(f) = the multMagma of G2
-  holds f is onto
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume A1: the multMagma of Image(f) = the multMagma of G2;
-  then rng f = the carrier of Image f by GROUP_6:44
-            .= the carrier of G2 by A1;
-  then f is onto by FUNCT_2:def 3;
-  hence thesis;
-end;
+  holds f is onto by GROUP_6:44;
 
 @ %def LmEpi
 
@@ -405,9 +373,7 @@ proof
   let f be Homomorphism of G1,G2;
   assume A1: f is onto;
   reconsider GG = Image(f) as Group;
-  A2: the carrier of G2 = rng(f) by A1
-                       .= the carrier of Image(f) by GROUP_6:44
-                       .= the carrier of GG;
+  A2: the carrier of G2 = the carrier of GG by A1, GROUP_6:44;
   the multF of GG = (the multF of G2)||(the carrier of G2) by A2,GROUP_2:def 5
                  .= the multF of G2;
   hence the multMagma of Image(f) = the multMagma of G2 by A2;
@@ -440,9 +406,8 @@ proof
   let f be Homomorphism of G,G2;
   set UN = the carrier of N;
   set UH = the carrier of H;
-  UH c= UN by GROUP_2:def 5;
-  then A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
-  by RELAT_1:73,74,GRSOLV_1:def 2;
+  A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
+  by GROUP_2:def 5,RELAT_1:74,GRSOLV_1:def 2;
   (f|N)|H = (f|N)|UH by GRSOLV_1:def 2
          .= (f|UN)|UH by GRSOLV_1:def 2;
   hence (f|N)|H = f|H by A1;
@@ -471,18 +436,16 @@ proof
   let f be Function of X,Y;
   assume A1: f is bijective;
   then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
-  f is one-to-one & rng f = Y implies f" is Function of Y,X
-  by FUNCT_2:25;
   reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
   A3: g is bijective by A1,GROUP_6:63;
   then A4: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
   by FUNCT_2:25;
-  then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 1, def 3,25;
+  then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 3;
 
   for x being object st x in X holds h.x = f.x
   <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>
-  then h = f by FUNCT_2:12;
+  then h = f;
   hence (f")" = f;
 end;
 
@@ -508,19 +471,13 @@ end;
 <<Proof: $\forall x, x\in X\implies h(x) = f(x)$>>=
 proof
   let x be object;
-  assume Z1: x in X;
+  assume x in X;
   then reconsider x as Element of X;
   consider y being object such that
-  Z2: y = f.x
-  by FUNCT_2:5;
-  Z3: g is one-to-one & y in dom g by A4, Z2;
-  f is one-to-one & x in dom f by A1, Z1, A2;
-  then Z4: x = (f").y by Z2,FUNCT_2:26
-            .= g.y;
-  h.x = (g").x
-     .= (g").(g.y) by Z4
-     .= y by Z3,FUNCT_2:26;
-  then h.x = f.x by Z2;
+  Z1: y = f.x;
+  Z2: x = g.y by A1,Z1,FUNCT_2:26;
+  then h.x = y by A1,Z1,FUNCT_2:26
+          .= f.x by Z1;
   hence thesis;
 end;
 
@@ -558,11 +515,9 @@ proof
   let y be Element of Y;
   f is onto by A1;
   then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
-  g is bijective by A1, GROUP_6:63;
-  then y = (g").(g.y) by FUNCT_2:26
-        .= ((f")").((f").y)
-        .= f.((f").y) by Lm10,A1;
-  hence thesis by Lm10;
+  y = (g").(g.y) by A1,FUNCT_2:26
+   .= f.((f").y) by Lm10,A1;
+  hence thesis;
 end;
 
 @ %def Lm11
@@ -594,15 +549,15 @@ proof
   A2: g = f" and
   A3: g is bijective
   by Lm13;
-  A4: g" = f by A1,A2,A3,Lm10;
+  A4: g" = f by A1,A2,Lm10;
   for y being object st y in Y holds (f*(f")).y = (id Y).y
   <<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>
-  then f*g = id Y by A2,FUNCT_2:12;
-  hence f*(f") = id Y by A2,FUNCT_2:12;
+  then f*g = id Y by A2;
+  hence f*(f") = id Y by A2;
   for x being object st x in X holds ((f")*f).x = (id X).x
   <<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>
-  then g*f = id X by A2,FUNCT_2:12;
-  hence (f")*f = id X by A2,FUNCT_2:12;
+  then g*f = id X by A2;
+  hence (f")*f = id X by A2;
 end;
 
 @ %def Lm12
@@ -616,7 +571,7 @@ proof
   let y be object;
   assume Z1: y in Y;
   then (f*g).y=f.(g.y) by FUNCT_2:15
-             .= y by A2,A3,A4,Z1, FUNCT_2:26
+             .= y by A3,A4,Z1,FUNCT_2:26
              .= (id Y).y by Z1,FUNCT_1:18;
   hence thesis by A2;
 end;
@@ -687,8 +642,7 @@ proof
   let f be Function of X,Y;
   let x be object;
   assume A0: x in X;
-  dom f = X by FUNCT_2:def 1;
-  then A1: x in dom f by A0;
+  A1: x in dom f by A0, FUNCT_2:def 1;
   for y being object holds y in f.:{x} iff y in {f.x}
   proof let y be object;
     thus y in f.:{x} implies y in {f.x}
@@ -799,8 +753,7 @@ registration
   proof
     reconsider G = multMagma (# REAL, addreal #) as Group by GROUP_1:3;
     take G;
-    the carrier of G <> {1_G};
-    hence not (G is trivial);
+    thus not (G is trivial);
   end;
 end;
 
@@ -820,14 +773,14 @@ registration
   existence
   proof
     take (1).G;
-    thus thesis by GROUP_6:10;
+    thus thesis;
   end;
   let H be Subgroup of G;
   cluster trivial for Subgroup of H;
   existence
   proof
     take (1).H;
-    thus thesis by GROUP_6:10;
+    thus thesis;
   end;
 end;
 
@@ -865,25 +818,11 @@ nontrivial subgroup.
 
 <<Proof: existence of strict nontrivial subgroup of $G$>>=
 proof
-  A1: the carrier of G <> {1_G} by GROUP_6:def 2;
   set H = multMagma (#the carrier of G, the multF of G#);
-  H is Group-like
-  proof
-    reconsider t = 1_G as Element of H;
-    take t;
-    let a be Element of H;
-    reconsider x = a as Element of G;
-    thus a * t = x * 1_G .= a by GROUP_1:def 4;
-    thus t * a = 1_G * x .= a by GROUP_1:def 4;
-    reconsider s = x" as Element of H;
-    take s;
-    thus a * s = x * x" .= t by GROUP_1:def 5;
-    thus s * a = x" * x .= t by GROUP_1:def 5;
-  end;
-  then reconsider H as Group-like non empty multMagma;
-  the multF of H = (the multF of G)||the carrier of H by RELSET_1:19;
+  reconsider H as Group-like non empty multMagma;
+  the multF of H = (the multF of G)||the carrier of H;
   then H is Subgroup of G by GROUP_2:def 5;
-  then H is strict Subgroup of G & H is non trivial by A1;
+  then H is strict Subgroup of G & H is non trivial;
   hence thesis;
 end;
 
@@ -913,15 +852,14 @@ proof
   thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
   proof
     assume G is trivial Group;
-    then A1: ex y being object st the carrier of G = {y} by GROUP_6:def 2;
-    1_G in G;
-    then A2: the carrier of G = {1_G} by A1, TARSKI:def 1;
-    thus for x being object holds x in G iff x = 1_G
-    by A2, STRUCT_0:def 5, TARSKI:def 1;
+    then ex y being object st the carrier of G = {y} by GROUP_6:def 2;
+    then the carrier of G = {1_G} by TARSKI:def 1;
+    hence for x being object holds x in G iff x = 1_G
+    by TARSKI:def 1;
   end;
   thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
   proof
-    assume A1: for x being object holds x in G iff x = 1_G;
+    assume for x being object holds x in G iff x = 1_G;
     then for x being object holds x in the carrier of G iff x = 1_G
     by STRUCT_0:def 5;
     then the carrier of G = {1_G} by TARSKI:def 1;
@@ -1071,11 +1009,7 @@ registration
   existence
   proof
     take (1).G;
-    G is non trivial;
-    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
-    then the carrier of G <> {1_G};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is proper;
+    thus (1).G is proper;
   end;
 end;
 
@@ -1103,8 +1037,7 @@ as forwards.
 Lm99:
   H is proper iff the carrier of H <> the carrier of G
 proof
-  H is Subgroup of G;
-  then (the carrier of H c= the carrier of G) & (the multF of H =
+  (the carrier of H c= the carrier of G) & (the multF of H =
   (the multF of G)||(the carrier of H)) by GROUP_2:def 5;
   hence thesis;
 end;
@@ -1160,7 +1093,7 @@ proof
   assume A1: H is proper;
   UH c= UG & UH <> UG by A1,Lm99, GROUP_2:def 5;
   then (for x holds x in UH implies x in UG) &
-  the carrier of H <> the carrier of G by TARSKI:def 3;
+  the carrier of H <> the carrier of G;
   then (for x holds x in UH implies x in UG) &
   not (for x holds x in UH iff x in UG) by TARSKI:2;
   hence (the carrier of G) \ (the carrier of H) is non empty set
@@ -1180,15 +1113,14 @@ equality, these are clearly different sets. Thus $H\properSubgroup G$
 proof
   assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
   set GH = UG \ UH;
-  A2: UH c= UG by GROUP_2:def 5;
   not (GH is empty) by A1;
-  then A3: ex x st x in GH by XBOOLE_0:def 1;
+  then ex x st x in GH by XBOOLE_0:def 1;
   then consider y such that
-  A4: y in GH;
-  y in UG & not y in UH by A4, XBOOLE_0:def 5;
-  then UG <> UH by TARSKI:2;
-  then the multMagma of G <> the multMagma of H by GROUP_2:def 5;
-  hence H is proper by Def10;
+  A2: y in GH;
+  y in UG & not y in UH by A2, XBOOLE_0:def 5;
+  then UG <> UH;
+  then the multMagma of G <> the multMagma of H;
+  hence H is proper;
 end;
 
 @
@@ -1205,11 +1137,7 @@ registration
   existence
   proof
     take (1).G;
-    G is non trivial;
-    then not (ex x being object st the carrier of G = {x}) by GROUP_6:def 2;
-    then the carrier of G <> {1_G};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is proper;
+    thus (1).G is proper;
   end;
 end;
 
@@ -1231,11 +1159,7 @@ registration
   existence
   proof
     take (1).H;
-    H is non trivial;
-    then not (ex x being object st the carrier of H = {x}) by GROUP_6:def 2;
-    then the carrier of H <> {1_H};
-    then the carrier of H <> the carrier of (1).H;
-    hence (1).H is proper;
+    thus (1).H is proper;
   end;
 end;
 
@@ -1252,13 +1176,7 @@ Lm98:
   for G being Group
   for H being Subgroup of G
   st H is maximal
-  holds H is proper
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  assume H is maximal;
-  hence H is proper by Def10,GROUP_4:def 6;
-end;
+  holds H is proper by GROUP_4:def 6;
 
 @ %def Lm98
 
@@ -1301,9 +1219,9 @@ proof
   then consider x being object such that
   A1: x in (the carrier of G) \ (the carrier of H)
   by XBOOLE_0:def 1;
-  reconsider x as Element of G by A1, STRUCT_0:def 5;
+  reconsider x as Element of G by A1;
   take x;
-  thus not (x in H) by A1, STRUCT_0:def 5, XBOOLE_0:def 5;
+  thus not (x in H) by A1, XBOOLE_0:def 5;
 end;
 
 @ %def Lm101
@@ -1324,10 +1242,10 @@ proof
   A1: not (x in H);
   set UG = the carrier of G;
   set UH = the carrier of H;
-  x in G & not (x in H) by A1,STRUCT_0:def 5;
+  x in G & not (x in H) by A1;
   then x in UG & not (x in UH);
   then x in (UG \ UH) by XBOOLE_0:def 5;
-  then (UG \ UH) is non empty by XBOOLE_0:def 1;
+  then (UG \ UH) is non empty;
   hence H is proper Subgroup of G by Lm100;
 end;
 
@@ -1356,14 +1274,12 @@ proof
     then consider x being object such that
     A1: the carrier of G = {x}
     by GROUP_6:def 2;
-    :: prove x = 1_G
-    1_G in G;
-    then x = 1_G by A1, TARSKI:def 1, STRUCT_0:def 5;
+    x = 1_G by A1, TARSKI:def 1;
     then the carrier of G = {1_G} by A1;
-    then the carrier of G = the carrier of (1).G by GROUP_2:def 7, TARSKI:2;
+    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
     hence the multMagma of G = (1).G by GROUP_2:61;
   end;
-  thus the multMagma of G = (1).G implies G is trivial by GROUP_6:10;
+  thus the multMagma of G = (1).G implies G is trivial;
   thus thesis;
 end;
 
@@ -1386,11 +1302,11 @@ LmTrivHasNoProperSubgroups:
   holds not (ex H being Subgroup of G st H is proper)
 proof
   let G be Group;
-  assume A1: G is trivial;
-  then A2: the multMagma of G = (1).G
+  assume G is trivial;
+  then the multMagma of G = (1).G
   by LmGroupIsTrivialIff1;
   then A3: the carrier of G = {1_G} by GROUP_2:def 7;
-  A4: for H being Subgroup of G holds not H is proper
+  for H being Subgroup of G holds not H is proper
   proof
     let H be Subgroup of G;
     B1: the carrier of H c= {1_G} by A3, GROUP_2:def 5;
@@ -1403,26 +1319,6 @@ proof
     hence not H is proper by Lm99;
   end;
   hence not (ex H being Subgroup of G st H is proper);
-end;
-
-@
-
-\begin{lemma}
-If $G$ is trivial, then it cannot have a maximal subgroup.
-\end{lemma}
-
-Certainly, if there is no hope for $G$ having a proper subgroup, we
-should have no hope for maximal subgroups.
-
-<<Lemma: Trivial groups have no maximal subgroup>>=
-for G being Group
-st G is trivial
-holds not (ex H being Subgroup of G st H is maximal)
-proof
-  let G be Group;
-  assume A1: G is trivial;
-  then not (ex H being Subgroup of G st H is proper) by LmTrivHasNoProperSubgroups;
-  hence not (ex H being Subgroup of G st H is maximal) by Lm98;
 end;
 
 @
