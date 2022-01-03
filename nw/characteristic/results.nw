@@ -18,6 +18,7 @@ begin :: Characteristic Subgroups
 <<Theorem: $Z(G)$ is characteristic subgroup>>
 <<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>
+<<Definition: $p$-Core>>
 
 @
 
@@ -999,6 +1000,15 @@ We also use the fact maximal subgroups are mapped to maximal subgroups under
 automorphisms.
 \end{proof}
 
+\begin{thm-remark}
+Observe the key property required to prove that $\Phi(G)$ is
+characteristic is the observation we have a family $\mathcal{F}$ of
+subgroups of $G$ for which any automorphism $\varphi\in\Aut(G)$ acts
+like a permutation of $\mathcal{F}$. If this is true, then
+$\bigcap\mathcal{F}$ is characteristic. We can formulate this argument
+as a scheme.
+\end{thm-remark}
+
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>=
 theorem Th30:
   (ex H being strict Subgroup of G st H is maximal) implies
@@ -1038,3 +1048,46 @@ proof
 end;
 
 @ %def Th33
+
+\begin{definition}\label{defn:characteristic:results:p-core}
+Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
+\define{$p$-Core} of $G$ is the subgroup
+\begin{equation}
+  \pCore{p}{G} = \bigcap\SylowSubgroups{p}{G}
+\end{equation}
+given by the intersection of all Sylow $p$-subgroups of $G$.
+\end{definition}
+
+<<Definition: $p$-Core>>=
+definition
+  let G be finite Group;
+  let p be prime Nat;
+  func p-core_of_G -> strict Subgroup of G means
+  the carrier of it = meet{A where A is Subset of G :
+  ex P being strict Subgroup of G st A = the carrier of P &
+  P is_Sylow_p-subgroup_of_prime p};
+  existence
+  proof
+    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+    A1: ex P being strict Subgroup of G st SPS[P]
+    by GROUP_10:10;
+    ex H being strict Subgroup of G st the carrier of H = meet{A where
+    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
+    from GROUP_4:sch 1(A1);
+    hence thesis by A1;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+@ %def -core_of_G
+
+\begin{voc}
+Before proving the $p$-core is characteristic, we need to tell Mizar
+there is a new token in town: [[-core_of_]] which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
+\end{voc}
+
+<<DICT/CHAR.VOC>>=
+V-core_of_
+
+@

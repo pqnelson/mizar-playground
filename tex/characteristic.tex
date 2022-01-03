@@ -47,7 +47,7 @@ Right now, we have just started, so we need an empty vocabulary file:
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW1Nnu7l-4FyAEL-1}\nwenddeflinemarkup
 
-\nwalsodefined{\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+\nwalsodefined{\\{NW1Nnu7l-4FyAEL-1}\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}\\{NW47t2dy-4FyAEL-2}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
 \subsection*{License}
 The license for the MML seems to be the same for each article, I will
@@ -1544,7 +1544,65 @@ end;
   $g\in G$ for which $g\notin H$. Then $U(G)\setminus U(H)\neq\emptyset$.
 \end{proof}
 
-\nwenddocs{}
+\nwenddocs{}\nwbegincode{73}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+proof
+  assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
+  UH c= UG & UH <> UG by A1,\nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}, GROUP_2:def 5;
+  then (for x holds x in UH implies x in UG) &
+  the carrier of H <> the carrier of G by TARSKI:def 3;
+  then (for x holds x in UH implies x in UG) &
+  not (for x holds x in UH iff x in UG) by TARSKI:2;
+  hence (the carrier of G) \\ (the carrier of H) is non empty set
+  by XBOOLE_0:def 5;
+end;
+
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
+
+\begin{proof}[Sub-proof outline]
+Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
+G\setminus H$, i.e., $y\in G$ and $y\notin H$. But we've found an
+element in $G$ that's not in $H$. So by the extensional notion of set
+equality, these are clearly different sets. Thus $H\properSubgroup G$
+\end{proof}
+
+\nwenddocs{}\nwbegincode{75}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+proof
+  assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
+  set GH = UG \\ UH;
+  A2: UH c= UG by GROUP_2:def 5;
+  not (GH is empty) by A1;
+  then A3: ex x st x in GH by XBOOLE_0:def 1;
+  then consider y such that
+  A4: y in GH;
+  y in UG & not y in UH by A4, XBOOLE_0:def 5;
+  then UG <> UH by TARSKI:2;
+  then the multMagma of G <> the multMagma of H by GROUP_2:def 5;
+  hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by \nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
+end;
+
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{76}\nwdocspar
+
+\begin{registration}
+For any nontrivial group $G$, we can call \define{Proper Subgroup} of
+$G$ a subgroup which is proper.
+\end{registration}
+
+\nwenddocs{}\nwbegincode{77}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
+registration
+  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
+  cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+    then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
+    then the carrier of G <> \{1_G\};
+    then the carrier of G <> the carrier of (1).G;
+    hence (1).G is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
+  end;
+end;
+
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}
 
 \nwixlogsorted{c}{{$\exists a\in\varphi^{-1}(H),g=\varphi(a)$}{NW1Nnu7l-41Hbi6-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-41Hbi6-1}}}%
 \nwixlogsorted{c}{{$\exists b\in H, a = \varphi^{-1}(b)$}{NW1Nnu7l-2rS80d-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-2rS80d-1}}}%
@@ -1571,9 +1629,10 @@ end;
 \nwixlogsorted{c}{{Define \code{}Endomorphism\edoc{}}{NW1Nnu7l-17cKlQ-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-17cKlQ-1}\nwixd{NW1Nnu7l-17cKlQ-2}}}%
 \nwixlogsorted{c}{{Define \code{}inner\edoc{} for Automorphism}{NW3Mfp8C-13QmRM-1}{\nwixu{NW3Mfp8C-gMHRo-1}\nwixd{NW3Mfp8C-13QmRM-1}}}%
 \nwixlogsorted{c}{{Defining formulas for $\rng(f)$ and $f(X)$}{NW18nMBU-24g6aa-1}{\nwixu{NW18nMBU-3LADMa-1}\nwixd{NW18nMBU-24g6aa-1}}}%
+\nwixlogsorted{c}{{Definition: $p$-Core}{NW47t2dy-4cW2Y2-1}{\nwixu{NW47t2dy-3N17ED-1}\nwixd{NW47t2dy-4cW2Y2-1}}}%
 \nwixlogsorted{c}{{Definition: \code{}characteristic\edoc{} attribute}{NW47t2dy-qejLV-1}{\nwixu{NW47t2dy-3N17ED-1}\nwixd{NW47t2dy-qejLV-1}}}%
 \nwixlogsorted{c}{{Definition: proper subgroup}{NW18nMBU-RKCxZ-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-RKCxZ-1}}}%
-\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
+\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW1Nnu7l-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-2}}}%
 \nwixlogsorted{c}{{Environment for \code{}char.miz\edoc{}}{NW4bbsBH-3ZQoFX-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NW4bbsBH-3ZQoFX-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is an Endomorphism}{NW3Mfp8C-lTiQo-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-lTiQo-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is the inverse function of $f$}{NW3Mfp8C-oixct-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-oixct-1}}}%
@@ -1723,6 +1782,7 @@ end;
 \nwixlogsorted{c}{{Theorem: Relate \code{}Automorphism\ of\ G\edoc{} to elements of \code{}Aut\ G\edoc{}}{NW3Mfp8C-2VuNZX-1}{\nwixu{NW3Mfp8C-gMHRo-1}\nwixd{NW3Mfp8C-2VuNZX-1}}}%
 \nwixlogsorted{c}{{Theorem: transitivity of characteristic subgroups}{NW47t2dy-2ur0LT-1}{\nwixu{NW47t2dy-3N17ED-1}\nwixd{NW47t2dy-2ur0LT-1}}}%
 \nwixlogsorted{c}{{Theorem: unique subgroup of order $n$ is \code{}characteristic\edoc{}}{NW47t2dy-3r3l0M-1}{\nwixu{NW47t2dy-3N17ED-1}\nwixd{NW47t2dy-3r3l0M-1}}}%
+\nwixlogsorted{i}{{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}}%
 \nwixlogsorted{i}{{\nwixident{Automorphism}}{Automorphism}}%
 \nwixlogsorted{i}{{\nwixident{characteristic}}{characteristic}}%
 \nwixlogsorted{i}{{\nwixident{CharMeet}}{CharMeet}}%
@@ -1798,65 +1858,7 @@ end;
 \nwixlogsorted{i}{{\nwixident{ThAutoProper}}{ThAutoProper}}%
 \nwixlogsorted{i}{{\nwixident{ThAutoTriv}}{ThAutoTriv}}%
 \nwixlogsorted{i}{{\nwixident{trivial}}{trivial}}%
-\nwbegincode{73}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
-proof
-  assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
-  UH c= UG & UH <> UG by A1,\nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}, GROUP_2:def 5;
-  then (for x holds x in UH implies x in UG) &
-  the carrier of H <> the carrier of G by TARSKI:def 3;
-  then (for x holds x in UH implies x in UG) &
-  not (for x holds x in UH iff x in UG) by TARSKI:2;
-  hence (the carrier of G) \\ (the carrier of H) is non empty set
-  by XBOOLE_0:def 5;
-end;
-
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
-
-\begin{proof}[Sub-proof outline]
-Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
-G\setminus H$, i.e., $y\in G$ and $y\notin H$. But we've found an
-element in $G$ that's not in $H$. So by the extensional notion of set
-equality, these are clearly different sets. Thus $H\properSubgroup G$
-\end{proof}
-
-\nwenddocs{}\nwbegincode{75}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
-proof
-  assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
-  set GH = UG \\ UH;
-  A2: UH c= UG by GROUP_2:def 5;
-  not (GH is empty) by A1;
-  then A3: ex x st x in GH by XBOOLE_0:def 1;
-  then consider y such that
-  A4: y in GH;
-  y in UG & not y in UH by A4, XBOOLE_0:def 5;
-  then UG <> UH by TARSKI:2;
-  then the multMagma of G <> the multMagma of H by GROUP_2:def 5;
-  hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by \nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1};
-end;
-
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Def10}}{Def10}{NW18nMBU-dfIXQ-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{76}\nwdocspar
-
-\begin{registration}
-For any nontrivial group $G$, we can call \define{Proper Subgroup} of
-$G$ a subgroup which is proper.
-\end{registration}
-
-\nwenddocs{}\nwbegincode{77}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
-registration
-  let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
-  cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
-  existence
-  proof
-    take (1).G;
-    G is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
-    then not (ex x being object st the carrier of G = \{x\}) by GROUP_6:def 2;
-    then the carrier of G <> \{1_G\};
-    then the carrier of G <> the carrier of (1).G;
-    hence (1).G is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
-  end;
-end;
-
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{78}\nwdocspar
+\nwbegindocs{78}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$ with nontrivial subgroup $H\subgroup G$, we
@@ -3968,6 +3970,7 @@ begin :: Characteristic Subgroups
 \LA{}Theorem: $Z(G)$ is characteristic subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-g56Nl-1}}\RA{}
 \LA{}Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant~{\nwtagstyle{}\subpageref{NW47t2dy-3pFvE5-1}}\RA{}
 \LA{}Theorem: $\FrattiniSubgroup(G)$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-1wEepZ-1}}\RA{}
+\LA{}Definition: $p$-Core~{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}\RA{}
 
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
@@ -4001,7 +4004,7 @@ subgroups, we have to tell Mizar that \lstinline|characteristic| is now
 a token that should be associated with Definition~\ref{defn:characteristic:results:characteristic-subgroup}.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{\relax}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{NW47t2dy-4FyAEL-2}\nwenddeflinemarkup
 Vcharacteristic
 
 \nwendcode{}\nwbegindocs{6}\nwdocspar
@@ -4988,4 +4991,47 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Th33}}{Th33}{NW47t2dy-1wEepZ-1}\eatline
-\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th33}}{Th33}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{CharMeet}}{CharMeet}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Th31}}{Th31}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{CharMeet}}{CharMeet}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{Th31}}{Th31}{NW47t2dy-1wEepZ-1}\nwendcode{}
+\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{Th33}}{Th33}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{CharMeet}}{CharMeet}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Th31}}{Th31}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{CharMeet}}{CharMeet}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{Th31}}{Th31}{NW47t2dy-1wEepZ-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
+\begin{definition}\label{defn:characteristic:results:p-core}
+Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
+\define{$p$-Core} of $G$ is the subgroup
+\begin{equation}
+  \pCore{p}{G} = \bigcap\SylowSubgroups{p}{G}
+\end{equation}
+given by the intersection of all Sylow $p$-subgroups of $G$.
+\end{definition}
+
+\nwenddocs{}\nwbegincode{75}\sublabel{NW47t2dy-4cW2Y2-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}}\moddef{Definition: $p$-Core~{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3N17ED-1}}\nwenddeflinemarkup
+definition
+  let G be finite Group;
+  let p be prime Nat;
+  func p\nwlinkedidentc{-core_of_G}{NW47t2dy-4cW2Y2-1} -> strict Subgroup of G means
+  the carrier of it = meet\{A where A is Subset of G :
+  ex P being strict Subgroup of G st A = the carrier of P &
+  P is_Sylow_p-subgroup_of_prime p\};
+  existence
+  proof
+    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+    A1: ex P being strict Subgroup of G st SPS[P]
+    by GROUP_10:10;
+    ex H being strict Subgroup of G st the carrier of H = meet\{A where
+    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]\}
+    from GROUP_4:sch 1(A1);
+    hence thesis by A1;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+\nwindexdefn{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}{NW47t2dy-4cW2Y2-1}\eatline
+\nwused{\\{NW47t2dy-3N17ED-1}}\nwidentdefs{\\{{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}}}\nwendcode{}\nwbegindocs{76}\nwdocspar
+\begin{voc}
+Before proving the $p$-core is characteristic, we need to tell Mizar
+there is a new token in town: {\Tt{}-core{\_}of{\_}\nwendquote} which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
+\end{voc}
+
+\nwenddocs{}\nwbegincode{77}\sublabel{NW47t2dy-4FyAEL-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-2}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW47t2dy-4FyAEL-1}{\relax}\nwenddeflinemarkup
+V-core_of_
+
+\nwendcode{}\nwbegindocs{78}\nwdocspar
+\nwenddocs{}
