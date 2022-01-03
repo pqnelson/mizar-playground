@@ -1,0 +1,80 @@
+\section{Higher-Order Logic in Mizar}
+
+\begin{ddanger}
+The reader may skim or even skip this section, and return to it when
+encountering a scheme either in the Mizar mathematical library, or later
+in this text. 
+\end{ddanger}
+
+\bigbreak
+Mizar provides a minimal facility for a fragment of higher-order
+logic. They're called \emph{schemes} in Mizar. The intuition is that
+when we ``abstract away'' predicates and functors in theorems, we get a
+scheme. They look like:
+\begin{quote}
+\noindent\texttt{scheme} \textit{label} \verb#{# \emph{parameters} \verb#}# \texttt{:}
+
+\noindent\qquad\emph{statement}
+
+\noindent\texttt{provided}
+
+\noindent\qquad\emph{statements}
+
+\noindent\texttt{proof}
+
+\noindent\qquad\dots
+
+\noindent\texttt{end;}
+\end{quote}
+Just as theorems have premises or hypotheses, schemes have ``provisions'' ---
+statements made in the ``\lstinline{provided}'' section. They are
+statements (optionally labeled), separated by ``\lstinline{and}''. These
+statements are referred to as the scheme's premises.
+
+Theorems make claims (consequents), which correspond to the scheme's
+conclusion (i.e., the very first statement made in a scheme, on line 2
+of our schematic scheme). The proof associated to the scheme establishes
+the conclusion deduced from given the premises.
+
+The \emph{parameters} of a scheme are the functors and predicates we
+abstract away. Functor parameters look like
+``\emph{identifier}\verb#(#\emph{params}\verb#) -> #\emph{type}''. For
+the special case when we want to abstract away a constant, we would use
+a functor parameter with an empty parameter list, e.g.,
+``\lstinline{G() -> Group}'' for ``some group'' \lstinline{G()}.
+Predicate parameters look like ``\emph{parameter}\verb#[#\emph{params}\verb#]#''.
+``Wildcard arguments'' of a predicate parameter would be just
+``\lstinline{set}'', since everything is a set in Mizar.
+
+We use schemes as we use theorems: to justify a step in a proof. Unlike
+theorems, we ``cite'' a scheme using different notation. For a scheme
+named ``\lstinline{Sch}'' with several provisions, we use it to justify
+a proof step by writing ``\lstinline{from Sch(P1,P2,...,Pn)}'' where
+\verb#P1# through \verb#Pn# refers to local labels in the proof from
+which we appeal to the scheme. They correspond to the scheme's premises,
+establishing the applicability of the scheme.
+
+Note: it is necessary to use local functor and predicate definitions
+when using a scheme. That is to say, we need to use
+``\lstinline{defpred P[object] means ...}'' and
+``\lstinline{deffunc F(...) = ...}''. An additional caveat, in these
+local definitions, we use ``\lstinline{$1}'' to refer to the first
+argument, ``\lstinline{$2}'' to refer to the second argument, and so on.
+
+An example of schemes appearing ``in the wild'' would be when we
+have a class of subgroups $\mathcal{F}$ satisfying some property $P[-]$
+and are closed under automorphism, then $\bigcap\mathcal{F}$ is a
+characteristic subgroup. Here, there are two parameters to the scheme:
+one is the obvious unary predicate $P[-]$, the other is the group object
+which would be \verb#G() -> Group#.
+Another example would be the $\mathcal{X}$-residual of a group (c.f.,
+Definition~\ref{defn:pure-math:X-residual}).
+
+In my experience, schemes are only an ``obvious'' solution when I
+realize I'm using ``the same argument'' with different
+predicates. Usually, after I've written a theorem and its proof, and
+I've just formulated a similar theorem with an analogous proof. That's
+when I say, ``Aha, now I can go back and abstract away my previous
+theorem as a scheme!'' A good heuristic, I think, is to generically rely
+on the programmer's idiom YAGNI when it comes to schemes: you ain't
+gonna need it.
