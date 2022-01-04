@@ -442,8 +442,6 @@ reserve X for set;
 \LA{}Lemma: Subgroups invariant under conjugation are normal~{\nwtagstyle{}\subpageref{NW18nMBU-3PXqHm-1}}\RA{}
 \LA{}Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$~{\nwtagstyle{}\subpageref{NW18nMBU-34x7vU-1}}\RA{}
 \LA{}Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$~{\nwtagstyle{}\subpageref{NW18nMBU-2GAoBc-1}}\RA{}
-\LA{}Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective~{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}\RA{}
-\LA{}Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$~{\nwtagstyle{}\subpageref{NW18nMBU-4MstRF-1}}\RA{}
 \LA{}Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}\RA{}
 
 begin :: Nontrivial Groups and Subgroups
@@ -451,7 +449,7 @@ begin :: Nontrivial Groups and Subgroups
 \LA{}Register: trivial groups and trivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}\RA{}
 \LA{}Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}\RA{}
 \LA{}Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}\RA{}
-\LA{}Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-2C5QcL-1}}\RA{}
+\LA{}Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$~{\nwtagstyle{}\subpageref{NW18nMBU-3k2d9L-1}}\RA{}
 \LA{}Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-26Ljt0-1}}\RA{}
 \LA{}Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-zF0jx-1}}\RA{}
 
@@ -612,11 +610,11 @@ $X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
 \end{proof}
 
 \nwenddocs{}\nwbegincode{15}\sublabel{NW18nMBU-34x7vU-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-34x7vU-1}}}\moddef{Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$~{\nwtagstyle{}\subpageref{NW18nMBU-34x7vU-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1}:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds (f")" = f
+\nwlinkedidentc{Lm5}{NW18nMBU-34x7vU-1}:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  st f is bijective
+  holds (f")" = f
 proof
   let X,Y be non empty set;
   let f be Function of X,Y;
@@ -635,8 +633,8 @@ proof
   hence (f")" = f;
 end;
 
-\nwindexdefn{\nwixident{Lm10}}{Lm10}{NW18nMBU-34x7vU-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm10}}{Lm10}}}\nwendcode{}\nwbegindocs{16}\nwdocspar
+\nwindexdefn{\nwixident{Lm5}}{Lm5}{NW18nMBU-34x7vU-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm5}}{Lm5}}}\nwendcode{}\nwbegindocs{16}\nwdocspar
 \begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
   Let $x\in X$ be arbitrary. Consider
   \begin{subequations}\label{eq:characteristic:preparatory:lm-finvinv-is-inv}
@@ -688,7 +686,7 @@ states that $f^{-1}(f(x))=x$ provided $f$ is injective.
 \end{lem-remark}
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW18nMBU-2GAoBc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2GAoBc-1}}}\moddef{Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$~{\nwtagstyle{}\subpageref{NW18nMBU-2GAoBc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1}:
+\nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1}:
 for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
@@ -702,84 +700,12 @@ proof
   f is onto by A1;
   then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
   y = (g").(g.y) by A1,FUNCT_2:26
-   .= f.((f").y) by \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1},A1;
+   .= f.((f").y) by \nwlinkedidentc{Lm5}{NW18nMBU-34x7vU-1},A1;
   hence thesis;
 end;
 
-\nwindexdefn{\nwixident{Lm11}}{Lm11}{NW18nMBU-2GAoBc-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm11}}{Lm11}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-2GAoBc-1}\nwendcode{}\nwbegindocs{20}\nwdocspar
-\begin{lemma}
-If $f\colon X\to Y$ is bijective, then there exists an inverse function
-$f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
-\end{lemma}
-
-\begin{proof}[Proof sketch]
-This follows from Theorem~\mml[Th63]{group6}\MizThm{GROUP\_6}{63} which
-asserts $f$ is bijective and $g=f^{-1}$ together implies $g$ is
-bijective. We just need to prove the existence of $g=f^{-1}$, which is
-handled by Theorem~\mml[Th25]{funct2}.\MizThm{FUNCT\_2}{25}
-\end{proof}
-
-\nwenddocs{}\nwbegincode{21}\sublabel{NW18nMBU-3Sa9s5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}}\moddef{Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective~{\nwtagstyle{}\subpageref{NW18nMBU-3Sa9s5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm13}{NW18nMBU-3Sa9s5-1}:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds ex g being Function of Y,X st g = f" & g is bijective
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is bijective;
-  then dom f = X & rng f = Y & f is one-to-one & f is onto by FUNCT_2:def 3,def 1;
-  then reconsider g = f" as Function of Y,X by FUNCT_2:25;
-  take g;
-  thus g = f";
-  thus g is bijective by A1, GROUP_6:63;
-end;
-
-\nwindexdefn{\nwixident{Lm13}}{Lm13}{NW18nMBU-3Sa9s5-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm13}}{Lm13}}}\nwendcode{}\nwbegindocs{22}\nwdocspar
-\begin{lemma}
-If $f\colon X\to Y$ is a function of sets and $x\in X$ is arbitrary,
-then $f(\{x\})=\{f(x)\}$.
-\end{lemma}
-
-\nwenddocs{}\nwbegincode{23}\sublabel{NW18nMBU-4MstRF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4MstRF-1}}}\moddef{Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$~{\nwtagstyle{}\subpageref{NW18nMBU-4MstRF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm58}{NW18nMBU-4MstRF-1}:
-  for X,Y being non empty set
-  for f being Function of X,Y
-  for x being object
-  st x in X
-  holds f .: \{x\} = \{f.x\}
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  let x be object;
-  assume A0: x in X;
-  A1: x in dom f by A0, FUNCT_2:def 1;
-  for y being object holds y in f.:\{x\} iff y in \{f.x\}
-  proof let y be object;
-    thus y in f.:\{x\} implies y in \{f.x\}
-    proof
-      assume y in f.:\{x\};
-      then consider z being object such that
-      z in dom f and
-A2:   z in \{x\} and
-A3:   y = f.z by FUNCT_1:def 6;
-      z = x by A2,TARSKI:def 1;
-      hence thesis by A3,TARSKI:def 1;
-    end;
-    assume y in \{f.x\};
-    then
-A4: y = f.x by TARSKI:def 1;
-    x in \{x\} by TARSKI:def 1;
-    hence thesis by A1,A4,FUNCT_1:def 6;
-  end;
-  hence f .: \{x\} = \{f.x\} by TARSKI:2;
-end;
-
-\nwindexdefn{\nwixident{Lm58}}{Lm58}{NW18nMBU-4MstRF-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm58}}{Lm58}}}\nwendcode{}\nwbegindocs{24}\nwdocspar
+\nwindexdefn{\nwixident{Lm6}}{Lm6}{NW18nMBU-2GAoBc-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm6}}{Lm6}}}\nwidentuses{\\{{\nwixident{Lm5}}{Lm5}}}\nwindexuse{\nwixident{Lm5}}{Lm5}{NW18nMBU-2GAoBc-1}\nwendcode{}\nwbegindocs{20}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
 Let $f\colon X\into Y$ be an injective function of non-empty sets, let
 $A\subset X$ be a non-empty subset, let $x\in X$ be any element such
@@ -791,8 +717,8 @@ We prove that, if $f(x)\in f(A)$, then we get a contradiction with the
 hypothesis $x\notin A$ or $f$ is injective.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{25}\sublabel{NW18nMBU-41PUYF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\moddef{Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1}:
+\nwenddocs{}\nwbegincode{21}\sublabel{NW18nMBU-41PUYF-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\moddef{Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$~{\nwtagstyle{}\subpageref{NW18nMBU-41PUYF-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm7}{NW18nMBU-41PUYF-1}:
   for X,Y being non empty set
   for A being non empty Subset of X
   for x being Element of X
@@ -817,8 +743,8 @@ proof
   hence not (f.x in (f .: A));
 end;
 
-\nwindexdefn{\nwixident{Lm18}}{Lm18}{NW18nMBU-41PUYF-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm18}}{Lm18}}}\nwendcode{}\nwbegindocs{26}\nwdocspar
+\nwindexdefn{\nwixident{Lm7}}{Lm7}{NW18nMBU-41PUYF-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm7}}{Lm7}}}\nwendcode{}\nwbegindocs{22}\nwdocspar
 
 
 
@@ -860,7 +786,7 @@ We have a notion of ``\texttt{non trivial}'' groups, and at least one
 exists (namely, the real numbers as an Abelian group).
 \end{registration}
 
-\nwenddocs{}\nwbegincode{27}\sublabel{NW18nMBU-47kVo6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\moddef{Register: non trivial for Group~{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{23}\sublabel{NW18nMBU-47kVo6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\moddef{Register: non trivial for Group~{\nwtagstyle{}\subpageref{NW18nMBU-47kVo6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Group;
   existence
@@ -872,7 +798,7 @@ registration
 end;
 
 \nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-47kVo6-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{28}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{24}\nwdocspar
 \begin{registration}\index{Subgroup!Trivial}\index{Group!Trivial}\index{Trivial!Subgroup|see{Subgroup,Trivial}}\index{Trivial!Group|see{Group,Trivial}}\mizindex{Trivial@\texttt{trivial}}
 We need to register the adjective ``trivial'' for groups and
 subgroups. \emph{Every} group --- strict or not, trivial or not, hairy
@@ -880,7 +806,7 @@ or bald --- has a trivial subgroup. Similarly, \emph{every} subgroup has
 a trivial subgroup.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{29}\sublabel{NW18nMBU-1APuWV-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\moddef{Register: trivial groups and trivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{25}\sublabel{NW18nMBU-1APuWV-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\moddef{Register: trivial groups and trivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-1APuWV-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   let G be Group;
   cluster \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
@@ -899,13 +825,13 @@ registration
 end;
 
 \nwindexdefn{\nwixident{trivial}}{trivial}{NW18nMBU-1APuWV-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{30}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{trivial}}{trivial}}}\nwendcode{}\nwbegindocs{26}\nwdocspar
 \begin{registration}\index{Subgroup!Nontrivial}
 For any non trivial group $G$, we can find a nontrivial subgroup
 $H\subgroup G$, namely $G$ itself.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{31}\sublabel{NW18nMBU-2RiGxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\moddef{Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{27}\sublabel{NW18nMBU-2RiGxf-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\moddef{Register: non trivial for Subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-2RiGxf-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for Subgroup of G;
@@ -922,7 +848,7 @@ registration
   \LA{}Proof: existence of strict nontrivial subgroup of $G$~{\nwtagstyle{}\subpageref{NW18nMBU-lTKq-1}}\RA{}
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{32}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2RiGxf-1}\nwendcode{}\nwbegindocs{28}\nwdocspar
 
 
 \begin{proof}[Proof outline (Existence of nontrivial subgroup)]
@@ -930,7 +856,7 @@ We basically take the strict group underlying $G$ as an example of a
 nontrivial subgroup.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{33}\sublabel{NW18nMBU-lTKq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-lTKq-1}}}\moddef{Proof: existence of strict nontrivial subgroup of $G$~{\nwtagstyle{}\subpageref{NW18nMBU-lTKq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2RiGxf-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{29}\sublabel{NW18nMBU-lTKq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-lTKq-1}}}\moddef{Proof: existence of strict nontrivial subgroup of $G$~{\nwtagstyle{}\subpageref{NW18nMBU-lTKq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2RiGxf-1}}\nwenddeflinemarkup
 proof
   set H = multMagma (#the carrier of G, the multF of G#);
   reconsider H as Group-like non empty multMagma;
@@ -940,23 +866,42 @@ proof
   hence thesis;
 end;
 
-\nwused{\\{NW18nMBU-2RiGxf-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-lTKq-1}\nwendcode{}\nwbegindocs{34}\nwdocspar
+\nwused{\\{NW18nMBU-2RiGxf-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-lTKq-1}\nwendcode{}\nwbegindocs{30}\nwdocspar
 
-\begin{lemma}
-A subgroup $H\subgroup G$ is trivial if and only if for any $g\in G$ we
-have $g\in H\iff g=1_{G}$.
+\begin{lemma}\label{lemma:preparatory:trivialIff1}
+A group $G$ is trivial if $G=\trivialSubgroup$.
 \end{lemma}
 
-\begin{proof}[Proof outline]
+One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
+need to prove the forward direction.
 
-  ($\Longrightarrow$) Suppose $G$ is trivial. Then $\exists y,G=\{y\}$.
-This must mean $G=\{1_{G}\}$ is the identity element.
+\begin{proof}[Proof sketch]
 
-  ($\Longleftarrow$) Suppose $\forall x, x\in G\iff x=1_{G}$. Then by
-definition~\mml[def 1]{tarski}, the set underlying $G$ is $\{1_{G}\}$
-and thus trivial.
 \end{proof}
 
+\nwenddocs{}\nwbegincode{31}\sublabel{NW18nMBU-NeCDP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\moddef{Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+Lm8:
+  for G being Group
+  holds G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} iff the multMagma of G = (1).G
+proof
+  let G be Group;
+  thus G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} implies the multMagma of G = (1).G
+  proof
+    assume G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+    then consider x being object such that
+    A1: the carrier of G = \{x\}
+    by GROUP_6:def 2;
+    x = 1_G by A1, TARSKI:def 1;
+    then the carrier of G = \{1_G\} by A1;
+    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
+    hence the multMagma of G = (1).G by GROUP_2:61;
+  end;
+  thus the multMagma of G = (1).G implies G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
+  thus thesis;
+end;
+
+\nwindexdefn{\nwixident{Lm14}}{Lm14}{NW18nMBU-NeCDP-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm14}}{Lm14}}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-NeCDP-1}\nwendcode{}\nwbegindocs{32}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
 \end{lemma}
@@ -965,8 +910,8 @@ If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
 \emph{Trivial}, thanks to Lemma~\ref{lemma:preparatory:trivialIff1}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-2C5QcL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2C5QcL-1}}}\moddef{Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-2C5QcL-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm108}{NW18nMBU-2C5QcL-1}:
+\nwenddocs{}\nwbegincode{33}\sublabel{NW18nMBU-3k2d9L-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3k2d9L-1}}}\moddef{Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$~{\nwtagstyle{}\subpageref{NW18nMBU-3k2d9L-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm9}{NW18nMBU-3k2d9L-1}:
   for G being Group
   for H being Subgroup of G
   st H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1}
@@ -975,14 +920,14 @@ proof
   let G be Group;
   let H be Subgroup of G;
   assume H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
-  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
+  then the multMagma of H = (1).H by Lm8
                          .= (1).G by GROUP_2:63;
   hence thesis;
 end;
 
 
-\nwindexdefn{\nwixident{Lm108}}{Lm108}{NW18nMBU-2C5QcL-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm108}}{Lm108}}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2C5QcL-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
+\nwindexdefn{\nwixident{Lm9}}{Lm9}{NW18nMBU-3k2d9L-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm9}}{Lm9}}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3k2d9L-1}\nwendcode{}\nwbegindocs{34}\nwdocspar
 \begin{lemma}
 If $H\subgroup G$ and $K\subgroup G$ are both trivial, then $H=K$ as groups.
 \end{lemma}
@@ -992,8 +937,8 @@ If $H$ and $K$ are both trivial, then by Lemma~\ref{lemma:characteristic:prepara
 and thus are equal to each other as groups.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-26Ljt0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-26Ljt0-1}}}\moddef{Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-26Ljt0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm107}{NW18nMBU-26Ljt0-1}:
+\nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-26Ljt0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-26Ljt0-1}}}\moddef{Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-26Ljt0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm10}{NW18nMBU-26Ljt0-1}:
   for G being Group
   for H being \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G
   for K being \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G
@@ -1002,13 +947,13 @@ proof
   let G be Group;
   let H be \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
   let K be \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
-  the multMagma of H = (1).G by \nwlinkedidentc{Lm108}{NW18nMBU-2C5QcL-1}
-  .= the multMagma of K by \nwlinkedidentc{Lm108}{NW18nMBU-2C5QcL-1};
+  the multMagma of H = (1).G by \nwlinkedidentc{Lm9}{NW18nMBU-3k2d9L-1}
+  .= the multMagma of K by \nwlinkedidentc{Lm9}{NW18nMBU-3k2d9L-1};
   hence thesis;
 end;
 
-\nwindexdefn{\nwixident{Lm107}}{Lm107}{NW18nMBU-26Ljt0-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm107}}{Lm107}}}\nwidentuses{\\{{\nwixident{Lm108}}{Lm108}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm108}}{Lm108}{NW18nMBU-26Ljt0-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-26Ljt0-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
+\nwindexdefn{\nwixident{Lm10}}{Lm10}{NW18nMBU-26Ljt0-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm10}}{Lm10}}}\nwidentuses{\\{{\nwixident{Lm9}}{Lm9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm9}}{Lm9}{NW18nMBU-26Ljt0-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-26Ljt0-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
 \begin{lemma}
 If $H\subgroup K$ and $K\subgroup G$ and $K=\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
 \end{lemma}
@@ -1020,8 +965,8 @@ to work with their underlying sets and the fact $\{1_{G}\}\subset
 H\subset\{1_{G}\}$ implies $H=\{1_{G}\}$ by Definition~\mml[def10]{xboole0}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{39}\sublabel{NW18nMBU-zF0jx-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-zF0jx-1}}}\moddef{Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-zF0jx-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm106}{NW18nMBU-zF0jx-1}:
+\nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-zF0jx-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-zF0jx-1}}}\moddef{Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-zF0jx-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm11}{NW18nMBU-zF0jx-1}:
   for G being Group
   for K being \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G
   for H being Subgroup of G
@@ -1034,7 +979,7 @@ proof
   assume A1: H is Subgroup of K;
   the carrier of H = \{1_G\}
   proof
-    the multMagma of K = (1).G by \nwlinkedidentc{Lm108}{NW18nMBU-2C5QcL-1};
+    the multMagma of K = (1).G by \nwlinkedidentc{Lm9}{NW18nMBU-3k2d9L-1};
     then the carrier of K = \{1_G\} by GROUP_2:def 7;
     then B1: the carrier of H c= \{1_G\} by A1,GROUP_2:def 5;
     (1).G is Subgroup of H by GROUP_2:65;
@@ -1046,8 +991,8 @@ proof
   hence H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G by GROUP_6:def 2;
 end;
 
-\nwindexdefn{\nwixident{Lm106}}{Lm106}{NW18nMBU-zF0jx-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm106}}{Lm106}}}\nwidentuses{\\{{\nwixident{Lm108}}{Lm108}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm108}}{Lm108}{NW18nMBU-zF0jx-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-zF0jx-1}\nwendcode{}\nwbegindocs{40}\nwdocspar
+\nwindexdefn{\nwixident{Lm11}}{Lm11}{NW18nMBU-zF0jx-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm11}}{Lm11}}}\nwidentuses{\\{{\nwixident{Lm9}}{Lm9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm9}}{Lm9}{NW18nMBU-zF0jx-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-zF0jx-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1070,7 +1015,7 @@ proper. Maximal subgroups were defined (\mml[def 6]{group4}\MizDef{GROUP\_4}[06]
 using the condition \lstinline|the multMagma of H <> the multMagma of G|.
 \end{def-remark}\mizindex{Proper@\texttt{proper}}
 
-\nwenddocs{}\nwbegincode{41}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{39}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 definition
   let G be Group;
   let IT be Subgroup of G;
@@ -1082,13 +1027,13 @@ reserve G for Group;
 reserve H for Subgroup of G;
 
 \nwindexdefn{\nwixident{Def10}}{Def10}{NW18nMBU-RKCxZ-1}\nwindexdefn{\nwixident{proper}}{proper}{NW18nMBU-RKCxZ-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{42}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 \begin{registration}
 For any nontrivial group $G$, we can find a proper subgroup $H\subgroup G$,
 namely the trivial subgroup $H=\trivialSubgroup_{G}$.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{41}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
 
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
@@ -1103,7 +1048,7 @@ end;
 reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
 
-\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
+\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{42}\nwdocspar
 
 \begin{lemma}
 Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
@@ -1120,8 +1065,8 @@ underlying sets must be different. This argument works backwards as well
 as forwards.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{45}\sublabel{NW18nMBU-2LrGAr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}:
+\nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-2LrGAr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-2LrGAr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm12}{NW18nMBU-2LrGAr-1}:
   H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff the carrier of H <> the carrier of G
 proof
   (the carrier of H c= the carrier of G) & (the multF of H =
@@ -1129,8 +1074,8 @@ proof
   hence thesis;
 end;
 
-\nwindexdefn{\nwixident{Lm99}}{Lm99}{NW18nMBU-2LrGAr-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm99}}{Lm99}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2LrGAr-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\nwindexdefn{\nwixident{Lm12}}{Lm12}{NW18nMBU-2LrGAr-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm12}}{Lm12}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2LrGAr-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
   Let $H\subgroup G$ be a subgroup.
   Then $H$ is a proper subgroup if and only if the set difference is nonempty
@@ -1151,10 +1096,10 @@ underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
   \end{enumerate}
 \end{proof}
 
-\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-2cWeD5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{45}\sublabel{NW18nMBU-2cWeD5-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\moddef{Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-2cWeD5-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 reserve h,x,y for object;
 
-\nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1}:
+\nwlinkedidentc{Lm13}{NW18nMBU-2cWeD5-1}:
   H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff (the carrier of G) \\ (the carrier of H) is non empty set
 proof
   set UG = the carrier of G;
@@ -1166,8 +1111,8 @@ proof
   thus thesis;
 end;
 
-\nwindexdefn{\nwixident{Lm100}}{Lm100}{NW18nMBU-2cWeD5-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm100}}{Lm100}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
+\nwindexdefn{\nwixident{Lm13}}{Lm13}{NW18nMBU-2cWeD5-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm13}}{Lm13}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2cWeD5-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
   $U(H)$ of $H$ is a subset of the underlying set $U(G)$ of $G$ --- i.e.,
@@ -1175,10 +1120,10 @@ end;
   $g\in G$ for which $g\notin H$. Then $U(G)\setminus U(H)\neq\emptyset$.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
 proof
   assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
-  UH c= UG & UH <> UG by A1,\nwlinkedidentc{Lm99}{NW18nMBU-2LrGAr-1}, GROUP_2:def 5;
+  UH c= UG & UH <> UG by A1,\nwlinkedidentc{Lm12}{NW18nMBU-2LrGAr-1}, GROUP_2:def 5;
   then (for x holds x in UH implies x in UG) &
   the carrier of H <> the carrier of G;
   then (for x holds x in UH implies x in UG) &
@@ -1187,7 +1132,7 @@ proof
   by XBOOLE_0:def 5;
 end;
 
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm99}}{Lm99}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm99}}{Lm99}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{Lm12}}{Lm12}}\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{Lm12}}{Lm12}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
 
 \begin{proof}[Sub-proof outline]
 Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
@@ -1196,7 +1141,7 @@ element in $G$ that's not in $H$. So by the extensional notion of set
 equality, these are clearly different sets. Thus $H\properSubgroup G$
 \end{proof}
 
-\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2cWeD5-1}}\nwenddeflinemarkup
 proof
   assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
   set GH = UG \\ UH;
@@ -1210,14 +1155,14 @@ proof
   hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
 end;
 
-\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
+\nwused{\\{NW18nMBU-2cWeD5-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$, we can call \define{Proper Subgroup} of
 $G$ a subgroup which is proper.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
@@ -1228,14 +1173,14 @@ registration
   end;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{52}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$ with nontrivial subgroup $H\subgroup G$, we
 can call \define{Proper Subgroup} of $H$ a subgroup $K\subgroup H$ which is proper.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-hGa0Z-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\moddef{Register: proper subgroups of nontrivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-hGa0Z-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\moddef{Register: proper subgroups of nontrivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
 
@@ -1250,7 +1195,7 @@ registration
   end;
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-hGa0Z-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-hGa0Z-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-hGa0Z-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-hGa0Z-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 
 \begin{lemma}
 Maximal subgroups are also proper subgroups.
@@ -1258,62 +1203,28 @@ Maximal subgroups are also proper subgroups.
 
 The proof is literally, ``Look at the definitions!''
 
-\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1}:
+\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm14}{NW18nMBU-NeCDP-1}:
   for G being Group
   for H being Subgroup of G
   st H is maximal
   holds H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by GROUP_4:def 6;
 
-\nwindexdefn{\nwixident{Lm98}}{Lm98}{NW18nMBU-KtuAy-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm98}}{Lm98}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
+\nwindexdefn{\nwixident{Lm14}}{Lm14}{NW18nMBU-KtuAy-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm14}}{Lm14}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 \begin{registration}
 We can now automatically take advantage of the fact that, a maximal
 subgroup for a nontrivial group is implicitly a proper subgroup.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster maximal -> \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
-  coherence by \nwlinkedidentc{Lm98}{NW18nMBU-KtuAy-1};
+  coherence by \nwlinkedidentc{Lm14}{NW18nMBU-NeCDP-1};
 end;
 
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm98}}{Lm98}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm98}}{Lm98}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
-
-\begin{lemma}\label{lemma:preparatory:trivialIff1}
-A group $G$ is trivial if $G=\trivialSubgroup$.
-\end{lemma}
-
-One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
-need to prove the forward direction.
-
-\begin{proof}[Proof sketch]
-
-\end{proof}
-
-\nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-NeCDP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\moddef{Lemma: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-NeCDP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-LmGroupIsTrivialIff1:
-  for G being Group
-  holds G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} iff the multMagma of G = (1).G
-proof
-  let G be Group;
-  thus G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} implies the multMagma of G = (1).G
-  proof
-    assume G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
-    then consider x being object such that
-    A1: the carrier of G = \{x\}
-    by GROUP_6:def 2;
-    x = 1_G by A1, TARSKI:def 1;
-    then the carrier of G = \{1_G\} by A1;
-    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
-    hence the multMagma of G = (1).G by GROUP_2:61;
-  end;
-  thus the multMagma of G = (1).G implies G is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1};
-  thus thesis;
-end;
-
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-NeCDP-1}\nwendcode{}\nwbegindocs{62}\nwdocspar
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentuses{\\{{\nwixident{Lm14}}{Lm14}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm14}}{Lm14}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
 
 \begin{lemma}
 If $H\properSubgroup K$ is proper and $K\subgroup G$ and $H\neq K$, then
@@ -1326,8 +1237,8 @@ $K$ is a nontrivial group.
   $H=\trivialSubgroup$ and this contradicts $H\properSubgroup K$ proper.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{63}\sublabel{NW18nMBU-1gsRKB-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1gsRKB-1}}}\moddef{Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial~{\nwtagstyle{}\subpageref{NW18nMBU-1gsRKB-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm110}{NW18nMBU-1gsRKB-1}:
+\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-1gsRKB-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1gsRKB-1}}}\moddef{Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial~{\nwtagstyle{}\subpageref{NW18nMBU-1gsRKB-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-oqDk7-1}}\nwenddeflinemarkup
+\nwlinkedidentc{Lm15}{NW18nMBU-1gsRKB-1}:
   for G being non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group
   for H being \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G
   for K being Subgroup of G
@@ -1343,15 +1254,15 @@ proof
   proof
     assume B1: not K is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
     then K is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
-    then H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G by A1,\nwlinkedidentc{Lm106}{NW18nMBU-zF0jx-1};
-    then the multMagma of H = the multMagma of K by B1,\nwlinkedidentc{Lm107}{NW18nMBU-26Ljt0-1};
+    then H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G by A1,\nwlinkedidentc{Lm11}{NW18nMBU-zF0jx-1};
+    then the multMagma of H = the multMagma of K by B1,\nwlinkedidentc{Lm10}{NW18nMBU-26Ljt0-1};
     hence contradiction by A2;
   end;
   hence K is non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
 end;
 
-\nwindexdefn{\nwixident{Lm110}}{Lm110}{NW18nMBU-1gsRKB-1}\eatline
-\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm110}}{Lm110}}}\nwidentuses{\\{{\nwixident{Lm106}}{Lm106}}\\{{\nwixident{Lm107}}{Lm107}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm106}}{Lm106}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{Lm107}}{Lm107}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1gsRKB-1}\nwendcode{}\nwfilename{nw/characteristic/automorphism.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\nwindexdefn{\nwixident{Lm15}}{Lm15}{NW18nMBU-1gsRKB-1}\eatline
+\nwused{\\{NW18nMBU-oqDk7-1}}\nwidentdefs{\\{{\nwixident{Lm15}}{Lm15}}}\nwidentuses{\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm11}}{Lm11}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1gsRKB-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1gsRKB-1}\nwendcode{}\nwfilename{nw/characteristic/automorphism.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Automorphisms}
 Now, we have a section for defining inner and outer group
 automorphisms. A \emph{group automorphism} is just a bijective endomorphism on
@@ -1565,15 +1476,15 @@ $\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
 \end{proof}
 
 \nwenddocs{}\nwbegincode{19}\sublabel{NW1Nnu7l-3CeuwY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}}\moddef{Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-2Beici-1}}\nwenddeflinemarkup
-\nwlinkedidentc{Lm8}{NW1Nnu7l-3CeuwY-1}: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
+\nwlinkedidentc{Lm16}{NW1Nnu7l-3CeuwY-1}: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
   assume H is Subgroup of (1).G;
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
-\nwindexdefn{\nwixident{Lm8}}{Lm8}{NW1Nnu7l-3CeuwY-1}\eatline
-\nwused{\\{NW1Nnu7l-2Beici-1}}\nwidentdefs{\\{{\nwixident{Lm8}}{Lm8}}}\nwendcode{}\nwbegindocs{20}\nwdocspar
+\nwindexdefn{\nwixident{Lm16}}{Lm16}{NW1Nnu7l-3CeuwY-1}\eatline
+\nwused{\\{NW1Nnu7l-2Beici-1}}\nwidentdefs{\\{{\nwixident{Lm16}}{Lm16}}}\nwendcode{}\nwbegindocs{20}\nwdocspar
 \begin{lemma}\label{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
 $G$, we have $\varphi|_{H}\colon H\into\varphi(H)$ be an injective group morphism.
@@ -1591,19 +1502,19 @@ $\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
 
 \nwenddocs{}\nwbegincode{21}\sublabel{NW1Nnu7l-2Beici-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-2Beici-1}}}\moddef{Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2Beici-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-32pmQO-1}}\nwenddeflinemarkup
 \LA{}Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW1Nnu7l-3CeuwY-1}}\RA{}
-\nwlinkedidentc{Lm9}{NW1Nnu7l-2Beici-1}:
+\nwlinkedidentc{Lm17}{NW1Nnu7l-2Beici-1}:
 (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by \nwlinkedidentc{Th9}{NW1Nnu7l-2Q8R0t-1};
-  then Ker(phi|H) = (1).G by \nwlinkedidentc{Lm8}{NW1Nnu7l-3CeuwY-1}
+  then Ker(phi|H) = (1).G by \nwlinkedidentc{Lm16}{NW1Nnu7l-3CeuwY-1}
                  .= (1).H by GROUP_2:63;
   hence (phi|H) is one-to-one by GROUP_6:56;
 end;
 
-\nwindexdefn{\nwixident{Lm9}}{Lm9}{NW1Nnu7l-2Beici-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Lm9}}{Lm9}}}\nwidentuses{\\{{\nwixident{Lm8}}{Lm8}}\\{{\nwixident{Th9}}{Th9}}}\nwindexuse{\nwixident{Lm8}}{Lm8}{NW1Nnu7l-2Beici-1}\nwindexuse{\nwixident{Th9}}{Th9}{NW1Nnu7l-2Beici-1}\nwendcode{}\nwbegindocs{22}\nwdocspar
+\nwindexdefn{\nwixident{Lm17}}{Lm17}{NW1Nnu7l-2Beici-1}\eatline
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Lm17}}{Lm17}}}\nwidentuses{\\{{\nwixident{Lm16}}{Lm16}}\\{{\nwixident{Th9}}{Th9}}}\nwindexuse{\nwixident{Lm16}}{Lm16}{NW1Nnu7l-2Beici-1}\nwindexuse{\nwixident{Th9}}{Th9}{NW1Nnu7l-2Beici-1}\nwendcode{}\nwbegindocs{22}\nwdocspar
 \begin{theorem}\label{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}
 Let $H\subgroup G$ be a subgroup such that
 $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$.
@@ -1699,14 +1610,14 @@ proof
   assume g in Image(phi|Image(psi|H));
   \LA{}$\exists a\in\varphi^{-1}(H),g=\varphi(a)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Hbi6-1}}\RA{}
   \LA{}$\exists b\in H, a = \varphi^{-1}(b)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-2rS80d-1}}\RA{}
-  then b = phi.(psi.b) by \nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1}
+  then b = phi.(psi.b) by \nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1}
         .= phi.((psi|H).b) by M2,\nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1}
         .= phi.a by B3
         .= g by B2;
   hence g in H;
 end;
 
-\nwused{\\{NW1Nnu7l-1ZaFZM-1}}\nwidentuses{\\{{\nwixident{Lm11}}{Lm11}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW1Nnu7l-47FJLD-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-47FJLD-1}\nwendcode{}\nwbegindocs{30}\nwdocspar
+\nwused{\\{NW1Nnu7l-1ZaFZM-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-47FJLD-1}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW1Nnu7l-47FJLD-1}\nwendcode{}\nwbegindocs{30}\nwdocspar
 
 \begin{proof}[Proof sub-step 1]
 Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
@@ -1810,13 +1721,13 @@ proof
   then B6: (phi|K).a =  phi.a  by B5,\nwlinkedidentc{Lm3}{NW18nMBU-3Uc8Un-1}
                     .= phi.(psi.g) by B4
                     .= phi.((phi").g)
-                    .= g by \nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1};
+                    .= g by \nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1};
   b = (phi|K).((psi|H).g)
    .= g by B6;
   hence thesis by B3;
 end;
 
-\nwused{\\{NW1Nnu7l-WRyHP-1}}\nwidentuses{\\{{\nwixident{Lm11}}{Lm11}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW1Nnu7l-kMqjk-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-kMqjk-1}\nwendcode{}\nwbegindocs{42}\nwdocspar
+\nwused{\\{NW1Nnu7l-WRyHP-1}}\nwidentuses{\\{{\nwixident{Lm3}}{Lm3}}\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-kMqjk-1}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW1Nnu7l-kMqjk-1}\nwendcode{}\nwbegindocs{42}\nwdocspar
 
 \begin{theorem}
 Let $H\subgroup G$ and $K\subgroup G$ be subgroups, let $\varphi\in\Aut(G)$
@@ -1847,7 +1758,7 @@ proof
   reconsider psi = phi" as \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G by GROUP_6:62;
   take psi;
   thus psi = phi";
-  A2: psi" = phi by \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1};
+  A2: psi" = phi by \nwlinkedidentc{Lm5}{NW18nMBU-34x7vU-1};
   consider phi0 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
   A3: phi0 = psi" and
   A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
@@ -1860,7 +1771,7 @@ proof
   hence H is Subgroup of Image(psi|K) by A5;
 end;
 
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-zRHLm-1}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW1Nnu7l-zRHLm-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-zRHLm-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm5}}{Lm5}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-zRHLm-1}\nwindexuse{\nwixident{Lm5}}{Lm5}{NW1Nnu7l-zRHLm-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-zRHLm-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ be any subgroup, and
@@ -1878,13 +1789,13 @@ theorem \nwlinkedidentc{Th8}{NW1Nnu7l-3WScXE-1}:
   H,phi .: H are_isomorphic
 proof
   reconsider H2 = phi .: H as Subgroup of G;
-  phi|H is one-to-one by \nwlinkedidentc{Lm9}{NW1Nnu7l-2Beici-1};
+  phi|H is one-to-one by \nwlinkedidentc{Lm17}{NW1Nnu7l-2Beici-1};
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
 
 \nwindexdefn{\nwixident{Th8}}{Th8}{NW1Nnu7l-3WScXE-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th8}}{Th8}}}\nwidentuses{\\{{\nwixident{Lm9}}{Lm9}}}\nwindexuse{\nwixident{Lm9}}{Lm9}{NW1Nnu7l-3WScXE-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th8}}{Th8}}}\nwidentuses{\\{{\nwixident{Lm17}}{Lm17}}}\nwindexuse{\nwixident{Lm17}}{Lm17}{NW1Nnu7l-3WScXE-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ any subgroup, and $\varphi\in\aut(G)$
 any automorphism.
@@ -2110,7 +2021,7 @@ proof
   let f be \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by \nwlinkedidentc{Lm9}{NW1Nnu7l-2Beici-1};
+  C2: f|H is one-to-one by \nwlinkedidentc{Lm17}{NW1Nnu7l-2Beici-1};
 
   f|H is onto \nwlinkedidentc{Endomorphism}{NW1Nnu7l-17cKlQ-1} of H
   \LA{}Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}\RA{}
@@ -2120,7 +2031,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Th11}}{Th11}{NW1Nnu7l-1QHEJY-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th11}}{Th11}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{Lm9}}{Lm9}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Lm9}}{Lm9}{NW1Nnu7l-1QHEJY-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{Th11}}{Th11}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{Lm17}}{Lm17}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Lm17}}{Lm17}{NW1Nnu7l-1QHEJY-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
 \begin{proof}[Proof sketch (Surjectivity)]
 For reasons I do not adequately understand, I could not simply handle
 {\Tt{}f|H\nwendquote} as a {\Tt{}Homomorphism\ of\ H,H\nwendquote} (despite having established this
@@ -2169,7 +2080,7 @@ proof
   A1: phi is one-to-one & phi is onto & UH is non empty Subset of UG &
       phi is Function of UG,UG by GROUP_2:def 5;
   assume H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G;
-  then UG \\ UH is non empty by \nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
+  then UG \\ UH is non empty by \nwlinkedidentc{Lm13}{NW18nMBU-2cWeD5-1};
   then consider x such that
   A2: x in UG \\ UH by XBOOLE_0:def 1;
   A3: x in G & not x in H by A2,XBOOLE_0:def 5;
@@ -2181,7 +2092,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{ThAutoProper}}{ThAutoProper}{NW1Nnu7l-39h8sj-1}\eatline
-\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{ThAutoProper}}{ThAutoProper}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39h8sj-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
+\nwused{\\{NW1Nnu7l-32pmQO-1}}\nwidentdefs{\\{{\nwixident{ThAutoProper}}{ThAutoProper}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm13}}{Lm13}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{Lm13}}{Lm13}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{proper}}{proper}{NW1Nnu7l-39h8sj-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-39h8sj-1}\nwendcode{}\nwbegindocs{72}\nwdocspar
 \begin{proof}[Proof step ($\varphi(x)\notin\varphi(H)$)]
 Since $x\in G$ and $x\notin H$, it follows that $\varphi(x)\notin\varphi(H)$
 thanks to Lemma~\ref{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}.
@@ -2192,11 +2103,11 @@ that this is the same as $\varphi$ applied to the subgroup $H$.
 \nwenddocs{}\nwbegincode{73}\sublabel{NW1Nnu7l-476s7N-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-476s7N-1}}}\moddef{$\varphi(x)\notin\varphi(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-476s7N-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-39h8sj-1}}\nwenddeflinemarkup
 not (phi.x in phi .: H)
 proof
-  not (phi.x in (phi .: UH)) by A1, A3, \nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1};
+  not (phi.x in (phi .: UH)) by A1, A3, \nwlinkedidentc{Lm7}{NW18nMBU-41PUYF-1};
   hence not (phi.x in (phi .: H)) by GRSOLV_1:8;
 end;
 
-\nwused{\\{NW1Nnu7l-39h8sj-1}}\nwidentuses{\\{{\nwixident{Lm18}}{Lm18}}}\nwindexuse{\nwixident{Lm18}}{Lm18}{NW1Nnu7l-476s7N-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
+\nwused{\\{NW1Nnu7l-39h8sj-1}}\nwidentuses{\\{{\nwixident{Lm7}}{Lm7}}}\nwindexuse{\nwixident{Lm7}}{Lm7}{NW1Nnu7l-476s7N-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
 
 \begin{proof}[Proof step ($\varphi(x)\in G)$.]
 We need to make explicit that $\varphi(x)$ is not just ``some object'',
@@ -2264,15 +2175,13 @@ end;
 \nwixlogsorted{c}{{Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$}{NW1Nnu7l-3CeuwY-1}{\nwixd{NW1Nnu7l-3CeuwY-1}\nwixu{NW1Nnu7l-2Beici-1}}}%
 \nwixlogsorted{c}{{Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$}{NW18nMBU-2cWeD5-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-2cWeD5-1}}}%
 \nwixlogsorted{c}{{Lemma: $H\subgroup G$ is proper iff the underlying sets are different}{NW18nMBU-2LrGAr-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-2LrGAr-1}}}%
-\nwixlogsorted{c}{{Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$}{NW18nMBU-2C5QcL-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-2C5QcL-1}}}%
+\nwixlogsorted{c}{{Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$}{NW18nMBU-3k2d9L-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-3k2d9L-1}}}%
 \nwixlogsorted{c}{{Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$}{NW18nMBU-zF0jx-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-zF0jx-1}}}%
-\nwixlogsorted{c}{{Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$}{NW18nMBU-4MstRF-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-4MstRF-1}}}%
 \nwixlogsorted{c}{{Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms}{NW3Mfp8C-3eJW7Q-1}{\nwixu{NW3Mfp8C-2gUxot-1}\nwixd{NW3Mfp8C-3eJW7Q-1}}}%
 \nwixlogsorted{c}{{Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$}{NW18nMBU-26Ljt0-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-26Ljt0-1}}}%
 \nwixlogsorted{c}{{Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$}{NW1Nnu7l-2Beici-1}{\nwixu{NW1Nnu7l-32pmQO-1}\nwixd{NW1Nnu7l-2Beici-1}}}%
 \nwixlogsorted{c}{{Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$}{NW18nMBU-34x7vU-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-34x7vU-1}}}%
 \nwixlogsorted{c}{{Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$}{NW18nMBU-2GAoBc-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-2GAoBc-1}}}%
-\nwixlogsorted{c}{{Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective}{NW18nMBU-3Sa9s5-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-3Sa9s5-1}}}%
 \nwixlogsorted{c}{{Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$}{NW47t2dy-1tYS7d-1}{\nwixu{NW47t2dy-HjATr-1}\nwixd{NW47t2dy-1tYS7d-1}}}%
 \nwixlogsorted{c}{{Lemma: maximal subgroups are proper}{NW18nMBU-KtuAy-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-KtuAy-1}}}%
 \nwixlogsorted{c}{{Lemma: restriction of group morphism acts on elements like the original}{NW18nMBU-3Uc8Un-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-3Uc8Un-1}}}%
@@ -2390,24 +2299,22 @@ end;
 \nwixlogsorted{i}{{\nwixident{inner}}{inner}}%
 \nwixlogsorted{i}{{\nwixident{Lm1}}{Lm1}}%
 \nwixlogsorted{i}{{\nwixident{Lm10}}{Lm10}}%
-\nwixlogsorted{i}{{\nwixident{Lm100}}{Lm100}}%
-\nwixlogsorted{i}{{\nwixident{Lm106}}{Lm106}}%
-\nwixlogsorted{i}{{\nwixident{Lm107}}{Lm107}}%
-\nwixlogsorted{i}{{\nwixident{Lm108}}{Lm108}}%
 \nwixlogsorted{i}{{\nwixident{Lm11}}{Lm11}}%
-\nwixlogsorted{i}{{\nwixident{Lm110}}{Lm110}}%
+\nwixlogsorted{i}{{\nwixident{Lm12}}{Lm12}}%
 \nwixlogsorted{i}{{\nwixident{Lm13}}{Lm13}}%
-\nwixlogsorted{i}{{\nwixident{Lm18}}{Lm18}}%
+\nwixlogsorted{i}{{\nwixident{Lm14}}{Lm14}}%
+\nwixlogsorted{i}{{\nwixident{Lm15}}{Lm15}}%
+\nwixlogsorted{i}{{\nwixident{Lm16}}{Lm16}}%
+\nwixlogsorted{i}{{\nwixident{Lm17}}{Lm17}}%
 \nwixlogsorted{i}{{\nwixident{Lm2}}{Lm2}}%
 \nwixlogsorted{i}{{\nwixident{Lm25}}{Lm25}}%
 \nwixlogsorted{i}{{\nwixident{Lm26}}{Lm26}}%
 \nwixlogsorted{i}{{\nwixident{Lm3}}{Lm3}}%
 \nwixlogsorted{i}{{\nwixident{Lm4}}{Lm4}}%
-\nwixlogsorted{i}{{\nwixident{Lm58}}{Lm58}}%
-\nwixlogsorted{i}{{\nwixident{Lm8}}{Lm8}}%
+\nwixlogsorted{i}{{\nwixident{Lm5}}{Lm5}}%
+\nwixlogsorted{i}{{\nwixident{Lm6}}{Lm6}}%
+\nwixlogsorted{i}{{\nwixident{Lm7}}{Lm7}}%
 \nwixlogsorted{i}{{\nwixident{Lm9}}{Lm9}}%
-\nwixlogsorted{i}{{\nwixident{Lm98}}{Lm98}}%
-\nwixlogsorted{i}{{\nwixident{Lm99}}{Lm99}}%
 \nwixlogsorted{i}{{\nwixident{LmNormalSubgroup}}{LmNormalSubgroup}}%
 \nwixlogsorted{i}{{\nwixident{LmSandwich}}{LmSandwich}}%
 \nwixlogsorted{i}{{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}}%
@@ -2501,8 +2408,8 @@ proof
   B4: H is Subgroup of Image(psi|K)
   by Th7b;
   set UK = the carrier of K;
-  reconsider K as non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} strict Subgroup of G by A2,B1,B2,\nwlinkedidentc{Lm110}{NW18nMBU-1gsRKB-1};
-  UK \\ (the carrier of Image(phi|H)) is non empty by B1,B2,\nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1},\nwlinkedidentc{Lm100}{NW18nMBU-2cWeD5-1};
+  reconsider K as non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} strict Subgroup of G by A2,B1,B2,\nwlinkedidentc{Lm15}{NW18nMBU-1gsRKB-1};
+  UK \\ (the carrier of Image(phi|H)) is non empty by B1,B2,\nwlinkedidentc{Def10}{NW18nMBU-RKCxZ-1},\nwlinkedidentc{Lm13}{NW18nMBU-2cWeD5-1};
   then consider k being object such that
   B6: k in UK \\ (the carrier of Image(phi|H))
   by XBOOLE_0:def 1;
@@ -2519,7 +2426,7 @@ proof
   hence thesis by B10;
 end;
 
-\nwused{\\{NW1Nnu7l-39Q49p-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Lm100}}{Lm100}}\\{{\nwixident{Lm110}}{Lm110}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm100}}{Lm100}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm110}}{Lm110}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-2sFwyR-1}\nwendcode{}\nwbegindocs{80}\nwdocspar
+\nwused{\\{NW1Nnu7l-39Q49p-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{Lm13}}{Lm13}}\\{{\nwixident{Lm15}}{Lm15}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Def10}}{Def10}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm13}}{Lm13}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{Lm15}}{Lm15}{NW1Nnu7l-2sFwyR-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW1Nnu7l-2sFwyR-1}\nwendcode{}\nwbegindocs{80}\nwdocspar
 
 \begin{proof}[Proof step ($\psi(k)\in L$).]
 Since $k\in K$ and $L=\psi(K)$, the result follows from unfolding definitions.
@@ -2549,12 +2456,12 @@ proof
   C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
   phi is Function of UG,UG by GROUP_2:def 5;
   k in G & not k in Image(phi|H) by B6, XBOOLE_0:def 5, GROUP_2:41;
-  then C2: not psi.k in (psi .: UPH) by C1,\nwlinkedidentc{Lm18}{NW18nMBU-41PUYF-1};
+  then C2: not psi.k in (psi .: UPH) by C1,\nwlinkedidentc{Lm7}{NW18nMBU-41PUYF-1};
   consider phi2 being \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G such that
   C3: phi2 = psi" and
   C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
   by \nwlinkedidentc{Th7}{NW1Nnu7l-xUcSR-1};
-  phi2=phi by C3,B3, \nwlinkedidentc{Lm10}{NW18nMBU-34x7vU-1};
+  phi2=phi by C3,B3, \nwlinkedidentc{Lm5}{NW18nMBU-34x7vU-1};
   then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
   set UPH = the carrier of Image(phi|H);
   psi .: UPH = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
@@ -2563,7 +2470,7 @@ proof
   hence thesis;
 end;
 
-\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm10}}{Lm10}}\\{{\nwixident{Lm18}}{Lm18}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm10}}{Lm10}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm18}}{Lm18}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-aXEjM-1}\nwendcode{}\nwbegindocs{84}\nwdocspar
+\nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm5}}{Lm5}}\\{{\nwixident{Lm7}}{Lm7}}\\{{\nwixident{Th7}}{Th7}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm5}}{Lm5}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Lm7}}{Lm7}{NW1Nnu7l-aXEjM-1}\nwindexuse{\nwixident{Th7}}{Th7}{NW1Nnu7l-aXEjM-1}\nwendcode{}\nwbegindocs{84}\nwdocspar
 
 \begin{proof}[Proof step ($\varphi(L)=G$).]
 Since $H\neq L$, and $H$ is maximal, it follows that $L=G$. Then
@@ -3955,15 +3862,15 @@ proof
   let y,z be Element of G;
   assume B1: z in Z;
   set x = (phi").y;
-  (phi.z)*y = (phi.z)*(phi.x) by \nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1}
+  (phi.z)*y = (phi.z)*(phi.x) by \nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1}
            .= phi.(z*x) by GROUP_6:def 6
            .= phi.(x*z) by B1,GROUP_5:77
            .= (phi.x)*(phi.z) by GROUP_6:def 6
-           .= y*(phi.z) by \nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1};
+           .= y*(phi.z) by \nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1};
   hence thesis;
 end;
 
-\nwused{\\{NW47t2dy-1dPqXM-1}}\nwidentuses{\\{{\nwixident{Lm11}}{Lm11}}}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW47t2dy-3ZyLrF-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwused{\\{NW47t2dy-1dPqXM-1}}\nwidentuses{\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW47t2dy-3ZyLrF-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 
 \begin{proof}[Proof step 2 ($\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$).]
 Establishing $z\in Z(G)$ implies $\varphi(z)\in Z(G)$ amounts to
@@ -4179,13 +4086,13 @@ proof
   reconsider psi = phi" as \nwlinkedidentc{Automorphism}{NW1Nnu7l-4WeeL5-1} of G() by GROUP_6:62;
   B4: dom phi = the carrier of G() by FUNCT_2:def 1;
   B5: psi.x in meet Fam by B1,A5;
-  B6: phi.(psi.x) = x by B3,\nwlinkedidentc{Lm11}{NW18nMBU-2GAoBc-1};
+  B6: phi.(psi.x) = x by B3,\nwlinkedidentc{Lm6}{NW18nMBU-2GAoBc-1};
   psi is bijective & x in G() by B2, GROUP_2:40;
   then psi.x in dom phi by B4, FUNCT_2:5;
   hence x in phi .: meet Fam by B6,B5,FUNCT_1:def 6;
 end;
 
-\nwused{\\{NW47t2dy-3pFvE5-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm11}}{Lm11}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2pu6zi-1}\nwindexuse{\nwixident{Lm11}}{Lm11}{NW47t2dy-2pu6zi-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
+\nwused{\\{NW47t2dy-3pFvE5-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm6}}{Lm6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2pu6zi-1}\nwindexuse{\nwixident{Lm6}}{Lm6}{NW47t2dy-2pu6zi-1}\nwendcode{}\nwbegindocs{68}\nwdocspar
 
 \begin{proof}[Proof step ($y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$).]
   Let $\varphi\in\Aut(G)$ be arbitrary.

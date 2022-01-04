@@ -212,14 +212,14 @@ $\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
 \end{proof}
 
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
-Lm8: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
+Lm16: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
   assume H is Subgroup of (1).G;
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
-@ %def Lm8
+@ %def Lm16
 
 \begin{lemma}\label{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
@@ -238,18 +238,18 @@ $\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
 
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
-Lm9:
+Lm17:
 (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   Ker(phi) = (1).G by GROUP_6:56;
   then Ker(phi|H) is Subgroup of (1).G by Th9;
-  then Ker(phi|H) = (1).G by Lm8
+  then Ker(phi|H) = (1).G by Lm16
                  .= (1).H by GROUP_2:63;
   hence (phi|H) is one-to-one by GROUP_6:56;
 end;
 
-@ %def Lm9
+@ %def Lm17
 
 \begin{theorem}\label{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}
 Let $H\subgroup G$ be a subgroup such that
@@ -346,7 +346,7 @@ proof
   assume g in Image(phi|Image(psi|H));
   <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>
   <<$\exists b\in H, a = \varphi^{-1}(b)$>>
-  then b = phi.(psi.b) by Lm11
+  then b = phi.(psi.b) by Lm6
         .= phi.((psi|H).b) by M2,Lm3
         .= phi.a by B3
         .= g by B2;
@@ -457,7 +457,7 @@ proof
   then B6: (phi|K).a =  phi.a  by B5,Lm3
                     .= phi.(psi.g) by B4
                     .= phi.((phi").g)
-                    .= g by Lm11;
+                    .= g by Lm6;
   b = (phi|K).((psi|H).g)
    .= g by B6;
   hence thesis by B3;
@@ -494,7 +494,7 @@ proof
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
-  A2: psi" = phi by Lm10;
+  A2: psi" = phi by Lm5;
   consider phi0 being Automorphism of G such that
   A3: phi0 = psi" and
   A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
@@ -525,7 +525,7 @@ theorem Th8:
   H,phi .: H are_isomorphic
 proof
   reconsider H2 = phi .: H as Subgroup of G;
-  phi|H is one-to-one by Lm9;
+  phi|H is one-to-one by Lm17;
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
@@ -757,7 +757,7 @@ proof
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by Lm9;
+  C2: f|H is one-to-one by Lm17;
 
   f|H is onto Endomorphism of H
   <<Proof: $\varphi|_{H}$ is surjective>>
@@ -816,7 +816,7 @@ proof
   A1: phi is one-to-one & phi is onto & UH is non empty Subset of UG &
       phi is Function of UG,UG by GROUP_2:def 5;
   assume H is proper Subgroup of G;
-  then UG \ UH is non empty by Lm100;
+  then UG \ UH is non empty by Lm13;
   then consider x such that
   A2: x in UG \ UH by XBOOLE_0:def 1;
   A3: x in G & not x in H by A2,XBOOLE_0:def 5;
@@ -839,7 +839,7 @@ that this is the same as $\varphi$ applied to the subgroup $H$.
 <<$\varphi(x)\notin\varphi(H)$>>=
 not (phi.x in phi .: H)
 proof
-  not (phi.x in (phi .: UH)) by A1, A3, Lm18;
+  not (phi.x in (phi .: UH)) by A1, A3, Lm7;
   hence not (phi.x in (phi .: H)) by GRSOLV_1:8;
 end;
 
@@ -922,8 +922,8 @@ proof
   B4: H is Subgroup of Image(psi|K)
   by Th7b;
   set UK = the carrier of K;
-  reconsider K as non trivial strict Subgroup of G by A2,B1,B2,Lm110;
-  UK \ (the carrier of Image(phi|H)) is non empty by B1,B2,Def10,Lm100;
+  reconsider K as non trivial strict Subgroup of G by A2,B1,B2,Lm15;
+  UK \ (the carrier of Image(phi|H)) is non empty by B1,B2,Def10,Lm13;
   then consider k being object such that
   B6: k in UK \ (the carrier of Image(phi|H))
   by XBOOLE_0:def 1;
@@ -970,12 +970,12 @@ proof
   C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
   phi is Function of UG,UG by GROUP_2:def 5;
   k in G & not k in Image(phi|H) by B6, XBOOLE_0:def 5, GROUP_2:41;
-  then C2: not psi.k in (psi .: UPH) by C1,Lm18;
+  then C2: not psi.k in (psi .: UPH) by C1,Lm7;
   consider phi2 being Automorphism of G such that
   C3: phi2 = psi" and
   C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
   by Th7;
-  phi2=phi by C3,B3, Lm10;
+  phi2=phi by C3,B3, Lm5;
   then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
   set UPH = the carrier of Image(phi|H);
   psi .: UPH = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8

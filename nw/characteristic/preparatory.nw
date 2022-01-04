@@ -46,8 +46,6 @@ reserve X for set;
 <<Lemma: Subgroups invariant under conjugation are normal>>
 <<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
 <<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
-<<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
-<<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>
 <<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
 
 begin :: Nontrivial Groups and Subgroups
@@ -55,7 +53,7 @@ begin :: Nontrivial Groups and Subgroups
 <<Register: trivial groups and trivial subgroups>>
 <<Register: non trivial for Subgroup>>
 <<Lemma: trivial groups look like $\trivialSubgroup$>>
-<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>
+<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
 <<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
 <<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
 
@@ -216,11 +214,11 @@ $X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
 \end{proof}
 
 <<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
-Lm10:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds (f")" = f
+Lm5:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  st f is bijective
+  holds (f")" = f
 proof
   let X,Y be non empty set;
   let f be Function of X,Y;
@@ -239,7 +237,7 @@ proof
   hence (f")" = f;
 end;
 
-@ %def Lm10
+@ %def Lm5
 
 \begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
   Let $x\in X$ be arbitrary. Consider
@@ -292,7 +290,7 @@ states that $f^{-1}(f(x))=x$ provided $f$ is injective.
 \end{lem-remark}
 
 <<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
-Lm11:
+Lm6:
 for X,Y being non empty set
 for f being Function of X,Y
 st f is bijective
@@ -306,83 +304,11 @@ proof
   f is onto by A1;
   then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
   y = (g").(g.y) by A1,FUNCT_2:26
-   .= f.((f").y) by Lm10,A1;
+   .= f.((f").y) by Lm5,A1;
   hence thesis;
 end;
 
-@ %def Lm11
-
-\begin{lemma}
-If $f\colon X\to Y$ is bijective, then there exists an inverse function
-$f^{-1}\colon Y\to X$ and $f^{-1}\colon Y\to X$ is bijective.
-\end{lemma}
-
-\begin{proof}[Proof sketch]
-This follows from Theorem~\mml[Th63]{group6}\MizThm{GROUP\_6}{63} which
-asserts $f$ is bijective and $g=f^{-1}$ together implies $g$ is
-bijective. We just need to prove the existence of $g=f^{-1}$, which is
-handled by Theorem~\mml[Th25]{funct2}.\MizThm{FUNCT\_2}{25}
-\end{proof}
-
-<<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>=
-Lm13:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds ex g being Function of Y,X st g = f" & g is bijective
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is bijective;
-  then dom f = X & rng f = Y & f is one-to-one & f is onto by FUNCT_2:def 3,def 1;
-  then reconsider g = f" as Function of Y,X by FUNCT_2:25;
-  take g;
-  thus g = f";
-  thus g is bijective by A1, GROUP_6:63;
-end;
-
-@ %def Lm13
-
-\begin{lemma}
-If $f\colon X\to Y$ is a function of sets and $x\in X$ is arbitrary,
-then $f(\{x\})=\{f(x)\}$.
-\end{lemma}
-
-<<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>=
-Lm58:
-  for X,Y being non empty set
-  for f being Function of X,Y
-  for x being object
-  st x in X
-  holds f .: {x} = {f.x}
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  let x be object;
-  assume A0: x in X;
-  A1: x in dom f by A0, FUNCT_2:def 1;
-  for y being object holds y in f.:{x} iff y in {f.x}
-  proof let y be object;
-    thus y in f.:{x} implies y in {f.x}
-    proof
-      assume y in f.:{x};
-      then consider z being object such that
-      z in dom f and
-A2:   z in {x} and
-A3:   y = f.z by FUNCT_1:def 6;
-      z = x by A2,TARSKI:def 1;
-      hence thesis by A3,TARSKI:def 1;
-    end;
-    assume y in {f.x};
-    then
-A4: y = f.x by TARSKI:def 1;
-    x in {x} by TARSKI:def 1;
-    hence thesis by A1,A4,FUNCT_1:def 6;
-  end;
-  hence f .: {x} = {f.x} by TARSKI:2;
-end;
-
-@ %def Lm58
+@ %def Lm6
 
 \begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
 Let $f\colon X\into Y$ be an injective function of non-empty sets, let
@@ -396,7 +322,7 @@ hypothesis $x\notin A$ or $f$ is injective.
 \end{proof}
 
 <<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
-Lm18:
+Lm7:
   for X,Y being non empty set
   for A being non empty Subset of X
   for x being Element of X
@@ -421,7 +347,7 @@ proof
   hence not (f.x in (f .: A));
 end;
 
-@ %def Lm18
+@ %def Lm7
 
 
 
@@ -546,20 +472,39 @@ end;
 
 @
 
-\begin{lemma}
-A subgroup $H\subgroup G$ is trivial if and only if for any $g\in G$ we
-have $g\in H\iff g=1_{G}$.
+\begin{lemma}\label{lemma:preparatory:trivialIff1}
+A group $G$ is trivial if $G=\trivialSubgroup$.
 \end{lemma}
 
-\begin{proof}[Proof outline]
+One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
+need to prove the forward direction.
 
-  ($\Longrightarrow$) Suppose $G$ is trivial. Then $\exists y,G=\{y\}$.
-This must mean $G=\{1_{G}\}$ is the identity element.
+\begin{proof}[Proof sketch]
 
-  ($\Longleftarrow$) Suppose $\forall x, x\in G\iff x=1_{G}$. Then by
-definition~\mml[def 1]{tarski}, the set underlying $G$ is $\{1_{G}\}$
-and thus trivial.
 \end{proof}
+
+<<Lemma: trivial groups look like $\trivialSubgroup$>>=
+Lm8:
+  for G being Group
+  holds G is trivial iff the multMagma of G = (1).G
+proof
+  let G be Group;
+  thus G is trivial implies the multMagma of G = (1).G
+  proof
+    assume G is trivial;
+    then consider x being object such that
+    A1: the carrier of G = {x}
+    by GROUP_6:def 2;
+    x = 1_G by A1, TARSKI:def 1;
+    then the carrier of G = {1_G} by A1;
+    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
+    hence the multMagma of G = (1).G by GROUP_2:61;
+  end;
+  thus the multMagma of G = (1).G implies G is trivial;
+  thus thesis;
+end;
+
+@ %def Lm14
 
 \begin{lemma}\label{lemma:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
@@ -569,8 +514,8 @@ If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
 \emph{Trivial}, thanks to Lemma~\ref{lemma:preparatory:trivialIff1}.
 \end{proof}
 
-<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>=
-Lm108:
+<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>=
+Lm9:
   for G being Group
   for H being Subgroup of G
   st H is trivial
@@ -579,13 +524,13 @@ proof
   let G be Group;
   let H be Subgroup of G;
   assume H is trivial;
-  then the multMagma of H = (1).H by LmGroupIsTrivialIff1
+  then the multMagma of H = (1).H by Lm8
                          .= (1).G by GROUP_2:63;
   hence thesis;
 end;
 
 
-@ %def Lm108
+@ %def Lm9
 
 \begin{lemma}
 If $H\subgroup G$ and $K\subgroup G$ are both trivial, then $H=K$ as groups.
@@ -597,7 +542,7 @@ and thus are equal to each other as groups.
 \end{proof}
 
 <<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>=
-Lm107:
+Lm10:
   for G being Group
   for H being trivial Subgroup of G
   for K being trivial Subgroup of G
@@ -606,12 +551,12 @@ proof
   let G be Group;
   let H be trivial Subgroup of G;
   let K be trivial Subgroup of G;
-  the multMagma of H = (1).G by Lm108
-  .= the multMagma of K by Lm108;
+  the multMagma of H = (1).G by Lm9
+  .= the multMagma of K by Lm9;
   hence thesis;
 end;
 
-@ %def Lm107
+@ %def Lm10
 
 \begin{lemma}
 If $H\subgroup K$ and $K\subgroup G$ and $K=\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
@@ -625,7 +570,7 @@ H\subset\{1_{G}\}$ implies $H=\{1_{G}\}$ by Definition~\mml[def10]{xboole0}.
 \end{proof}
 
 <<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>=
-Lm106:
+Lm11:
   for G being Group
   for K being trivial Subgroup of G
   for H being Subgroup of G
@@ -638,7 +583,7 @@ proof
   assume A1: H is Subgroup of K;
   the carrier of H = {1_G}
   proof
-    the multMagma of K = (1).G by Lm108;
+    the multMagma of K = (1).G by Lm9;
     then the carrier of K = {1_G} by GROUP_2:def 7;
     then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
     (1).G is Subgroup of H by GROUP_2:65;
@@ -650,7 +595,7 @@ proof
   hence H is trivial Subgroup of G by GROUP_6:def 2;
 end;
 
-@ %def Lm106
+@ %def Lm11
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -725,7 +670,7 @@ as forwards.
 \end{proof}
 
 <<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>=
-Lm99:
+Lm12:
   H is proper iff the carrier of H <> the carrier of G
 proof
   (the carrier of H c= the carrier of G) & (the multF of H =
@@ -733,7 +678,7 @@ proof
   hence thesis;
 end;
 
-@ %def Lm99
+@ %def Lm12
 
 \begin{lemma}\label{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
   Let $H\subgroup G$ be a subgroup.
@@ -758,7 +703,7 @@ underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
 <<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>=
 reserve h,x,y for object;
 
-Lm100:
+Lm13:
   H is proper iff (the carrier of G) \ (the carrier of H) is non empty set
 proof
   set UG = the carrier of G;
@@ -770,7 +715,7 @@ proof
   thus thesis;
 end;
 
-@ %def Lm100
+@ %def Lm13
 
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
@@ -782,7 +727,7 @@ end;
 <<Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$>>=
 proof
   assume A1: H is proper;
-  UH c= UG & UH <> UG by A1,Lm99, GROUP_2:def 5;
+  UH c= UG & UH <> UG by A1,Lm12, GROUP_2:def 5;
   then (for x holds x in UH implies x in UG) &
   the carrier of H <> the carrier of G;
   then (for x holds x in UH implies x in UG) &
@@ -863,13 +808,13 @@ Maximal subgroups are also proper subgroups.
 The proof is literally, ``Look at the definitions!''
 
 <<Lemma: maximal subgroups are proper>>=
-Lm98:
+Lm14:
   for G being Group
   for H being Subgroup of G
   st H is maximal
   holds H is proper by GROUP_4:def 6;
 
-@ %def Lm98
+@ %def Lm14
 
 \begin{registration}
 We can now automatically take advantage of the fact that, a maximal
@@ -880,41 +825,7 @@ subgroup for a nontrivial group is implicitly a proper subgroup.
 registration
   let G be non trivial Group;
   cluster maximal -> proper for Subgroup of G;
-  coherence by Lm98;
-end;
-
-@
-
-\begin{lemma}\label{lemma:preparatory:trivialIff1}
-A group $G$ is trivial if $G=\trivialSubgroup$.
-\end{lemma}
-
-One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
-need to prove the forward direction.
-
-\begin{proof}[Proof sketch]
-
-\end{proof}
-
-<<Lemma: trivial groups look like $\trivialSubgroup$>>=
-LmGroupIsTrivialIff1:
-  for G being Group
-  holds G is trivial iff the multMagma of G = (1).G
-proof
-  let G be Group;
-  thus G is trivial implies the multMagma of G = (1).G
-  proof
-    assume G is trivial;
-    then consider x being object such that
-    A1: the carrier of G = {x}
-    by GROUP_6:def 2;
-    x = 1_G by A1, TARSKI:def 1;
-    then the carrier of G = {1_G} by A1;
-    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
-    hence the multMagma of G = (1).G by GROUP_2:61;
-  end;
-  thus the multMagma of G = (1).G implies G is trivial;
-  thus thesis;
+  coherence by Lm14;
 end;
 
 @
@@ -931,7 +842,7 @@ $K$ is a nontrivial group.
 \end{proof}
 
 <<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
-Lm110:
+Lm15:
   for G being non trivial Group
   for H being proper Subgroup of G
   for K being Subgroup of G
@@ -947,11 +858,11 @@ proof
   proof
     assume B1: not K is non trivial Subgroup of G;
     then K is trivial Subgroup of G;
-    then H is trivial Subgroup of G by A1,Lm106;
-    then the multMagma of H = the multMagma of K by B1,Lm107;
+    then H is trivial Subgroup of G by A1,Lm11;
+    then the multMagma of H = the multMagma of K by B1,Lm10;
     hence contradiction by A2;
   end;
   hence K is non trivial Subgroup of G;
 end;
 
-@ %def Lm110
+@ %def Lm15
