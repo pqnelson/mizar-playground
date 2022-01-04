@@ -75,48 +75,6 @@ environ
 begin :: Preparatory Work
 reserve X for set;
 
-LmOntoMapsEverything:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is onto
-holds f .: X = Y
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is onto;
-  dom f = X by FUNCT_2:def 1;
-  then
-  A2: (for y being object
-  holds y in rng f iff ex x being object st x in X & y = f.x) &
-  (for y being object
-  holds y in (f .: X) iff ex x being object st x in X & x in X & y = f.x)
-  by FUNCT_1:def 3,def 6
-;
-
-  C1: for y being object holds y in (f .: X) implies y in rng f
-  proof
-    let y be object;
-    assume y in (f .: X);
-    then consider x being object such that
-    B1: x in X and x in X and B2: y = f.x
-    by A2;
-    thus y in rng f by A2,B1,B2;
-  end;
-
-
-  C2: for y being object holds y in rng f implies y in (f .: X)
-  proof
-    let y be object;
-    assume y in rng f;
-    then consider x being object such that
-    B1: x in X and B2: y = f.x
-    by A2;
-    thus y in (f .: X) by A2,B1,B2;
-  end;
-
-  thus f .: X = Y by A1,C1,C2,TARSKI:2;
-end;
-
 registration
   let X;
   cluster id X -> onto;
@@ -128,11 +86,6 @@ registration
   cluster id X -> bijective;
   coherence;
 end;
-
-LmSubgroupElt:
-for G being Group
-for H being Subgroup of G
-for h being Element of G st h in H holds h is Element of H;
 
 LmSubgroupEltTrans:
   for G being Group
@@ -172,48 +125,6 @@ proof
   hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
 
-LmEpi:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st the multMagma of Image(f) = the multMagma of G2
-  holds f is onto by GROUP_6:44;
-
-LmEpi2:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st f is onto
-  holds the multMagma of Image(f) = the multMagma of G2
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume A1: f is onto;
-  reconsider GG = Image(f) as Group;
-  A2: the carrier of G2 = the carrier of GG by A1, GROUP_6:44;
-  the multF of GG = (the multF of G2)||(the carrier of G2) by A2,GROUP_2:def 5
-                 .= the multF of G2;
-  hence the multMagma of Image(f) = the multMagma of G2 by A2;
-end;
-
-LmRestrictCollapse:
-for G,G2 being Group
-for N being Subgroup of G
-for H being Subgroup of N
-for f being Homomorphism of G,G2
-holds (f|N)|H = f|H
-proof
-  let G,G2 be Group;
-  let N be Subgroup of G;
-  let H be Subgroup of N;
-  let f be Homomorphism of G,G2;
-  set UN = the carrier of N;
-  set UH = the carrier of H;
-  A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
-  by GROUP_2:def 5,RELAT_1:74,GRSOLV_1:def 2;
-  (f|N)|H = (f|N)|UH by GRSOLV_1:def 2
-         .= (f|UN)|UH by GRSOLV_1:def 2;
-  hence (f|N)|H = f|H by A1;
-end;
-
 Lm10:
 for X,Y being non empty set
 for f being Function of X,Y
@@ -226,7 +137,7 @@ proof
   then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
   A3: g is bijective by A1,GROUP_6:63;
-  then A4: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
+  then dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
   by FUNCT_2:25;
   then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 3;
@@ -280,46 +191,6 @@ proof
   take g;
   thus g = f";
   thus g is bijective by A1, GROUP_6:63;
-end;
-
-Lm12:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds f*(f") = id Y & (f")*f = id X
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is bijective;
-  then consider g being Function of Y,X such that
-  A2: g = f" and
-  A3: g is bijective
-  by Lm13;
-  A4: g" = f by A1,A2,Lm10;
-  for y being object st y in Y holds (f*(f")).y = (id Y).y
-  proof
-    let y be object;
-    assume Z1: y in Y;
-    then (f*g).y=f.(g.y) by FUNCT_2:15
-               .= y by A3,A4,Z1,FUNCT_2:26
-               .= (id Y).y by Z1,FUNCT_1:18;
-    hence thesis by A2;
-  end;
-
-  then f*g = id Y by A2;
-  hence f*(f") = id Y by A2;
-  for x being object st x in X holds ((f")*f).x = (id X).x
-  proof
-    let x be object;
-    assume Z1: x in X;
-    then (g*f).x = g.(f.x) by FUNCT_2:15
-                .= x by A1,A2,Z1,FUNCT_2:26
-                .= (id X).x by Z1,FUNCT_1:18;
-    hence thesis by A2;
-  end;
-
-  then g*f = id X by A2;
-  hence (f")*f = id X by A2;
 end;
 
 Lm58:
@@ -450,30 +321,6 @@ proof
     hence the multMagma of G = (1).G by GROUP_2:61;
   end;
   thus the multMagma of G = (1).G implies G is trivial;
-  thus thesis;
-end;
-
-Lm109:
-  for G being Group
-  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
-proof
-  let G be Group;
-  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
-  proof
-    assume G is trivial Group;
-    then ex y being object st the carrier of G = {y} by GROUP_6:def 2;
-    then the carrier of G = {1_G} by TARSKI:def 1;
-    hence for x being object holds x in G iff x = 1_G
-    by TARSKI:def 1;
-  end;
-  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
-  proof
-    assume for x being object holds x in G iff x = 1_G;
-    then for x being object holds x in the carrier of G iff x = 1_G
-    by STRUCT_0:def 5;
-    then the carrier of G = {1_G} by TARSKI:def 1;
-    hence G is trivial Group by GROUP_6:def 2;
-  end;
   thus thesis;
 end;
 
@@ -635,64 +482,6 @@ registration
   let G be non trivial Group;
   cluster maximal -> proper for Subgroup of G;
   coherence by Lm98;
-end;
-
-Lm101:
-  for H being Subgroup of G
-  st (ex x being Element of G st not (x in H))
-  holds H is proper Subgroup of G
-proof
-  let H be Subgroup of G;
-  given x being Element of G such that
-  A1: not (x in H);
-  set UG = the carrier of G;
-  set UH = the carrier of H;
-  x in G & not (x in H) by A1;
-  then x in UG & not (x in UH);
-  then x in (UG \ UH) by XBOOLE_0:def 5;
-  then (UG \ UH) is non empty;
-  hence H is proper Subgroup of G by Lm100;
-end;
-
-Lm101:
-  for H being Subgroup of G
-  st H is proper Subgroup of G
-  holds ex x being Element of G st not (x in H)
-proof
-  let H be Subgroup of G;
-  assume H is proper Subgroup of G;
-  then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
-  then consider x being object such that
-  A1: x in (the carrier of G) \ (the carrier of H)
-  by XBOOLE_0:def 1;
-  reconsider x as Element of G by A1;
-  take x;
-  thus not (x in H) by A1, XBOOLE_0:def 5;
-end;
-
-LmTrivHasNoProperSubgroups:
-  for G being Group
-  st G is trivial
-  holds not (ex H being Subgroup of G st H is proper)
-proof
-  let G be Group;
-  assume G is trivial;
-  then the multMagma of G = (1).G
-  by LmGroupIsTrivialIff1;
-  then A3: the carrier of G = {1_G} by GROUP_2:def 7;
-  for H being Subgroup of G holds not H is proper
-  proof
-    let H be Subgroup of G;
-    B1: the carrier of H c= {1_G} by A3, GROUP_2:def 5;
-    (1).G is Subgroup of H by GROUP_2:65;
-    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
-    then {1_G} c= the carrier of H by GROUP_2:def 7;
-    then {1_G} c= the carrier of H & the carrier of H c= {1_G} by B1;
-    then the carrier of H = {1_G} by XBOOLE_0:def 10;
-    then the carrier of H = the carrier of G by A3;
-    hence not H is proper by Lm99;
-  end;
-  hence not (ex H being Subgroup of G st H is proper);
 end;
 
 Lm110:
@@ -912,23 +701,6 @@ proof
   hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
 
-theorem Th7a:
-  ex psi being Automorphism of G
-  st psi = phi" & the multMagma of Image(psi|Image(phi|H)) = the multMagma of H
-proof
-  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-  A1: psi" = phi by Lm10;
-  take psi;
-  thus psi = phi";
-  consider phi2 being Automorphism of G such that
-  A2: phi2 = psi" and
-  A3: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
-  by Th7;
-  phi2 = phi by A1,A2;
-  then the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by A3;
-  hence thesis;
-end;
-
 theorem Th7b:
   for H being strict Subgroup of G
   for K being Subgroup of G
@@ -1059,39 +831,16 @@ proof
         hence not (phi.x in (phi .: H)) by GRSOLV_1:8;
       end;
 
-  A5: phi.x is Element of G
-      proof
-        dom phi = UG & rng phi = UG by A1, FUNCT_2:def 1;
-        then phi.x in UG by A3, FUNCT_1:def 3;
-        hence phi.x is Element of G;
-      end;
+  phi.x is Element of G
+  proof
+    dom phi = UG & rng phi = UG by A1, FUNCT_2:def 1;
+    then phi.x in UG by A3, FUNCT_1:def 3;
+    hence phi.x is Element of G;
+  end;
 
   then ex y being Element of G st not y in phi .: H by A4;
   then phi .: H is proper;
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
-end;
-
-theorem ThAutoTriv:
-  for G being Group
-  for phi being Automorphism of G
-  for H being trivial Subgroup of G
-  holds Image(phi|H) is trivial Subgroup of G
-proof
-  let G be Group;
-  let phi be Automorphism of G;
-  let H be trivial Subgroup of G;
-  the multMagma of H = (1).G by Lm108;
-  then A1: the carrier of H = {1_G} by GROUP_2:def 7;
-  the carrier of (phi .: H) = phi .: (the carrier of H) by GRSOLV_1:8
-  .= phi .: {1_G} by A1
-  .= {phi.(1_G)} by Lm58
-  .= {1_G} by GROUP_6:31
-  .= the carrier of (1).G by GROUP_2:def 7;
-  then the carrier of (phi .: H) = the carrier of (1).G;
-  then the multMagma of (phi .: H) = (1).G by GROUP_2:59;
-  then phi .: H is trivial;
-  then Image(phi|H) is trivial by GRSOLV_1:def 3;
-  hence thesis;
 end;
 
 theorem Th31:
@@ -1187,26 +936,6 @@ proof
   end;
 
   thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
-end;
-
-Th32:
-  for G being non trivial Group
-  for K being strict Subgroup of G
-  st K is maximal
-  for phi being Automorphism of G
-  holds (ex H being strict Subgroup of G st H is maximal & Image(phi|H) = K)
-proof
-  let G be non trivial Group;
-  let K be strict Subgroup of G;
-  assume A1: K is maximal;
-  let phi be Automorphism of G;
-  consider psi being Automorphism of G such that
-  psi = phi" and
-  A2: the multMagma of Image(phi|Image(psi|K)) = the multMagma of K
-  by Th7;
-  take H = Image(psi|K);
-  thus H is maximal by A1,Th31;
-  thus Image(phi|H) = K by A2, GROUP_2:def 6;
 end;
 
 definition :: Def5

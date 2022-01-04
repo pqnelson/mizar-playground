@@ -40,19 +40,13 @@ know what I should have done instead.
 begin :: Preparatory Work
 reserve X for set;
 
-<<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>
 <<Register: the identity function is surjective and bijective>>
-<<Lemma: A group element in the subgroup is a subgroup element>>
 <<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
 <<Lemma: restriction of group morphism acts on elements like the original>>
 <<Lemma: Subgroups invariant under conjugation are normal>>
-<<Lemma: Morphism is surjective if its image is its codomain>>
-<<Lemma: $\varphi\colon G_{1}\onto G_{2}$ is surjective implies $\varphi(G_{1})=G_{2}$>>
-<<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>
 <<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
 <<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
 <<Lemma: if $f\colon X\to Y$ is bijective, then there exists an inverse function and $f^{-1}\colon Y\to X$ is bijective>>
-<<Lemma: bijections have inverses>>
 <<Lemma: $x\in X$ and $f\colon X\to Y$, then $f\{x\}=\{f(x)\}$>>
 <<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
 
@@ -61,7 +55,6 @@ begin :: Nontrivial Groups and Subgroups
 <<Register: trivial groups and trivial subgroups>>
 <<Register: non trivial for Subgroup>>
 <<Lemma: trivial groups look like $\trivialSubgroup$>>
-<<Lemma: $H\subgroup G$ is trivial iff $\forall x\in G, x\in H\iff x = 1_{G}$>>
 <<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup$>>
 <<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
 <<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
@@ -74,109 +67,10 @@ begin :: Proper Subgroups
 <<Register: proper subgroups of nontrivial subgroups>>
 <<Lemma: maximal subgroups are proper>>
 <<Register: maximal subgroups are proper>>
-<<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>
-<<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>
-<<Lemma: Trivial groups have no proper subgroups>>
 <<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
 
 @
 
-\begin{lemma}
-If $f\colon X\onto Y$ is a surjective function of sets, then $f(X)=Y$.
-\end{lemma}
-
-\begin{proof}[Proof outline]
-  Assume $f\colon X\onto Y$ is surjective. Then by definition its range
-  is its codomain $\rng(f)=Y$.
-  We just need to show $\rng(f)=Y$ implies $f(X)=Y$, and $f(X)=Y$
-  implies $\rng(f)$.
-\end{proof}
-
-\begin{lem-remark}[Note to Alex]
-This should be refactored out into another theorem, namely
-$\rng(f)=f(X)$. The result claimed follows immediately.
-\end{lem-remark}
-
-\begin{lem-remark}[Mizar notation \texttt{f.:A} and \texttt{f.x}]\index{\texttt{f.:A}!Mizar for $f(A)$}\index{\texttt{f.x}!Mizar for $f(x)$}
-We should caution Mizar's notation for writing something like, if
-$f\colon X\to Y$ is a function of sets and $A\subset X$, then
-$f(A)=\{f(a)\in Y|a\in A\}$ is denoted as [[f.:A]] instead of $f(A)$,
-and [[f.a]] instead of $f(a)$. This is because $f$ is a set theoretic
-function, a collection of ``(input, output)'' ordered pairs. Mizar
-distinguishes $f(x)$ as function application from ``functors'' (i.e.,
-parametrized terms) by using $f(x)=\mathtt{f.x}$ for mathematical functions.
-\end{lem-remark}
-
-<<Lemma: $f\colon X\onto Y\implies f(X)=Y$>>=
-LmOntoMapsEverything:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is onto
-holds f .: X = Y
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is onto;
-  dom f = X by FUNCT_2:def 1;
-  then
-  <<Defining formulas for $\rng(f)$ and $f(X)$>>;
-
-  C1: for y being object holds y in (f .: X) implies y in rng f
-  <<Proof: $y\in f(X)\implies y\in\rng(f)$>>
-
-  C2: for y being object holds y in rng f implies y in (f .: X)
-  <<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>
-  thus f .: X = Y by A1,C1,C2,TARSKI:2;
-end;
-
-@ %def LmOntoMapsEverything
-
-\begin{proof}[Proof step (conditions for $\rng(f)$, $f(X)$)]
-We can look up the definitions for [[rng f]] and [[f .: X]], which
-give the logical equivalences:
-\end{proof}
-
-<<Defining formulas for $\rng(f)$ and $f(X)$>>=
-A2: (for y being object
-holds y in rng f iff ex x being object st x in X & y = f.x) &
-(for y being object
-holds y in (f .: X) iff ex x being object st x in X & x in X & y = f.x)
-by FUNCT_1:def 3,def 6
-
-@
-
-\begin{proof}[Proof step ($f(X)\subset\rng(f)$)]
-Proving the forward direction amounts to unfolding definitions.
-\end{proof}
-
-<<Proof: $y\in f(X)\implies y\in\rng(f)$>>=
-proof
-  let y be object;
-  assume y in (f .: X);
-  then consider x being object such that
-  B1: x in X and x in X and B2: y = f.x
-  by A2;
-  thus y in rng f by A2,B1,B2;
-end;
-
-@
-
-\begin{proof}[Proof step ($f(X)\supset\rng(f)$)]
-Proving the backward direction amounts to unfolding the same
-definitions, in the opposite order.
-\end{proof}
-
-<<Proof: $y\in f(X)\impliedby y\in\rng(f)$>>=
-proof
-  let y be object;
-  assume y in rng f;
-  then consider x being object such that
-  B1: x in X and B2: y = f.x
-  by A2;
-  thus y in (f .: X) by A2,B1,B2;
-end;
-
-@
 
 \begin{registration}
 We begin by registering the identity function as being surjective and
@@ -198,30 +92,6 @@ registration
 end;
 
 @
-
-\begin{lemma}
-If $H\subgroup G$ is a subgroup and $h$ is an element of $G$ such that
-$h\in H$, then $h$ is an element of $H$.
-\end{lemma}
-
-We also need to prove that, if we have a subgroup $H\subgroup G$ and
-$h\in G$ is an arbitrary element of the underlying set, then $h\in H$
-implies the typing judgement ``[[h is Element of H]]''.
-
-\begin{lem-remark}\index{\texttt{h in H}!Mizar for $h\in H$}
-Mizar writes ``[[h in H]]'' instead of ``$h\in H$''. The statement
-``[[h is Element of H]]'' is a typing declaration roughly analogous to
-``$h{:}H$''; strictly speaking, it's a predicate in the object language,
-not a judgement in the metalanguage.
-\end{lem-remark}
-
-<<Lemma: A group element in the subgroup is a subgroup element>>=
-LmSubgroupElt:
-for G being Group
-for H being Subgroup of G
-for h being Element of G st h in H holds h is Element of H;
-
-@ %def LmSubgroupElt
 
 \begin{lemma}
   Let $G$ be a group and $g\in G$ be any element of the group,
@@ -335,86 +205,6 @@ end;
 
 @ %def LmNormalSubgroup
 
-\begin{lemma}
-  Let $\varphi\colon G_{1}\to G_{2}$ be a group morphism.
-  If $\varphi(G_{1})=G_{2}$, then $\varphi$ is surjective.
-\end{lemma}
-
-Mizar has this lemma in its library, but it has a more stringent
-requirement that $G_{2}$ be a [[strict Group]], which is totally
-unnecessary. We weaken the conditions further, allowing $G_{2}$ to have
-some bizarre exotic structure.
-
-<<Lemma: Morphism is surjective if its image is its codomain>>=
-LmEpi:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st the multMagma of Image(f) = the multMagma of G2
-  holds f is onto by GROUP_6:44;
-
-@ %def LmEpi
-
-\begin{lemma}
-  If $\varphi\colon G_{1}\onto G_{2}$ is a surjective group morphism,
-  then $\varphi(G_{1}) = G_{2}$.
-\end{lemma}
-
-The only subtlety to this claim is that we either require $G_{2}$ being
-a \emph{strict} group, or we prove [[the multMagma of G2 = the multMagma of Image(f)]].
-
-<<Lemma: $\varphi\colon G_{1}\onto G_{2}$ is surjective implies $\varphi(G_{1})=G_{2}$>>=
-LmEpi2:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st f is onto
-  holds the multMagma of Image(f) = the multMagma of G2
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume A1: f is onto;
-  reconsider GG = Image(f) as Group;
-  A2: the carrier of G2 = the carrier of GG by A1, GROUP_6:44;
-  the multF of GG = (the multF of G2)||(the carrier of G2) by A2,GROUP_2:def 5
-                 .= the multF of G2;
-  hence the multMagma of Image(f) = the multMagma of G2 by A2;
-end;
-
-@ %def LmEpi2
-
-\begin{lemma}
-Let $G_{1}$ and $G_{2}$ be groups, $K\subgroup G_{1}$ and $H\subgroup K$
-be subgroups. If $f\colon G_{1}\to G_{2}$ is a group morphism, then
-$(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a group morphism.
-\end{lemma}
-
-\begin{lem-remark}
-Something like this was proven in Theorem~\mml[Th50]{funct1}\MizThm{FUNCT\_1}{50},
-but I couldn't apply that theorem (not even to functions of sets).
-\end{lem-remark}
-
-<<Lemma: $H\subgroup K\subgroup G_{1}$ and $f\colon G_{1}\to G_{2}$ is a morphism, then $(f|_{K})|_{H}=f|_{H}\colon H\to G_{2}$ is a morphism>>=
-LmRestrictCollapse:
-for G,G2 being Group
-for N being Subgroup of G
-for H being Subgroup of N
-for f being Homomorphism of G,G2
-holds (f|N)|H = f|H
-proof
-  let G,G2 be Group;
-  let N be Subgroup of G;
-  let H be Subgroup of N;
-  let f be Homomorphism of G,G2;
-  set UN = the carrier of N;
-  set UH = the carrier of H;
-  A1: (f|UN)|UH = f|UH & (f|UN) = f|N & f|UH = f|H
-  by GROUP_2:def 5,RELAT_1:74,GRSOLV_1:def 2;
-  (f|N)|H = (f|N)|UH by GRSOLV_1:def 2
-         .= (f|UN)|UH by GRSOLV_1:def 2;
-  hence (f|N)|H = f|H by A1;
-end;
-
-@ %def LmRestrictCollapse
-
 \begin{lemma}\label{lm:characteristic:preparatory:lm10}
 If $f\colon X\to Y$ is a bijective function of non-empty sets, then $(f^{-1})^{-1}=f$.
 \end{lemma}
@@ -438,7 +228,7 @@ proof
   then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
   A3: g is bijective by A1,GROUP_6:63;
-  then A4: dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
+  then dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
   by FUNCT_2:25;
   then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 3;
@@ -521,78 +311,6 @@ proof
 end;
 
 @ %def Lm11
-
-\begin{lemma}
-  If $f\colon X\to Y$ is a bijective function of sets,
-  then its inverse function $f^{-1}\colon Y\to X$ exists (as defined by
-  $f\circ f^{-1}=\id_{Y}$ and $f^{-1}\circ f=\id_{X}$).
-\end{lemma}
-
-\begin{proof}[Proof sketch]
-We need to prove two results. We have, for any $y\in Y$,
-$f(f^{-1}(y))=y$ establish the result that $f\circ f^{-1}=\id_{Y}$. The
-other result follows from, for any $x\in X$, that $f^{-1}(f(x))=x$ which
-implies $f^{-1}\circ f=\id_{X}$.
-\end{proof}
-
-<<Lemma: bijections have inverses>>=
-Lm12:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-holds f*(f") = id Y & (f")*f = id X
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is bijective;
-  then consider g being Function of Y,X such that
-  A2: g = f" and
-  A3: g is bijective
-  by Lm13;
-  A4: g" = f by A1,A2,Lm10;
-  for y being object st y in Y holds (f*(f")).y = (id Y).y
-  <<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>
-  then f*g = id Y by A2;
-  hence f*(f") = id Y by A2;
-  for x being object st x in X holds ((f")*f).x = (id X).x
-  <<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>
-  then g*f = id X by A2;
-  hence (f")*f = id X by A2;
-end;
-
-@ %def Lm12
-
-\begin{proof}[Proof step ($\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$)]
-The result follows from $(f\circ f^{-1})(y)=f(f^{-1}(y))=y$.
-\end{proof}
-
-<<Proof: $\forall y, y\in Y\implies (f\circ f^{-1})(y) = \id_{Y}(y)$>>=
-proof
-  let y be object;
-  assume Z1: y in Y;
-  then (f*g).y=f.(g.y) by FUNCT_2:15
-             .= y by A3,A4,Z1,FUNCT_2:26
-             .= (id Y).y by Z1,FUNCT_1:18;
-  hence thesis by A2;
-end;
-
-@
-
-\begin{proof}[Proof step ($\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$)]
-The result follows from $(f^{-1}\circ f)(x) = f^{-1}(f(x))=x$.
-\end{proof}
-
-<<Proof: $\forall x,x\in X\implies (f^{-1}\circ f)(x) = \id_{X}(x)$>>=
-proof
-  let x be object;
-  assume Z1: x in X;
-  then (g*f).x = g.(f.x) by FUNCT_2:15
-              .= x by A1,A2,Z1,FUNCT_2:26
-              .= (id X).x by Z1,FUNCT_1:18;
-  hence thesis by A2;
-end;
-
-@
 
 \begin{lemma}
 If $f\colon X\to Y$ is bijective, then there exists an inverse function
@@ -842,33 +560,6 @@ This must mean $G=\{1_{G}\}$ is the identity element.
 definition~\mml[def 1]{tarski}, the set underlying $G$ is $\{1_{G}\}$
 and thus trivial.
 \end{proof}
-
-<<Lemma: $H\subgroup G$ is trivial iff $\forall x\in G, x\in H\iff x = 1_{G}$>>=
-Lm109:
-  for G being Group
-  holds G is trivial Group iff (for x being object holds x in G iff x = 1_G)
-proof
-  let G be Group;
-  thus G is trivial Group implies (for x being object holds x in G iff x = 1_G)
-  proof
-    assume G is trivial Group;
-    then ex y being object st the carrier of G = {y} by GROUP_6:def 2;
-    then the carrier of G = {1_G} by TARSKI:def 1;
-    hence for x being object holds x in G iff x = 1_G
-    by TARSKI:def 1;
-  end;
-  thus (for x being object holds x in G iff x = 1_G) implies G is trivial Group
-  proof
-    assume for x being object holds x in G iff x = 1_G;
-    then for x being object holds x in the carrier of G iff x = 1_G
-    by STRUCT_0:def 5;
-    then the carrier of G = {1_G} by TARSKI:def 1;
-    hence G is trivial Group by GROUP_6:def 2;
-  end;
-  thus thesis;
-end;
-
-@ %def Lm109
 
 \begin{lemma}\label{lemma:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
@@ -1194,63 +885,6 @@ end;
 
 @
 
-\begin{lemma}
-If $H\properSubgroup G$ is a proper subgroup, then there exists some
-$x\in G$ such that $x\notin H$.
-\end{lemma}
-
-\begin{proof}[Proof sketch]
-If $H\properSubgroup G$ is proper, then by Lemma~\ref{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
-their underlying sets satisfy $U(G)\setminus U(H)\neq\emptyset$.
-Consider $x\in U(G)\setminus U(H)$ since it's nonempty. Then by
-Definition~\mml[def5]{xboole0} of the set difference, $x\in G$ and
-$x\notin H$.
-\end{proof}
-
-<<Lemma: $H\subgroup G$ is proper implies $\exists x\in G, x\notin H$>>=
-Lm101:
-  for H being Subgroup of G
-  st H is proper Subgroup of G
-  holds ex x being Element of G st not (x in H)
-proof
-  let H be Subgroup of G;
-  assume H is proper Subgroup of G;
-  then (the carrier of G) \ (the carrier of H) is non empty by Lm100;
-  then consider x being object such that
-  A1: x in (the carrier of G) \ (the carrier of H)
-  by XBOOLE_0:def 1;
-  reconsider x as Element of G by A1;
-  take x;
-  thus not (x in H) by A1, XBOOLE_0:def 5;
-end;
-
-@ %def Lm101
-
-\begin{lemma}
-If $H\subgroup G$ is a subgroup such that there is an $x\in G$ but
-$x\notin H$, then $H$ is a proper subgroup of $G$.
-\end{lemma}
-
-<<Lemma: $H\subgroup G$ and $\exists x\in G,x\notin H$ implies $H$ is proper>>=
-Lm101:
-  for H being Subgroup of G
-  st (ex x being Element of G st not (x in H))
-  holds H is proper Subgroup of G
-proof
-  let H be Subgroup of G;
-  given x being Element of G such that
-  A1: not (x in H);
-  set UG = the carrier of G;
-  set UH = the carrier of H;
-  x in G & not (x in H) by A1;
-  then x in UG & not (x in UH);
-  then x in (UG \ UH) by XBOOLE_0:def 5;
-  then (UG \ UH) is non empty;
-  hence H is proper Subgroup of G by Lm100;
-end;
-
-@ %def Lm101
-
 \begin{lemma}\label{lemma:preparatory:trivialIff1}
 A group $G$ is trivial if $G=\trivialSubgroup$.
 \end{lemma}
@@ -1281,44 +915,6 @@ proof
   end;
   thus the multMagma of G = (1).G implies G is trivial;
   thus thesis;
-end;
-
-@
-
-\begin{lemma}
-If $G=\trivialSubgroup$ is trivial, then it has no proper subgroups.
-\end{lemma}
-
-\begin{lem-remark}
-The argument that two sets $X$ and $Y$ are equal iff they are subsets of
-each other $X\subset Y\land Y\subset X$ is precisely what
-\mml[def10]{xboole0}\MizDef{XBOOLE\_0}{10} offers.
-\end{lem-remark}
-
-<<Lemma: Trivial groups have no proper subgroups>>=
-LmTrivHasNoProperSubgroups:
-  for G being Group
-  st G is trivial
-  holds not (ex H being Subgroup of G st H is proper)
-proof
-  let G be Group;
-  assume G is trivial;
-  then the multMagma of G = (1).G
-  by LmGroupIsTrivialIff1;
-  then A3: the carrier of G = {1_G} by GROUP_2:def 7;
-  for H being Subgroup of G holds not H is proper
-  proof
-    let H be Subgroup of G;
-    B1: the carrier of H c= {1_G} by A3, GROUP_2:def 5;
-    (1).G is Subgroup of H by GROUP_2:65;
-    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
-    then {1_G} c= the carrier of H by GROUP_2:def 7;
-    then {1_G} c= the carrier of H & the carrier of H c= {1_G} by B1;
-    then the carrier of H = {1_G} by XBOOLE_0:def 10;
-    then the carrier of H = the carrier of G by A3;
-    hence not H is proper by Lm99;
-  end;
-  hence not (ex H being Subgroup of G st H is proper);
 end;
 
 @
