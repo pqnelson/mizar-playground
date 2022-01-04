@@ -25,6 +25,8 @@ begin :: Automorphisms
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>
 <<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>
+<<Theorem: isomorphic subgroups have equal indices>>
+<<Theorem: Sylow $p$-Subgroups invariant under $\Aut(G)$>>
 <<Define $\Id_{G}$>>
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>
 <<Register [[Id_G]] is bijective>>
@@ -32,7 +34,6 @@ begin :: Automorphisms
 <<Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$>>
 <<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>
 <<Results and definition for Inner automorphisms>>
-
 @
 
 \begin{reserve}
@@ -47,7 +48,6 @@ Likewise, we reserve [[H]] for a subgroup of [[G]].
 <<Reserve symbols for inner and outer automorphisms>>=
 reserve G for Group;
 reserve H for Subgroup of G;
-
 @
 
 \begin{definition}\index{Endomorphism|textbf}
@@ -70,7 +70,6 @@ definition :: Def1
   let G;
   mode Endomorphism of G is Homomorphism of G,G;
 end;
-
 @ %def Endomorphism
 
 \begin{registration}\label{par:characteristic:register-bijective-for-endomorphism}
@@ -95,7 +94,6 @@ registration
     hence thesis;
   end;
 end;
-
 @
 
 \begin{definition}\index{Automorphism|textbf}\index{Endomorphism}
@@ -113,7 +111,6 @@ definition :: Def2
   let G;
   mode Automorphism of G is bijective Endomorphism of G;
 end;
-
 @ %def Automorphism
 
 \begin{reserve}
@@ -126,7 +123,6 @@ end;
 
 <<Define [[Automorphism]]>>=
 reserve phi for Automorphism of G;
-
 @
 
 \begin{proposition}
@@ -163,7 +159,6 @@ proof
                 .= (1).G by GRSOLV_1:11;
   hence thesis;
 end;
-
 @ %def Th16
 
 \begin{reserve}
@@ -173,7 +168,6 @@ Now we need to tell Mizar that $f$ is an endomorphism of $G$.
 
 <<Define [[Endomorphism]]>>=
 reserve f for Endomorphism of G;
-
 @
 
 \begin{theorem}
@@ -199,7 +193,6 @@ proof
   (1).G is Subgroup of (1).G by GROUP_2:54;
   hence Image(phi|(1).G) is Subgroup of (1).G by Th16;
 end;
-
 @ %def Th17
 
 \begin{lemma}
@@ -218,7 +211,6 @@ proof
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
-
 @ %def Lm2
 
 \begin{lemma}\label{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
@@ -248,7 +240,6 @@ proof
                  .= (1).H by GROUP_2:63;
   hence (phi|H) is one-to-one by GROUP_6:56;
 end;
-
 @ %def Lm3
 
 \begin{theorem}\label{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}
@@ -280,7 +271,6 @@ proof
   then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
   hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
 end;
-
 @ %def Th18
 
 \begin{theorem}\label{thm:characteristic:automorphism:phi-phiInv-H-is-H}
@@ -311,7 +301,6 @@ proof
   <<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>
   hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
-
 @ %def Th19
 
 \begin{proof}[{Sub-proof ($\forall g\in G, g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
@@ -329,7 +318,6 @@ proof
   <<Step 2: $g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$>>
   thus thesis;
 end;
-
 @
 
 \begin{proof}[{Proof step 1 ($g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
@@ -352,7 +340,6 @@ proof
         .= g by B2;
   hence g in H;
 end;
-
 @
 
 \begin{proof}[Proof sub-step 1]
@@ -364,7 +351,6 @@ then consider a being Element of Image(psi|H) such that
 B1: g = (phi|Image(psi|H)).a by GROUP_6:45;
 M1: a in Image(psi|H) & a is Element of G by GROUP_2:42;
 then B2: phi.a = g by B1, Th2;
-
 @
 
 \begin{proof}[Proof sub-step 2]
@@ -377,7 +363,6 @@ consider b being Element of H such that
 B3: a = (psi|H).b
 by M1,GROUP_6:45;
 M2: b in H & b is Element of G by GROUP_2:42;
-
 @
 
 \begin{proof}[{Proof step 2 ($g\in\varphi[\varphi^{-1}(H)]\impliedby g\in H$)}.]
@@ -403,7 +388,6 @@ proof
   thus g in Image(phi|K)
   <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>
 end;
-
 @
 
 \begin{proof}[Proof sub-step 1 ($a\in\varphi^{-1}(H)$).]
@@ -420,7 +404,6 @@ proof
   then (psi|H).g in Image(psi|H);
   hence a in Image(psi|H);
 end;
-
 @
 
 \begin{proof}[{Proof sub-step 2 ($b\in\varphi[\varphi^{-1}(H)]$)}.]
@@ -436,7 +419,6 @@ proof
   then (phi|K).a in Image(phi|K);
   hence b in Image(phi|K);
 end;
-
 @
 
 \begin{proof}[{Proof sub-step 3 ($g\in\varphi[\varphi^{-1}(H)]$)}.]
@@ -462,7 +444,6 @@ proof
    .= g by B6;
   hence thesis by B3;
 end;
-
 @
 
 \begin{theorem}
@@ -506,7 +487,6 @@ proof
   then Image(psi|Image(phi|H)) is Subgroup of Image(psi|K) by GRSOLV_1:def 3;
   hence H is Subgroup of Image(psi|K) by A5;
 end;
-
 @ %def Th20
 
 \begin{theorem}
@@ -529,8 +509,65 @@ proof
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
-
 @ %def Th21
+
+\begin{theorem}
+Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$ be isomorphic
+subgroups. Suppose $G$ is a finite group. Then $\Index{G}{H_{1}}=\Index{G}{H_{2}}$.
+\end{theorem}
+
+<<Theorem: isomorphic subgroups have equal indices>>=
+theorem ThIsoHaveSameIndices:
+  for G being finite Group
+  for H1,H2 being strict Subgroup of G
+  st H1,H2 are_isomorphic
+  holds index H1 = index H2
+proof
+  let G be finite Group;
+  let H1,H2 be strict Subgroup of G;
+  assume A1: H1,H2 are_isomorphic;
+  then A2: card H1 = card H2 by GROUP_6:73;
+  card H1 * index H1 = card G by GROUP_2:147
+                    .= card H2 * index H2 by GROUP_2:147;
+  then index H1 * card H1 = index H2 * card H1 by A2;
+  hence index H1 = index H2 by XCMPLX_1:5;
+end;
+@ %def ThIsoHaveSameIndices
+
+\begin{theorem}
+Let $G$ be a finite group, $p\in\NN$ be prime. If $\varphi\in\Aut(G)$ is
+an automorphism and $P\subgroup G$ is a Sylow $p$-subgroup, then
+$\varphi(P)$ is a Sylow $p$-subgroup.
+\end{theorem}
+
+<<Theorem: Sylow $p$-Subgroups invariant under $\Aut(G)$>>=
+theorem ThSylowSubgroupInvariants:
+  G is finite implies
+  for p being prime Nat
+  for P being strict Subgroup of G
+  st P is_Sylow_p-subgroup_of_prime p
+  holds Image(phi|P) is_Sylow_p-subgroup_of_prime p
+proof
+  assume A0: G is finite;
+  let p be prime Nat;
+  let P be strict Subgroup of G;
+  assume A1: P is_Sylow_p-subgroup_of_prime p;
+  then A2: P is p-group by GROUP_10:def 18;
+  set Q = (phi .: P);
+  A3: P,Q are_isomorphic by Th21, GRSOLV_1:def 3;
+  then A4: card P = card Q by GROUP_6:75;
+  then consider r being Nat such that
+  A5: card P = p |^ r
+  by A2,GROUP_10:def 17;
+  card Q = p |^ r by A4,A5;
+  then A6: Q is p-group by GROUP_10:def 17;
+  A7: index P = index Q by A0,A3,ThIsoHaveSameIndices;
+  A8: Q = Image(phi|P) by GRSOLV_1:def 3;
+  not p divides index P by A1, GROUP_10:def 18;
+  then not p divides index Q by A2, A7, GROUP_10:def 18;
+  hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A6, A8, GROUP_10:def 18;
+end;
+@ %def ThSylowSubgroupInvariants
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ any subgroup, and $\varphi\in\aut(G)$
@@ -563,7 +600,6 @@ proof
   then Ker(f|H) is Subgroup of Ker(f) by A1,GROUP_2:58;
   hence thesis;
 end;
-
 @ %def Th22
 
 \begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
@@ -583,7 +619,6 @@ proof
   then 1_G2 = f.g by A2,A4,GROUP_6:41;
   hence g in Ker(f) by GROUP_6:41;
 end;
-
 @
 \begin{definition}\index{$\Id_{G}$}\index{Endomorphism!Identity}
 Let $G$ be a group. The \define{Identity endomorphism} of $G$ is defined
@@ -606,7 +641,6 @@ definition :: Def3
   uniqueness
   <<Proof $\Id_{G}$ is unique>>
 end;
-
 @ %def Id_G Id_ Def3
 
 \begin{voc}
@@ -615,7 +649,6 @@ We need to add [[Id_]] to our vocabulary.
 
 <<DICT/CHAR.VOC>>=
 OId_
-
 @
 
 \begin{proof}[Proof sketch (Existence of $\Id_{G}$)]
@@ -631,7 +664,6 @@ proof
   for x being Element of G holds i.x = x;
   hence thesis;
 end;
-
 @
 
 \begin{proof}[Proof sketch (Uniqueness of $\Id_{G}$)]
@@ -655,7 +687,6 @@ proof
             .= Id2.x by A2;
   thus thesis;
 end;
-
 @
 
 \begin{theorem}\label{thm:characteristic:identity-endomorphism-is-identity-function}
@@ -669,7 +700,6 @@ the identity group morphism $\Id_{G}$ that \emph{we} think it is.
 <<Theorem: [[Id_G]] is the same as [[id the carrier of G]]>>=
 theorem Th10:
   Id_G = id (the carrier of G) by Def3;
-
 @ %def Th10
 
 \begin{registration}
@@ -686,7 +716,6 @@ registration let G;
   cluster Id_G -> bijective;
   coherence by Lm4,Lm5;
 end;
-
 @
 
 \begin{lemma}[Identity is injective]
@@ -705,7 +734,6 @@ proof
   id (the carrier of G) is one-to-one;
   hence thesis by Th10;
 end;
-
 @ %def Lm4
 
 \begin{lemma}[Identity is surjective]
@@ -720,7 +748,6 @@ proof
   id (the carrier of G) is onto;
   hence thesis by Th10;
 end;
-
 @ %def Lm5
 
 \begin{theorem}\label{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}
@@ -765,7 +792,6 @@ proof
   then f|H is Automorphism of H;
   hence thesis;
 end;
-
 @ %def Th24
 
 \begin{proof}[Proof sketch (Surjectivity)]
@@ -791,7 +817,6 @@ proof
   then f|H is onto Homomorphism of H,H by C1;
   hence thesis;
 end;
-
 @
 
 \begin{theorem}
@@ -826,7 +851,6 @@ proof
   then phi .: H is proper;
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
-
 @ %def Th25
 
 \begin{proof}[Proof step ($\varphi(x)\notin\varphi(H)$)]
@@ -842,7 +866,6 @@ proof
   not (phi.x in (phi .: UH)) by A1, A3, Th7;
   hence not (phi.x in (phi .: H)) by GRSOLV_1:8;
 end;
-
 @
 
 \begin{proof}[Proof step ($\varphi(x)\in G)$.]
@@ -862,7 +885,6 @@ proof
   then phi.x in UG by A3, FUNCT_1:def 3;
   hence phi.x is Element of G;
 end;
-
 @
 
 \begin{theorem}\label{thm:characteristic:automorphism:image-of-maximal-subgroup-under-automorphism-is-maximal}
@@ -901,7 +923,6 @@ proof
   <<Proof: $H$ is maximal implies $K=G$>>
   thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
 end;
-
 @ %def Th26
 
 \begin{proof}[Sub-proof outline ($H$ is maximal implies $K=G$).]
@@ -939,7 +960,6 @@ proof
   <<Proof: $\varphi(L) = K$>>
   hence thesis by B10;
 end;
-
 @
 
 \begin{proof}[Proof step ($\psi(k)\in L$).]
@@ -956,7 +976,6 @@ proof
   then l in the carrier of (psi .: K) by GRSOLV_1:8;
   hence psi.k in Image(psi|K) by C2,GRSOLV_1:def 3;
 end;
-
 @
 
 \begin{proof}[Proof step ($H\neq L$).]
@@ -983,7 +1002,6 @@ proof
   then the carrier of H <> the carrier of L by B8,C2,C5;
   hence thesis;
 end;
-
 @
 
 \begin{proof}[Proof step ($\varphi(L)=G$).]
@@ -1005,7 +1023,6 @@ proof
   then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
   hence thesis;
 end;
-
 @
 
 \begin{proof}[Proof step ($\varphi(L)=K$).]
@@ -1020,5 +1037,4 @@ proof
   by Th19;
   thus Image(phi|Image(psi|K)) = K by B3,C1,C2;
 end;
-
 @

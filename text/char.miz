@@ -14,7 +14,7 @@ environ
  vocabularies MOD_4, CHAR,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0,
-   FUNCT_2, CARD_1
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1
 ,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
    GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP
@@ -23,31 +23,37 @@ environ
 
 ;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-              RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS, XXREAL_0, REAL_1,
-              SETFAM_1, ORDINAL1, XCMPLX_0, NAT_1, INT_1, INT_2, NAT_D
+              RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1
 ,
-   ARYTM_2, ORDINAL2, XREAL_0, SQUARE_1,
+   NUMBERS, REAL_1,
+   ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
+   SETFAM_1, ORDINAL1, NAT_1, INT_1, INT_2,
+   XCMPLX_0, XXREAL_0, XREAL_0, NAT_D
+,
    BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON
 
 ;
  notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-           RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS, XXREAL_0, REAL_1,
-           SETFAM_1, ORDINAL1, XCMPLX_0, NAT_1, INT_1, INT_2, NAT_D
+           RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1
+,
+   NUMBERS, XXREAL_0, REAL_1, SETFAM_1, ORDINAL1, XCMPLX_0, NAT_1, INT_1,
+   INT_2, ARYTM_3, NAT_D
 ,
    BINOP_1, BINOP_2, FINSET_1, CARD_1, STRUCT_0, ALGSTR_0, REALSET1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON
 
 ;
- registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
-               INT_1, INT_2, XCMPLX_0, ARYTM_3, XREAL_0,
-               ARYTM_2, NUMBERS, FINSET_1
+ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
+,
+   ORDINAL1, FINSET_1, NUMBERS, XREAL_0, NAT_1, INT_1, INT_2, XCMPLX_0,
+   ARYTM_3, ARYTM_2
 ,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3,
    GROUP_6, GR_CY_1, NEWTON
-
+, CARD_1
 ;
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL
 ;
@@ -67,7 +73,7 @@ environ
 ,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
    AUTGROUP, GROUP_10
-
+, XREAL_1, XCMPLX_1
 ;
  schemes FUNCT_2, GROUP_4
 ;
@@ -686,6 +692,49 @@ proof
   phi|H is one-to-one by Lm3;
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
+end;
+
+theorem ThIsoHaveSameIndices:
+  for G being finite Group
+  for H1,H2 being strict Subgroup of G
+  st H1,H2 are_isomorphic
+  holds index H1 = index H2
+proof
+  let G be finite Group;
+  let H1,H2 be strict Subgroup of G;
+  assume A1: H1,H2 are_isomorphic;
+  then A2: card H1 = card H2 by GROUP_6:73;
+  card H1 * index H1 = card G by GROUP_2:147
+                    .= card H2 * index H2 by GROUP_2:147;
+  then index H1 * card H1 = index H2 * card H1 by A2;
+  hence index H1 = index H2 by XCMPLX_1:5;
+end;
+
+theorem ThSylowSubgroupInvariants:
+  G is finite implies
+  for p being prime Nat
+  for P being strict Subgroup of G
+  st P is_Sylow_p-subgroup_of_prime p
+  holds Image(phi|P) is_Sylow_p-subgroup_of_prime p
+proof
+  assume A0: G is finite;
+  let p be prime Nat;
+  let P be strict Subgroup of G;
+  assume A1: P is_Sylow_p-subgroup_of_prime p;
+  then A2: P is p-group by GROUP_10:def 18;
+  set Q = (phi .: P);
+  A3: P,Q are_isomorphic by Th21, GRSOLV_1:def 3;
+  then A4: card P = card Q by GROUP_6:75;
+  then consider r being Nat such that
+  A5: card P = p |^ r
+  by A2,GROUP_10:def 17;
+  card Q = p |^ r by A4,A5;
+  then A6: Q is p-group by GROUP_10:def 17;
+  A7: index P = index Q by A0,A3,ThIsoHaveSameIndices;
+  A8: Q = Image(phi|P) by GRSOLV_1:def 3;
+  not p divides index P by A1, GROUP_10:def 18;
+  then not p divides index Q by A2, A7, GROUP_10:def 18;
+  hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A6, A8, GROUP_10:def 18;
 end;
 
 definition :: Def3
@@ -1594,6 +1643,48 @@ A3: P[H]
 
 end;
 
+scheme
+  MeetIsChar{G() -> Group, P[set]} :
+  ex K being strict Subgroup of G() st
+  the carrier of K = meet {A where A is Subset of G() :
+  ex H being strict Subgroup of G() st A = the carrier of H & P[H]} &
+  K is characteristic
+provided
+A1: for phi being Automorphism of G()
+    for H being strict Subgroup of G()
+    st P[H]
+    holds P[Image(phi|H)] and
+A2: ex H being strict Subgroup of G() st P[H]
+proof
+  set Fam = {A where A is Subset of G() :
+             ex H being strict Subgroup of G()
+             st A = the carrier of H & P[H]};
+  
+  A3: for phi being Automorphism of G()
+  holds phi .: meet Fam = meet Fam from CharMeet(A1,A2);
+
+  consider H being strict Subgroup of G() such that
+  A4: the carrier of H = meet Fam
+  from GROUP_4:sch 1(A2);
+  take H;
+
+  for phi being Automorphism of G()
+  holds Image(phi|H) = H
+  proof
+    let phi be Automorphism of G();
+    the carrier of Image(phi|H)
+     = the carrier of phi .: H by GRSOLV_1:def 3
+    .= phi .: (the carrier of H) by GRSOLV_1:8
+    .= phi .: meet Fam by A1,A4
+    .= meet Fam by A3
+    .= the carrier of H by A1,A4;
+    hence Image(phi|H) = H by GROUP_2:59;
+  end;
+
+  then H is characteristic;
+  hence thesis by A4;
+end;
+
 theorem Th44:
   (ex H being strict Subgroup of G st H is maximal) implies
   Phi(G) is characteristic Subgroup of G
@@ -1608,31 +1699,21 @@ proof
   for H being strict Subgroup of G
   st P[H]
   holds P[Image(phi|H)] by Th26;
-
-  A3: for phi being Automorphism of G
-  holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
-
-  for phi being Automorphism of G
-  holds Image(phi|Phi(G)) = Phi(G)
-  proof
-    let phi be Automorphism of G;
-    the carrier of Image(phi|Phi(G))
-     = the carrier of phi .: Phi(G) by GRSOLV_1:def 3
-    .= phi .: (the carrier of Phi(G)) by GRSOLV_1:8
-    .= phi .: meet MaxSubCarrs by A1,GROUP_4:def 7
-    .= meet MaxSubCarrs by A3
-    .= the carrier of Phi(G) by A1,GROUP_4:def 7;
-    hence Image(phi|Phi(G)) = Phi(G) by GROUP_2:59;
-  end;
-
-  then Phi(G) is characteristic;
-  hence thesis;
+  
+  consider K being strict Subgroup of G such that
+  A3: the carrier of K = meet {A where A is Subset of G :
+      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
+  A4: K is characteristic
+  from MeetIsChar(A2,A1);
+  K = Phi(G) by A1,A3,GROUP_4:def 7;
+  hence thesis by A4;
 end;
 
 definition
   let G be finite Group;
   let p be prime Nat;
   func p-core_of_G -> strict Subgroup of G means
+  :Def7:
   the carrier of it = meet{A where A is Subset of G :
   ex P being strict Subgroup of G st A = the carrier of P &
   P is_Sylow_p-subgroup_of_prime p};
@@ -1648,6 +1729,34 @@ definition
   end;
   uniqueness by GROUP_2:59;
   correctness;
+end;
+
+theorem
+  for G being finite Group
+  for p being prime Nat
+  holds p-core_of_G is characteristic
+proof
+  let G be finite Group;
+  let p be prime Nat;
+
+  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
+  set MaxSubCarrs = {A where A is Subset of G :
+                     ex H being strict Subgroup of G
+                     st A = the carrier of H & P[H]};
+
+  A2: for phi being Automorphism of G
+  for P being strict Subgroup of G
+  st P[P]
+  holds P[Image(phi|P)] by GRSOLV_1:def 3, ThSylowSubgroupInvariants;
+  
+  consider K being strict Subgroup of G such that
+  A3: the carrier of K = meet {A where A is Subset of G :
+      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
+  A4: K is characteristic
+  from MeetIsChar(A2,A1);
+  K = p-core_of_G by A3,Def7;
+  hence thesis by A4;
 end;
 
 

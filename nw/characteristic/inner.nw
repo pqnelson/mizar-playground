@@ -14,7 +14,6 @@ We can now organize our treatment of inner automorphisms.
 <<Corollary: conjugation of given element is an \emph{inner} automorphism>>
 <<Theorem: constructing inner automorphisms from group elements>>
 <<Theorem: inner Automorphisms fix only normal Subgroups>>
-
 @
 
 \begin{definition}\index{Automorphism!inner}\index{inner!Automorphism|see {Automorphism}}
@@ -39,7 +38,6 @@ definition :: Def5
   for x being Element of G holds IT.x = x |^ a;
 end;
 <<Outer as antonym of inner>>
-
 @ %def Def5 inner
 
 \begin{notation}\index{Automorphism!outer}
@@ -55,7 +53,6 @@ notation
   let G be Group, f be Automorphism of G;
   antonym f is outer for f is inner;
 end;
-
 @ %def outer
 
 \begin{voc}
@@ -66,7 +63,6 @@ automorphisms, we should add the attributes to our vocabulary file.
 <<DICT/CHAR.VOC>>=
 Vinner
 Vouter
-
 @
 
 \begin{theorem}[$\Id_{G}$ is effectively inner]\label{thm:characteristic:id-inner}
@@ -90,7 +86,6 @@ proof
           .= x |^ 1_G by GROUP_3:19;
   hence thesis;
 end;
-
 @ %def Th27
 
 \begin{registration}
@@ -104,7 +99,6 @@ registration
   existence
   <<Proof of existence of an inner Automorphism>>
 end;
-
 @
 
 \begin{proof}[Proof sketch (Existence of inner automorphism)]
@@ -120,7 +114,6 @@ proof
   take 1_G;
   thus thesis by Th27;
 end;
-
 @
 
 \begin{theorem}[{$\varphi\in\aut(G)\iff \varphi$ is [[Automorphism of G]]}]
@@ -157,7 +150,6 @@ proof
   thus f is Automorphism of G implies f in Aut G by AUTGROUP:def 1;
   thus thesis;
 end;
-
 @ %def Th28
 
 \begin{proof}[Sub-proof ($\Longrightarrow$)]
@@ -175,7 +167,6 @@ proof
   f is bijective by A1,AUTGROUP:def 1;
   hence thesis;
 end;
-
 @
 
 
@@ -219,7 +210,6 @@ proof
   <<Proof ($f$ is inner automorphism) $\implies$ $f$ is in [[InnAut G]]>>
   thus thesis;
 end;
-
 @ %def Th29
 
 \begin{proof}[Proof step ($\varphi\in\Inn\Aut(G)\implies\varphi$ is inner).]
@@ -237,7 +227,6 @@ proof
   by A1,B1,AUTGROUP:def 4;
   thus thesis by Def5,B2;
 end;
-
 @
 
 \begin{proof}[Proof step ($\varphi$ is inner$\implies\varphi\in\Inn\Aut(G)$).]
@@ -254,7 +243,6 @@ proof
   by Def5;
   thus thesis by A1,B1,AUTGROUP:def 4;
 end;
-
 @
 
 \begin{lemma}
@@ -276,7 +264,6 @@ proof
   f is Element of Aut G by AUTGROUP:12;
   hence f is Automorphism of G by Th28;
 end;
-
 @ %def Lm6
 
 \begin{theorem}\label{thm:characteristic:inner:image-of-inner-automorphism-on-subgroup}
@@ -318,7 +305,6 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   <<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>
   thus (H |^ a) = Image(f|H) by C2,C3,GROUP_2:def 6;
 end;
-
 @ %def Th30
 
 \begin{proof}[{Proof step 1 ($\forall y\in G, y\in f(H)\implies y\in H^{a}$)}.]
@@ -338,7 +324,6 @@ proof
              .= y by B1;
   hence y in H |^ a by B2,GROUP_3:58;
 end;
-
 @
 
 \begin{proof}[{Proof step 2 ($\forall y\in G, y \in f(H)\impliedby y\in H^{a}$)}.]
@@ -361,7 +346,6 @@ proof
              .= y by B1;
   thus y in Image(f|H) by B2,B3,GROUP_6:45;
 end;
-
 @
 
 \begin{theorem}[Kernel of inner automorphism is trivial]\label{thm:characteristic:inner:ker-of-inner-is-trivial}
@@ -400,7 +384,6 @@ proof
   A3: (1).G is Subgroup of Ker f by GROUP_2:65;
   thus Ker f = (1).G by A2,A3,GROUP_2:55;
 end;
-
 @ %def Th31
 
 \begin{proof}[Sub-proof ($\ker(f)\subset\trivialSubgroup$)]
@@ -418,7 +401,6 @@ proof
   then x = 1_G by GROUP_3:18;
   hence x in (1).G by GROUP_2:46;
 end;
-
 @
 
 \begin{theorem}[{Conjugation by fixed element is an automorphism}]\label{thm:characteristic:inner:conjugation-by-fixed-element-is-an-automorphism}
@@ -455,7 +437,6 @@ proof
   then f is onto by FUNCT_2:18;
   hence f is Automorphism of G by A2;
 end;
-
 @ %def Th32
 
 \begin{proof}[Sub-proof (Existence of inverse of conjugation)]
@@ -475,7 +456,6 @@ proof
   <<Establish $f^{-1}$ is the inverse function of $f$>>
   hence thesis;
 end;
-
 @
 
 \begin{proof}[Sub-proof ($\psi$ is inverse function of $\varphi$).]
@@ -498,7 +478,6 @@ proof
   hence thesis;
 end;
 then f*fInv = id the carrier of G;
-
 @
 
 \begin{proof}[Sub-proof ($\psi$ is an endomorphism)]
@@ -517,7 +496,6 @@ proof
   hence thesis;
 end;
 then reconsider fInv as Endomorphism of G by GROUP_6:def 6;
-
 @
 
 \begin{corollary}\label{thm:characteristic:inner:conjugation-as-endomorphism-is-inner-automorphism}
@@ -537,7 +515,6 @@ theorem Th33:
   for f being Endomorphism of G
   st (for x being Element of G holds f.x = x |^ a)
   holds f is inner Automorphism of G by Th32,Def5;
-
 @ %def Th33
 
 \begin{theorem}[Constructing inner automorphisms]
@@ -587,7 +564,6 @@ A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
   by A1,Th33;
   hence thesis;
 end;
-
 @ %def Th34
 
 \begin{theorem}\label{thm:characteristic:inner:subgroup-is-normal-iff-invariant-under-every-inner-automorphism}
@@ -627,7 +603,6 @@ proof
   <<Proof by contradiction: fixed by inner automorphisms implies normal>>
   thus thesis by A1,A2;
 end;
-
 @ %def Th35
 
 \begin{proof}[Sub-proof (normal implies fixed by inner automorphisms)]
@@ -651,7 +626,6 @@ proof
             .= H;
   hence Image(f|H)=H;
 end;
-
 @
 
 \begin{proof}[Sub-proof (fixed by inner automorphisms implies normal)]
@@ -681,5 +655,4 @@ proof
   Image(f|H) = H |^ a by B3, Th30;
   hence contradiction by B1,B2;
 end;
-
 @
