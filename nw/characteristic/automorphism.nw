@@ -156,7 +156,7 @@ The proof is simply ``follow your nose''.
 \end{proof}
 
 <<Theorem: Endomorphisms preserve the trivial subgroup>>=
-theorem Th1:
+theorem Th16:
   Image (f|(1).G) = (1).G
 proof
   Image(f|(1).G) = f .: ((1).G) by GRSOLV_1:def 3
@@ -164,7 +164,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th1
+@ %def Th16
 
 \begin{reserve}
 Now we need to tell Mizar that $f$ is an endomorphism of $G$.
@@ -193,14 +193,14 @@ proves that $G$ is a subgroup of itself.
 <<Theorem: Automorphisms map trivial subgroups to themselves>>=
 :: In particular, the trivial proper subgroup (1).G of G is invariant
 :: under inner automorphisms, and thus is a characteristic subgroup.
-theorem Th2:
+theorem Th17:
   Image(phi|(1).G) is Subgroup of (1).G
 proof
   (1).G is Subgroup of (1).G by GROUP_2:54;
-  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
+  hence Image(phi|(1).G) is Subgroup of (1).G by Th16;
 end;
 
-@ %def Th2
+@ %def Th17
 
 \begin{lemma}
 If $H\subgroup\trivialSubgroup_{G}\subgroup G$, then $H=\trivialSubgroup$.
@@ -212,14 +212,14 @@ $\trivialSubgroup_{G}\subgroup H$, and taken together, the result follows.
 \end{proof}
 
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>=
-Lm16: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
+Lm2: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
 proof
   assume H is Subgroup of (1).G;
   then H is Subgroup of (1).G & (1).G is Subgroup of H by GROUP_2:65;
   hence thesis by GROUP_2:55;
 end;
 
-@ %def Lm16
+@ %def Lm2
 
 \begin{lemma}\label{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
 For any subgroup $H\subgroup G$ and automorphism $\varphi\in\Aut(G)$ of
@@ -238,18 +238,18 @@ $\ker(\varphi|_H)$ is trivial, and thus $\varphi|_{H}$ is injective.
 
 <<Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$>>=
 <<Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$>>
-Lm17:
+Lm3:
 (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
 proof
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   Ker(phi) = (1).G by GROUP_6:56;
-  then Ker(phi|H) is Subgroup of (1).G by Th9;
-  then Ker(phi|H) = (1).G by Lm16
+  then Ker(phi|H) is Subgroup of (1).G by Th22;
+  then Ker(phi|H) = (1).G by Lm2
                  .= (1).H by GROUP_2:63;
   hence (phi|H) is one-to-one by GROUP_6:56;
 end;
 
-@ %def Lm17
+@ %def Lm3
 
 \begin{theorem}\label{thm:characteristic:automorphism:f-fInv-H-is-subgroup-of-H}
 Let $H\subgroup G$ be a subgroup such that
@@ -266,7 +266,7 @@ the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
 \end{proof}
 
 <<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>=
-theorem Th6:
+theorem Th18:
   (for f being Automorphism of G holds Image(f|H) is Subgroup of H) implies
   ex psi being Automorphism of G
   st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
@@ -281,7 +281,7 @@ proof
   hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
 end;
 
-@ %def Th6
+@ %def Th18
 
 \begin{theorem}\label{thm:characteristic:automorphism:phi-phiInv-H-is-H}
   Let $G$ be a group, and $H\subgroup G$ be a subgroup.
@@ -300,7 +300,7 @@ The result then follows that they are equal as groups using Theorem~\mml[Th60]{g
 \end{proof}
 
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
-theorem Th7:
+theorem Th19:
   ex psi being Automorphism of G
   st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
 proof
@@ -312,7 +312,7 @@ proof
   hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
 
-@ %def Th7
+@ %def Th19
 
 \begin{proof}[{Sub-proof ($\forall g\in G, g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
 The bones of the proof for this claim amounts to unfolding the
@@ -337,7 +337,7 @@ We begin by showing, if $g\in\varphi[\varphi^{-1}(H)]$, then there is
 some [[M1:]] $a\in\varphi^{-1}(H)$ such that [[B2:]] $g=\varphi(a)$. And
 then we have, by the same line of reasoning applied to $a$, there is
 some [[M2:]] $b\in H$ such that [[B3:]] $\varphi^{-1}|_{H}(b)=a$. It
-follows that $g = \varphi(\varphi^{-1}(b))$, and by Lemma~\ref{lemma:characteristic:preparatory:f-finv-y-is-y} we have
+follows that $g = \varphi(\varphi^{-1}(b))$, and by Theorem~\ref{thm:characteristic:preparatory:f-finv-y-is-y} we have
 $g = b$ which proves the claim.
 \end{proof}
 
@@ -346,8 +346,8 @@ proof
   assume g in Image(phi|Image(psi|H));
   <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>
   <<$\exists b\in H, a = \varphi^{-1}(b)$>>
-  then b = phi.(psi.b) by Lm6
-        .= phi.((psi|H).b) by M2,Lm3
+  then b = phi.(psi.b) by Th6
+        .= phi.((psi|H).b) by M2,Th2
         .= phi.a by B3
         .= g by B2;
   hence g in H;
@@ -363,7 +363,7 @@ Showing $a\in\varphi^{-1}(H)$ and $g=\varphi(a)$ follow from basic results.
 then consider a being Element of Image(psi|H) such that
 B1: g = (phi|Image(psi|H)).a by GROUP_6:45;
 M1: a in Image(psi|H) & a is Element of G by GROUP_2:42;
-then B2: phi.a = g by B1, Lm3;
+then B2: phi.a = g by B1, Th2;
 
 @
 
@@ -449,15 +449,15 @@ these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
 <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>=
 proof
   H is Subgroup of G & g in H & g is Element of G by B1;
-  then B4: psi.g = (psi|H).g by Lm3
+  then B4: psi.g = (psi|H).g by Th2
                 .= a;
   B5: a is Element of K & K is Subgroup of G & a in K & phi is
   Homomorphism of G,G by B2;
   then a is Element of G by GROUP_2:42;
-  then B6: (phi|K).a =  phi.a  by B5,Lm3
+  then B6: (phi|K).a =  phi.a  by B5,Th2
                     .= phi.(psi.g) by B4
                     .= phi.((phi").g)
-                    .= g by Lm6;
+                    .= g by Th6;
   b = (phi|K).((psi|H).g)
    .= g by B6;
   hence thesis by B3;
@@ -481,7 +481,7 @@ I need to work on my numbering scheme\dots
 \end{thm-remark}
 
 <<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>=
-theorem Th7b:
+theorem Th20:
   for H being strict Subgroup of G
   for K being Subgroup of G
   st Image(phi|H) is Subgroup of K
@@ -494,11 +494,11 @@ proof
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
-  A2: psi" = phi by Lm5;
+  A2: psi" = phi by Th5;
   consider phi0 being Automorphism of G such that
   A3: phi0 = psi" and
   A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
-  by Th7;
+  by Th19;
   phi = phi0 by A2,A3;
   then A5: Image(psi|Image(phi|H)) = H by A4;
   psi .: Image(phi|H) is Subgroup of psi .: K by A1,GRSOLV_1:12;
@@ -507,7 +507,7 @@ proof
   hence H is Subgroup of Image(psi|K) by A5;
 end;
 
-@
+@ %def Th20
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ be any subgroup, and
@@ -521,16 +521,16 @@ injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-
 \end{proof}
 
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
-theorem Th8:
+theorem Th21:
   H,phi .: H are_isomorphic
 proof
   reconsider H2 = phi .: H as Subgroup of G;
-  phi|H is one-to-one by Lm17;
+  phi|H is one-to-one by Lm3;
   then H,Image(phi|H) are_isomorphic by GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
 
-@ %def Th8
+@ %def Th21
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ any subgroup, and $\varphi\in\aut(G)$
@@ -546,7 +546,7 @@ Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
 \end{proof}
 
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>=
-theorem Th9:
+theorem Th22:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
   for H being Subgroup of G1
@@ -564,11 +564,11 @@ proof
   hence thesis;
 end;
 
-@ %def Th9
+@ %def Th22
 
 \begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
 Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
-But $\varphi|_{H}(g)=\varphi(g)$ by Lemma~\ref{lemma:characteristic:preparatory:restrict-group-morphism-to-subgroups}. So we have
+But $\varphi|_{H}(g)=\varphi(g)$ by Theorem~\ref{thm:characteristic:preparatory:restrict-group-morphism-to-subgroups}. So we have
 $\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by Theorem~\mml[Th41]{group6}.\MizThm{GROUP\_6}{41}
 \end{proof}
 
@@ -578,7 +578,7 @@ proof
   assume A2: g in Ker(f|H);
   Ker(f|H) is Subgroup of H;
   then A3: g in H by A2, LmSubgroupEltTrans;
-  then A4: (f|H).g = f.g by Lm3;
+  then A4: (f|H).g = f.g by Th2;
   g is Element of H by A3;
   then 1_G2 = f.g by A2,A4,GROUP_6:41;
   hence g in Ker(f) by GROUP_6:41;
@@ -684,7 +684,7 @@ surjectivity.
 
 registration let G;
   cluster Id_G -> bijective;
-  coherence by Lm1,Lm2;
+  coherence by Lm4,Lm5;
 end;
 
 @
@@ -700,13 +700,13 @@ on the underlying set $U(G)$ of the group $G$.
 \end{proof}
 
 <<[[Id_G]] is injective>>=
-Lm1: Id_G is one-to-one
+Lm4: Id_G is one-to-one
 proof
   id (the carrier of G) is one-to-one;
   hence thesis by Th10;
 end;
 
-@ %def Lm1
+@ %def Lm4
 
 \begin{lemma}[Identity is surjective]
 For any group $G$, the identity morphism $\Id_{G}$ is surjective.
@@ -715,13 +715,13 @@ For any group $G$, the identity morphism $\Id_{G}$ is surjective.
 As with establishing injectivity, it's straightforward.
 
 <<[[Id_G]] is surjective>>=
-Lm2: Id_G is onto
+Lm5: Id_G is onto
 proof
   id (the carrier of G) is onto;
   hence thesis by Th10;
 end;
 
-@ %def Lm2
+@ %def Lm5
 
 \begin{theorem}\label{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}
   Let $H\subgroup G$ be any subgroup.
@@ -749,7 +749,7 @@ This result isn't surprising, but proving surjectivity was surprisingly
 \end{proof}
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
-theorem Th11:
+theorem Th24:
   for f being Automorphism of G
   st Image(f|H) = H
   holds f|H is Automorphism of H
@@ -757,7 +757,7 @@ proof
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
   then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by Lm17;
+  C2: f|H is one-to-one by Lm3;
 
   f|H is onto Endomorphism of H
   <<Proof: $\varphi|_{H}$ is surjective>>
@@ -766,7 +766,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th11
+@ %def Th24
 
 \begin{proof}[Proof sketch (Surjectivity)]
 For reasons I do not adequately understand, I could not simply handle
@@ -801,7 +801,7 @@ $\varphi(H)\properSubgroup G$.
 \end{theorem}
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\properSubgroup G$ implies $\varphi(H)\properSubgroup G$>>=
-theorem ThAutoProper:
+theorem Th25:
   for G being non trivial Group
   for H being Subgroup of G
   for phi being Automorphism of G
@@ -816,7 +816,7 @@ proof
   A1: phi is one-to-one & phi is onto & UH is non empty Subset of UG &
       phi is Function of UG,UG by GROUP_2:def 5;
   assume H is proper Subgroup of G;
-  then UG \ UH is non empty by Lm13;
+  then UG \ UH is non empty by Th13;
   then consider x such that
   A2: x in UG \ UH by XBOOLE_0:def 1;
   A3: x in G & not x in H by A2,XBOOLE_0:def 5;
@@ -827,11 +827,11 @@ proof
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
 
-@ %def ThAutoProper
+@ %def Th25
 
 \begin{proof}[Proof step ($\varphi(x)\notin\varphi(H)$)]
 Since $x\in G$ and $x\notin H$, it follows that $\varphi(x)\notin\varphi(H)$
-thanks to Lemma~\ref{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}.
+thanks to Theorem~\ref{thm:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}.
 We also need an extra step since $\varphi$ is considered first as a
 function on the underlying set $U(H)$ of $H$, then we need to remember
 that this is the same as $\varphi$ applied to the subgroup $H$.
@@ -839,7 +839,7 @@ that this is the same as $\varphi$ applied to the subgroup $H$.
 <<$\varphi(x)\notin\varphi(H)$>>=
 not (phi.x in phi .: H)
 proof
-  not (phi.x in (phi .: UH)) by A1, A3, Lm7;
+  not (phi.x in (phi .: UH)) by A1, A3, Th7;
   hence not (phi.x in (phi .: H)) by GRSOLV_1:8;
 end;
 
@@ -880,7 +880,7 @@ end;
 \end{proof}
 
 <<Theorem: Automorphisms map maximal subgroups to maximal subgroups>>=
-theorem Th31:
+theorem Th26:
   for G being non trivial Group
   for H being strict Subgroup of G
   for phi being Automorphism of G
@@ -891,7 +891,7 @@ proof
   let H be strict Subgroup of G;
   let phi be Automorphism of G;
   assume A1: H is maximal;
-  A2: Image(phi|H) is proper Subgroup of G by A1,ThAutoProper;
+  A2: Image(phi|H) is proper Subgroup of G by A1,Th25;
   then P1: the multMagma of Image(phi|H) <> the multMagma of G by Def10;
   set UG = the carrier of G;
   set UH = the carrier of H;
@@ -902,7 +902,7 @@ proof
   thus Image(phi|H) is maximal by P1,P2,GROUP_4:def 6;
 end;
 
-@ %def Th31
+@ %def Th26
 
 \begin{proof}[Sub-proof outline ($H$ is maximal implies $K=G$).]
 Let $K$ be an arbitrary subgroup of $G$ such that $\varphi(H)\properSubgroup K$.
@@ -920,10 +920,10 @@ proof
   then consider psi being Automorphism of G such that
   B3: psi = phi" and
   B4: H is Subgroup of Image(psi|K)
-  by Th7b;
+  by Th20;
   set UK = the carrier of K;
-  reconsider K as non trivial strict Subgroup of G by A2,B1,B2,Lm15;
-  UK \ (the carrier of Image(phi|H)) is non empty by B1,B2,Def10,Lm13;
+  reconsider K as non trivial strict Subgroup of G by A2,B1,B2,Th15;
+  UK \ (the carrier of Image(phi|H)) is non empty by B1,B2,Def10,Th13;
   then consider k being object such that
   B6: k in UK \ (the carrier of Image(phi|H))
   by XBOOLE_0:def 1;
@@ -970,12 +970,12 @@ proof
   C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
   phi is Function of UG,UG by GROUP_2:def 5;
   k in G & not k in Image(phi|H) by B6, XBOOLE_0:def 5, GROUP_2:41;
-  then C2: not psi.k in (psi .: UPH) by C1,Lm7;
+  then C2: not psi.k in (psi .: UPH) by C1,Th7;
   consider phi2 being Automorphism of G such that
   C3: phi2 = psi" and
   C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
-  by Th7;
-  phi2=phi by C3,B3, Lm5;
+  by Th19;
+  phi2=phi by C3,B3, Th5;
   then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
   set UPH = the carrier of Image(phi|H);
   psi .: UPH = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
@@ -1017,7 +1017,7 @@ proof
   consider psi2 being Automorphism of G such that
   C1: psi2 = phi" and
   C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
-  by Th7;
+  by Th19;
   thus Image(phi|Image(psi|K)) = K by B3,C1,C2;
 end;
 

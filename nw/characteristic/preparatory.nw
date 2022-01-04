@@ -41,31 +41,31 @@ begin :: Preparatory Work
 reserve X for set;
 
 <<Register: the identity function is surjective and bijective>>
-<<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
-<<Lemma: restriction of group morphism acts on elements like the original>>
-<<Lemma: Subgroups invariant under conjugation are normal>>
-<<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
-<<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
-<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
+<<Theorem: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
+<<Theorem: restriction of group morphism acts on elements like the original>>
+<<Theorem: Subgroups invariant under conjugation are normal>>
+<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
+<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
+<<Theorem: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
 
 begin :: Nontrivial Groups and Subgroups
 <<Register: non trivial for Group>>
 <<Register: trivial groups and trivial subgroups>>
 <<Register: non trivial for Subgroup>>
-<<Lemma: trivial groups look like $\trivialSubgroup$>>
-<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
-<<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
-<<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
+<<Theorem: trivial groups look like $\trivialSubgroup$>>
+<<Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
+<<Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
+<<Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
 
 begin :: Proper Subgroups
 <<Definition: proper subgroup>>
-<<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>
-<<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
+<<Theorem: $H\subgroup G$ is proper iff the underlying sets are different>>
+<<Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
 <<Register: proper subgroup for nontrivial groups>>
 <<Register: proper subgroups of nontrivial subgroups>>
 <<Lemma: maximal subgroups are proper>>
 <<Register: maximal subgroups are proper>>
-<<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
+<<Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
 
 @
 
@@ -91,15 +91,15 @@ end;
 
 @
 
-\begin{lemma}
+\begin{theorem}
   Let $G$ be a group and $g\in G$ be any element of the group,
   $H_{1}\subgroup G$ and $H_{2}\subgroup G$ be subgroups.
   If $H_{1}\subgroup H_{2}$ and $g\in H_{1}$, then $g\in H_{2}$.
-\end{lemma}
+\end{theorem}
 
 This is another ``Well, duh'' lemma that I couldn't find in Mizar's library.
 
-<<Lemma: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>=
+<<Theorem: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>=
 LmSubgroupEltTrans:
   for G being Group
   for H1,H2 being Subgroup of G
@@ -109,10 +109,10 @@ LmSubgroupEltTrans:
 
 @ %def LmSubgroupEltTrans
 
-\begin{lemma}[{Restriction of Group Morphisms to Subgroups}]\label{lemma:characteristic:preparatory:restrict-group-morphism-to-subgroups}
+\begin{theorem}[{Restriction of Group Morphisms to Subgroups}]\label{thm:characteristic:preparatory:restrict-group-morphism-to-subgroups}
 If $f\colon G_{1}\to G_{2}$ is a group morphism and $H\subgroup G_{1}$
 is a subgroup, then for any $h\in H$ we have $f(h) = f|_{H}(h)$.
-\end{lemma}
+\end{theorem}
 
 \begin{lem-remark}
 Mizar proves that, if $f\colon X\to Y$ is a set theoretic function and
@@ -130,13 +130,14 @@ piggie-back off earlier results establishing the desired claim
 \end{lem-remark}
 
 
-<<Lemma: restriction of group morphism acts on elements like the original>>=
-Lm3: for G1,G2 being Group
-for H being Subgroup of G1
-for f being Homomorphism of G1,G2
-for h being Element of G1
-st h in H
-holds (f|H).h = f.h
+<<Theorem: restriction of group morphism acts on elements like the original>>=
+theorem Th2:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for f being Homomorphism of G1,G2
+  for h being Element of G1
+  st h in H
+  holds (f|H).h = f.h
 proof
   let G1,G2 be Group;
   let H be Subgroup of G1;
@@ -148,23 +149,24 @@ proof
   hence (f|H).h = f.h by GRSOLV_1:def 2;
 end;
 
-@ %def Lm3
+@ %def Th2
 
-\begin{lemma}
+\begin{theorem}
 Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$.
 If $H_{1}\subgroup H_{2}$ and $H_{2}\subgroup H_{1}$, then
 $H_{1}=H_{2}$.
-\end{lemma}
+\end{theorem}
 
 \begin{lem-remark}
 Pretty simple, right? \dots I'm not sure I'll need this, but here it is if I do.
 \end{lem-remark}
 
-<<Lemma: Sandwich Subgroup Equality Theorem>>=
-LmSandwich: for H1 being strict Subgroup of G
-for H2 being strict Subgroup of G
-st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
-holds H1 = H2
+<<Theorem: Sandwich Subgroup Equality Theorem>>=
+theorem Th3:
+  for H1 being strict Subgroup of G
+  for H2 being strict Subgroup of G
+  st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
+  holds H1 = H2
 proof
   let H1 be strict Subgroup of G;
   let H2 be strict Subgroup of G;
@@ -173,12 +175,12 @@ proof
   hence thesis;
 end;
 
-@ %def LmSandwich
+@ %def Th3
 
-\begin{lemma}\label{lemma:characteristic:preparatory:normal-subgroup}
+\begin{theorem}\label{thm:characteristic:preparatory:normal-subgroup}
 Let $H\subgroup G$ be such that $\forall a\in G, a^{-1}Ha=H$.
 Then $H\normalSubgroup G$ is a normal subgroup.
-\end{lemma}
+\end{theorem}
 
 \begin{lem-remark}
 The current theorems in~\mml{group3} require $H$ to be a \emph{strict}
@@ -186,8 +188,8 @@ subgroup, but this strictness condition is not necessary.
 \end{lem-remark}
 
 
-<<Lemma: Subgroups invariant under conjugation are normal>>=
-LmNormalSubgroup:
+<<Theorem: Subgroups invariant under conjugation are normal>>=
+theorem Th4:
 for G being Group
 for H being Subgroup of G
 st (for a being Element of G holds H |^ a = H)
@@ -201,11 +203,11 @@ proof
   hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
 
-@ %def LmNormalSubgroup
+@ %def Th4
 
-\begin{lemma}\label{lm:characteristic:preparatory:lm10}
+\begin{theorem}\label{thm:characteristic:preparatory:lm10}
 If $f\colon X\to Y$ is a bijective function of non-empty sets, then $(f^{-1})^{-1}=f$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}[Proof outline]
 Let $f\colon X\to Y$ be bijective. Then $g=f^{-1}$ is a bijective
@@ -213,8 +215,8 @@ function from $Y$ to $X$. And $h=g^{-1}$ is a bijective function from
 $X$ to $Y$. Then for any $x\in X$, we have $f(x)=h(x)$. This proves the claim.
 \end{proof}
 
-<<Lemma: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
-Lm5:
+<<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>=
+theorem Th5:
   for X,Y being non empty set
   for f being Function of X,Y
   st f is bijective
@@ -237,7 +239,7 @@ proof
   hence (f")" = f;
 end;
 
-@ %def Lm5
+@ %def Th5
 
 \begin{proof}[Proof step ($\forall x\in X, h(x)=f(x)$)]
   Let $x\in X$ be arbitrary. Consider
@@ -271,16 +273,16 @@ end;
 
 @
 
-\begin{lemma}\label{lemma:characteristic:preparatory:f-finv-y-is-y}
+\begin{theorem}\label{thm:characteristic:preparatory:f-finv-y-is-y}
 If $f\colon X\to Y$ is a bijective function of sets, then for any $y\in Y$
 we have $f(f^{-1}(y))=y$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}[Proof sketch]
 Let $f\colon X\to Y$ be bijective. Then $g\colon Y\to X$ given by
 $g=f^{-1}$ is bijective. Mizar knows $g^{-1}(g(y))=y$ for $y=f(x)$. Then
 plugging in the definition of $g$ and using
-Lemma~\ref{lm:characteristic:preparatory:lm10} to transform
+Theorem~\ref{thm:characteristic:preparatory:lm10} to transform
 $(f^{-1})^{-1}=f$, together gives the result.
 \end{proof}
 
@@ -289,13 +291,13 @@ Mizar has the opposite result in its library, namely, Theorem~\mml[Th26]{funct2}
 states that $f^{-1}(f(x))=x$ provided $f$ is injective.
 \end{lem-remark}
 
-<<Lemma: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
-Lm6:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is bijective
-for y being Element of Y
-holds f.((f").y) = y
+<<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>=
+theorem Th6:
+  for X,Y being non empty set
+  for f being Function of X,Y
+  st f is bijective
+  for y being Element of Y
+  holds f.((f").y) = y
 proof
   let X,Y be non empty set;
   let f be Function of X,Y;
@@ -304,25 +306,25 @@ proof
   f is onto by A1;
   then reconsider g = f" as Function of Y,X by A1,FUNCT_2:25;
   y = (g").(g.y) by A1,FUNCT_2:26
-   .= f.((f").y) by Lm5,A1;
+   .= f.((f").y) by Th5,A1;
   hence thesis;
 end;
 
-@ %def Lm6
+@ %def Th6
 
-\begin{lemma}\label{lemma:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
+\begin{theorem}\label{thm:characteristic:preparatory:x-notin-A-implies-fx-notin-fA}
 Let $f\colon X\into Y$ be an injective function of non-empty sets, let
 $A\subset X$ be a non-empty subset, let $x\in X$ be any element such
 that $x\notin A$. Then $f(x)\notin f(A)$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}[Proof sketch]
 We prove that, if $f(x)\in f(A)$, then we get a contradiction with the
 hypothesis $x\notin A$ or $f$ is injective.
 \end{proof}
 
-<<Lemma: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
-Lm7:
+<<Theorem: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>=
+theorem Th7:
   for X,Y being non empty set
   for A being non empty Subset of X
   for x being Element of X
@@ -347,7 +349,7 @@ proof
   hence not (f.x in (f .: A));
 end;
 
-@ %def Lm7
+@ %def Th7
 
 
 
@@ -472,9 +474,9 @@ end;
 
 @
 
-\begin{lemma}\label{lemma:preparatory:trivialIff1}
+\begin{theorem}\label{thm:preparatory:trivialIff1}
 A group $G$ is trivial if $G=\trivialSubgroup$.
-\end{lemma}
+\end{theorem}
 
 One direction has been proven in Theorem~\mml[Th10]{group6}, so we just
 need to prove the forward direction.
@@ -483,8 +485,8 @@ need to prove the forward direction.
 
 \end{proof}
 
-<<Lemma: trivial groups look like $\trivialSubgroup$>>=
-Lm8:
+<<Theorem: trivial groups look like $\trivialSubgroup$>>=
+theorem Th8:
   for G being Group
   holds G is trivial iff the multMagma of G = (1).G
 proof
@@ -504,18 +506,18 @@ proof
   thus thesis;
 end;
 
-@ %def Lm14
+@ %def Th8
 
-\begin{lemma}\label{lemma:characteristic:preparatory:trivial-subgroups-look-like-1}
+\begin{theorem}\label{thm:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
-\emph{Trivial}, thanks to Lemma~\ref{lemma:preparatory:trivialIff1}.
+\emph{Trivial}, thanks to Theorem~\ref{thm:preparatory:trivialIff1}.
 \end{proof}
 
-<<Lemma: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>=
-Lm9:
+<<Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>=
+theorem Th9:
   for G being Group
   for H being Subgroup of G
   st H is trivial
@@ -524,25 +526,25 @@ proof
   let G be Group;
   let H be Subgroup of G;
   assume H is trivial;
-  then the multMagma of H = (1).H by Lm8
+  then the multMagma of H = (1).H by Th8
                          .= (1).G by GROUP_2:63;
   hence thesis;
 end;
 
 
-@ %def Lm9
+@ %def Th9
 
-\begin{lemma}
+\begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are both trivial, then $H=K$ as groups.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
-If $H$ and $K$ are both trivial, then by Lemma~\ref{lemma:characteristic:preparatory:trivial-subgroups-look-like-1} they both look like $\trivialSubgroup$
+If $H$ and $K$ are both trivial, then by Theorem~\ref{thm:characteristic:preparatory:trivial-subgroups-look-like-1} they both look like $\trivialSubgroup$
 and thus are equal to each other as groups.
 \end{proof}
 
-<<Lemma: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>=
-Lm10:
+<<Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>=
+theorem Th10:
   for G being Group
   for H being trivial Subgroup of G
   for K being trivial Subgroup of G
@@ -551,16 +553,16 @@ proof
   let G be Group;
   let H be trivial Subgroup of G;
   let K be trivial Subgroup of G;
-  the multMagma of H = (1).G by Lm9
-  .= the multMagma of K by Lm9;
+  the multMagma of H = (1).G by Th9
+                    .= the multMagma of K by Th9;
   hence thesis;
 end;
 
-@ %def Lm10
+@ %def Th10
 
-\begin{lemma}
+\begin{theorem}
 If $H\subgroup K$ and $K\subgroup G$ and $K=\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
 We have $\trivialSubgroup\subgroup H\subgroup\trivialSubgroup$ imply
@@ -569,8 +571,8 @@ to work with their underlying sets and the fact $\{1_{G}\}\subset
 H\subset\{1_{G}\}$ implies $H=\{1_{G}\}$ by Definition~\mml[def10]{xboole0}.
 \end{proof}
 
-<<Lemma: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>=
-Lm11:
+<<Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>=
+theorem Th11:
   for G being Group
   for K being trivial Subgroup of G
   for H being Subgroup of G
@@ -583,7 +585,7 @@ proof
   assume A1: H is Subgroup of K;
   the carrier of H = {1_G}
   proof
-    the multMagma of K = (1).G by Lm9;
+    the multMagma of K = (1).G by Th9;
     then the carrier of K = {1_G} by GROUP_2:def 7;
     then B1: the carrier of H c= {1_G} by A1,GROUP_2:def 5;
     (1).G is Subgroup of H by GROUP_2:65;
@@ -595,7 +597,7 @@ proof
   hence H is trivial Subgroup of G by GROUP_6:def 2;
 end;
 
-@ %def Lm11
+@ %def Th11
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -654,10 +656,10 @@ reserve H for Subgroup of G;
 
 @
 
-\begin{lemma}
+\begin{theorem}
 Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
 and only if the underlying set of $G$ differs from the underlying set of $H$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}[Proof outline]
 The only way a group could be different, since they are magmas
@@ -669,8 +671,8 @@ underlying sets must be different. This argument works backwards as well
 as forwards.
 \end{proof}
 
-<<Lemma: $H\subgroup G$ is proper iff the underlying sets are different>>=
-Lm12:
+<<Theorem: $H\subgroup G$ is proper iff the underlying sets are different>>=
+theorem Th12:
   H is proper iff the carrier of H <> the carrier of G
 proof
   (the carrier of H c= the carrier of G) & (the multF of H =
@@ -678,13 +680,13 @@ proof
   hence thesis;
 end;
 
-@ %def Lm12
+@ %def Th12
 
-\begin{lemma}\label{lemma:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
+\begin{theorem}\label{thm:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
   Let $H\subgroup G$ be a subgroup.
   Then $H$ is a proper subgroup if and only if the set difference is nonempty
   $G\setminus H\neq\emptyset$.
-\end{lemma}
+\end{theorem}
 
 \begin{lem-remark}
 This version, as stated, is a little sloppy. We should more precisely
@@ -700,10 +702,10 @@ underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
   \end{enumerate}
 \end{proof}
 
-<<Lemma: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>=
+<<Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>=
 reserve h,x,y for object;
 
-Lm13:
+theorem Th13:
   H is proper iff (the carrier of G) \ (the carrier of H) is non empty set
 proof
   set UG = the carrier of G;
@@ -715,7 +717,7 @@ proof
   thus thesis;
 end;
 
-@ %def Lm13
+@ %def Th13
 
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
@@ -727,7 +729,7 @@ end;
 <<Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$>>=
 proof
   assume A1: H is proper;
-  UH c= UG & UH <> UG by A1,Lm12, GROUP_2:def 5;
+  UH c= UG & UH <> UG by A1,Th12, GROUP_2:def 5;
   then (for x holds x in UH implies x in UG) &
   the carrier of H <> the carrier of G;
   then (for x holds x in UH implies x in UG) &
@@ -808,13 +810,13 @@ Maximal subgroups are also proper subgroups.
 The proof is literally, ``Look at the definitions!''
 
 <<Lemma: maximal subgroups are proper>>=
-Lm14:
+Lm1:
   for G being Group
   for H being Subgroup of G
   st H is maximal
   holds H is proper by GROUP_4:def 6;
 
-@ %def Lm14
+@ %def Lm1
 
 \begin{registration}
 We can now automatically take advantage of the fact that, a maximal
@@ -825,15 +827,15 @@ subgroup for a nontrivial group is implicitly a proper subgroup.
 registration
   let G be non trivial Group;
   cluster maximal -> proper for Subgroup of G;
-  coherence by Lm14;
+  coherence by Lm1;
 end;
 
 @
 
-\begin{lemma}
+\begin{theorem}
 If $H\properSubgroup K$ is proper and $K\subgroup G$ and $H\neq K$, then
 $K$ is a nontrivial group.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}[Proof outline]
   Assume for contradiction that $K=\trivialSubgroup$.
@@ -841,8 +843,8 @@ $K$ is a nontrivial group.
   $H=\trivialSubgroup$ and this contradicts $H\properSubgroup K$ proper.
 \end{proof}
 
-<<Lemma: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
-Lm15:
+<<Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
+theorem Th15:
   for G being non trivial Group
   for H being proper Subgroup of G
   for K being Subgroup of G
@@ -858,11 +860,11 @@ proof
   proof
     assume B1: not K is non trivial Subgroup of G;
     then K is trivial Subgroup of G;
-    then H is trivial Subgroup of G by A1,Lm11;
-    then the multMagma of H = the multMagma of K by B1,Lm10;
+    then H is trivial Subgroup of G by A1,Th11;
+    then the multMagma of H = the multMagma of K by B1,Th10;
     hence contradiction by A2;
   end;
   hence K is non trivial Subgroup of G;
 end;
 
-@ %def Lm15
+@ %def Th15
