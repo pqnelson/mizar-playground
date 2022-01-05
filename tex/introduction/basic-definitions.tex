@@ -136,12 +136,13 @@ with $n$ fields $\mathsf{F}_{j}$, then we can make an instance of it
 using notation ``\verb$Foo(# F1, ..., Fn #)$'' where ``\verb$(#$'' is an
 ASCII approximation to ``$\langle\!\langle$'', and ``\verb$#)$'' approximates
 ``$\rangle\!\rangle$''. Equality of two
-instances follows the same axiomatic behavior as ordered $n$-tuples:
-\verb$Foo(# E1, ..., En #) = Foo(# F1, ..., Fn #)$ if and only if each
+instances follows the same axiomatic behavior as ordered $n$-tuples
+indexed by field name:
+\verb$Foo(# E1, ..., En #)$ $=$ \verb$Foo(# F1, ..., Fn #)$ if and only if each
 pair of fields are equal
 \lstinline{E1} = \lstinline{F1}, \dots, and \lstinline{En} = \lstinline{Fn}.
 If we tried to assert two \emph{different} structures are equal --- e.g.,
-\verb$Foo(# E1, ..., En #) = Bar(# F1, ..., Fm #)$ --- well, this is not
+\verb!Foo(# E1, ..., En #)! $=$ \verb$Bar(# F1, ..., Fm #)$ --- well, this is not
 allowed, Mizar will reject it.
 
 One caveat to this is if we have, for example, a topological group
@@ -173,7 +174,7 @@ immediately in \mml{group1}:
   $\forall_{x,y,z\esti \mathtt{IT}}\mu(\mu(x,y),z)=\mu(x,\mu(y,z))$.
 \end{enumerate}
 With these attributes in hand, Mizar defines a group to be a
-``\lstinline{Group-like associative non empty multMagma}'', i.e., a magma such
+``\lstinline{Group-like} \lstinline{associative} \lstinline{non empty} \lstinline{multMagma}'', i.e., a magma such
 that it is associative and group-like (has an identity element and for
 each element, a corresponding inverse element exists). This is collected
 in a new type, or \define{Mode}\index{Mode!in Mizar} (as Mizar calls them).
@@ -186,22 +187,27 @@ definition
 
   attr IT is unital means
 :: GROUP_1:def 1
-  ex e being Element of IT st for h being
-  Element of IT holds h * e = h & e * h = h;
+  ex e being Element of IT st
+  for h being Element of IT
+  holds h * e = h & e * h = h;
 
   attr IT is Group-like means
 :: GROUP_1:def 2
-  ex e being Element of IT st for h being Element of IT
+  ex e being Element of IT st
+  for h being Element of IT
   holds h * e = h & e * h = h &
-        ex g being Element of IT st h * g = e & g * h = e;
+        ex g being Element of IT
+        st h * g = e & g * h = e;
 
   attr IT is associative means
 :: GROUP_1:def 3
-  for x,y,z being Element of IT holds (x*y )*z = x*(y*z);
+  for x,y,z being Element of IT
+  holds (x*y )*z = x*(y*z);
 end;
 
 definition
-  mode Group is Group-like associative non empty multMagma;
+  mode Group is Group-like associative
+    non empty multMagma;
 end;
 \end{mizar}
 \index{Associative@\texttt{associative}|)}\index{Group-like@\texttt{Group-like}|)}\index{Unital@\texttt{unital}|)}\index{Group@\texttt{Group}|textbf}
@@ -269,7 +275,8 @@ definition
 A1: G is unital;
   func 1_G -> Element of G means
 :: GROUP_1:def 4
-  for h being Element of G holds h * it = h & it * h = h;
+  for h being Element of G
+  holds h * it = h & it * h = h;
   existence by A1;
   uniqueness
   :: proof omitted
