@@ -20,10 +20,23 @@ Once that has been squared away, we will define a notion of a
 [[characteristic]] subgroup. Then we will prove results right away.
 
 <<[[char.miz]] article body>>=
+begin :: Preparatory Work
 <<Helper lemmas and registrations for [[char.miz]]>>
 
-<<Inner and outer automorphisms>>
-<<Characteristic subgroup results>>
+begin :: Nontrivial Groups and Subgroups
+<<Nontrivial Groups>>
+
+begin :: Proper Subgroups
+<<Proper Subgroups>>
+
+begin :: Automorphisms
+<<Automorphisms of Groups>>
+
+begin :: Inner Automorphisms
+<<Inner Automorphisms>>
+
+begin :: Characteristic Subgroups
+<<Characteristic subgroups>>
 @
 
 \section{Preparatory results}
@@ -36,35 +49,21 @@ removed (and relocated to the relevant articles) or the editors will
 know what I should have done instead.
 
 <<Helper lemmas and registrations for [[char.miz]]>>=
-begin :: Preparatory Work
 reserve X for set;
 
 <<Register: the identity function is surjective and bijective>>
+
 <<Theorem: $g\in H\subgroup G$ and $K\subgroup G$, then $H\subgroup K\implies g\in K$>>
+
 <<Theorem: restriction of group morphism acts on elements like the original>>
+
 <<Theorem: Subgroups invariant under conjugation are normal>>
+
 <<Theorem: if $f$ is bijective, then $(f^{-1})^{-1}=f$>>
+
 <<Theorem: if $f\colon X\to Y$ is bijective, then $f\circ f^{-1}=\id_{Y}$>>
+
 <<Theorem: $f\colon X\into Y$ and $x\notin A\subset X$ implies $f(x)\notin f(A)$>>
-
-begin :: Nontrivial Groups and Subgroups
-<<Register: non trivial for Group>>
-<<Register: trivial groups and trivial subgroups>>
-<<Register: non trivial for Subgroup>>
-<<Theorem: trivial groups look like $\trivialSubgroup$>>
-<<Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
-<<Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
-<<Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
-
-begin :: Proper Subgroups
-<<Definition: proper subgroup>>
-<<Theorem: $H\subgroup G$ is proper iff the underlying sets are different>>
-<<Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
-<<Register: proper subgroup for nontrivial groups>>
-<<Register: proper subgroups of nontrivial subgroups>>
-<<Lemma: maximal subgroups are proper>>
-<<Register: maximal subgroups are proper>>
-<<Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
 @
 
 
@@ -184,10 +183,10 @@ subgroup, but this strictness condition is not necessary.
 
 <<Theorem: Subgroups invariant under conjugation are normal>>=
 theorem Th4:
-for G being Group
-for H being Subgroup of G
-st (for a being Element of G holds H |^ a = H)
-holds H is normal Subgroup of G
+  for G being Group
+  for H being Subgroup of G
+  st (for a being Element of G holds H |^ a = H)
+  holds H is normal Subgroup of G
 proof
   let G be Group;
   let H be Subgroup of G;
@@ -356,7 +355,7 @@ nontrivial if $G\neq\trivialSubgroup_{G}$. It is defined (or
 definition
   let G be non empty 1-sorted;
   redefine attr G is trivial means
-  :Def2:
+  ::GROUP_6:Def2
   ex x being object st the carrier of G = {x};
   compatibility
   :: ...
@@ -366,6 +365,19 @@ end;
 We register the negated version ``\texttt{non trivial}'' for groups and
 subgroups.
 
+<<Nontrivial Groups>>=
+<<Register: non trivial for Group>>
+<<Register: trivial groups and trivial subgroups>>
+<<Register: non trivial for Subgroup>>
+
+<<Theorem: trivial groups look like $\trivialSubgroup$>>
+
+<<Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
+
+<<Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
+
+<<Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$>>
+@
 
 \begin{proposition}[{\mml[Th3]{group1}\MizThm{GROUP\_1}[03]{3}}]
 The real numbers equipped with addition form a group.
@@ -589,6 +601,22 @@ When we have a [nontrivial] group $G$, we can discuss the notion of a
 proper subgroup $H\properSubgroup G$ in analogy to the notion of a
 proper subset $X\properSubset Y$.
 
+<<Proper Subgroups>>=
+<<Definition: proper subgroup>>
+
+<<Theorem: $H\subgroup G$ is proper iff the underlying sets are different>>
+
+<<Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
+
+<<Register: proper subgroup for nontrivial groups>>
+<<Register: proper subgroups of nontrivial subgroups>>
+
+<<Lemma: maximal subgroups are proper>>
+
+<<Register: maximal subgroups are proper>>
+
+<<Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>
+@
 
 \begin{definition}\index{Subgroup!Proper|textbf}
 Let $G$ be a group. We call a subgroup $H\subgroup G$ \define{Proper} if
@@ -607,7 +635,7 @@ definition
   let G be Group;
   let IT be Subgroup of G;
   attr IT is proper means
-  :Def10:
+  :Def1:
   the multMagma of IT <> the multMagma of G;
 end;
 reserve G for Group;
@@ -620,7 +648,6 @@ namely the trivial subgroup $H=\trivialSubgroup_{G}$.
 \end{registration}
 
 <<Register: proper subgroup for nontrivial groups>>=
-
 registration
   let G be non trivial Group;
   cluster proper for Subgroup of G;
@@ -815,7 +842,7 @@ $K$ is a nontrivial group.
 \end{proof}
 
 <<Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial>>=
-theorem Th15:
+theorem Th14:
   for G being non trivial Group
   for H being proper Subgroup of G
   for K being Subgroup of G
@@ -837,4 +864,4 @@ proof
   end;
   hence K is non trivial Subgroup of G;
 end;
-@ %def Th15
+@ %def Th14

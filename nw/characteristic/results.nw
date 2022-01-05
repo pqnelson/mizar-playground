@@ -2,24 +2,38 @@
 \section{Characteristic Subgroups}
 We now arrive at the meat of the matter: characteristic subgroups!
 
-<<Characteristic subgroup results>>=
-begin :: Characteristic Subgroups
+<<Characteristic subgroups>>=
 <<Definition: [[characteristic]] attribute>>
+
 <<Lemma: trivial subgroup is [[characteristic]]>>
+
 <<Theorem: Existence of characteristic subgroups>>
+
 <<Register [[characteristic]] as attribute for Subgroup>>
 <<Register [[strict]] [[characteristic]] for Subgroups>>
+
 <<Theorem: characteristic subgroups are normal>>
+
 <<Register characteristic subgroups are normal>>
+
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
+
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>
+
 <<Theorem: transitivity of characteristic subgroups>>
+
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
+
 <<Theorem: $Z(G)$ is characteristic subgroup>>
+
 <<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>
+
 <<Scheme: $\bigcap\{A\subset G\mid\exists H\subgroup G, A=H, P[H]\}$ is characteristic>>
+
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>
+
 <<Definition: $p$-Core>>
+
 <<Theorem: $p$-Core is Characteristic>>
 @
 
@@ -36,15 +50,15 @@ $\varphi(H)\subgroup H$. We prove this later as equivalent in Theorem~\ref{thm:r
 \end{def-remark}
 
 <<Definition: [[characteristic]] attribute>>=
-definition :: Def9
+definition
   let G;
   let IT be Subgroup of G;
   attr IT is characteristic means
-  :Def9:
+  :Def6:
   for f being Automorphism of G
   holds Image (f|IT) = IT;
 end;
-@ %def characteristic Def9
+@ %def characteristic Def6
 
 \begin{voc}
 Before rushing off to prove properties concerning characteristic
@@ -70,7 +84,7 @@ proof
   for f being Automorphism of G holds Image(f|(1).G) = (1).G
   proof
     let f be Automorphism of G;
-    reconsider I = Image(f|(1).G) as Subgroup of (1).G by Th17;
+    reconsider I = Image(f|(1).G) as Subgroup of (1).G by Th16;
     (1).G = I by Lm8;
     hence Image(f|(1).G) = (1).G;
   end;
@@ -194,7 +208,7 @@ proof
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by Th34;
-  K = Image(f|K) by Def9
+  K = Image(f|K) by Def6
    .= K |^ a by A2,Th30;
   hence thesis;
 end;
@@ -241,7 +255,7 @@ proof
   proof
     let phi be Automorphism of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then card H = card Image(phi|H) by Th21,GROUP_6:73;
+    then card H = card Image(phi|H) by Th20,GROUP_6:73;
     hence Image(phi|H) = H by A1;
   end;
   hence thesis;
@@ -310,7 +324,7 @@ proof
 
   Image(g|N) = N by Th35;
   then reconsider f = g|N as Automorphism of N by Th24;
-  A2: Image(f|K) = K by Def9;
+  A2: Image(f|K) = K by Def6;
 
   for k being Element of G st k in K holds f.k = g.k by Th2,GROUP_2:40;
   then Image(f|K) = Image(g|K) by Th40;
@@ -462,16 +476,16 @@ proof
   for g being Automorphism of G holds Image(g|K) = K
   proof
     let g be Automorphism of G;
-    Image(g|N) = N by Def9;
+    Image(g|N) = N by Def6;
     then reconsider f = g|N as Automorphism of N by Th24;
-    A1: Image(f|K) = K by Def9;
+    A1: Image(f|K) = K by Def6;
 
     for k being Element of G st k in K holds f.k = g.k by Th2, GROUP_2:40;
     then Image(g|K) = Image(f|K) by Th40
                    .= K by A1;
     hence Image(g|K) = K;
   end;
-  hence K is characteristic Subgroup of G by Def9;
+  hence K is characteristic Subgroup of G by Def6;
 end;
 @ %def Th41
 
@@ -524,7 +538,7 @@ $H\subgroup H$ then applying the definition of characteristic subgroup.
 <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
   assume H is characteristic Subgroup of G;
-  then Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,Def9;
+  then Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,Def6;
   hence Image(phi|H) is Subgroup of H;
 end;
 @
@@ -552,7 +566,7 @@ proof
     by A1,A2;
     hence H = Image(phi|H) by GROUP_2:55;
   end;
-  hence H is characteristic Subgroup of G by Def9;
+  hence H is characteristic Subgroup of G by Def6;
 end;
 @
 
@@ -571,10 +585,10 @@ This suffices to infer $H\subgroup\varphi(H)$.
 proof
   consider psi being Automorphism of G such that
   B1: psi = phi" and
-  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th18;
+  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th17;
   consider psi2 being Automorphism of G such that
   B3: psi2 = phi" and
-  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th19;
+  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th18;
   thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
 end;
 @
@@ -827,7 +841,7 @@ proof
     by C2;
     consider psi being Automorphism of G() such that
     C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
-    by Th19;
+    by Th18;
     x in K by C1,B1,C3;
     then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
     P[Image(psi|K)] by C3,A1;
@@ -937,7 +951,7 @@ proof
   set Fam = {A where A is Subset of G() :
              ex H being strict Subgroup of G()
              st A = the carrier of H & P[H]};
-  
+
   A3: for phi being Automorphism of G()
   holds phi .: meet Fam = meet Fam from CharMeet(A1,A2);
 
@@ -1005,7 +1019,7 @@ proof
   for H being strict Subgroup of G
   st P[H]
   holds P[Image(phi|H)] by Th26;
-  
+
   consider K being strict Subgroup of G such that
   A3: the carrier of K = meet {A where A is Subset of G :
       ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
@@ -1066,7 +1080,7 @@ O-core_of_
 \begin{theorem}
   Let $G$ be any finite group, $p\in\NN$ a prime number.
   Then the $p$-core of $G$, $\pCore{p}{G}$, is a characteristic
-  subgroup. 
+  subgroup.
 \end{theorem}
 
 \begin{proof}
@@ -1084,7 +1098,7 @@ proof
   let G be finite Group;
   let p be prime Nat;
   defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-  
+
   A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
   set MaxSubCarrs = {A where A is Subset of G :
                      ex H being strict Subgroup of G
@@ -1093,7 +1107,7 @@ proof
   A2: for phi being Automorphism of G
   for P being strict Subgroup of G
   st P[P]
-  holds P[Image(phi|P)] by GRSOLV_1:def 3, ThSylowSubgroupInvariants;
+  holds P[Image(phi|P)] by GRSOLV_1:def 3, Th22;
 
   A3: for phi being Automorphism of G
   holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
@@ -1106,4 +1120,4 @@ proof
   K = p-core_of_G by A4,Def7;
   hence thesis by A5;
 end;
-@ 
+@

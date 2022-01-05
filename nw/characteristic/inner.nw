@@ -2,17 +2,27 @@
 \section{Inner Automorphisms}
 We can now organize our treatment of inner automorphisms.
 
-<<Results and definition for Inner automorphisms>>=
-<<Define [[inner]] for Automorphism>>
-<<Theorem: [[Id_G]] is effectively inner>>
+<<Inner Automorphisms>>=
+<<Definition: [[inner]] for Automorphism>>
+
+<<Theorem: [[id G]] is effectively inner>>
+
 <<Register [[inner]] for [[Automorphism]]>>
+
 <<Theorem: Relate [[Automorphism of G]] to elements of [[Aut G]]>>
+
 <<Theorem: $f$ in [[InnAut G]] iff $f$ is [[inner Automorphism of G]]>>
+
 <<Theorem: inner automorphism acting on subgroup is conjugate of argument>>
+
 <<Theorem: Kernel of conjugation as endomorphism>>
+
 <<Theorem: Conjugation by fixed element is an automorphism>>
+
 <<Corollary: conjugation of given element is an \emph{inner} automorphism>>
+
 <<Theorem: constructing inner automorphisms from group elements>>
+
 <<Theorem: inner Automorphisms fix only normal Subgroups>>
 @
 
@@ -28,12 +38,12 @@ informally we know $\Inn(G)\subset\Aut(G)$. (We will prove
 $\Inn(G)\subset\Aut(G)$ later, I think.)
 \end{def-remark}
 
-<<Define [[inner]] for Automorphism>>=
-definition :: Def5
+<<Definition: [[inner]] for Automorphism>>=
+definition :: Def4
   let G;
   let IT be Automorphism of G;
   attr IT is inner means
-  :Def5:
+  :Def4:
   ex a being Element of G st
   for x being Element of G holds IT.x = x |^ a;
 end;
@@ -77,13 +87,13 @@ an inner Automorphism. This uses the fact, if $e\in G$ is the identity
 element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
 (proven in Theorem~\mml[Th19]{group3}).\MizThm{GROUP\_3}{19}
 
-<<Theorem: [[Id_G]] is effectively inner>>=
+<<Theorem: [[id G]] is effectively inner>>=
 theorem Th27:
-  for x being Element of G holds (Id_G).x = x |^ 1_G
+  for x being Element of G holds (id the carrier of G).x = x |^ 1_G
 proof
   let x be Element of G;
-  (Id_G).x = x by Def3
-          .= x |^ 1_G by GROUP_3:19;
+  (id the carrier of G).x = x by FUNCT_1:17
+                         .= x |^ 1_G by GROUP_3:19;
   hence thesis;
 end;
 @ %def Th27
@@ -102,15 +112,16 @@ end;
 @
 
 \begin{proof}[Proof sketch (Existence of inner automorphism)]
-The proof is a two punch knock-out. We take [[Id_G]] to be the
+The proof is a two punch knock-out. We take [[id the carrier of G]] to be the
 morphism, [[1_g]] the group's identity element to be the element
-[[Id_G]] conjugates by, then from earlier (Theorem~\ref{thm:characteristic:id-inner})
-we have [[Id_G]] be inner.
+[[id the carrier of G]] conjugates by, then from earlier (Theorem~\ref{thm:characteristic:id-inner})
+we have [[id the carrier of G]] be inner.
 \end{proof}
 
 <<Proof of existence of an inner Automorphism>>=
 proof
-  take Id_G;
+  reconsider i = id (the carrier of G) as Automorphism of G by GROUP_6:38;
+  take i;
   take 1_G;
   thus thesis by Th27;
 end;
@@ -225,7 +236,7 @@ proof
   consider a being Element of G such that
   B2: for x being Element of G holds f.x = x |^ a
   by A1,B1,AUTGROUP:def 4;
-  thus thesis by Def5,B2;
+  thus thesis by Def4,B2;
 end;
 @
 
@@ -240,7 +251,7 @@ proof
   then reconsider f as inner Automorphism of G;
   consider a being Element of G such that
   B1: for x being Element of G holds f.x = x |^ a
-  by Def5;
+  by Def4;
   thus thesis by A1,B1,AUTGROUP:def 4;
 end;
 @
@@ -514,7 +525,7 @@ theorem Th33:
   for a being Element of G
   for f being Endomorphism of G
   st (for x being Element of G holds f.x = x |^ a)
-  holds f is inner Automorphism of G by Th32,Def5;
+  holds f is inner Automorphism of G by Th32,Def4;
 @ %def Th33
 
 \begin{theorem}[Constructing inner automorphisms]
@@ -620,7 +631,7 @@ proof
   let f be inner Automorphism of G;
   consider a being Element of G such that
   B2: for x being Element of G holds f.x = x |^ a
-  by Def5;
+  by Def4;
   Image(f|H) = H |^ a by B2,Th30
             .= the multMagma of H by B1,GROUP_3:def 13
             .= H;
