@@ -25,6 +25,19 @@ such that its carrier is a subset of the underlying set of $G$, and the
 Subgroup's multiplication operator is the multiplication from $G$
 restricted to the Subgroup.
 
+\begin{definition}[{\mml[def 5]{group2}\MizDef{GROUP\_2}[05]{5}}]
+Let $G$ be a group. A \define{Subgroup} of $G$ consists of a nonempty
+subset $A\subset G$ equipped with the binary operator $\star$ from $G$
+restricted to $A$, such that the resulting magma $\langle\!\langle A,\star|_{A}\rangle\!\rangle$
+satisfies the group properties.
+\end{definition}
+
+\begin{def-remark}
+``Subgroup of $G$'' is defined to be a type (``mode''), specifically
+it's a Group-like non-empty magma as already described. Thus subgroups
+of $G$ are automatically groups.
+\end{def-remark}
+
 \begin{notation}
 We denote $H\subgroup G$ for the statement ``$H$ is a subgroup of $G$''.
 \end{notation}
@@ -34,9 +47,20 @@ For reasons which are not well documented, \mml[def 6]{group2}
 redefines equality for \emph{strict} Subgroups. Non-strict subgroups
 cannot be equal (not as subgroups).
 
-There are a few useful theorems
-concerning equality of subgroups, but the idiomatic Mizar code seems to
-be to assert ``\lstinline[breaklines=true]{the multMagma of H1 = the multMagma of H2}''.
+\begin{definition}[{\mml[def 6]{group2}}]
+Let $G$ be a group.
+Let $H_{1}$, $H_{2}\subgroup G$.
+We define \define{Subgroup Equality} $H_{1}=H_{2}$ by the condition
+\begin{equation}
+\forall g\in G, g\in H_{1}\iff g\in H_{2}.
+\end{equation}
+\end{definition}
+
+\bigbreak
+
+There are a few useful theorems concerning equality of subgroups, but
+the idiomatic Mizar code seems to be to asserting
+``\lstinline[breaklines=true]{the multMagma of H1 = the multMagma of H2}''.
 When the user knows both subgroups are strict, they can set ``\lstinline{H1 = H2}''.
 
 
@@ -70,6 +94,13 @@ trivial subgroup is denoted by mathematicians as $G$ itself, but Mizar
 distinguishes this trivial improper subgroup as $\Omega_{G}$\index{$\Omega_{G}$} in
 \mml[def 8]{group2}\MizDef{GROUP\_2}[08]{8}.\mizindex{Omega.G@$\mathtt{(Omega).G}$}
 
+\begin{definition}[{\mml[def 7]{group2}}]
+Let $G$ be a group.
+The \define{Trivial Subgroup} of $G$ is the subgroup
+$\trivialSubgroup_{G}$ whose underlying set is just the singleton $\{1_{G}\}$
+consisting of the identity element of $G$.
+\end{definition}
+
 \subsection{Intersection of Subgroups}
 If $H_{1}\subgroup G$ and $H_{2}\subgroup G$, then $H_{1}\cap H_{2}$ is
 a subgroup of $G$, too. Mizar denotes this by
@@ -89,6 +120,13 @@ which Mizar defines as \lstinline{Index H}\mizindex{Index@\lstinline{Index}} in
 cardinality of the collection of left cosets of $H$ in $G$. This is
 proven to be the same as the same definition using right cosets in
 \mml[Th 145]{group2}.\MizThm{GROUP\_2}{145}
+
+\begin{theorem}[Lagrange's {\mml[Th147]{group2}}]
+  Let $G$ be a finite group, $H\subgroup G$. Then
+  \begin{equation}
+|G| = |H|\cdot\Index{G}{H}.
+  \end{equation}
+\end{theorem}
 
 More generally, the collection of all possible subgroups of $G$ is given
 in \mml[def 1]{group3}\MizDef{GROUP\_3}[01]{1} as

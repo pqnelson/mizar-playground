@@ -12,13 +12,13 @@
 
 environ
 
- vocabularies MOD_4, CHAR, CARD_3, FINSOP_1, ORDINAL4, REAL_1,
-   RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1, FINSEQ_2, FINSEQ_3,
+ vocabularies MOD_4, CHAR, CARD_3, 
+   RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, BINOP_1, SETWISEO,
-   STRUCT_0, GROUP_1, GROUP_2, QC_LANG1, GROUP_4, GROUP_5,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1,
+   STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
    GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP,
-   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10, RFINSEQ;
+   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
               RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
    CARD_1, NUMBERS, REAL_1, SETWISEO,
@@ -30,9 +30,9 @@ environ
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
 
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
-   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, XREAL_0, PARTFUN1,
+   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
    FINSEQ_1, ZFMISC_1, CARD_1, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
-   FINSEQ_2, FINSEQ_3, REAL_1, SETFAM_1, NUMBERS, MEMBERED, BINOP_1,
+   FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, BINOP_1,
    BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
@@ -1607,9 +1607,6 @@ proof
   st P[P]
   holds P[Image(phi|P)] by Th22;
 
-  for phi being Automorphism of G
-  holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
-
   consider K being strict Subgroup of G such that
   A3: the carrier of K = meet {A where A is Subset of G :
       ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
@@ -1638,17 +1635,12 @@ proof
     set x = psi.a;
     set y = psi.b;
     set h = [.x,y.];
-    x in G & y in G;
-    h in commutators G;
     dom phi = the carrier of G by FUNCT_2:def 1;
     then B3: h in dom phi;
     psi.g = psi.([.a,b.]) by B2
          .= [.psi.a,psi.b.] by GROUP_6:34
          .= h;
     then B4: psi.g = h;
-    psi is bijective;
-    phi.h = phi.(psi.g) by B4
-         .= phi.((phi").g);
     B6: phi.((phi").g) = g by Th6;
     h in dom phi & h in commutators G by B3;
     then phi.h in phi .: commutators G by FUNCT_1:def 6;
@@ -1700,7 +1692,6 @@ proof
     B2: x in dom(phi|H) and
     B3: y = (phi|H).x
     by FUNCT_1:def 3;
-    dom (phi|H) = the carrier of H by FUNCT_2:def 1;
     B4: x in H by B2;
     reconsider x as Element of H by B2;
     x is Element of G by GROUP_2:42;
@@ -1734,7 +1725,6 @@ proof
   A3: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
   proof
     let phi be Automorphism of G;
-    dom phi = the carrier of G by FUNCT_2:def 1;
     B2: for h being Element of G
     st h in H
     holds phi.h in H
@@ -1747,7 +1737,6 @@ proof
       C3: rng F1 c= A and
       C4: Product(F1 |^ I) = h
       by GROUP_4:28;
-      phi.h = phi.(Product(F1 |^ I)) by C4;
       deffunc F(Nat) = phi.(F1/.$1);
       consider F2 being FinSequence such that
       C5: len(F2) = len F1 and
@@ -1767,8 +1756,6 @@ proof
           set x = F1.k;
           x in rng F1 by FUNCT_1:def 3, E1, C7;
           then reconsider x as Element of A by C3;
-          x in A & A c= the carrier of G & dom phi = the carrier of G by FUNCT_2:def 1;
-          then x in dom phi;
           y = F(k) by E1,E2,C6
            .= phi.(F1/.k)
            .= phi.(x) by E1,C7,PARTFUN1:def 6;
