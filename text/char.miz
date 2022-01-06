@@ -15,7 +15,7 @@ environ
  vocabularies MOD_4, CHAR, CARD_3, FINSOP_1, ORDINAL4, REAL_1,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1, FINSEQ_2, FINSEQ_3,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, BINOP_1, SETWISEO, 
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, BINOP_1, SETWISEO,
    STRUCT_0, GROUP_1, GROUP_2, QC_LANG1, GROUP_4, GROUP_5,
    GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10, RFINSEQ;
@@ -27,7 +27,7 @@ environ
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON; 
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
 
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, XREAL_0, PARTFUN1,
@@ -853,13 +853,7 @@ notation
 end;
 
 theorem Th27:
-  for x being Element of G holds (id the carrier of G).x = x |^ 1_G
-proof
-  let x be Element of G;
-  (id the carrier of G).x = x by FUNCT_1:17
-                         .= x |^ 1_G by GROUP_3:19;
-  hence thesis;
-end;
+  for x being Element of G holds (id the carrier of G).x = x |^ 1_G by GROUP_3:19;
 
 registration
   let G;
@@ -975,7 +969,7 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
                .= y by B1;
     thus y in Image(f|H) by B2,B3,GROUP_6:45;
   end;
-  thus (H |^ a) = Image(f|H) by C2,C3,GROUP_2:def 6;
+  thus (H |^ a) = Image(f|H) by C2,C3;
 end;
 
 theorem Th31:
@@ -1539,13 +1533,13 @@ proof
     the carrier of Image(phi|H)
      = the carrier of phi .: H by GRSOLV_1:def 3
     .= phi .: (the carrier of H) by GRSOLV_1:8
-    .= phi .: meet Fam by A1,A4
+    .= phi .: meet Fam by A4
     .= meet Fam by A3
-    .= the carrier of H by A1,A4;
+    .= the carrier of H by A4;
     hence Image(phi|H) = H by GROUP_2:59;
   end;
 
-  then H is characteristic;
+  then H is characteristic ;
   hence thesis by A4;
 end;
 
@@ -1612,7 +1606,7 @@ proof
   A2: for phi being Automorphism of G
   for P being strict Subgroup of G
   st P[P]
-  holds P[Image(phi|P)] by GRSOLV_1:def 3, Th22;
+  holds P[Image(phi|P)] by Th22;
 
   A3: for phi being Automorphism of G
   holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
@@ -1646,34 +1640,31 @@ proof
     set y = psi.b;
     set h = [.x,y.];
     x in G & y in G;
-    then B3: h in commutators G by GROUP_5:58;
+    B3: h in commutators G;
     dom phi = the carrier of G by FUNCT_2:def 1;
-    then B4: h in dom phi by B2;
+    then B4: h in dom phi;
     psi.g = psi.([.a,b.]) by B2
          .= [.psi.a,psi.b.] by GROUP_6:34
          .= h;
     then B5: psi.g = h;
     B6: psi is bijective;
-    then B7: phi.h = phi.(psi.g) by B5
-                  .= phi.((phi").g)
-                  .= g by B6,Th6;
+    phi.h = phi.(psi.g) by B5
+         .= phi.((phi").g);
     B8: phi.((phi").g) = g by Th6;
-    h in dom phi & h in commutators G by B3,B4;
-    then B6: phi.h in phi .: commutators G by B1,FUNCT_1:def 6;
+    h in dom phi & h in commutators G by B4;
+    then phi.h in phi .: commutators G by FUNCT_1:def 6;
     then phi.(psi.g) in phi .: commutators G by B5;
-    then phi.((phi").g) in phi .: commutators G;
     then g in phi .: commutators G by B8;
     hence thesis;
   end;
   then P1: commutators G c= phi .: commutators G by TARSKI:def 3;
-  A1: for h being object
+  for h being object
   st h in phi .: commutators G
   holds h in commutators G
   proof
     let h be object;
     assume B1: h in phi .: commutators G;
-    dom phi = the carrier of G by FUNCT_2:def 1;
-    then consider g being object such that
+    consider g being object such that
         g in dom phi and
     B2: g in commutators G and
     B3: h = phi.g
@@ -1705,14 +1696,14 @@ proof
   holds y in the carrier of H
   proof
     let y be object;
-    assume B1: y in rng(phi|H);
+    assume y in rng(phi|H);
     then consider x being object such that
     B2: x in dom(phi|H) and
     B3: y = (phi|H).x
-    by B1,FUNCT_1:def 3;
+    by FUNCT_1:def 3;
     dom (phi|H) = the carrier of H by FUNCT_2:def 1;
-    then B4: x in H by B2;
-    then reconsider x as Element of H;
+    B4: x in H by B2;
+    reconsider x as Element of H by B2;
     x is Element of G by GROUP_2:42;
     then (phi|H).x = phi.x by B4,Th2;
     then B5: y = phi.x by B3;
@@ -1737,7 +1728,6 @@ proof
   proof
     let a be Element of A;
     dom phi = the carrier of G by FUNCT_2:def 1;
-    then a in dom phi;
     then phi.a in phi .: A by FUNCT_1:def 6;
     hence phi.a in A by A1;
   end;
@@ -1745,13 +1735,13 @@ proof
   A3: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
   proof
     let phi be Automorphism of G;
-    B1: dom phi = the carrier of G by FUNCT_2:def 1;
+    dom phi = the carrier of G by FUNCT_2:def 1;
     B2: for h being Element of G
     st h in H
     holds phi.h in H
     proof
       let h be Element of G;
-      assume C1: h in H;
+      assume h in H;
       then consider F1 being FinSequence of the carrier of G,
                     I being FinSequence of INT such that
       C2: len F1 = len I and
@@ -1759,7 +1749,7 @@ proof
       C4: Product(F1 |^ I) = h
       by GROUP_4:28;
       phi.h = phi.(Product(F1 |^ I)) by C4;
-      deffunc F(Nat) = phi.(F1/.$1); :: phi.((F1/.$1) |^ @(I/.$1));
+      deffunc F(Nat) = phi.(F1/.$1);
       consider F2 being FinSequence such that
       C5: len(F2) = len F1 and
       C6: for k being Nat st k in dom F2 holds F2.k = F(k)
@@ -1767,63 +1757,48 @@ proof
       C7: dom F2 = dom F1 by C5,FINSEQ_3:29;
       C8: F2 is FinSequence of the carrier of G & rng F2 c= A
       proof
-        D0: for a being object st a in A holds a in G;
         D1: for y being object st y in rng F2 holds y in A
         proof
           let y be object;
-          assume E1: y in rng F2;
+          assume y in rng F2;
           then consider k being object such that
-          E2: k in dom F2 and
-          E3: y = F2.k by FUNCT_1:def 3;
-          reconsider k as Element of NAT by E2;
+          E1: k in dom F2 and
+          E2: y = F2.k by FUNCT_1:def 3;
+          reconsider k as Element of NAT by E1;
           set x = F1.k;
-          x in rng F1 by FUNCT_1:def 3, E2, C7;
+          x in rng F1 by FUNCT_1:def 3, E1, C7;
           then reconsider x as Element of A by C3;
-          E4: x = F1/.k by E2,C7,PARTFUN1:def 6, PARTFUN1:4;
-          x in A &
-          A c= the carrier of G & dom phi = the carrier of G by FUNCT_2:def 1;
-          then E5: x in dom phi by STRUCT_0:def 6;
-          y = F(k) by E2,E3,C6
+          x in A & A c= the carrier of G & dom phi = the carrier of G by FUNCT_2:def 1;
+          then x in dom phi;
+          y = F(k) by E1,E2,C6
            .= phi.(F1/.k)
-           .= phi.(x) by E4;
-          then y in A by A2; :: , E5, FUNCT_1:def 3;
-          then E5: y is Element of A by A1, FUNCT_1:def 3;
-          thus thesis by E5;
+           .= phi.(x) by E1,C7,PARTFUN1:def 6;
+          hence y in A by A2;
         end;
-        D2: rng F2 c= A by D1, TARSKI:def 3;
         for y being object st y in rng F2 holds y in the carrier of G
         proof
           let y be object;
-          assume E1: y in rng F2;
+          assume y in rng F2;
           then y in A by D1;
-          hence y in the carrier of G by D0;
+          hence y in the carrier of G;
         end;
         hence rng F2 c= the carrier of G by TARSKI:def 3;
-        thus rng F2 c= A by D2, TARSKI:def 3;
+        thus rng F2 c= A by D1, TARSKI:def 3;
       end;
       then reconsider F2 as FinSequence of the carrier of G;
-      F2 is FinSequence of the carrier of G & rng F2 c= A by C8;
       set h2 = Product(F2 |^ I);
-      C9: (for k being Nat st k in dom F1
-      holds F2.k = phi.(F1.k)) & len F1 = len I & len F2 = len I
+      C9: for k being Nat st k in dom F1 holds F2.k = phi.(F1.k)
       proof
-        thus (for k being Nat st k in dom F1
-        holds F2.k = phi.(F1.k))
-        proof
-          let k be Nat;
-          assume D1: k in dom F1;
-          then k in dom F2 by C7;
-          then F2.k = F(k) by C6
-                   .= phi.(F1/.k);
-          hence F2.k = phi.(F1.k) by D1,PARTFUN1:def 6;
-        end;
-        thus len F1 = len I by C2;
-        thus len F2 = len I by C2,C5;
+        let k be Nat;
+        assume D1: k in dom F1;
+        then k in dom F2 by C7;
+        then F2.k = F(k) by C6
+                 .= phi.(F1/.k);
+        hence F2.k = phi.(F1.k) by D1,PARTFUN1:def 6;
       end;
-      then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by GROUP_9:125;
-      then C10: len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
-      by C4,C9,C8;
-      :: then Product(F2 |^ I) in H by GROUP_4:28;
+      then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by C2,C5,GROUP_9:125;
+      then len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
+      by C2,C4,C5,C9,C8;
       hence phi.h in H by GROUP_4:28;
     end;
     for h being Element of H
@@ -1832,8 +1807,7 @@ proof
       let h be Element of H;
       C1: h in H;
       C2: h is Element of G by GROUP_2:42;
-      then phi.h in H by B2,C1;
-      hence thesis;
+      hence phi.h in H by B2,C1;
     end;
     hence Image(phi|H) is Subgroup of H by Th47;
   end;
@@ -1848,6 +1822,5 @@ proof
   for phi being Automorphism of G holds phi .: commutators G =
   commutators G by Th46;
   then gr commutators G is characteristic by A1,Th48;
-  hence thesis by GROUP_5:def 9;
+  hence thesis;
 end;
-
