@@ -134,7 +134,7 @@ proof
     then reconsider x as Element of X;
     consider y being object such that
     Z1: y = f.x;
-    Z2: x = g.y by A1,Z1,FUNCT_2:26;
+    x = g.y by A1,Z1,FUNCT_2:26;
     then h.x = y by A1,Z1,FUNCT_2:26
             .= f.x by Z1;
     hence thesis;
@@ -217,9 +217,8 @@ registration
   cluster non trivial for Subgroup of G;
   existence
   proof
-    A1: the carrier of G <> {1_G} by GROUP_6:def 2;
     reconsider H=G as Subgroup of G by GROUP_2:54;
-    the carrier of H <> {1_G} by A1;
+    the carrier of H <> {1_G};
     hence thesis;
   end;
 
@@ -306,7 +305,7 @@ proof
     hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
   end;
   then ex x being object st the carrier of H = {x};
-  hence H is trivial Subgroup of G by GROUP_6:def 2;
+  hence H is trivial Subgroup of G;
 end;
 
 begin :: Proper Subgroups
@@ -655,11 +654,11 @@ theorem Th21:
 proof
   let G be finite Group;
   let H1,H2 be strict Subgroup of G;
-  assume A1: H1,H2 are_isomorphic;
-  then A2: card H1 = card H2 by GROUP_6:73;
+  assume H1,H2 are_isomorphic;
+  then A1: card H1 = card H2 by GROUP_6:73;
   card H1 * index H1 = card G by GROUP_2:147
                     .= card H2 * index H2 by GROUP_2:147;
-  then index H1 * card H1 = index H2 * card H1 by A2;
+  then index H1 * card H1 = index H2 * card H1 by A1;
   hence index H1 = index H2 by XCMPLX_1:5;
 end;
 
@@ -676,9 +675,9 @@ proof
   assume A1: P is_Sylow_p-subgroup_of_prime p;
   then A2: P is p-group by GROUP_10:def 18;
   set Q = (phi .: P);
-  A3: P,Q are_isomorphic by Th20, GRSOLV_1:def 3;
+  A3: P,Q are_isomorphic by Th20;
   then A4: card P = card Q by GROUP_6:75;
-  then consider r being Nat such that
+  consider r being Nat such that
   A5: card P = p |^ r
   by A2,GROUP_10:def 17;
   card Q = p |^ r by A4,A5;
@@ -686,7 +685,7 @@ proof
   A7: index P = index Q by A0,A3,Th21;
   A8: Q = Image(phi|P) by GRSOLV_1:def 3;
   not p divides index P by A1, GROUP_10:def 18;
-  then not p divides index Q by A2, A7, GROUP_10:def 18;
+  then not p divides index Q by A7;
   hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A6, A8, GROUP_10:def 18;
 end;
 
@@ -1608,16 +1607,16 @@ proof
   st P[P]
   holds P[Image(phi|P)] by Th22;
 
-  A3: for phi being Automorphism of G
+  for phi being Automorphism of G
   holds phi .: meet MaxSubCarrs = meet MaxSubCarrs from CharMeet(A2,A1);
 
   consider K being strict Subgroup of G such that
-  A4: the carrier of K = meet {A where A is Subset of G :
+  A3: the carrier of K = meet {A where A is Subset of G :
       ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
-  A5: K is characteristic
+  A4: K is characteristic
   from MeetIsChar(A2,A1);
-  K = p-core_of_G by A4,Def7;
-  hence thesis by A5;
+  K = p-core_of_G by A3,Def7;
+  hence thesis by A4;
 end;
 
 theorem Th46:
@@ -1640,21 +1639,21 @@ proof
     set y = psi.b;
     set h = [.x,y.];
     x in G & y in G;
-    B3: h in commutators G;
+    h in commutators G;
     dom phi = the carrier of G by FUNCT_2:def 1;
-    then B4: h in dom phi;
+    then B3: h in dom phi;
     psi.g = psi.([.a,b.]) by B2
          .= [.psi.a,psi.b.] by GROUP_6:34
          .= h;
-    then B5: psi.g = h;
-    B6: psi is bijective;
-    phi.h = phi.(psi.g) by B5
+    then B4: psi.g = h;
+    psi is bijective;
+    phi.h = phi.(psi.g) by B4
          .= phi.((phi").g);
-    B8: phi.((phi").g) = g by Th6;
-    h in dom phi & h in commutators G by B4;
+    B6: phi.((phi").g) = g by Th6;
+    h in dom phi & h in commutators G by B3;
     then phi.h in phi .: commutators G by FUNCT_1:def 6;
-    then phi.(psi.g) in phi .: commutators G by B5;
-    then g in phi .: commutators G by B8;
+    then phi.(psi.g) in phi .: commutators G by B4;
+    then g in phi .: commutators G by B6;
     hence thesis;
   end;
   then P1: commutators G c= phi .: commutators G by TARSKI:def 3;
@@ -1787,7 +1786,7 @@ proof
       end;
       then reconsider F2 as FinSequence of the carrier of G;
       set h2 = Product(F2 |^ I);
-      C9: for k being Nat st k in dom F1 holds F2.k = phi.(F1.k)
+      for k being Nat st k in dom F1 holds F2.k = phi.(F1.k)
       proof
         let k be Nat;
         assume D1: k in dom F1;
@@ -1798,7 +1797,7 @@ proof
       end;
       then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by C2,C5,GROUP_9:125;
       then len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
-      by C2,C4,C5,C9,C8;
+      by C2,C4,C5,C8;
       hence phi.h in H by GROUP_4:28;
     end;
     for h being Element of H
@@ -1806,7 +1805,7 @@ proof
     proof
       let h be Element of H;
       C1: h in H;
-      C2: h is Element of G by GROUP_2:42;
+      h is Element of G by GROUP_2:42;
       hence phi.h in H by B2,C1;
     end;
     hence Image(phi|H) is Subgroup of H by Th47;
