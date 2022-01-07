@@ -139,7 +139,6 @@ proof
   let f be Homomorphism of G1,G2;
   let h be Element of G1;
   assume h in H;
-  then h is Element of H;
   then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
   hence (f|H).h = f.h by GRSOLV_1:def 2;
 end;
@@ -220,7 +219,6 @@ proof
   then A2: dom f = X & rng f = Y & f is one-to-one by FUNCT_2:def 3,def 1;
   reconsider g = f" as Function of Y,X by A2,FUNCT_2:25;
   A3: g is bijective by A1,GROUP_6:63;
-  then dom g = Y & rng g = X & g is one-to-one by FUNCT_2:def 1,def 3;
   g is one-to-one & rng g = X implies g" is Function of X,Y
   by FUNCT_2:25;
   then reconsider h = g" as Function of X,Y by A3,FUNCT_2:def 3;
@@ -256,7 +254,7 @@ proof
   then reconsider x as Element of X;
   consider y being object such that
   Z1: y = f.x;
-  Z2: x = g.y by A1,Z1,FUNCT_2:26;
+  x = g.y by A1,Z1,FUNCT_2:26;
   then h.x = y by A1,Z1,FUNCT_2:26
           .= f.x by Z1;
   hence thesis;
@@ -407,7 +405,7 @@ end;
 
 \begin{registration}\index{Subgroup!Trivial}\index{Group!Trivial}\index{Trivial!Subgroup|see{Subgroup,Trivial}}\index{Trivial!Group|see{Group,Trivial}}\mizindex{Trivial@\texttt{trivial}}
 We need to register the adjective ``trivial'' for groups and
-subgroups. \emph{Every} group --- strict or not, trivial or not, hairy
+subgroups. \emph{Every} group --- strict or not, proper or not, hairy
 or bald --- has a trivial subgroup. Similarly, \emph{every} subgroup has
 a trivial subgroup.
 \end{registration}
@@ -442,9 +440,8 @@ registration
   cluster non trivial for Subgroup of G;
   existence
   proof
-    A1: the carrier of G <> {1_G} by GROUP_6:def 2;
     reconsider H=G as Subgroup of G by GROUP_2:54;
-    the carrier of H <> {1_G} by A1;
+    the carrier of H <> {1_G};
     hence thesis;
   end;
 
@@ -465,8 +462,7 @@ proof
   set H = multMagma (#the carrier of G, the multF of G#);
   reconsider H as Group-like non empty multMagma;
   the multF of H = (the multF of G)||the carrier of H;
-  then H is Subgroup of G by GROUP_2:def 5;
-  then H is strict Subgroup of G & H is non trivial;
+  then H is strict Subgroup of G & H is non trivial by GROUP_2:def 5;
   hence thesis;
 end;
 @
@@ -492,8 +488,7 @@ proof
   proof
     assume G is trivial;
     then consider x being object such that
-    A1: the carrier of G = {x}
-    by GROUP_6:def 2;
+    A1: the carrier of G = {x};
     x = 1_G by A1, TARSKI:def 1;
     then the carrier of G = {1_G} by A1;
     then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
@@ -588,7 +583,7 @@ proof
     hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
   end;
   then ex x being object st the carrier of H = {x};
-  hence H is trivial Subgroup of G by GROUP_6:def 2;
+  hence H is trivial Subgroup of G;
 end;
 @ %def Th11
 

@@ -82,20 +82,14 @@ The identity endomorphism $\Id_{G}$ is an inner automorphism of $G$.
 We will be registering ``inner'' as an attribute for ``Automorphism
 of $G$''. This will require proving that there exists an inner
 Automorphism of $G$. I've found the trivial examples are often best for
-establishing the existence of such things, so we will prove [[Id G]] is
+establishing the existence of such things, so we will prove [[id the carrier of G]] is
 an inner Automorphism. This uses the fact, if $e\in G$ is the identity
 element, then for any $g\in G$ we have conjugation $g^{e} = e^{-1}ge=g$
 (proven in Theorem~\mml[Th19]{group3}).\MizThm{GROUP\_3}{19}
 
 <<Theorem: [[id G]] is effectively inner>>=
 theorem Th27:
-  for x being Element of G holds (id the carrier of G).x = x |^ 1_G
-proof
-  let x be Element of G;
-  (id the carrier of G).x = x by FUNCT_1:17
-                         .= x |^ 1_G by GROUP_3:19;
-  hence thesis;
-end;
+  for x being Element of G holds (id the carrier of G).x = x |^ 1_G by GROUP_3:19;
 @ %def Th27
 
 \begin{registration}
@@ -314,7 +308,7 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
   <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>
 C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
   <<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>
-  thus (H |^ a) = Image(f|H) by C2,C3,GROUP_2:def 6;
+  thus (H |^ a) = Image(f|H) by C2,C3;
 end;
 @ %def Th30
 

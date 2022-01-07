@@ -536,11 +536,11 @@ theorem Th21:
 proof
   let G be finite Group;
   let H1,H2 be strict Subgroup of G;
-  assume A1: H1,H2 are_isomorphic;
-  then A2: card H1 = card H2 by GROUP_6:73;
+  assume H1,H2 are_isomorphic;
+  then A1: card H1 = card H2 by GROUP_6:73;
   card H1 * index H1 = card G by GROUP_2:147
                     .= card H2 * index H2 by GROUP_2:147;
-  then index H1 * card H1 = index H2 * card H1 by A2;
+  then index H1 * card H1 = index H2 * card H1 by A1;
   hence index H1 = index H2 by XCMPLX_1:5;
 end;
 @ %def Th21
@@ -565,9 +565,9 @@ proof
   assume A1: P is_Sylow_p-subgroup_of_prime p;
   then A2: P is p-group by GROUP_10:def 18;
   set Q = (phi .: P);
-  A3: P,Q are_isomorphic by Th20, GRSOLV_1:def 3;
+  A3: P,Q are_isomorphic by Th20;
   then A4: card P = card Q by GROUP_6:75;
-  then consider r being Nat such that
+  consider r being Nat such that
   A5: card P = p |^ r
   by A2,GROUP_10:def 17;
   card Q = p |^ r by A4,A5;
@@ -575,7 +575,7 @@ proof
   A7: index P = index Q by A0,A3,Th21;
   A8: Q = Image(phi|P) by GRSOLV_1:def 3;
   not p divides index P by A1, GROUP_10:def 18;
-  then not p divides index Q by A2, A7, GROUP_10:def 18;
+  then not p divides index Q by A7;
   hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A6, A8, GROUP_10:def 18;
 end;
 @ %def Th22
