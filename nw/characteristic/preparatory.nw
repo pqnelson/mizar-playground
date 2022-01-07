@@ -370,6 +370,8 @@ subgroups.
 
 <<Theorem: trivial groups look like $\trivialSubgroup$>>
 
+<<Register: nontrivial for "finite group">>
+
 <<Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$>>
 
 <<Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$>>
@@ -498,6 +500,49 @@ proof
   thus thesis;
 end;
 @ %def Th8
+
+\begin{lemma}
+$\cyclicGroup{2}$ is a nontrivial group.
+\end{lemma}
+
+\begin{proof}[Proof outline]
+The set underlying $\cyclicGroup{2}$ is [isomorphic to] the ordinal
+$2=\{0,1\}$ whereas the set underlying its trivial subgroup is the
+ordinal $1=\{0\}$. These are different set, and thus must underly
+different groups.
+\end{proof}
+
+<<Lemma: Existence of finite nontrivial groups>>=
+LmFiniteNontrivial:
+  not INT.Group(2) is trivial
+proof
+  set G = INT.Group(2);
+  A1: the carrier of G = Segm 2
+                      .= 2 by ORDINAL1:def 17;
+  the carrier of (1).G = {1_G} by GROUP_2:def 7
+                      .= {0} by GR_CY_1:14
+                      .= {} \/ {0}
+                      .= succ 0 by ORDINAL1:def 1
+                      .= 1;
+  then the carrier of (1).G <> the carrier of G by A1;
+  hence not INT.Group(2) is trivial by Th8;
+end;
+@ %def LmFiniteNontrivial
+
+\begin{registration}
+We can have [[non trivial finite Group]] as a sensible type, so we
+register [[non trivial]] as an adjective for the type [[finite Group]].
+\end{registration}
+
+<<Register: nontrivial for "finite group">>=
+<<Lemma: Existence of finite nontrivial groups>>
+
+registration
+  cluster non trivial for finite Group;
+  existence by LmFiniteNontrivial;
+end;
+
+@ 
 
 \begin{theorem}\label{thm:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.

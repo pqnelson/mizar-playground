@@ -149,12 +149,15 @@ We'll also make use of the fact that the real numbers form a group, and
 some basics of arithmetic (the {\Tt{}ARYTM{\_}\nwendquote} supply us with what we need).
 
 For proving the Frattini subgroup is characteristic, we need to use
-{\Tt{}meet\nwendquote} from {\Tt{}SETFAM{\_}1\nwendquote}
+{\Tt{}meet\nwendquote} from {\Tt{}SETFAM{\_}1\nwendquote}.
+
+For finite cyclic groups, we need {\Tt{}ORDINAL1\nwendquote} since the underlying set
+of $\cyclicGroup{n}$ is the ordinal $n$.
 
 \nwenddocs{}\nwbegincode{5}\sublabel{NW4bbsBH-1ATTd1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-1ATTd1-1}}}\moddef{Functions and subset tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-1ATTd1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3Tf8w1-1}}\nwenddeflinemarkup
 RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1,
 FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1
+FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1
 \nwused{\\{NW4bbsBH-3Tf8w1-1}}\nwendcode{}\nwbegindocs{6}\nwdocspar
 
 %\M
@@ -163,7 +166,7 @@ and subgroups.
 
 \nwenddocs{}\nwbegincode{7}\sublabel{NW4bbsBH-5jMsk-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-5jMsk-1}}}\moddef{Group and subgroups tokens~{\nwtagstyle{}\subpageref{NW4bbsBH-5jMsk-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3Tf8w1-1}}\nwenddeflinemarkup
 STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
-GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP
+GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1
 \nwused{\\{NW4bbsBH-3Tf8w1-1}}\nwendcode{}\nwbegindocs{8}\nwdocspar
 
 %\M
@@ -331,14 +334,14 @@ number of articles we refer to for using the real numbers.
 
 \nwenddocs{}\nwbegincode{37}\sublabel{NW4bbsBH-4KRCaJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-4KRCaJ-1}}}\moddef{Import set-theoretic theorems for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW4bbsBH-4KRCaJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-1CXYUa-1}}\nwenddeflinemarkup
 TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
-SETFAM_1, FINSEQ_3, PARTFUN1
+SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1
 \nwused{\\{NW4bbsBH-1CXYUa-1}}\nwendcode{}\nwbegindocs{38}\nwdocspar
 
 %\M
 Again, we import the usual group theoretic theorems.
 \nwenddocs{}\nwbegincode{39}\sublabel{NW4bbsBH-30lw0c-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-30lw0c-1}}}\moddef{Import group-theoretic theorems for \code{}char.miz\edoc{}~{\nwtagstyle{}\subpageref{NW4bbsBH-30lw0c-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-1CXYUa-1}}\nwenddeflinemarkup
 GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-AUTGROUP, GROUP_9, GROUP_10
+AUTGROUP, GROUP_9, GROUP_10, GR_CY_1
 \nwused{\\{NW4bbsBH-1CXYUa-1}}\nwendcode{}\nwbegindocs{40}\nwdocspar
 
 \subsubsection{Schemes}
@@ -359,7 +362,7 @@ Expansions of terms defined by {\Tt{}equals\nwendquote} are imported by a new
 
 \nwenddocs{}\nwbegincode{43}\sublabel{NW4bbsBH-1aojze-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\moddef{\code{}char.miz\edoc{} equalities~{\nwtagstyle{}\subpageref{NW4bbsBH-1aojze-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW4bbsBH-3ZQoFX-1}}\nwenddeflinemarkup
 equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
-  GROUP_3, GROUP_4, GROUP_5, GROUP_6,
+  GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
   ALGSTR_0, NEWTON
 \nwused{\\{NW4bbsBH-3ZQoFX-1}}\nwendcode{}\nwbegindocs{44}\nwdocspar
 
@@ -761,6 +764,8 @@ subgroups.
 
 \LA{}Theorem: trivial groups look like $\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-2jhymB-1}}\RA{}
 
+\LA{}Register: nontrivial for "finite group"~{\nwtagstyle{}\subpageref{NW18nMBU-OpWr6-1}}\RA{}
+
 \LA{}Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$~{\nwtagstyle{}\subpageref{NW18nMBU-3Oqgqd-1}}\RA{}
 
 \LA{}Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-4EQBnP-1}}\RA{}
@@ -890,6 +895,49 @@ proof
 end;
 \nwindexdefn{\nwixident{Th8}}{Th8}{NW18nMBU-2jhymB-1}\eatline
 \nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th8}}{Th8}}}\nwidentuses{\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2jhymB-1}\nwendcode{}\nwbegindocs{34}\nwdocspar
+\begin{lemma}
+$\cyclicGroup{2}$ is a nontrivial group.
+\end{lemma}
+
+\begin{proof}[Proof outline]
+The set underlying $\cyclicGroup{2}$ is [isomorphic to] the ordinal
+$2=\{0,1\}$ whereas the set underlying its trivial subgroup is the
+ordinal $1=\{0\}$. These are different set, and thus must underly
+different groups.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-3WaVwt-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3WaVwt-1}}}\moddef{Lemma: Existence of finite nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-3WaVwt-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-OpWr6-1}}\nwenddeflinemarkup
+\nwlinkedidentc{LmFiniteNontrivial}{NW18nMBU-3WaVwt-1}:
+  not INT.Group(2) is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1}
+proof
+  set G = INT.Group(2);
+  A1: the carrier of G = Segm 2
+                      .= 2 by ORDINAL1:def 17;
+  the carrier of (1).G = \{1_G\} by GROUP_2:def 7
+                      .= \{0\} by GR_CY_1:14
+                      .= \{\} \\/ \{0\}
+                      .= succ 0 by ORDINAL1:def 1
+                      .= 1;
+  then the carrier of (1).G <> the carrier of G by A1;
+  hence not INT.Group(2) is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} by \nwlinkedidentc{Th8}{NW18nMBU-2jhymB-1};
+end;
+\nwindexdefn{\nwixident{LmFiniteNontrivial}}{LmFiniteNontrivial}{NW18nMBU-3WaVwt-1}\eatline
+\nwused{\\{NW18nMBU-OpWr6-1}}\nwidentdefs{\\{{\nwixident{LmFiniteNontrivial}}{LmFiniteNontrivial}}}\nwidentuses{\\{{\nwixident{Th8}}{Th8}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th8}}{Th8}{NW18nMBU-3WaVwt-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3WaVwt-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
+\begin{registration}
+We can have {\Tt{}non\ \nwlinkedidentq{trivial}{NW18nMBU-47kVo6-1}\ finite\ Group\nwendquote} as a sensible type, so we
+register {\Tt{}non\ \nwlinkedidentq{trivial}{NW18nMBU-47kVo6-1}\nwendquote} as an adjective for the type {\Tt{}finite\ Group\nwendquote}.
+\end{registration}
+
+\nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-OpWr6-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-OpWr6-1}}}\moddef{Register: nontrivial for "finite group"~{\nwtagstyle{}\subpageref{NW18nMBU-OpWr6-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
+\LA{}Lemma: Existence of finite nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-3WaVwt-1}}\RA{}
+
+registration
+  cluster non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} for finite Group;
+  existence by \nwlinkedidentc{LmFiniteNontrivial}{NW18nMBU-3WaVwt-1};
+end;
+
+\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentuses{\\{{\nwixident{LmFiniteNontrivial}}{LmFiniteNontrivial}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{LmFiniteNontrivial}}{LmFiniteNontrivial}{NW18nMBU-OpWr6-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-OpWr6-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
+
 \begin{theorem}\label{thm:characteristic:preparatory:trivial-subgroups-look-like-1}
 If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
 \end{theorem}
@@ -898,7 +946,7 @@ If $H\subgroup G$ is trivial, then $H=\trivialSubgroup$.
 \emph{Trivial}, thanks to Theorem~\ref{thm:preparatory:trivialIff1}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{35}\sublabel{NW18nMBU-3Oqgqd-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3Oqgqd-1}}}\moddef{Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$~{\nwtagstyle{}\subpageref{NW18nMBU-3Oqgqd-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{39}\sublabel{NW18nMBU-3Oqgqd-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3Oqgqd-1}}}\moddef{Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$~{\nwtagstyle{}\subpageref{NW18nMBU-3Oqgqd-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th9}{NW18nMBU-3Oqgqd-1}:
   for G being Group
   for H being Subgroup of G
@@ -914,7 +962,7 @@ proof
 end;
 
 \nwindexdefn{\nwixident{Th9}}{Th9}{NW18nMBU-3Oqgqd-1}\eatline
-\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th9}}{Th9}}}\nwidentuses{\\{{\nwixident{Th8}}{Th8}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th8}}{Th8}{NW18nMBU-3Oqgqd-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3Oqgqd-1}\nwendcode{}\nwbegindocs{36}\nwdocspar
+\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th9}}{Th9}}}\nwidentuses{\\{{\nwixident{Th8}}{Th8}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th8}}{Th8}{NW18nMBU-3Oqgqd-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3Oqgqd-1}\nwendcode{}\nwbegindocs{40}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are both trivial, then $H=K$ as groups.
 \end{theorem}
@@ -924,7 +972,7 @@ If $H$ and $K$ are both trivial, then by Theorem~\ref{thm:characteristic:prepara
 and thus are equal to each other as groups.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{37}\sublabel{NW18nMBU-4EQBnP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4EQBnP-1}}}\moddef{Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-4EQBnP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{41}\sublabel{NW18nMBU-4EQBnP-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4EQBnP-1}}}\moddef{Theorem: for $H\subgroup G$ and $K\subgroup G$ both trivial, $H=K$~{\nwtagstyle{}\subpageref{NW18nMBU-4EQBnP-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th10}{NW18nMBU-4EQBnP-1}:
   for G being Group
   for H being \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G
@@ -939,7 +987,7 @@ proof
   hence thesis;
 end;
 \nwindexdefn{\nwixident{Th10}}{Th10}{NW18nMBU-4EQBnP-1}\eatline
-\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th10}}{Th10}}}\nwidentuses{\\{{\nwixident{Th9}}{Th9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th9}}{Th9}{NW18nMBU-4EQBnP-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-4EQBnP-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
+\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th10}}{Th10}}}\nwidentuses{\\{{\nwixident{Th9}}{Th9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th9}}{Th9}{NW18nMBU-4EQBnP-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-4EQBnP-1}\nwendcode{}\nwbegindocs{42}\nwdocspar
 \begin{theorem}
 If $H\subgroup K$ and $K\subgroup G$ and $K=\trivialSubgroup_{G}$, then $H=\trivialSubgroup_{G}$.
 \end{theorem}
@@ -951,7 +999,7 @@ to work with their underlying sets and the fact $\{1_{G}\}\subset
 H\subset\{1_{G}\}$ implies $H=\{1_{G}\}$ by Definition~\mml[def10]{xboole0}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{39}\sublabel{NW18nMBU-A6DSQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-A6DSQ-1}}}\moddef{Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-A6DSQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-A6DSQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-A6DSQ-1}}}\moddef{Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$~{\nwtagstyle{}\subpageref{NW18nMBU-A6DSQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-1xRFQU-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th11}{NW18nMBU-A6DSQ-1}:
   for G being Group
   for K being \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G
@@ -977,7 +1025,7 @@ proof
   hence H is \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Subgroup of G;
 end;
 \nwindexdefn{\nwixident{Th11}}{Th11}{NW18nMBU-A6DSQ-1}\eatline
-\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th11}}{Th11}}}\nwidentuses{\\{{\nwixident{Th9}}{Th9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th9}}{Th9}{NW18nMBU-A6DSQ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-A6DSQ-1}\nwendcode{}\nwbegindocs{40}\nwdocspar
+\nwused{\\{NW18nMBU-1xRFQU-1}}\nwidentdefs{\\{{\nwixident{Th11}}{Th11}}}\nwidentuses{\\{{\nwixident{Th9}}{Th9}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Th9}}{Th9}{NW18nMBU-A6DSQ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-A6DSQ-1}\nwendcode{}\nwbegindocs{44}\nwdocspar
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -987,7 +1035,7 @@ When we have a [nontrivial] group $G$, we can discuss the notion of a
 proper subgroup $H\properSubgroup G$ in analogy to the notion of a
 proper subset $X\properSubset Y$.
 
-\nwenddocs{}\nwbegincode{41}\sublabel{NW18nMBU-KQsbx-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KQsbx-1}}}\moddef{Proper Subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-KQsbx-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2TX9wk-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{45}\sublabel{NW18nMBU-KQsbx-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KQsbx-1}}}\moddef{Proper Subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-KQsbx-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2TX9wk-1}}\nwenddeflinemarkup
 \LA{}Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}\RA{}
 
 \LA{}Theorem: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-3PEt35-1}}\RA{}
@@ -1002,7 +1050,7 @@ proper subset $X\properSubset Y$.
 \LA{}Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}\RA{}
 
 \LA{}Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial~{\nwtagstyle{}\subpageref{NW18nMBU-2DotbH-1}}\RA{}
-\nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{42}\nwdocspar
+\nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{46}\nwdocspar
 
 \begin{definition}\index{Subgroup!Proper|textbf}
 Let $G$ be a group. We call a subgroup $H\subgroup G$ \define{Proper} if
@@ -1016,7 +1064,7 @@ proper. Maximal subgroups were defined (\mml[def 6]{group4}\MizDef{GROUP\_4}[06]
 using the condition \lstinline|the multMagma of H <> the multMagma of G|.
 \end{def-remark}\mizindex{Proper@\texttt{proper}}
 
-\nwenddocs{}\nwbegincode{43}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-RKCxZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\moddef{Definition: proper subgroup~{\nwtagstyle{}\subpageref{NW18nMBU-RKCxZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 definition
   let G be Group;
   let IT be Subgroup of G;
@@ -1027,13 +1075,13 @@ end;
 reserve G for Group;
 reserve H for Subgroup of G;
 \nwindexdefn{\nwixident{Def10}}{Def10}{NW18nMBU-RKCxZ-1}\nwindexdefn{\nwixident{proper}}{proper}{NW18nMBU-RKCxZ-1}\eatline
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{44}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Def10}}{Def10}}\\{{\nwixident{proper}}{proper}}}\nwendcode{}\nwbegindocs{48}\nwdocspar
 \begin{registration}
 For any nontrivial group $G$, we can find a proper subgroup $H\subgroup G$,
 namely the trivial subgroup $H=\trivialSubgroup_{G}$.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{45}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-1x35KZ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwprevnextdefs{\relax}{NW18nMBU-1x35KZ-2}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
@@ -1046,7 +1094,7 @@ end;
 
 reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
-\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{46}\nwdocspar
+\nwalsodefined{\\{NW18nMBU-1x35KZ-2}}\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
 
 \begin{theorem}
 Let $H\subgroup G$ be a subgroup. Then $H\properSubgroup G$ is proper if
@@ -1063,7 +1111,7 @@ underlying sets must be different. This argument works backwards as well
 as forwards.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{47}\sublabel{NW18nMBU-3PEt35-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3PEt35-1}}}\moddef{Theorem: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-3PEt35-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-3PEt35-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3PEt35-1}}}\moddef{Theorem: $H\subgroup G$ is proper iff the underlying sets are different~{\nwtagstyle{}\subpageref{NW18nMBU-3PEt35-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th12}{NW18nMBU-3PEt35-1}:
   H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} iff the carrier of H <> the carrier of G
 proof
@@ -1072,7 +1120,7 @@ proof
   hence thesis;
 end;
 \nwindexdefn{\nwixident{Th12}}{Th12}{NW18nMBU-3PEt35-1}\eatline
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Th12}}{Th12}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3PEt35-1}\nwendcode{}\nwbegindocs{48}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Th12}}{Th12}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3PEt35-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
 \begin{theorem}\label{thm:characteristic:preparatory:proper-subgroups-have-set-diff-neq-empty}
   Let $H\subgroup G$ be a subgroup.
   Then $H$ is a proper subgroup if and only if the set difference is nonempty
@@ -1093,7 +1141,7 @@ underlying set $U(H)$ of $H$ is nonempty $U(G)\setminus U(H)\neq\emptyset$.
   \end{enumerate}
 \end{proof}
 
-\nwenddocs{}\nwbegincode{49}\sublabel{NW18nMBU-17X1oO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-17X1oO-1}}}\moddef{Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-17X1oO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-17X1oO-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-17X1oO-1}}}\moddef{Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-17X1oO-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 reserve h,x,y for object;
 
 theorem \nwlinkedidentc{Th13}{NW18nMBU-17X1oO-1}:
@@ -1108,7 +1156,7 @@ proof
   thus thesis;
 end;
 \nwindexdefn{\nwixident{Th13}}{Th13}{NW18nMBU-17X1oO-1}\eatline
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Th13}}{Th13}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-17X1oO-1}\nwendcode{}\nwbegindocs{50}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Th13}}{Th13}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-17X1oO-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 \begin{proof}[Sub-proof outline]
   If $H\properSubgroup G$ is a proper subgroup, then the underlying set
   $U(H)$ of $H$ is a subset of the underlying set $U(G)$ of $G$ --- i.e.,
@@ -1116,7 +1164,7 @@ end;
   $g\in G$ for which $g\notin H$. Then $U(G)\setminus U(H)\neq\emptyset$.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{51}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-17X1oO-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-4cgubz-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\moddef{Sub-proof: $H\properSubgroup G\implies G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-4cgubz-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-17X1oO-1}}\nwenddeflinemarkup
 proof
   assume A1: H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
   UH c= UG & UH <> UG by A1,\nwlinkedidentc{Th12}{NW18nMBU-3PEt35-1}, GROUP_2:def 5;
@@ -1127,7 +1175,7 @@ proof
   hence (the carrier of G) \\ (the carrier of H) is non empty set
   by XBOOLE_0:def 5;
 end;
-\nwused{\\{NW18nMBU-17X1oO-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{Th12}}{Th12}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{Th12}}{Th12}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{52}\nwdocspar
+\nwused{\\{NW18nMBU-17X1oO-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{Th12}}{Th12}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-4cgubz-1}\nwindexuse{\nwixident{Th12}}{Th12}{NW18nMBU-4cgubz-1}\nwendcode{}\nwbegindocs{56}\nwdocspar
 
 \begin{proof}[Sub-proof outline]
 Assume $G\setminus H\neq\emptyset$. Then there exists some $y\in
@@ -1136,7 +1184,7 @@ element in $G$ that's not in $H$. So by the extensional notion of set
 equality, these are clearly different sets. Thus $H\properSubgroup G$
 \end{proof}
 
-\nwenddocs{}\nwbegincode{53}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-17X1oO-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-dfIXQ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\moddef{Sub-proof: $H\properSubgroup G\impliedby G\setminus H\neq\emptyset$~{\nwtagstyle{}\subpageref{NW18nMBU-dfIXQ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-17X1oO-1}}\nwenddeflinemarkup
 proof
   assume A1: (the carrier of G) \\ (the carrier of H) is non empty set;
   set GH = UG \\ UH;
@@ -1149,14 +1197,14 @@ proof
   then the multMagma of G <> the multMagma of H;
   hence H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
 end;
-\nwused{\\{NW18nMBU-17X1oO-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwused{\\{NW18nMBU-17X1oO-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-dfIXQ-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$, we can call \define{Proper Subgroup} of
 $G$ a subgroup which is proper.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{55}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-1x35KZ-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-2}}}\moddef{Register: proper subgroup for nontrivial groups~{\nwtagstyle{}\subpageref{NW18nMBU-1x35KZ-1}}}\plusendmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwprevnextdefs{NW18nMBU-1x35KZ-1}{\relax}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
@@ -1166,14 +1214,14 @@ registration
     thus (1).G is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
   end;
 end;
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{56}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-1x35KZ-2}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-1x35KZ-2}\nwendcode{}\nwbegindocs{60}\nwdocspar
 
 \begin{registration}
 For any nontrivial group $G$ with nontrivial subgroup $H\subgroup G$, we
 can call \define{Proper Subgroup} of $H$ a subgroup $K\subgroup H$ which is proper.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{57}\sublabel{NW18nMBU-hGa0Z-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\moddef{Register: proper subgroups of nontrivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-hGa0Z-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\moddef{Register: proper subgroups of nontrivial subgroups~{\nwtagstyle{}\subpageref{NW18nMBU-hGa0Z-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 reserve G for non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
 reserve H for Subgroup of G;
 
@@ -1187,7 +1235,7 @@ registration
     thus (1).H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1};
   end;
 end;
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-hGa0Z-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-hGa0Z-1}\nwendcode{}\nwbegindocs{58}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-hGa0Z-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-hGa0Z-1}\nwendcode{}\nwbegindocs{62}\nwdocspar
 
 \begin{lemma}
 Maximal subgroups are also proper subgroups.
@@ -1195,26 +1243,26 @@ Maximal subgroups are also proper subgroups.
 
 The proof is literally, ``Look at the definitions!''
 
-\nwenddocs{}\nwbegincode{59}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{63}\sublabel{NW18nMBU-KtuAy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\moddef{Lemma: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-KtuAy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 \nwlinkedidentc{Lm1}{NW18nMBU-KtuAy-1}:
   for G being Group
   for H being Subgroup of G
   st H is maximal
   holds H is \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} by GROUP_4:def 6;
 \nwindexdefn{\nwixident{Lm1}}{Lm1}{NW18nMBU-KtuAy-1}\eatline
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Lm1}}{Lm1}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{60}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Lm1}}{Lm1}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-KtuAy-1}\nwendcode{}\nwbegindocs{64}\nwdocspar
 \begin{registration}
 We can now automatically take advantage of the fact that, a maximal
 subgroup for a nontrivial group is implicitly a proper subgroup.
 \end{registration}
 
-\nwenddocs{}\nwbegincode{61}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{65}\sublabel{NW18nMBU-3ZDEGc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\moddef{Register: maximal subgroups are proper~{\nwtagstyle{}\subpageref{NW18nMBU-3ZDEGc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 registration
   let G be non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group;
   cluster maximal -> \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} for Subgroup of G;
   coherence by \nwlinkedidentc{Lm1}{NW18nMBU-KtuAy-1};
 end;
-\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{Lm1}}{Lm1}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm1}}{Lm1}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{62}\nwdocspar
+\nwused{\\{NW18nMBU-KQsbx-1}}\nwidentuses{\\{{\nwixident{Lm1}}{Lm1}}\\{{\nwixident{proper}}{proper}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Lm1}}{Lm1}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-3ZDEGc-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-3ZDEGc-1}\nwendcode{}\nwbegindocs{66}\nwdocspar
 
 \begin{theorem}
 If $H\properSubgroup K$ is proper and $K\subgroup G$ and $H\neq K$, then
@@ -1227,7 +1275,7 @@ $K$ is a nontrivial group.
   $H=\trivialSubgroup$ and this contradicts $H\properSubgroup K$ proper.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{63}\sublabel{NW18nMBU-2DotbH-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2DotbH-1}}}\moddef{Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial~{\nwtagstyle{}\subpageref{NW18nMBU-2DotbH-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{67}\sublabel{NW18nMBU-2DotbH-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW18nMBU-2DotbH-1}}}\moddef{Theorem: $H\properSubgroup K\subgroup G$ and $H\neq K$ implies $K$ is nontrivial~{\nwtagstyle{}\subpageref{NW18nMBU-2DotbH-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-KQsbx-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th14}{NW18nMBU-2DotbH-1}:
   for G being non \nwlinkedidentc{trivial}{NW18nMBU-47kVo6-1} Group
   for H being \nwlinkedidentc{proper}{NW18nMBU-RKCxZ-1} Subgroup of G
@@ -4285,6 +4333,7 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{c}{{Inner Automorphisms}{NW3Mfp8C-UGF1u-1}{\nwixu{NW18nMBU-2TX9wk-1}\nwixd{NW3Mfp8C-UGF1u-1}}}%
 \nwixlogsorted{c}{{Lemma: $H\subgroup G$ and $\trivialSubgroup\subgroup H$ implies $H=\trivialSubgroup$}{NW1Nnu7l-3CeuwY-1}{\nwixd{NW1Nnu7l-3CeuwY-1}\nwixu{NW1Nnu7l-2Beici-1}}}%
 \nwixlogsorted{c}{{Lemma: Elements of \code{}InnAut\ G\edoc{} are automorphisms}{NW3Mfp8C-3eJW7Q-1}{\nwixu{NW3Mfp8C-2gUxot-1}\nwixd{NW3Mfp8C-3eJW7Q-1}}}%
+\nwixlogsorted{c}{{Lemma: Existence of finite nontrivial groups}{NW18nMBU-3WaVwt-1}{\nwixd{NW18nMBU-3WaVwt-1}\nwixu{NW18nMBU-OpWr6-1}}}%
 \nwixlogsorted{c}{{Lemma: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have monomorphism $\varphi|_{H}$}{NW1Nnu7l-2Beici-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-2Beici-1}}}%
 \nwixlogsorted{c}{{Lemma: if $H\subgroup\trivialGroup$, then $H=\trivialGroup$}{NW47t2dy-1tYS7d-1}{\nwixu{NW47t2dy-HjATr-1}\nwixd{NW47t2dy-1tYS7d-1}}}%
 \nwixlogsorted{c}{{Lemma: maximal subgroups are proper}{NW18nMBU-KtuAy-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-KtuAy-1}}}%
@@ -4340,6 +4389,7 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{c}{{Register: maximal subgroups are proper}{NW18nMBU-3ZDEGc-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-3ZDEGc-1}}}%
 \nwixlogsorted{c}{{Register: non trivial for Group}{NW18nMBU-47kVo6-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-47kVo6-1}}}%
 \nwixlogsorted{c}{{Register: non trivial for Subgroup}{NW18nMBU-2RiGxf-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-2RiGxf-1}}}%
+\nwixlogsorted{c}{{Register: nontrivial for "finite group"}{NW18nMBU-OpWr6-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-OpWr6-1}}}%
 \nwixlogsorted{c}{{Register: proper subgroup for nontrivial groups}{NW18nMBU-1x35KZ-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-1x35KZ-1}\nwixd{NW18nMBU-1x35KZ-2}}}%
 \nwixlogsorted{c}{{Register: proper subgroups of nontrivial subgroups}{NW18nMBU-hGa0Z-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-hGa0Z-1}}}%
 \nwixlogsorted{c}{{Register: the identity function is surjective and bijective}{NW18nMBU-1ouPZe-1}{\nwixu{NW18nMBU-oqDk7-1}\nwixd{NW18nMBU-1ouPZe-1}}}%
@@ -4425,6 +4475,7 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{i}{{\nwixident{Lm6}}{Lm6}}%
 \nwixlogsorted{i}{{\nwixident{Lm7}}{Lm7}}%
 \nwixlogsorted{i}{{\nwixident{Lm8}}{Lm8}}%
+\nwixlogsorted{i}{{\nwixident{LmFiniteNontrivial}}{LmFiniteNontrivial}}%
 \nwixlogsorted{i}{{\nwixident{LmSubgroupEltTrans}}{LmSubgroupEltTrans}}%
 \nwixlogsorted{i}{{\nwixident{MeetIsChar}}{MeetIsChar}}%
 \nwixlogsorted{i}{{\nwixident{outer}}{outer}}%

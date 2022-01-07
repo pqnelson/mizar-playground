@@ -15,9 +15,9 @@ environ
  vocabularies MOD_4, CHAR, CARD_3,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
-   GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP,
+   GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
               RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
@@ -43,15 +43,15 @@ environ
  definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, ARYTM_2, FINSEQ_1,
    GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0;
  equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
-   GROUP_3, GROUP_4, GROUP_5, GROUP_6,
+   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
    ALGSTR_0, NEWTON;
  expansions FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
    FUNCT_2, NEWTON;
  theorems
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
-   SETFAM_1, FINSEQ_3, PARTFUN1,
+   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, XCMPLX_1;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1;
  schemes FUNCT_2, GROUP_4, FINSEQ_1;
 
 begin :: Preparatory Work
@@ -247,6 +247,28 @@ proof
   thus the multMagma of G = (1).G implies G is trivial;
   thus thesis;
 end;
+
+LmFiniteNontrivial:
+  not INT.Group(2) is trivial
+proof
+  set G = INT.Group(2);
+  
+  A1: the carrier of G = Segm 2
+                      .= 2 by ORDINAL1:def 17;
+  the carrier of (1).G = {1_G} by GROUP_2:def 7
+                      .= {0} by GR_CY_1:14
+                      .= {} \/ {0}
+                      .= succ 0 by ORDINAL1:def 1
+                      .= 1;
+  then the carrier of (1).G <> the carrier of G by A1;
+  hence not INT.Group(2) is trivial by Th8;
+end;
+
+registration
+  cluster non trivial for finite Group;
+  existence by LmFiniteNontrivial;
+end;
+
 
 theorem Th9:
   for G being Group
