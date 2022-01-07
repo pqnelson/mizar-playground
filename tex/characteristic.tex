@@ -2929,6 +2929,14 @@ We now arrive at the meat of the matter: characteristic subgroups!
 \LA{}Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-3lDAoY-1}}\RA{}
 
 \LA{}Theorem: The derived subgroup is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}\RA{}
+
+\LA{}Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$~{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}\RA{}
+
+\LA{}Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$~{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}\RA{}
+
+\LA{}Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$~{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}\RA{}
+
+\LA{}Scheme: $\mathcal{X}$-residual is characteristic subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-2TTBav-1}}\RA{}
 \nwused{\\{NW18nMBU-2TX9wk-1}}\nwendcode{}\nwbegindocs{2}\nwdocspar
 
 \begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}\label{defn:characteristic:results:characteristic-subgroup}
@@ -4291,7 +4299,382 @@ end;
 The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \end{theorem}
 
-\nwenddocs{}
+\nwenddocs{}\nwbegincode{91}\sublabel{NW47t2dy-44iz0d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\moddef{Theorem: The derived subgroup is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+theorem \nwlinkedidentc{Th49}{NW47t2dy-44iz0d-1}:
+  G` is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
+proof
+  [.1_G,1_G.] in commutators G;
+  then A1: commutators G <> \{\};
+  for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G holds phi .: commutators G =
+  commutators G by \nwlinkedidentc{Th46}{NW47t2dy-1BwBWL-1};
+  then gr commutators G is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} by A1,\nwlinkedidentc{Th48}{NW47t2dy-3lDAoY-1};
+  hence thesis;
+end;
+\nwindexdefn{\nwixident{Th49}}{Th49}{NW47t2dy-44iz0d-1}\eatline
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th49}}{Th49}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th46}}{Th46}}\\{{\nwixident{Th48}}{Th48}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th46}}{Th46}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th48}}{Th48}{NW47t2dy-44iz0d-1}\nwendcode{}\nwbegindocs{92}\nwdocspar
+\begin{theorem}
+If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
+$\varphi\in\Aut(G)$, then $\varphi(aH)=\varphi(a)\varphi(H)$.
+\end{theorem}
+
+\nwenddocs{}\nwbegincode{93}\sublabel{NW47t2dy-TIqNK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$~{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+theorem \nwlinkedidentc{Th50}{NW47t2dy-TIqNK-1}:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(a * H) = (f.a) * (f .: H)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(a * H) holds y in (f.a)*(f.:H)
+  proof
+    let y be object;
+    assume B1: y in f .: (a * H);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (a * H) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = a*h & h in H
+    by B2,GROUP_2:103;
+    B5: y = f.(a*h) by B3,B4
+         .= (f.a)*(f.h) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.a)*(f.h) in (f.a)*(f.:H) by GROUP_2:103;
+    hence y in (f.a) * (f .: H) by B5;
+  end;
+  then A1: f.:(a * H) c= (f.a) * (f .: H) by TARSKI:def 3;
+  for y being object st y in (f.a)*(f.:H) holds y in f.:(a * H)
+  proof
+    let y be object;
+    assume B1: y in (f.a)*(f.:H);
+    then consider g being Element of G2 such that
+    B2: y = (f.a)*g and
+    B3: g in (f.:H)
+    by GROUP_2:103;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,\nwlinkedidentc{Th2}{NW18nMBU-32pfqx-1};
+    then B6: g = f.x by B4;
+    B7: y = (f.a)*g by B2
+         .= (f.a)*(f.x) by B6
+         .= f.(a*x) by GROUP_6:def 6;
+    B8: a*x in a*H by B5,GROUP_2:103;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then a*x in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by A1,B7,B8;
+    hence y in f.:(a * H) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f.a) * (f .: H) c= f.:(a * H) by TARSKI:def 3;
+  thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
+end;
+\nwindexdefn{\nwixident{Th50}}{Th50}{NW47t2dy-TIqNK-1}\eatline
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th50}}{Th50}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-TIqNK-1}\nwendcode{}\nwbegindocs{94}\nwdocspar
+\begin{theorem}
+If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
+$\varphi\in\Aut(G)$, then $\varphi(Ha)=\varphi(H)\varphi(a)$.
+\end{theorem}
+
+\nwenddocs{}\nwbegincode{95}\sublabel{NW47t2dy-4LQhDT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$~{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+theorem \nwlinkedidentc{Th51}{NW47t2dy-4LQhDT-1}:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(H * a) = (f .: H) * (f.a)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(H * a) holds y in (f.:H)*(f.a)
+  proof
+    let y be object;
+    assume B1: y in f .: (H * a);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (H * a) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = h*a & h in H
+    by B2,GROUP_2:104;
+    B5: y = f.(h*a) by B3,B4
+         .= (f.h)*(f.a) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
+    hence thesis by B5;
+  end;
+  then A1: f.:(H * a) c= (f .: H) * (f.a) by TARSKI:def 3;
+  for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
+  proof
+    let y be object;
+    assume B1: y in (f.:H)*(f.a);
+    then consider g being Element of G2 such that
+    B2: y = g*(f.a) and
+    B3: g in (f.:H)
+    by GROUP_2:104;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,\nwlinkedidentc{Th2}{NW18nMBU-32pfqx-1};
+    then B6: g = f.x by B4;
+    B7: y = g*(f.a) by B2
+         .= (f.x)*(f.a) by B6
+         .= f.(x*a) by GROUP_6:def 6;
+    B8: x*a in H*a by B5,GROUP_2:104;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then x*a in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by A1,B7,B8;
+    hence y in f.:(H * a) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f .: H) * (f.a) c= f.:(H * a) by TARSKI:def 3;
+  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+end;
+\nwindexdefn{\nwixident{Th51}}{Th51}{NW47t2dy-4LQhDT-1}\eatline
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th51}}{Th51}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-4LQhDT-1}\nwendcode{}\nwbegindocs{96}\nwdocspar
+\begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
+If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
+of $G$ we have our automorphism map $N$ to another normal subgroup
+$\varphi(N)\normalSubgroup G$. 
+\end{theorem}
+
+\nwenddocs{}\nwbegincode{97}\sublabel{NW47t2dy-17HxJc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\moddef{Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$~{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+theorem \nwlinkedidentc{Th52}{NW47t2dy-17HxJc-1}:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
+  holds Image(phi|N) is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
+  set H = Image(phi|N);
+  A1: H = phi .: N by GRSOLV_1:def 3;
+  for g being Element of G
+  holds g * H = H * g
+  proof
+    let g be Element of G;
+    set f = (phi").g;
+    f is Element of G;
+    B1: phi.f = g by \nwlinkedidentc{Th6}{NW18nMBU-1Brdpy-1};
+    B2: f * N = N * f by GROUP_3:117;
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by \nwlinkedidentc{Th50}{NW47t2dy-TIqNK-1}
+                      .= g * H by B1,A1;
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by \nwlinkedidentc{Th51}{NW47t2dy-4LQhDT-1}
+                      .= (phi .: N)*g by B1
+                      .= H*g by A1;
+    hence g * H = H * g by B2,B3,B4;
+  end;
+  hence H is normal Subgroup of G by GROUP_3:117;
+end;
+\nwindexdefn{\nwixident{Th52}}{Th52}{NW47t2dy-17HxJc-1}\eatline
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th52}}{Th52}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th50}}{Th50}}\\{{\nwixident{Th51}}{Th51}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th51}}{Th51}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-17HxJc-1}\nwendcode{}\nwbegindocs{98}\nwdocspar
+\begin{scheme}
+Let $P[-]$ be a unary predicate of quotient groups of $G$ such that
+\begin{itemize}
+\item[$(A_{1})$]
+for any normal subgroup $N\subgroup G$ such that $P[G/N]$ holds implies
+$P[G/\varphi(N)]$ for any automorphism $\varphi\in\Aut(G)$; and
+\item[$(A_{2})$]
+there is at least one normal subgroup $N\subgroup G$ such that $P[G/N]$ holds.
+\end{itemize}
+Then there exists a subgroup $K\subgroup G$ whose underlying set is 
+\begin{equation}
+K = \bigcap\{A\subset G\mid\exists N\normalSubgroup G, A=N\land P[G/N]\}.
+\end{equation}
+Furthermore, $K$ is a characteristic subgroup of $G$.
+\end{scheme}
+
+\begin{proof}[Proof outline]
+The basic idea is to translate this into terms that we can use our
+earlier Scheme~\ref{scheme:characteristic:results:meet-is-characteristic}.
+We construct a new predicate of subgroups $H\subgroup G$,
+\begin{equation}
+P_{2}[X] = \exists N\normalSubgroup G, X=N\land P[G/N],
+\end{equation}
+then show the family of subsets
+\begin{equation}
+\mathcal{F} = \{A\subset G\mid \exists N\normalSubgroup G, A=N\land P[G/N]\}
+\end{equation}
+is the same as the family of subsets
+\begin{equation}
+\mathcal{F}_{2} = \{A\subset G\mid \exists H\subgroup G, A=H\land P_{2}[H]\}.
+\end{equation}
+This is important because using $P_{2}[-]$, we can construct a
+characteristic subgroup $K=\bigcap\mathcal{F}_{2}$. But since
+$\mathcal{F}=\mathcal{F}_{2}$, it follows that $K=\bigcap\mathcal{F}$ is
+the desired characteristic subgroup.
+\end{proof}
+
+\begin{sch-remark}
+This formalizes an important piece of folklore\footnote{I am endebted to
+Jack Schmidt for this, from~\url{https://math.stackexchange.com/a/216961/31693}} in finite group theory:
+given any class of finite groups $\mathcal{X}$ closed under
+isomorphisms, taking subgroups, and finitely many direct products; then
+for any finite group $G$ we can construct a characteristic subgroup of it,
+\begin{equation}
+O^{\mathcal{X}}(G) := \bigcap\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}.
+\end{equation}
+If we construct a predicate $P[X]=X\in\mathcal{X}$, then we can
+formalize this construct using Mizar schemes.
+
+Our formalization is slightly different.
+%% , since $N_{1}\iso N_{2}$ and
+%% $G/N_{1}\iso G/N_{2}$ does not necessarily imply that there is an
+%% automorphism $\varphi\in\Aut(G)$ such that $N_{1}=\varphi(N_{2})$.
+A more faithful condition would replace $A_{1}$ with $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. But we are restricting our attention to
+subgroups of $G$ which means we'd also have $G_{1},G_{2}\subgroup G$.
+Now I assert this is the same as the condition formalized.
+
+If $H_{1}\iso H_{2}$, suppose the isomorphism is given by
+$\varphi_{0}\colon H_{1}\to H_{2}$. Then this extends to an automorphism
+of $G$ given by:
+\begin{equation}
+  \varphi(x) = \begin{cases}\varphi_{0}(x) & x\in H_{1}\\
+    x & \text{otherwise}.
+  \end{cases}
+\end{equation}
+There may be others, but we have at least this one. This convinced me
+that we do not need to insist on the property $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. And this is precisely our condition $(A_{1})$.
+\end{sch-remark}
+
+\nwenddocs{}\nwbegincode{99}\sublabel{NW47t2dy-2TTBav-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2TTBav-1}}}\moddef{Scheme: $\mathcal{X}$-residual is characteristic subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-2TTBav-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+scheme :: Sch 3
+  \nwlinkedidentc{XResidualIsChar}{NW47t2dy-2TTBav-1}\{G() -> Group, P[Group]\} :
+ex K being strict Subgroup of G()
+st the carrier of K = meet \{A where A is Subset of G() :
+                            ex H being strict normal Subgroup of G()
+                            st A = the carrier of H & P[G()./.H]\} &
+   K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
+provided
+A1: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G()
+    for N being strict normal Subgroup of G()
+    st P[G()./.N]
+    holds ex H being strict normal Subgroup of G()
+          st H = Image(phi|N) & P[G()./.H] and
+A2: ex H being strict normal Subgroup of G() st P[G()./.H]
+proof
+  defpred P2[Group] means ex N being strict normal Subgroup of G()
+                          st the multMagma of N = the multMagma of $1 &
+                             P[G() ./. N];
+  set Fam = \{A where A is Subset of G() :
+             ex H being strict normal Subgroup of G()
+             st A = the carrier of H & P[G()./.H]\};
+  set Fam2 = \{A where A is Subset of G() :
+              ex H being strict Subgroup of G()
+              st A = the carrier of H & P2[H]\};
+
+  A3: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G()
+  for H being strict Subgroup of G()
+  st P2[H]
+  holds P2[Image(phi|H)]
+  \LA{}Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$~{\nwtagstyle{}\subpageref{NW47t2dy-197w35-1}}\RA{}
+  A4: ex H being strict Subgroup of G() st P2[H] by A2;
+  
+  consider K being strict Subgroup of G() such that
+  A5: the carrier of K = meet Fam2 and
+  A6: K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
+  from \nwlinkedidentc{MeetIsChar}{NW47t2dy-5CDvr-1}(A3,A4);
+  take K;
+  for A being object
+  holds A in Fam iff A in Fam2
+  \LA{}Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$~{\nwtagstyle{}\subpageref{NW47t2dy-2wlg0Q-1}}\RA{}
+  then Fam = Fam2 by TARSKI:2;
+  then the carrier of K = meet Fam by A5;
+  hence thesis by A5,A6;
+end;
+\nwindexdefn{\nwixident{XResidualIsChar}}{XResidualIsChar}{NW47t2dy-2TTBav-1}\eatline
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{XResidualIsChar}}{XResidualIsChar}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{MeetIsChar}}{MeetIsChar}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2TTBav-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2TTBav-1}\nwindexuse{\nwixident{MeetIsChar}}{MeetIsChar}{NW47t2dy-2TTBav-1}\nwendcode{}\nwbegindocs{100}\nwdocspar
+\begin{proof}[{Proof step ($P_{3}[H]\implies\forall\varphi\in\Aut(G),P_{3}[\varphi(H)]$)}.]
+We translate our given hypothesis $A_{2}$ into a form that will be
+accepted by the previous scheme, and this amounts to unrolling
+definitions. We need
+Theorem~\ref{thm:characteristic:automorphisms-preserve-normal-subgroups}
+to show automorphisms $\varphi\in\Aut(G)$ map $N\normalSubgroup G$
+satisfying $P[G/N]$ to normal subgroups.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{101}\sublabel{NW47t2dy-197w35-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-197w35-1}}}\moddef{Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$~{\nwtagstyle{}\subpageref{NW47t2dy-197w35-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-2TTBav-1}}\nwenddeflinemarkup
+proof
+  let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G();
+  let H be strict Subgroup of G();
+  assume B1: P2[H];
+  
+  then consider N being strict normal Subgroup of G() such that
+  B2: the multMagma of N = the multMagma of H and
+  B3: P[G()./.N];
+  
+  P[G()./.N] by B3;
+  then P2[N];
+  then consider N2 being strict normal Subgroup of G() such that
+  B4: N2 = Image(phi|N) & P[G()./.N2]
+  by A1;
+  P2[(Image(phi|N))] by B4,\nwlinkedidentc{Th52}{NW47t2dy-17HxJc-1};
+  hence P2[Image(phi|H)] by B2;
+end;
+\nwused{\\{NW47t2dy-2TTBav-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th52}}{Th52}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-197w35-1}\nwindexuse{\nwixident{Th52}}{Th52}{NW47t2dy-197w35-1}\nwendcode{}\nwbegindocs{102}\nwdocspar
+
+\begin{proof}[Proof step ($A\in\mathcal{F}_{3}\iff A\in\mathcal{F}$).]
+This amounts to unrolling the criteria for $A$ to be in one family or
+the other, which amounts to showing it satisfies the same properties.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{103}\sublabel{NW47t2dy-2wlg0Q-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2wlg0Q-1}}}\moddef{Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$~{\nwtagstyle{}\subpageref{NW47t2dy-2wlg0Q-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-2TTBav-1}}\nwenddeflinemarkup
+proof
+  let A be object;
+  thus A in Fam implies A in Fam2
+  proof
+    assume B1: A in Fam;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict normal Subgroup of G()
+    st A0 = the carrier of H & P[G()./.H];
+    consider H being strict normal Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P[G()./.H]
+    by B3;
+    B6: A0 = carr H & H is strict Subgroup of G() & P2[H] by B4,B5;
+    then ex H2 being strict Subgroup of G() st A0 = carr H2 & P2[H2];
+    then A0 in Fam2;
+    hence thesis by B2;
+  end;
+  thus A in Fam2 implies A in Fam
+  proof
+    assume B1: A in Fam2;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict Subgroup of G()
+    st A0 = the carrier of H & P2[H];
+    consider H being strict Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P2[H]
+    by B3;
+    B6: ex N being strict normal Subgroup of G() st N=H & P[G()./.N] by B5;
+    then A0 in Fam by B4;
+    hence thesis by B2;
+  end;
+end;
+\nwused{\\{NW47t2dy-2TTBav-1}}\nwendcode{}
 
 \nwixlogsorted{c}{{$\exists a\in\varphi^{-1}(H),g=\varphi(a)$}{NW1Nnu7l-41Hbi6-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-41Hbi6-1}}}%
 \nwixlogsorted{c}{{$\exists b\in H, a = \varphi^{-1}(b)$}{NW1Nnu7l-2rS80d-1}{\nwixu{NW1Nnu7l-47FJLD-1}\nwixd{NW1Nnu7l-2rS80d-1}}}%
@@ -4367,10 +4750,12 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{c}{{Proof: $\varphi(L) = K$}{NW1Nnu7l-3oqpnZ-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-3oqpnZ-1}}}%
 \nwixlogsorted{c}{{Proof: $\varphi(L)=G$}{NW1Nnu7l-13ZzHL-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-13ZzHL-1}}}%
 \nwixlogsorted{c}{{Proof: $\varphi|_{H}$ is surjective}{NW1Nnu7l-41Pxbq-1}{\nwixu{NW1Nnu7l-1QHEJY-1}\nwixd{NW1Nnu7l-41Pxbq-1}}}%
+\nwixlogsorted{c}{{Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$}{NW47t2dy-2wlg0Q-1}{\nwixu{NW47t2dy-2TTBav-1}\nwixd{NW47t2dy-2wlg0Q-1}}}%
 \nwixlogsorted{c}{{Proof: $H$ is maximal implies $K=G$}{NW1Nnu7l-2sFwyR-1}{\nwixu{NW1Nnu7l-39Q49p-1}\nwixd{NW1Nnu7l-2sFwyR-1}}}%
 \nwixlogsorted{c}{{Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$}{NW47t2dy-1WVJgD-1}{\nwixu{NW47t2dy-4Z20G4-1}\nwixd{NW47t2dy-1WVJgD-1}}}%
 \nwixlogsorted{c}{{Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$}{NW47t2dy-ikrOm-1}{\nwixu{NW47t2dy-4Z20G4-1}\nwixd{NW47t2dy-ikrOm-1}}}%
 \nwixlogsorted{c}{{Proof: $H\neq L$}{NW1Nnu7l-aXEjM-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-aXEjM-1}}}%
+\nwixlogsorted{c}{{Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$}{NW47t2dy-197w35-1}{\nwixu{NW47t2dy-2TTBav-1}\nwixd{NW47t2dy-197w35-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(K)\iff y\in g(K)$}{NW47t2dy-1JehLA-1}{\nwixu{NW47t2dy-475WvU-1}\nwixd{NW47t2dy-1JehLA-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(K)\implies y\in g(K)$}{NW47t2dy-1yCGg9-1}{\nwixu{NW47t2dy-1JehLA-1}\nwixd{NW47t2dy-1yCGg9-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in g(K)\implies y\in f(K)$}{NW47t2dy-1aEga6-1}{\nwixu{NW47t2dy-1JehLA-1}\nwixd{NW47t2dy-1aEga6-1}}}%
@@ -4398,6 +4783,7 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{c}{{Reserve: $\varphi$ for \code{}Automorphism\edoc{}}{NW1Nnu7l-1FGfaH-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-1FGfaH-1}}}%
 \nwixlogsorted{c}{{Reserve: $f$ for \code{}Endomorphism\edoc{}}{NW1Nnu7l-18sdY2-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-18sdY2-1}}}%
 \nwixlogsorted{c}{{Scheme: $\bigcap\{A\subset G\mid\exists H\subgroup G, A=H, P[H]\}$ is characteristic}{NW47t2dy-5CDvr-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-5CDvr-1}}}%
+\nwixlogsorted{c}{{Scheme: $\mathcal{X}$-residual is characteristic subgroup}{NW47t2dy-2TTBav-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-2TTBav-1}}}%
 \nwixlogsorted{c}{{Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant}{NW47t2dy-3pFvE5-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-3pFvE5-1}}}%
 \nwixlogsorted{c}{{Ste theoretic constructors for \code{}char.miz\edoc{}}{NW4bbsBH-1oVli-1}{\nwixu{NW4bbsBH-45oKpZ-1}\nwixd{NW4bbsBH-1oVli-1}}}%
 \nwixlogsorted{c}{{Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$}{NW47t2dy-3ZyLrF-1}{\nwixu{NW47t2dy-1dPqXM-1}\nwixd{NW47t2dy-3ZyLrF-1}}}%
@@ -4430,7 +4816,10 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{c}{{Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$}{NW18nMBU-17X1oO-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-17X1oO-1}}}%
 \nwixlogsorted{c}{{Theorem: $H\subgroup G$ is proper iff the underlying sets are different}{NW18nMBU-3PEt35-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-3PEt35-1}}}%
 \nwixlogsorted{c}{{Theorem: $H\subgroup G$, $H$ is trivial implies $H=\trivialSubgroup_{G}$}{NW18nMBU-3Oqgqd-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-3Oqgqd-1}}}%
+\nwixlogsorted{c}{{Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$}{NW47t2dy-TIqNK-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-TIqNK-1}}}%
+\nwixlogsorted{c}{{Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$}{NW47t2dy-4LQhDT-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-4LQhDT-1}}}%
 \nwixlogsorted{c}{{Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$}{NW18nMBU-A6DSQ-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-A6DSQ-1}}}%
+\nwixlogsorted{c}{{Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$}{NW47t2dy-17HxJc-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-17HxJc-1}}}%
 \nwixlogsorted{c}{{Theorem: $p$-Core is Characteristic}{NW47t2dy-26IJy2-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-26IJy2-1}}}%
 \nwixlogsorted{c}{{Theorem: $Z(G)$ is characteristic subgroup}{NW47t2dy-g56Nl-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-g56Nl-1}}}%
 \nwixlogsorted{c}{{Theorem: \code{}id\ G\edoc{} is effectively inner}{NW3Mfp8C-4YoKSm-1}{\nwixu{NW3Mfp8C-UGF1u-1}\nwixd{NW3Mfp8C-4YoKSm-1}}}%
@@ -4524,21 +4913,14 @@ The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \nwixlogsorted{i}{{\nwixident{Th48}}{Th48}}%
 \nwixlogsorted{i}{{\nwixident{Th49}}{Th49}}%
 \nwixlogsorted{i}{{\nwixident{Th5}}{Th5}}%
+\nwixlogsorted{i}{{\nwixident{Th50}}{Th50}}%
+\nwixlogsorted{i}{{\nwixident{Th51}}{Th51}}%
+\nwixlogsorted{i}{{\nwixident{Th52}}{Th52}}%
 \nwixlogsorted{i}{{\nwixident{Th6}}{Th6}}%
 \nwixlogsorted{i}{{\nwixident{Th7}}{Th7}}%
 \nwixlogsorted{i}{{\nwixident{Th8}}{Th8}}%
 \nwixlogsorted{i}{{\nwixident{Th9}}{Th9}}%
 \nwixlogsorted{i}{{\nwixident{trivial}}{trivial}}%
-\nwbegincode{91}\sublabel{NW47t2dy-44iz0d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\moddef{Theorem: The derived subgroup is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
-theorem \nwlinkedidentc{Th49}{NW47t2dy-44iz0d-1}:
-  G` is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
-proof
-  [.1_G,1_G.] in commutators G;
-  then A1: commutators G <> \{\};
-  for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G holds phi .: commutators G =
-  commutators G by \nwlinkedidentc{Th46}{NW47t2dy-1BwBWL-1};
-  then gr commutators G is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} by A1,\nwlinkedidentc{Th48}{NW47t2dy-3lDAoY-1};
-  hence thesis;
-end;
-\nwindexdefn{\nwixident{Th49}}{Th49}{NW47t2dy-44iz0d-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th49}}{Th49}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th46}}{Th46}}\\{{\nwixident{Th48}}{Th48}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th46}}{Th46}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th48}}{Th48}{NW47t2dy-44iz0d-1}\nwendcode{}
+\nwixlogsorted{i}{{\nwixident{XResidualIsChar}}{XResidualIsChar}}%
+\nwbegindocs{104}\nwdocspar
+\nwenddocs{}

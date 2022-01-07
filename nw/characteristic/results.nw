@@ -43,6 +43,14 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic>>
 
 <<Theorem: The derived subgroup is characteristic>>
+
+<<Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$>>
+
+<<Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$>>
+
+<<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>
+
+<<Scheme: $\mathcal{X}$-residual is characteristic subgroup>>
 @
 
 \begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}\label{defn:characteristic:results:characteristic-subgroup}
@@ -1417,3 +1425,367 @@ proof
   hence thesis;
 end;
 @ %def Th49
+
+\begin{theorem}
+If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
+$\varphi\in\Aut(G)$, then $\varphi(aH)=\varphi(a)\varphi(H)$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$>>=
+theorem Th50:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(a * H) = (f.a) * (f .: H)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(a * H) holds y in (f.a)*(f.:H)
+  proof
+    let y be object;
+    assume B1: y in f .: (a * H);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (a * H) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = a*h & h in H
+    by B2,GROUP_2:103;
+    B5: y = f.(a*h) by B3,B4
+         .= (f.a)*(f.h) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.a)*(f.h) in (f.a)*(f.:H) by GROUP_2:103;
+    hence y in (f.a) * (f .: H) by B5;
+  end;
+  then A1: f.:(a * H) c= (f.a) * (f .: H) by TARSKI:def 3;
+  for y being object st y in (f.a)*(f.:H) holds y in f.:(a * H)
+  proof
+    let y be object;
+    assume B1: y in (f.a)*(f.:H);
+    then consider g being Element of G2 such that
+    B2: y = (f.a)*g and
+    B3: g in (f.:H)
+    by GROUP_2:103;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,Th2;
+    then B6: g = f.x by B4;
+    B7: y = (f.a)*g by B2
+         .= (f.a)*(f.x) by B6
+         .= f.(a*x) by GROUP_6:def 6;
+    B8: a*x in a*H by B5,GROUP_2:103;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then a*x in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by A1,B7,B8;
+    hence y in f.:(a * H) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f.a) * (f .: H) c= f.:(a * H) by TARSKI:def 3;
+  thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
+end;
+@ %def Th50
+
+\begin{theorem}
+If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
+$\varphi\in\Aut(G)$, then $\varphi(Ha)=\varphi(H)\varphi(a)$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$>>=
+theorem Th51:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(H * a) = (f .: H) * (f.a)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(H * a) holds y in (f.:H)*(f.a)
+  proof
+    let y be object;
+    assume B1: y in f .: (H * a);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (H * a) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = h*a & h in H
+    by B2,GROUP_2:104;
+    B5: y = f.(h*a) by B3,B4
+         .= (f.h)*(f.a) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
+    hence thesis by B5;
+  end;
+  then A1: f.:(H * a) c= (f .: H) * (f.a) by TARSKI:def 3;
+  for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
+  proof
+    let y be object;
+    assume B1: y in (f.:H)*(f.a);
+    then consider g being Element of G2 such that
+    B2: y = g*(f.a) and
+    B3: g in (f.:H)
+    by GROUP_2:104;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,Th2;
+    then B6: g = f.x by B4;
+    B7: y = g*(f.a) by B2
+         .= (f.x)*(f.a) by B6
+         .= f.(x*a) by GROUP_6:def 6;
+    B8: x*a in H*a by B5,GROUP_2:104;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then x*a in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by A1,B7,B8;
+    hence y in f.:(H * a) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f .: H) * (f.a) c= f.:(H * a) by TARSKI:def 3;
+  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+end;
+@ %def Th51
+
+\begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
+If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
+of $G$ we have our automorphism map $N$ to another normal subgroup
+$\varphi(N)\normalSubgroup G$. 
+\end{theorem}
+
+<<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>=
+theorem Th52:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for phi being Automorphism of G
+  holds Image(phi|N) is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let phi be Automorphism of G;
+  set H = Image(phi|N);
+  A1: H = phi .: N by GRSOLV_1:def 3;
+  for g being Element of G
+  holds g * H = H * g
+  proof
+    let g be Element of G;
+    set f = (phi").g;
+    f is Element of G;
+    B1: phi.f = g by Th6;
+    B2: f * N = N * f by GROUP_3:117;
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th50
+                      .= g * H by B1,A1;
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th51
+                      .= (phi .: N)*g by B1
+                      .= H*g by A1;
+    hence g * H = H * g by B2,B3,B4;
+  end;
+  hence H is normal Subgroup of G by GROUP_3:117;
+end;
+@ %def Th52
+
+\begin{scheme}
+Let $P[-]$ be a unary predicate of quotient groups of $G$ such that
+\begin{itemize}
+\item[$(A_{1})$]
+for any normal subgroup $N\subgroup G$ such that $P[G/N]$ holds implies
+$P[G/\varphi(N)]$ for any automorphism $\varphi\in\Aut(G)$; and
+\item[$(A_{2})$]
+there is at least one normal subgroup $N\subgroup G$ such that $P[G/N]$ holds.
+\end{itemize}
+Then there exists a subgroup $K\subgroup G$ whose underlying set is 
+\begin{equation}
+K = \bigcap\{A\subset G\mid\exists N\normalSubgroup G, A=N\land P[G/N]\}.
+\end{equation}
+Furthermore, $K$ is a characteristic subgroup of $G$.
+\end{scheme}
+
+\begin{proof}[Proof outline]
+The basic idea is to translate this into terms that we can use our
+earlier Scheme~\ref{scheme:characteristic:results:meet-is-characteristic}.
+We construct a new predicate of subgroups $H\subgroup G$,
+\begin{equation}
+P_{2}[X] = \exists N\normalSubgroup G, X=N\land P[G/N],
+\end{equation}
+then show the family of subsets
+\begin{equation}
+\mathcal{F} = \{A\subset G\mid \exists N\normalSubgroup G, A=N\land P[G/N]\}
+\end{equation}
+is the same as the family of subsets
+\begin{equation}
+\mathcal{F}_{2} = \{A\subset G\mid \exists H\subgroup G, A=H\land P_{2}[H]\}.
+\end{equation}
+This is important because using $P_{2}[-]$, we can construct a
+characteristic subgroup $K=\bigcap\mathcal{F}_{2}$. But since
+$\mathcal{F}=\mathcal{F}_{2}$, it follows that $K=\bigcap\mathcal{F}$ is
+the desired characteristic subgroup.
+\end{proof}
+
+\begin{sch-remark}
+This formalizes an important piece of folklore\footnote{I am endebted to
+Jack Schmidt for this, from~\url{https://math.stackexchange.com/a/216961/31693}} in finite group theory:
+given any class of finite groups $\mathcal{X}$ closed under
+isomorphisms, taking subgroups, and finitely many direct products; then
+for any finite group $G$ we can construct a characteristic subgroup of it,
+\begin{equation}
+O^{\mathcal{X}}(G) := \bigcap\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}.
+\end{equation}
+If we construct a predicate $P[X]=X\in\mathcal{X}$, then we can
+formalize this construct using Mizar schemes.
+
+Our formalization is slightly different.
+%% , since $N_{1}\iso N_{2}$ and
+%% $G/N_{1}\iso G/N_{2}$ does not necessarily imply that there is an
+%% automorphism $\varphi\in\Aut(G)$ such that $N_{1}=\varphi(N_{2})$.
+A more faithful condition would replace $A_{1}$ with $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. But we are restricting our attention to
+subgroups of $G$ which means we'd also have $G_{1},G_{2}\subgroup G$.
+Now I assert this is the same as the condition formalized.
+
+If $H_{1}\iso H_{2}$, suppose the isomorphism is given by
+$\varphi_{0}\colon H_{1}\to H_{2}$. Then this extends to an automorphism
+of $G$ given by:
+\begin{equation}
+  \varphi(x) = \begin{cases}\varphi_{0}(x) & x\in H_{1}\\
+    x & \text{otherwise}.
+  \end{cases}
+\end{equation}
+There may be others, but we have at least this one. This convinced me
+that we do not need to insist on the property $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. And this is precisely our condition $(A_{1})$.
+\end{sch-remark}
+
+<<Scheme: $\mathcal{X}$-residual is characteristic subgroup>>=
+scheme :: Sch 3
+  XResidualIsChar{G() -> Group, P[Group]} :
+ex K being strict Subgroup of G()
+st the carrier of K = meet {A where A is Subset of G() :
+                            ex H being strict normal Subgroup of G()
+                            st A = the carrier of H & P[G()./.H]} &
+   K is characteristic
+provided
+A1: for phi being Automorphism of G()
+    for N being strict normal Subgroup of G()
+    st P[G()./.N]
+    holds ex H being strict normal Subgroup of G()
+          st H = Image(phi|N) & P[G()./.H] and
+A2: ex H being strict normal Subgroup of G() st P[G()./.H]
+proof
+  defpred P2[Group] means ex N being strict normal Subgroup of G()
+                          st the multMagma of N = the multMagma of $1 &
+                             P[G() ./. N];
+  set Fam = {A where A is Subset of G() :
+             ex H being strict normal Subgroup of G()
+             st A = the carrier of H & P[G()./.H]};
+  set Fam2 = {A where A is Subset of G() :
+              ex H being strict Subgroup of G()
+              st A = the carrier of H & P2[H]};
+
+  A3: for phi being Automorphism of G()
+  for H being strict Subgroup of G()
+  st P2[H]
+  holds P2[Image(phi|H)]
+  <<Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$>>
+  A4: ex H being strict Subgroup of G() st P2[H] by A2;
+  
+  consider K being strict Subgroup of G() such that
+  A5: the carrier of K = meet Fam2 and
+  A6: K is characteristic
+  from MeetIsChar(A3,A4);
+  take K;
+  for A being object
+  holds A in Fam iff A in Fam2
+  <<Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$>>
+  then Fam = Fam2 by TARSKI:2;
+  then the carrier of K = meet Fam by A5;
+  hence thesis by A5,A6;
+end;
+@ %def XResidualIsChar
+
+\begin{proof}[{Proof step ($P_{3}[H]\implies\forall\varphi\in\Aut(G),P_{3}[\varphi(H)]$)}.]
+We translate our given hypothesis $A_{2}$ into a form that will be
+accepted by the previous scheme, and this amounts to unrolling
+definitions. We need
+Theorem~\ref{thm:characteristic:automorphisms-preserve-normal-subgroups}
+to show automorphisms $\varphi\in\Aut(G)$ map $N\normalSubgroup G$
+satisfying $P[G/N]$ to normal subgroups.
+\end{proof}
+
+<<Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$>>=
+proof
+  let phi be Automorphism of G();
+  let H be strict Subgroup of G();
+  assume B1: P2[H];
+  
+  then consider N being strict normal Subgroup of G() such that
+  B2: the multMagma of N = the multMagma of H and
+  B3: P[G()./.N];
+  
+  P[G()./.N] by B3;
+  then P2[N];
+  then consider N2 being strict normal Subgroup of G() such that
+  B4: N2 = Image(phi|N) & P[G()./.N2]
+  by A1;
+  P2[(Image(phi|N))] by B4,Th52;
+  hence P2[Image(phi|H)] by B2;
+end;
+@
+
+\begin{proof}[Proof step ($A\in\mathcal{F}_{3}\iff A\in\mathcal{F}$).]
+This amounts to unrolling the criteria for $A$ to be in one family or
+the other, which amounts to showing it satisfies the same properties.
+\end{proof}
+
+<<Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$>>=
+proof
+  let A be object;
+  thus A in Fam implies A in Fam2
+  proof
+    assume B1: A in Fam;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict normal Subgroup of G()
+    st A0 = the carrier of H & P[G()./.H];
+    consider H being strict normal Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P[G()./.H]
+    by B3;
+    B6: A0 = carr H & H is strict Subgroup of G() & P2[H] by B4,B5;
+    then ex H2 being strict Subgroup of G() st A0 = carr H2 & P2[H2];
+    then A0 in Fam2;
+    hence thesis by B2;
+  end;
+  thus A in Fam2 implies A in Fam
+  proof
+    assume B1: A in Fam2;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict Subgroup of G()
+    st A0 = the carrier of H & P2[H];
+    consider H being strict Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P2[H]
+    by B3;
+    B6: ex N being strict normal Subgroup of G() st N=H & P[G()./.N] by B5;
+    then A0 in Fam by B4;
+    hence thesis by B2;
+  end;
+end;
+@ 

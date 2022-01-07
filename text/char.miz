@@ -252,7 +252,6 @@ LmFiniteNontrivial:
   not INT.Group(2) is trivial
 proof
   set G = INT.Group(2);
-  
   A1: the carrier of G = Segm 2
                       .= 2 by ORDINAL1:def 17;
   the carrier of (1).G = {1_G} by GROUP_2:def 7
@@ -1837,3 +1836,305 @@ proof
   then gr commutators G is characteristic by A1,Th48;
   hence thesis;
 end;
+
+theorem Th50:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(a * H) = (f.a) * (f .: H)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(a * H) holds y in (f.a)*(f.:H)
+  proof
+    let y be object;
+    assume B1: y in f .: (a * H);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (a * H) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = a*h & h in H
+    by B2,GROUP_2:103;
+    B5: y = f.(a*h) by B3,B4
+         .= (f.a)*(f.h) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.a)*(f.h) in (f.a)*(f.:H) by GROUP_2:103;
+    hence y in (f.a) * (f .: H) by B5;
+  end;
+  then A1: f.:(a * H) c= (f.a) * (f .: H) by TARSKI:def 3;
+  for y being object st y in (f.a)*(f.:H) holds y in f.:(a * H)
+  proof
+    let y be object;
+    assume B1: y in (f.a)*(f.:H);
+    then consider g being Element of G2 such that
+    B2: y = (f.a)*g and
+    B3: g in (f.:H)
+    by GROUP_2:103;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,Th2;
+    then B6: g = f.x by B4;
+    B7: y = (f.a)*g by B2
+         .= (f.a)*(f.x) by B6
+         .= f.(a*x) by GROUP_6:def 6;
+    B8: a*x in a*H by B5,GROUP_2:103;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then a*x in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by A1,B7,B8;
+    hence y in f.:(a * H) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f.a) * (f .: H) c= f.:(a * H) by TARSKI:def 3;
+  thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
+end;
+
+theorem Th51:
+  for G1,G2 being Group
+  for H being Subgroup of G1
+  for a being Element of G1
+  for f being Homomorphism of G1,G2
+  holds f.:(H * a) = (f .: H) * (f.a)
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G1;
+  let a be Element of G1;
+  let f be Homomorphism of G1,G2;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
+  for y being object st y in f.:(H * a) holds y in (f.:H)*(f.a)
+  proof
+    let y be object;
+    assume B1: y in f .: (H * a);
+    then consider x being object such that
+    B2: x in the carrier of G1 & x in (H * a) and
+    B3: y = f.x
+    by A1,FUNCT_1:def 6;
+    consider h being Element of G1 such that
+    B4: x = h*a & h in H
+    by B2,GROUP_2:104;
+    B5: y = f.(h*a) by B3,B4
+         .= (f.h)*(f.a) by GROUP_6:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
+    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
+    then f.h in f.:H;
+    then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
+    hence thesis by B5;
+  end;
+  then A1: f.:(H * a) c= (f .: H) * (f.a) by TARSKI:def 3;
+  for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
+  proof
+    let y be object;
+    assume B1: y in (f.:H)*(f.a);
+    then consider g being Element of G2 such that
+    B2: y = g*(f.a) and
+    B3: g in (f.:H)
+    by GROUP_2:104;
+    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    then consider x being Element of H such that
+    B4: g = (f|H).x
+    by GROUP_6:45;
+    B5: x in H & x is Element of G1 by GROUP_2:42;
+    reconsider x as Element of G1 by GROUP_2:42;
+    (f|H).x = f.x by B5,Th2;
+    then B6: g = f.x by B4;
+    B7: y = g*(f.a) by B2
+         .= (f.x)*(f.a) by B6
+         .= f.(x*a) by GROUP_6:def 6;
+    B8: x*a in H*a by B5,GROUP_2:104;
+    dom f = the carrier of G1 by FUNCT_2:def 1;
+    then x*a in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
+    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by A1,B7,B8;
+    hence y in f.:(H * a) by A1,B7,B8,FUNCT_1:def 6;
+  end;
+  then A2: (f .: H) * (f.a) c= f.:(H * a) by TARSKI:def 3;
+  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+end;
+
+theorem Th52:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for phi being Automorphism of G
+  holds Image(phi|N) is normal Subgroup of G
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let phi be Automorphism of G;
+  set H = Image(phi|N);
+  A1: H = phi .: N by GRSOLV_1:def 3;
+  for g being Element of G
+  holds g * H = H * g
+  proof
+    let g be Element of G;
+    set f = (phi").g;
+    f is Element of G;
+    B1: phi.f = g by Th6;
+    B2: f * N = N * f by GROUP_3:117;
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th50
+                      .= g * H by B1,A1;
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th51
+                      .= (phi .: N)*g by B1
+                      .= H*g by A1;
+    hence g * H = H * g by B2,B3,B4;
+  end;
+  hence H is normal Subgroup of G by GROUP_3:117;
+end;
+
+scheme :: Sch 3
+  XResidualIsChar{G() -> Group, P[Group]} :
+ex K being strict Subgroup of G()
+st the carrier of K = meet {A where A is Subset of G() :
+                            ex H being strict normal Subgroup of G()
+                            st A = the carrier of H & P[G()./.H]} &
+   K is characteristic
+provided
+A1: for phi being Automorphism of G()
+    for N being strict normal Subgroup of G()
+    st P[G()./.N]
+    holds ex H being strict normal Subgroup of G()
+          st H = Image(phi|N) & P[G()./.H] and
+A2: ex H being strict normal Subgroup of G() st P[G()./.H]
+proof
+  defpred P2[Group] means ex N being strict normal Subgroup of G()
+                          st the multMagma of N = the multMagma of $1 &
+                             P[G() ./. N];
+  set Fam = {A where A is Subset of G() :
+             ex H being strict normal Subgroup of G()
+             st A = the carrier of H & P[G()./.H]};
+  set Fam2 = {A where A is Subset of G() :
+              ex H being strict Subgroup of G()
+              st A = the carrier of H & P2[H]};
+
+  A3: for phi being Automorphism of G()
+  for H being strict Subgroup of G()
+  st P2[H]
+  holds P2[Image(phi|H)]
+  proof
+    let phi be Automorphism of G();
+    let H be strict Subgroup of G();
+    assume B1: P2[H];
+    
+    then consider N being strict normal Subgroup of G() such that
+    B2: the multMagma of N = the multMagma of H and
+    B3: P[G()./.N];
+    
+    P[G()./.N] by B3;
+    then P2[N];
+    then consider N2 being strict normal Subgroup of G() such that
+    B4: N2 = Image(phi|N) & P[G()./.N2]
+    by A1;
+    P2[(Image(phi|N))] by B4,Th52;
+    hence P2[Image(phi|H)] by B2;
+  end;
+  A4: ex H being strict Subgroup of G() st P2[H] by A2;
+  
+  consider K being strict Subgroup of G() such that
+  A5: the carrier of K = meet Fam2 and
+  A6: K is characteristic
+  from MeetIsChar(A3,A4);
+  take K;
+  for A being object
+  holds A in Fam iff A in Fam2
+  proof
+    let A be object;
+    thus A in Fam implies A in Fam2
+    proof
+      assume B1: A in Fam;
+      then consider A0 being Subset of G() such that
+      B2: A = A0 and
+      B3: ex H being strict normal Subgroup of G()
+      st A0 = the carrier of H & P[G()./.H];
+      consider H being strict normal Subgroup of G() such that
+      B4: A0 = the carrier of H and
+      B5: P[G()./.H]
+      by B3;
+      B6: A0 = carr H & H is strict Subgroup of G() & P2[H] by B4,B5;
+      then ex H2 being strict Subgroup of G() st A0 = carr H2 & P2[H2];
+      then A0 in Fam2;
+      hence thesis by B2;
+    end;
+    thus A in Fam2 implies A in Fam
+    proof
+      assume B1: A in Fam2;
+      then consider A0 being Subset of G() such that
+      B2: A = A0 and
+      B3: ex H being strict Subgroup of G()
+      st A0 = the carrier of H & P2[H];
+      consider H being strict Subgroup of G() such that
+      B4: A0 = the carrier of H and
+      B5: P2[H]
+      by B3;
+      B6: ex N being strict normal Subgroup of G() st N=H & P[G()./.N] by B5;
+      then A0 in Fam by B4;
+      hence thesis by B2;
+    end;
+  end;
+  then Fam = Fam2 by TARSKI:2;
+  then the carrier of K = meet Fam by A5;
+  hence thesis by A5,A6;
+end;
+
+
+scheme :: Sch 3
+  PResidualIsChar{G() -> Group, P[Group]} :
+ex K being strict normal Subgroup of G()
+st P[G()./.K] &
+   (for N being normal Subgroup of G() holds P[G()./.N] iff K is Subgroup of N) &
+   K is characteristic
+provided
+A1: for G1,G2 being Group
+    st G1,G2 are_isomorphic & P[G1]
+    holds P[G2] and
+::A1: for N1,N2 being strict normal Subgroup of G()
+::    st P[G()./.N1] & G()./.N1,G()./.N2 are_isomorphic
+::    holds P[G()./.N2]
+A2: for H being Group
+    st P[H]
+    holds (for K being Subgroup of H holds P[K]) and
+A3: ex H being strict normal Subgroup of G() st P[G()./.H]
+proof
+  defpred P2[set] means ex N being strict normal Subgroup of G() st $1 = N & P[G()./.N];
+  A4: ex H being strict Subgroup of G() st P2[H] by A3;
+  set Fam = {A where A is Subset of G() :
+             ex H being strict Subgroup of G()
+             st A = the carrier of H & P2[H]};
+  consider K being strict Subgroup of G() such that
+  A5: the carrier of K = meet Fam
+  from GROUP_4:sch 1(A4);
+  K is normal;
+::>         *4
+  then reconsider K as strict normal Subgroup of G();
+  take K;
+  thus C1: P[G()./.K];
+::>                 *4
+  thus C2: for N being normal Subgroup of G() holds P[G()./.N] iff K is Subgroup of N
+  proof
+    let N be normal Subgroup of G();
+    thus P[G()./.N] implies K is Subgroup of N
+    proof
+      assume P[G()./.N];
+      then carr N in Fam;
+::>                    *4
+      then K is Subgroup of N;
+::>                         *4
+    end;
+::>   *70
+    thus K is Subgroup of N implies P[G()./.N];
+::>                                          *4
+  end;
+
+  thus K is characteristic;
+::>                      *4
+end;
+::> 4: This inference is not accepted
+::> 70: Something remains to be proved
