@@ -2291,7 +2291,7 @@ end;
 
 
 scheme :: Sch 3
-  PResidualIsChar{G() -> Group, P[Group]} :
+  PResidualIsChar{G() -> Group, P[set]} :
   ex K being strict normal Subgroup of G()
   st P[G()./.K] &
      (for N being strict normal Subgroup of G() holds P[G()./.N] iff K is Subgroup of N) &
@@ -2321,13 +2321,51 @@ proof
   set Fam = {A where A is Subset of G() :
              ex H being strict Subgroup of G()
              st A = the carrier of H & P3[H]};
+  set Fam2 = {A where A is Subset of G() :
+              ex N being strict Subgroup of G()
+              st A = carr N & N is normal & P2[N]};
   consider K being strict Subgroup of G() such that
   A2: the carrier of K = meet Fam and
   A3: for N being strict Subgroup of G() st P3[N] holds K is Subgroup of N
   from MeetIsMinimal(A1);
-  A4: ex H being strict normal Subgroup of G() st P3[H] by A1;
-  reconsider K as strict normal Subgroup of G() from MeetOfNormsIsNormal(A4);
-::>                                                *20
+  A4: for A being object holds A in Fam iff A in Fam2
+  proof
+    let A be object;
+    thus A in Fam implies A in Fam2
+    proof
+      assume A in Fam;
+      then consider A0 being Subset of G() such that
+      B1: A0 = A and
+      B2: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 & P3[H0];
+      consider H0 being strict Subgroup of G() such that
+      B3: A0 = the carrier of H0 & P3[H0]
+      by B2;
+      H0 is normal & P2[H0] by B3;
+      then carr H0 in Fam2;
+      hence thesis by B1,B3;
+    end;
+    thus A in Fam2 implies A in Fam
+    proof
+      assume A in Fam2;
+      then consider A0 being Subset of G() such that
+      B1: A0 = A and
+      B2: ex N being strict Subgroup of G() st A0 = carr N & N is normal & P2[N];
+      consider N being strict Subgroup of G() such that
+      B3: A0 = carr N & N is normal & P2[N]
+      by B2;
+      P3[N] by B3;
+      then carr N in Fam;
+      hence thesis by B1,B3;
+    end;
+  end;
+  then A5:Fam = Fam2 by TARSKI:2;
+  then A6: meet Fam = meet Fam2;
+  A7: ex H1 being strict normal Subgroup of G() st P2[H1] by A1;
+  A8: for H0 being strict Subgroup of G()
+  st the carrier of H0 = meet Fam2
+  holds H0 is strict normal Subgroup of G() from MeetOfNormsIsNormal(A7);
+  the carrier of K = meet Fam2 by A2,A6;
+  then reconsider K as strict normal Subgroup of G() by A4,A6,A8;
   take K;
   A5: :: for G being Group
       for H1,H2 being Subgroup of G()
