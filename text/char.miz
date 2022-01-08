@@ -2147,19 +2147,21 @@ proof
   assume A1: H1 is Subgroup of H2;
   let a be Element of G;
   for h being Element of G
-  st h in H1
-  holds h |^ a in H2 |^ a
+  st h in H1 |^ a
+  holds h in H2 |^ a
   proof
     let h be Element of G;
-    assume B1: h in H1;
-    then h in H2 by A1, GROUP_2:40;
-    then h |^ a in H2 |^ a by GROUP_3:58;
-    hence thesis;
+    assume B1: h in H1 |^ a;
+    then consider g being Element of G such that
+    B2: h = g |^ a and
+    B3: g in H1
+    by GROUP_3:58;
+    g in H2 by A1,B3,GROUP_2:40;
+    then g |^ a in H2 |^ a by GROUP_3:58;
+    hence thesis by B2;
   end;
-  thus H1 |^ a is Subgroup of H2 |^ a;
-::>                                 *4
+  hence H1 |^ a is Subgroup of H2 |^ a by GROUP_2:58;
 end;
-
 
 scheme
   MeetOfNormsIsNormal{G() -> Group, P[set]} :
