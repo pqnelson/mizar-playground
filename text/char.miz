@@ -17,7 +17,7 @@ environ
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
-   GROUP_6, GROUP_7, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
+   GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
               RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
@@ -25,7 +25,7 @@ environ
    ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
    SETFAM_1, ORDINAL1,INT_1, INT_2, PRALG_1,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
-   BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1,
+   BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GROUP_7, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
@@ -38,7 +38,7 @@ environ
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
    ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
-   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7;
+   STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7;
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
  definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1,
    GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7;
@@ -49,7 +49,7 @@ environ
    FUNCT_2, NEWTON, GROUP_7;
  theorems
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
-   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
+   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
@@ -2386,61 +2386,80 @@ end;
 theorem Th55:
   for G being Group
   for X being finite set
-  st X <> {} & (for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N)
+  st X <> {} & (for A being Element of X
+                holds ex N being strict normal Subgroup of G
+                st A = the carrier of N)
   for I being set
   st card I = card X
-  for F being Group-like multMagma-Family of I
-  st (for N being normal Subgroup of G st N in X holds ex i being Element of I st F.i=G./.N)
-  holds ex H being Group st H = product F & ex N being normal Subgroup of G st the carrier of N = meet X & ex phi being Homomorphism of G,H st Image(phi),G./.N are_isomorphic
+  for F being associative Group-like multMagma-Family of I
+  st (for N being normal Subgroup of G st N in X
+      holds ex i being Element of I st F.i=G./.N)
+  holds ex H being Group st H = product F &
+                         ex N being normal Subgroup of G
+                            st the carrier of N = meet X &
+                         ex phi being Homomorphism of G,H
+                            st Image(phi),G./.N are_isomorphic
 proof
   let G be Group;
   let X be finite set;
   assume A1: X <> {};
-  assume A2: for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N;
+  assume A2: for A being Element of X
+             holds ex N being strict normal Subgroup of G st A = the carrier of N;
   let I be set;
   assume A3: card I = card X;
-  let F be Group-like multMagma-Family of I;
-  assume A4: for N being normal Subgroup of G st N in X holds ex i being Element of I st F.i=G./.N;
-  consider H being multMagma such that
+  let F be associative Group-like multMagma-Family of I;
+  assume A4: for N being normal Subgroup of G st N in X
+             holds ex i being Element of I st F.i=G./.N;
+  consider H being Group such that
   A5: H = product F;
-  reconsider H as Group;
-::>                   *4,4,4
   take H;
-  thus H = product F by A5;
-  defpred P[set] means $1 in X;
-  set Fam = {A where A is Subset of G : ex N being strict Subgroup of G st A = the carrier of N & P[N]};
+  thus C1: H = product F by A5;
+  defpred P[Group] means the carrier of $1 in X;
+  set Fam = {A where A is Subset of G : ex N being strict Subgroup of G
+                                        st A = the carrier of N & P[N]};
   A6: ex H being strict Subgroup of G st P[H]
   proof
     X <> {} by A1;
     then X is non empty;
-    then ex H being object st H in X by XBOOLE_0:def 1;
-    then consider H being object such that
-    B1: H in X;
-    reconsider H as Element of X by B1;
-    reconsider H as strict Subgroup of G by A2;
-::>                                       *4,4
+    then ex A being object st A in X by XBOOLE_0:def 1;
+    then consider A being object such that
+    B1: A in X;
+    reconsider A as Element of X by B1;
+    consider H being strict normal Subgroup of G such that
+    B2: A = the carrier of H
+    by B1,A2;
     take H;
-    H in X by B1;
+    the carrier of H in X by B1,B2;
     hence P[H];
   end;
   consider N being strict normal Subgroup of G such that
   A7: the carrier of N = meet X
   by A1,A2,Th54;
   take N;
-  thus the carrier of N = meet X by A7;
-  consider phi being Homomorphism of G,H;
-::>                                     *403
+  thus C2: the carrier of N = meet X by A7;
+  consider phi being Homomorphism of G,H such that
+  A8: for g being Element of G holds
+      (ex f being Function
+       st phi.g = f & dom f = dom F &
+          for i being object st i in dom F
+          holds ex Fi being Subgroup of G st (Fi = F.i & f.i = g*Fi))
+  by A4, A5, GROUP_7:def 2, CARD_3:def 5;
+::>,4
+  the carrier of Ker phi = meet X;
+::>                             *4
+  then C3: N = Ker phi by A7, GROUP_2:59;
   take phi;
-  thus Image(phi),G./.N are_isomorphic;
-::>                                  *4
+  thus Image(phi),G./.N are_isomorphic by C3,GROUP_6:78;
 end;
-
+proof end;
+::> *396
 
 scheme :: Sch 3
   PResidualIsChar{G() -> Group, P[set]} :
   ex K being strict normal Subgroup of G()
   st P[G()./.K] &
-     (for N being strict normal Subgroup of G() holds P[G()./.N] iff K is Subgroup of N) &
+     (for N being strict normal Subgroup of G()
+      holds P[G()./.N] iff K is Subgroup of N) &
      K is characteristic
 provided
 P0: ex H being strict normal Subgroup of G() st P[G()./.H] and
@@ -2456,8 +2475,8 @@ P3: for G being Group
     holds P[H1 /\ H2] and
 P4: for G being Group
     st P[G]
-    for N being normal Subgroup of G holds P[G./.N]
-:: P5: for X being finite set st X <> {} & (for G being Element of X holds G is Group & P[G]) holds ex G being Group st product X,G are_isomorphic & P[G]
+    for N being normal Subgroup of G holds P[G./.N] and
+P5: for X being finite set st X <> {} & (for G being Element of X holds G is Group & P[G]) for I being set st card I = card X for F being associative Group-like multMagma-Family of I holds P[product F]
 proof
   defpred P2[set] means ex N being strict normal Subgroup of G() st $1 = N & P[G()./.N];
   defpred P3[set] means ex H being strict Subgroup of G() st $1 = H & H is normal & P2[H];
@@ -2555,5 +2574,4 @@ proof
 end;
 ::> 4: This inference is not accepted
 ::> 70: Something remains to be proved
-::> 191: Check if scheme is in "schemes" or all constructors are available
-::> 403: "such" expected
+::> 396: Formula expected
