@@ -1,0 +1,15 @@
+\section{Product Groups}
+
+This is formalized in~\mml{group7}. The basic idea is to have some
+indexing set $I$, then consider a family of magmas indexed by it $F_{i}$
+for $i\in I$. The Mizar notation for $F_{i}$ is ``\lstinline{F.i}''.
+This leans on the notion of a product of a family of sets, as given in
+Definition~\mml[def 5]{card3}:
+
+\begin{mizar}
+func product f -> set means :: CARD_3:def 5
+:Def5: for x being object holds x in it iff
+  ex g st x = g & dom g = dom f &
+          for y being object st y in dom f
+          holds g.y in f.y;
+\end{mizar}
