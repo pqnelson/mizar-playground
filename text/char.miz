@@ -17,42 +17,42 @@ environ
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
-   GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
+   GROUP_6, GROUP_7, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
               RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
-   CARD_1, NUMBERS, REAL_1, SETWISEO,
+   CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
    ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
-   SETFAM_1, ORDINAL1,INT_1, INT_2,
+   SETFAM_1, ORDINAL1,INT_1, INT_2, PRALG_1,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1,
-   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GROUP_7, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
-   FINSEQ_1, ZFMISC_1, CARD_1, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+   FINSEQ_1, ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
    FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, BINOP_1,
    BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, GROUP_7;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
    ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
-   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1;
+   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7;
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
  definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1,
-   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0;
+   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7;
  equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
-   ALGSTR_0, NEWTON;
+   ALGSTR_0, NEWTON, GROUP_7;
  expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
-   FUNCT_2, NEWTON;
+   FUNCT_2, NEWTON, GROUP_7;
  theorems
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
    SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1;
- schemes FUNCT_2, GROUP_4, FINSEQ_1;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7;
+ schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
 
 begin :: Preparatory Work
 reserve X for set;
@@ -2117,24 +2117,6 @@ A2: the carrier of H = meet {A where A is Subset of G() :
   hence thesis by A2;
 end;
 
-scheme
-  MeetSatisfiesP{G() -> Group, P[set]} :
-  for H being strict strict Subgroup of G()
-  st the carrier of H = meet {A where A is Subset of G() : ex N being strict Subgroup of G() st A = carr N & P[N]}
-  holds P[H]
-provided
-A1: ex H being strict Subgroup of G() st P[H] and
-A2: for H1,H2 being Subgroup of G() st P[H1] & P[H2] holds P[H1 /\ H2]
-proof
-  let H be strict Subgroup of G();
-  assume A3: the carrier of H = meet {A where A is Subset of G() :
-                                      ex N being strict Subgroup of G()
-                                      st A = carr N & P[N]};
-
-  thus P[H];
-::>       *4
-end;
-
 theorem Th53:
   for G being Group
   for H1,H2 being Subgroup of G
@@ -2166,13 +2148,13 @@ end;
 scheme
   MeetOfNormsIsNormal{G() -> Group, P[set]} :
   for H being strict Subgroup of G()
-  st the carrier of H = meet {A where A is Subset of G() : ex N being strict Subgroup of G() st A = carr N & N is normal & P[N]}
+  st the carrier of H = meet {A where A is Subset of G() : ex N being strict Subgroup of G() st A = the carrier of N & N is normal & P[N]}
   holds H is strict normal Subgroup of G()
 provided
 A1: ex H being strict normal Subgroup of G() st P[H]
 proof
   defpred IsNorm[Subgroup of G()] means $1 is normal Subgroup of G();
-  set Fam = {A where A is Subset of G() : ex N being strict Subgroup of G() st A = carr N & N is normal & P[N]};
+  set Fam = {A where A is Subset of G() : ex N being strict Subgroup of G() st A = the carrier of N & N is normal & P[N]};
   let H be strict Subgroup of G();
   assume A2: the carrier of H = meet Fam;
   A3: Fam <> {}
@@ -2189,7 +2171,7 @@ proof
     assume P[N];
     then carr N in Fam;
     then meet Fam c= carr N by SETFAM_1:3;
-    then carr H c= carr N by A2;
+    then the carrier of H c= carr N by A2;
     then H is Subgroup of N by GROUP_2:57;
     hence thesis;
   end;
@@ -2214,9 +2196,9 @@ proof
     A in Fam by B1,B2;
     then consider A0 being Subset of G() such that
     B3: A = A0 and
-    B4: ex H0 being strict Subgroup of G() st A0 = carr H0 & H0 is normal & P[H0];
+    B4: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 & H0 is normal & P[H0];
     consider H0 being strict Subgroup of G() such that
-    B5: A0 = carr H0 & H0 is normal & P[H0]
+    B5: A0 = the carrier of H0 & H0 is normal & P[H0]
     by B4;
     carr H0 = carr N by B2,B3,B5;
     then H0 = N by GROUP_2:59;
@@ -2258,9 +2240,9 @@ proof
       assume C0: A in Fam;
       then consider A0 being Subset of G() such that
       C1: A = A0 and
-      C2: ex H0 being strict Subgroup of G() st A0 = carr H0 & H0 is normal & P[H0];
+      C2: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 & H0 is normal & P[H0];
       consider H0 being strict Subgroup of G() such that
-      C3: A0 = carr H0 & H0 is normal & P[H0]
+      C3: A0 = the carrier of H0 & H0 is normal & P[H0]
       by C2;
       reconsider H0 as strict normal Subgroup of G() by C3;
       carr H0 in Fam by C0,C1,C3;
@@ -2277,7 +2259,7 @@ proof
         assume C2: A in Fam;
         then consider A0 being Subset of G() such that
         C3: A0 = A and
-        C4: ex H0 being strict Subgroup of G() st A0 = carr H0 & H0 is normal & P[H0];
+        C4: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 & H0 is normal & P[H0];
         carr(H |^ a) c= A0 by C2,C3,B3;
         hence thesis by C1,C3;
       end;
@@ -2289,6 +2271,168 @@ proof
   end;
   then H is normal by GROUP_3:122;
   hence thesis;
+end;
+
+theorem Th54:
+  for G being Group
+  for X being finite set
+  st X <> {} & (for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N)
+  holds ex N being strict normal Subgroup of G st the carrier of N = meet X
+proof
+  let G be Group;
+  let X be finite set;
+  assume A1: X <> {};
+  assume A2: for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N;
+  defpred P[Group] means $1 is normal Subgroup of G & the carrier of $1 in X;
+  set Fam = {A where A is Subset of G : ex N being strict Subgroup of G st A = the carrier of N & P[N]};
+  set Fam2 = {A where A is Subset of G : ex N being strict Subgroup of G st A = the carrier of N & N is normal & P[N]};
+  A3: ex H being strict Subgroup of G st P[H]
+  proof
+    X <> {} by A1;
+    then X is non empty;
+    then ex A being object st A in X by XBOOLE_0:def 1;
+    then consider A being object such that
+    B1: A in X;
+    reconsider A as Element of X by B1;
+    consider H being strict normal Subgroup of G such that
+    B2: A = the carrier of H
+    by A2;
+    take H;
+    the carrier of H in X by B1,B2;
+    hence P[H];
+  end;
+
+  consider N being strict Subgroup of G such that
+  A4: the carrier of N = meet Fam
+  from GROUP_4:sch 1(A3);
+  for A being object
+  holds A in Fam iff A in Fam2
+  proof
+    let A be object;
+    thus A in Fam implies A in Fam2
+    proof
+      assume B1: A in Fam;
+      then consider A0 being Subset of G such that
+      B2: A = A0 and
+      B3: ex N being strict Subgroup of G st A0 = the carrier of N & P[N];
+
+      consider N being strict Subgroup of G such that
+      B4: A0 = the carrier of N & P[N]
+      by B3;
+      B5: N is normal by B4;
+      hence A in Fam2 by B2,B3,B4,B5;
+    end;
+    thus A in Fam2 implies A in Fam
+    proof
+      assume B1: A in Fam2;
+      then consider A0 being Subset of G such that
+      B2: A = A0 and
+      B3: ex N being strict Subgroup of G st A0 = the carrier of N & N is normal & P[N];
+      thus A in Fam by B2,B3;
+    end;
+  end;
+  then A5: Fam = Fam2 by TARSKI:2;
+  B3: ex H being strict normal Subgroup of G st P[H]
+  proof
+    consider H being strict Subgroup of G such that
+    B1: P[H]
+    by A3;
+    H is strict normal Subgroup of G & the carrier of H in X by B1;
+    then reconsider H as strict normal Subgroup of G;
+    take H;
+    thus thesis by B1;
+  end;
+  A6: for H being strict Subgroup of G
+  st the carrier of H = meet Fam2
+  holds H is strict normal Subgroup of G
+  from MeetOfNormsIsNormal(B3);
+  then N is normal by A4,A5;
+  then reconsider N as strict normal Subgroup of G;
+  take N;
+
+  for A being object
+  holds A in Fam iff A in X
+  proof
+    let A be object;
+    thus A in Fam implies A in X
+    proof
+      assume B1: A in Fam;
+      then consider A0 being Subset of G such that
+      B3: A = A0 and
+      B2: ex N being strict Subgroup of G st A0 = the carrier of N & P[N];
+
+      consider N being strict Subgroup of G such that
+      B4: A0 = the carrier of N & P[N]
+      by B2;
+      reconsider N as strict normal Subgroup of G by B4;
+      the carrier of N in X by B4;
+      hence thesis by B2,B3,B4;
+    end;
+    thus A in X implies A in Fam
+    proof
+      assume B1: A in X;
+      then consider N being strict normal Subgroup of G such that
+      B2: A = the carrier of N
+      by A2;
+      B3: P[N] by B1,B2;
+      A is Subset of G by B2,GROUP_2:def 5;
+      hence A in Fam by B2,B3;
+    end;
+  end;
+  then Fam = X by TARSKI:2;
+  hence the carrier of N = meet X by A4,A5,TARSKI:2;
+end;
+
+theorem Th55:
+  for G being Group
+  for X being finite set
+  st X <> {} & (for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N)
+  for I being set
+  st card I = card X
+  for F being Group-like multMagma-Family of I
+  st (for N being normal Subgroup of G st N in X holds ex i being Element of I st F.i=G./.N)
+  holds ex H being Group st H = product F & ex N being normal Subgroup of G st the carrier of N = meet X & ex phi being Homomorphism of G,H st Image(phi),G./.N are_isomorphic
+proof
+  let G be Group;
+  let X be finite set;
+  assume A1: X <> {};
+  assume A2: for A being Element of X holds ex N being strict normal Subgroup of G st A = the carrier of N;
+  let I be set;
+  assume A3: card I = card X;
+  let F be Group-like multMagma-Family of I;
+  assume A4: for N being normal Subgroup of G st N in X holds ex i being Element of I st F.i=G./.N;
+  consider H being multMagma such that
+  A5: H = product F;
+  reconsider H as Group;
+::>                   *4,4,4
+  take H;
+  thus H = product F by A5;
+  defpred P[set] means $1 in X;
+  set Fam = {A where A is Subset of G : ex N being strict Subgroup of G st A = the carrier of N & P[N]};
+  A6: ex H being strict Subgroup of G st P[H]
+  proof
+    X <> {} by A1;
+    then X is non empty;
+    then ex H being object st H in X by XBOOLE_0:def 1;
+    then consider H being object such that
+    B1: H in X;
+    reconsider H as Element of X by B1;
+    reconsider H as strict Subgroup of G by A2;
+::>                                       *4,4
+    take H;
+    H in X by B1;
+    hence P[H];
+  end;
+  consider N being strict normal Subgroup of G such that
+  A7: the carrier of N = meet X
+  by A1,A2,Th54;
+  take N;
+  thus the carrier of N = meet X by A7;
+  consider phi being Homomorphism of G,H;
+::>                                     *403
+  take phi;
+  thus Image(phi),G./.N are_isomorphic;
+::>                                  *4
 end;
 
 
@@ -2303,9 +2447,6 @@ P0: ex H being strict normal Subgroup of G() st P[G()./.H] and
 P1: for G1,G2 being Group
     st G1,G2 are_isomorphic & P[G1]
     holds P[G2] and
-::P1: for N1,N2 being strict normal Subgroup of G()
-::    st P[G()./.N1] & G()./.N1,G()./.N2 are_isomorphic
-::    holds P[G()./.N2]
 P2: for H being Group
     st P[H]
     holds (for K being Subgroup of H holds P[K]) and
@@ -2316,21 +2457,39 @@ P3: for G being Group
 P4: for G being Group
     st P[G]
     for N being normal Subgroup of G holds P[G./.N]
+:: P5: for X being finite set st X <> {} & (for G being Element of X holds G is Group & P[G]) holds ex G being Group st product X,G are_isomorphic & P[G]
 proof
   defpred P2[set] means ex N being strict normal Subgroup of G() st $1 = N & P[G()./.N];
   defpred P3[set] means ex H being strict Subgroup of G() st $1 = H & H is normal & P2[H];
+  Q0: ex H being strict normal Subgroup of G() st P3[H] by P0;
+  Q2: for H being strict normal Subgroup of G() st P3[H]
+  holds (for N being strict normal Subgroup of G() st H is Subgroup of N holds P3[N])
+  proof
+    let H be strict normal Subgroup of G();
+    assume B1: P3[H];
+    let N be strict normal Subgroup of G();
+    assume B2: H is Subgroup of N;
+    then N./.((N,H) `*`) is normal Subgroup of G()./.H by GROUP_6:29;
+    then consider J being normal Subgroup of G()./.H such that
+    B3: J = N./.((N,H) `*`);
+    B4: P[(G()./.H)./.J] by B1,P4;
+    (G()./.H)./.J,G()./.N are_isomorphic by B2,B3,GROUP_6:80;
+    then P[G()./.N] by B4,P1;
+    hence P3[N];
+  end;
+
   A1: ex H being strict Subgroup of G() st P3[H] by P0;
   set Fam = {A where A is Subset of G() :
              ex H being strict Subgroup of G()
              st A = the carrier of H & P3[H]};
   set Fam2 = {A where A is Subset of G() :
               ex N being strict Subgroup of G()
-              st A = carr N & N is normal & P2[N]};
+              st A = the carrier of N & N is normal & P2[N]};
   consider K being strict Subgroup of G() such that
   A2: the carrier of K = meet Fam and
   A3: for N being strict Subgroup of G() st P3[N] holds K is Subgroup of N
   from MeetIsMinimal(A1);
-  A4: for A being object holds A in Fam iff A in Fam2
+  for A being object holds A in Fam iff A in Fam2
   proof
     let A be object;
     thus A in Fam implies A in Fam2
@@ -2343,7 +2502,7 @@ proof
       B3: A0 = the carrier of H0 & P3[H0]
       by B2;
       H0 is normal & P2[H0] by B3;
-      then carr H0 in Fam2;
+      then the carrier of H0 in Fam2 by B3;
       hence thesis by B1,B3;
     end;
     thus A in Fam2 implies A in Fam
@@ -2351,31 +2510,30 @@ proof
       assume A in Fam2;
       then consider A0 being Subset of G() such that
       B1: A0 = A and
-      B2: ex N being strict Subgroup of G() st A0 = carr N & N is normal & P2[N];
+      B2: ex N being strict Subgroup of G() st A0 = the carrier of N & N is normal & P2[N];
       consider N being strict Subgroup of G() such that
-      B3: A0 = carr N & N is normal & P2[N]
+      B3: A0 = the carrier of N & N is normal & P2[N]
       by B2;
       P3[N] by B3;
       then carr N in Fam;
       hence thesis by B1,B3;
     end;
   end;
-  then A5:Fam = Fam2 by TARSKI:2;
-  then A6: meet Fam = meet Fam2;
+  then Fam = Fam2 by TARSKI:2;
+  then meet Fam = meet Fam2;
+  then A6: the carrier of K = meet Fam2 by A2;
   A7: ex H1 being strict normal Subgroup of G() st P2[H1] by A1;
-  A8: for H0 being strict Subgroup of G()
+  for H0 being strict Subgroup of G()
   st the carrier of H0 = meet Fam2
   holds H0 is strict normal Subgroup of G() from MeetOfNormsIsNormal(A7);
-  the carrier of K = meet Fam2 by A2,A6;
-  then reconsider K as strict normal Subgroup of G() by A4,A6,A8;
+  then reconsider K as strict normal Subgroup of G() by A6;
   take K;
-  A5: :: for G being Group
-      for H1,H2 being Subgroup of G()
-      st P3[H1] & P3[H2]
-      holds P3[H1 /\ H2];
-::>                    *4
-  thus C1: P[G()./.K] from MeetSatisfiesP(A1,A5);
-::>                      *20
+
+  thus C1: P[G()./.K]
+  proof
+    :: Theorem 55 will be applied here
+  end;
+::> *70
   thus C2: for N being strict normal Subgroup of G()
            holds P[G()./.N] iff K is Subgroup of N
   proof
@@ -2396,4 +2554,6 @@ proof
 ::>                      *4
 end;
 ::> 4: This inference is not accepted
-::> 20: The structure of the sentences disagrees with the scheme
+::> 70: Something remains to be proved
+::> 191: Check if scheme is in "schemes" or all constructors are available
+::> 403: "such" expected
