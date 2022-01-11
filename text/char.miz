@@ -12,27 +12,27 @@
 
 environ
 
- vocabularies MOD_4, CHAR, CARD_3, RLVECT_1,
-   RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1,
+ vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS,
+   RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
    GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-              RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
    CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
    ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
-   SETFAM_1, ORDINAL1,INT_1, INT_2,
+   SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
-   FINSEQ_1, ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
-   FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, BINOP_1,
-   BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, GROUP_1, GROUP_2,
+   ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+   FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
+   BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -48,8 +48,8 @@ environ
  expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
    FUNCT_2, NEWTON, PRALG_1, GROUP_7;
  theorems
-   TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
-   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1,
+   TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
+   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
@@ -2392,7 +2392,7 @@ reserve I for set;
 reserve i for object;
 theorem Th55:
   for G being Group
-  for X being finite set
+  for X being set
   st X <> {} & (for A being Element of X
                 holds ex N being strict normal Subgroup of G
                 st A = the carrier of N)
@@ -2410,7 +2410,7 @@ theorem Th55:
                             st Image(phi),G./.N are_isomorphic
 proof
   let G be Group;
-  let X be finite set;
+  let X be set;
   assume A1: X <> {};
   assume A2: for A being Element of X
              holds ex N being strict normal Subgroup of G st A = the carrier of N;
@@ -2471,6 +2471,7 @@ proof
   consider N being strict normal Subgroup of G such that
   A7: the carrier of N = meet X
   by A1,A2,Th54;
+::>,4
   take N;
   thus C2: the carrier of N = meet X by A7;
 
@@ -2540,11 +2541,233 @@ proof
 end;
 
 theorem Th56:
-  for G being finite Group
+  for G being Group
   for X being set
-  st (for N being normal Subgroup of G holds N in X)
-  holds X is finite;
-::>               *4
+  st X<>{} & (for A being object st A in X holds A is normal Subgroup of G)
+  for I being set
+  st card I = card X
+  holds ex F being associative Group-like multMagma-Family of I st
+  (for i being Element of I
+   holds ex N being normal Subgroup of G st N in X & F.i = G./.N) &
+  (for N being normal Subgroup of G st N in X
+   holds ex i being Element of I st F.i = G./.N);
+::>                                            *4
+
+theorem Th57:
+  for Fam being set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for G being Group st G in Fam holds F.G=G)
+proof
+  let Fam be set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = id Fam;
+  A3: F = id Fam;
+  dom F = Fam;
+  then F is total Fam-defined Function;
+  then F is ManySortedSet of Fam;
+  A3: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+  take F;
+  let G be Group;
+  assume A3: G in Fam;
+  thus F.G=G by A3,FUNCT_1:17;
+end;
+
+theorem Th58:
+  for Fam being finite set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Seg (card Fam)
+  st F is one-to-one & (for i being Nat st i in Seg (card Fam) holds ex G
+  being Group st G in Fam & F.i=G)
+proof
+  let Fam be finite set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = canFS Fam;
+  set n = len F;
+  A21: n = len F;
+  A3: len F = card Fam by FINSEQ_1:93;
+  A31: n = card Fam by A21,A3;
+  F is PartFunc of NAT,Fam;
+  A4: F is one-to-one onto by FINSEQ_1:def 19;
+  F is Function of Seg n,Fam
+  proof
+    B1: dom F = Seg n by A1,FINSEQ_1:def 2,def 3;
+    then reconsider F1 = F|(dom F) as PartFunc of Seg n,Fam by PARTFUN1:10;
+    set F = F1;
+    F is PartFunc of Seg n,Fam &
+    dom F = Seg n by B1;
+    then F is quasi_total by A1,FUNCT_2:def 1;
+    hence thesis;
+  end;
+  then reconsider F as Function of Seg n,Fam by A4;
+  A40: rng F = Fam by A4;
+  A5: F is ManySortedSet of (Seg n)
+  proof
+    B1: dom F = Seg (card Fam) by A3,FINSEQ_1:def 3;
+    then B2: F is (Seg n)-defined Function by RELAT_1:def 16;
+    F is quasi_total Function of Seg n,Fam;
+    then dom F = (Seg n) by B1,A3;
+    then F is total by B1,PARTFUN1:def 2;
+    hence thesis;
+  end;
+  A6: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding by GROUP_7:def 1;
+  then F is multMagma-yielding ManySortedSet of Seg n by A5,A6,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Seg n;
+  F is associative Group-like multMagma-Family of Seg n
+  proof
+    for i being set st i in Seg n ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Seg n ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Seg
+  (card Fam) by A31;
+  take F;
+  thus F is one-to-one by A4;
+  let i be Nat;
+  assume A10: i in Seg (card Fam);
+  dom F = Seg n by A3,FINSEQ_1:def 3;
+  then i in dom F by A31,A10;
+  then F.i in rng F by FUNCT_1:3;
+  then A11: F.i in Fam by A40;
+  then F.i is Element of Fam;
+  then A12: F.i is Group by A2;
+  hence thesis by A11;
+end;
+
+theorem Th59:
+  for G being Group
+  for Fam being set
+  st Fam<>{} & (for A being Element of Fam holds ex N being normal
+  Subgroup of G st A = the carrier of N)
+  for I being set
+  st card I = card Fam
+  holds ex F being associative Group-like multMagma-Family of I st
+  (for i being Element of I
+   holds ex N being normal Subgroup of G
+         st the carrier of N in Fam & F.i = G./.N) &
+  (for N being normal Subgroup of G st the carrier of N in Fam
+  holds ex i being Element of I st F.i=G./.N)
+proof
+  let G be Group;
+  let Fam be set;
+  assume A1: Fam<>{};
+  assume A2: for A being Element of Fam
+             holds ex N being normal Subgroup of G st A = the carrier of N;
+  let I be set;
+  assume A3: card I = card Fam;
+  consider F being associative Group-like multMagma-Family of I;
+::>                                                            *403
+  take F;
+  thus (for i being Element of I
+        holds ex N being normal Subgroup of G
+              st the carrier of N in Fam & F.i = G./.N)
+  proof 
+    let i be Element of I;
+    consider N being normal Subgroup of G;
+::>                                      *403
+    take N;
+    thus the carrier of N in Fam;
+::>                            *4
+    thus F.i = G./.N;
+::>                *4
+  end;
+  let N be normal Subgroup of G;
+  assume Z3: the carrier of N in Fam;
+  consider i being Element of I;
+::>                            *403
+  take i;
+  thus F.i=G./.N;
+::>            *4
+end;
+
 
 scheme :: Sch 3
   PResidualIsChar{G() -> finite Group, P[set]} :
@@ -2568,13 +2791,17 @@ P3: for G being Group
 P4: for G being Group
     st P[G]
     for N being normal Subgroup of G holds P[G./.N] and
-P5: for X being finite set st X <> {} & (for G being Element of X holds G is Group & P[G]) for I being set st card I = card X for F being associative Group-like multMagma-Family of I holds P[product F]
+P5: for I being set for F being associative Group-like multMagma-Family
+    of I st (for i being Element of I holds P[F.i]) holds P[product F]
 proof
-  defpred P2[set] means ex N being strict normal Subgroup of G() st $1 = N & P[G()./.N];
-  defpred P3[set] means ex H being strict Subgroup of G() st $1 = H & H is normal & P2[H];
+  defpred P2[set] means ex N being strict normal Subgroup of G()
+                        st $1 = N & P[G()./.N];
+  defpred P3[set] means ex H being strict Subgroup of G()
+                        st $1 = H & H is normal & P2[H];
   Q0: ex H being strict normal Subgroup of G() st P3[H] by P0;
   Q2: for H being strict normal Subgroup of G() st P3[H]
-  holds (for N being strict normal Subgroup of G() st H is Subgroup of N holds P3[N])
+  holds (for N being strict normal Subgroup of G()
+         st H is Subgroup of N holds P3[N])
   proof
     let H be strict normal Subgroup of G();
     assume B1: P3[H];
@@ -2608,7 +2835,8 @@ proof
       assume A in Fam;
       then consider A0 being Subset of G() such that
       B1: A0 = A and
-      B2: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 & P3[H0];
+      B2: ex H0 being strict Subgroup of G() st A0 = the carrier of H0 &
+          P3[H0];
       consider H0 being strict Subgroup of G() such that
       B3: A0 = the carrier of H0 & P3[H0]
       by B2;
@@ -2621,7 +2849,8 @@ proof
       assume A in Fam2;
       then consider A0 being Subset of G() such that
       B1: A0 = A and
-      B2: ex N being strict Subgroup of G() st A0 = the carrier of N & N is normal & P2[N];
+      B2: ex N being strict Subgroup of G() st A0 = the carrier of N &
+          N is normal & P2[N];
       consider N being strict Subgroup of G() such that
       B3: A0 = the carrier of N & N is normal & P2[N]
       by B2;
@@ -2630,7 +2859,7 @@ proof
       hence thesis by B1,B3;
     end;
   end;
-  then Fam = Fam2 by TARSKI:2;
+  then A9: Fam = Fam2 by TARSKI:2;
   then meet Fam = meet Fam2;
   then A6: the carrier of K = meet Fam2 by A2;
   A7: ex H1 being strict normal Subgroup of G() st P2[H1] by A1;
@@ -2640,40 +2869,106 @@ proof
   then reconsider K as strict normal Subgroup of G() by A6;
   take K;
 
+  A8: Fam <> {}
+  proof
+    consider H being strict normal Subgroup of G() such that
+    B1: P[G()./.H]
+    by P0;
+    carr H in Fam by B1;
+    hence thesis;
+  end;
+  A10: for A being Element of Fam
+    holds ex N0 being strict normal Subgroup of G()
+    st A = the carrier of N0 & P3[N0]
+  proof
+      let A be Element of Fam;
+      A in Fam by A8,SUBSET_1:def 1;
+      then A in Fam2 by A9;
+      then consider A0 being Subset of G() such that
+      D1: A = A0 and
+      D2: ex N0 being strict Subgroup of G() st A0 = the carrier of N0
+          & N0 is normal & P2[N0];
+      consider N0 being strict normal Subgroup of G() such that
+      D3: A0 = the carrier of N0 & N0 is normal & P2[N0]
+      by D2;
+      take N0;
+      thus thesis by D1,D3;
+  end;
+
   thus C1: P[G()./.K]
   proof
-    B6: Fam is finite by Th56;
-::>                    *4
     set I = card Fam;
-    B5: card I = card Fam;
-    B0: Fam <> {};
-::>             *4
+    B1: card I = card Fam;
+    B2: Fam <> {} by A8;
     consider F being associative Group-like multMagma-Family of I such that
-    B1: for i being Element of I holds ex N being strict normal Subgroup of G() st
-        the carrier of N in Fam & F.i = G()./.N and
-    B2: for N being strict normal Subgroup of G() st the carrier of N in Fam
-        holds ex i being Element of I st F.i=G()./.N;
-::>                                                *4
+    B3: for i being Element of I
+        holds ex N being strict normal Subgroup of G()
+              st the carrier of N in Fam & F.i = G()./.N and
+    B4: for N being strict normal Subgroup of G() st the carrier of N in Fam
+        holds ex i being Element of I st F.i=G()./.N
+    by Th59;
+::>  *4
     for A being Element of Fam
     holds ex N0 being strict normal Subgroup of G()
-          st A = the carrier of N0;
-::>                              *4
-    then consider P being Group such that
-    B3: P = product F and
-    B4: ex CapF being strict normal Subgroup of G() st the carrier of CapF = meet Fam &
-        ex phi being Homomorphism of G(),product F st Image(phi),G()./.CapF are_isomorphic
-    by B5,B0,B1,B2,B6,Th55;
+    st A = the carrier of N0
+    proof
+      let A be Element of Fam;
+      consider N0 being strict normal Subgroup of G() such that
+      D1: A = the carrier of N0 & P3[N0]
+      by A10;
+      thus thesis by D1;
+    end;
     :: Theorem 55 will be applied here
+    then consider P being Group such that
+    B5: P = product F and
+    B6: ex CapF being strict normal Subgroup of G()
+        st the carrier of CapF = meet Fam &
+        ex phi being Homomorphism of G(),product F
+        st Image(phi),G()./.CapF are_isomorphic
+    by B1,B2,B3,B4,Th55;
     consider CapF being strict normal Subgroup of G() such that
     B7: the carrier of CapF = meet Fam and
-    B8: ex phi being Homomorphism of G(),product F st Image(phi),G()./.CapF are_isomorphic
-    by B4;
+    B8: ex phi being Homomorphism of G(),product F
+        st Image(phi),G()./.CapF are_isomorphic
+    by B6;
     B9: K = CapF by A2,B7,GROUP_2:59;
     consider phi being Homomorphism of G(),product F such that
     B10: Image(phi),G()./.CapF are_isomorphic
     by B8;
-    P[product F] by P5,B6;
-::>               *4
+
+   :: for I being set for F being associative Group-like multMagma-Family
+   :: of I st (for i being Element of I holds P[F.i]) holds P[product F]
+
+    P[product F]
+    proof
+      for i being Element of I holds ex N0 being strict normal Subgroup
+      of G() st the carrier of N0 in Fam & F.i = G()./.N0 by B3;
+      for i being Element of I holds P[F.i]
+      proof
+        let i be Element of I;
+        consider N0 being strict normal Subgroup of G() such that
+        D1: the carrier of N0 in Fam and
+        D2: F.i = G()./.N0
+        by B3;
+        set A = the carrier of N0;
+        consider A0 being Subset of G() such that
+        D3: A0 = A and
+        D4: ex N1 being strict Subgroup of G() st A0 = the carrier of N1
+            & P3[N1]
+        by D1;
+        consider N1 being strict Subgroup of G() such that
+        D5: A0 = the carrier of N1 & P3[N1]
+        by D4;
+        the carrier of N0 = A0 by D3
+          .= the carrier of N1 by D5;
+        then N1 = N0 by GROUP_2:59;
+        then P3[N0] by D5;
+        then P[G()./.N0];
+        hence P[F.i] by D2;
+      end;
+      hence thesis by P5;
+    end;
+      
     then P[Image(phi)] by P2;
     then P[G()./.CapF] by B10,P1;
     hence P[G()./.K] by B9,B10;
@@ -2698,3 +2993,4 @@ proof
 ::>                      *4
 end;
 ::> 4: This inference is not accepted
+::> 403: "such" expected
