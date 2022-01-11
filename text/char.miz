@@ -2749,7 +2749,7 @@ proof
   thus (for i being Element of I
         holds ex N being normal Subgroup of G
               st the carrier of N in Fam & F.i = G./.N)
-  proof 
+  proof
     let i be Element of I;
     consider N being normal Subgroup of G;
 ::>                                      *403
@@ -2767,7 +2767,6 @@ proof
   thus F.i=G./.N;
 ::>            *4
 end;
-
 
 scheme :: Sch 3
   PResidualIsChar{G() -> finite Group, P[set]} :
@@ -2894,13 +2893,71 @@ proof
       take N0;
       thus thesis by D1,D3;
   end;
+  A11: Fam is finite
+  proof
+    G() is finite Group;
+    then B1: Subgroups G() is finite by GROUP_3:15;
+    Fam is Subset of Subgroups G();
+::>                              *4
+    then Fam is finite set by B1;
+  end;
+::> *70
 
+:: for Fam being finite set
+::  st Fam <> {} & (for G being Element of Fam holds G is Group)
+::  holds ex F being associative Group-like multMagma-Family of Seg (card Fam)
+::  st F is one-to-one & (for i being Nat st i in Seg (card Fam) holds ex G
+::  being Group st G in Fam & F.i=G)
+  set Fam = {A where A is Subset of G() :
+             ex H being strict Subgroup of G()
+             st A = the carrier of H & P3[H]};
+  set GFam = {N0 where N0 is Element of Subgroups G() :
+              P3[N0]};
+::  set GFam = {N1 where N1 is strict normal Subgroup of G() : P3[N1]};
   thus C1: P[G()./.K]
   proof
-    set I = card Fam;
-    B1: card I = card Fam;
-    B2: Fam <> {} by A8;
-    consider F being associative Group-like multMagma-Family of I such that
+    set n = card Fam;
+    set I = n;
+    B1: GFam is finite set
+    proof
+      G() is finite Group;
+      then D1: Subgroups G() is finite by GROUP_3:15;
+      for H being Subgroup of G()
+      st H in GFam
+      holds H in Subgroups G()
+      proof
+        let H be Subgroup of G();
+        assume E1: H in GFam;
+        then consider H0 being Element of Subgroups G() such that
+        E2: H = H0 & P3[H0];
+        thus H in Subgroups G() by E2;
+      end;
+      then GFam c= Subgroups G();
+::>                            *4
+      then GFam is Subset of Subgroups G();
+      hence GFam is finite by D1;
+::>            *51
+    end;
+    B2: GFam <> {} by P0;
+::>                 *4
+    for N being object st N in GFam holds N is Group
+    proof
+      let N be object;
+      assume D1: N in GFam;
+      then consider N0 being Element of Subgroups G() such that
+      D2: N = N0 & P3[N0];
+      N0 is Subgroup of G() by GROUP_3:def 1;
+      then N0 is Group;
+      hence thesis by D2;
+    end;
+    then consider F being associative Group-like multMagma-Family of Seg (card GFam)
+::>                                 *115       *115             *136   *103
+    such that
+    B3: F is one-to-one and
+    B4: for i being Nat st i in Seg (card GFam) holds ex G being Group st G in GFam & F.i=G
+::>                               *103
+    by B1,B2,Th58;
+consider F being associative Group-like multMagma-Family of I such that
     B3: for i being Element of I
         holds ex N being strict normal Subgroup of G()
               st the carrier of N in Fam & F.i = G()./.N and
@@ -2926,6 +2983,7 @@ proof
         ex phi being Homomorphism of G(),product F
         st Image(phi),G()./.CapF are_isomorphic
     by B1,B2,B3,B4,Th55;
+::>  *4
     consider CapF being strict normal Subgroup of G() such that
     B7: the carrier of CapF = meet Fam and
     B8: ex phi being Homomorphism of G(),product F
@@ -2968,7 +3026,7 @@ proof
       end;
       hence thesis by P5;
     end;
-      
+
     then P[Image(phi)] by P2;
     then P[G()./.CapF] by B10,P1;
     hence P[G()./.K] by B9,B10;
@@ -2993,4 +3051,9 @@ proof
 ::>                      *4
 end;
 ::> 4: This inference is not accepted
+::> 51: Invalid conclusion
+::> 70: Something remains to be proved
+::> 103: Unknown functor
+::> 115: Unknown attribute
+::> 136: Non registered cluster
 ::> 403: "such" expected
