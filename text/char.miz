@@ -2723,6 +2723,19 @@ proof
 end;
 
 theorem Th59:
+  for G being finite Group
+  for X being Subset of Subgroups G
+  holds X is finite
+proof
+  let G be finite Group;
+  let X be Subset of Subgroups G;
+  X c= Subgroups G & Subgroups G is finite by GROUP_3:15;
+  hence X is finite by FINSET_1:1;
+end;
+
+
+
+theorem Th60:
   for G being Group
   for Fam being set
   st Fam<>{} & (for A being Element of Fam holds ex N being normal
@@ -2734,39 +2747,46 @@ theorem Th59:
    holds ex N being normal Subgroup of G
          st the carrier of N in Fam & F.i = G./.N) &
   (for N being normal Subgroup of G st the carrier of N in Fam
-  holds ex i being Element of I st F.i=G./.N)
-proof
-  let G be Group;
-  let Fam be set;
-  assume A1: Fam<>{};
-  assume A2: for A being Element of Fam
-             holds ex N being normal Subgroup of G st A = the carrier of N;
-  let I be set;
-  assume A3: card I = card Fam;
-  consider F being associative Group-like multMagma-Family of I;
-::>                                                            *403
-  take F;
-  thus (for i being Element of I
-        holds ex N being normal Subgroup of G
-              st the carrier of N in Fam & F.i = G./.N)
-  proof
-    let i be Element of I;
-    consider N being normal Subgroup of G;
-::>                                      *403
-    take N;
-    thus the carrier of N in Fam;
-::>                            *4
-    thus F.i = G./.N;
-::>                *4
-  end;
-  let N be normal Subgroup of G;
-  assume Z3: the carrier of N in Fam;
-  consider i being Element of I;
-::>                            *403
-  take i;
-  thus F.i=G./.N;
-::>            *4
-end;
+  holds ex i being Element of I st F.i=G./.N);
+:: proof
+::   let G be Group;
+::   let Fam be set;
+::   assume A1: Fam<>{};
+::   assume A2: for A being Element of Fam
+::              holds ex N being normal Subgroup of G st A = the carrier of N;
+::   let I be set;
+::   assume A3: card I = card Fam;
+::   consider F being associative Group-like multMagma-Family of I;
+:: ::>                                                            *403
+::   take F;
+::   thus (for i being Element of I
+::         holds ex N being normal Subgroup of G
+::               st the carrier of N in Fam & F.i = G./.N)
+::   proof
+::     let i be Element of I;
+::     consider N being normal Subgroup of G;
+:: ::>                                      *403
+::     take N;
+::     thus the carrier of N in Fam;
+:: ::>                            *4
+::     thus F.i = G./.N;
+:: ::>                *4
+::   end;
+::   let N be normal Subgroup of G;
+::   assume Z3: the carrier of N in Fam;
+::   consider i being Element of I;
+:: ::>                            *403
+::   take i;
+::   thus F.i=G./.N;
+:: ::>            *4
+:: end;
+
+theorem Th61:
+  for G being Group
+  ex X being set
+  st (for N being normal Subgroup of G
+      holds G./.N in X);
+::>                   *4
 
 scheme :: Sch 3
   PResidualIsChar{G() -> finite Group, P[set]} :
@@ -2893,15 +2913,6 @@ proof
       take N0;
       thus thesis by D1,D3;
   end;
-  A11: Fam is finite
-  proof
-    G() is finite Group;
-    then B1: Subgroups G() is finite by GROUP_3:15;
-    Fam is Subset of Subgroups G();
-::>                              *4
-    then Fam is finite set by B1;
-  end;
-::> *70
 
 :: for Fam being finite set
 ::  st Fam <> {} & (for G being Element of Fam holds G is Group)
@@ -2913,6 +2924,87 @@ proof
              st A = the carrier of H & P3[H]};
   set GFam = {N0 where N0 is Element of Subgroups G() :
               P3[N0]};
+  A11: GFam <> {}
+  proof
+    consider H0 being strict normal Subgroup of G() such that
+    B1: P[G()./.H0] by P0;
+    P3[H0] & H0 in Subgroups G() by B1,GROUP_3:def 1;
+    then H0 in GFam;
+    hence thesis;
+  end;
+
+  A12: for N0 being Element of GFam
+  holds N0 is strict normal Subgroup of G()
+  proof
+    let N0 be Element of GFam;
+    B1: N0 in GFam by A11,SUBSET_1:def 1;
+    then consider H0 being Element of Subgroups G() such that
+    B2: N0 = H0 & P3[H0];
+    P3[N0] by B2;
+    then P2[N0];
+    then consider N1 being strict normal Subgroup of G() such that
+    B3: N0 = N1 & P[G()./.N1];
+    N1 is strict normal Subgroup of G() & N0 = N1 by B3;
+    hence N0 is strict normal Subgroup of G();
+  end;
+  consider GFam1 being set such that
+  A13: for N being object holds N is normal Subgroup of G() iff N in GFam1;
+::>                                                                      *4
+::  A13: for N being normal Subgroup of G() holds N in GFam1;
+
+  consider GFam2 being set such that
+  A14: for N being normal Subgroup of G() holds G()./.N in GFam2
+  by Th61;
+::>,4
+  set GFam3 = {N1 where N1 is Element of GFam2 : P[N1]};
+  
+  A15: for N0 being Element of GFam
+  ex N1 being strict normal Subgroup of G()
+  st N0=N1 & G()./.N1 in GFam2
+  proof
+    let N0 be Element of GFam;
+    B1: N0 is strict normal Subgroup of G() by A12;
+    then reconsider N1=N0 as strict normal Subgroup of G();
+    take N1;
+    thus N1=N0;
+    thus G()./.N1 in GFam2 by A14;
+  end;
+
+  A16: GFam3 <> {}
+  proof
+    consider H0 being strict normal Subgroup of G() such that
+    B1: P[G()./.H0] by P0;
+    G()./.H0 in GFam2 by A14;
+    then G()./.H0 in GFam3 by B1;
+    hence thesis;
+  end;
+  A17: GFam2 is finite set;
+::>                      *4
+  A18: GFam3 is finite set
+  proof
+    defpred QuoP[object, object] means $1 in GFam1 & ex N0 being normal Subgroup of G() st $1 = N0 & $2 = G()./.N0;
+    B1: for x being object st x in GFam1 ex y being object st y in GFam2 & QuoP[x,y]
+    proof
+      let x be object;
+      assume D1: x in GFam1;
+      then reconsider x as normal Subgroup of G() by A13;
+      take y = G()./.x;
+      thus y in GFam2 by A14;
+      consider N0 being normal Subgroup of G() such that
+      D2: x = N0 and
+      D3: y = G()./.x;
+      QuoP[x,y] by D1,D2,D3;
+      hence thesis;
+    end;
+    consider f being Function of GFam1,GFam2 such that
+    B3: for x being object st x in GFam1 holds QuoP[x,f.x]
+    from FUNCT_2:sch 1(B1);
+    
+    GFam3 c= GFam2 by A14,TARSKI:def 3;
+::>                 *4
+    hence thesis by A17,FINSET_1:1;
+  end;
+
 ::  set GFam = {N1 where N1 is strict normal Subgroup of G() : P3[N1]};
   thus C1: P[G()./.K]
   proof
@@ -2920,55 +3012,65 @@ proof
     set I = n;
     B1: GFam is finite set
     proof
-      G() is finite Group;
-      then D1: Subgroups G() is finite by GROUP_3:15;
-      for H being Subgroup of G()
+      D1: G() is finite Group;
+      then D2: Subgroups G() is finite by GROUP_3:15;
+      for H being object
       st H in GFam
       holds H in Subgroups G()
       proof
-        let H be Subgroup of G();
+        let H be object;
         assume E1: H in GFam;
         then consider H0 being Element of Subgroups G() such that
         E2: H = H0 & P3[H0];
         thus H in Subgroups G() by E2;
       end;
-      then GFam c= Subgroups G();
-::>                            *4
-      then GFam is Subset of Subgroups G();
-      hence GFam is finite by D1;
-::>            *51
+      then GFam c= Subgroups G() by TARSKI:def 3;
+      hence thesis by D2,FINSET_1:1;
     end;
-    B2: GFam <> {} by P0;
-::>                 *4
-    for N being object st N in GFam holds N is Group
+    then reconsider GFam as finite set;
+    B3: for N being Element of GFam holds N is Group
     proof
-      let N be object;
-      assume D1: N in GFam;
+      let N be Element of GFam;
+      D1: N in GFam by A11;
       then consider N0 being Element of Subgroups G() such that
       D2: N = N0 & P3[N0];
       N0 is Subgroup of G() by GROUP_3:def 1;
       then N0 is Group;
       hence thesis by D2;
     end;
-    then consider F being associative Group-like multMagma-Family of Seg (card GFam)
-::>                                 *115       *115             *136   *103
+    consider F being associative Group-like multMagma-Family of Seg (card GFam)
     such that
-    B3: F is one-to-one and
-    B4: for i being Nat st i in Seg (card GFam) holds ex G being Group st G in GFam & F.i=G
-::>                               *103
-    by B1,B2,Th58;
-consider F being associative Group-like multMagma-Family of I such that
-    B3: for i being Element of I
-        holds ex N being strict normal Subgroup of G()
-              st the carrier of N in Fam & F.i = G()./.N and
-    B4: for N being strict normal Subgroup of G() st the carrier of N in Fam
-        holds ex i being Element of I st F.i=G()./.N
-    by Th59;
-::>  *4
+    B4: F is one-to-one & (for i being Nat st i in Seg (card GFam) holds ex G being Group st G in GFam & F.i=G)
+    by B1,A11,B3,Th58;
+
+    set I = Seg (card GFam); :: indexing set!
+    card I = card GFam;
+::>                  *4
+    
+  for G being Group
+  for X being set
+  st X <> {} & (for A being Element of X
+                holds ex N being strict normal Subgroup of G
+                st A = the carrier of N)
+  for I being set
+  st card I = card X
+  for F being associative Group-like multMagma-Family of I
+  st (for i being Element of I
+      holds ex N being strict normal Subgroup of G st the carrier of N in X & F.i = G./.N) &
+     (for N being strict normal Subgroup of G st the carrier of N in X
+      holds ex i being Element of I st F.i = G./.N)
+  holds ex H being Group st H = product F &
+                         ex N being strict normal Subgroup of G
+                            st the carrier of N = meet X &
+                         ex phi being Homomorphism of G,product F
+                            st Image(phi),G./.N are_isomorphic
+
     for A being Element of Fam
+::>   *395
     holds ex N0 being strict normal Subgroup of G()
     st A = the carrier of N0
     proof
+::>     *396
       let A be Element of Fam;
       consider N0 being strict normal Subgroup of G() such that
       D1: A = the carrier of N0 & P3[N0]
@@ -2983,7 +3085,7 @@ consider F being associative Group-like multMagma-Family of I such that
         ex phi being Homomorphism of G(),product F
         st Image(phi),G()./.CapF are_isomorphic
     by B1,B2,B3,B4,Th55;
-::>  *4
+::>        *144
     consider CapF being strict normal Subgroup of G() such that
     B7: the carrier of CapF = meet Fam and
     B8: ex phi being Homomorphism of G(),product F
@@ -3001,6 +3103,7 @@ consider F being associative Group-like multMagma-Family of I such that
     proof
       for i being Element of I holds ex N0 being strict normal Subgroup
       of G() st the carrier of N0 in Fam & F.i = G()./.N0 by B3;
+::>                                                        *4
       for i being Element of I holds P[F.i]
       proof
         let i be Element of I;
@@ -3008,6 +3111,7 @@ consider F being associative Group-like multMagma-Family of I such that
         D1: the carrier of N0 in Fam and
         D2: F.i = G()./.N0
         by B3;
+::>      *4
         set A = the carrier of N0;
         consider A0 being Subset of G() such that
         D3: A0 = A and
@@ -3051,9 +3155,7 @@ consider F being associative Group-like multMagma-Family of I such that
 ::>                      *4
 end;
 ::> 4: This inference is not accepted
-::> 51: Invalid conclusion
-::> 70: Something remains to be proved
-::> 103: Unknown functor
-::> 115: Unknown attribute
-::> 136: Non registered cluster
+::> 144: Unknown label
+::> 395: Justification expected
+::> 396: Formula expected
 ::> 403: "such" expected
