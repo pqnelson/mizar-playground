@@ -2788,6 +2788,142 @@ theorem Th61:
       holds G./.N in X);
 ::>                   *4
 
+theorem Th62:
+  for G being Group
+  for Fam being non empty set
+  st (for N being Element of Fam holds N is normal Subgroup of G)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for N being normal Subgroup of G st N in Fam holds F.N=G./.N)
+proof
+  let G be Group;
+  let Fam be non empty set;
+  defpred P[object,object] means ex N being normal Subgroup of G st $1=N & $2=G./.N;
+  assume A1: for N being Element of Fam holds N is normal Subgroup of G;
+  A2: for x,y1,y2 being object st x in Fam & P[x,y1] & P[x,y2] holds y1=y2;
+  A3: for x being object st x in Fam ex y being object st P[x,y]
+  proof
+    let x be object;
+    assume B1: x in Fam;
+    then x is normal Subgroup of G by A1;
+    then reconsider x as normal Subgroup of G;
+    consider N being normal Subgroup of G such that
+    B2: x = N by Def10;
+    consider y being Group such that
+    B3: y = G./.N;
+    reconsider y as object;
+    take y;
+    B5: P[x,y] by B2,B3;
+    hence thesis;
+  end;
+
+  consider F being Function such that
+  A4: dom F = Fam and
+  A5: for x being object st x in Fam holds P[x, F.x]
+  from FUNCT_1:sch 2(A2,A3);
+
+  A6: for x being normal Subgroup of G st x in Fam holds F.x = G./.x
+  proof
+    let x be normal Subgroup of G;
+    assume B1: x in Fam;
+    P[x, F.x] by A4,A5,B1;
+    then consider N being normal Subgroup of G such that
+    B2: x = N and
+    B3: F.x = G./.N;
+    thus F.x = G./.x by B2,B3;
+  end;  
+  set codomain = rng F;
+  A7: codomain <> {}
+  proof
+    Fam is non empty;
+    then consider x being object such that
+    B1: x in Fam
+    by XBOOLE_0:def 1;
+    reconsider x as Element of Fam by B1;
+    F.x in rng F by A4,FUNCT_1:3;
+    then F.x in codomain;
+    hence thesis by XBOOLE_0:def 1;
+  end;
+  A8: for y being Element of codomain holds y is Group
+  proof
+    let y be Element of codomain;
+    y in codomain by A7;
+    then y in rng F;
+    then consider x being object such that
+    B1: x in dom F and
+    B2: y = F.x
+    by FUNCT_1:def 3;
+    P[x, y] by B1,B2,A4,A5;
+    then consider N being normal Subgroup of G such that
+    B3: x = N and
+    B4: y = G./.N;
+    thus y is Group by B4;
+  end;
+
+  
+  reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
+  A9: F is Function of Fam,codomain by FUNCT_2:1;
+  F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
+  then A10: F is ManySortedSet of Fam;
+
+  A11: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F and
+    B3: y = F.x
+    by FUNCT_1:def 3;
+    x is Element of dom F by B2;
+    then x is normal Subgroup of G by B2,A1;
+    then reconsider x as normal Subgroup of G;
+    y in rng F by A4, B2, B3, FUNCT_1:3;
+    then y is Element of codomain;
+    then y is Group by A8;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by A10,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+
+  take F;
+  let N be normal Subgroup of G;
+  assume A8: N in Fam;
+  hence F.N=G./.N by A6;
+end;
+
+
 scheme :: Sch 3
   PResidualIsChar{G() -> finite Group, P[set]} :
   ex K being strict normal Subgroup of G()

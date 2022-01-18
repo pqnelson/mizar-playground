@@ -8,2164 +8,545 @@
 :: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
 :: licenses, or see http://www.gnu.org/licenses/gpl.html and
 :: http://creativecommons.org/licenses/by-sa/3.0/.
-for G being Group
-for phi being Automorphism of G
-holds phi " is Automorphism of G by GROUP_6 :62;
+
 environ
 
- vocabularies RING_3, :: for MIsomorphism
-   MOD_4, :: for Endomorphism, Automorphism
-   CARD_1, :: for card
-   AUTGROUP, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, SUBSET_1, GROUP_4,
-   MSSUBFAM, GROUP_6, NEWTON, PRE_TOPC, RELAT_1, TARSKI, FUNCT_1,
-   FUNCT_2, XBOOLE_0, BINOP_1, BINOP_2, ALGSTR_0, ZFMISC_1, REALSET1,
-   GROUP_5, NUMBERS, WELLORD1, GRSOLV_1, TMP;
+ vocabularies TMP, MOD_4, CARD_3, RLVECT_1, UPROOTS,
+   RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
+   FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE,
+   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
+   GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
+   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
+ constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
+   CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
+   ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
+   SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
+   XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
+   BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
+ notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
+   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
+   ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+   FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
+   BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
+   GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7;
+ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+   ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
+   ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
+   STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7;
+ requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
+ definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1, PRALG_1,
+   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7;
+ equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
+   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
+   ALGSTR_0, NEWTON, PRALG_1, GROUP_7;
+ expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
+   FUNCT_2, NEWTON, PRALG_1, GROUP_7;
+ theorems
+   TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
+   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, XTUPLE_0;
+ schemes FUNCT_1, FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL, XFAMILY, XBOOLE_0;
 
-notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-  RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS, BINOP_1, BINOP_2,
-  STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2, GROUP_3, GROUP_4,
-  GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP;
+begin
 
-constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-  RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, NUMBERS, BINOP_1, BINOP_2,
-  STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2, GROUP_3, GROUP_4,
-  GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP;
-
-::constructors TARSKI, RELAT_2, PARTFUN1, RELSET_1, FUNCOP_1, FUNCT_2,
-::  NUMBERS, BINOP_1, BINOP_2, REALSET1, GROUP_2, GROUP_3, GROUP_4,
-::  GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP;
-
-registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
-  STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6;
-
- requirements BOOLE, SUBSET;
- definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, GROUP_3, GROUP_4, AUTGROUP;
- equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0, AUTGROUP;
- expansions BINOP_1, FUNCT_2;
- theorems TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, GROUP_1,
-   GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, RELAT_1, ZFMISC_1,
-   XBOOLE_0, STRUCT_0, GRSOLV_1, AUTGROUP,
-   GROUP_4;
- schemes BINOP_1, FUNCT_2;
-
-
-begin :: preparatory work
-reserve X for set;
-
-registration
-  let X;
-  cluster id X -> onto;
-  coherence;
-end;
-
-registration
-  let X;
-  cluster id X -> bijective;
-  coherence;
-end;
-
-LmOntoMapsEverything:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is onto
-holds f .: X = Y
+theorem Th57:
+  for Fam being set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for G being Group st G in Fam holds F.G=G)
 proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume Z58: f is onto;
-  then A0: rng f = Y;
-  A1: dom f = X by FUNCT_2:def 1;
-  A2: for y being object
-  holds y in rng f iff ex x being object st x in X & y = f.x
-  by A1, FUNCT_1:def 3;
-
-
-  for y being object holds y in (f .: X) iff
-  ex x being object st x in dom f & x in X & y = f.x by FUNCT_1:def 6;
-
-  A3: for y being object holds y in (f .: X) iff
-  ex x being object st x in X & x in X & y = f.x
-  by A1,FUNCT_1:def 6;
-
-  B1: for y being object holds y in (f .: X) implies y in rng f
+  let Fam be set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = id Fam;
+  A3: F = id Fam;
+  dom F = Fam;
+  then F is total Fam-defined Function;
+  then F is ManySortedSet of Fam;
+  A3: for y being set st y in rng F holds y is non empty multMagma
   proof
-    let y be object;
-    assume Z59: y in (f .: X);
-    then consider x being object such that
-    A10: x in X and
-    x in X and
-    A11: y = f.x
-    by A3;
-    thus y in rng f by A10,A11,A2;
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
   end;
-
-  B2: for y being object holds y in rng f implies y in (f .: X)
+  then F is multMagma-yielding ManySortedSet of Fam by GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
   proof
-    let y be object;
-    assume Z60: y in rng f;
-    then consider x being object such that
-    A10: x in X and
-    A11: y = f.x
-    by A2;
-    thus y in (f .: X) by A10,A11,A3;
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
   end;
-  B3: rng f c= Y & f .: X c= Y;
-  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
-  then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A0;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+  take F;
+  let G be Group;
+  assume A3: G in Fam;
+  thus F.G=G by A3,FUNCT_1:17;
 end;
 
-:: I really don't know why this isn't in GROUP_2...
-LmSubgroupElt:
-for G being Group
-for H being Subgroup of G
-for h being Element of G st h in H holds h is Element of H
+theorem Th58:
+  for Fam being finite set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Seg (card Fam)
+  st F is one-to-one & (for i being Nat st i in Seg (card Fam) holds ex G
+  being Group st G in Fam & F.i=G)
 proof
-  let G be Group,
-      H be Subgroup of G,
-      h be Element of G;
-  assume h in H;
-  then h is Element of the carrier of H by STRUCT_0:def 5;
-  then h is Element of H;
-  hence thesis;
+  let Fam be finite set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = canFS Fam;
+  set n = len F;
+  A21: n = len F;
+  A3: len F = card Fam by FINSEQ_1:93;
+  A31: n = card Fam by A21,A3;
+  F is PartFunc of NAT,Fam;
+  A4: F is one-to-one onto by FINSEQ_1:def 19;
+  F is Function of Seg n,Fam
+  proof
+    B1: dom F = Seg n by A1,FINSEQ_1:def 2,def 3;
+    then reconsider F1 = F|(dom F) as PartFunc of Seg n,Fam by PARTFUN1:10;
+    set F = F1;
+    F is PartFunc of Seg n,Fam &
+    dom F = Seg n by B1;
+    then F is quasi_total by A1,FUNCT_2:def 1;
+    hence thesis;
+  end;
+  then reconsider F as Function of Seg n,Fam by A4;
+  A40: rng F = Fam by A4;
+  A5: F is ManySortedSet of (Seg n)
+  proof
+    B1: dom F = Seg (card Fam) by A3,FINSEQ_1:def 3;
+    then B2: F is (Seg n)-defined Function by RELAT_1:def 16;
+    F is quasi_total Function of Seg n,Fam;
+    then dom F = (Seg n) by B1,A3;
+    then F is total by B1,PARTFUN1:def 2;
+    hence thesis;
+  end;
+  A6: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding by GROUP_7:def 1;
+  then F is multMagma-yielding ManySortedSet of Seg n by A5,A6,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Seg n;
+  F is associative Group-like multMagma-Family of Seg n
+  proof
+    for i being set st i in Seg n ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Seg n ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Seg
+  (card Fam) by A31;
+  take F;
+  thus F is one-to-one by A4;
+  let i be Nat;
+  assume A10: i in Seg (card Fam);
+  dom F = Seg n by A3,FINSEQ_1:def 3;
+  then i in dom F by A31,A10;
+  then F.i in rng F by FUNCT_1:3;
+  then A11: F.i in Fam by A40;
+  then F.i is Element of Fam;
+  then A12: F.i is Group by A2;
+  hence thesis by A11;
 end;
 
-LmSubgroupEltTrans:
+theorem Th59:
+  for G being finite Group
+  for X being Subset of Subgroups G
+  holds X is finite
+proof
+  let G be finite Group;
+  let X be Subset of Subgroups G;
+  X c= Subgroups G & Subgroups G is finite by GROUP_3:15;
+  hence X is finite by FINSET_1:1;
+end;
+
+
+
+theorem Th60:
   for G being Group
-  for H1,H2 being Subgroup of G
-  for g being Element of G
-  st g in H1 & H1 is Subgroup of H2
-  holds g in H2
-proof
+  for Fam being set
+  st Fam<>{} & (for A being Element of Fam holds ex N being normal
+  Subgroup of G st A = the carrier of N)
+  for I being set
+  st card I = card Fam
+  holds ex F being associative Group-like multMagma-Family of I st
+  (for i being Element of I
+   holds ex N being normal Subgroup of G
+         st the carrier of N in Fam & F.i = G./.N) &
+  (for N being normal Subgroup of G st the carrier of N in Fam
+  holds ex i being Element of I st F.i=G./.N);
+::>                                         *4
+:: proof
+::   let G be Group;
+::   let Fam be set;
+::   assume A1: Fam<>{};
+::   assume A2: for A being Element of Fam
+::              holds ex N being normal Subgroup of G st A = the carrier of N;
+::   let I be set;
+::   assume A3: card I = card Fam;
+::   consider F being associative Group-like multMagma-Family of I;
+:: ::>                                                            *403
+::   take F;
+::   thus (for i being Element of I
+::         holds ex N being normal Subgroup of G
+::               st the carrier of N in Fam & F.i = G./.N)
+::   proof
+::     let i be Element of I;
+::     consider N being normal Subgroup of G;
+:: ::>                                      *403
+::     take N;
+::     thus the carrier of N in Fam;
+:: ::>                            *4
+::     thus F.i = G./.N;
+:: ::>                *4
+::   end;
+::   let N be normal Subgroup of G;
+::   assume Z3: the carrier of N in Fam;
+::   consider i being Element of I;
+:: ::>                            *403
+::   take i;
+::   thus F.i=G./.N;
+:: ::>            *4
+:: end;
+
+theorem Th61:
+  for G being Group
+  ex X being set
+  st (for N being normal Subgroup of G
+      holds G./.N in X);
+::>                   *4
+
+
+theorem Th56:
+  for G being Group
+  for X being set
+  st X<>{} & (for A being object st A in X holds A is normal Subgroup of G)
+  for I being set
+  st card I = card X
+  holds ex F being associative Group-like multMagma-Family of I st
+  (for i being Element of I
+   holds ex N being normal Subgroup of G st N in X & F.i = G./.N) &
+  (for N being normal Subgroup of G st N in X
+   holds ex i being Element of I st F.i = G./.N);
+::>                                            *4
+
+
+definition
   let G be Group;
-  let H1,H2 be Subgroup of G;
-  let g be Element of G;
-  assume A1: g in H1;
-  assume A2: H1 is Subgroup of H2;
-  then g is Element of H1 by A1,LmSubgroupElt;
-  then g in H2 by A1, A2, GROUP_2:40;
-  hence thesis;
-end;
-
-LmNormalSubgroup:
-for G being Group
-for H being Subgroup of G
-st (for a being Element of G holds H |^ a = H)
-holds H is normal Subgroup of G
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  assume A0: for a being Element of G holds H |^ a = H;
-  then for a being Element of G holds the carrier of H |^ a = the carrier of H;
-  then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
-  hence H is normal Subgroup of G by GROUP_3:def 13;
-end;
-
-begin :: the main work
-
-reserve G,G1,G2 for Group;
-reserve H for Subgroup of G;
-reserve N for normal Subgroup of G;
-reserve f for Homomorphism of G, G;
-reserve f0 for Homomorphism of G1, G2;
-reserve a,b,x,y for Element of G;
-reserve g1 for Element of G1;
-reserve X for set;
-
-definition :: Def1
-  let G;
-  mode Endomorphism of G is Homomorphism of G,G;
-end;
-
-registration
-  let G;
-  cluster bijective for Endomorphism of G;
+  func normal_Subgroups G -> set means
+  :Def10:
+  for x being object holds x in it iff x is strict normal Subgroup of G;
   existence
   proof
-    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
-    i is bijective;
-    hence thesis;
-  end;
-end;
+    take IT = {N where N is Element of Subgroups G : N is strict normal Subgroup of G};
+    A1: for N being object st N is strict normal Subgroup of G holds N in IT
+    proof
+      let N be object;
+      assume B1: N is strict normal Subgroup of G;
+      then B2: N in Subgroups G by GROUP_3:def 1;
+      thus N in IT by B1, B2;
+    end;
+    A2: for N being object st N in IT holds N is strict normal Subgroup of G
+    proof
+      let N be object;
+      assume B1: N in IT;
+      then consider N0 being Element of Subgroups G such that
+      B2: N0 = N and
+      B3: N0 is strict normal Subgroup of G;
+      thus N is strict normal Subgroup of G by B1,B2,B3;
+    end;
 
-definition :: Def2
-  let G;
-  mode Automorphism of G is bijective Endomorphism of G;
-end;
-
-LmAuto:
-for G being strict Group holds
-for f being Automorphism of G holds Image(f) = G
-proof
-  let G be strict Group;
-  let f be Automorphism of G;
-  f is Homomorphism of G,G &
-  f is onto;
-  then Image(f) = G by GROUP_6:57;
-  hence thesis;
-end;
-
-theorem Th1:
-  Image (f|(1).G) = (1).G
-proof
-  Image(f|(1).G) = f .: ((1).G) by GRSOLV_1:def 3
-  .= (1).G by GRSOLV_1:11;
-  hence thesis;
-end;
-
-for phi being Automorphism of G
-holds Image(phi|(1).G) = (1).G by Th1;
-
-:: In particular, the trivial proper subgroup (1).G of G is invariant
-:: under inner automorphisms, and thus is a characteristic subgroup.
-theorem Th2:
-  for f being Automorphism of G
-  holds Image(f|(1).G) is Subgroup of (1).G
-proof
-  let phi be Automorphism of G;
-  (1).G is Subgroup of (1).G by GROUP_2:54;
-  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
-end;
-
-:: reserve Id1, Id2 for Endomorphism of G;
-
-definition :: Def3
-  let G;
-  func Id_G -> Endomorphism of G means
-  :Def3:
-  for x being Element of G holds it.x=x;
-  existence
-  proof
-    reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
-    i.x = x by FUNCT_1:17;
-    hence thesis;
+    thus thesis by A1,A2;
   end;
   uniqueness
   proof
-    let Id1, Id2 be Endomorphism of G such that
-A1: for x being Element of G holds Id1.x=x and
-A2: for x being Element of G holds Id2.x=x;
-    let x be Element of G;
-    thus A7: Id1.x = x by A1
-                  .= Id2.x by A2;
-    thus thesis;
+    defpred P[object] means $1 is strict normal Subgroup of G;
+    let A1,A2 be set;
+    assume
+A10: for x being object holds x in A1 iff P[x];
+    assume
+A11: for x being object holds x in A2 iff P[x];
+    thus thesis from XBOOLE_0:sch 2(A10,A11);
   end;
 end;
 
-
-theorem Th3:
-  Id_G = id (the carrier of G)
-proof
-A1: for x being Element of X holds (id X).x=x;
-A2: for x being Element of G holds (Id_G).x=x by Def3;
-A3: for x being Element of G holds (id (the carrier of G)).x=x
-    by RELAT_1:def 8,A1;
-  let x be Element of G;
-  thus A4: (Id_G).x = x by A2
-                   .= (id (the carrier of G)).x by A3;
-  then (Id_G).x = (id (the carrier of G)).x by A2,A3;
-  thus thesis by A4,FUNCT_2:12;
-end;
-
-theorem Th3:
-  Id_G = id (the carrier of G)
-proof
-  let x be Element of G;
-  thus (Id_G).x = x by Def3
-               .= (id (the carrier of G)).x;
-end;
-
-Lm1: Id_G is one-to-one
-proof
-  id (the carrier of G) is one-to-one;
-  hence thesis by Th3;
-end;
-
-Lm2: Id_G is onto
-proof
-  id (the carrier of G) is onto;
-  hence thesis by Th3;
-end;
-
-registration let G;
-  cluster Id_G -> bijective;
-  coherence by Lm1,Lm2;
-end;
-
-theorem Th4:
-  Id_G is Automorphism of G
-proof
-  Id_G is bijective by Lm1, Lm2;
-  hence thesis;
-end;
-
-theorem Th5:
-  for x being Element of G holds (Id_G).x = x |^ 1_G
-proof
-  let x;
-  thus (Id_G).x = x by Def3
-               .= x |^ 1_G by GROUP_3:19;
-end;
-
-definition :: Def5
-  let G;
-  let IT be Automorphism of G;
-  attr IT is inner means
-  :Def5:
-  ex a being Element of G st
-  for x being Element of G holds IT.x = x |^ a;
-end;
-
-notation
-  let G be Group, f be Automorphism of G;
-  antonym f is outer for f is inner;
-end;
-
-registration
-  let G;
-  cluster inner for Automorphism of G;
-  existence
-  proof
-    take Id_G;
-    take 1_G;
-    thus thesis by Th5;
-  end;
-end;
-
-
-reserve H1,H2 for Subgroup of G;
-
-
-Lm3:
-for G1,G2 being Group
-for H being Subgroup of G1
-for f being Homomorphism of G1,G2
-for h being Element of G1
-st h in H
-holds (f|H).h = f.h
-proof
-  let G1,G2 be Group;
-  let H be Subgroup of G1;
-  let f be Homomorphism of G1,G2;
-  let h be Element of G1;
-  assume Z0: h in H;
-  then h is Element of H by LmSubgroupElt;
-  then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
-  then (f|H).h = f.h by GRSOLV_1:def 2;
-  hence thesis;
-end;
-
-theorem ThKerInner:
+theorem Th62:
   for G being Group
-  for f being inner Automorphism of G
-  holds Ker f = (1).G
+  for Fam being non empty set
+  st (for N being Element of Fam holds N is normal Subgroup of G)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for N being normal Subgroup of G st N in Fam holds F.N=G./.N)
 proof
   let G be Group;
-  let f be inner Automorphism of G;
-  consider a being Element of G such that
-A0: for x being Element of G holds f.x = x |^ a
-  by Def5;
-A1:  for x being Element of G holds x in Ker f implies x in (1).G
+  let Fam be non empty set;
+  defpred P[object,object] means ex N being normal Subgroup of G st $1=N & $2=G./.N;
+  assume A1: for N being Element of Fam holds N is normal Subgroup of G;
+  A2: for x,y1,y2 being object st x in Fam & P[x,y1] & P[x,y2] holds y1=y2;
+  A3: for x being object st x in Fam ex y being object st P[x,y]
   proof
-    let x be Element of G;
-    assume A11: x in Ker f;
-    then f.x = 1_G by GROUP_6:41;
-    then x |^ a = 1_G by A0;
-    then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
-    the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1;
-    then x in the carrier of (1).G by A12;
-    then x in (1).G by STRUCT_0:def 5;
-    hence thesis;
-  end;
-A2:  for x being Element of G holds x in (1).G implies x in Ker f
-  proof
-    let x be Element of G;
-    assume Z4: x in (1).G;
-    then x is Element of (1).G by LmSubgroupElt;
-    then x in the carrier of (1).G;
-    then x in {1_G} by GROUP_2:def 7;
-    then x = 1_G by TARSKI:def 1;
-    then f.x = 1_G by GROUP_6:31;
-    then x in Ker f by GROUP_6:41;
-    hence thesis;
-  end;
-  thus Ker f = (1).G by A1,A2,GROUP_2:60;
-end;
-
-
-
-:: theorem Th6:
-LmSandwich: for H1 being strict Subgroup of G
-for H2 being strict Subgroup of G
-st (H1 is Subgroup of H2) & (H2 is Subgroup of H1)
-holds H1 = H2
-proof
-  let H1 be strict Subgroup of G;
-  let H2 be strict Subgroup of G;
-  assume H1 is Subgroup of H2 & H2 is Subgroup of H1;
-  then the multMagma of H1 = the multMagma of H2 by GROUP_2:55;
-  hence thesis;
-end;
-
-reserve H for Subgroup of G;
-
-theorem Th7:
-  for a being Element of G
-  for f being inner Automorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds Image(f|H) = H |^ a
-proof
-  let a be Element of G,
-      f be inner Automorphism of G;
-  assume
-A0: for x being Element of G holds f.x = x |^ a;
-C1: for h being Element of G st h in H holds (f|H).h = h |^ a
-  proof
-    let h be Element of G;
-    assume h in H;
-    then Z1: f.h = (f|H).h by Lm3;
-    f.h = h |^ a by A0;
-    hence (f|H).h = h |^ a by Z1;
-  end;
-
-C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
-  proof
-    let y be Element of G;
-    assume y in Image(f|H);
-    then consider h being Element of H such that
-    AA1: (f|H).h = y by GROUP_6:45;
-    h is Element of G by GROUP_2:42;
-    then reconsider h as Element of G;
-    AA2: h in H by STRUCT_0:def 5;
-    then (f|H).h = h |^ a by C1;
-    then y = h |^ a by AA1;
-    then y = h |^ a & h in H by AA2;
-    then y in H |^ a by GROUP_3:58;
+    let x be object;
+    assume B1: x in Fam;
+    then x is normal Subgroup of G by A1;
+    then reconsider x as normal Subgroup of G;
+    consider N being normal Subgroup of G such that
+    B2: x = N by Def10;
+    consider y being Group such that
+    B3: y = G./.N;
+    reconsider y as object;
+    take y;
+    B5: P[x,y] by B2,B3;
     hence thesis;
   end;
 
-C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  consider F being Function such that
+  A4: dom F = Fam and
+  A5: for x being object st x in Fam holds P[x, F.x]
+  from FUNCT_1:sch 2(A2,A3);
+
+  A6: for x being normal Subgroup of G st x in Fam holds F.x = G./.x
   proof
-    let y be Element of G;
-    assume y in H |^ a;
-    then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
-    then consider g being Element of G such that
-    AB1:    y=g|^a and
-    AB2:    g in H;
-
-AB3:  (f|H).g = f.g by Lm3,AB2
-      .= g |^ a by A0
-      .= y by AB1;
-    reconsider g as Element of H by AB2,LmSubgroupElt;
-    reconsider fH = (f|H) as Homomorphism of H,G;
-    fH.g = y by AB3;
-    hence y in Image(f|H) by GROUP_6:45;
-  end;
-
-  for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
-  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
-  hence thesis;
-end;
-
-
-definition :: Def6
-  let G1,G2 be Group;
-  attr G2 is G1-isomorphic means :Def6:
-  G1,G2 are_isomorphic;
-end;
-
-registration
-  let G1 be Group;
-  cluster G1-isomorphic for Group;
-  existence
+    let x be normal Subgroup of G;
+    assume B1: x in Fam;
+    P[x, F.x] by A4,A5,B1;
+    then consider N being normal Subgroup of G such that
+    B2: x = N and
+    B3: F.x = G./.N;
+    thus F.x = G./.x by B2,B3;
+  end;  
+  set codomain = rng F;
+  A7: codomain <> {}
   proof
-    take G1;
-    Id_G1 is bijective;
-    thus thesis;
+    Fam is non empty;
+    then consider x being object such that
+    B1: x in Fam
+    by XBOOLE_0:def 1;
+    reconsider x as Element of Fam by B1;
+    F.x in rng F by A4,FUNCT_1:3;
+    then F.x in codomain;
+    hence thesis by XBOOLE_0:def 1;
   end;
-end;
-
-
-:: Reflexivity
-Lm4: for G being Group holds G is G-isomorphic
-proof
-  let G be Group;
-  G,G are_isomorphic;
-  thus thesis;
-end;
-
-Lm5:
-  for G2 being G1-isomorphic Group
-  holds (ex h being Homomorphism of G1,G2 st h is bijective)
-proof
-  let G2 be G1-isomorphic Group;
-  G1,G2 are_isomorphic by Def6;
-  then consider h being Homomorphism of G1,G2 such that
-A1: h is bijective by GROUP_6:def 11;
-  thus thesis by A1;
-end;
-
-registration
-  let G1 be Group,
-      G2 be G1-isomorphic Group;
-  cluster bijective for Homomorphism of G1,G2;
-  existence by Lm5;
-end;
-
-
-reserve h for Homomorphism of G, G;
-
-definition :: Def7
-  let G1 be Group,
-      G2 be G1-isomorphic Group;
-  mode Isomorphism of G1,G2 is bijective Homomorphism of G1,G2;
-end;
-
-theorem Th97:
-  for G1 being Group
-  for G2 being strict Group
-  for f being Homomorphism of G1,G2
-  st f is onto
-  holds Image(f) = G2 by GROUP_6:57;
-
-
-theorem Th97:
-  for G,H being Group
-  for f being Homomorphism of G,H
-  st f is onto
-  holds H = Image f
-proof
-  let G,H be Group;
-  let f be Homomorphism of G,H;
-  assume Z61: f is onto;
-  then A1: rng f = the carrier of H;
-  rng f = the carrier of Image f by GROUP_6:44;
-  then the carrier of Image f = the carrier of H by A1;
-  then the multMagma of Image f = the multMagma of H by GROUP_2:61;
-  then Image(f) qua Group = H qua Group;
-::>                                   *4
-end;
-::>,70
-
-
-
-theorem Th98:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st f is onto
-  holds Image(f) = G2
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  A0: dom f = the carrier of G1 by FUNCT_2:def 1;
-  assume Z57: f is onto;
-  then rng f = the carrier of G2;
-  then f .: (the carrier of G1) = (the carrier of G2)
-  by Z57, LmOntoMapsEverything;
-  A1: Image f is strict Subgroup of G2 by GROUP_6:def 10;
-  A2: G2 is Subgroup of G2 by GROUP_2:54;
-  rng f = the carrier of G2 by Z57;
-  then the carrier of Image f = the carrier of G2 by GROUP_6:44;
-  then the multMagma of Image f = the multMagma of G2 by A1,A2,GROUP_2:59;
-  then Image f = the multMagma of G2 by A1,GROUP_2:61;
-  hence thesis;
-::>          *4
-end;
-
-proof end;
-::> *396
-
-theorem Th99:
-  for G1 being strict Group
-  for G2 being G1-isomorphic Group
-  for f being Isomorphism of G1,G2
-  holds Image(f) = G2
-proof
-  let G1 be strict Group;
-  let G2 be G1-isomorphic Group;
-  let f be Isomorphism of G1,G2;
-  set UG2 = the carrier of G2;
-  A0: f is onto;
-  reconsider G2 as Group;
-  f is Homomorphism of G1,G2;
-  then Image f = G2 by A0,GROUP_6:57;
-::>                  *4
-  hence thesis;
-end;
-
-definition
-  let G1 be Group;
-  let G2 be G1-isomorphic Group;
-  let f be Isomorphism of G1,G2;
-  redefine func f" -> Function of G2,G1;
-  coherence
+  A8: for y being Element of codomain holds y is Group
   proof
-    rng f = the carrier of G2 by FUNCT_2:def 3;
-    then reconsider g = f" as Function of the carrier of G2, the carrier of G1
-    by FUNCT_2:25;
-    g is Function of G2,G1;
-    hence thesis;
-  end;
-end;
-
-LmIso:
-for G1 being Group
-for G2 being G1-isomorphic Group
-for f being Isomorphism of G1,G2
-holds f" is multiplicative Function of G2,G1
-proof
-  let G1 be Group;
-  let G2 be G1-isomorphic Group;
-  let f be Isomorphism of G1,G2;
-  set g = f";
-  A1: rng f = the carrier of G2 by FUNCT_2:def 3, Th99;
-  now
-    let y1,y2 be Element of G2;
-    consider x1 being Element of G1 such that
-    A2: x1 in G1 & y1 = f.x1 by A1,FUNCT_2:11;
-::>                           *4
-    consider x2 being Element of G1 such that y2 = f.x2 by A1,FUNCT_2:11;
-::>                                                      *4
-    f".(y1*y2) = f".(f(x1)*f(x2))
-::>                  *148  *148
-    .= f".(f(x1*x2))
-::>        *148
-    .= x1*x2;
-  end;
-  thus f" is multiplicative Function of G2,G1;
-::>                                         *4
-end;
-
-
-LmIsoInvIsIso:
-  for G being Group
-  for H being G-isomorphic Group
-  for f being Isomorphism of G,H
-  holds f" is Isomorphism of H,G
-::>                     *101
-proof
-  let G,H be Group;
-  let f be Isomorphism of G,H;
-::>                  *101
-  thus f" is Isomorphism of G,H;
-::>                    *101
-end;
-
-
-theorem Th12:
-  for G being Group
-  for G2 being G-isomorphic Group
-  for f being Endomorphism of G
-  st G = G2
-  holds (f is Isomorphism of G,G2) iff (f is Automorphism of G)
-proof
-  let G be Group;
-  let G2 be G-isomorphic Group;
-  let f be Endomorphism of G;
-  assume Z9: G = G2;
-  thus (f is Isomorphism of G,G2) implies (f is Automorphism of G)
-  proof
-    assume Z10: f is Isomorphism of G,G2;
-    then f is bijective Homomorphism of G,G2;
-    then f is bijective Homomorphism of G,G by Z9;
-    then f is Automorphism of G;
-    hence thesis;
-  end;
-  thus (f is Automorphism of G) implies (f is Isomorphism of G,G2)
-  proof
-    assume Z12: f is Automorphism of G;
-    then f is bijective Homomorphism of G,G;
-    then f is bijective Homomorphism of G,G2 by Z9;
-    then f is Isomorphism of G,G2;
-    hence thesis;
-  end;
-  thus thesis;
-end;
-
-theorem Th8:
-  for G being strict Group, f being object
-  holds (f in Aut G) iff (f is Automorphism of G)
-proof
-  let G be strict Group,
-      f be object;
-::      f be Endomorphism of G;
-  thus f in Aut G implies f is Automorphism of G
-  proof
-    assume A0: f in Aut G;
-    then reconsider f as Endomorphism of G by AUTGROUP:def 1;
-    f is bijective by A0,AUTGROUP:def 1;
-    then f is Automorphism of G;
-    hence thesis;
-  end;
-  thus f is Automorphism of G implies f in Aut G
-  proof
-    assume f is Automorphism of G;
-    then reconsider f as Automorphism of G;
-    f is bijective;
-    then f in Aut G by AUTGROUP:def 1;
-    hence thesis;
-  end;
-  thus thesis;
-end;
-
-LmInnAut:
-  for G being strict Group
-  for f being Element of InnAut G
-  holds f is Automorphism of G
-proof
-  let G be strict Group;
-  let f be Element of InnAut G;
-  f is Element of Aut G by AUTGROUP:12;
-  then f in Aut G;
-  hence f is Automorphism of G by Th8;
-end;
-
-LmInnAutHelper:
-for G being strict Group
-for f being Element of InnAut G
-holds ex a being Element of G st (for x being Element of G holds f.x = x |^ a)
-proof
-  let G be strict Group;
-  let f be Element of InnAut G;
-A1: f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-  consider a being Element of G such that
-A2:  for x being Element of G holds f.x = x |^ a
-  by A1,AUTGROUP:def 4;
-  take a;
-  let x be Element of G;
-  thus f.x = x |^ a by A2;
-end;
-
-
-LmInnAut2:
-  for G being strict Group
-  for f being object
-  holds (f in InnAut G) iff (f is inner Automorphism of G)
-proof
-  let G be strict Group;
-  let f be object;
-  thus (f in InnAut G) implies (f is inner Automorphism of G)
-  proof
-    assume f in InnAut G;
-    then reconsider f as Element of InnAut G;
-    consider a being Element of G such that
-A1: for x being Element of G holds f.x = x |^ a
-    by LmInnAutHelper;
-    reconsider f as Element of Aut G by AUTGROUP:12;
-    reconsider f as Automorphism of G by Th8;
-    f is inner by A1,Def5;
-    then f is inner Automorphism of G;
-    hence thesis;
-  end;
-  thus (f is inner Automorphism of G) implies (f in InnAut G)
-  proof
-    assume B0: f is inner Automorphism of G;
-    then reconsider f as inner Automorphism of G;
-    consider a being Element of G such that
-B1: for x being Element of G holds f.x = x |^ a
-    by Def5;
-    reconsider f as Element of Funcs (the carrier of G, the carrier of G)
-    by FUNCT_2:9;
-    f in InnAut G by B1,AUTGROUP:def 4;
-    hence thesis;
-  end;
-  thus thesis;
-end;
-
-
-
-
-theorem Th999:
-  for G being strict Group
-  for f being object
-  holds (f in InnAut G) iff (f is inner Automorphism of G)
-proof
-  let G be strict Group;
-  let f be object;
-  thus (f in InnAut G) implies (f is inner Automorphism of G)
-  proof
-    assume Z0: f in InnAut G;
-    then f is Automorphism of G by LmInnAut;
-    then reconsider f as Automorphism of G;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then consider a being Element of G such that
-    A2: for x being Element of G holds f.x = x |^ a
-    by Z0,AUTGROUP:def 4;
-    f is inner Automorphism of G by Def5,A2;
-    hence thesis;
-  end;
-  thus (f is inner Automorphism of G) implies (f in InnAut G)
-  proof
-    assume Z1: f is inner Automorphism of G;
-    reconsider f as inner Automorphism of G by Z1;
-    f is Element of Aut G by Z1,Th8;
-    then consider a being Element of G such that
-    B1: for x being Element of G holds f.x = x |^ a
-    by Z1,Def5;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then f in InnAut G by B1,AUTGROUP:def 4;
-    hence thesis;
-  end;
-  thus thesis;
-end;
-
-reserve H1,H2 for strict Subgroup of G;
-reserve H for Subgroup of G;
-
-theorem Th9:
-  for H
-  st (for a holds H |^ a = H)
-  holds H is normal Subgroup of G
-proof
-  let H;
-  assume for a being Element of G holds H |^ a = H;
-  then the carrier of H |^ a = the carrier of H;
-  then the multMagma of H = H |^ a by GROUP_2:59;
-  hence H is normal Subgroup of G by GROUP_3:def 13;
-end;
-
-
-theorem Th10:
-  for H being strict Subgroup of G
-  holds (for a holds H |^ a = H) iff H is strict normal Subgroup of G
-proof
-  let H be strict Subgroup of G;
-  thus (for a holds H |^ a = H) implies H is strict normal Subgroup of G
-  proof
-    assume A1: for a holds H |^ a = H;
-    A2:  the carrier of H |^ a = the carrier of H by A1;
-    then H |^ a is Subgroup of G;
-    then the multMagma of H = H |^ a by A1,A2, GROUP_2:59;
-    hence H is strict normal Subgroup of G by GROUP_3:def 13;
-  end;
-  thus H is strict normal Subgroup of G implies (for a holds H |^ a = H)
-  proof
-    assume A1: H is strict normal Subgroup of G;
-    let a;
-    set H1 = H |^ a;
-    thus H1 = H
-    proof
-      A2:  H1 in con_class H by A1,GROUP_3:108;
-      A3:  con_class H = {H} by A1, GROUP_3:123;
-      hence H1 = H by A2,TARSKI:def 1;
-    end;
-    hence thesis;
-  end;
-  thus thesis;
-end;
-
-reserve H for strict Subgroup of G;
-reserve H1,H2 for Subgroup of G;
-reserve h for Element of H;
-
-LmTmp:
-for x being object
-holds x in Image(f|H) iff (ex g being Element of H st x = (f|H).g)
-by GROUP_6:45;
-
-definition :: Def8
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  func dom f -> Group equals G1;
-  coherence;
-end;
-
-reserve H for Subgroup of G1;
-reserve f for Homomorphism of G1,G2;
-reserve H1 for Subgroup of G1;
-reserve g for object;
-reserve X for set;
-
-definition :: Def9
-  let G;
-  let IT be Subgroup of G;
-  attr IT is characteristic means
-  :Def9:
-  for f being Automorphism of G
-  holds Image (f|IT) = IT;
-end;
-
-reserve I for Subgroup of H;
-
-Lm6: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
-proof
-  let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
-  hence thesis by GROUP_2:55;
-end;
-
-Lm7: ex H being Subgroup of G st H is characteristic
-proof
-  take H = (1).G;
-A1:    for f being Automorphism of G
-       holds Image (f|H) is Subgroup of H by Th2;
-A2:  for f being Automorphism of G holds Image(f|H) = H
-  proof
-    let f be Automorphism of G;
-    reconsider I = Image(f|H) as Subgroup of H by A1;
-    H = I by Lm6;
-    then
-A3:    Image(f|H) = H by A1;
-    thus thesis by A3;
-  end;
-  then H is characteristic by A2,Def9;
-  hence thesis;
-end;
-
-registration
-  let G;
-  cluster characteristic for Subgroup of G;
-  existence by Lm7;
-end;
-
-reserve K for characteristic Subgroup of G;
-:: "K" for "Karacteristic"...uh, wait...
-
-theorem ThAltChar:
-  for G being Group
-  for K being characteristic Subgroup of G
-  for f being Automorphism of G
-  holds f .: K = K
-proof
-  let G be Group;
-  let K be characteristic Subgroup of G;
-  let f be Automorphism of G;
-  f .: K = Image(f|K) by GRSOLV_1:def 3
-  .= K by Def9;
-  hence f .: K = K;
-end;
-
-
-theorem Th13:
-  for G being Group
-  for K being characteristic Subgroup of G
-  for f being Automorphism of G
-  holds f .: K = K
-proof
-  let G be Group;
-  let K be characteristic Subgroup of G;
-  let f be Automorphism of G;
-  f .: K = Image(f|K) by GRSOLV_1:def 3
-  .= K by Def9;
-  hence f .: K = K;
-end;
-
-:: group morphisms preserve subgroups
-theorem
-  for G1,G2 being Group
-  for H being Subgroup of G1
-  for f being Homomorphism of G1,G2
-  holds f .: H is Subgroup of G2 by GRSOLV_1:def 3;
-
-LmKerRestrictedIsSubgroupOfKer:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  for H being Subgroup of G1
-  holds Ker(f|H) is Subgroup of Ker(f)
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  let H be Subgroup of G1;
-  C0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
-  C1: Ker(f) is Subgroup of G1;
-  C2: for g being Element of G1
-  st g in Ker(f|H)
-  holds g in Ker(f)
-  proof
-    let g be Element of G1;
-    assume A1: g in Ker(f|H);
-    A2: Ker(f|H) is Subgroup of H;
-    then A3: g in H by A1, LmSubgroupEltTrans;
-    A4: (f|H).g = f.g by A3,Lm3;
-    g is Element of H by A3, LmSubgroupElt;
-    then (f|H).g = 1_G2 by A1, GROUP_6:41;
-    then f.g = 1_G2 by A4;
-    then g in Ker(f) by GROUP_6:41;
-    hence thesis;
-  end;
-  Ker(f|H) is Subgroup of Ker(f) by C0,C1,C2,GROUP_2:58;
-  hence thesis;
-end;
-
-
-Lm9:
-for G being Group
-for H being Subgroup of G
-for phi being Automorphism of G
-holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
-::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
-  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
-  AA0: phi is one-to-one;
-  then Ker(phi) = (1).G by GROUP_6:56;
-  then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
-  then AA1: Ker(phi|H) = (1).G by Lm6;
-  (1).G = (1).H by GROUP_2:63;
-  then Ker(phi|H) = (1).H by AA1;
-  then (phi|H) is one-to-one by GROUP_6:56;
-  hence thesis;
-end;
-
-
-theorem Th14:
-  for G being Group
-  for H being Subgroup of G
-  for phi being Automorphism of G
-  holds H,phi .: H are_isomorphic
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
-  reconsider H2 = phi .: H as Subgroup of G;
-  A1: Image(phi|H) = H2 by GRSOLV_1:def 3;
-  C1: phi|H is one-to-one by Lm9;
-  then C2: H,Image(phi|H) are_isomorphic by GROUP_6:68;
-  then H,phi .: H are_isomorphic by C2, GRSOLV_1:def 3;
-  hence thesis;
-end;
-
-Lm8:
-for G being Group
-for H being Subgroup of G
-for phi being Automorphism of G
-holds (phi .: H) is H-isomorphic Group by Th14, Def6;
-
-:: GROUP_6:57 requires G2 being a strict group, but that's not necessary
-:: for one direction of implication.
-theorem Th15:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st Image(f) = G2
-  holds f is onto
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume A1: Image(f) = G2;
-  then rng f = the carrier of Image f by GROUP_6:44
-  .= the carrier of G2 by A1;
-  then f is onto by FUNCT_2:def 3;
-  hence thesis;
-end;
-
-for G1,G2 being Group
-st G1 = G2
-holds the multMagma of G1 = the multMagma of G2;
-
-for G1,G2 being Group
-st the multMagma of G1 = the multMagma of G2
-holds G1 = G2
-proof
-  let G1,G2 be Group;
-  assume Z1: the multMagma of G1 = the multMagma of G2;
-  then Z2: the carrier of G1 = the carrier of G2 & the multF of G1 = the multF of G2;
-  then G1 = G2;
-::>         *116                  *116         *4
-  hence thesis;
-end;
-
-for G1,G2 being strict Group
-st the multMagma of G1 = the multMagma of G2
-holds G1 = G2
-proof
-  let G1,G2 be strict Group;
-  assume Z1: the multMagma of G1 = the multMagma of G2;
-  then the carrier of G1 = the carrier of G2 & the multF of G1 = the multF of G2;
-  then G1 = G2;
-  hence thesis;
-end;
-
-
-for G1,G2 being Group
-for f being Homomorphism of G1,G2
-st f is onto
-holds Image(f) = G2
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume f is onto;
-  then rng f = the carrier of G2;
-  then A0: the carrier of Image f = the carrier of G2 by GROUP_6:44;
-  then A1: the multMagma of Image f = the multMagma of G2 by GROUP_2:61;
-  (Image f) is Group;
-  reconsider fG = (Image f) as Group;
-  A2: f is Function of G1,fG & rng f = the carrier of fG by GROUP_6:44,GROUP_6:49;
-  the multF of fG = the multF of Image f & the multF of Image f = (the multF of G2)||(the carrier of Image f) by GROUP_2:def 5;
-  the carrier of fG = the carrier of G2 by A0;
-  then the multMagma of fG = the multMagma of G2 by A2,GROUP_2:61;
-  then fG = G2;
-::>          *4
-  Image(f) qua Group = G2 by A1,GROUP_2:61;
-::>                        *4
-  hence thesis;
-end;
-
-proof end;
-::> *396
-
-LmRestr:
-for G being Group
-for H being Subgroup of G
-for phi being Automorphism of G
-holds phi|H is Homomorphism of H,(phi .: H)
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
-A1:  phi|H is Homomorphism of H, G by GRSOLV_1:def 2;
-A2:  Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-  phi|H is Homomorphism of H, Image(phi|H) by GROUP_6:49;
-  then phi|H is Homomorphism of H,(phi .: H) by A2;
-  hence thesis;
-end;
-
-
-theorem Th16:
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for phi being Automorphism of G
-  st H2 = Image(phi|H1)
-  holds (phi|H1) is onto
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let phi be Automorphism of G;
-  assume A1: H2 = Image(phi|H1);
-  then A2: H2 = phi .: H1 by GRSOLV_1:def 3;
-  then H1,H2 are_isomorphic by Th14;
-  set f = phi|H1;
-  f is onto iff phi|H1 is onto;
-  B1: phi|H1 is one-to-one by Lm9;
-  phi|H1 is Homomorphism of H1,(phi .: H1) by LmRestr;
-  then B2: phi|H1 is Homomorphism of H1,H2 by A2;
-  for y being Element of rng(phi|H1)
-  st (ex x being Element of H1 st y = (phi|H1).x)
-  holds (phi|H1) is onto;
-::>                    *4
-  then phi|H1 is onto by A1,B1,Th15;
-::>                    *4
-  rng(phi|H1) = the carrier of Image(phi|H1) by GROUP_6:44
-  .= the carrier of H2 by A1;
-  (phi|H1) is Homomorphism of H1,H2 by A1,GROUP_6:49;
-  then (phi|H1) is onto;
-::>                   *4
-  (phi|H1) is onto by A1,GROUP_6:44,FUNCT_2:def 3;
-::>                 *4
-  set f = (phi|H1);
-  C1: Image(f) = Image(phi|H1)
-  .= H2 by A1;
-  then f is onto;
-::>            *4
-  reconsider f = (phi|H1) as Homomorphism of H1,Image(phi|H1) by A1,GROUP_6:49;
-  the carrier of Image(f) = f .: (the carrier of H1) by GROUP_6:def 10;
-  f is one-to-one by B1;
-  f is onto by GROUP_6:44;
-  then (phi|H1) is onto;
-::>                   *4
-  hence thesis;
-end;
-
-theorem Th16a:
-  for G being Group
-  for H being strict Subgroup of G
-  holds (H is normal) iff (for f being inner Automorphism of G holds (f .: H) = H)
-proof
-  let G be Group;
-  let H be strict Subgroup of G;
-   C1: (H is normal) implies (for f being inner Automorphism of G holds
-   (f .: H) = H)
-  proof
-    assume A0: H is normal;
-    let f be inner Automorphism of G;
-    consider a being Element of G such that
-    A1: for x being Element of G holds f.x = x |^ a
-    by Def5;
-    Image(f|H) = H |^ a by A1,Th7;
-    then A2: f .: H = H |^ a by GRSOLV_1:def 3;
-    H |^ a = the multMagma of H by A0,GROUP_3:def 13
-    .= H by GROUP_2:def 6;
-    then f .: H = H by A2;
-    hence thesis;
-  end;
-  C2: not ((for f being inner Automorphism of G holds (f .: H = H)) implies H is normal)
-      implies contradiction
-  proof
-    assume B1: for f being inner Automorphism of G holds f .: H = H;
-    assume not H is normal;
-    then consider a being Element of G such that
-    B2: H |^ a <> the multMagma of H
-    by GROUP_3:def 13;
-    consider f being inner Automorphism of G such that
-    B3: (for x being Element of G holds f.x= x |^ a)
-    by ThAlwaysFindInnerAuto;
-    Image(f|H) = H |^ a by B3, Th7;
-    then f .: H = H |^ a by GRSOLV_1:def 3;
-    hence contradiction by B1,B2;
-  end;
-
-  thus thesis by C1,C2;
-end;
-
-Lm25:
-for Y,Z being non empty set
-for f being Function of Y,Z
-for X1,X2 being non empty set
-st X1 c= X2 & X2 c= Y
-holds (f|X2) .: X1 = f .: X1
-proof
-  let Y,Z be non empty set;
-  let f be Function of Y,Z;
-  let X1,X2 be non empty set;
-  assume Z72: X1 c= X2;
-  assume Z73: X2 c= Y;
-  Z78: dom f = Y by FUNCT_2:def 1;
-  Z79: X2 c= dom f by Z78, Z73,Z73,XBOOLE_1:1;
-  then Z80: X2 /\ dom f = X2 by XBOOLE_1:28;
-  Z81: X1 c= dom f by Z72,Z79,XBOOLE_1:1;
-  then Z82: X1 c= dom f /\ X2 by Z72,XBOOLE_1:19;      
-  for y being object holds y in (f .: X1) iff y in ((f|X2) .: X1)
-  proof
-    let y be object;
-    thus y in f .: X1 implies y in ((f|X2) .: X1)
-    proof
-      assume Z76: y in f .: X1;
-      then Z77: ex x being object st x in dom f & x in X1 & y = f.x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom f and
-      C2: x0 in X1 and
-      C3: y = f.x0;
-      ex x being object st x in dom f /\ X2 & x in X1 & y = f.x by
-      Z82, Z77,FUNCT_1:def 6;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;      
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      then x0 in dom f /\ X2 & x0 in X1 & y = f.x0 by Z80,Z72,C1,C2,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      Z <> {} & x0 in X1 & y = f.x0 & y = (f|X2).x0 by BA1, C2,Z72,C3;
-      then y in ((f|X2) .: X1) by B1,C2,Z72,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus y in (f|X2) .: X1 implies y in (f .: X1)
-    proof
-      assume Z1: y in (f|X2) .: X1;
-      then Z2: ex x being object
-      st x in dom (f|X2) & x in X1 & y = (f|X2).x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom (f|X2) and
-      C2: x0 in X1 and
-      C3: y = (f|X2).x0;
-      ex x being object st x in dom (f|X2) & x in X1 & y = (f|X2).x
-      by Z82, Z2,FUNCT_1:def 6;
-      B11: f is Function of Y,Z;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      f is Function of Y,Z &
-      Z <> {} & X1 c= X2 & X2 c= Y & x0 in X1 & x0 in Y & y = f.x0 by B1,B2,C2,C1,Z72,Z73,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      then y in (f .: X1) by B1,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus thesis;
-  end;
-  then (f|X2) .: X1 = f .: X1 by TARSKI:2;
-  hence thesis;
-end;
-
-
-theorem Th16:
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for phi being Automorphism of G
-  st H2 = (phi .: H1)
-  holds (phi|H1) is onto
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let phi be Automorphism of G;
-  assume A1: H2 = (phi .: H1);
-  then H1,H2 are_isomorphic by Th14;
-  B1: (phi|H1) is one-to-one by Lm9;
-  then B2: (phi|H1)" is Homomorphism of Image(phi|H1),H1 by GROUP_6:55;
-
-  A2: Image(phi|H1) = H2 by A1, GRSOLV_1:def 3;
-  (phi|H1) is Homomorphism of H1,G by GRSOLV_1:def 2;
-  then A3: (phi|H1) is Homomorphism of H1,H2 by A2,GROUP_6:49;
-  set f = (phi|H1);
-  A6: f is Homomorphism of H1,H2 by A3;
-  A4: Image(f) = H2 by A2;
-  then A5: rng f = the carrier of H2 by GROUP_6:44;
-  then f is onto by A4,A5,A6,FUNCT_2:def 3;
-::>               *4
-::  reconsider f=(phi|H1) as Homomorphism of H1,H2 by A3;
-::  f is onto implies (phi|H1) is onto;
-  reconsider f as Homomorphism of H1,H2 by A3;
-  H1 is Group & H2 is Group & f is Homomorphism of H1,H2;
-  Image(f) = H2 by A2,A4;
-::>              *4
-  f is onto by A4, Th15;
-::>          *4
-end;
-::>,70
-
-
-theorem Th17:
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for phi being Automorphism of G
-  st H2 = (phi .: H1)
-  holds (phi|H1) is Homomorphism of H1,H2 & (phi|H1) is bijective
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let phi be Automorphism of G;
-  assume A1: H2 = (phi .: H1);
-  then H1,H2 are_isomorphic by Th14;
-  A2: Image(phi|H1) = H2 by A1, GRSOLV_1:def 3;
-  (phi|H1) is Homomorphism of H1,G by GRSOLV_1:def 2;
-  then A3: (phi|H1) is Homomorphism of H1,H2 by A2,GROUP_6:49;
-  ::
-  phi"|H2 is Homomorphism of H2,G;
-::>                             *4,4,4
-
-  H1 is Group & H2 is Group;
-  A5: rng(phi|H1) = the carrier of Image(phi|H1) by GROUP_6:44
-  .= the carrier of H2 by A2;
-  then A4: rng(phi|H1) = the carrier of H2;
-  then (phi|H1) is bijective by A4,GROUP_6:60;
-::>                           *4,4
-  reconsider phiH = (phi|H1) as Homomorphism of H1,H2 by A3;
-  rng(phiH) = the carrier of H2 by A4;
-  then phiH is onto by A4,FUNCT_2:def 3;
-  then (phi|H1) qua Homomorphism of H1,H2 is onto by A4,FUNCT_2:def 3;
-::>               *116
-  then the carrier of H2 c= rng(phi|H1);
-::>                                   *4
-  then rng (phi|H1) = the carrier of H2;
-::>                                   *4
-  then (phi|H1) is onto by GROUP_6:57;
-::>                      *4
-  thus (phi|H1) is bijective;
-::>    *51                 *4,4
-end;
-
-
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for phi being Automorphism of G
-  st H2 = (phi .: H1)
-  holds (phi|H1) is Homomorphism of H1,H2 & (phi|H1) is bijective
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let phi be Automorphism of G;
-  assume A1: H2 = phi .: H;
-::>    *52
-  A1: Image(phi|H) = H2 by GRSOLV_1:def 3;
-::>       *103
-  C1: phi|H is one-to-one
-  proof
-    AA0: phi is one-to-one;
-    then Ker(phi) = (1).G by GROUP_6:56;
-    then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
-::>        *103
-    then AA1: Ker(phi|H) = (1).G by Lm6;
-::>             *103
-    (1).G = (1).H by GROUP_2:63;
-::>                *4
-    then Ker(phi|H) = (1).H by AA1;
-::>        *103
-    then (phi|H) is one-to-one by GROUP_6:56;
-    hence thesis;
-  end;
-  then C2: H,Image(phi|H) are_isomorphic by GROUP_6:68;
-::>              *103
-  then H,phi .: H are_isomorphic by C2, GRSOLV_1:def 3;
-::>                            *102
-  hence thesis;
-end;
-
-
-
-theorem
-  for G being Group
-  for H being Subgroup of G
-  st (for H2 being Subgroup of G
-      st card H = card H2
-      holds H = H2)
-  holds H is characteristic Subgroup of G
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  assume A1: for H2 being Subgroup of G st card H = card H2 holds H = H2;
-  now
-    let phi be Automorphism of G;
-    reconsider H2 = phi .: H as Subgroup of G;
-    A2: H,H2 are_isomorphic by Th14;
-    phi|H is Isomorphism of H,H2 by Th14;
-::>                    *101
-    then (the carrier of H), (the carrier of H2) are_equipotent;
-    then the carrier of H, the carrier of H2 are_equipotent;
-    then card H2 = card H by CARD_1:4;
-::>                              *203
-    thus H2 = H by A1;
-::>              *68,4
-  end;
-  then for phi being Automorphism of G holds phi .: H = H;
-  hence H is characteristic Subgroup of G;
-::>                                     *4
-end;
-
-proof end;
-::> *396
-
-
-LmAlwaysFindInnerAuto:
-  for G being strict Group
-  for a being Element of G
-  holds ex f being inner Automorphism of G st (for x being Element of G
-  holds f.x = x |^ a)
-proof
-  let G be strict Group;
-  let a be Element of G;
-  reconsider f = (Conjugate a) as inner Automorphism of G
-  by AUTGROUP:def 6, Th999;
-  take f;
-  let x be Element of G;
-  thus f.x = x |^ a by AUTGROUP:def 6;
-end;
-
-
-
-
-theorem LmKerOfConjugate:
-  for G being Group
-  for a being Element of G
-  for f being Endomorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds Ker f = (1).G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-A1:  for x being Element of G holds x in Ker f implies x in (1).G
-  proof
-    let x be Element of G;
-    assume A11: x in Ker f;
-    then f.x = 1_G by GROUP_6:41;
-    then x |^ a = 1_G by A0;
-    then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
-    the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1;
-    then x in the carrier of (1).G by A12;
-    then x in (1).G by STRUCT_0:def 5;
-    hence thesis;
-  end;
-A2:  for x being Element of G holds x in (1).G implies x in Ker f
-  proof
-    let x be Element of G;
-    assume Z4: x in (1).G;
-    then x is Element of (1).G by LmSubgroupElt;
-    then x in the carrier of (1).G;
-    then x in {1_G} by GROUP_2:def 7;
-    then x = 1_G by TARSKI:def 1;
-    then f.x = 1_G by GROUP_6:31;
-    then x in Ker f by GROUP_6:41;
-    hence thesis;
-  end;
-  thus Ker f = (1).G by A1,A2,GROUP_2:60;
-end;
-
-
-theorem Th12:
-  for G being Group
-  for a being Element of G
-  holds ex f being Endomorphism of G st (for x being Element of G
-  holds f.x = x |^ a)
-proof
-  let G be Group;
-  let a be Element of G;
-  deffunc F(Element of G) = ($1) |^ a;
-  consider f be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
-  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
-  proof
-    let x1,x2 be Element of G;
-    A2: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
-    f.(x1 * x2) = (x1 * x2) |^ a by A1
-               .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
-               .= f.x1 * f.x2 by A2;
-    hence thesis;
-  end;
-  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
-  then f is Endomorphism of G;
-  hence thesis by A1;
-end;
-
-theorem ThConIsAuto:
-  for G being Group
-  for a being Element of G
-  for f being Endomorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds f is Automorphism of G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-  then Ker f = (1).G by LmKerOfConjugate;
-  then
-C0: f is one-to-one by GROUP_6:56;
-
-  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
-  proof
-    deffunc F(Element of G) = ($1) |^ a";
-    consider fInv be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
-    fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-A2:  for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
-    proof
-      let x1,x2 be Element of G;
-      A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
-      fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
-      .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
-      .= fInv.x1 * fInv.x2 by A21;
-      hence thesis;
-    end;
-    then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
-    then fInv is Endomorphism of G;
-    then reconsider fInv as Endomorphism of G;
-    for x being Element of G holds (f*fInv).x = (id the carrier of G).x
-    proof
-      let x be Element of G;
-      (f * fInv).x = f.(fInv.x) by FUNCT_2:15
-      .= f.(x |^ a") by A1
-      .= (x |^ a") |^ a by A0
-      .= x |^ (a" * a) by GROUP_3:24
-      .= x |^ 1_G by GROUP_1:def 5
-      .= x by GROUP_3:19
-      .= (id the carrier of G).x;
-      hence thesis;
-    end;
-    then f*fInv = id the carrier of G by FUNCT_1:2;
-    hence thesis;
-  end;
-  then rng f = the carrier of G by FUNCT_2:18;
-  then f is onto by GROUP_6:58;
-  then f is bijective by C0;
-  then f is Automorphism of G;
-  hence thesis;
-end;
-
-theorem ThConjIsInnerAutomorphism:
-  for G being Group
-  for a being Element of G
-  for f being Endomorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds f is inner Automorphism of G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-  then f is Automorphism of G by ThConIsAuto;
-  then f is inner Automorphism of G by A0,Def5;
-  hence thesis;
-end;
-
-theorem ThAlwaysFindInnerAuto:
-  for G being Group
-  for a being Element of G
-  holds ex f being inner Automorphism of G st (for x being Element of G
-  holds f.x = x |^ a)
-proof
-  let G be Group,
-      a be Element of G;
-  consider f being Endomorphism of G such that
-A1: for x being Element of G holds f.x = x |^ a
-  by Th12;
-C1: f is inner Automorphism of G by A1,ThConjIsInnerAutomorphism;
-  for x being Element of G holds f.x = x |^ a by A1;
-  hence thesis by C1;
-end;
-
-theorem Th11:
-  for G being Group
-  for K being characteristic Subgroup of G
-  holds K is normal Subgroup of G
-proof
-  let G be Group;
-  let K be characteristic Subgroup of G;
-A1:  for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider f being inner Automorphism of G such that
-A2: for x being Element of G holds f.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-    A3: Image(f|K) = K by GROUP_6:57,Def9;
-    Image(f|K) = K |^ a by A2,Th7;
-    then K |^ a = K by A3,Def9;
-    hence thesis;
-  end;
-  then for a being Element of G holds the carrier of K |^ a = the
-  carrier of K;
-  then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
-  hence K is normal Subgroup of G by A1,GROUP_3:def 13;
-end;
-
-
-
-for G1,G2 being Group
-for H being Subgroup of G1
-for K being Subgroup of H
-for f being Homomorphism of G1,G2
-holds (f|H)|K = f|K
-proof
-  let G1,G2 be Group;
-  let H be Subgroup of G1;
-  let K be Subgroup of H;
-  let f be Homomorphism of G1,G2;
-  C0: K is Subgroup of G1;
-  R2: dom f = the carrier of G1 by FUNCT_2:def 1;
-::>                              *4
-  C1: dom(f|H) = the carrier of H by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                *4
-  C2: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                *4
-  set fH = f|H;
-  R0: fH is Homomorphism of H,G2;
-  C3: dom(fH|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                 *4
-  then dom(fH|K) = dom(f|K) by C2, GRSOLV_1:def 2, FUNCT_1:50;
-  the carrier of K c= the carrier of H by GROUP_2:def 5;
-  then
-  P1: dom(fH|K) = dom(f|H) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
-::>                                                                *203
-  P2: for x being Element of H st x in K holds (fH|K).x = fH.x by Lm3;
-  then
-  P3: fH|K = (f|H)|K by FUNCT_1:45, P1;
-  set g = fH|K;
-  the carrier of K c= the carrier of G1 by GROUP_2:def 5;
-  then Q0: dom(g) = dom(f) /\ (the carrier of K) by R2,C1,C2,C3,XBOOLE_1:28;
-::>                                                                   *203
-  then
-  Q1: dom(g) = the carrier of K by C3;
-  Q2: for x being Element of G1 st x in dom(g) holds f.x = g.x
-  proof
-    let x be Element of G1;
-    assume Z13: x in dom(g);
-    then Z14: x in K by Q1, STRUCT_0:def 5;
-    Z15: K is Subgroup of H;
-    x is Element of K by Z14,C0,LmSubgroupElt;
-    then Z16: x is Element of H by Z15,GROUP_2:42;
-    then Z17: x in H by STRUCT_0:def 5;
-    then AHA1: (fH|K).x = fH.x by R0,Z15,Z16,Z14,Lm3;
-    AHA2: fH.x = f.x by Z17,Lm3;
-    AHA3: (f|K).x = f.x by Z14,Lm3;
-    AHA4: g.x = (fH|K).x;
-    then f.x = g.x by AHA1,AHA2,AHA3;
-    hence thesis;
-  end;
-  (dom g = dom f /\ the carrier of K) &
-  (for x being Element of G1 st x in dom g holds g.x = f.x) by Q0,Q1,Q2;
-  (dom g = dom f /\ the carrier of K) &
-  (for x being Element of G1 st x in dom g holds g.x = f.x) implies
-  f|K = g by FUNCT_1:45;
-::>        *4
-  then
-  Q3: f|(the carrier of K) = g by FUNCT_1:45, Q0, Q1, Q2, C3;
-::>                             *4
-  hence (f|H)|K = f|K;
-::>                 *4
-end;
-
-
-theorem Th15:
-  for G being Group
-  for N being strict normal Subgroup of G
-  for K being characteristic Subgroup of N
-  holds K is normal Subgroup of G
-proof
-  let G be Group;
-  let N be strict normal Subgroup of G;
-  let K be characteristic Subgroup of N;
-  N is normal;
-  A1: for f being inner Automorphism of G holds f|N is Automorphism of N
-  proof
-    let f be inner Automorphism of G;
-    Image(f|N) = N by Th16;
-::>                 *4
-    then f|N is Automorphism of N by LmAuto2;
-::>                                        *144
-    hence thesis;
-  end;
-  K is Subgroup of G by GROUP_2:56;
-  A2: for f being inner Automorphism of G holds ((f|N)|K) = f|K
-  proof
-    let f be inner Automorphism of G;
-    C1: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                  *4
-    C2: dom(f|N) = the carrier of N by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                  *4
-    set fN = f|N;
-    C3: dom(fN|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-::>                                   *4
-    then dom(fN|K) = dom(f|K) by C1, GRSOLV_1:def 2, FUNCT_1:50;
-    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
-    then
-    P1: dom(fN|K) = dom(f|N) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
-::>                                                                  *203
-    P2: for x being Element of N st x in K holds (fN|K).x = fN.x
-    by Lm3;
-    then
-    P3: fN|K = (f|N)|K by FUNCT_1:45, P1;
-    hence thesis;
-::>            *4
-  end;
-
-  for f being inner Automorphism of G holds Image((f|N)|K) = K
-  proof
-    let f be inner Automorphism of G;
-    B1: f|N is Automorphism of N by A1;
-    reconsider fN = f|N as Automorphism of N by B1;
-    K is characteristic Subgroup of N;
-    then Image(fN|K) = K by Def9,B1;
-    hence thesis;
-::>            *4
-  end;
-  thus K is normal Subgroup of G;
-::>                            *4
-end;
-
-
-
-for G1,G2 being Group
-for H being Subgroup of G1
-for K being Subgroup of H
-for f being Homomorphism of G1,G2
-holds (f|H)|K = f|K
-proof
-  let G1,G2 be Group;
-  let H be Subgroup of G1;
-  let K be Subgroup of H;
-  let f be Homomorphism of G1,G2;
-  C0: K is Subgroup of G1;
-  R2: dom f = the carrier of G1 by FUNCT_2:def 1;
-  C1: dom(f|H) = the carrier of H by GRSOLV_1:def 2, FUNCT_2:def 1;
-  C2: dom(f|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-  set fH = f|H;
-  R0: fH is Homomorphism of H,G2;
-  C3: dom(fH|K) = the carrier of K by GRSOLV_1:def 2, FUNCT_2:def 1;
-  then dom(fH|K) = dom(f|K) by C2, GRSOLV_1:def 2, FUNCT_1:50;
-  the carrier of K c= the carrier of H by GROUP_2:def 5;
-  then
-  P1: dom(fH|K) = dom(f|H) /\ (the carrier of K) by C1,C2,C3,XBOOLE_1:28;
-  P2: for x being Element of H st x in K holds (fH|K).x = fH.x by Lm3;
-  then
-  P3: fH|K = (f|H)|K by FUNCT_1:45, P1;
-  set g = fH|K;
-  the carrier of K c= the carrier of G1 by GROUP_2:def 5;
-  then Q0: dom(g) = dom(f) /\ (the carrier of K) by R2,C1,C2,C3,XBOOLE_1:28;
-  then
-  Q1: dom(g) = the carrier of K by C3;
-  Q2: for x being Element of G1 st x in dom(g) holds f.x = g.x
-  proof
-    let x be Element of G1;
-    assume Z13: x in dom(g);
-    then Z14: x in K by Q1, STRUCT_0:def 5;
-    Z15: K is Subgroup of H;
-    x is Element of K by Z14,C0,LmSubgroupElt;
-    then Z16: x is Element of H by Z15,GROUP_2:42;
-    then Z17: x in H by STRUCT_0:def 5;
-    then AHA1: (fH|K).x = fH.x by R0,Z15,Z16,Z14,Lm3;
-    AHA2: fH.x = f.x by Z17,Lm3;
-    AHA3: (f|K).x = f.x by Z14,Lm3;
-    AHA4: g.x = (fH|K).x;
-    then f.x = g.x by AHA1,AHA2,AHA3;
-    hence thesis;
-  end;
-  (dom g = dom f /\ the carrier of K) &
-  (for x being Element of G1 st x in dom g holds g.x = f.x) by Q0,Q1,Q2;
-  (dom g = dom f /\ the carrier of K) &
-  (for x being Element of G1 st x in dom g holds g.x = f.x) implies
-  f|K = g by FUNCT_1:45;
-::>        *4
-  then
-  Q3: f|(the carrier of K) = g by FUNCT_1:45, Q0, Q1, Q2, C3;
-::>                             *4
-  hence (f|H)|K = f|K;
-::>                 *4
-end;
-
-
-
-registration
-  let G be Group;
-  cluster characteristic -> normal for Subgroup of G;
-  coherence by Th11;
-end;
-
-
-
-Lm25:
-for Y,Z being non empty set
-for f being Function of Y,Z
-for X1,X2 being non empty set
-st X1 c= X2 & X2 c= Y
-holds (f|X2) .: X1 = f .: X1
-proof
-  let Y,Z be non empty set;
-  let f be Function of Y,Z;
-  let X1,X2 be non empty set;
-  assume Z72: X1 c= X2;
-  assume Z73: X2 c= Y;
-  Z78: dom f = Y by FUNCT_2:def 1;
-  Z79: X2 c= dom f by Z78, Z73,Z73,XBOOLE_1:1;
-  then Z80: X2 /\ dom f = X2 by XBOOLE_1:28;
-  Z81: X1 c= dom f by Z72,Z79,XBOOLE_1:1;
-  then Z82: X1 c= dom f /\ X2 by Z72,XBOOLE_1:19;      
-  for y being object holds y in (f .: X1) iff y in ((f|X2) .: X1)
-  proof
-    let y be object;
-    thus y in f .: X1 implies y in ((f|X2) .: X1)
-    proof
-      assume Z76: y in f .: X1;
-      then Z77: ex x being object st x in dom f & x in X1 & y = f.x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom f and
-      C2: x0 in X1 and
-      C3: y = f.x0;
-      ex x being object st x in dom f /\ X2 & x in X1 & y = f.x by
-      Z82, Z77,FUNCT_1:def 6;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;      
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      then x0 in dom f /\ X2 & x0 in X1 & y = f.x0 by Z80,Z72,C1,C2,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      Z <> {} & x0 in X1 & y = f.x0 & y = (f|X2).x0 by BA1, C2,Z72,C3;
-      then y in ((f|X2) .: X1) by B1,C2,Z72,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus y in (f|X2) .: X1 implies y in (f .: X1)
-    proof
-      assume Z1: y in (f|X2) .: X1;
-      then Z2: ex x being object
-      st x in dom (f|X2) & x in X1 & y = (f|X2).x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom (f|X2) and
-      C2: x0 in X1 and
-      C3: y = (f|X2).x0;
-      ex x being object st x in dom (f|X2) & x in X1 & y = (f|X2).x
-      by Z82, Z2,FUNCT_1:def 6;
-      B11: f is Function of Y,Z;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      f is Function of Y,Z &
-      Z <> {} & X1 c= X2 & X2 c= Y & x0 in X1 & x0 in Y & y = f.x0 by B1,B2,C2,C1,Z72,Z73,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      then y in (f .: X1) by B1,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus thesis;
-  end;
-  then (f|X2) .: X1 = f .: X1 by TARSKI:2;
-  hence thesis;
-end;
-
-theorem
-  for G being Group
-  for H being Subgroup of G
-  for f being Endomorphism of G
-  for g being Homomorphism of H,G
-  st dom g = dom f /\ (the carrier of H) &
-  (for x being object st x in dom g holds f.x = g.x)
-  holds g = f|H
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let f be Endomorphism of G;
-  let g be Homomorphism of H,G;
-  assume A1: dom g = dom f /\ (the carrier of H);
-  assume A2: for x being object st x in dom g holds f.x = g.x;
-  set UG = the carrier of G;
-  set UH = the carrier of H;
-  E2: dom g = UH & dom f = UG by FUNCT_2:def 1;
-  reconsider g0 = g as Function of UH,UG by E2;
-  reconsider f0 = f as Function of UG,UG by E2;
-  B1: dom g0 = dom f0 /\ UH by A1;
-  B2: for x being object st x in dom g0 holds f0.x = g0.x by A2;
-  g0 = f0|UH by B1,B2,FUNCT_1:45;
-::>           *4
-  g qua Function of UH,UG = f|UH by FUNCT_1:45;
-::>                               *4
-  thus g = f|H;
-::>          *4
-end;
-
-theorem
-  for G being Group
-  for N being strict normal Subgroup of G
-  for K being strict characteristic Subgroup of N
-  holds K is normal Subgroup of G
-proof
-  let G be Group;
-  let N be strict normal Subgroup of G;
-  let K be strict characteristic Subgroup of N;
-  not (for f being inner Automorphism of G holds f .: K = K) implies contradiction
-  proof
-    assume Z71: not for f being inner Automorphism of G holds f .: K = K;
-    then AC1: ex f being inner Automorphism of G st f .: K <> K;
-    then consider f being inner Automorphism of G such that
-    Z72: f .: K <> K;
-    f .: N = N by Th16a;
-    B1: Image(f|N) = N by Th16;
-    then Z73: f|N is Automorphism of N by Lm20;
-
-    A0: f is Function of (the carrier of G), (the carrier of G) &
-    (the carrier of N) c= (the carrier of G) &
-    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
-    then A1: f|(the carrier of N) .: (the carrier of K)
-    = f .: (the carrier of K) by Lm25;
-    f is multiplicative;
-    then A2: f|N .: (the carrier of K) = f .: (the carrier of K) by A0,A1, GRSOLV_1:def 2;
-    A3: the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
-    A4: the carrier of (f .: K) = f .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
-    then A5: the carrier of (f|N .: K) = the carrier of (f .: K) by A1,A2,A3;
-    
-    f|N .: K is strict Subgroup of Image(f|N) by GRSOLV_1:10;
-    then f|N .: K is strict Subgroup of N by B1;
-    then B2: f|N .: K is strict Subgroup of G;
-
-    B3: f .: K is strict Subgroup of G;
-
-    then the multMagma of (f .: K) = the multMagma of (f|N .: K)
-    by GROUP_2:59,A5,B2,B3;
-    then f .: K = f|N .: K by GROUP_2:def 6;
-
-    the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:8;
-    then f|N .: (the carrier of K) = the carrier of K by Lm21,Z73;
-::>                                                    *4
-    f|N .: K = K by Z73,Lm21, GRSOLV_1:def 2;
-::>               *4
-    consider g being Element of G such that
-    AC2: for x being Element of G holds f.x = x |^ g
-    by Def5;
-    
-    Image(f|N) = N;
-::>              *4
-    reconsider fN = f|N as Automorphism of N by Z73;
-    fN .: K = K by Lm21;
-    hence contradiction;
-::>                   *4
-  end;
-
-  CL1: for f being inner Automorphism of G holds ex g being Automorphism of N
-  st (for x being Element of N holds f.x = g.x)
-  proof
-    let f be inner Automorphism of G;
-    consider a being Element of G such that
-    CL2: for x being Element of G holds f.x = x |^ a
-    by Def5;
-    f .: N = N by Th16a;
-    Image(f|N) = N by Th16;
-    then reconsider g = f|N as Automorphism of N by Lm20;
-    take g;
-    let x be Element of N;
-    CL3: (f|N).x = g.x;
-    x is Element of G &
-    x in N by GROUP_2:42, STRUCT_0:def 5;
-    then (f|N).x = f.x by Lm3;
-    then f.x = g.x by CL3;
-    hence thesis;
+    let y be Element of codomain;
+    y in codomain by A7;
+    then y in rng F;
+    then consider x being object such that
+    B1: x in dom F and
+    B2: y = F.x
+    by FUNCT_1:def 3;
+    P[x, y] by B1,B2,A4,A5;
+    then consider N being normal Subgroup of G such that
+    B3: x = N and
+    B4: y = G./.N;
+    thus y is Group by B4;
   end;
 
   
+  reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
+  A9: F is Function of Fam,codomain by FUNCT_2:1;
+  F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
+  then A10: F is ManySortedSet of Fam;
 
-  for f being inner Automorphism of G holds f .: K = K
+  A11: for y being set st y in rng F holds y is non empty multMagma
   proof
-    let f be inner Automorphism of G;
-    B1: Image(f|N) = N by Th16;
-    then Z73: f|N is Automorphism of N by Lm20;
-    set UN = the carrier of N;
-    set UK = the carrier of K;
-    set UG = the carrier of G;
-    A0: f is Function of (the carrier of G), (the carrier of G) &
-    (the carrier of N) c= (the carrier of G) &
-    (the carrier of K) c= (the carrier of N) by GROUP_2:def 5;
-    then A1: f|(the carrier of N) .: (the carrier of K)
-    = f .: (the carrier of K) by Lm25;
-    f is multiplicative;
-    then A2: f|N .: (the carrier of K) = f .: (the carrier of K) by A0,A1, GRSOLV_1:def 2;
-    A3: the carrier of (f|N .: K) = f|N .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
-    the carrier of (f .: K) = f .: (the carrier of K) by GRSOLV_1:def 2, GRSOLV_1:8;
-    then A5: the carrier of (f|N .: K) = the carrier of (f .: K) by A1,A2,A3;
-    f|N .: K is strict Subgroup of Image(f|N) by GRSOLV_1:10;
-    then f|N .: K is strict Subgroup of N by B1;
-    then B2: f|N .: K is strict Subgroup of G;
-
-    consider g being Automorphism of N such that
-    AA1: for x being Element of N holds f.x = g.x
-    by CL1;
-    for A being strict Subgroup of N
-    holds f.:A = g.: A
-    proof
-      let A be strict Subgroup of N;
-      consider AG being strict Subgroup of G such that
-      BB1: AG = f .: A
-      by GRSOLV_1:10;
-      consider AN being strict Subgroup of N such that
-      BB2: AN = g .: A
-      by GRSOLV_1:10;
-      for x being Element of A holds f.x = g.x
-      proof
-        let x be Element of A;
-        A is Subgroup of N & x in A by STRUCT_0:def 5;
-        then x is Element of N by GROUP_2:42;
-        hence f.x = g.x by AA1;
-      end;
-      for y being object holds y in f.:A iff y in g.:A
-      proof
-        let y be object;
-        thus y in f.:A implies y in g.:A
-        proof
-          assume Z80: y in f.:A;
-          then y in the carrier of (f.:A) by STRUCT_0:def 5;
-          then consider x being object such that
-          Z801: x in dom f and
-          Z802: x in A and
-          Z803: f.x = y
-          by Z80,FUNCT_1:def 6;
-::>        *4
-          thus y in g.:A;
-::>                    *4
-        end;
-        thus y in f.:A implies y in g.:A;
-::>          *51                       *4
-        thus thesis;
-      end;
-      then the carrier of f.:A = the carrier of g.:A by TARSKI:2;
-::>                                                   *4
-      the carrier of f.:A c= the carrier of g.:A
-      proof
-        let y be Element of the carrier of f.:A;
-::>                                          *56
-        then ex x being object st x in dom f & x in A & y = f.x by FUNCT_1:def 6;
-::>        *164
-        thus y in the carrier of g.:A;
-::>                                 *4
-      end;
-      thus f.:A = g.: A;
-::>                   *4
-    end;
-
-
-    for x being Element of G st x in N holds x is Element of N by LmSubgroupElt;
-    AA2: for x being Element of G st x in N holds f.x = g.x
-    proof
-      let x be Element of G;
-      assume Z78: x in N;
-      then x is Element of N by LmSubgroupElt;
-      then f.x = g.x by AA1;
-      hence thesis;
-    end;
-    AA3: for x being object st x in N holds f.x = g.x
-    proof
-      let x be object;
-      assume Z79: x in N;
-      then x is Element of N by STRUCT_0:def 5;
-      then f.x = g.x by AA1;
-      hence thesis;
-    end;
-    AA4: for x being object st x in UN holds f.x = g.x
-    proof
-      let x be object;
-      assume Z79: x in UN;
-      then x is Element of N by STRUCT_0:def 5;
-      then f.x = g.x by AA1;
-      hence thesis;
-    end;
-
-
-    E1: UN c= UG by GROUP_2:def 5;
-    E2: dom g = UN & dom f = UG by FUNCT_2:def 1;
-    UN /\ dom f = UN by E1,E2,XBOOLE_1:28;
-    then E3: dom g = dom f /\ UN &
-
-    f is Function of UG,UG & g is Function of UN,UN by E2;
-
-    then dom g = dom f /\ UN &
-    (for x being object st x in dom g holds g.x = f.x) by AA4,E2;
-    then g = f|UN by FUNCT_1:45;
-::>                *4
-    Image(g|K) = f .: K by A1,GRSOLV_1:3;
-::>                      *4
-    the carrier of K c= the carrier of N by A0;
-    then Image((f|UN)|UK) = Image(f|UK);
-::>          *103               *103
-
-    B3: f .: K is strict Subgroup of G;
-
-    then the multMagma of (f .: K) = the multMagma of (f|N .: K)
-    by GROUP_2:59,A5,B2,B3;
-    then f .: K = f|N .: K by GROUP_2:def 6;
-    B4: f .: N = N by Th16a;
-    f|N .: N = f .: N by Lm25;
-::>                    *4
-    set fN = f|N;
-    (fN qua Automorphism of N) .: K = K by Z73,Lm21;
-::>       *116
-    hence f .: K = K;
-::>                *4
+    let y be set;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F and
+    B3: y = F.x
+    by FUNCT_1:def 3;
+    x is Element of dom F by B2;
+    then x is normal Subgroup of G by B2,A1;
+    then reconsider x as normal Subgroup of G;
+    y in rng F by A4, B2, B3, FUNCT_1:3;
+    then y is Element of codomain;
+    then y is Group by A8;
+    hence thesis;
   end;
-  then K is normal Subgroup of G by Th16a;
-  thus K is normal Subgroup of G;
-::>                            *4
+  then F is multMagma-yielding ManySortedSet of Fam by A10,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+
+  take F;
+  let N be normal Subgroup of G;
+  assume A8: N in Fam;
+  hence F.N=G./.N by A6;
 end;
 
 
 
-::> 4: This inference is not accepted
-::> 51: Invalid conclusion
-::> 52: Invalid assumption
-::> 68: Nongeneralizable variable in the skeleton of a reasoning
-::> 70: Something remains to be proved
-::> 101: Unknown mode
-::> 102: Unknown predicate
-::> 103: Unknown functor
-::> 116: Invalid "qua"
-::> 144: Unknown label
-::> 148: Unknown private functor
-::> 203: Unknown token, maybe an illegal character used in an identifier
-::> 396: Formula expected
+for G being Group
+for Fam being Subset of Subgroups G
+st Fam <> {} & (for H1,H2 being strict Subgroup of G st H1 in Fam & H2
+in Fam holds H1 /\ H2 in Fam)
+holds ex H being strict Subgroup of G st H in Fam & (for K being strict
+Subgroup of G st K in Fam holds H is Subgroup of K)
+proof
+  let G be Group;
+  let Fam be Subset of Subgroups G;
+  assume A1: Fam <> {};
+  assume A2: for H1,H2 being strict Subgroup of G st H1 in Fam & H2 in Fam holds H1 /\ H2 in Fam;
+  consider H being strict Subgroup of G such that
+  A3: for K being strict Subgroup of G st K in Fam holds H is Subgroup of K;
+::>                                                                       *4
+  take H;
+  thus H in Fam;
+  
+::>           *4
+  let K be strict Subgroup of G;
+  assume K in Fam;
+  hence H is Subgroup of K by A3;
+end;
 
+
+
+for G being Group
+for Fam being Subset of normal_Subgroups G
+st Fam <> {} & (for N1, N2, H being normal Subgroup of G st N1 in Fam &
+N2 in Fam & G./.H is Subgroup of product <*G./.N1,G./.N2*> holds H
+in Fam) &
+(for N, H being normal Subgroup of G st N in Fam &
+G./.H,G./.N are_isomorphic holds H in Fam)
+holds (ex K being normal Subgroup of G st the carrier of K = meet {A
+where A is Subset of G : ex N being normal Subgroup of G st N in Fam & A = the carrier of N}
+& K in Fam)
+proof
+  let G be Group;
+  let Fam be Subset of normal_Subgroups G;
+  assume A1: Fam <> {};
+  assume A2: for N1, N2, H being normal Subgroup of G st N1 in Fam & N2 in Fam & G./.H is Subgroup of product <*G./.N1,G./.N2*> holds H in Fam;
+  assume A3: for N, H being normal Subgroup of G st N in Fam & G./.H,G./.N are_isomorphic holds H in Fam;
+  consider K being normal Subgroup of G such that
+  A4: the carrier of K = meet {A where A is Subset of G : ex N being normal Subgroup of G st N in Fam & A = the carrier of N};
+::>                                                                                                                         *4
+  take K;
+  thus the carrier of K = meet {A where A is Subset of G : ex N being
+  normal Subgroup of G st N in Fam & A = the carrier of N} by A4;
+
+  A5: for N1,N2 being strict normal Subgroup of G st N1 in Fam & N2 in Fam
+  holds N1 /\ N2 in Fam
+  proof
+    let N1,N2 be strict normal Subgroup of G;
+    assume B1: N1 in Fam & N2 in Fam;
+    set N = N1 /\ N2;
+    reconsider N as normal Subgroup of G by GROUP_3:115;
+    consider H being normal Subgroup of G such that
+    B2: G./.H is Subgroup of product <*G./.N1,G./.N2*> and
+    B3: G./.H,G./.N are_isomorphic;
+::>                              *4
+    H in Fam by B1,B2,A2;
+    then N in Fam by A3,B3;
+    hence N1 /\ N2 in Fam;
+  end;
+  thus K in Fam;
+::>           *4
+end;
+
+::> 4: This inference is not accepted
