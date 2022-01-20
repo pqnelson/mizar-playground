@@ -13,3 +13,52 @@ func product f -> set means :: CARD_3:def 5
           for y being object st y in dom f
           holds g.y in f.y;
 \end{mizar}
+
+The basic ``design pattern'' surrounding product groups as implemented
+in Mizar:
+\begin{enumerate}
+\item ``\lstinline{multMagma-yielding}'' for a relation means that each
+  value in the range is a ``\lstinline{non empty multMagma}''
+  (\mml[def1]{group7})
+\item ``\lstinline{multMagma-Family of I}'' (where ``I'' is some indexing
+  set) is just a ``\lstinline{multMagma-yielding ManySortedSet of I}''
+  (\mml{group7})
+\item ``\lstinline{ManySortedSet of I}'' is a
+  ``\lstinline{total I-defined Function}'', i.e., it's a family of sets
+  indexed by ``I'' (\mml[def1]{pboole})
+\item If ``I'' is an indexing set and ``F'' is a
+  ``\lstinline{multMagma-Family of I}'', then we can construct
+  ``\lstinline{product F}'' (\mml[def2]{group7}).
+\end{enumerate}
+
+\begin{mizar}
+definition :: GROUP_7:def 2
+  let I be set, F be multMagma-Family of I;
+  func product F -> strict multMagma means
+  :Def2:
+  the carrier of it = product Carrier F &
+  for f, g being Element of product Carrier F,
+      i being set
+  st i in I
+  ex Fi being non empty multMagma,
+     h being Function
+  st Fi = F.i & h = (the multF of it).(f,g) &
+     h.i = (the multF of Fi).(f.i,g.i);
+  existence;
+  uniqueness;
+end;
+\end{mizar}
+
+We need to establish a ``\lstinline{multMagma-Family of I}'' is
+``\lstinline{Group-like associative non empty}''. There is no notion of a
+``\lstinline{Group-Family of I}'', though I think it might be worthwhile.
+
+\begin{ddanger}
+Product groups are under-developed in Mizar, in my opinion. The
+universal property of products for groups is not established. Taking the
+product of a finite set of groups is tedious and requires a lot more
+work than it deserves. \emph{It would be very worth-while to write
+quality-of-life results for product grups.} I'm not even sure how to
+define the wreath product without a number of preliminary work done on
+product groups. (I suspect this will be my second article to Mizar.)
+\end{ddanger}
