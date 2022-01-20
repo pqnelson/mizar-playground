@@ -239,115 +239,6 @@ proof
 end;
 
 
-
-theorem Th60:
-  for G being Group
-  for Fam being set
-  st Fam<>{} & (for A being Element of Fam holds ex N being normal
-  Subgroup of G st A = the carrier of N)
-  for I being set
-  st card I = card Fam
-  holds ex F being associative Group-like multMagma-Family of I st
-  (for i being Element of I
-   holds ex N being normal Subgroup of G
-         st the carrier of N in Fam & F.i = G./.N) &
-  (for N being normal Subgroup of G st the carrier of N in Fam
-  holds ex i being Element of I st F.i=G./.N);
-::>                                         *4
-:: proof
-::   let G be Group;
-::   let Fam be set;
-::   assume A1: Fam<>{};
-::   assume A2: for A being Element of Fam
-::              holds ex N being normal Subgroup of G st A = the carrier of N;
-::   let I be set;
-::   assume A3: card I = card Fam;
-::   consider F being associative Group-like multMagma-Family of I;
-:: ::>                                                            *403
-::   take F;
-::   thus (for i being Element of I
-::         holds ex N being normal Subgroup of G
-::               st the carrier of N in Fam & F.i = G./.N)
-::   proof
-::     let i be Element of I;
-::     consider N being normal Subgroup of G;
-:: ::>                                      *403
-::     take N;
-::     thus the carrier of N in Fam;
-:: ::>                            *4
-::     thus F.i = G./.N;
-:: ::>                *4
-::   end;
-::   let N be normal Subgroup of G;
-::   assume Z3: the carrier of N in Fam;
-::   consider i being Element of I;
-:: ::>                            *403
-::   take i;
-::   thus F.i=G./.N;
-:: ::>            *4
-:: end;
-
-theorem Th61:
-  for G being Group
-  ex X being set
-  st (for N being normal Subgroup of G
-      holds G./.N in X);
-::>                   *4
-
-
-theorem Th56:
-  for G being Group
-  for X being set
-  st X<>{} & (for A being object st A in X holds A is normal Subgroup of G)
-  for I being set
-  st card I = card X
-  holds ex F being associative Group-like multMagma-Family of I st
-  (for i being Element of I
-   holds ex N being normal Subgroup of G st N in X & F.i = G./.N) &
-  (for N being normal Subgroup of G st N in X
-   holds ex i being Element of I st F.i = G./.N);
-::>                                            *4
-
-
-definition
-  let G be Group;
-  func normal_Subgroups G -> set means
-  :Def10:
-  for x being object holds x in it iff x is strict normal Subgroup of G;
-  existence
-  proof
-    take IT = {N where N is Element of Subgroups G : N is strict normal Subgroup of G};
-    A1: for N being object st N is strict normal Subgroup of G holds N in IT
-    proof
-      let N be object;
-      assume B1: N is strict normal Subgroup of G;
-      then B2: N in Subgroups G by GROUP_3:def 1;
-      thus N in IT by B1, B2;
-    end;
-    A2: for N being object st N in IT holds N is strict normal Subgroup of G
-    proof
-      let N be object;
-      assume B1: N in IT;
-      then consider N0 being Element of Subgroups G such that
-      B2: N0 = N and
-      B3: N0 is strict normal Subgroup of G;
-      thus N is strict normal Subgroup of G by B1,B2,B3;
-    end;
-
-    thus thesis by A1,A2;
-  end;
-  uniqueness
-  proof
-    defpred P[object] means $1 is strict normal Subgroup of G;
-    let A1,A2 be set;
-    assume
-A10: for x being object holds x in A1 iff P[x];
-    assume
-A11: for x being object holds x in A2 iff P[x];
-    thus thesis from XBOOLE_0:sch 2(A10,A11);
-  end;
-end;
-
 theorem Th62:
   for G being Group
   for Fam being non empty set
@@ -390,7 +281,7 @@ proof
     B2: x = N and
     B3: F.x = G./.N;
     thus F.x = G./.x by B2,B3;
-  end;  
+  end;
   set codomain = rng F;
   A7: codomain <> {}
   proof
@@ -419,7 +310,7 @@ proof
     thus y is Group by B4;
   end;
 
-  
+
   reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
   A9: F is Function of Fam,codomain by FUNCT_2:1;
   F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
@@ -604,7 +495,7 @@ proof
       assume B1: g in Ker f;
       then B2: <*1_H1, 1_H2*> = f.g by A3
       .= <*f1.g, f2.g*> by A1;
-      
+
       thus f1.g = 1_H1 by B2,Th64;
       thus f2.g = 1_H2 by B2,Th64;
     end;
@@ -748,5 +639,4 @@ proof
   holds Image(phi|H) = H;
 ::>                    *4,4
 end;
-
 ::> 4: This inference is not accepted
