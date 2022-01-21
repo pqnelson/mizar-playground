@@ -258,7 +258,7 @@ proof
     then x is normal Subgroup of G by A1;
     then reconsider x as normal Subgroup of G;
     consider N being normal Subgroup of G such that
-    B2: x = N by Def10;
+    B2: x = N;
     consider y being Group such that
     B3: y = G./.N;
     reconsider y as object;
@@ -600,8 +600,7 @@ theorem Th68:
   (for G1 being Group st G1 in Fam
    for N being normal Subgroup of G1 holds G1./.N in Fam)
   for Subfam being non empty set
-  st (for x being Element of Subfam ex N being normal Subgroup of G st
-  G./.N in Fam & x = N) & (ex N0 being normal Subgroup of G st N0 in Subfam)
+  st (for N being normal Subgroup of G holds G./.N in Fam iff N in Subfam) & (ex N0 being normal Subgroup of G st N0 in Subfam)
   for H being strict Subgroup of G
   st (for K being strict Subgroup of G st K in Subfam holds H is Subgroup of K)
   holds H in Subfam & (for phi being Homomorphism of G,G st phi is
@@ -609,27 +608,64 @@ theorem Th68:
 proof
   let G be Group;
   let Fam be set;
-  assume A1: Fam <> {};
-  assume A2: for x being Element of Fam holds x is Group;
+  assume P0: Fam <> {};
+  assume P1: for x being Element of Fam holds x is Group;
   :: Fam is closed under isomorphism
-  assume A3: for G1,G2 being Group st G1 in Fam & G1,G2 are_isomorphic
+  assume P2: for G1,G2 being Group st G1 in Fam & G1,G2 are_isomorphic
              holds G2 in Fam;
   :: Fam is closed under subgroups
-  assume A4: for G1 being Group st G1 in Fam for H1 being Subgroup of G1
+  assume P3: for G1 being Group st G1 in Fam for H1 being Subgroup of G1
              holds H1 in Fam;
   :: Fam is closed under finite products
-  assume A5: for G1,G2 being Group st G1 in Fam & G2 in Fam
+  assume P4: for G1,G2 being Group st G1 in Fam & G2 in Fam
              holds product <*G1,G2*> in Fam;
   :: Fam is closed under quotients
-  assume A6: for G1 being Group st G1 in Fam
+  assume P5: for G1 being Group st G1 in Fam
              for N being normal Subgroup of G1
              holds G1./.N in Fam;
   :: Subfam = {N where N is normal Subgroup of G : G./.N in Fam}
   let Subfam be non empty set;
-  assume A7: for x being Element of Subfam
-             ex N being normal Subgroup of G
-             st G./.N in Fam & x = N;
-  assume A8: ex N0 being normal Subgroup of G st N0 in Subfam;
+  assume A1: for N being normal Subgroup of G holds G./.N in Fam iff N in Subfam;
+  assume A2: ex N0 being normal Subgroup of G st N0 in Subfam;
+
+  C1: for N1,N2 being strict normal Subgroup of G st N1 in Subfam & N2 in Subfam
+  holds N1/\N2 in Subfam
+  proof
+    let N1,N2 be strict normal Subgroup of G;
+    assume B1: N1 in Subfam;
+    assume B2: N2 in Subfam;
+    then G./.N1 in Fam & G./.N2 in Fam by B1,A1;
+    then B3: product<*G./.N1,G./.N2*> in Fam by P4;
+    set N12 = N1 /\ N2;
+    reconsider N12 as normal Subgroup of G by GROUP_3:115;
+    consider H being Subgroup of product<*G./.N1,G./.N2*> such that
+    B4: G./.N12,H are_isomorphic
+    by Th67;
+    H in Fam by P3,B3;
+    then G./.N12 in Fam by B4,P2;
+    then N12 in Subfam by A1;
+    hence N1/\N2 in Subfam;
+  end;
+
+  C2: for H being strict normal Subgroup of G st H in Subfam
+  holds (for N being strict normal Subgroup of G
+         st H is Subgroup of N holds N in Subfam)
+  proof
+    let H be strict normal Subgroup of G;
+    assume B1: H in Subfam;
+    let N be strict normal Subgroup of G;
+    assume B2: H is Subgroup of N;
+    then N./.((N,H) `*`) is normal Subgroup of G./.H by GROUP_6:29;
+    then consider J being normal Subgroup of G./.H such that
+    B3: J = N./.((N,H) `*`);
+    G./.H in Fam by B1,A1;
+    then B4: (G./.H)./.J in Fam by B1,P5;
+    (G./.H)./.J, G./.N are_isomorphic by B2,B3,GROUP_6:80;
+    then G./.N in Fam by B4,P2;
+    hence N in Subfam by A1;
+  end;
+
+
   let H be strict Subgroup of G;
   assume A9: for K being strict Subgroup of G st K in Subfam
              holds H is Subgroup of K;
@@ -639,4 +675,10 @@ proof
   holds Image(phi|H) = H;
 ::>                    *4,4
 end;
+
+theorem
+  for G being Group
+  for Fam being non empty Subset of Subgroups G
+::>                                            *340
 ::> 4: This inference is not accepted
+::> 340: "holds", "for" or "ex" expected
