@@ -4487,6 +4487,62 @@ proof
 end;
 \nwindexdefn{\nwixident{Th52}}{Th52}{NW47t2dy-17HxJc-1}\eatline
 \nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th52}}{Th52}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th50}}{Th50}}\\{{\nwixident{Th51}}{Th51}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th51}}{Th51}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-17HxJc-1}\nwendcode{}\nwbegindocs{98}\nwdocspar
+
+\section{Residues and Radicals of a Group}
+
+There are a number of good references for the notions of a radical and
+residue of a group. For example, Kurzweil and
+Stellmacher~\cite{kurzweil2004theory}, Robinson~\cite{robinson1972finiteness1},
+and even the cursory review found in Aivazidis and
+M\"uller~\cite{aivazidis2021residuals}.
+
+\begin{definition}\label{defn:characteristic:results:x-residual-of-group}
+Let $\mathcal{X}$ be a class of groups such that
+\begin{enumerate}
+\item The trivial group belongs to it: $\trivialGroup\in\mathcal{X}$; and
+\item If $G_{1}\in\mathcal{X}$ and $G_{2}\iso G_{1}$, then $G_{2}\in\mathcal{X}$.
+\end{enumerate}
+Let $G$ be a group.
+The \define{$\mathcal{X}$-Residue} of $G$ (sometimes called the
+``\emph{$\mathcal{X}$-Residual} of $G$) is defined to be the subgroup
+\begin{equation}
+O^{\mathcal{X}}(G) := \bigcap\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}
+\end{equation}
+the intersection of normal subgroups of $G$ whose quotients belong to
+the class $\mathcal{X}$.
+\end{definition}
+
+\begin{definition}
+Let $\mathcal{X}$ be a class of groups such that
+\begin{enumerate}
+\item The trivial group belongs to it: $\trivialGroup\in\mathcal{X}$; and
+\item If $G_{1}\in\mathcal{X}$ and $G_{2}\iso G_{1}$, then $G_{2}\in\mathcal{X}$.
+\end{enumerate}
+(This is identical to the conditions as in Definition~\ref{defn:characteristic:results:x-residual-of-group}.)
+Let $G$ be a group.
+We define the \define{$X$-Radical} of $G$ to be the group
+\begin{equation}\label{eq:characteristic:results:defn-of-radical}
+O_{\mathcal{X}}(G) := \prod_{\substack{N\normalSubgroup G\\ N\in\mathcal{X}}}N.
+\end{equation}
+\begin{ddanger}
+  The product in Eq~\eqref{eq:characteristic:results:defn-of-radical}
+  \emph{does not} refer to the direct product: it refers to the product
+  of normal subgroups $N_{1}N_{2}=\{n_{1}n_{2}\in G\mid n_{1}\in
+  N_{1},n_{2}\in N_{2}\}$ which Mizar denotes by ``\lstinline{N1 "\/" N2}''.
+  Otherwise, it would be impossible to claim
+  $O_{\mathcal{X}}(G)\normalSubgroup G$.
+\end{ddanger}
+\end{definition}
+
+
+\begin{def-remark}
+This notion seems to be traceable back to Kurosh's works in the
+1950s~\cite{kurosh1953} and '60s~\cite{kurosh1962radicaux,kurosh1962radicals}.
+Although I am unable to track down the 1953 reference, Kurosh notes in
+his lectures~\cite{SD_1961-1962__15_2_A11_0} it was where he introduced
+the concept of a radical.
+\end{def-remark}
+
 \begin{scheme}
 Let $P[-]$ be a unary predicate of quotient groups of $G$ such that
 \begin{itemize}
@@ -4556,6 +4612,30 @@ of $G$ given by:
 There may be others, but we have at least this one. This convinced me
 that we do not need to insist on the property $\forall G_{1}\iso G_{2},
 P[G_{1}]\iff P[G_{2}]$. And this is precisely our condition $(A_{1})$.
+\end{sch-remark}
+
+\begin{sch-remark}
+As Kurzweil and Stellmacher~\cite[\S6.3]{kurzweil2004theory}
+note, we only require $\mathcal{X}$ be a class of groups containing the
+trivial group and closed under isomorphism (i.e., if $G_{1}\iso G_{2}$
+and $G_{1}\in\mathcal{X}$, then $G_{2}\in\mathcal{X}$). However, in
+general, $G/O^{\mathcal{X}}(G)\notin\mathcal{X}$. We need further:
+\begin{enumerate}
+\item $\mathcal{X}$ be closed under arbitrary
+subgroups (i.e., if $G\in\mathcal{X}$, then every subgroup $H\subgroup G$
+also belongs to $\mathcal{X}\ni H$),
+\item $\mathcal{X}$ be closed under finite products (i.e., if
+$G_{1},\dots,G_{n}\in\mathcal{X}$, then $G_{1}\times\dots\times
+G_{n}\in\mathcal{X}$), and
+\item $\mathcal{X}$ be closed under quotients (if $G\in\mathcal{X}$ and
+$N\normalSubgroup G$, then $G/N\in\mathcal{X}$).
+\end{enumerate}
+In that case, we have $G/O^{\mathcal{X}}(G)\in\mathcal{X}$~\cite[Th6.3.2]{kurzweil2004theory}.
+The last condition can be replaced with being closed under homomorphic
+images --- i.e., if $G_{1}\in\mathcal{X}$ and $G_{2}$ is ``some group''
+(possibly not in $\mathcal{X}$) and if $\varphi\colon G_{1}\to G_{2}$ is
+any group morphism, then $\varphi(G_{1})\in\mathcal{X}$. By the first
+isomorphism theorem, it's equivalent to what we have.
 \end{sch-remark}
 
 \nwenddocs{}\nwbegincode{99}\sublabel{NW47t2dy-2TTBav-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2TTBav-1}}}\moddef{Scheme: $\mathcal{X}$-residual is characteristic subgroup~{\nwtagstyle{}\subpageref{NW47t2dy-2TTBav-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
@@ -4923,4 +5003,25 @@ end;
 \nwixlogsorted{i}{{\nwixident{trivial}}{trivial}}%
 \nwixlogsorted{i}{{\nwixident{XResidualIsChar}}{XResidualIsChar}}%
 \nwbegindocs{104}\nwdocspar
+
+
+\begin{exercise}[{\cite[\S1.3 ex.1]{kurzweil2004theory}}]
+Let $K\normalSubgroup G$ be a characteristic subgroup. Prove the
+automorphisms $\alpha\in\Aut(G)$ satisfying $\alpha|_{K}=\id$ form a
+normal subgroup of $\Aut(G)$.
+\end{exercise}
+
+\begin{theorem}[{\cite[Th1.4.4]{kurzweil2004theory}}]
+Subgroups of cyclic groups are characteristic.
+\end{theorem}
+
+\begin{theorem}[{\cite[Th1.6.2]{kurzweil2004theory}}]
+  % Kurzweil \& Stellmacher, \emph{Theory of Finite Groups}, 1.4.4}]
+  Let $G=G_{1}\times\dots\times G_{n}$.
+  If the factors $G_{1}$, \dots, $G_{n}$ are characteristic subgroups of
+  $G$, then
+  \begin{equation}
+\Aut(G)\iso\Aut(G_{1})\times\dots\times\Aut(G_{n}).
+  \end{equation}
+\end{theorem}
 \nwenddocs{}
