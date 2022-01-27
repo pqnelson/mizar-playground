@@ -4512,6 +4512,32 @@ the intersection of normal subgroups of $G$ whose quotients belong to
 the class $\mathcal{X}$.
 \end{definition}
 
+\begin{def-remark}[History]
+As far as I can tell, it looks like this concept was introduced long ago
+(Plotkin~\cite{plotkin1955radical}, English translation in~\cite{zbMATH03209211}). Originally, back then, people
+thought about looking at functions of classes of universal algebras
+(``varieties'' and ``pseudovarieties''). The early formulations of
+residual subgroups used this baroque language. We invite the curious
+reader to read the beautiful review by Baer~\cite{baer1966group}. 
+\end{def-remark}
+
+\begin{def-remark}[Conventions in Mizar]
+Since part of universal algebra has been formulated in Mizar
+(see~\mml{birkhoff}) and there the convention was adopted to encode
+``classes'' as predicates and theorems concerning them as schemes, we
+will follow similar conventions.
+\end{def-remark}
+
+\begin{def-remark}
+Doerk and Hawkes~\cite{doerk2011finite} % pg 272
+show in chapter II Lemma 2.4
+that the set $\mathcal{S}=\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}$
+has a partial ordering (given by inclusion), and the
+$\mathcal{X}$-residual is the unique minimal element of the
+poset. Furthermore, it is a characteristic subgroup.
+\end{def-remark}
+
+
 \begin{definition}
 Let $\mathcal{X}$ be a class of groups such that
 \begin{enumerate}
@@ -4522,7 +4548,7 @@ Let $\mathcal{X}$ be a class of groups such that
 Let $G$ be a group.
 We define the \define{$X$-Radical} of $G$ to be the group
 \begin{equation}\label{eq:characteristic:results:defn-of-radical}
-O_{\mathcal{X}}(G) := \prod_{\substack{N\normalSubgroup G\\ N\in\mathcal{X}}}N.
+O_{\mathcal{X}}(G) := \frobProd_{\substack{N\normalSubgroup G\\ N\in\mathcal{X}}}N.
 \end{equation}
 \begin{ddanger}
   The product in Eq~\eqref{eq:characteristic:results:defn-of-radical}
@@ -4534,13 +4560,21 @@ O_{\mathcal{X}}(G) := \prod_{\substack{N\normalSubgroup G\\ N\in\mathcal{X}}}N.
 \end{ddanger}
 \end{definition}
 
-
-\begin{def-remark}
+\begin{def-remark}[History]
 This notion seems to be traceable back to Kurosh's works in the
 1950s~\cite{kurosh1953} and '60s~\cite{kurosh1962radicaux,kurosh1962radicals}.
 Although I am unable to track down the 1953 reference, Kurosh notes in
 his lectures~\cite{SD_1961-1962__15_2_A11_0} it was where he introduced
-the concept of a radical.
+the concept of a radical. The term was chosen specifically in analogy to
+radicals in ring theory.
+\end{def-remark}
+
+\begin{def-remark}
+Doerk and Hawkes~\cite{doerk2011finite} show in chapter II Lemma 2.9
+that the set $\mathcal{S}=\{N\subnormalSubgroup G\mid N\in\mathcal{X}\}$
+has a partial ordering (given by inclusion), and the
+$\mathcal{X}$-radical is the unique maximal element of the
+poset. Furthermore, it is a characteristic subgroup.
 \end{def-remark}
 
 \begin{scheme}
