@@ -1,0 +1,30 @@
+\section{Finite Fields}
+
+It seems that Galois Fields\index{Field!Galois} are not defined in
+general, not anywhere I could find. Well, true to form, Mizar defines
+the finite rings $\ZZ/n\ZZ$ as \lstinline{INT.Ring(n)}. And as far as
+Mizar cares, a field is just a ring satisfying extra properties. So the
+finite ring \lstinline{INT.Ring(p)} is provably a field, for example.
+
+Unfolding the definitions, we have Definition~\mml[def10,11,12]{vectsp1}
+first define \lstinline{Skew-Field} as a ring satisfying extra properties
+(i.e., \lstinline{non degenerated} \lstinline{almost_left_invertible} \lstinline{Ring}).
+Then a \lstinline{Field} is \lstinline{commutative Skew-Field}.
+
+\begin{example}[{$\FF_{3}$}]
+The field with three elements $\FF_{3}$ is defined as \lstinline!Z_3!
+in \mml[def 20]{mod2}\MizDef{MOD\_2}{20}.
+\end{example}
+
+\begin{example}[{$\ZZ/n\ZZ$}]
+The integers modulo $n$ form a ring in Definition~\mml[def12]{int3} as
+\lstinline{INT.Ring(n)}. I think Theorem~\mml[Th12]{int3} suffices to
+prove \lstinline{INT.Ring(p)} is a field. Also Registration~\mml[reg14]{int3}
+associated \lstinline{INT.Ring(p)} with being\dots well, many things,
+but they combine together to make it a finite field.
+\end{example}
+
+\begin{exercise}
+Prove \lstinline{INT.Ring(p |^ n)} is a field where ``\lstinline{p |^ n}''
+is Mizar for $p^{n}$ (where $p,n\in\NN$ and $p$ is prime).
+\end{exercise}
