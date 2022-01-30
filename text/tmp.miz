@@ -17,23 +17,23 @@ environ
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
    GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
-   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
+   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10, GROUP_19;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1, FUNCT_3,
    RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
-   CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
+   CARD_1, NUMBERS, REAL_1, SETWISEO,
    ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
    SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
-   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, CARD_3, PRALG_1, GROUP_7, GROUP_19;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1, FUNCT_3,
-   ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+   ZFMISC_1, CARD_1, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
    FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
    BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, CARD_3, PRALG_1, GROUP_7, GROUP_19;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
    ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
@@ -41,18 +41,18 @@ environ
    GR_CY_1, GROUP_7;
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
  definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1, PRALG_1, MONOID_0,
-   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7;
+   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7, GROUP_19;
  equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1, MONOID_0,
-   ALGSTR_0, NEWTON, PRALG_1, GROUP_7;
+   ALGSTR_0, NEWTON, PRALG_1, GROUP_7, GROUP_19;
  expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
-   FUNCT_2, NEWTON, PRALG_1, MONOID_0, GROUP_7;
+   FUNCT_2, NEWTON, PRALG_1, MONOID_0, GROUP_7, GROUP_19;
 
  theorems TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, FUNCT_3,
    XBOOLE_0, CARD_1, RELAT_1, SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
    CARD_3, PRALG_1, FINSEQ_1, FINSET_1, GROUP_1, GROUP_2, GROUP_3,
    GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1, AUTGROUP, GROUP_9,
-   GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, MONOID_0, XTUPLE_0;
+   GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, MONOID_0, XTUPLE_0, GROUP_19;
 
  schemes FUNCT_1, FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL, XFAMILY, XBOOLE_0;
 
@@ -373,6 +373,7 @@ proof
   assume A8: N in Fam;
   hence F.N=G./.N by A6;
 end;
+::>                                                                                                                                                *4
 
 theorem Th63:
   for G,H1,H2 being Group
@@ -406,6 +407,114 @@ proof
   take f;
   let g be Element of G;
   thus f.g = <*f1.g, f2.g*> by A2;
+end;
+
+theorem 63b:
+  for G being Group
+  for I being set
+  for F being Group-Family of I
+  for Maps being set
+  st (for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi in Maps)
+  ex f being Homomorphism of G,product F
+  st (for g being Element of G
+      for i being set st i in i
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi in Maps & (f.g).i = fi.g)
+proof
+  let G be Group;
+  let I be set;
+  let F be Group-Family of I;
+  let Maps be set;
+  assume A1: for i being set st i in I
+             for Fi being Group st Fi=F.i
+             ex fi being Homomorphism of G,Fi st fi in Maps;
+  consider f being Homomorphism of G,product F;
+  take f;
+  let g be Element of G;
+  let i be set;
+  assume A2: i in i;
+  let Fi be Group;
+  assume A3: Fi=F.i;
+  consider fi being Homomorphism of G,Fi;
+  take fi;
+  thus fi in Maps;
+  thus (f.g).i = fi.g;
+end;
+
+theorem 63c:
+  for G being Group
+  for I being set
+  for F being associative Group-like multMagma-Family of I
+  for Maps being non empty set
+  st (for i being set st i in I
+      for Gi being Group
+      st F.i = Gi
+      ex fi being Homomorphism of G,Gi
+      st fi in Maps)
+  for q being Element of product F
+  st (for g being Element of G
+      ex p being Element of product F
+      st (for i being set st i in I
+          for Gi being Group
+          st F.i = Gi
+          for fi being Homomorphism of G,Gi
+          st fi in Maps
+          holds p.i = fi.g & p.i = q.i))
+  holds for g being Element of G
+  ex f being Homomorphism of G,product F
+  st q = f.g
+proof
+  let G be Group;
+  let I be set;
+  let F be associative Group-like multMagma-Family of I;
+  let Maps be non empty set;
+  assume A1: for i being set st i in I for Gi being Group st F.i = Gi
+      ex fi being Homomorphism of G,Gi st fi in Maps;
+  let q be Element of product F;
+  assume A2: for g being Element of G ex p being Element of product F
+  st (for i being set st i in I
+      for Gi being Group st F.i = Gi
+      for fi being Homomorphism of G,Gi
+      st fi in Maps
+      holds p.i = fi.g & p.i = q.i);
+  defpred P[Element of G,Element of product F] means for i being set st i in I for Gi being Group st F.i=Gi for fi being Homomorphism of G,Gi st fi in Maps holds $2.i = fi.$1 & $2.i = q.i;
+  A3: for g being Element of G ex p being Element of product F st P[g,p] by A2;
+  product F is non empty;
+  consider f being Function of G,product F such that
+  A4: for g being Element of G holds P[g,f.g]
+  from FUNCT_2:sch 3(A3);
+  let g be Element of G;
+  for g1,g2 being Element of G
+  holds f.(g1*g2) = (f.g1)*(f.g2);
+::>                             *4
+  then reconsider f as Homomorphism of G,product F by GROUP_6:def 6, GROUP_6:def 7;
+  take f;
+  A5: P[g,f.g] by A4;
+  A6: for i being set st i in I holds (f.g).i = q.i
+  proof
+    let i be set;
+    assume B1: i in I;
+    then B2: for Gi being Group st F.i=Gi for fi being Homomorphism of G,Gi st fi in Maps holds
+    (f.g).i = q.i by A5,B1;
+    consider Gi being associative non empty multMagma such that
+    B3: Gi = F.i
+    by B1,GROUP_7:def 4;
+    consider Gi2 being Group-like non empty multMagma such that
+    B4: Gi2 = F.i
+    by B1,GROUP_7:def 3;
+    Gi2=Gi by B3,B4;
+    then reconsider Gi as Group by B3,B4;
+    B5: Gi is Group & Gi=F.i by B3;
+    let fi be Homomorphism of G,Gi such that fi in Maps;
+::>      *55
+    thus (f.g).i = q.i by A5,B1,B2,B5;
+::>                     *4
+  end;
+  A7: dom q = I & dom (f.g) = I by GROUP_19:3;
+  then for x being object st x in dom q holds q.x = (f.g).x by A6;
+  hence q = f.g by A6,A7,FUNCT_1:2;
 end;
 
 theorem Th64:
@@ -600,7 +709,9 @@ theorem Th68:
   (for G1 being Group st G1 in Fam
    for N being normal Subgroup of G1 holds G1./.N in Fam)
   for Subfam being non empty set
-  st (for N being normal Subgroup of G holds G./.N in Fam iff N in Subfam) & (ex N0 being normal Subgroup of G st N0 in Subfam)
+  st (for N being normal Subgroup of G holds G./.N in Fam iff N in Subfam) &
+     (ex N0 being normal Subgroup of G st N0 in Subfam) &
+     Subfam c= Subgroups G
   for H being strict Subgroup of G
   st (for K being strict Subgroup of G st K in Subfam holds H is Subgroup of K)
   holds H in Subfam & (for phi being Homomorphism of G,G st phi is
@@ -627,6 +738,7 @@ proof
   let Subfam be non empty set;
   assume A1: for N being normal Subgroup of G holds G./.N in Fam iff N in Subfam;
   assume A2: ex N0 being normal Subgroup of G st N0 in Subfam;
+  assume A3: Subfam c= Subgroups G;
 
   C1: for N1,N2 being strict normal Subgroup of G st N1 in Subfam & N2 in Subfam
   holds N1/\N2 in Subfam
@@ -667,7 +779,7 @@ proof
 
 
   let H be strict Subgroup of G;
-  assume A9: for K being strict Subgroup of G st K in Subfam
+  assume A4: for K being strict Subgroup of G st K in Subfam
              holds H is Subgroup of K;
   thus H in Subfam;
 ::>              *4
@@ -681,4 +793,5 @@ theorem
   for Fam being non empty Subset of Subgroups G
 ::>                                            *340
 ::> 4: This inference is not accepted
+::> 55: Invalid generalization
 ::> 340: "holds", "for" or "ex" expected

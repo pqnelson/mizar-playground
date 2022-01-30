@@ -15,7 +15,7 @@ environ
  vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, EQREL_1,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
    GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
    NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
@@ -51,7 +51,7 @@ environ
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
    SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
 
 begin :: Preparatory Work
@@ -395,6 +395,18 @@ registration
   proof
     take (1).G;
     thus (1).G is proper;
+  end;
+  cluster proper for normal Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus (1).G is proper;
+  end;
+  cluster strict proper for normal Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    thus (1).G is strict proper;
   end;
 end;
 reserve G for non trivial Group;
@@ -2383,6 +2395,228 @@ proof
   hence the carrier of N = meet X by A4,A5,TARSKI:2;
 end;
 
+:: Suzuki, Group Theory II, Ch 4 section 2, pp.28 et seq.
+:: See also Kurzweil & Stellmacher's "Theory of Finite Groups", ch 6 section 3.
+:: And this is not a typo: R is a maximal P[ ]-subgroup of G()
+scheme
+  ExistPRad{G() -> finite non trivial Group, P[set]} :
+  ex R being strict proper normal Subgroup of G() st
+  for H being proper normal Subgroup of G() st P[H] holds H is Subgroup of R
+provided
+A1: for H,N being normal Subgroup of G() st P[H] & P[N] holds P[H "\/" N] and
+A2: ex N being strict proper normal Subgroup of G() st P[N]
+proof
+  set Fam = {A where A is Subset of G() : ex N being strict normal Subgroup of G() st
+A = the carrier of N & P[N]};
+  A3: Fam <> {}
+  proof
+    consider N being strict proper normal Subgroup of G() such that
+    B1: P[N]
+    by A2;
+    carr N in Fam by B1;
+    hence thesis;
+  end;
+  then reconsider Fam as non empty set;
+  A4: Fam is finite
+  proof
+    defpred P1[set] means ex N being strict normal Subgroup of G() st N = $1 & P[N];
+    set Subs = {H where H is Element of Subgroups G() : P1[H]};
+    B1: Subs c= Subgroups G()
+    proof
+      let x be object;
+      assume C1: x in Subs;
+      then consider H being Element of Subgroups G() such that
+      C2: x = H & P1[H];
+      x is Element of Subgroups G() by C2;
+      hence x in Subgroups G();
+    end;
+    Subgroups G() is finite by GROUP_3:15;
+    then Subs is finite by B1;
+    then reconsider Subs as finite Subset of Subgroups G() by B1;
+    B2: Subs <> {}
+    proof
+      consider H being strict proper normal Subgroup of G() such that
+      C1: P1[H] by A2;
+      H is Element of Subgroups G() by GROUP_3:def 1;
+      then H in Subs by C1;
+      hence thesis;
+    end;
+    then reconsider Subs as finite non empty Subset of Subgroups G();
+    defpred FUN[Element of Subs,set] means ex H being strict Subgroup of G() st
+    $1 = H & the carrier of H = $2 & P1[H];
+    B3: for x being Element of Subs ex A being Element of Fam st FUN[x, A]
+    proof
+      let x be Element of Subs;
+      x is Element of Subs;
+      then x in Subs by B2;
+      then consider H being Element of Subgroups G() such that
+      C1: H = x & P1[H];
+      reconsider H as strict Subgroup of G() by GROUP_3:def 1;
+      consider A being Subset of G() such that
+      C2: A = carr H;
+      take A = the carrier of H;
+      C3: A = the carrier of H;
+      C4: ex N being strict normal Subgroup of G() st N = H & P[N] by C1;
+      then A in Fam by C1,C2,C3;
+      then reconsider A as Element of Fam;
+      FUN[x,A]
+      proof
+        take H;
+        thus H = x by C1;
+        thus the carrier of H = A by C3;
+        thus P1[H] by C1;
+      end;
+      hence thesis;
+    end;
+    consider f being Function of Subs,Fam such that
+    B4: for x being Element of Subs holds FUN[x,f.x]
+    from FUNCT_2:sch 3(B3);
+    B5: for x being Subgroup of G() st x in Subs holds f.x = carr x
+    proof
+      let x be Subgroup of G();
+      assume C1: x in Subs;
+      then reconsider x0 = x as Element of Subs;
+      C2: FUN[x0, f.x0] by C1, B4;
+      then consider H being strict Subgroup of G() such that
+      C3: x0 = H & the carrier of H = f.x0 & P1[H];
+      C4: x = x0
+           .= H by C3;
+      then f.x0 = the carrier of x by C3;
+      hence thesis;
+    end;
+    for x1,x2 being object st x1 in Subs & x2 in Subs & f.x1 = f.x2 holds x1 = x2
+    proof
+      let x1,x2 be object;
+      assume C1: x1 in Subs;
+      assume C2: x2 in Subs;
+      assume C3: f.x1 = f.x2;
+      reconsider x1 as strict Subgroup of G() by C1,GROUP_3:def 1;
+      reconsider x2 as strict Subgroup of G() by C2,GROUP_3:def 1;
+      carr x1 = f.x1 by B5,C1
+          .= f.x2 by C3
+          .= carr x2 by B5,C2;
+      then the carrier of x1 = the carrier of x2;
+      then x1 = x2 by GROUP_2:59;
+      hence thesis;
+    end;
+    then B6: f is one-to-one by FUNCT_2:19;
+    B7: dom f = Subs by FUNCT_2:def 1;
+    Fam c= rng f
+    proof
+      for y being object holds y in Fam implies y in rng f
+      proof
+        let y be object;
+        assume C1: y in Fam;
+        then consider A being Subset of G() such that
+        C2: y = A and
+        C3: ex N being strict normal Subgroup of G() st A = the carrier of N & P[N];
+        consider N being strict normal Subgroup of G() such that
+        C4: A = the carrier of N & P[N] by C3;
+        P1[N] & N is Element of Subgroups G() by C4,GROUP_3:def 1;
+        then N in Subs by C4,GROUP_3:def 1;
+        then C5: N in dom f by FUNCT_2:def 1;
+        then C6: f.N = carr N by B5
+        .= the carrier of N;
+        then A = f.N by C4;
+        then N in dom f & carr N = f.N by C5,C6;
+        then f.N in rng f by FUNCT_1:3;
+        hence y in rng f by C2,C4,C6;
+      end;
+      hence thesis by TARSKI:def 3;
+    end;
+    then B8: rng f = Fam by XBOOLE_0:def 10;
+    thus thesis by B6,B7,B8;
+  end;
+  :: Claim: gr (union Fam) is the Subgroup we're looking for
+  :: GOAL: use GROUP_4:61  for H2 being strict Subgroup of G
+  :: holds H1 is Subgroup of H2 iff H1 "\/" H2 = H2
+  ::
+end;
+::>,70
+
+registration
+  let G be Group;
+  let N1,N2 be strict normal Subgroup of G;
+  cluster N1 /\ N2 -> strict normal for Subgroup of G;
+  coherence by GROUP_3:115;
+end;
+
+for G being Group
+for N1,N2 being strict normal Subgroup of G
+holds N1 /\ N2 is strict normal Subgroup of G;
+
+:: Suzuki, Group Theory I, Ch 2 section 4, corollary to 4.20, pg.142
+scheme
+  LmResidualIntersections{G() -> finite Group, P[set]} :
+  for N1,N2 being strict normal Subgroup of G()
+  st P[G()./.N1] & P[G()./.N2]
+  ex N12 being strict normal Subgroup of G()
+  st N12 = N1 /\ N2 & P[G()./.N12] :: P[G()./.(N1 /\ N2)]
+provided
+P1: for G1 being Group st P[G1] holds (for H being Subgroup of G1 holds P[H]) and
+P2: for G1,G2 being Group st P[G1] & P[G2] holds P[product <*G1,G2*>] and
+P3: ex N being strict normal Subgroup of G() st P[G()./.N] and
+P4: for G1,G2 being Group st P[G1] & G1,G2 are_isomorphic holds P[G2]
+proof
+  let N1,N2 be strict normal Subgroup of G();
+  assume A1: P[G()./.N1];
+  assume A2: P[G()./.N2];
+  consider N12 being strict normal Subgroup of G() such that
+  A3: N12 = N1 /\ N2;
+  take N12;
+  thus N12 = N1 /\ N2 by A3;
+  ex H being Subgroup of product <*G()./.N1,G()./.N2*> st H,G()./.N12 are_isomorphic;
+::>                                                                                *4
+  then consider H being Subgroup of product <*G()./.N1,G()./.N2*> such that
+  A4: H,G()./.N12 are_isomorphic;
+  P[product <*G()./.N1,G()./.N2*>] by A1,A2,P2;
+  then P[H] by P1;
+  then P[G()./.N12] by A4,P4;
+  hence thesis;
+end;
+
+:: Suzuki, Group Theory I, Ch 2 section 4, def 4.21, pg.142
+scheme
+  ExistPResidual{G() -> finite non trivial Group, P[set]} :
+  ex R being strict proper normal Subgroup of G() st
+  for N being normal Subgroup of G() st P[G()./.N] holds R is Subgroup of N
+provided
+P1: for G1 being Group st P[G1] holds (for H being Subgroup of G1 holds P[H]) and
+P2: for G1,G2 being Group st P[G1] & P[G2] holds P[product <*G1,G2*>] and
+P3: ex N being strict normal Subgroup of G() st P[G()./.N] and
+P4: for G1,G2 being Group st P[G1] & G1,G2 are_isomorphic holds P[G2]
+proof
+  defpred P1[set] means ex N being strict normal Subgroup of G() st N=$1 & P[G()./.N];
+  set Fam = {A where A is Subset of G() : ex N being strict normal Subgroup of G()
+  st A = the carrier of N & P[G()./.N]};
+  Fam is non empty
+  proof
+    consider N being strict normal Subgroup of G() such that
+    B1: P[G()./.N]
+    by P3;
+    carr N in Fam by B1;
+    hence thesis;
+  end;
+  then A1: Fam <> {};
+  for N being strict normal Subgroup of G()
+  st carr N in Fam
+  holds N in Subgroups G() by GROUP_3:def 1;
+  A2: card Fam c= card Subgroups G() by CARD_1:9;
+::>                                   *4
+  Subgroups G() is finite by GROUP_3:15;
+  then Fam is finite by A2;
+  then reconsider Fam as finite set;
+  A4: for A being Element of Fam ex N being strict normal Subgroup of G()
+  st A = the carrier of N;
+::>                     *4
+  then consider R being strict normal Subgroup of G() such that
+  A4: the carrier of R = meet Fam
+  by A1,Th54;
+
+
+end;
+::>,70
+
 :: TODO: formalize the universal property of product groups
 :: If F is associative Group-like multMagma-Family of I,
 :: and PHI is Family of Homomorphism from Z to F
@@ -2748,6 +2982,7 @@ theorem Th60:
          st the carrier of N in Fam & F.i = G./.N) &
   (for N being normal Subgroup of G st the carrier of N in Fam
   holds ex i being Element of I st F.i=G./.N);
+::>                                         *4
 :: proof
 ::   let G be Group;
 ::   let Fam be set;
@@ -2808,6 +3043,7 @@ proof
     then reconsider x as normal Subgroup of G;
     consider N being normal Subgroup of G such that
     B2: x = N by Def10;
+::>                  *144
     consider y being Group such that
     B3: y = G./.N;
     reconsider y as object;
@@ -2820,6 +3056,7 @@ proof
   A4: dom F = Fam and
   A5: for x being object st x in Fam holds P[x, F.x]
   from FUNCT_1:sch 2(A2,A3);
+::>  *191
 
   A6: for x being normal Subgroup of G st x in Fam holds F.x = G./.x
   proof
@@ -2830,7 +3067,7 @@ proof
     B2: x = N and
     B3: F.x = G./.N;
     thus F.x = G./.x by B2,B3;
-  end;  
+  end;
   set codomain = rng F;
   A7: codomain <> {}
   proof
@@ -2859,7 +3096,7 @@ proof
     thus y is Group by B4;
   end;
 
-  
+
   reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
   A9: F is Function of Fam,codomain by FUNCT_2:1;
   F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
@@ -3091,9 +3328,8 @@ proof
   consider GFam2 being set such that
   A14: for N being normal Subgroup of G() holds G()./.N in GFam2
   by Th61;
-::>,4
   set GFam3 = {N1 where N1 is Element of GFam2 : P[N1]};
-  
+
   A15: for N0 being Element of GFam
   ex N1 being strict normal Subgroup of G()
   st N0=N1 & G()./.N1 in GFam2
@@ -3135,7 +3371,7 @@ proof
     consider f being Function of GFam1,GFam2 such that
     B3: for x being object st x in GFam1 holds QuoP[x,f.x]
     from FUNCT_2:sch 1(B1);
-    
+
     GFam3 c= GFam2 by A14,TARSKI:def 3;
 ::>                 *4
     hence thesis by A17,FINSET_1:1;
@@ -3182,7 +3418,7 @@ proof
     set I = Seg (card GFam); :: indexing set!
     card I = card GFam;
 ::>                  *4
-    
+
   for G being Group
   for X being set
   st X <> {} & (for A being Element of X
@@ -3291,7 +3527,8 @@ proof
 ::>                      *4
 end;
 ::> 4: This inference is not accepted
+::> 70: Something remains to be proved
 ::> 144: Unknown label
+::> 191: Check if scheme is in "schemes" or all constructors are available
 ::> 395: Justification expected
 ::> 396: Formula expected
-::> 403: "such" expected
