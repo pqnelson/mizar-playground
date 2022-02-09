@@ -1,0 +1,328 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Residues and Radicals of a Group}
+
+There are a number of good references for the notions of a radical and
+residue of a group. For example, Kurzweil and
+Stellmacher~\cite{kurzweil2004theory}, Robinson~\cite{robinson1972finiteness1},
+and even the cursory review found in Aivazidis and
+M\"uller~\cite{aivazidis2021residuals}.
+
+<<Residues and Radicals>>=
+<<Scheme: $\mathcal{X}$-residual is characteristic subgroup>>
+
+@ 
+
+\begin{definition}\label{defn:characteristic:results:x-residual-of-group}
+Let $\mathcal{X}$ be a class of groups such that
+\begin{enumerate}
+\item The trivial group belongs to it: $\trivialGroup\in\mathcal{X}$; and
+\item If $G_{1}\in\mathcal{X}$ and $G_{2}\iso G_{1}$, then $G_{2}\in\mathcal{X}$.
+\end{enumerate}
+Let $G$ be a group.
+The \define{$\mathcal{X}$-Residue} of $G$ (sometimes called the
+``\emph{$\mathcal{X}$-Residual} of $G$) is defined to be the subgroup
+\begin{equation}
+O^{\mathcal{X}}(G) := \bigcap\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}
+\end{equation}
+the intersection of normal subgroups of $G$ whose quotients belong to
+the class $\mathcal{X}$.
+\end{definition}
+
+\begin{def-remark}[History]
+As far as I can tell, it looks like this concept was introduced long ago
+(Plotkin~\cite{plotkin1955radical}, English translation in~\cite{zbMATH03209211}). Originally, back then, people
+thought about looking at functions of classes of universal algebras
+(``varieties'' and ``pseudovarieties''). The early formulations of
+residual subgroups used this baroque language. We invite the curious
+reader to read the beautiful review by Baer~\cite{baer1966group}. 
+\end{def-remark}
+
+\begin{def-remark}[Conventions in Mizar]
+Since part of universal algebra has been formulated in Mizar
+(see~\mml{birkhoff}) and there the convention was adopted to encode
+``classes'' as predicates and theorems concerning them as schemes, we
+will follow similar conventions.
+\end{def-remark}
+
+\begin{def-remark}
+Doerk and Hawkes~\cite{doerk2011finite} % pg 272
+show in chapter II Lemma 2.4
+that the set $\mathcal{S}=\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}$
+has a partial ordering (given by inclusion), and the
+$\mathcal{X}$-residual is the unique minimal element of the
+poset. Furthermore, it is a characteristic subgroup.
+\end{def-remark}
+
+
+\begin{definition}
+Let $\mathcal{X}$ be a class of groups such that
+\begin{enumerate}
+\item The trivial group belongs to it: $\trivialGroup\in\mathcal{X}$; and
+\item If $G_{1}\in\mathcal{X}$ and $G_{2}\iso G_{1}$, then $G_{2}\in\mathcal{X}$.
+\end{enumerate}
+(This is identical to the conditions as in Definition~\ref{defn:characteristic:results:x-residual-of-group}.)
+Let $G$ be a group.
+We define the \define{$X$-Radical} of $G$ to be the group
+\begin{equation}\label{eq:characteristic:results:defn-of-radical}
+O_{\mathcal{X}}(G) := \frobProd_{\substack{N\normalSubgroup G\\ N\in\mathcal{X}}}N.
+\end{equation}
+\begin{ddanger}
+  The product in Eq~\eqref{eq:characteristic:results:defn-of-radical}
+  \emph{does not} refer to the direct product: it refers to the product
+  of normal subgroups $N_{1}N_{2}=\{n_{1}n_{2}\in G\mid n_{1}\in
+  N_{1},n_{2}\in N_{2}\}$ which Mizar denotes by ``\lstinline{N1 "\/" N2}''.
+  Otherwise, it would be impossible to claim
+  $O_{\mathcal{X}}(G)\normalSubgroup G$.
+\end{ddanger}
+\end{definition}
+
+\begin{def-remark}[History]
+This notion seems to be traceable back to Kurosh's works in the
+1950s~\cite{kurosh1953} and '60s~\cite{kurosh1962radicaux,kurosh1962radicals}.
+Although I am unable to track down the 1953 reference, Kurosh notes in
+his lectures~\cite{SD_1961-1962__15_2_A11_0} it was where he introduced
+the concept of a radical. The term was chosen specifically in analogy to
+radicals in ring theory.
+\end{def-remark}
+
+\begin{def-remark}
+Doerk and Hawkes~\cite{doerk2011finite} show in chapter II Lemma 2.9
+that the set $\mathcal{S}=\{N\subnormalSubgroup G\mid N\in\mathcal{X}\}$
+has a partial ordering (given by inclusion), and the
+$\mathcal{X}$-radical is the unique maximal element of the
+poset. Furthermore, it is a characteristic subgroup.
+\end{def-remark}
+
+\begin{scheme}
+Let $P[-]$ be a unary predicate of quotient groups of $G$ such that
+\begin{itemize}
+\item[$(A_{1})$]
+for any normal subgroup $N\subgroup G$ such that $P[G/N]$ holds implies
+$P[G/\varphi(N)]$ for any automorphism $\varphi\in\Aut(G)$; and
+\item[$(A_{2})$]
+there is at least one normal subgroup $N\subgroup G$ such that $P[G/N]$ holds.
+\end{itemize}
+Then there exists a subgroup $K\subgroup G$ whose underlying set is 
+\begin{equation}
+K = \bigcap\{A\subset G\mid\exists N\normalSubgroup G, A=N\land P[G/N]\}.
+\end{equation}
+Furthermore, $K$ is a characteristic subgroup of $G$.
+\end{scheme}
+
+\begin{proof}[Proof outline]
+The basic idea is to translate this into terms that we can use our
+earlier Scheme~\ref{scheme:characteristic:results:meet-is-characteristic}.
+We construct a new predicate of subgroups $H\subgroup G$,
+\begin{equation}
+P_{2}[X] = \exists N\normalSubgroup G, X=N\land P[G/N],
+\end{equation}
+then show the family of subsets
+\begin{equation}
+\mathcal{F} = \{A\subset G\mid \exists N\normalSubgroup G, A=N\land P[G/N]\}
+\end{equation}
+is the same as the family of subsets
+\begin{equation}
+\mathcal{F}_{2} = \{A\subset G\mid \exists H\subgroup G, A=H\land P_{2}[H]\}.
+\end{equation}
+This is important because using $P_{2}[-]$, we can construct a
+characteristic subgroup $K=\bigcap\mathcal{F}_{2}$. But since
+$\mathcal{F}=\mathcal{F}_{2}$, it follows that $K=\bigcap\mathcal{F}$ is
+the desired characteristic subgroup.
+\end{proof}
+
+\begin{sch-remark}
+This formalizes an important piece of folklore\footnote{I am endebted to
+Jack Schmidt for this, from~\url{https://math.stackexchange.com/a/216961/31693}} in finite group theory:
+given any class of finite groups $\mathcal{X}$ closed under
+isomorphisms, taking subgroups, and finitely many direct products; then
+for any finite group $G$ we can construct a characteristic subgroup of it,
+\begin{equation}
+O^{\mathcal{X}}(G) := \bigcap\{N\normalSubgroup G\mid G/N\in\mathcal{X}\}.
+\end{equation}
+If we construct a predicate $P[X]=X\in\mathcal{X}$, then we can
+formalize this construct using Mizar schemes.
+
+Our formalization is slightly different.
+%% , since $N_{1}\iso N_{2}$ and
+%% $G/N_{1}\iso G/N_{2}$ does not necessarily imply that there is an
+%% automorphism $\varphi\in\Aut(G)$ such that $N_{1}=\varphi(N_{2})$.
+A more faithful condition would replace $A_{1}$ with $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. But we are restricting our attention to
+subgroups of $G$ which means we'd also have $G_{1},G_{2}\subgroup G$.
+Now I assert this is the same as the condition formalized.
+
+If $H_{1}\iso H_{2}$, suppose the isomorphism is given by
+$\varphi_{0}\colon H_{1}\to H_{2}$. Then this extends to an automorphism
+of $G$ given by:
+\begin{equation}
+  \varphi(x) = \begin{cases}\varphi_{0}(x) & x\in H_{1}\\
+    x & \text{otherwise}.
+  \end{cases}
+\end{equation}
+There may be others, but we have at least this one. This convinced me
+that we do not need to insist on the property $\forall G_{1}\iso G_{2},
+P[G_{1}]\iff P[G_{2}]$. And this is precisely our condition $(A_{1})$.
+\end{sch-remark}
+
+\begin{sch-remark}
+As Kurzweil and Stellmacher~\cite[\S6.3]{kurzweil2004theory}
+note, we only require $\mathcal{X}$ be a class of groups containing the
+trivial group and closed under isomorphism (i.e., if $G_{1}\iso G_{2}$
+and $G_{1}\in\mathcal{X}$, then $G_{2}\in\mathcal{X}$). However, in
+general, $G/O^{\mathcal{X}}(G)\notin\mathcal{X}$. We need further:
+\begin{enumerate}
+\item $\mathcal{X}$ be closed under arbitrary
+subgroups (i.e., if $G\in\mathcal{X}$, then every subgroup $H\subgroup G$
+also belongs to $\mathcal{X}\ni H$),
+\item $\mathcal{X}$ be closed under finite products (i.e., if
+$G_{1},\dots,G_{n}\in\mathcal{X}$, then $G_{1}\times\dots\times
+G_{n}\in\mathcal{X}$), and
+\item $\mathcal{X}$ be closed under quotients (if $G\in\mathcal{X}$ and
+$N\normalSubgroup G$, then $G/N\in\mathcal{X}$).
+\end{enumerate}
+In that case, we have $G/O^{\mathcal{X}}(G)\in\mathcal{X}$~\cite[Th6.3.2]{kurzweil2004theory}.
+The last condition can be replaced with being closed under homomorphic
+images --- i.e., if $G_{1}\in\mathcal{X}$ and $G_{2}$ is ``some group''
+(possibly not in $\mathcal{X}$) and if $\varphi\colon G_{1}\to G_{2}$ is
+any group morphism, then $\varphi(G_{1})\in\mathcal{X}$. By the first
+isomorphism theorem, it's equivalent to what we have.
+\end{sch-remark}
+
+<<Scheme: $\mathcal{X}$-residual is characteristic subgroup>>=
+scheme :: Sch 3
+  XResidualIsChar{G() -> Group, P[Group]} :
+ex K being strict Subgroup of G()
+st the carrier of K = meet {A where A is Subset of G() :
+                            ex H being strict normal Subgroup of G()
+                            st A = the carrier of H & P[G()./.H]} &
+   K is characteristic
+provided
+A1: for phi being Automorphism of G()
+    for N being strict normal Subgroup of G()
+    st P[G()./.N]
+    holds ex H being strict normal Subgroup of G()
+          st H = Image(phi|N) & P[G()./.H] and
+A2: ex H being strict normal Subgroup of G() st P[G()./.H]
+proof
+  defpred P2[Group] means ex N being strict normal Subgroup of G()
+                          st the multMagma of N = the multMagma of $1 &
+                             P[G() ./. N];
+  set Fam = {A where A is Subset of G() :
+             ex H being strict normal Subgroup of G()
+             st A = the carrier of H & P[G()./.H]};
+  set Fam2 = {A where A is Subset of G() :
+              ex H being strict Subgroup of G()
+              st A = the carrier of H & P2[H]};
+
+  A3: for phi being Automorphism of G()
+  for H being strict Subgroup of G()
+  st P2[H]
+  holds P2[Image(phi|H)]
+  <<Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$>>
+  A4: ex H being strict Subgroup of G() st P2[H] by A2;
+  
+  consider K being strict Subgroup of G() such that
+  A5: the carrier of K = meet Fam2 and
+  A6: K is characteristic
+  from MeetIsChar(A3,A4);
+  take K;
+  for A being object
+  holds A in Fam iff A in Fam2
+  <<Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$>>
+  then Fam = Fam2 by TARSKI:2;
+  then the carrier of K = meet Fam by A5;
+  hence thesis by A5,A6;
+end;
+@ %def XResidualIsChar
+
+\begin{proof}[{Proof step ($P_{3}[H]\implies\forall\varphi\in\Aut(G),P_{3}[\varphi(H)]$)}.]
+We translate our given hypothesis $A_{2}$ into a form that will be
+accepted by the previous scheme, and this amounts to unrolling
+definitions. We need
+Theorem~\ref{thm:characteristic:automorphisms-preserve-normal-subgroups}
+to show automorphisms $\varphi\in\Aut(G)$ map $N\normalSubgroup G$
+satisfying $P[G/N]$ to normal subgroups.
+\end{proof}
+
+<<Proof: $P_{2}[H]$ implies $\forall\varphi\in\Aut(G),P_{2}[\varphi(H)]$>>=
+proof
+  let phi be Automorphism of G();
+  let H be strict Subgroup of G();
+  assume B1: P2[H];
+  
+  then consider N being strict normal Subgroup of G() such that
+  B2: the multMagma of N = the multMagma of H and
+  B3: P[G()./.N];
+  
+  P[G()./.N] by B3;
+  then P2[N];
+  then consider N2 being strict normal Subgroup of G() such that
+  B4: N2 = Image(phi|N) & P[G()./.N2]
+  by A1;
+  P2[(Image(phi|N))] by B4,Th52;
+  hence P2[Image(phi|H)] by B2;
+end;
+@
+
+\begin{proof}[Proof step ($A\in\mathcal{F}_{3}\iff A\in\mathcal{F}$).]
+This amounts to unrolling the criteria for $A$ to be in one family or
+the other, which amounts to showing it satisfies the same properties.
+\end{proof}
+
+<<Proof: $A\in\mathcal{F}\iff A\in\mathcal{F}_{2}$>>=
+proof
+  let A be object;
+  thus A in Fam implies A in Fam2
+  proof
+    assume B1: A in Fam;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict normal Subgroup of G()
+    st A0 = the carrier of H & P[G()./.H];
+    consider H being strict normal Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P[G()./.H]
+    by B3;
+    B6: A0 = carr H & H is strict Subgroup of G() & P2[H] by B4,B5;
+    then ex H2 being strict Subgroup of G() st A0 = carr H2 & P2[H2];
+    then A0 in Fam2;
+    hence thesis by B2;
+  end;
+  thus A in Fam2 implies A in Fam
+  proof
+    assume B1: A in Fam2;
+    then consider A0 being Subset of G() such that
+    B2: A = A0 and
+    B3: ex H being strict Subgroup of G()
+    st A0 = the carrier of H & P2[H];
+    consider H being strict Subgroup of G() such that
+    B4: A0 = the carrier of H and
+    B5: P2[H]
+    by B3;
+    B6: ex N being strict normal Subgroup of G() st N=H & P[G()./.N] by B5;
+    then A0 in Fam by B4;
+    hence thesis by B2;
+  end;
+end;
+@
+
+
+\begin{exercise}[{\cite[\S1.3 ex.1]{kurzweil2004theory}}]
+Let $K\normalSubgroup G$ be a characteristic subgroup. Prove the
+automorphisms $\alpha\in\Aut(G)$ satisfying $\alpha|_{K}=\id$ form a
+normal subgroup of $\Aut(G)$.
+\end{exercise}
+
+\begin{theorem}[{\cite[Th1.4.4]{kurzweil2004theory}}]
+Subgroups of cyclic groups are characteristic.
+\end{theorem}
+
+\begin{theorem}[{\cite[Th1.6.2]{kurzweil2004theory}}]
+  % Kurzweil \& Stellmacher, \emph{Theory of Finite Groups}, 1.4.4}]
+  Let $G=G_{1}\times\dots\times G_{n}$.
+  If the factors $G_{1}$, \dots, $G_{n}$ are characteristic subgroups of
+  $G$, then
+  \begin{equation}
+\Aut(G)\iso\Aut(G_{1})\times\dots\times\Aut(G_{n}).
+  \end{equation}
+\end{theorem}

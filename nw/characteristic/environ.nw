@@ -55,7 +55,7 @@ Similarly, [[MOD_4]] introduces the tokens [[Endomorphism]] and
 [[Automorphism]], which I want to use, so I add them, too.
 
 <<[[char.miz]] vocabularies>>=
-vocabularies MOD_4, CHAR, CARD_3,
+vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
   <<Group conjugation and normal subgroups tokens>>
@@ -86,9 +86,9 @@ For finite cyclic groups, we need [[ORDINAL1]] since the underlying set
 of $\cyclicGroup{n}$ is the ordinal $n$.
 
 <<Functions and subset tokens>>=
-RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_1, FINSEQ_1,
+RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
 FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
-FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1
+FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, EQREL_1
 @
 
 %\M
@@ -96,8 +96,8 @@ Characteristic subgroups requires recognizing tokens about\dots groups,
 and subgroups.
 
 <<Group and subgroups tokens>>=
-STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5,
-GROUP_6, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1
+STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
+GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1
 @
 
 %\M
@@ -122,26 +122,26 @@ in my experience it's often a strict subset of the notations. I'm lazy,
 so I'll just copy the constructor imports:
 
 <<[[char.miz]] constructors>>=
-constructors <<Ste theoretic constructors for [[char.miz]]>>
+constructors <<Set theoretic constructors for [[char.miz]]>>
   <<Number constructors for [[char.miz]]>>
   <<Group theory constructors for [[char.miz]]>>
 @
 
-<<Ste theoretic constructors for [[char.miz]]>>=
+<<Set theoretic constructors for [[char.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
 RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
 @
 
 <<Number constructors for [[char.miz]]>>=
-CARD_1, NUMBERS, REAL_1, SETWISEO,
+CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
 ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
-SETFAM_1, ORDINAL1,INT_1, INT_2,
+SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
 XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
 @
 
 <<Group theory constructors for [[char.miz]]>>=
-BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1,
-GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
+BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
+GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
 AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON
 @
 
@@ -167,14 +167,17 @@ The group theoretic notions are a grab bag of binary operators
 ([[STRUCT_0]] and [[ALGSTR_0]]), primordial group theoretic articles
 ([[REALSET1]]), and the relevant group theory articles.
 
+I'll also be using products of groups (established in [[GROUP_7]]) and
+need some helper results ([[PRALG_1]]).
+
 <<[[char.miz]] notations>>=
 notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
-  FINSEQ_1, ZFMISC_1, CARD_1, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
-  FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, BINOP_1,
-  BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, GROUP_1, GROUP_2,
+  ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+  FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
+  BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
   GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
-  AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON
+  AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7
 @
 
 \subsection{Registrations, Definitions, Theorems, Schemes}
@@ -210,7 +213,7 @@ ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2
 We also need to register adjectives germane to group theory.
 
 <<Register group theoretic clusters for [[char.miz]]>>=
-STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1
+STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7
 @
 
 \subsubsection{Definitions} When using a definition $f := M$, we need to cite it in
@@ -234,7 +237,7 @@ Arguably, we want to be using basic predicates concerning subsets
 ([[TARSKI]]), so let's just add them.
 
 <<Include set theoretic definitions for [[char.miz]]>>=
-SUBSET_1, FUNCT_1, TARSKI, FUNCT_2, ARYTM_2, FINSEQ_1
+TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1
 @
 
 %\M
@@ -242,7 +245,8 @@ But we also want to use facts concerning normal subgroups ([[GROUP_3]])
 and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
 <<Group theoretic definitions for [[char.miz]]>>=
-GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0
+PRALG_1, GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON,
+XXREAL_0, GROUP_7
 @
 
 \subsubsection{Theorems}
@@ -256,7 +260,7 @@ articles to the [[theorems]] environment.
 <<[[char.miz]] theorems>>=
 theorems
   <<Import set-theoretic theorems for [[char.miz]]>>,
-  <<Import group-theoretic theorems for [[char.miz]]>>, XCMPLX_1
+  <<Import group-theoretic theorems for [[char.miz]]>>
 @
 
 %\M
@@ -264,15 +268,15 @@ We have the usual cast of set theoretic characters. There are a large
 number of articles we refer to for using the real numbers.
 
 <<Import set-theoretic theorems for [[char.miz]]>>=
-TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0,
-SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1
+TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
+SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1
 @
 
 %\M
 Again, we import the usual group theoretic theorems.
 <<Import group-theoretic theorems for [[char.miz]]>>=
 GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-AUTGROUP, GROUP_9, GROUP_10, GR_CY_1
+AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2
 @
 
 \subsubsection{Schemes}
@@ -280,7 +284,7 @@ If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the [[schemes]] portion of the environment.
 
 <<[[char.miz]] schemes>>=
-schemes FUNCT_2, GROUP_4, FINSEQ_1
+schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL
 @
 
 \subsection{\dots and the rest}
@@ -294,7 +298,7 @@ Expansions of terms defined by [[equals]] are imported by a new
 <<[[char.miz]] equalities>>=
 equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
-  ALGSTR_0, NEWTON
+  ALGSTR_0, NEWTON, PRALG_1, GROUP_7
 @
 
 \subsubsection{Expansions}
@@ -302,8 +306,8 @@ Import expansions of predicates and adjectives from the specified
 articles.
 
 <<[[char.miz]] expansions>>=
-expansions FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
-  FUNCT_2, NEWTON
+expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
+  FUNCT_2, NEWTON, PRALG_1, GROUP_7
 @
 
 \subsubsection{Requirements} Within mathematics, there's a lot of implicit
