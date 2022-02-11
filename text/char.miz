@@ -12,7 +12,7 @@
 
 environ
 
- vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS,
+ vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS, QC_LANG1,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, EQREL_1,
@@ -2356,11 +2356,11 @@ proof
     let phi be Automorphism of G();
     let H be strict Subgroup of G();
     assume B1: P2[H];
-    
+
     then consider N being strict normal Subgroup of G() such that
     B2: the multMagma of N = the multMagma of H and
     B3: P[G()./.N];
-    
+
     P[G()./.N] by B3;
     then P2[N];
     then consider N2 being strict normal Subgroup of G() such that
@@ -2370,7 +2370,7 @@ proof
     hence P2[Image(phi|H)] by B2;
   end;
   A4: ex H being strict Subgroup of G() st P2[H] by A2;
-  
+
   consider K being strict Subgroup of G() such that
   A5: the carrier of K = meet Fam2 and
   A6: K is characteristic
@@ -2417,6 +2417,186 @@ proof
   hence thesis by A5,A6;
 end;
 
+theorem Th55:
+  for G1,G2 being Group
+  for phi being Homomorphism of G1,G2
+  for a1,a2 being Element of G1
+  st phi.a1 = phi.a2
+  ex k being Element of G1
+  st k in Ker phi & a1 = k*a2
+proof
+  let G1,G2 be Group;
+  let phi be Homomorphism of G1,G2;
+  let a1,a2 be Element of G1;
+  assume A1: phi.a1 = phi.a2;
+  A2: 1_G2 = (phi.a1) * ((phi.a2)") by A1,GROUP_1:def 5
+          .= (phi.a1) * phi.(a2") by GROUP_6:32
+          .= phi.(a1 * (a2")) by GROUP_6:def 6;
+  then A3: a1 * a2" in Ker phi by GROUP_6:41;
+  then consider k being Element of G1 such that
+  A4: a1 * a2" = k;
+  take k;
+  thus k in Ker phi by A3,A4;
+
+  k * a2 = (a1 * a2") * a2 by A4
+        .= a1 * (a2" * a2) by GROUP_1:def 3
+        .= a1 * 1_G1 by GROUP_1:def 5
+        .= a1 by GROUP_1:def 4;
+  hence a1 = k * a2;
+end;
+
+:: Universal property of quotients
+theorem
+  for G1,G2 being Group
+  for N being normal Subgroup of G1
+  for phi being Homomorphism of G1,G2
+  st N is Subgroup of Ker phi
+  ex phiBar being Homomorphism of G1./.N,G2
+  st phiBar * (nat_hom N) = phi
+proof
+  let G1,G2 be Group;
+  let N be normal Subgroup of G1;
+  let phi be Homomorphism of G1,G2;
+  assume A1: N is Subgroup of Ker phi;
+
+  for A being Element of G1./.N
+  ex a being Element of G1
+  st A = a*N & A = N*a by GROUP_6:21;
+
+  defpred P[Element of G1./.N, Element of G2] means ex a being Element of G1 st
+  $1 = a*N & phi.a = $2;
+
+  A2: for x being Element of G1./.N ex y being Element of G2 st P[x, y]
+  proof
+    let x be Element of G1./.N;
+    x in Cosets N;
+    then consider a being Element of G1 such that
+    B1: x = a*N & x = N*a
+    by GROUP_6:13,21;
+    consider y being Element of G2 such that
+    B2: y = phi.a;
+    take y;
+    thus P[x, y] by B1,B2;
+  end;
+
+  consider phiBar being Function of G1./.N,G2 such that
+  A3: for x being Element of G1./.N holds P[x, phiBar.x]
+  from FUNCT_2:sch 3(A2);
+
+  A4: for x being Element of G1./.N
+  ex a being Element of G1
+  st x = a*N & phiBar.x = phi.a
+  proof
+    let x be Element of G1./.N;
+    consider a being Element of G1 such that B1: x = a*N & phi.a = phiBar.x by A3;
+    take a;
+    thus thesis by B1;
+  end;
+
+  for x1,x2 being Element of G1./.N
+  holds phiBar.(x1*x2) = (phiBar.x1)*(phiBar.x2)
+  proof
+    let x1,x2 be Element of G1./.N;
+    consider a1 being Element of G1 such that
+    B1: x1 = a1*N & phiBar.x1 = phi.a1
+    by A4;
+    consider a2 being Element of G1 such that
+    B2: x2 = a2*N & phiBar.x2 = phi.a2
+    by A4;
+
+    B3: phiBar.x1 * phiBar.x2 = phi.(a1 * a2) by B1,B2, GROUP_6:def 6;
+
+    B4: x1 * x2 = (@ x1) * (@ x2) by GROUP_6:19
+               .= (a1 * N) * (@ x2) by B1
+               .= a1 * N * (@ x2)
+               .= a1 * (N * (@ x2)) by GROUP_2:29
+               .= a1 * (N * (a2 * N)) by B2
+               .= a1 * (N * (N * a2)) by GROUP_3:117
+               .= a1 * ((N * N) * a2) by GROUP_4:46
+               .= a1 * (N * a2) by GROUP_2:76
+               .= a1 * (a2 * N) by GROUP_3:117
+               .= (a1 * a2) * N by GROUP_2:105;
+    B6: P[x1 * x2, phiBar.(x1 * x2)] by A3;
+
+    consider a being Element of G1 such that
+    B5: x1 * x2 = a*N & phiBar.(x1 * x2) = phi.a
+    by A4;
+
+    phi.a = phi.(a1 * a2) by A3,B3,B4,B5;
+::>                        *4
+    then consider k being Element of G1 such that
+    B6: k in Ker phi and
+    B7: a = k*(a1 * a2)
+    by Th55;
+
+    phiBar.(x1 * x2) = phi.(a1 * a2) by B4;
+::>                                   *4
+    then B5: P[x1 * x2, phi.(a1 * a2)];
+::>                                  *4
+    (x1 * x2) in G1./.N & (x1 * x2) = (a1 * a2) * N by B4;
+    then phiBar.(x1 * x2) = phi.(a1 * a2) by B4, B5, B6, A3, A4;
+::>                                        *4
+    P[x1 * x2, phiBar.x1 * phiBar.x2] by B3,B4;
+    then phiBar.(x1 * x2) = phiBar.x1 * phiBar.x2 by A3,B5;
+::>                                                *4
+    then phiBar.(x1 * x2) = phi.(a1 * a2) by B4,B5,A3,A4;
+::>                                        *4
+    thus phiBar.(x1*x2) = (phiBar.x1)*(phiBar.x2);
+::>                                             *4
+  end;
+
+  for x1,x2 being Element of G1./.N
+  holds phiBar.(x1*x2) = (phiBar.x1)*(phiBar.x2)
+  proof
+    let x1,x2 be Element of G1./.N;
+
+    x1 in Cosets N;
+    then consider a1 being Element of G1 such that
+    B1: x1 = a1*N & x1 = N*a1
+    by GROUP_6:13;
+    x2 in Cosets N;
+    then consider a2 being Element of G1 such that
+    B2: x2 = a2*N & x2 = N*a2
+    by GROUP_6:13;
+    consider y1 being Element of G2 such that
+    B3: y1 = phi.a1;
+    consider y2 being Element of G2 such that
+    B4: y2 = phi.a2;
+    B5: P[x1, phi.a1] by B1,B3;
+    B6: P[x2, phi.a2] by B2,B4;
+    B7: phi.(a1*a2) = (phi.a1)*(phi.a2);
+::>                                   *4
+    x1 * x2 = (@ x1) * (@ x2) by GROUP_6:19
+    .= (a1*N) * (@ x2) by B1
+    .= a1 * N * (@ x2)
+    .= a1 * (N * (@ x2)) by GROUP_2:29
+    .= a1 * (N * (N * a2)) by B2
+    .= a1 * ((N * N) * a2) by GROUP_4:46
+    .= a1 * (N * a2) by GROUP_2:76
+    .= a1 * (a2 * N) by GROUP_3:117
+    .= (a1 * a2) * N by GROUP_2:105;
+    then B8: P[x1*x2, phi.(a1*a2)] by B1,B2;
+    then P[x1*x2, (phi.a1)*(phi.a2)] by B7;
+    then phiBar.(x1*x2) = (phiBar.x1)*(phiBar.x2) by A3,A4,B5,B6,B7,B8;
+::>                                                *4
+    thus phiBar.(x1*x2) = (phiBar.x1)*(phiBar.x2);
+::>                                             *4
+  end;
+  then reconsider phiBar as Homomorphism of G1./.N,G2 by GROUP_6:def 6;
+  take phiBar;
+  thus phiBar * (nat_hom N) = phi by A1,A3;
+::>                                *4
+end;
+
+
+theorem
+  for G being Group
+  for K being characteristic Subgroup of G
+  for phi being Automorphism of G
+  for g being Element of G
+  holds phi .: (g * K) = (phi.g) * K;
+::>                                *4
+
 theorem
   for G being Group
   for K being characteristic Subgroup of G
@@ -2426,8 +2606,26 @@ proof
   let G be Group;
   let K be characteristic Subgroup of G;
   let phi be Automorphism of G;
+  (nat_hom K) is onto by GROUP_6:59;
+  then A1: (nat_hom K) * phi is onto by FUNCT_2:27;
+
+  for x1,x2 being Element of G./.K
+  st
+  for A,B being Element of Left_Cosets K
+  for a,b being Element of G
+  st A = a*K & B = b*K
+::>                   *340
+
+  st ((nat
+  for g being Element of G
+  ex A being Element of Left_Cosets K
+  st g in A;
+  then consider a being Element of G such that
+  A2:
   thus (nat_hom K) * phi is Automorphism of G./.K;
+::>  *396
 end;
+::>,70
 
 
 :: Gorenstein, Finite Groups, Theorem 2.1.2.iv
@@ -2446,5 +2644,7 @@ proof
   thus K is characteristic Subgroup of G;
 ::>                                    *4
 end;
-
 ::> 4: This inference is not accepted
+::> 70: Something remains to be proved
+::> 340: "holds", "for" or "ex" expected
+::> 396: Formula expected
