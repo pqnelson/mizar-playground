@@ -67,18 +67,18 @@ definition
   of G st a in A holds a*b = b*a };
     C1: 1_G in Car
     <<Proof: $1_{G}\in C_{G}(A)$>>
-    
+
     for x being object st x in Car holds x in the carrier of G
     <<Proof: $\forall x, x\in C_{G}(A)\implies x\in G$>>
     then C2: Car is Subset of G by TARSKI:def 3;
-    
+
     C3: for g1,g2 being Element of G st g1 in Car & g2 in Car
     holds g1*g2 in Car
     <<Proof: $C_{G}(A)$ closed under multiplication>>
-    
+
     C4: for g being Element of G st g in Car holds g" in Car
     <<Proof: $\forall g\in C_{G}(A), g^{-1}\in C_{G}(A)$>>
-    
+
     thus thesis by C1,C2,C3,C4,GROUP_2:52;
   end;
   uniqueness
@@ -102,8 +102,8 @@ proof
        st (x = g) & (for a being Element of G st a in A holds a*g = g*a);
   hence thesis;
 end;
-    
-@ 
+
+@
 
 <<Proof: $1_{G}\in C_{G}(A)$>>=
 proof
@@ -116,7 +116,7 @@ proof
     hence thesis;
   end;
   hence thesis;
-end;    
+end;
 @
 
 <<Proof: $C_{G}(A)$ closed under multiplication>>=
@@ -141,7 +141,7 @@ proof
   end;
   hence thesis;
 end;
-@ 
+@
 
 <<Proof: $\forall g\in C_{G}(A), g^{-1}\in C_{G}(A)$>>=
 proof
@@ -164,7 +164,7 @@ proof
   end;
   hence thesis;
 end;
-@ 
+@
 
 \begin{theorem}
 Let $G$ be a group, $A\subset G$ be any subset, $g\in G$ be any group element.
@@ -177,7 +177,7 @@ $ag=ga$.
 \end{thm-remark}
 
 <<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>=
-theorem
+theorem Th60:
   for G being Group
   for A being Subset of G
   for g being Element of G
@@ -189,7 +189,7 @@ proof
   let g be Element of G;
 A1: the carrier of Centralizer A = {b where b is Element of G : for a
   being Element of G st a in A holds b*a=a*b} by Def8;
-  hereby 
+  hereby
     assume for a being Element of G st a in A holds g*a = a*g;
     then g in the carrier of Centralizer A by A1;
     hence g is Element of Centralizer A;
@@ -200,7 +200,7 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
-@ %def Th55
+@ %def Th60
 
 \begin{definition}
 Let $G$ be a group, $H\subgroup G$ be a subgroup.
@@ -216,6 +216,13 @@ This basically amounts to Definition~\ref{defn:characteristic-subgroup:centraliz
 applied to the underlying set of a subgroup of $G$. The proofs of
 existence and uniqueness carry over.
 \end{def-remark}
+\begin{def-remark}
+We also follow Mizar's example in Definition~\mml[def15]{group3} of the
+normalizer of $H\subgroup G$, based off the
+Definition~\mml[def14]{group3} of the normalizer for a subset $A\subset G$.
+Consequently we only need a [[correctness;]] assertion. This is briefly
+mentioned at the very end of \S2 of ``Mizar in a nutshell''.
+\end{def-remark}
 
 <<Definition: Centralizer of Subgroup>>=
 definition
@@ -224,20 +231,7 @@ definition
   func Centralizer H -> strict Subgroup of G means
   :Def9:
   it = Centralizer carr H;
-  existence
-  proof
-    set A = carr H;
-    take Centralizer A;
-    thus thesis;
-  end;
-  uniqueness
-  proof
-    let H1,H2 be strict Subgroup of G such that
-A1: H1 = Centralizer carr H and
-A2: H2 = Centralizer carr H;
-    for g being Element of G holds g in H1 iff g in H2 by A1,A2;
-    hence thesis;
-  end;
+  correctness;
 end;
 @ %def Def9
 
@@ -260,7 +254,7 @@ end;
 \end{proof}
 
 <<Theorem: carrier of $C_{G}(H) = \{b\in G\mid\forall a\in H, ba=ab\}$>>=
-theorem Th56:
+theorem Th61:
   for G being Group
   for H being Subgroup of G
   holds the carrier of Centralizer H = {b where b is Element of G : for a
@@ -270,11 +264,11 @@ proof
   let H be Subgroup of G;
   set A = carr H;
   set Car = {b where b is Element of G : for a being Element of G st a in H holds b*a=a*b};
-  
+
   A1: the carrier of Centralizer A = {b where b is Element of G : for a
   being Element of G st a in A holds b*a=a*b} by Def8;
   A2: the carrier of Centralizer A = the carrier of Centralizer carr H by Def9;
-  
+
   for x being object st x in Car holds x in the carrier of Centralizer H
   proof
     let x be object;
@@ -300,7 +294,7 @@ proof
     hence thesis by Def9;
   end;
   then A3: Car c= the carrier of Centralizer H by TARSKI:def 3;
-  
+
   for x being object st x in the carrier of Centralizer H holds x in Car
   proof
     let x be object;
@@ -325,7 +319,7 @@ proof
   hence thesis by A3,XBOOLE_0:def 10;
 end;
 
-@ %def Th56
+@ %def Th61
 
 \begin{theorem}
 Let $H\subgroup G$ and $g\in G$.
@@ -333,7 +327,7 @@ Then $g\in C_{G}(H)$ if and only if for any $a\in H$ we have $ga=ag$.
 \end{theorem}
 
 <<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>=
-theorem Th57:
+theorem Th62:
   for G being Group
   for H being Subgroup of G
   for g being Element of G
@@ -344,8 +338,8 @@ proof
   let H be Subgroup of G;
   let g be Element of G;
 A1: the carrier of Centralizer H = {b where b is Element of G : for a
-  being Element of G st a in H holds b*a=a*b} by Th56;
-  hereby 
+  being Element of G st a in H holds b*a=a*b} by Th61;
+  hereby
     assume B1: for a being Element of G st a in H holds g*a = a*g;
     then g in the carrier of Centralizer H by A1;
     hence g is Element of Centralizer H;
@@ -356,8 +350,7 @@ A1: the carrier of Centralizer H = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
-
-@ %def Th57
+@ %def Th62
 
 \begin{theorem}
   Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
@@ -365,14 +358,41 @@ end;
 \end{theorem}
 
 <<Theorem: Centralizer of characteristic subgroups is characteristic>>=
-theorem
+theorem Th63:
   for G being Group
-  for K being characteristic Subgroup of G
+  for K being strict characteristic Subgroup of G
   holds (Centralizer K) is characteristic Subgroup of G
 proof
   let G be Group;
-  let K be characteristic Subgroup of G;
-  thus (Centralizer K) is characteristic Subgroup of G;
+  let K be strict characteristic Subgroup of G;
+  for phi being Automorphism of G
+  for x being Element of G
+  st x in Centralizer K
+  holds phi.x in Centralizer K
+  proof
+    let phi be Automorphism of G;
+    let x be Element of G;
+    assume B1: x in Centralizer K;
+    set y = phi.x;
+    reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+    for k being Element of G st k in K holds y*k = k*y
+    proof
+      let k be Element of G;
+      assume C1: k in K;
+      then C2: psi.k in K by Th53;
+      set j = psi.k;
+      C3: j in K by C2;
+      then x*j = j*x by B1,Th62;
+      then phi.(x*j) = phi.(j*x) by C3
+                    .= phi.j * phi.x by GROUP_6:def 6;
+      then phi.x * phi.j = phi.j * phi.x by GROUP_6:def 6;
+      then y * phi.(psi.k) = phi.(psi.k) * y
+                          .= k * y by Th6;
+      hence y * k = k * y by Th6;
+    end;
+    then y is Element of Centralizer K by Th62;
+    hence thesis;
+  end;
+  hence Centralizer K is characteristic Subgroup of G by Th53;
 end;
-
-@ 
+@ %def Th63

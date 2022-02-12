@@ -50,6 +50,15 @@ We now arrive at the meat of the matter: characteristic subgroups!
 
 <<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>
 
+<<Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$>>
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic>>
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic>>
+
+<<Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable>>
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic>>
 @
 
 \begin{definition}[{Dummit and Foote~\cite[\S4.4]{dummit-foote}}]\index{Subgroup!Characteristic}\index{Characteristic!Subgroup}\label{defn:characteristic:results:characteristic-subgroup}
@@ -527,16 +536,18 @@ characteristic subgroup of $G$.
 
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 theorem Th42:
+  for G being Group
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
-  (for phi holds Image(phi|H) is Subgroup of H)
+  (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
 proof
+  let G be Group;
   let H be strict Subgroup of G;
   thus H is characteristic Subgroup of G implies
-       (for phi holds Image(phi|H) is Subgroup of H)
+       (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
   <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 
-  thus (for phi holds Image(phi|H) is Subgroup of H)
+  thus (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
        implies H is characteristic Subgroup of G
   <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>
 
@@ -552,8 +563,9 @@ $H\subgroup H$ then applying the definition of characteristic subgroup.
 
 <<Proof: $H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
-  assume H is characteristic Subgroup of G;
-  then Image(phi|H) = H & H is Subgroup of H by GROUP_2:54,Def6;
+  assume B1: H is characteristic Subgroup of G;
+  let phi be Automorphism of G;
+  Image(phi|H) = H & H is Subgroup of H by B1,GROUP_2:54,Def6;
   hence Image(phi|H) is Subgroup of H;
 end;
 @
@@ -572,11 +584,12 @@ have the hypothesis that $H$ is a strict subgroup of $G$.
 
 <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
-  assume A1: Image(phi|H) is Subgroup of H;
-  A2: H is Subgroup of Image(phi|H)
+  assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
+  A2: for phi being Automorphism of G holds H is Subgroup of Image(phi|H)
   <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>
-  H = Image(phi|H)
+  for phi being Automorphism of G holds H = Image(phi|H)
   proof
+    let phi be Automorphism of G;
     H is Subgroup of Image(phi|H) & Image(phi|H) is Subgroup of H
     by A1,A2;
     hence H = Image(phi|H) by GROUP_2:55;
@@ -598,6 +611,7 @@ This suffices to infer $H\subgroup\varphi(H)$.
 
 <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>=
 proof
+  let phi be Automorphism of G;
   consider psi being Automorphism of G such that
   B1: psi = phi" and
   B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th17;
@@ -766,9 +780,7 @@ $\varphi(\bigcap\mathcal{F})\supset\bigcap\mathcal{F}$. The result then follows.
 \end{proof}
 
 <<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>=
-reserve G for non trivial Group;
-reserve H,K for Subgroup of G;
-reserve A,A1,A2 for set;
+reserve A1,A2 for set;
 
 scheme
   CharMeet{G() -> Group, P[set]} :
@@ -821,7 +833,7 @@ $H\in\mathcal{F}$. Hence $\bigcap\mathcal{F}\neq\emptyset$.
 
 <<Proof step: $\mathcal{F}\neq\emptyset$>>=
 proof
-  consider A such that
+  consider A being set such that
   B1: A = the carrier of H;
   the carrier of H is Subset of G() by GROUP_2:def 5;
   then A in Fam by A3, B1;
@@ -844,9 +856,9 @@ proof
   let x be object;
   assume x in meet Fam;
   then B1: for A1 holds A1 in Fam implies x in A1 by SETFAM_1:def 1;
-  for A holds A in Fam implies phi0.x in A
+  for A being set holds A in Fam implies phi0.x in A
   proof
-    let A;
+    let A be set;
     assume C1: A in Fam;
     consider A0 being Subset of G() such that
     C2: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
@@ -1019,9 +1031,11 @@ as a scheme.
 
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>=
 theorem Th44:
-  (ex H being strict Subgroup of G st H is maximal) implies
+  for G being non trivial Group
+  holds (ex H being strict Subgroup of G st H is maximal) implies
   Phi(G) is characteristic Subgroup of G
 proof
+  let G be non trivial Group;
   defpred P[Subgroup of G] means $1 is maximal;
   assume A1: ex H being strict Subgroup of G st P[H];
   set MaxSubCarrs = {A where A is Subset of G :
@@ -1259,12 +1273,14 @@ If every $h\in H$ satisfies $\varphi(h)\in H$, then $\varphi(H)\subgroup H$.
 
 <<Theorem: $\forall h\in H,\varphi(h)\in H$ implies $\varphi(H)\subgroup H$>>=
 theorem Th47:
+  for G being Group
   for phi being Automorphism of G
   for H being Subgroup of G
   st (for h being Element of H
       holds phi.h in H)
   holds Image(phi|H) is Subgroup of H
 proof
+  let G be Group;
   let phi be Automorphism of G;
   let H be Subgroup of G;
   assume A1: for h being Element of H holds phi.h in H;
@@ -1300,16 +1316,20 @@ subgroup $\langle A\rangle$ is a characteristic subgroup.
 
 <<Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic>>=
 theorem Th48:
+  for G being Group
   for A being non empty Subset of G
   st (for phi being Automorphism of G
       holds phi .: A = A)
   holds gr A is characteristic
 proof
+  let G be Group;
   let A be non empty Subset of G;
   assume A1: for phi being Automorphism of G holds phi .: A = A;
-  A2: for a being Element of A
+  A2: for phi being Automorphism of G
+  for a being Element of A
   holds phi.a in A
   proof
+    let phi be Automorphism of G;
     let a be Element of A;
     dom phi = the carrier of G by FUNCT_2:def 1;
     then a in dom phi;
@@ -1566,7 +1586,7 @@ end;
 \begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
 If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
 of $G$ we have our automorphism map $N$ to another normal subgroup
-$\varphi(N)\normalSubgroup G$. 
+$\varphi(N)\normalSubgroup G$.
 \end{theorem}
 
 <<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>=
@@ -1599,3 +1619,247 @@ proof
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
 @ %def Th52
+
+\begin{theorem}
+Let $H\subgroup G$. Then $H$ is characteristic if and only if for any
+automorphism $\varphi\in\Aut(G)$ and every $x\in H$ we have
+$\varphi(x)\in H$.
+\end{theorem}
+
+\begin{thm-remark}
+We need to have $H$ be a strict subgroup since the definition of a
+characteristic subgroup requires $\forall\varphi\in\Aut(G),\varphi(H)=H$.
+Without strictness, we cannot have subgroup equality.
+\end{thm-remark}
+
+<<Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$>>=
+theorem Th53:
+  for G being Group
+  for H being strict Subgroup of G
+  holds H is characteristic iff
+        (for phi being Automorphism of G
+         for x being Element of G
+         st x in H
+         holds phi.x in H)
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+  thus H is characteristic implies (for phi being Automorphism of G
+                                    for x being Element of G
+                                    st x in H
+                                    holds phi.x in H)
+  proof
+    assume B1: H is characteristic;
+    let phi be Automorphism of G;
+    let x be Element of G;
+    assume B2: x in H;
+    B3: H = Image(phi|H) by B1, Def6
+         .= phi .: H by GRSOLV_1:def 3;
+    dom phi = the carrier of G by FUNCT_2:def 1;
+    then x in dom phi;
+    then phi.x in phi .: (the carrier of H) by B2,B3,FUNCT_1:def 6;
+    then phi.x in the carrier of (phi .: H) by GRSOLV_1:8;
+    then phi.x in the carrier of H by B3;
+    hence thesis;
+  end;
+  thus (for phi being Automorphism of G
+        for x being Element of G
+        st x in H
+        holds phi.x in H)
+       implies H is characteristic
+  proof
+    assume B1: for phi being Automorphism of G for x being Element of G st x in H holds phi.x in H;
+    for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
+    proof
+      let phi be Automorphism of G;
+      for x being Element of H holds phi.x in H
+      proof
+        let x be Element of H;
+        C1: x in H;
+        reconsider g=x as Element of G by GROUP_2:42;
+        g in H by C1;
+        then phi.g in H by B1;
+        hence phi.x in H;
+      end;
+      hence Image(phi|H) is Subgroup of H by Th47;
+    end;
+    hence H is characteristic by Th42;
+  end;
+end;
+@ %def Th53
+
+\begin{theorem}
+If $H\subgroup G$ and $K\subgroup G$ are strict characteristic subgroups,
+then $H\cap G$ is a characteristic subgroup.
+\end{theorem}
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic>>=
+theorem
+  for G being Group
+  for H,K being strict characteristic Subgroup of G
+  holds H /\ K is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H,K be strict characteristic Subgroup of G;
+  for phi being Automorphism of G
+  for x being Element of G
+  st x in H /\ K
+  holds phi.x in H /\ K
+  proof
+    let phi be Automorphism of G;
+    let x be Element of G;
+    assume B1: x in H /\ K;
+    then B2: x in H & x in K by GROUP_2:82;
+    then B3: phi.x in H by Th53;
+    phi.x in K by B2,Th53;
+    hence phi.x in H /\ K by B3, GROUP_2:82;
+  end;
+  hence H /\ K is characteristic Subgroup of G by Th53;
+end;
+@ %def Th54
+
+\begin{theorem}
+  If $H\subgroup G$ and $K\subgroup G$ are characteristic subgroups,
+  then $\langle H, K\rangle$ is a characteristic subgroup of $G$.
+\end{theorem}
+
+\begin{thm-remark}
+More generally, if $\{K_{i}\}_{i\in I}$ is any family of characteristic subgroups
+of $G$, then their join $\langle K_{i}\rangle_{i\in I}$.
+\end{thm-remark}
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic>>=
+theorem Th55:
+  for G being Group
+  for H,K being strict characteristic Subgroup of G
+  holds H "\/" K is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H,K be strict characteristic Subgroup of G;
+
+  for phi being Automorphism of G
+  for g being Element of G
+  st g in H "\/" K
+  holds phi.g in H "\/" K
+  proof
+    let phi be Automorphism of G;
+    let g be Element of G;
+    assume B1: g in H "\/" K;
+    then g in H*K by GROUP_4:53;
+    then g in carr H * carr K by GROUP_4:def 8;
+    then consider h, k being Element of G such that
+    B2: g = h*k and
+    B3: h in carr H and
+    B4: k in carr K by GROUP_2:8;
+    h in H by B3;
+    then B5: phi.h in H by Th53;
+    k in K by B4;
+    then B6: phi.k in K by Th53;
+    then phi.k in carr K & phi.h in carr H by B5;
+    then phi.h * phi.k in carr H*carr K by GROUP_2:def 2, GROUP_4:def 8;
+    then phi.(h*k) in carr H * carr K by GROUP_6:def 6;
+    then phi.g in carr H * carr K by B2;
+    then phi.g in H*K by GROUP_4:def 8;
+    hence phi.g in H "\/" K by GROUP_4:53;
+  end;
+
+  hence H "\/" K is characteristic Subgroup of G by Th53;
+end;
+@ %def Th55
+
+\begin{theorem}
+If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the set of
+commutators $\{[h,k]\in G\mid h\in H, k\in K\}$ is invariant under
+automorphisms of $G$.
+\end{theorem}
+
+<<Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable>>=
+theorem Th56:
+  for G being Group
+  for H,K being strict characteristic Subgroup of G
+  for phi being Automorphism of G
+  holds phi .: commutators(H,K) = commutators(H,K)
+proof
+  let G be Group;
+  let H,K be strict characteristic Subgroup of G;
+  let phi be Automorphism of G;
+  A1: dom phi = the carrier of G by FUNCT_2:def 1;
+
+  for x being object
+  st x in commutators(H,K)
+  holds x in phi .: commutators(H,K)
+  proof
+    let x be object;
+    assume B0: x in commutators(H,K);
+    then reconsider g=x as Element of G;
+    consider h,k being Element of G such that
+    B1: x = [.h,k.] and
+    B2: h in H and
+    B3: k in K by B0,GROUP_5:52;
+    phi.k in K & phi.h in H by B2,B3,Th53;
+    reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+    set a = psi.h;
+    set b = psi.k;
+    B4: a in H by B2,Th53;
+    B5: b in K by B3,Th53;
+    B6: psi.x = psi.([.h,k.]) by B1
+    .= [.psi.h,psi.k.] by GROUP_6:34
+    .= [.a,b.];
+    phi.([. a,b .]) = phi.(psi.x) by B6
+    .= g by Th6;
+    then B7: x = phi.([. a,b .]);
+    B8: [. a, b .] in commutators(H,K) by B4,B5,GROUP_5:52;
+    then [. a,b .] in the carrier of G;
+    then phi.([. a,b .]) in phi .: commutators(H,K) by A1,B8,FUNCT_1:def 6;
+    hence x in phi .: commutators(H,K) by B7;
+  end;
+  then A2: commutators(H,K) c= phi .: commutators(H,K);
+
+  for y being object
+  st y in phi .: commutators(H,K)
+  holds y in commutators(H,K)
+  proof
+    let y be object;
+    assume B1: y in phi .: commutators(H,K);
+    then consider x being object such that
+    B2: x in dom phi & x in commutators(H,K) & y = phi.x
+    by FUNCT_1:def 6;
+    consider h,k being Element of G such that
+    B3: x = [.h,k.] and
+    B4: h in H and
+    B5: k in K by B2,GROUP_5:52;
+    set a = phi.h;
+    B6: a in H by B4,Th53;
+    set b = phi.k;
+    B7: b in K by B5,Th53;
+    phi.x = phi.([. h,k .]) by B3
+    .= [. phi.h, phi.k .] by GROUP_6:34;
+    hence y in commutators(H,K) by B2,B6,B7,GROUP_5:52;
+  end;
+  then phi .: commutators(H,K) c= commutators(H,K);
+  hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
+end;
+@ %def Th56
+
+\begin{theorem}
+If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator
+subgroup $[H,K]$ is a characteristic subgroup.
+\end{theorem}
+
+<<Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic>>=
+theorem Th57:
+  for G being Group
+  for H,K being strict characteristic Subgroup of G
+  holds [.H,K.] is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H,K be strict characteristic Subgroup of G;
+  set A = commutators(H,K);
+  A1: A is non empty Subset of G by GROUP_5:53;
+  then reconsider A as non empty Subset of G;
+  for phi being Automorphism of G
+  holds phi .: A = A by Th56;
+  then gr A is characteristic by A1, Th48;
+  hence [.H,K.] is characteristic Subgroup of G by GROUP_5:63;
+end;
+@ %def Th57
