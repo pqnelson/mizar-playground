@@ -1,0 +1,378 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Centralizers of Characteristic Subgroups}
+
+<<Centralizers of Characteristic Subgroups>>=
+<<Definition: Centralizer of Subset>>
+
+<<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>
+
+<<Definition: Centralizer of Subgroup>>
+
+<<Theorem: carrier of $C_{G}(H) = \{b\in G\mid\forall a\in H, ba=ab\}$>>
+
+<<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>
+
+<<Theorem: Centralizer of characteristic subgroups is characteristic>>
+
+@
+
+\begin{definition}\label{defn:characteristic-subgroup:centralizer-of-subset}
+  Let $G$ be a group, let $A\subset G$ be a subset of $G$.
+  We define the \define{Centralizer} of $A$ to be the subgroup of $G$
+  given by
+  \begin{equation}
+C_{G}(A) = \{g\in G\mid \forall a\in A, ag=ga\}.
+  \end{equation}
+\end{definition}
+
+\begin{def-remark}
+We not only need to prove the existence of centralizers, but also the
+uniqueness (since we speak of \emph{the} centralizer of $A$).
+\end{def-remark}
+\begin{def-remark}
+Note that \mml{weddwitt} defines the centralizer of a group \emph{element},
+but nothing further (well, nothing further about group centralizers).
+\end{def-remark}
+
+\begin{proof}[Proof sketch of existence]
+Basically, we have four steps to proving the existence of a centralizer
+subgroup $C_{G}(A)$:
+\begin{enumerate}
+\item it contains the identity element $1_{G}\in C_{G}(A)$;
+\item its carrier is a subset of $G$, $C_{G}(A)\subset G$;
+\item it is closed under the group operation;
+\item it is closed under inversion.
+\end{enumerate}
+Then from these claims, it follows $C_{G}(A)$ is a subgroup.
+\end{proof}
+
+\begin{proof}[Proof sketch of uniqueness]
+Suppose we have two subgroups $H_{1}\subgroup G$ and $H_{2}\subgroup G$
+satisfying the definition of being a centralizer of $A$.
+Then $H_{1}=H_{2}$ since they contain the same elements.
+\end{proof}
+
+<<Definition: Centralizer of Subset>>=
+definition
+  let G be Group;
+  let A be Subset of G;
+  func Centralizer A -> strict Subgroup of G means
+  :Def8:
+  the carrier of it = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+  existence
+  proof
+    set Car = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+    C1: 1_G in Car
+    <<Proof: $1_{G}\in C_{G}(A)$>>
+    
+    for x being object st x in Car holds x in the carrier of G
+    <<Proof: $\forall x, x\in C_{G}(A)\implies x\in G$>>
+    then C2: Car is Subset of G by TARSKI:def 3;
+    
+    C3: for g1,g2 being Element of G st g1 in Car & g2 in Car
+    holds g1*g2 in Car
+    <<Proof: $C_{G}(A)$ closed under multiplication>>
+    
+    C4: for g being Element of G st g in Car holds g" in Car
+    <<Proof: $\forall g\in C_{G}(A), g^{-1}\in C_{G}(A)$>>
+    
+    thus thesis by C1,C2,C3,C4,GROUP_2:52;
+  end;
+  uniqueness
+  proof
+    let H1,H2 be strict Subgroup of G such that
+A1: the carrier of H1 = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a } and
+A2: the carrier of H2 = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+     for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+     hence thesis;
+  end;
+end;
+@ %def Centralizer Def8
+
+<<Proof: $\forall x, x\in C_{G}(A)\implies x\in G$>>=
+proof
+  let x be object;
+  assume x in Car;
+  then ex g being Element of G
+       st (x = g) & (for a being Element of G st a in A holds a*g = g*a);
+  hence thesis;
+end;
+    
+@ 
+
+<<Proof: $1_{G}\in C_{G}(A)$>>=
+proof
+  for a being Element of G st a in A holds 1_G*a = a*1_G
+  proof
+    let a be Element of G;
+    assume a in A;
+    then 1_G*a = a by GROUP_1:def 4
+              .= a*1_G by GROUP_1:def 4;
+    hence thesis;
+  end;
+  hence thesis;
+end;    
+@
+
+<<Proof: $C_{G}(A)$ closed under multiplication>>=
+proof
+  let g1,g2 be Element of G;
+  assume B1: g1 in Car;
+  assume B2: g2 in Car;
+  B3: ex z1 being Element of G st (z1 = g1) & (for a being Element of G
+  st a in A holds a*z1 = z1*a) by B1;
+  B4: ex z2 being Element of G st (z2 = g2) & (for a being Element of G
+  st a in A holds a*z2 = z2*a) by B2;
+  for a being Element of G st a in A holds a*(g1*g2)=(g1*g2)*a
+  proof
+    let a be Element of G;
+    assume Z1: a in A;
+    a*(g1*g2) = (a*g1)*g2 by GROUP_1:def 3
+             .= (g1*a)*g2 by B1,Z1,B3
+             .= g1*(a*g2) by GROUP_1:def 3
+             .= g1*(g2*a) by B2,Z1,B4
+             .= g1*g2*a by GROUP_1:def 3;
+    hence thesis;
+  end;
+  hence thesis;
+end;
+@ 
+
+<<Proof: $\forall g\in C_{G}(A), g^{-1}\in C_{G}(A)$>>=
+proof
+  let g be Element of G;
+  assume Z1: g in Car;
+  then Z2: ex z1 being Element of G st (z1 = g) & (for a being
+  Element of G st a in A holds z1*a=a*z1);
+  for a being Element of G st a in A holds g" * a = a * g"
+  proof
+    let a be Element of G;
+    assume Z3: a in A;
+    g" * (g * a) = a by GROUP_3:1;
+    then g" * ((a*g) * g") = g" * ((g*a) * g") by Z3,Z2
+                          .= (g" * (g * a)) * g" by GROUP_1:def 3
+                          .= ((g" * g) * a) * g"  by GROUP_1:def 3
+                          .= (1_G * a) * g"  by GROUP_1:def 5
+                          .= a * g"  by GROUP_1:def 4;
+    then g" * a = a * g" by GROUP_3:1;
+    hence thesis;
+  end;
+  hence thesis;
+end;
+@ 
+
+\begin{theorem}
+Let $G$ be a group, $A\subset G$ be any subset, $g\in G$ be any group element.
+We have $g\in C_{G}(A)$ if and only if for any $a\in A$, $ag=ga$.
+\end{theorem}
+
+\begin{thm-remark}
+This allows us to use the fact that $g\in C_{G}(A)$ and $a\in A$ implies
+$ag=ga$.
+\end{thm-remark}
+
+<<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>=
+theorem
+  for G being Group
+  for A being Subset of G
+  for g being Element of G
+  holds (for a being Element of G st a in A holds g*a = a*g) iff
+        g is Element of Centralizer A
+proof
+  let G be Group;
+  let A be Subset of G;
+  let g be Element of G;
+A1: the carrier of Centralizer A = {b where b is Element of G : for a
+  being Element of G st a in A holds b*a=a*b} by Def8;
+  hereby 
+    assume for a being Element of G st a in A holds g*a = a*g;
+    then g in the carrier of Centralizer A by A1;
+    hence g is Element of Centralizer A;
+  end;
+  assume g is Element of Centralizer A;
+  then g in the carrier of Centralizer A;
+  then ex b being Element of G st (b = g) & (for a being Element of G st a in A
+  holds b*a = a*b) by A1;
+  hence thesis;
+end;
+@ %def Th55
+
+\begin{definition}
+Let $G$ be a group, $H\subgroup G$ be a subgroup.
+We define the \define{Centralizer} of $H$ is the subgroup whose
+underlying set is
+\begin{equation}
+C_{G}(H) = \{g\in G\mid \forall h\in H, hg=gh\}.
+\end{equation}
+\end{definition}
+
+\begin{def-remark}
+This basically amounts to Definition~\ref{defn:characteristic-subgroup:centralizer-of-subset}
+applied to the underlying set of a subgroup of $G$. The proofs of
+existence and uniqueness carry over.
+\end{def-remark}
+
+<<Definition: Centralizer of Subgroup>>=
+definition
+  let G be Group;
+  let H be Subgroup of G;
+  func Centralizer H -> strict Subgroup of G means
+  :Def9:
+  it = Centralizer carr H;
+  existence
+  proof
+    set A = carr H;
+    take Centralizer A;
+    thus thesis;
+  end;
+  uniqueness
+  proof
+    let H1,H2 be strict Subgroup of G such that
+A1: H1 = Centralizer carr H and
+A2: H2 = Centralizer carr H;
+    for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+    hence thesis;
+  end;
+end;
+@ %def Def9
+
+\begin{theorem}
+  Let $H\subgroup G$. Then the set underlying $C_{G}(H)$ is precisely
+  $\{b\in G\mid\forall a\in H, ba=ab\}$.
+\end{theorem}
+
+\begin{thm-remark}
+  This may seem silly and redundant, but we need to explicitly spell out
+  what the underlying set of the centralizer for a subgroup \emph{is},
+  if we want to use it later.
+\end{thm-remark}
+
+\begin{proof}[Proof outline]
+  There are two steps to the proof. First, we prove
+  $C_{G}(H) \subset \{b\in G\mid\forall a\in H, ba=ab\}$.
+  Next we prove $\{b\in G\mid\forall a\in H, ba=ab\}\subset C_{G}(H)$.
+  The result follows.
+\end{proof}
+
+<<Theorem: carrier of $C_{G}(H) = \{b\in G\mid\forall a\in H, ba=ab\}$>>=
+theorem Th56:
+  for G being Group
+  for H being Subgroup of G
+  holds the carrier of Centralizer H = {b where b is Element of G : for a
+  being Element of G st a in H holds b*a=a*b}
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  set A = carr H;
+  set Car = {b where b is Element of G : for a being Element of G st a in H holds b*a=a*b};
+  
+  A1: the carrier of Centralizer A = {b where b is Element of G : for a
+  being Element of G st a in A holds b*a=a*b} by Def8;
+  A2: the carrier of Centralizer A = the carrier of Centralizer carr H by Def9;
+  
+  for x being object st x in Car holds x in the carrier of Centralizer H
+  proof
+    let x be object;
+    assume B1: x in Car;
+    ex b being Element of G
+    st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
+    proof
+      consider b being Element of G such that
+      B2: x = b and
+      B3: for a being Element of G st a in H holds b*a=a*b
+      by B1;
+      B4: for a being Element of G st a in carr H holds b*a=a*b
+      proof
+        let a be Element of G;
+        assume Z1: a in carr H;
+        then a in the carrier of H;
+        then a in H;
+        hence b*a=a*b by B3;
+      end;
+      hence thesis by B2;
+    end;
+    then x in the carrier of Centralizer carr H by A1,A2;
+    hence thesis by Def9;
+  end;
+  then A3: Car c= the carrier of Centralizer H by TARSKI:def 3;
+  
+  for x being object st x in the carrier of Centralizer H holds x in Car
+  proof
+    let x be object;
+    assume B1: x in the carrier of Centralizer H;
+    then B2: x in the carrier of Centralizer carr H by Def9;
+    then B3: ex b being Element of G
+    st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
+    by A1,A2;
+    ex b being Element of G
+    st (x=b) & (for a being Element of G st a in H holds b*a=a*b)
+    proof
+      consider b being Element of G such that
+      Z1: x = b  & (for a being Element of G st a in carr H holds b*a=a*b)
+      by B3;
+      for a being Element of G st a in H holds b*a=a*b by Z1;
+      hence thesis by Z1;
+    end;
+    then x in Car;
+    hence thesis;
+  end;
+  then the carrier of Centralizer H c= Car by TARSKI:def 3;
+  hence thesis by A3,XBOOLE_0:def 10;
+end;
+
+@ %def Th56
+
+\begin{theorem}
+Let $H\subgroup G$ and $g\in G$.
+Then $g\in C_{G}(H)$ if and only if for any $a\in H$ we have $ga=ag$.
+\end{theorem}
+
+<<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>=
+theorem Th57:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  holds (for a being Element of G st a in H holds g*a = a*g) iff
+        g is Element of Centralizer H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+A1: the carrier of Centralizer H = {b where b is Element of G : for a
+  being Element of G st a in H holds b*a=a*b} by Th56;
+  hereby 
+    assume B1: for a being Element of G st a in H holds g*a = a*g;
+    then g in the carrier of Centralizer H by A1;
+    hence g is Element of Centralizer H;
+  end;
+  assume A2: g is Element of Centralizer H;
+  then g in the carrier of Centralizer H;
+  then ex b being Element of G st (b = g) & (for a being Element of G st a in H
+  holds b*a = a*b) by A1;
+  hence thesis;
+end;
+
+@ %def Th57
+
+\begin{theorem}
+  Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
+  Then its centralizer $C_{G}(K)$ is a characteristic subgroup.
+\end{theorem}
+
+<<Theorem: Centralizer of characteristic subgroups is characteristic>>=
+theorem
+  for G being Group
+  for K being characteristic Subgroup of G
+  holds (Centralizer K) is characteristic Subgroup of G
+proof
+  let G be Group;
+  let K be characteristic Subgroup of G;
+  thus (Centralizer K) is characteristic Subgroup of G;
+end;
+
+@ 

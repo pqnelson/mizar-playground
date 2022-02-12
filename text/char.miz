@@ -17,24 +17,25 @@ environ
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, EQREL_1,
    STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
-   GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
-   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10;
+   GROUP_6, GROUP_7, BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP,
+   GR_CY_1, NATTRA_1, NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC,
+   GROUP_10, WEDDWITT;
  constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-              RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
    CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
    ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
    SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, WEDDWITT;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
    ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
    FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
    BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7, WEDDWITT;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
    ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
@@ -1334,10 +1335,12 @@ proof
   hence K is characteristic Subgroup of G by Def6;
 end;
 
+reserve G for Group;
+reserve phi for Automorphism of G;
 theorem Th42:
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
-  (for phi holds Image(phi|H) is Subgroup of H)
+  (for phi be Automorphism of G holds Image(phi|H) is Subgroup of H)
 proof
   let H be strict Subgroup of G;
   thus H is characteristic Subgroup of G implies
@@ -1699,12 +1702,14 @@ proof
 end;
 
 theorem Th47:
+  for G being Group
   for phi being Automorphism of G
   for H being Subgroup of G
   st (for h being Element of H
       holds phi.h in H)
   holds Image(phi|H) is Subgroup of H
 proof
+  let G be Group;
   let phi be Automorphism of G;
   let H be Subgroup of G;
   assume A1: for h being Element of H holds phi.h in H;
@@ -2446,7 +2451,7 @@ proof
 end;
 
 :: Universal property of quotients
-theorem
+theorem Th56:
   for G1,G2 being Group
   for N being normal Subgroup of G1
   for phi being Homomorphism of G1,G2
@@ -2588,7 +2593,6 @@ proof
 ::>                                *4
 end;
 
-
 theorem
   for G being Group
   for K being characteristic Subgroup of G
@@ -2597,54 +2601,394 @@ theorem
   holds phi .: (g * K) = (phi.g) * K;
 ::>                                *4
 
+
+
+theorem
+  for G being Group
+  for H,K being characteristic Subgroup of G
+  holds H /\ K is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H,K be characteristic Subgroup of G;
+  thus H /\ K is characteristic Subgroup of G;
+::>                                         *4
+end;
+
+definition
+  let G be Group;
+  let A be Subset of G;
+  func Centralizer A -> strict Subgroup of G means
+  :Def8:
+  the carrier of it = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+  existence
+  proof
+    set Car = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+    C1: 1_G in Car
+    proof
+      for a being Element of G st a in A holds 1_G*a = a*1_G
+      proof
+        let a be Element of G;
+        assume a in A;
+        then 1_G*a = a by GROUP_1:def 4
+                  .= a*1_G by GROUP_1:def 4;
+        hence thesis;
+      end;
+      hence thesis;
+    end;
+    for x being object st x in Car holds x in the carrier of G
+    proof
+      let x be object;
+      assume x in Car;
+      then ex g being Element of G st (x = g) & (for a being Element of G
+      st a in A holds a*g = g*a);
+      hence thesis;
+    end;
+    then C2: Car is Subset of G by TARSKI:def 3;
+    C3: for g1,g2 being Element of G st g1 in Car & g2 in Car
+    holds g1*g2 in Car
+    proof
+      let g1,g2 be Element of G;
+      assume B1: g1 in Car;
+      assume B2: g2 in Car;
+      B3: ex z1 being Element of G st (z1 = g1) & (for a being Element of G
+      st a in A holds a*z1 = z1*a) by B1;
+      B4: ex z2 being Element of G st (z2 = g2) & (for a being Element of G
+      st a in A holds a*z2 = z2*a) by B2;
+      for a being Element of G st a in A holds a*(g1*g2)=(g1*g2)*a
+      proof
+        let a be Element of G;
+        assume Z1: a in A;
+        a*(g1*g2) = (a*g1)*g2 by GROUP_1:def 3
+                 .= (g1*a)*g2 by B1,Z1,B3
+                 .= g1*(a*g2) by GROUP_1:def 3
+                 .= g1*(g2*a) by B2,Z1,B4
+                 .= g1*g2*a by GROUP_1:def 3;
+        hence thesis;
+      end;
+      hence thesis;
+    end;
+
+    C4: for g being Element of G st g in Car holds g" in Car
+    proof
+      let g be Element of G;
+      assume Z1: g in Car;
+      then Z2: ex z1 being Element of G st (z1 = g) & (for a being
+      Element of G st a in A holds z1*a=a*z1);
+      for a being Element of G st a in A holds g" * a = a * g"
+      proof
+        let a be Element of G;
+        assume Z3: a in A;
+        g" * (g * a) = a by GROUP_3:1;
+        then g" * ((a*g) * g") = g" * ((g*a) * g") by Z3,Z2
+                              .= (g" * (g * a)) * g" by GROUP_1:def 3
+                              .= ((g" * g) * a) * g"  by GROUP_1:def 3
+                              .= (1_G * a) * g"  by GROUP_1:def 5
+                              .= a * g"  by GROUP_1:def 4;
+        then g" * a = a * g" by GROUP_3:1;
+        hence thesis;
+      end;
+      hence thesis;
+    end;
+
+    thus thesis by C1,C2,C3,C4,GROUP_2:52;
+  end;
+  uniqueness
+  proof
+    let H1,H2 be strict Subgroup of G such that
+A1: the carrier of H1 = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a } and
+A2: the carrier of H2 = {b where b is Element of G : for a being Element
+  of G st a in A holds a*b = b*a };
+     for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+     hence thesis;
+  end;
+end;
+
+definition
+  let G be Group;
+  let H be Subgroup of G;
+  func Centralizer H -> strict Subgroup of G means
+  :Def9:
+  it = Centralizer carr H;
+  existence
+  proof
+    set A = carr H;
+    take Centralizer A;
+    thus thesis;
+  end;
+  uniqueness
+  proof
+    let H1,H2 be strict Subgroup of G such that
+A1: H1 = Centralizer carr H and
+A2: H2 = Centralizer carr H;
+     for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+     hence thesis;
+  end;
+end;
+
+theorem Th55:
+  for G being Group
+  for A being Subset of G
+  for g being Element of G
+  holds (for a being Element of G st a in A holds g*a = a*g) iff
+        g is Element of Centralizer A
+proof
+  let G be Group;
+  let A be Subset of G;
+  let g be Element of G;
+A1: the carrier of Centralizer A = {b where b is Element of G : for a
+  being Element of G st a in A holds b*a=a*b} by Def8;
+  hereby 
+    assume B1: for a being Element of G st a in A holds g*a = a*g;
+    then g in the carrier of Centralizer A by A1;
+    hence g is Element of Centralizer A;
+  end;
+  assume A2: g is Element of Centralizer A;
+  then g in the carrier of Centralizer A;
+  then ex b being Element of G st (b = g) & (for a being Element of G st a in A
+  holds b*a = a*b) by A1;
+  hence thesis;
+end;
+
+
+theorem Th56:
+  for G being Group
+  for H being Subgroup of G
+  holds the carrier of Centralizer H = {b where b is Element of G : for a
+  being Element of G st a in H holds b*a=a*b}
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  set A = carr H;
+  set Car = {b where b is Element of G : for a being Element of G st a in H holds b*a=a*b};
+  
+  A1: the carrier of Centralizer A = {b where b is Element of G : for a
+  being Element of G st a in A holds b*a=a*b} by Def8;
+  A2: the carrier of Centralizer A = the carrier of Centralizer carr H by Def9;
+  
+  for x being object st x in Car holds x in the carrier of Centralizer H
+  proof
+    let x be object;
+    assume B1: x in Car;
+    ex b being Element of G st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
+    proof
+      consider b being Element of G such that
+      B2: x = b and
+      B3: for a being Element of G st a in H holds b*a=a*b
+      by B1;
+      B4: for a being Element of G st a in carr H holds b*a=a*b
+      proof
+        let a be Element of G;
+        assume Z1: a in carr H;
+        then a in the carrier of H;
+        then a in H;
+        hence b*a=a*b by B3;
+      end;
+      hence thesis by B2;
+    end;
+    then x in the carrier of Centralizer carr H by A1,A2;
+    hence thesis by Def9;
+  end;
+  then A3: Car c= the carrier of Centralizer H by TARSKI:def 3;
+  
+  for x being object st x in the carrier of Centralizer H holds x in Car
+  proof
+    let x be object;
+    assume B1: x in the carrier of Centralizer H;
+    then B2: x in the carrier of Centralizer carr H by Def9;
+    then B3: ex b being Element of G st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
+    by A1,A2;
+    ex b being Element of G st (x=b) & (for a being Element of G st a in H holds b*a=a*b)
+    proof
+      consider b being Element of G such that
+      Z1: x = b  & (for a being Element of G st a in carr H holds b*a=a*b)
+      by B3;
+      for a being Element of G st a in H holds b*a=a*b by Z1;
+      hence thesis by Z1;
+    end;
+    then x in Car;
+    hence thesis;
+  end;
+  then the carrier of Centralizer H c= Car by TARSKI:def 3;
+  hence thesis by A3,XBOOLE_0:def 10;
+end;
+
+theorem Th57:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  holds (for a being Element of G st a in H holds g*a = a*g) iff
+        g is Element of Centralizer H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+A1: the carrier of Centralizer H = {b where b is Element of G : for a
+  being Element of G st a in H holds b*a=a*b} by Th56;
+  hereby 
+    assume B1: for a being Element of G st a in H holds g*a = a*g;
+    then g in the carrier of Centralizer H by A1;
+    hence g is Element of Centralizer H;
+  end;
+  assume A2: g is Element of Centralizer H;
+  then g in the carrier of Centralizer H;
+  then ex b being Element of G st (b = g) & (for a being Element of G st a in H
+  holds b*a = a*b) by A1;
+  hence thesis;
+end;
+
+
+theorem
+  for G being Group
+  for A being Subset of G
+  for a being Element of G st a in A
+  for g being Element of G st g in Centralizer A
+  holds g*a = a*g by Th55;
+
 theorem
   for G being Group
   for K being characteristic Subgroup of G
-  for phi being Automorphism of G
-  holds (nat_hom K) * phi is Automorphism of G./.K
+  holds (Centralizer K) is characteristic Subgroup of G
 proof
   let G be Group;
   let K be characteristic Subgroup of G;
-  let phi be Automorphism of G;
-  (nat_hom K) is onto by GROUP_6:59;
-  then A1: (nat_hom K) * phi is onto by FUNCT_2:27;
+  for phi being Automorphism of G
+  holds Image(phi|(Centralizer K)) is Subgroup of Centralizer K
+  proof
+    let phi be Automorphism of G;
+    for a,k being Element of G
+    st a in Centralizer K & k in K
+    holds (phi.a)*k = k*(phi.a)
+    proof
+      let a,k be Element of G;
+      assume Z1: a in Centralizer K;
+      assume Z2: k in K;
+      Image(phi|K) is Subgroup of K;
+::>                               *4
+      then consider psi being Automorphism of G such that
+      Z3: psi = phi" & K is Subgroup of Image(psi|K) by Th19;
+::>                                                   *4
+      consider k' being Element of G such that
+::>            *140,203
+      Z4: k' = psi.k & k' in K by Z3;
+      phi.(psi.k) = k;
+      then (phi.a)*(phi.(psi.k)) = phi.(a*(psi.k))
+      .= phi.(a * k') by Z3
+::>                *203
+      .= phi.(k' * a) by 
 
-  for x1,x2 being Element of G./.K
-  st
-  for A,B being Element of Left_Cosets K
-  for a,b being Element of G
-  st A = a*K & B = b*K
-::>                   *340
-
-  st ((nat
-  for g being Element of G
-  ex A being Element of Left_Cosets K
-  st g in A;
-  then consider a being Element of G such that
-  A2:
-  thus (nat_hom K) * phi is Automorphism of G./.K;
-::>  *396
+      reconsider phi" as Automorphism of G by GROUP_6:62;
+::>                 *388
+      Image(phi"|K) = K;
+      then (phi").k in K;
+      thus (phi.a)*k = k*(phi.a);
+    end;
+;
+::>,391
+    then for a being Element of Centralizer K
+    holds phi.a in Centralizer K;
+    then Image(phi|(Centralizer K)) is Subgroup of Centralizer K by Th47;
+    :: thus Image(phi|(Centralizer K)) = Centralizer K;
+  end;
+::> *70
+  hence (Centralizer K) is characteristic Subgroup of G by Th42;
 end;
-::>,70
 
 
+
+theorem
+  for G being Group
+  for H,K being strict characteristic Subgroup of G
+  holds H "\/" K is characteristic Subgroup of G
+proof
+  let G be Group;
+  let H,K be strict characteristic Subgroup of G;
+  H is strict normal Subgroup of G & K is strict normal Subgroup of G;
+  the carrier of H "\/" K = H*K by GROUP_4:53;
+  thus H "\/" K is characteristic Subgroup of G;
+::>                                           *4
+end;
+
+theorem
+  for G being Group
+  for N being strict normal Subgroup of G
+  for phi being Endomorphism of G
+  st Image(phi|N) = N
+  ex psi being Endomorphism of G./.N
+  st (for g being Element of G holds psi.(g*N) = (phi.g)*N)
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let phi be Endomorphism of G;
+  assume A1: Image(phi|N) = N;
+  consider psi being Endomorphism of G./.N such that
+  A2: psi * (nat_hom N) = (nat_hom N) * phi;
+::>                                       *4
+  take psi;
+  let g be Element of G;
+  thus psi.(g*N) = (phi.g)*N by A2;
+::>                           *4
+end;
+
+
+reserve G for Group;
+reserve g for Element of G;
 :: Gorenstein, Finite Groups, Theorem 2.1.2.iv
 theorem
   for G being Group
-  for H being characteristic Subgroup of G
-  for K being Subgroup of G
-  st H is Subgroup of K & K./.(K,H)`*` is characteristic Subgroup of G./.H
+  for H being strict characteristic Subgroup of G
+  for K being strict Subgroup of G
+  st H is Subgroup of K & K./.(K,H)`*` is strict characteristic Subgroup of G./.H
   holds K is characteristic Subgroup of G
 proof
   let G be Group;
-  let H be characteristic Subgroup of G;
-  let K be Subgroup of G;
+  let H be strict characteristic Subgroup of G;
+  let K be strict Subgroup of G;
   assume A1: H is Subgroup of K;
-  assume A2: K./.(K,H)`*` is characteristic Subgroup of G./.H;
-  thus K is characteristic Subgroup of G;
-::>                                    *4
+  assume A2: K./.(K,H)`*` is strict characteristic Subgroup of G./.H;
+  
+  for phi being Automorphism of G
+  holds Image(phi|K) is Subgroup of K
+  proof
+    let phi be Automorphism of G;
+    Image(phi|H) = H by Def6;
+
+    consider psi being Automorphism of G./.H such that
+    B2: psi.(g*H) = (phi.g)*H;
+::>               *163      *4
+:: for x being Element of G./.H ex g being Element of G st x = g*H & psi.x = (phi.g)*H;
+    consider J being strict characteristic Subgroup of G./.H such that
+    B3: J = K./.((K,H)`*`) by A2;
+    J is characteristic Subgroup of G./.H by B3,A2;
+    then Image(psi|J) = J by Def6;
+    B4: phi is Automorphism of G & K is Subgroup of G;
+    for k being Element of K
+    holds phi.k in K
+    proof
+      let k be Element of K;
+      reconsider g = k as Element of G;
+::>                                  *4
+      psi.(g*H) in J;
+::>                *4
+      then (phi.g)*H in J;
+::>                     *4
+      then phi.g in K;
+::>                 *4
+      then phi.k in K;
+      hence thesis;
+    end;
+    then Image(phi|K) is Subgroup of K by B4, Th47;
+    hence thesis;
+  end;
+  hence K is characteristic Subgroup of G by Th42;
 end;
 ::> 4: This inference is not accepted
 ::> 70: Something remains to be proved
-::> 340: "holds", "for" or "ex" expected
+::> 140: Unknown variable
+::> 163: Disagreement of reservations of a free variable
+::> 203: Unknown token, maybe an illegal character used in an identifier
+::> 388: "as" expected
+::> 391: Incorrect beginning of a text item
 ::> 396: Formula expected
