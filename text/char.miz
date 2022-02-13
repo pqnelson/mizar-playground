@@ -53,7 +53,8 @@ environ
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
    SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2, NEWTON;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2, NEWTON,
+   ZFMISC_1;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
 
 begin :: Preparatory Work
@@ -2830,9 +2831,35 @@ definition
   correctness;
 end;
 
-for G being Group
-for a,x being Element of G
-holds x in Normalizer a iff ex h being Element of G st x = h & {a} |^ h = {a} by GROUP_3:129;
+Lm111:
+for x,y being object
+holds {x} = {y} iff x = y
+proof
+  let x,y be object;
+  thus {x} = {y} implies x = y
+  proof
+    assume {x} = {y};
+    then {x} c= {y} by XBOOLE_0:def 10;
+    hence x = y by ZFMISC_1:3;
+  end;
+  thus x = y implies {x} = {y};
+end;
+
+theorem
+  for G being Group
+  for a,x being Element of G
+  holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
+proof
+  let G be Group;
+  let a,x be Element of G;
+  A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a} by GROUP_3:129;
+  then A2: x in Normalizer{a} iff {a} |^ x = {a};
+  A3: {a} |^ x = {a} |^ {x} by GROUP_3:def 3
+  .= {a |^ x} by GROUP_3:37;
+  then {a |^ x} = {a} iff a |^ x = a by Lm111;
+  then x in Normalizer{a} iff a |^ x = a by A2,A3;
+  hence thesis by A1;
+end;
 
 theorem
   for G being Group
@@ -2899,7 +2926,9 @@ proof
     then for X being set st X in Fam
     holds x in X by SETFAM_1:def 1;
     (for a being Element of G st a in A holds g*a = a*g);
+::>                                           *140    *140
     then g in Centralizer A;
+::>      *140
     then x in Centralizer A;
     thus x in the carrier of Centralizer A;
 ::>                                      *4
@@ -3185,3 +3214,5 @@ proof
   hence thesis;
 end;
 ::> 4: This inference is not accepted
+::> 140: Unknown variable
+::> 396: Formula expected
