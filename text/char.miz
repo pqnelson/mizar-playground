@@ -53,7 +53,7 @@ environ
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
    SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2, NEWTON;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
 
 begin :: Preparatory Work
@@ -2812,11 +2812,11 @@ proof
     let phi be Automorphism of G();
     let H be strict Subgroup of G();
     assume B1: P2[H];
-    
+
     then consider N being strict normal Subgroup of G() such that
     B2: the multMagma of N = the multMagma of H and
     B3: P[G()./.N];
-    
+
     P[G()./.N] by B3;
     then P2[N];
     then consider N2 being strict normal Subgroup of G() such that
@@ -2826,7 +2826,7 @@ proof
     hence P2[Image(phi|H)] by B2;
   end;
   A4: ex H being strict Subgroup of G() st P2[H] by A2;
-  
+
   consider K being strict Subgroup of G() such that
   A5: the carrier of K = meet Fam2 and
   A6: K is characteristic
@@ -2873,3 +2873,143 @@ proof
   hence thesis by A5,A6;
 end;
 
+:: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be finite Group;
+  attr IT is Pi-group means
+  :Def10:
+  (for p being prime Nat st p divides card IT holds p in Pi)
+  or (IT is trivial);
+end;
+
+theorem Th64:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  ex H being strict Subgroup of G
+  st H is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  take H = (1).G;
+  H is trivial;
+  hence H is Pi-group by Def10;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for finite Group;
+  existence
+  proof
+    consider G being trivial Group such that not contradiction;
+    take G;
+    thus thesis by Def10;
+  end;
+end;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  func Pi-core_of_G -> strict Subgroup of G means
+  :Def11:
+  the carrier of it = meet {A where A is Subset of G :
+  ex H being strict Subgroup of G st A = the carrier of H &
+  H is Pi-group};
+  existence
+  proof
+    defpred PIG[Subgroup of G] means $1 is Pi-group;
+    A1: ex H being strict Subgroup of G st PIG[H] by Th64;
+    ex K being strict Subgroup of G
+    st the carrier of K = meet {A where A is Subset of G :
+    ex H being strict Subgroup of G st A = the carrier of H & PIG[H]}
+    from GROUP_4:sch 1(A1);
+    hence thesis;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+
+theorem Th65:
+  for p being prime Nat
+  holds {p} is Subset of SetPrimes
+proof
+  let p be prime Nat;
+  for x being object st x in {p} holds x in SetPrimes
+  proof
+    let x be object;
+    assume A1: x in {p};
+    then A2: x = p by TARSKI:def 1;
+    p in SetPrimes by NEWTON:def 6;
+    hence thesis by A2;
+  end;
+  then {p} c= SetPrimes by TARSKI:def 3;
+  hence thesis;
+end;
+
+definition
+  let p be prime Nat;
+  redefine func {p} -> Subset of SetPrimes;
+  coherence by Th65;
+end;
+
+theorem Th66:
+  for p being prime Nat
+  for G being finite Group
+  holds G is p-group iff G is {p}-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  thus G is p-group implies G is {p}-group
+  proof
+    assume B1: G is p-group;
+    thus G is {p}-group;
+::>                   *4
+  end;
+  thus G is {p}-group implies G is p-group
+  proof
+    assume B1: G is {p}-group;
+    thus G is p-group;
+::>                 *4
+  end;
+end;
+
+theorem Th67:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core_of_G = {p}-core_of_G
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  A1: the carrier of {p}-core_of_G c= the carrier of p-core_of_G;
+::>                                                            *4
+  the carrier of p-core_of_G c= the carrier of {p}-core_of_G;
+::>                                                        *4
+  then the carrier of p-core_of_G = the carrier of {p}-core_of_G by A1,XBOOLE_0:def 10;
+  hence thesis by GROUP_2:59;
+end;
+
+theorem Th68:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  holds Pi-core_of_G is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  thus Pi-core_of_G is Pi-group;
+::>                           *4
+end;
+
+theorem Th69:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core_of_G is p-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  {p}-core_of_G is {p}-group by Th68;
+  then {p}-core_of_G is p-group by Th66;
+  then p-core_of_G is p-group by Th67;
+  hence thesis;
+end;
+::> 4: This inference is not accepted
