@@ -2640,6 +2640,35 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
   hence thesis;
 end;
 
+theorem
+  for G being Group
+  for A,B being Subset of G
+  st A c= B
+  holds Centralizer B is Subgroup of Centralizer A
+proof
+  let G be Group;
+  let A,B be Subset of G;
+  assume A1: A c= B;
+  for g being Element of G st g in Centralizer B
+  holds g in Centralizer A
+  proof
+    let g be Element of G;
+    assume B1: g in Centralizer B;
+    for a being Element of G st a in A
+    holds g*a = a*g
+    proof
+      let a be Element of G;
+      assume a in A;
+      then a in B by A1;
+      hence g*a = a*g by B1,Th60;
+    end;
+    then g is Element of Centralizer A by Th60;
+    hence thesis;
+  end;
+
+  hence Centralizer B is Subgroup of Centralizer A by GROUP_2:58;
+end;
+
 definition
   let G be Group;
   let H be Subgroup of G;
@@ -2738,6 +2767,149 @@ A1: the carrier of Centralizer H = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
+
+theorem Th62b:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  holds (for a being Element of G st a in H holds g*a = a*g) iff
+        g in H by Th62;
+::>             *4,4
+
+theorem
+  for G being Group
+  for A being Subset of G
+  holds A is Subset of Centralizer (Centralizer A)
+proof
+  let G be Group;
+  let A be Subset of G;
+  set H = Centralizer A;
+  for g being object
+  st g in A
+  holds g in the carrier of Centralizer H
+  proof
+    let g be object;
+    assume B1: g in A;
+    then reconsider g as Element of G by GROUP_2:40;
+    for h being Element of G st h in H
+    holds g*h = h*g by B1,Th60;
+    then g is Element of Centralizer H by Th62;
+    hence thesis;
+  end;
+  then A c= the carrier of Centralizer H by TARSKI:def 3;
+  hence A is Subset of Centralizer H;
+end;
+
+::theorem GROUP_3:Th129:
+::  x in Normalizer A iff ex h st x = h & A |^ h = A
+
+definition
+  let G be Group;
+  let a be Element of G;
+  redefine func {a} -> Subset of G;
+  coherence
+  proof
+    for x being object st x in {a}
+    holds x in the carrier of G
+    proof
+      let x be object;
+      assume Z3: x in {a};
+      then x = a by TARSKI:def 1;
+      hence thesis;
+    end;
+    then {a} c= the carrier of G by TARSKI:def 3;
+    hence {a} is Subset of G;
+  end;
+end;
+
+definition
+  let G be Group;
+  let a be Element of G;
+  func Normalizer a -> strict Subgroup of G equals
+  Normalizer{a};
+  correctness;
+end;
+
+for G being Group
+for a,x being Element of G
+holds x in Normalizer a iff ex h being Element of G st x = h & {a} |^ h = {a} by GROUP_3:129;
+
+theorem
+  for G being Group
+  for A being non empty Subset of G
+  holds the carrier of Centralizer A = meet {B where B is Subset of G :
+  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
+  a in A & H = Normalizer a}
+proof
+  let G be Group;
+  let A be non empty Subset of G;
+  set Fam = {B where B is Subset of G :
+  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
+  a in A & H = Normalizer a};
+  A1: Fam <> {};
+::>           *4
+  for x being object
+  st x in the carrier of Centralizer A
+  holds x in meet Fam
+  proof
+    let x be object;
+    assume Z1: x in the carrier of Centralizer A;
+    then Z2: x in Centralizer A;
+    then x in G by GROUP_2:40;
+    then reconsider g = x as Element of G;
+    for X being set st X in Fam
+    holds x in X
+    proof
+      let X be set;
+      assume C1: X in Fam;
+      then consider B being Subset of G such that
+      C2: B = X and
+      C3: ex H being strict Subgroup of G, a being Element of G
+          st B = the carrier of H & a in A & H = Normalizer a;
+      consider H being strict Subgroup of G, a being Element of G such that
+      C4: B = the carrier of H & a in A & H = Normalizer a by C3;
+      g is Element of Centralizer A by Z2;
+      then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th60;
+      then C5: g*a = a*g by C4;
+      then C6: a |^ g = g" * a * g by GROUP_3:def 2
+      .= g" * (a * g) by GROUP_1:def 3
+      .= g" * (g * a) by C5
+      .= (g" * g) * a by GROUP_1:def 3
+      .= (1_G) * a by GROUP_1:def 5
+      .= a by GROUP_1:def 4;
+      then {a} |^ g = {a} |^ {g} by GROUP_3:def 3
+      .= {a |^ g} by GROUP_3:37
+      .= {a} by C6;
+      then g in Normalizer a by GROUP_3:129;
+      then g in H by C4;
+      then x in H;
+      then x in the carrier of H by C4;
+      then x in B by C4;
+      hence x in X by C2;
+    end;
+    hence x in meet Fam by A1,SETFAM_1:def 1;
+  end;
+  then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
+  for x being object
+  st x in meet Fam
+  holds x in the carrier of Centralizer A
+  proof
+    let x be object;
+    assume B1: x in meet Fam;
+    then for X being set st X in Fam
+    holds x in X by SETFAM_1:def 1;
+    (for a being Element of G st a in A holds g*a = a*g);
+    then g in Centralizer A;
+    then x in Centralizer A;
+    thus x in the carrier of Centralizer A;
+::>                                      *4
+  end;
+
+  then meet Fam c= the carrier of Centralizer A;
+  hence thesis by A2, XBOOLE_0:def 10;
+end;
+:: ( ex a being Element of G st a in A & H = Normalizer a)};
+
 
 theorem Th63:
   for G being Group

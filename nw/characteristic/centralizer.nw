@@ -7,11 +7,15 @@
 
 <<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>
 
+<<Theorem: $A\subset B\subset G\implies C_{G}(B)\subgroup C_{G}(A)$>>
+
 <<Definition: Centralizer of Subgroup>>
 
 <<Theorem: carrier of $C_{G}(H) = \{b\in G\mid\forall a\in H, ba=ab\}$>>
 
 <<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>
+
+<<Theorem: $A\subset G\implies A\subset C_{G}(C_{G}(A))$>>
 
 <<Theorem: Centralizer of characteristic subgroups is characteristic>>
 
@@ -202,6 +206,42 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
 end;
 @ %def Th60
 
+
+\begin{theorem}
+  Let $G$ be a group, let $A\subset B\subset G$ be subsets.
+  Then $C_{G}(B)\subgroup C_{G}(A)$.
+\end{theorem}
+
+<<Theorem: $A\subset B\subset G\implies C_{G}(B)\subgroup C_{G}(A)$>>=
+theorem
+  for G being Group
+  for A,B being Subset of G
+  st A c= B
+  holds Centralizer B is Subgroup of Centralizer A
+proof
+  let G be Group;
+  let A,B be Subset of G;
+  assume A1: A c= B;
+  for g being Element of G st g in Centralizer B
+  holds g in Centralizer A
+  proof
+    let g be Element of G;
+    assume B1: g in Centralizer B;
+    for a being Element of G st a in A
+    holds g*a = a*g
+    proof
+      let a be Element of G;
+      assume a in A;
+      then a in B by A1;
+      hence g*a = a*g by B1,Th60;
+    end;
+    then g is Element of Centralizer A by Th60;
+    hence thesis;
+  end;
+  hence Centralizer B is Subgroup of Centralizer A by GROUP_2:58;
+end;
+@
+
 \begin{definition}
 Let $G$ be a group, $H\subgroup G$ be a subgroup.
 We define the \define{Centralizer} of $H$ is the subgroup whose
@@ -326,6 +366,11 @@ Let $H\subgroup G$ and $g\in G$.
 Then $g\in C_{G}(H)$ if and only if for any $a\in H$ we have $ga=ag$.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+This boils down to relying on previous results for the centralizer of
+the set underlying $H$.
+\end{proof}
+
 <<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>=
 theorem Th62:
   for G being Group
@@ -351,6 +396,36 @@ A1: the carrier of Centralizer H = {b where b is Element of G : for a
   hence thesis;
 end;
 @ %def Th62
+
+\begin{theorem}
+Let $A\subset G$ be a subset of a group. Then $A\subset C_{G}(C_{G}(A))$.
+\end{theorem}
+
+<<Theorem: $A\subset G\implies A\subset C_{G}(C_{G}(A))$>>=
+theorem
+  for G being Group
+  for A being Subset of G
+  holds A is Subset of Centralizer (Centralizer A)
+proof
+  let G be Group;
+  let A be Subset of G;
+  set H = Centralizer A;
+  for g being object
+  st g in A
+  holds g in the carrier of Centralizer H
+  proof
+    let g be object;
+    assume B1: g in A;
+    then reconsider g as Element of G by GROUP_2:40;
+    for h being Element of G st h in H
+    holds g*h = h*g by B1,Th60;
+    then g is Element of Centralizer H by Th62;
+    hence thesis;
+  end;
+  then A c= the carrier of Centralizer H by TARSKI:def 3;
+  hence A is Subset of Centralizer H;
+end;
+@
 
 \begin{theorem}
   Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
