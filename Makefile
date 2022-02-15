@@ -8,10 +8,11 @@ CHAR=nw/characteristic
 NWFILES=$(wildcard nw/characteristic.nw nw/characteristic/*.nw)
 DEFS_CMD=$(foreach file, $(NWFILES), def/$(file))
 EXTRACT_CMD=$(foreach file, $(NWFILES), extract_text/$(file))
-DUMB_NWFILES=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
+CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw \
 	$(CHAR)/residues-and-radicals.nw
+DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 
 all: doc
 
@@ -36,11 +37,11 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 # noweb many-file extraction voodoo ends here
 
 dumb_extract_text:
-	noweave $(NOWEBOPTS) $(DUMB_NWFILES) > tex/characteristic.tex
+	noweave $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
 
-extract_code:
-	notangle -RTEXT/char.miz $(DUMB_NWFILES) > text/char.miz
-	notangle -RDICT/CHAR.VOC $(DUMB_NWFILES) > dict/char.voc
+code:
+	notangle -RTEXT/char.miz $(CHARACTERISTIC_SUBGROUP) > text/char.miz
+	notangle -RDICT/CHAR.VOC $(CHARACTERISTIC_SUBGROUP) > dict/char.voc
 
 without_bib:
 	$(TEX) $(BOOK)
