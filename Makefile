@@ -10,8 +10,7 @@ DEFS_CMD=$(foreach file, $(NWFILES), def/$(file))
 EXTRACT_CMD=$(foreach file, $(NWFILES), extract_text/$(file))
 CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
-	$(CHAR)/meet.nw $(CHAR)/centralizer.nw \
-	$(CHAR)/residues-and-radicals.nw
+	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 
 all: doc

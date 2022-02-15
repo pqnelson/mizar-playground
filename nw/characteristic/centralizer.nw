@@ -19,6 +19,12 @@
 
 <<Theorem: Centralizer of characteristic subgroups is characteristic>>
 
+<<Definition: $\forall a\in G$, $\{a\}\subset G$>>
+
+<<Theorem: $\{x\}=\{y\}\iff x=y$>>
+
+<<Theorem: $h\in N_{G}(a)\iff a^{h}=a$>>
+
 @
 
 \begin{definition}\label{defn:characteristic-subgroup:centralizer-of-subset}
@@ -63,12 +69,12 @@ definition
   let A be Subset of G;
   func Centralizer A -> strict Subgroup of G means
   :Def8:
-  the carrier of it = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
+  the carrier of it = { b where b is Element of G :
+                        for a being Element of G st a in A holds a*b = b*a };
   existence
   proof
-    set Car = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
+    set Car = {b where b is Element of G :
+               for a being Element of G st a in A holds a*b = b*a };
     C1: 1_G in Car
     <<Proof: $1_{G}\in C_{G}(A)$>>
 
@@ -88,12 +94,14 @@ definition
   uniqueness
   proof
     let H1,H2 be strict Subgroup of G such that
-A1: the carrier of H1 = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a } and
-A2: the carrier of H2 = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
-     for g being Element of G holds g in H1 iff g in H2 by A1,A2;
-     hence thesis;
+A1: the carrier of H1 = {b where b is Element of G : for a being Element of G
+                                                     st a in A
+                                                     holds a*b = b*a } and
+A2: the carrier of H2 = {b where b is Element of G : for a being Element of G
+                                                     st a in A
+                                                     holds a*b = b*a };
+    for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+    hence thesis;
   end;
 end;
 @ %def Centralizer Def8
@@ -303,7 +311,8 @@ proof
   let G be Group;
   let H be Subgroup of G;
   set A = carr H;
-  set Car = {b where b is Element of G : for a being Element of G st a in H holds b*a=a*b};
+  set Car = {b where b is Element of G : for a being Element of G st a in H
+                                         holds b*a=a*b};
 
   A1: the carrier of Centralizer A = {b where b is Element of G : for a
   being Element of G st a in A holds b*a=a*b} by Def8;
@@ -471,3 +480,254 @@ proof
   hence Centralizer K is characteristic Subgroup of G by Th53;
 end;
 @ %def Th63
+
+\begin{definition}
+Let $G$ be a group, let $a\in G$ be any group element. Then the
+singleton $\{a\}$ is a subset of $G$.
+\end{definition}
+
+\begin{def-remark}
+Singletons in Mizar seem to be just a ``generic set'', so this claim is
+really a \emph{redefinition} of a singleton set to narrow its type to
+\lstinline{Subset of G}. This is necessary for defining the normalizer
+of a group element (or the centralizer for a group element).
+\end{def-remark}
+
+<<Definition: $\forall a\in G$, $\{a\}\subset G$>>=
+definition
+  let G be Group;
+  let a be Element of G;
+  redefine func {a} -> Subset of G;
+  coherence
+  proof
+    for x being object st x in {a}
+    holds x in the carrier of G
+    proof
+      let x be object;
+      assume Z3: x in {a};
+      then x = a by TARSKI:def 1;
+      hence thesis;
+    end;
+    then {a} c= the carrier of G by TARSKI:def 3;
+    hence {a} is Subset of G;
+  end;
+end;
+@
+
+\begin{definition}
+Let $G$ be a group, let $a\in G$. The \define{Normalizer of $a$} is the
+strict subgroup of $G$ given by $N_{G}(\{a\})$.
+\end{definition}
+
+<<Definition: Normalizer of group element>>=
+definition
+  let G be Group;
+  let a be Element of G;
+  func Normalizer a -> strict Subgroup of G equals
+  Normalizer{a};
+  correctness;
+end;
+@
+
+\begin{theorem}
+For any $x$, $y$ we have $\{x\}=\{y\}$ if and only if $x=y$.
+\end{theorem}
+
+<<Theorem: $\{x\}=\{y\}\iff x=y$>>=
+theorem Th65:
+  for x,y being object
+  holds {x} = {y} iff x = y
+proof
+  let x,y be object;
+  thus {x} = {y} implies x = y
+  proof
+    assume {x} = {y};
+    then {x} c= {y} by XBOOLE_0:def 10;
+    hence x = y by ZFMISC_1:3;
+  end;
+  thus x = y implies {x} = {y};
+end;
+@ %def Th65
+
+\begin{theorem}
+Let $G$ be a group, $a\in G$ an arbitrary group element.
+We have $x\in N_{G}(a)$ if and only if there is some $h\in G$
+such that $x=h$ and conjugates $a = a^{h}$.
+\end{theorem}
+
+<<Theorem: $h\in N_{G}(a)\iff a^{h}=a$>>=
+theorem Th66:
+  for G being Group
+  for a,x being Element of G
+  holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
+proof
+  let G be Group;
+  let a,x be Element of G;
+  A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a}
+  by GROUP_3:129;
+  then A2: x in Normalizer{a} iff {a} |^ x = {a};
+  A3: {a} |^ x = {a} |^ {x} by GROUP_3:def 3
+              .= {a |^ x} by GROUP_3:37;
+  then {a |^ x} = {a} iff a |^ x = a by Th65;
+  then x in Normalizer{a} iff a |^ x = a by A2,A3;
+  hence thesis by A1;
+end;
+@ %def Th66
+
+\begin{theorem}
+Let $G$ be a group and $A\subset G$.
+Then $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+We prove this in two steps. Step one $C_{G}(A)\subset \bigcap_{a\in A} N_{G}(a)$.
+Step two $\bigcap_{a\in A} N_{G}(a) \subset C_{G}(A)$.
+\end{proof}
+
+<<Theorem: $A\subset G$, $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$>>=
+theorem Th67:
+  for G being Group
+  for A being non empty Subset of G
+  holds the carrier of Centralizer A = meet {B where B is Subset of G :
+  ex H being strict Subgroup of G st B = the carrier of H &
+  (ex a being Element of G st a in A & H = Normalizer a)}
+proof
+  let G be Group;
+  let A be non empty Subset of G;
+  defpred P[strict Subgroup of G] means (ex a being Element of G
+                                         st a in A & $1 = Normalizer a);
+  set Fam = {B where B is Subset of G :
+  ex H being strict Subgroup of G st B = the carrier of H & P[H]};
+  A1: Fam <> {}
+  proof
+    consider a being object such that
+    B1: a in A
+    by XBOOLE_0:def 1;
+    reconsider a as Element of G by B1,GROUP_2:42;
+    consider H being strict Subgroup of G such that
+    B2: H = Normalizer a;
+    carr H in Fam by B1,B2;
+    hence thesis;
+  end;
+  for x being object
+  st x in the carrier of Centralizer A
+  holds x in meet Fam
+  <<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>
+  then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
+
+  for x being object
+  st x in meet Fam
+  holds x in the carrier of Centralizer A
+  <<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>
+  then meet Fam c= the carrier of Centralizer A;
+  hence thesis by A2, XBOOLE_0:def 10;
+end;
+@
+
+<<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>=
+proof
+  let x be object;
+  assume Z1: x in the carrier of Centralizer A;
+  then Z2: x in Centralizer A;
+  then x in G by GROUP_2:40;
+  then reconsider g = x as Element of G;
+  for X being set st X in Fam
+  holds x in X
+  proof
+    let X be set;
+    assume C1: X in Fam;
+    then consider B being Subset of G such that
+    C2: B = X and
+    C3: ex H being strict Subgroup of G
+        st B = the carrier of H &
+           (ex a being Element of G st a in A & H = Normalizer a);
+    consider H being strict Subgroup of G, a being Element of G such that
+    C4: B = the carrier of H & a in A & H = Normalizer a by C3;
+    g is Element of Centralizer A by Z2;
+    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th60;
+    then C5: g*a = a*g by C4;
+    then C6: a |^ g = g" * a * g by GROUP_3:def 2
+                   .= g" * (a * g) by GROUP_1:def 3
+                   .= g" * (g * a) by C5
+                   .= (g" * g) * a by GROUP_1:def 3
+                   .= (1_G) * a by GROUP_1:def 5
+                   .= a by GROUP_1:def 4;
+    then {a} |^ g = {a} |^ {g} by GROUP_3:def 3
+                 .= {a |^ g} by GROUP_3:37
+                 .= {a} by C6;
+    then g in Normalizer a by GROUP_3:129;
+    then g in H by C4;
+    then x in H;
+    then x in the carrier of H by C4;
+    then x in B by C4;
+    hence x in X by C2;
+  end;
+  hence x in meet Fam by A1,SETFAM_1:def 1;
+end;  
+@
+
+<<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>=
+proof
+  let x be object;
+  assume B1: x in meet Fam;
+  then for X being set st X in Fam
+  holds x in X by SETFAM_1:def 1;
+  
+  B2: ex H being strict Subgroup of G st P[H]
+  proof
+    Fam <> {} by A1;
+    then Fam is non empty;
+    then consider X being object such that
+    C1: X in Fam by A1, XBOOLE_0:def 1;
+    consider B being Subset of G such that
+    C2: B = X and
+    C3: ex H being strict Subgroup of G
+        st B = the carrier of H & P[H]
+    by C1;
+    thus thesis by C3;
+  end;
+  
+  consider K being strict Subgroup of G such that
+  B3: the carrier of K = meet Fam
+  from GROUP_4:sch 1(B2);
+  
+  B4: x in K by B1,B3;
+  then reconsider g = x as Element of G by GROUP_2:42;
+  B5: g in K by B4;
+  then B6: for X being set st X in Fam
+           holds g in X by B3,SETFAM_1:def 1;
+  
+  B7: for a being Element of G st a in A
+  holds g in Normalizer a
+  proof
+    let a be Element of G;
+    assume C1: a in A;
+    set H = Normalizer a;
+    P[H] by C1;
+    then carr H in Fam;
+    then g in carr H by B6;
+    hence g in Normalizer a;
+  end;
+  for a being Element of G st a in A holds g*a = a*g
+  proof
+    let a be Element of G;
+    assume C1: a in A;
+    then g in Normalizer a by B7;
+    then consider h being Element of G such that
+    C2: g = h & a |^ h = a
+    by Th66;
+    C3: a = g" * a * g by C2,GROUP_3:def 2
+         .= g" * (a * g) by GROUP_1:def 3;
+    g * a = g * (g" * (a * g)) by C3
+         .= (g * g") * (a * g) by GROUP_1:def 3
+         .= 1_G * (a * g) by GROUP_1:def 5
+         .= a * g by GROUP_1:def 4;
+    hence g*a = a*g;
+  end;
+  
+  then g is Element of Centralizer A by Th60;
+  then g in Centralizer A;
+  then x in Centralizer A;
+  hence thesis;
+end;
+@ 

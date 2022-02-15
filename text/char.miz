@@ -2845,7 +2845,7 @@ proof
   thus x = y implies {x} = {y};
 end;
 
-theorem Th64:
+theorem Th66:
   for G being Group
   for a,x being Element of G
   holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
@@ -2861,7 +2861,7 @@ proof
   hence thesis by A1;
 end;
 
-theorem
+theorem Th67:
   for G being Group
   for A being non empty Subset of G
   holds the carrier of Centralizer A = meet {B where B is Subset of G :
@@ -2927,10 +2927,6 @@ proof
   end;
   then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
 
-:: Fam = {B where B is Subset of G :
-::  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
-::  a in A & H = Normalizer a};
-
   for x being object
   st x in meet Fam
   holds x in the carrier of Centralizer A
@@ -2960,12 +2956,38 @@ proof
 
     B4: x in K by B1,B3;
     then reconsider g = x as Element of G by GROUP_2:42;
-    
-    for a being Element of G st a in A
-    holds g in Normalizer a;
-::>                       *4
-    then (for a being Element of G st a in A holds g*a = a*g);
-::>                                                         *4
+    B5: g in K by B4;
+    then B6: for X being set st X in Fam
+    holds g in X by B3,SETFAM_1:def 1;
+
+    B7: for a being Element of G st a in A
+    holds g in Normalizer a
+    proof
+      let a be Element of G;
+      assume C1: a in A;
+      set H = Normalizer a;
+      P[H] by C1;
+      then carr H in Fam;
+      then g in carr H by B6;
+      hence g in Normalizer a;
+    end;
+    for a being Element of G st a in A holds g*a = a*g
+    proof
+      let a be Element of G;
+      assume C1: a in A;
+      then g in Normalizer a by B7;
+      then consider h being Element of G such that
+      C2: g = h & a |^ h = a
+      by Th66;
+      C3: a = g" * a * g by C2,GROUP_3:def 2
+           .= g" * (a * g) by GROUP_1:def 3;
+      g * a = g * (g" * (a * g)) by C3
+           .= (g * g") * (a * g) by GROUP_1:def 3
+           .= 1_G * (a * g) by GROUP_1:def 5
+           .= a * g by GROUP_1:def 4;
+      hence g*a = a*g;
+    end;
+
     then g is Element of Centralizer A by Th60;
     then g in Centralizer A;
     then x in Centralizer A;
