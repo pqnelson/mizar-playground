@@ -6,9 +6,19 @@ import re
 import sys
 
 def article_path(name):
-    filename = name.lower()+".miz"
-    mizfiles = os.environ.get('MIZFILES')
-    return str(pathlib.PurePath(mizfiles, "mml", filename))
+    if name.startswith('--file='):
+        filename = name[len("--file="):]
+        return filename.strip()
+    elif name.startswith('-f'):
+        if '=' == name[2]:
+            filename = name[3:]
+        else:
+            filename = name[2:]
+        return filename.strip()
+    else:
+        filename = name.lower()+".miz"
+        mizfiles = os.environ.get('MIZFILES')
+        return str(pathlib.PurePath(mizfiles, "mml", filename))
 
 def read_theorems(article_id):
     f = open(article_path(article_id))
