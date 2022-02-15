@@ -3,11 +3,16 @@
 
 We will begin with formalizing results concerning characteristic
 subgroups. In section 1 we will briefly discuss the environment part of
-a Mizar article. In section 2 we will formalize preliminary material,
-including trivial subgroups and proper subgroups. In section 3, we
-formalize automorphisms and inner automorphisms. In section 4, we
-formalize the notion of a characteristic subgroup, prove the center
-subgroup is characteristic, among other results.
+a Mizar article. In section~\ref{sec:characteristic:preparatory:start} we will formalize preliminary material,
+including trivial subgroups and proper subgroups. In
+section~\ref{sec:characteristic:automorphism}, we formalize
+automorphisms, then in
+section~\ref{sec:characteristic:inner-automorphism} inner automorphisms.
+In section~\ref{sec:characteristic:results}, we formalize the notion of
+a characteristic subgroup, prove the center subgroup is characteristic,
+among other results. We conclude, in section~\ref{sec:characteristic:centralizer},
+with introducing the centralizer of a subgroup and Theorem~\ref{thm:characteristic:centralizer:centralizer-of-char-group-is-char} proves the
+centralizer of a characteristic subgroup is characteristic.
 
 \subsection*{Mizar Article}
 We call a Mizar file/script an ``article''. While developing a Mizar
@@ -48,7 +53,7 @@ Right now, we have just started, so we need an empty vocabulary file:
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NWoaARJ-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\endmoddef\nwstartdeflinemarkup\nwprevnextdefs{\relax}{NW3Mfp8C-4FyAEL-1}\nwenddeflinemarkup
 
-\nwalsodefined{\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}\\{NW47t2dy-4FyAEL-2}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
+\nwalsodefined{\\{NW3Mfp8C-4FyAEL-1}\\{NW47t2dy-4FyAEL-1}}\nwnotused{DICT/CHAR.VOC}\nwendcode{}\nwbegindocs{4}\nwdocspar
 
 \subsection*{License}
 The license for the MML seems to be the same for each article, I will
@@ -191,7 +196,6 @@ GR_CY_1, NATTRA_1
 \nwixlogsorted{c}{{Cluster \code{}proper\ normal\ Subgroup\edoc{}}{NW18nMBU-2YhlIY-1}{\nwixu{NW18nMBU-1x35KZ-1}\nwixd{NW18nMBU-2YhlIY-1}}}%
 \nwixlogsorted{c}{{Cluster \code{}strict\ proper\ normal\ Subgroup\edoc{}}{NW18nMBU-3A6xup-1}{\nwixu{NW18nMBU-1x35KZ-1}\nwixd{NW18nMBU-3A6xup-1}}}%
 \nwixlogsorted{c}{{Corollary: conjugation of given element is an \emph{inner} automorphism}{NW3Mfp8C-47V7KL-1}{\nwixu{NW3Mfp8C-UGF1u-1}\nwixd{NW3Mfp8C-47V7KL-1}}}%
-\nwixlogsorted{c}{{Definition: $p$-Core}{NW47t2dy-4cW2Y2-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-4cW2Y2-1}}}%
 \nwixlogsorted{c}{{Definition: \code{}Automorphism\edoc{}}{NW1Nnu7l-2qSYW4-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-2qSYW4-1}}}%
 \nwixlogsorted{c}{{Definition: \code{}characteristic\edoc{} attribute}{NW47t2dy-qejLV-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-qejLV-1}}}%
 \nwixlogsorted{c}{{Definition: \code{}Endomorphism\edoc{}}{NW1Nnu7l-1U3x3j-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-1U3x3j-1}}}%
@@ -199,7 +203,7 @@ GR_CY_1, NATTRA_1
 \nwixlogsorted{c}{{Definition: Centralizer of Subgroup}{NW4XxNUZ-1mSO5f-1}{\nwixu{NW4XxNUZ-2Y3Nao-1}\nwixd{NW4XxNUZ-1mSO5f-1}}}%
 \nwixlogsorted{c}{{Definition: Centralizer of Subset}{NW4XxNUZ-1mdlmG-1}{\nwixu{NW4XxNUZ-2Y3Nao-1}\nwixd{NW4XxNUZ-1mdlmG-1}}}%
 \nwixlogsorted{c}{{Definition: proper subgroup}{NW18nMBU-RKCxZ-1}{\nwixu{NW18nMBU-KQsbx-1}\nwixd{NW18nMBU-RKCxZ-1}}}%
-\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-2}}}%
+\nwixlogsorted{c}{{DICT/CHAR.VOC}{NWoaARJ-4FyAEL-1}{\nwixd{NWoaARJ-4FyAEL-1}\nwixd{NW3Mfp8C-4FyAEL-1}\nwixd{NW47t2dy-4FyAEL-1}}}%
 \nwixlogsorted{c}{{Environment for \code{}char.miz\edoc{}}{NW4bbsBH-3ZQoFX-1}{\nwixu{NWoaARJ-2sCaVS-1}\nwixd{NW4bbsBH-3ZQoFX-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is an Endomorphism}{NW3Mfp8C-lTiQo-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-lTiQo-1}}}%
 \nwixlogsorted{c}{{Establish $f^{-1}$ is the inverse function of $f$}{NW3Mfp8C-oixct-1}{\nwixu{NW3Mfp8C-a3qbq-1}\nwixd{NW3Mfp8C-oixct-1}}}%
@@ -335,7 +339,6 @@ GR_CY_1, NATTRA_1
 \nwixlogsorted{c}{{Theorem: $H\subgroup K$ and $K\subgroup G$, then $K=\trivialSubgroup\implies H=\trivialSubgroup$}{NW18nMBU-A6DSQ-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-A6DSQ-1}}}%
 \nwixlogsorted{c}{{Theorem: $H_{1}\subgroup H_{2}\subgroup G$ and $a\in G$ implies ${H_{1}}^{a}\subgroup {H_{2}}^{a}$}{NW3SHPdF-2LUja1-1}{\nwixu{NW3SHPdF-3kq7TJ-1}\nwixd{NW3SHPdF-2LUja1-1}}}%
 \nwixlogsorted{c}{{Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$}{NW47t2dy-17HxJc-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-17HxJc-1}}}%
-\nwixlogsorted{c}{{Theorem: $p$-Core is Characteristic}{NW47t2dy-26IJy2-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-26IJy2-1}}}%
 \nwixlogsorted{c}{{Theorem: $Z(G)$ is characteristic subgroup}{NW47t2dy-g56Nl-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-g56Nl-1}}}%
 \nwixlogsorted{c}{{Theorem: \code{}id\ G\edoc{} is effectively inner}{NW3Mfp8C-4YoKSm-1}{\nwixu{NW3Mfp8C-UGF1u-1}\nwixd{NW3Mfp8C-4YoKSm-1}}}%
 \nwixlogsorted{c}{{Theorem: Automorphisms map maximal subgroups to maximal subgroups}{NW1Nnu7l-39Q49p-1}{\nwixu{NW1Nnu7l-1CMOm-1}\nwixd{NW1Nnu7l-39Q49p-1}}}%
@@ -368,7 +371,6 @@ GR_CY_1, NATTRA_1
 \nwixlogsorted{c}{{Theorem: transitivity of characteristic subgroups}{NW47t2dy-2ur0LT-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-2ur0LT-1}}}%
 \nwixlogsorted{c}{{Theorem: trivial groups look like $\trivialSubgroup$}{NW18nMBU-2jhymB-1}{\nwixu{NW18nMBU-1xRFQU-1}\nwixd{NW18nMBU-2jhymB-1}}}%
 \nwixlogsorted{c}{{Theorem: unique subgroup of order $n$ is \code{}characteristic\edoc{}}{NW47t2dy-3r3l0M-1}{\nwixu{NW47t2dy-3NltVm-1}\nwixd{NW47t2dy-3r3l0M-1}}}%
-\nwixlogsorted{i}{{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}}%
 \nwixlogsorted{i}{{\nwixident{Automorphism}}{Automorphism}}%
 \nwixlogsorted{i}{{\nwixident{Centralizer}}{Centralizer}}%
 \nwixlogsorted{i}{{\nwixident{characteristic}}{characteristic}}%
@@ -431,7 +433,6 @@ GR_CY_1, NATTRA_1
 \nwixlogsorted{i}{{\nwixident{Th42}}{Th42}}%
 \nwixlogsorted{i}{{\nwixident{Th43}}{Th43}}%
 \nwixlogsorted{i}{{\nwixident{Th44}}{Th44}}%
-\nwixlogsorted{i}{{\nwixident{Th45}}{Th45}}%
 \nwixlogsorted{i}{{\nwixident{Th46}}{Th46}}%
 \nwixlogsorted{i}{{\nwixident{Th47}}{Th47}}%
 \nwixlogsorted{i}{{\nwixident{Th48}}{Th48}}%
@@ -1631,7 +1632,7 @@ proof
 end;
 \nwindexdefn{\nwixident{Th14}}{Th14}{NW18nMBU-2DotbH-1}\eatline
 \nwused{\\{NW18nMBU-KQsbx-1}}\nwidentdefs{\\{{\nwixident{Th14}}{Th14}}}\nwidentuses{\\{{\nwixident{proper}}{proper}}\\{{\nwixident{Th10}}{Th10}}\\{{\nwixident{Th11}}{Th11}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{proper}}{proper}{NW18nMBU-2DotbH-1}\nwindexuse{\nwixident{Th10}}{Th10}{NW18nMBU-2DotbH-1}\nwindexuse{\nwixident{Th11}}{Th11}{NW18nMBU-2DotbH-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW18nMBU-2DotbH-1}\nwendcode{}\nwfilename{nw/characteristic/automorphism.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
-\section{Automorphisms}
+\section{Automorphisms}\label{sec:characteristic:automorphism}
 Now, we have a section for defining inner and outer group
 automorphisms. A \emph{group automorphism} is just a bijective endomorphism on
 a group, and an \emph{endomorphism} is a group morphism whose codomain
@@ -2537,7 +2538,7 @@ proof
 end;
 \nwused{\\{NW1Nnu7l-2sFwyR-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th18}}{Th18}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-3oqpnZ-1}\nwindexuse{\nwixident{Th18}}{Th18}{NW1Nnu7l-3oqpnZ-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
 \nwenddocs{}\nwfilename{nw/characteristic/inner.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
-\section{Inner Automorphisms}
+\section{Inner Automorphisms}\label{sec:characteristic:inner-automorphism}
 We can now organize our treatment of inner automorphisms.
 
 \nwenddocs{}\nwbegincode{1}\sublabel{NW3Mfp8C-UGF1u-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW3Mfp8C-UGF1u-1}}}\moddef{Inner Automorphisms~{\nwtagstyle{}\subpageref{NW3Mfp8C-UGF1u-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2TX9wk-1}}\nwenddeflinemarkup
@@ -3200,7 +3201,7 @@ proof
 end;
 \nwused{\\{NW3Mfp8C-4Qqcti-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th30}}{Th30}}\\{{\nwixident{Th34}}{Th34}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-3U116k-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-3U116k-1}\nwindexuse{\nwixident{Th30}}{Th30}{NW3Mfp8C-3U116k-1}\nwindexuse{\nwixident{Th34}}{Th34}{NW3Mfp8C-3U116k-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 \nwenddocs{}\nwfilename{nw/characteristic/results.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
-\section{Characteristic Subgroups}
+\section{Characteristic Subgroups}\label{sec:characteristic:results}
 We now arrive at the meat of the matter: characteristic subgroups!
 
 \nwenddocs{}\nwbegincode{1}\sublabel{NW47t2dy-3NltVm-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3NltVm-1}}}\moddef{Characteristic subgroups~{\nwtagstyle{}\subpageref{NW47t2dy-3NltVm-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2TX9wk-1}}\nwenddeflinemarkup
@@ -3232,10 +3233,6 @@ We now arrive at the meat of the matter: characteristic subgroups!
 \LA{}Scheme: $\bigcap\{A\subset G\mid\exists H\subgroup G, A=H, P[H]\}$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-5CDvr-1}}\RA{}
 
 \LA{}Theorem: $\FrattiniSubgroup(G)$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-1wEepZ-1}}\RA{}
-
-\LA{}Definition: $p$-Core~{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}\RA{}
-
-\LA{}Theorem: $p$-Core is Characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-26IJy2-1}}\RA{}
 
 \LA{}Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-1BwBWL-1}}\RA{}
 
@@ -3275,6 +3272,7 @@ $\varphi(H)\subgroup H$. We prove this later as equivalent in Theorem~\ref{thm:r
 \end{def-remark}
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW47t2dy-qejLV-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-qejLV-1}}}\moddef{Definition: \code{}characteristic\edoc{} attribute~{\nwtagstyle{}\subpageref{NW47t2dy-qejLV-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+:: Dummit and Foote, Abstract Algebra, ch.4 section 4
 definition
   let G;
   let IT be Subgroup of G;
@@ -3291,7 +3289,7 @@ subgroups, we have to tell Mizar that \lstinline|characteristic| is now
 a token that should be associated with Definition~\ref{defn:characteristic:results:characteristic-subgroup}.
 \end{voc}
 
-\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{NW47t2dy-4FyAEL-2}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{5}\sublabel{NW47t2dy-4FyAEL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-1}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW3Mfp8C-4FyAEL-1}{\relax}\nwenddeflinemarkup
 Vcharacteristic
 \nwendcode{}\nwbegindocs{6}\nwdocspar
 
@@ -4258,95 +4256,7 @@ proof
 end;
 \nwindexdefn{\nwixident{Th44}}{Th44}{NW47t2dy-1wEepZ-1}\eatline
 \nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th44}}{Th44}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{MeetIsChar}}{MeetIsChar}}\\{{\nwixident{Th26}}{Th26}}\\{{\nwixident{trivial}}{trivial}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{MeetIsChar}}{MeetIsChar}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{Th26}}{Th26}{NW47t2dy-1wEepZ-1}\nwindexuse{\nwixident{trivial}}{trivial}{NW47t2dy-1wEepZ-1}\nwendcode{}\nwbegindocs{74}\nwdocspar
-\begin{definition}\label{defn:characteristic:results:p-core}
-Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
-\define{$p$-Core} of $G$ is the subgroup
-\begin{equation}
-  \pCore{p}{G} = \bigcap\SylowSubgroups{p}{G}
-\end{equation}
-given by the intersection of all Sylow $p$-subgroups of $G$.
-\end{definition}
 
-\begin{def-remark}
-We will be leaning on results from~\mml{group10} concerning Sylow's
-theorems, specifically Sylow $p$-subgroups.
-\end{def-remark}
-
-\nwenddocs{}\nwbegincode{75}\sublabel{NW47t2dy-4cW2Y2-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}}\moddef{Definition: $p$-Core~{\nwtagstyle{}\subpageref{NW47t2dy-4cW2Y2-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
-definition
-  let G be finite Group;
-  let p be prime Nat;
-  func p\nwlinkedidentc{-core_of_G}{NW47t2dy-4cW2Y2-1} -> strict Subgroup of G means
-  :Def7:
-  the carrier of it = meet\{A where A is Subset of G :
-  ex P being strict Subgroup of G st A = the carrier of P &
-  P is_Sylow_p-subgroup_of_prime p\};
-  existence
-  proof
-    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-    A1: ex P being strict Subgroup of G st SPS[P]
-    by GROUP_10:10;
-    ex H being strict Subgroup of G st the carrier of H = meet\{A where
-    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]\}
-    from GROUP_4:sch 1(A1);
-    hence thesis;
-  end;
-  uniqueness by GROUP_2:59;
-  correctness;
-end;
-\nwindexdefn{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}{NW47t2dy-4cW2Y2-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}}}\nwendcode{}\nwbegindocs{76}\nwdocspar
-\begin{voc}
-Before proving the $p$-core is characteristic, we need to tell Mizar
-there is a new token in town: {\Tt{}-core{\_}of{\_}\nwendquote} which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
-\end{voc}
-
-\nwenddocs{}\nwbegincode{77}\sublabel{NW47t2dy-4FyAEL-2}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4FyAEL-2}}}\moddef{DICT/CHAR.VOC~{\nwtagstyle{}\subpageref{NWoaARJ-4FyAEL-1}}}\plusendmoddef\nwstartdeflinemarkup\nwprevnextdefs{NW47t2dy-4FyAEL-1}{\relax}\nwenddeflinemarkup
-O-core_of_
-\nwendcode{}\nwbegindocs{78}\nwdocspar
-
-\begin{theorem}
-  Let $G$ be any finite group, $p\in\NN$ a prime number.
-  Then the $p$-core of $G$, $\pCore{p}{G}$, is a characteristic
-  subgroup.
-\end{theorem}
-
-\begin{proof}
-The proof boils down to what we would find in a textbook.
-We have abstracted away the argument to form Scheme~\ref{scheme:characteristic:results:meet-is-characteristic},
-which gives us the results.
-\end{proof}
-
-\nwenddocs{}\nwbegincode{79}\sublabel{NW47t2dy-26IJy2-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-26IJy2-1}}}\moddef{Theorem: $p$-Core is Characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-26IJy2-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
-theorem \nwlinkedidentc{Th45}{NW47t2dy-26IJy2-1}:
-  for G being finite Group
-  for p being prime Nat
-  holds p\nwlinkedidentc{-core_of_G}{NW47t2dy-4cW2Y2-1} is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
-proof
-  let G be finite Group;
-  let p be prime Nat;
-  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-
-  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
-  set MaxSubCarrs = \{A where A is Subset of G :
-                     ex H being strict Subgroup of G
-                     st A = the carrier of H & P[H]\};
-
-  A2: for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
-  for P being strict Subgroup of G
-  st P[P]
-  holds P[Image(phi|P)] by \nwlinkedidentc{Th22}{NW1Nnu7l-3PWeZI-1};
-
-  consider K being strict Subgroup of G such that
-  A4: the carrier of K = meet \{A where A is Subset of G :
-      ex H being strict Subgroup of G st A = the carrier of H & P[H]\} and
-  A5: K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
-  from \nwlinkedidentc{MeetIsChar}{NW47t2dy-5CDvr-1}(A2,A1);
-  K = p\nwlinkedidentc{-core_of_G}{NW47t2dy-4cW2Y2-1} by A4,Def7;
-  hence thesis by A5;
-end;
-\nwindexdefn{\nwixident{Th45}}{Th45}{NW47t2dy-26IJy2-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th45}}{Th45}}}\nwidentuses{\\{{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}}\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{MeetIsChar}}{MeetIsChar}}\\{{\nwixident{Th22}}{Th22}}}\nwindexuse{\nwixident{-core{\_}of{\_}G}}{-core:unof:unG}{NW47t2dy-26IJy2-1}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-26IJy2-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-26IJy2-1}\nwindexuse{\nwixident{MeetIsChar}}{MeetIsChar}{NW47t2dy-26IJy2-1}\nwindexuse{\nwixident{Th22}}{Th22}{NW47t2dy-26IJy2-1}\nwendcode{}\nwbegindocs{80}\nwdocspar
 \subsection{Derived Subgroup is Characteristic}
 We will denote the \emph{set} of all commutators of elements of $G$ by
 \begin{equation}
@@ -4368,7 +4278,7 @@ $\varphi\in\Aut(G)$, we have $\varphi(C) = C$.
 We will prove $\varphi(C)\subset C$ and $\varphi(C)\supset C$.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{81}\sublabel{NW47t2dy-1BwBWL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1BwBWL-1}}}\moddef{Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-1BwBWL-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{75}\sublabel{NW47t2dy-1BwBWL-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1BwBWL-1}}}\moddef{Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-1BwBWL-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th46}{NW47t2dy-1BwBWL-1}:
   for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
   holds phi .: commutators G = commutators G
@@ -4387,7 +4297,7 @@ proof
   hence commutators G = phi .: commutators G by P1,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th46}}{Th46}{NW47t2dy-1BwBWL-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th46}}{Th46}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1BwBWL-1}\nwendcode{}\nwbegindocs{82}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th46}}{Th46}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-1BwBWL-1}\nwendcode{}\nwbegindocs{76}\nwdocspar
 \begin{proof}[{Proof step [$\varphi(\Commutators(G))\supset\Commutators(G)$]}.]
   Let $g\in\Commutators(G)$. Then consider $a,b\in G$ such that
   \begin{equation}
@@ -4403,7 +4313,7 @@ g = [a,b]
   this implies $\varphi(\Commutators(G))\supset\Commutators(G)$ by Theorem~\mml[def3]{tarski}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{83}\sublabel{NW47t2dy-22edeY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-22edeY-1}}}\moddef{Proof: $\varphi(\Commutators(G))\supset\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-22edeY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1BwBWL-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{77}\sublabel{NW47t2dy-22edeY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-22edeY-1}}}\moddef{Proof: $\varphi(\Commutators(G))\supset\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-22edeY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1BwBWL-1}}\nwenddeflinemarkup
 proof
   let g be object;
   assume B1: g in commutators G;
@@ -4429,7 +4339,7 @@ proof
   then g in phi .: commutators G by B5;
   hence thesis;
 end;
-\nwused{\\{NW47t2dy-1BwBWL-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-22edeY-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-22edeY-1}\nwendcode{}\nwbegindocs{84}\nwdocspar
+\nwused{\\{NW47t2dy-1BwBWL-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-22edeY-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-22edeY-1}\nwendcode{}\nwbegindocs{78}\nwdocspar
 
 \begin{proof}[{Proof step [$\varphi(\Commutators(G))\subset\Commutators(G)$]}.]
 We consider an arbitrary $h\in\varphi(\Commutators(G))$. Then there is
@@ -4448,7 +4358,7 @@ $\varphi(g)\in\Commutators(G)$. And since we let $h$ be arbitrary, this
 means $\varphi(\Commutators(G))\subset\Commutators(G)$ by Theorem~\mml[def3]{tarski}.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{85}\sublabel{NW47t2dy-3odp3Y-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3odp3Y-1}}}\moddef{Proof: $\varphi(\Commutators(G))\subset\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-3odp3Y-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1BwBWL-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{79}\sublabel{NW47t2dy-3odp3Y-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3odp3Y-1}}}\moddef{Proof: $\varphi(\Commutators(G))\subset\Commutators(G)$~{\nwtagstyle{}\subpageref{NW47t2dy-3odp3Y-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-1BwBWL-1}}\nwenddeflinemarkup
 proof
   let h be object;
   assume B1: h in phi .: commutators G;
@@ -4465,14 +4375,14 @@ proof
    .= [.phi.a, phi.b.] by GROUP_6:34;
   hence h in commutators G;
 end;
-\nwused{\\{NW47t2dy-1BwBWL-1}}\nwendcode{}\nwbegindocs{86}\nwdocspar
+\nwused{\\{NW47t2dy-1BwBWL-1}}\nwendcode{}\nwbegindocs{80}\nwdocspar
 
 \begin{theorem}
 Let $H\subgroup G$ be a subgroup, $\varphi\in\Aut(G)$ be an automorphism.
 If every $h\in H$ satisfies $\varphi(h)\in H$, then $\varphi(H)\subgroup H$.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{87}\sublabel{NW47t2dy-3M3ox1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3M3ox1-1}}}\moddef{Theorem: $\forall h\in H,\varphi(h)\in H$ implies $\varphi(H)\subgroup H$~{\nwtagstyle{}\subpageref{NW47t2dy-3M3ox1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{81}\sublabel{NW47t2dy-3M3ox1-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3M3ox1-1}}}\moddef{Theorem: $\forall h\in H,\varphi(h)\in H$ implies $\varphi(H)\subgroup H$~{\nwtagstyle{}\subpageref{NW47t2dy-3M3ox1-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th47}{NW47t2dy-3M3ox1-1}:
   for G being Group
   for phi being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
@@ -4508,14 +4418,14 @@ proof
   hence Image(phi|H) is Subgroup of H by GROUP_2:57;
 end;
 \nwindexdefn{\nwixident{Th47}}{Th47}{NW47t2dy-3M3ox1-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th47}}{Th47}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3M3ox1-1}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-3M3ox1-1}\nwendcode{}\nwbegindocs{88}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th47}}{Th47}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3M3ox1-1}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-3M3ox1-1}\nwendcode{}\nwbegindocs{82}\nwdocspar
 \begin{theorem}
 If $A\subset G$ is a nonempty subset such that, for any automorphism
 $\varphi\in\Aut(G)$ we have $\varphi(A) = A$, then the generated
 subgroup $\langle A\rangle$ is a characteristic subgroup.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{89}\sublabel{NW47t2dy-3lDAoY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3lDAoY-1}}}\moddef{Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-3lDAoY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{83}\sublabel{NW47t2dy-3lDAoY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-3lDAoY-1}}}\moddef{Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-3lDAoY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th48}{NW47t2dy-3lDAoY-1}:
   for G being Group
   for A being non empty Subset of G
@@ -4628,12 +4538,12 @@ proof
   thus gr A is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} by A3,\nwlinkedidentc{Th42}{NW47t2dy-4Z20G4-1};
 end;
 \nwindexdefn{\nwixident{Th48}}{Th48}{NW47t2dy-3lDAoY-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th48}}{Th48}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th42}}{Th42}}\\{{\nwixident{Th47}}{Th47}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{Th42}}{Th42}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{Th47}}{Th47}{NW47t2dy-3lDAoY-1}\nwendcode{}\nwbegindocs{90}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th48}}{Th48}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th42}}{Th42}}\\{{\nwixident{Th47}}{Th47}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{Th42}}{Th42}{NW47t2dy-3lDAoY-1}\nwindexuse{\nwixident{Th47}}{Th47}{NW47t2dy-3lDAoY-1}\nwendcode{}\nwbegindocs{84}\nwdocspar
 \begin{theorem}
 The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{91}\sublabel{NW47t2dy-44iz0d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\moddef{Theorem: The derived subgroup is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{85}\sublabel{NW47t2dy-44iz0d-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\moddef{Theorem: The derived subgroup is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-44iz0d-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th49}{NW47t2dy-44iz0d-1}:
   G` is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1}
 proof
@@ -4645,13 +4555,13 @@ proof
   hence thesis;
 end;
 \nwindexdefn{\nwixident{Th49}}{Th49}{NW47t2dy-44iz0d-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th49}}{Th49}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th46}}{Th46}}\\{{\nwixident{Th48}}{Th48}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th46}}{Th46}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th48}}{Th48}{NW47t2dy-44iz0d-1}\nwendcode{}\nwbegindocs{92}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th49}}{Th49}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th46}}{Th46}}\\{{\nwixident{Th48}}{Th48}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th46}}{Th46}{NW47t2dy-44iz0d-1}\nwindexuse{\nwixident{Th48}}{Th48}{NW47t2dy-44iz0d-1}\nwendcode{}\nwbegindocs{86}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
 $\varphi\in\Aut(G)$, then $\varphi(aH)=\varphi(a)\varphi(H)$.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{93}\sublabel{NW47t2dy-TIqNK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$~{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{87}\sublabel{NW47t2dy-TIqNK-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$~{\nwtagstyle{}\subpageref{NW47t2dy-TIqNK-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th50}{NW47t2dy-TIqNK-1}:
   for G1,G2 being Group
   for H being Subgroup of G1
@@ -4714,13 +4624,13 @@ proof
   thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th50}}{Th50}{NW47t2dy-TIqNK-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th50}}{Th50}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-TIqNK-1}\nwendcode{}\nwbegindocs{94}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th50}}{Th50}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-TIqNK-1}\nwendcode{}\nwbegindocs{88}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
 $\varphi\in\Aut(G)$, then $\varphi(Ha)=\varphi(H)\varphi(a)$.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{95}\sublabel{NW47t2dy-4LQhDT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$~{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{89}\sublabel{NW47t2dy-4LQhDT-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\moddef{Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$~{\nwtagstyle{}\subpageref{NW47t2dy-4LQhDT-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th51}{NW47t2dy-4LQhDT-1}:
   for G1,G2 being Group
   for H being Subgroup of G1
@@ -4783,14 +4693,14 @@ proof
   thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th51}}{Th51}{NW47t2dy-4LQhDT-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th51}}{Th51}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-4LQhDT-1}\nwendcode{}\nwbegindocs{96}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th51}}{Th51}}}\nwidentuses{\\{{\nwixident{Th2}}{Th2}}}\nwindexuse{\nwixident{Th2}}{Th2}{NW47t2dy-4LQhDT-1}\nwendcode{}\nwbegindocs{90}\nwdocspar
 \begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
 If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
 of $G$ we have our automorphism map $N$ to another normal subgroup
 $\varphi(N)\normalSubgroup G$.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{97}\sublabel{NW47t2dy-17HxJc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\moddef{Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$~{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{91}\sublabel{NW47t2dy-17HxJc-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\moddef{Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$~{\nwtagstyle{}\subpageref{NW47t2dy-17HxJc-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th52}{NW47t2dy-17HxJc-1}:
   for G being Group
   for N being strict normal Subgroup of G
@@ -4820,7 +4730,7 @@ proof
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
 \nwindexdefn{\nwixident{Th52}}{Th52}{NW47t2dy-17HxJc-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th52}}{Th52}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th50}}{Th50}}\\{{\nwixident{Th51}}{Th51}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th51}}{Th51}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-17HxJc-1}\nwendcode{}\nwbegindocs{98}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th52}}{Th52}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th50}}{Th50}}\\{{\nwixident{Th51}}{Th51}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th51}}{Th51}{NW47t2dy-17HxJc-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-17HxJc-1}\nwendcode{}\nwbegindocs{92}\nwdocspar
 \begin{theorem}
 Let $H\subgroup G$. Then $H$ is characteristic if and only if for any
 automorphism $\varphi\in\Aut(G)$ and every $x\in H$ we have
@@ -4833,7 +4743,7 @@ characteristic subgroup requires $\forall\varphi\in\Aut(G),\varphi(H)=H$.
 Without strictness, we cannot have subgroup equality.
 \end{thm-remark}
 
-\nwenddocs{}\nwbegincode{99}\sublabel{NW47t2dy-2u8tjJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2u8tjJ-1}}}\moddef{Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$~{\nwtagstyle{}\subpageref{NW47t2dy-2u8tjJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{93}\sublabel{NW47t2dy-2u8tjJ-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2u8tjJ-1}}}\moddef{Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$~{\nwtagstyle{}\subpageref{NW47t2dy-2u8tjJ-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th53}{NW47t2dy-2u8tjJ-1}:
   for G being Group
   for H being strict Subgroup of G
@@ -4888,13 +4798,13 @@ proof
   end;
 end;
 \nwindexdefn{\nwixident{Th53}}{Th53}{NW47t2dy-2u8tjJ-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th53}}{Th53}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def6}}{Def6}}\\{{\nwixident{Th42}}{Th42}}\\{{\nwixident{Th47}}{Th47}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Def6}}{Def6}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Th42}}{Th42}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Th47}}{Th47}{NW47t2dy-2u8tjJ-1}\nwendcode{}\nwbegindocs{100}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th53}}{Th53}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def6}}{Def6}}\\{{\nwixident{Th42}}{Th42}}\\{{\nwixident{Th47}}{Th47}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Def6}}{Def6}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Th42}}{Th42}{NW47t2dy-2u8tjJ-1}\nwindexuse{\nwixident{Th47}}{Th47}{NW47t2dy-2u8tjJ-1}\nwendcode{}\nwbegindocs{94}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are strict characteristic subgroups,
 then $H\cap G$ is a characteristic subgroup.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{101}\sublabel{NW47t2dy-ycPYy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-ycPYy-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-ycPYy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{95}\sublabel{NW47t2dy-ycPYy-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-ycPYy-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-ycPYy-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem
   for G being Group
   for H,K being strict \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G
@@ -4918,7 +4828,7 @@ proof
   hence H /\\ K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G by \nwlinkedidentc{Th53}{NW47t2dy-2u8tjJ-1};
 end;
 \nwindexdefn{\nwixident{Th54}}{Th54}{NW47t2dy-ycPYy-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th54}}{Th54}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-ycPYy-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-ycPYy-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-ycPYy-1}\nwendcode{}\nwbegindocs{102}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th54}}{Th54}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-ycPYy-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-ycPYy-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-ycPYy-1}\nwendcode{}\nwbegindocs{96}\nwdocspar
 \begin{theorem}
   If $H\subgroup G$ and $K\subgroup G$ are characteristic subgroups,
   then $\langle H, K\rangle$ is a characteristic subgroup of $G$.
@@ -4929,7 +4839,7 @@ More generally, if $\{K_{i}\}_{i\in I}$ is any family of characteristic subgroup
 of $G$, then their join $\langle K_{i}\rangle_{i\in I}$.
 \end{thm-remark}
 
-\nwenddocs{}\nwbegincode{103}\sublabel{NW47t2dy-2FHlHr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2FHlHr-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-2FHlHr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{97}\sublabel{NW47t2dy-2FHlHr-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-2FHlHr-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-2FHlHr-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th55}{NW47t2dy-2FHlHr-1}:
   for G being Group
   for H,K being strict \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G
@@ -4967,14 +4877,14 @@ proof
   hence H "\\/" K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G by \nwlinkedidentc{Th53}{NW47t2dy-2u8tjJ-1};
 end;
 \nwindexdefn{\nwixident{Th55}}{Th55}{NW47t2dy-2FHlHr-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th55}}{Th55}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2FHlHr-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2FHlHr-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-2FHlHr-1}\nwendcode{}\nwbegindocs{104}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th55}}{Th55}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2FHlHr-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-2FHlHr-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-2FHlHr-1}\nwendcode{}\nwbegindocs{98}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the set of
 commutators $\{[h,k]\in G\mid h\in H, k\in K\}$ is invariant under
 automorphisms of $G$.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{105}\sublabel{NW47t2dy-41VHSD-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable~{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{99}\sublabel{NW47t2dy-41VHSD-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable~{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th56}{NW47t2dy-41VHSD-1}:
   for G being Group
   for H,K being strict \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G
@@ -5041,13 +4951,13 @@ proof
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th56}}{Th56}{NW47t2dy-41VHSD-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th56}}{Th56}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-41VHSD-1}\nwendcode{}\nwbegindocs{106}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th56}}{Th56}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th53}}{Th53}}\\{{\nwixident{Th6}}{Th6}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th53}}{Th53}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th6}}{Th6}{NW47t2dy-41VHSD-1}\nwendcode{}\nwbegindocs{100}\nwdocspar
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator
 subgroup $[H,K]$ is a characteristic subgroup.
 \end{theorem}
 
-\nwenddocs{}\nwbegincode{107}\sublabel{NW47t2dy-E9Ys0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{101}\sublabel{NW47t2dy-E9Ys0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th57}{NW47t2dy-E9Ys0-1}:
   for G being Group
   for H,K being strict \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G
@@ -5455,7 +5365,7 @@ end;
 \nwindexdefn{\nwixident{Th59}}{Th59}{NW3SHPdF-35XaBG-1}\eatline
 \nwused{\\{NW3SHPdF-3kq7TJ-1}}\nwidentdefs{\\{{\nwixident{Th59}}{Th59}}}\nwidentuses{\\{{\nwixident{MeetOfNormsIsNormal}}{MeetOfNormsIsNormal}}}\nwindexuse{\nwixident{MeetOfNormsIsNormal}}{MeetOfNormsIsNormal}{NW3SHPdF-35XaBG-1}\nwendcode{}\nwfilename{nw/characteristic/centralizer.nw}\nwbegindocs{0}% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-\section{Centralizers of Characteristic Subgroups}
+\section{Centralizers of Characteristic Subgroups}\label{sec:characteristic:centralizer}
 
 \nwenddocs{}\nwbegincode{1}\sublabel{NW4XxNUZ-2Y3Nao-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW4XxNUZ-2Y3Nao-1}}}\moddef{Centralizers of Characteristic Subgroups~{\nwtagstyle{}\subpageref{NW4XxNUZ-2Y3Nao-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW18nMBU-2TX9wk-1}}\nwenddeflinemarkup
 \LA{}Definition: Centralizer of Subset~{\nwtagstyle{}\subpageref{NW4XxNUZ-1mdlmG-1}}\RA{}
@@ -5882,7 +5792,7 @@ proof
 end;
 \nwused{\\{NW4XxNUZ-2Y3Nao-1}}\nwidentuses{\\{{\nwixident{Centralizer}}{Centralizer}}\\{{\nwixident{Th60}}{Th60}}\\{{\nwixident{Th62}}{Th62}}}\nwindexuse{\nwixident{Centralizer}}{Centralizer}{NW4XxNUZ-1nMINk-1}\nwindexuse{\nwixident{Th60}}{Th60}{NW4XxNUZ-1nMINk-1}\nwindexuse{\nwixident{Th62}}{Th62}{NW4XxNUZ-1nMINk-1}\nwendcode{}\nwbegindocs{24}\nwdocspar
 
-\begin{theorem}
+\begin{theorem}\label{thm:characteristic:centralizer:centralizer-of-char-group-is-char}
   Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
   Then its centralizer $C_{G}(K)$ is a characteristic subgroup.
 \end{theorem}
