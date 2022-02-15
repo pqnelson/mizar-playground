@@ -2777,7 +2777,7 @@ theorem Th62b:
         g in H by Th62;
 ::>             *4,4
 
-theorem
+theorem Th63:
   for G being Group
   for A being Subset of G
   holds A is Subset of Centralizer (Centralizer A)
@@ -2845,7 +2845,7 @@ proof
   thus x = y implies {x} = {y};
 end;
 
-theorem
+theorem Th64:
   for G being Group
   for a,x being Element of G
   holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
@@ -2865,16 +2865,25 @@ theorem
   for G being Group
   for A being non empty Subset of G
   holds the carrier of Centralizer A = meet {B where B is Subset of G :
-  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
-  a in A & H = Normalizer a}
+  ex H being strict Subgroup of G st B = the carrier of H &
+  (ex a being Element of G st a in A & H = Normalizer a)}
 proof
   let G be Group;
   let A be non empty Subset of G;
+  defpred P[strict Subgroup of G] means (ex a being Element of G st a in A & $1 = Normalizer a);
   set Fam = {B where B is Subset of G :
-  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
-  a in A & H = Normalizer a};
-  A1: Fam <> {};
-::>           *4
+  ex H being strict Subgroup of G st B = the carrier of H & P[H]};
+  A1: Fam <> {}
+  proof
+    consider a being object such that
+    B1: a in A
+    by XBOOLE_0:def 1;
+    reconsider a as Element of G by B1,GROUP_2:42;
+    consider H being strict Subgroup of G such that
+    B2: H = Normalizer a;
+    carr H in Fam by B1,B2;
+    hence thesis;
+  end;
   for x being object
   st x in the carrier of Centralizer A
   holds x in meet Fam
@@ -2891,8 +2900,8 @@ proof
       assume C1: X in Fam;
       then consider B being Subset of G such that
       C2: B = X and
-      C3: ex H being strict Subgroup of G, a being Element of G
-          st B = the carrier of H & a in A & H = Normalizer a;
+      C3: ex H being strict Subgroup of G
+          st B = the carrier of H & (ex a being Element of G st a in A & H = Normalizer a);
       consider H being strict Subgroup of G, a being Element of G such that
       C4: B = the carrier of H & a in A & H = Normalizer a by C3;
       g is Element of Centralizer A by Z2;
@@ -2917,6 +2926,11 @@ proof
     hence x in meet Fam by A1,SETFAM_1:def 1;
   end;
   then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
+
+:: Fam = {B where B is Subset of G :
+::  ex H being strict Subgroup of G, a being Element of G st B = the carrier of H &
+::  a in A & H = Normalizer a};
+
   for x being object
   st x in meet Fam
   holds x in the carrier of Centralizer A
@@ -2925,13 +2939,37 @@ proof
     assume B1: x in meet Fam;
     then for X being set st X in Fam
     holds x in X by SETFAM_1:def 1;
-    (for a being Element of G st a in A holds g*a = a*g);
-::>                                           *140    *140
+
+    B2: ex H being strict Subgroup of G st P[H]
+    proof
+      Fam <> {} by A1;
+      then Fam is non empty;
+      then consider X being object such that
+      C1: X in Fam by A1, XBOOLE_0:def 1;
+      consider B being Subset of G such that
+      C2: B = X and
+      C3: ex H being strict Subgroup of G
+          st B = the carrier of H & P[H]
+      by C1;
+      thus thesis by C3;
+    end;
+
+    consider K being strict Subgroup of G such that
+    B3: the carrier of K = meet Fam
+    from GROUP_4:sch 1(B2);
+
+    B4: x in K by B1,B3;
+    then reconsider g = x as Element of G by GROUP_2:42;
+    
+    for a being Element of G st a in A
+    holds g in Normalizer a;
+::>                       *4
+    then (for a being Element of G st a in A holds g*a = a*g);
+::>                                                         *4
+    then g is Element of Centralizer A by Th60;
     then g in Centralizer A;
-::>      *140
     then x in Centralizer A;
-    thus x in the carrier of Centralizer A;
-::>                                      *4
+    hence thesis;
   end;
 
   then meet Fam c= the carrier of Centralizer A;
@@ -3076,5 +3114,3 @@ end;
 
 
 ::> 4: This inference is not accepted
-::> 140: Unknown variable
-::> 396: Formula expected
