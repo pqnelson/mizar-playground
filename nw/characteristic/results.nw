@@ -1,5 +1,5 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
-\section{Characteristic Subgroups}
+\section{Characteristic Subgroups}\label{sec:characteristic:results}
 We now arrive at the meat of the matter: characteristic subgroups!
 
 <<Characteristic subgroups>>=
@@ -31,10 +31,6 @@ We now arrive at the meat of the matter: characteristic subgroups!
 <<Scheme: $\bigcap\{A\subset G\mid\exists H\subgroup G, A=H, P[H]\}$ is characteristic>>
 
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>
-
-<<Definition: $p$-Core>>
-
-<<Theorem: $p$-Core is Characteristic>>
 
 <<Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$>>
 
@@ -74,6 +70,7 @@ $\varphi(H)\subgroup H$. We prove this later as equivalent in Theorem~\ref{thm:r
 \end{def-remark}
 
 <<Definition: [[characteristic]] attribute>>=
+:: Dummit and Foote, Abstract Algebra, ch.4 section 4
 definition
   let G;
   let IT be Subgroup of G;
@@ -1057,94 +1054,6 @@ proof
 end;
 @ %def Th44
 
-\begin{definition}\label{defn:characteristic:results:p-core}
-Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
-\define{$p$-Core} of $G$ is the subgroup
-\begin{equation}
-  \pCore{p}{G} = \bigcap\SylowSubgroups{p}{G}
-\end{equation}
-given by the intersection of all Sylow $p$-subgroups of $G$.
-\end{definition}
-
-\begin{def-remark}
-We will be leaning on results from~\mml{group10} concerning Sylow's
-theorems, specifically Sylow $p$-subgroups.
-\end{def-remark}
-
-<<Definition: $p$-Core>>=
-definition
-  let G be finite Group;
-  let p be prime Nat;
-  func p-core_of_G -> strict Subgroup of G means
-  :Def7:
-  the carrier of it = meet{A where A is Subset of G :
-  ex P being strict Subgroup of G st A = the carrier of P &
-  P is_Sylow_p-subgroup_of_prime p};
-  existence
-  proof
-    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-    A1: ex P being strict Subgroup of G st SPS[P]
-    by GROUP_10:10;
-    ex H being strict Subgroup of G st the carrier of H = meet{A where
-    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
-    from GROUP_4:sch 1(A1);
-    hence thesis;
-  end;
-  uniqueness by GROUP_2:59;
-  correctness;
-end;
-@ %def -core_of_G
-
-\begin{voc}
-Before proving the $p$-core is characteristic, we need to tell Mizar
-there is a new token in town: [[-core_of_]] which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
-\end{voc}
-
-<<DICT/CHAR.VOC>>=
-O-core_of_
-@
-
-\begin{theorem}
-  Let $G$ be any finite group, $p\in\NN$ a prime number.
-  Then the $p$-core of $G$, $\pCore{p}{G}$, is a characteristic
-  subgroup.
-\end{theorem}
-
-\begin{proof}
-The proof boils down to what we would find in a textbook.
-We have abstracted away the argument to form Scheme~\ref{scheme:characteristic:results:meet-is-characteristic},
-which gives us the results.
-\end{proof}
-
-<<Theorem: $p$-Core is Characteristic>>=
-theorem Th45:
-  for G being finite Group
-  for p being prime Nat
-  holds p-core_of_G is characteristic
-proof
-  let G be finite Group;
-  let p be prime Nat;
-  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-
-  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
-  set MaxSubCarrs = {A where A is Subset of G :
-                     ex H being strict Subgroup of G
-                     st A = the carrier of H & P[H]};
-
-  A2: for phi being Automorphism of G
-  for P being strict Subgroup of G
-  st P[P]
-  holds P[Image(phi|P)] by Th22;
-
-  consider K being strict Subgroup of G such that
-  A4: the carrier of K = meet {A where A is Subset of G :
-      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
-  A5: K is characteristic
-  from MeetIsChar(A2,A1);
-  K = p-core_of_G by A4,Def7;
-  hence thesis by A5;
-end;
-@ %def Th45
 
 \subsection{Derived Subgroup is Characteristic}
 We will denote the \emph{set} of all commutators of elements of $G$ by

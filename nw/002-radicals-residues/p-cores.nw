@@ -1,0 +1,280 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{The $p$-Core and $\pi$-Core of a Group}
+
+<<$p$-Cores and $\pi$-Cores of a Group>>=
+
+<<Definition: $p$-Core>>
+
+<<Theorem: $p$-Core is Characteristic>>
+
+<<Definition: $\pi$-Group>>
+
+<<Theorem: Existence of $\pi$-Subgroup>>
+
+<<Register: $\pi$-group for finite group>
+
+<<Definition: $\pi$-Core>>
+
+<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
+
+<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
+
+<<Theorem: $\pCore{\pi}{G}$ is a $\pi$-Group>>
+
+<<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>
+
+<<Theorem: $\pCore{p}{G}$ is a $p$-Group>>
+@
+
+\begin{definition}\label{defn:characteristic:results:p-core}
+Let $G$ be a finite group, let $p\in\NN$ be a prime. Then the
+\define{$p$-Core} of $G$ is the subgroup
+\begin{equation}
+  \pCore{p}{G} = \bigcap\SylowSubgroups{p}{G}
+\end{equation}
+given by the intersection of all Sylow $p$-subgroups of $G$.
+\end{definition}
+
+\begin{def-remark}
+We will be leaning on results from~\mml{group10} concerning Sylow's
+theorems, specifically Sylow $p$-subgroups.
+\end{def-remark}
+
+<<Definition: $p$-Core>>=
+definition
+  let G be finite Group;
+  let p be prime Nat;
+  func p-core_of_G -> strict Subgroup of G means
+  :Def7:
+  the carrier of it = meet{A where A is Subset of G :
+  ex P being strict Subgroup of G st A = the carrier of P &
+  P is_Sylow_p-subgroup_of_prime p};
+  existence
+  proof
+    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+    A1: ex P being strict Subgroup of G st SPS[P]
+    by GROUP_10:10;
+    ex H being strict Subgroup of G st the carrier of H = meet{A where
+    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
+    from GROUP_4:sch 1(A1);
+    hence thesis;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+@ %def -core_of_G
+
+\begin{voc}
+Before proving the $p$-core is characteristic, we need to tell Mizar
+there is a new token in town: [[-core_of_]] which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
+\end{voc}
+
+<<DICT/CHAR.VOC>>=
+O-core_of_
+@
+
+\begin{theorem}
+  Let $G$ be any finite group, $p\in\NN$ a prime number.
+  Then the $p$-core of $G$, $\pCore{p}{G}$, is a characteristic
+  subgroup.
+\end{theorem}
+
+\begin{proof}
+The proof boils down to what we would find in a textbook.
+We have abstracted away the argument to form Scheme~\ref{scheme:characteristic:results:meet-is-characteristic},
+which gives us the results.
+\end{proof}
+
+<<Theorem: $p$-Core is Characteristic>>=
+theorem Th45:
+  for G being finite Group
+  for p being prime Nat
+  holds p-core_of_G is characteristic
+proof
+  let G be finite Group;
+  let p be prime Nat;
+  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+
+  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
+  set MaxSubCarrs = {A where A is Subset of G :
+                     ex H being strict Subgroup of G
+                     st A = the carrier of H & P[H]};
+
+  A2: for phi being Automorphism of G
+  for P being strict Subgroup of G
+  st P[P]
+  holds P[Image(phi|P)] by Th22;
+
+  consider K being strict Subgroup of G such that
+  A4: the carrier of K = meet {A where A is Subset of G :
+      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
+  A5: K is characteristic
+  from MeetIsChar(A2,A1);
+  K = p-core_of_G by A4,Def7;
+  hence thesis by A5;
+end;
+@ %def Th45
+
+\begin{definition}
+Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
+a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
+also belongs to $\pi\ni p$, or if the group is trivial $G=\trivialGroup$.
+\end{definition}
+
+<<Definition: $\pi$-Group>>=
+:: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be finite Group;
+  attr IT is Pi-group means
+  :Def10:
+  (for p being prime Nat st p divides card IT holds p in Pi)
+  or (IT is trivial);
+end;
+@ %def Def10 Pi-group
+
+<<Theorem: Existence of $\pi$-Subgroup>>=
+theorem Th64:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  ex H being strict Subgroup of G
+  st H is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  take H = (1).G;
+  H is trivial;
+  hence H is Pi-group by Def10;
+end;
+@
+
+<<Register: $\pi$-group for finite group>>=
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for finite Group;
+  existence
+  proof
+    consider G being trivial Group such that not contradiction;
+    take G;
+    thus thesis by Def10;
+  end;
+end;
+@
+
+<<Definition: $\pi$-Core>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  func Pi-core_of_G -> strict Subgroup of G means
+  :Def11:
+  the carrier of it = meet {A where A is Subset of G :
+  ex H being strict Subgroup of G st A = the carrier of H &
+  H is Pi-group};
+  existence
+  proof
+    defpred PIG[Subgroup of G] means $1 is Pi-group;
+    A1: ex H being strict Subgroup of G st PIG[H] by Th64;
+    ex K being strict Subgroup of G
+    st the carrier of K = meet {A where A is Subset of G :
+    ex H being strict Subgroup of G st A = the carrier of H & PIG[H]}
+    from GROUP_4:sch 1(A1);
+    hence thesis;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+@ %def Def11 Pi-core_of_G
+
+<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
+theorem Th65:
+  for p being prime Nat
+  holds {p} is Subset of SetPrimes
+proof
+  let p be prime Nat;
+  for x being object st x in {p} holds x in SetPrimes
+  proof
+    let x be object;
+    assume A1: x in {p};
+    then A2: x = p by TARSKI:def 1;
+    p in SetPrimes by NEWTON:def 6;
+    hence thesis by A2;
+  end;
+  then {p} c= SetPrimes by TARSKI:def 3;
+  hence thesis;
+end;
+
+definition
+  let p be prime Nat;
+  redefine func {p} -> Subset of SetPrimes;
+  coherence by Th65;
+end;
+@ %def Th65
+
+<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
+theorem Th66:
+  for p being prime Nat
+  for G being finite Group
+  holds G is p-group iff G is {p}-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  thus G is p-group implies G is {p}-group
+  proof
+    assume B1: G is p-group;
+    thus G is {p}-group;
+::>                   *4
+  end;
+  thus G is {p}-group implies G is p-group
+  proof
+    assume B1: G is {p}-group;
+    thus G is p-group;
+::>                 *4
+  end;
+end;
+@ %def Th66
+
+<<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>=
+theorem Th67:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core_of_G = {p}-core_of_G
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  A1: the carrier of {p}-core_of_G c= the carrier of p-core_of_G;
+::>                                                            *4
+  the carrier of p-core_of_G c= the carrier of {p}-core_of_G;
+::>                                                        *4
+  then the carrier of p-core_of_G = the carrier of {p}-core_of_G by A1,XBOOLE_0:def 10;
+  hence thesis by GROUP_2:59;
+end;
+@ %def Th67
+
+<<Theorem: $\pCore{\pi}{G}$ is a $\pi$-Group>>=
+theorem Th68:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  holds Pi-core_of_G is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  thus Pi-core_of_G is Pi-group;
+::>                           *4
+end;
+@
+
+<<Theorem: $\pCore{p}{G}$ is a $p$-Group>>=
+theorem Th69:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core_of_G is p-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  {p}-core_of_G is {p}-group by Th68;
+  then {p}-core_of_G is p-group by Th66;
+  then p-core_of_G is p-group by Th67;
+  hence thesis;
+end;
+@
