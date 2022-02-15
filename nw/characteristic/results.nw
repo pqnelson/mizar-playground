@@ -1077,7 +1077,7 @@ We will prove $\varphi(C)\subset C$ and $\varphi(C)\supset C$.
 \end{proof}
 
 <<Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$>>=
-theorem Th46:
+theorem Th45:
   for phi being Automorphism of G
   holds phi .: commutators G = commutators G
 proof
@@ -1094,7 +1094,7 @@ proof
   then phi .: commutators G c= commutators G by TARSKI:def 3;
   hence commutators G = phi .: commutators G by P1,XBOOLE_0:def 10;
 end;
-@ %def Th46
+@ %def Th45
 
 \begin{proof}[{Proof step [$\varphi(\Commutators(G))\supset\Commutators(G)$]}.]
   Let $g\in\Commutators(G)$. Then consider $a,b\in G$ such that
@@ -1181,7 +1181,7 @@ If every $h\in H$ satisfies $\varphi(h)\in H$, then $\varphi(H)\subgroup H$.
 \end{theorem}
 
 <<Theorem: $\forall h\in H,\varphi(h)\in H$ implies $\varphi(H)\subgroup H$>>=
-theorem Th47:
+theorem Th46:
   for G being Group
   for phi being Automorphism of G
   for H being Subgroup of G
@@ -1215,7 +1215,7 @@ proof
   then the carrier of Image(phi|H) c= the carrier of H by GROUP_6:44;
   hence Image(phi|H) is Subgroup of H by GROUP_2:57;
 end;
-@ %def Th47
+@ %def Th46
 
 \begin{theorem}
 If $A\subset G$ is a nonempty subset such that, for any automorphism
@@ -1224,7 +1224,7 @@ subgroup $\langle A\rangle$ is a characteristic subgroup.
 \end{theorem}
 
 <<Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic>>=
-theorem Th48:
+theorem Th47:
   for G being Group
   for A being non empty Subset of G
   st (for phi being Automorphism of G
@@ -1331,28 +1331,28 @@ proof
       then phi.h in H by B2,C1;
       hence thesis;
     end;
-    hence Image(phi|H) is Subgroup of H by Th47;
+    hence Image(phi|H) is Subgroup of H by Th46;
   end;
   thus gr A is characteristic by A3,Th42;
 end;
-@ %def Th48
+@ %def Th47
 
 \begin{theorem}
 The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \end{theorem}
 
 <<Theorem: The derived subgroup is characteristic>>=
-theorem Th49:
+theorem Th48:
   G` is characteristic
 proof
   [.1_G,1_G.] in commutators G;
   then A1: commutators G <> {};
   for phi being Automorphism of G holds phi .: commutators G =
-  commutators G by Th46;
-  then gr commutators G is characteristic by A1,Th48;
+  commutators G by Th45;
+  then gr commutators G is characteristic by A1,Th47;
   hence thesis;
 end;
-@ %def Th49
+@ %def Th48
 
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
@@ -1360,7 +1360,7 @@ $\varphi\in\Aut(G)$, then $\varphi(aH)=\varphi(a)\varphi(H)$.
 \end{theorem}
 
 <<Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$>>=
-theorem Th50:
+theorem Th49:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1421,7 +1421,7 @@ proof
   then A2: (f.a) * (f .: H) c= f.:(a * H) by TARSKI:def 3;
   thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
 end;
-@ %def Th50
+@ %def Th49
 
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
@@ -1429,7 +1429,7 @@ $\varphi\in\Aut(G)$, then $\varphi(Ha)=\varphi(H)\varphi(a)$.
 \end{theorem}
 
 <<Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$>>=
-theorem Th51:
+theorem Th50:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1490,7 +1490,7 @@ proof
   then A2: (f .: H) * (f.a) c= f.:(H * a) by TARSKI:def 3;
   thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
 end;
-@ %def Th51
+@ %def Th50
 
 \begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
 If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
@@ -1499,7 +1499,7 @@ $\varphi(N)\normalSubgroup G$.
 \end{theorem}
 
 <<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>=
-theorem Th52:
+theorem Th51:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -1518,16 +1518,16 @@ proof
     f is Element of G;
     B1: phi.f = g by Th6;
     B2: f * N = N * f by GROUP_3:117;
-    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th50
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th49
                       .= g * H by B1,A1;
-    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th51
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th50
                       .= (phi .: N)*g by B1
                       .= H*g by A1;
     hence g * H = H * g by B2,B3,B4;
   end;
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
-@ %def Th52
+@ %def Th51
 
 \begin{theorem}
 Let $H\subgroup G$. Then $H$ is characteristic if and only if for any
@@ -1542,7 +1542,7 @@ Without strictness, we cannot have subgroup equality.
 \end{thm-remark}
 
 <<Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$>>=
-theorem Th53:
+theorem Th52:
   for G being Group
   for H being strict Subgroup of G
   holds H is characteristic iff
@@ -1590,12 +1590,12 @@ proof
         then phi.g in H by B1;
         hence phi.x in H;
       end;
-      hence Image(phi|H) is Subgroup of H by Th47;
+      hence Image(phi|H) is Subgroup of H by Th46;
     end;
     hence H is characteristic by Th42;
   end;
 end;
-@ %def Th53
+@ %def Th52
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are strict characteristic subgroups,
@@ -1603,7 +1603,7 @@ then $H\cap G$ is a characteristic subgroup.
 \end{theorem}
 
 <<Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic>>=
-theorem
+theorem Th53:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H /\ K is characteristic Subgroup of G
@@ -1619,13 +1619,13 @@ proof
     let x be Element of G;
     assume B1: x in H /\ K;
     then B2: x in H & x in K by GROUP_2:82;
-    then B3: phi.x in H by Th53;
-    phi.x in K by B2,Th53;
+    then B3: phi.x in H by Th52;
+    phi.x in K by B2,Th52;
     hence phi.x in H /\ K by B3, GROUP_2:82;
   end;
-  hence H /\ K is characteristic Subgroup of G by Th53;
+  hence H /\ K is characteristic Subgroup of G by Th52;
 end;
-@ %def Th54
+@ %def Th53
 
 \begin{theorem}
   If $H\subgroup G$ and $K\subgroup G$ are characteristic subgroups,
@@ -1638,7 +1638,7 @@ of $G$, then their join $\langle K_{i}\rangle_{i\in I}$.
 \end{thm-remark}
 
 <<Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic>>=
-theorem Th55:
+theorem Th54:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H "\/" K is characteristic Subgroup of G
@@ -1661,9 +1661,9 @@ proof
     B3: h in carr H and
     B4: k in carr K by GROUP_2:8;
     h in H by B3;
-    then B5: phi.h in H by Th53;
+    then B5: phi.h in H by Th52;
     k in K by B4;
-    then B6: phi.k in K by Th53;
+    then B6: phi.k in K by Th52;
     then phi.k in carr K & phi.h in carr H by B5;
     then phi.h * phi.k in carr H*carr K by GROUP_2:def 2, GROUP_4:def 8;
     then phi.(h*k) in carr H * carr K by GROUP_6:def 6;
@@ -1672,9 +1672,9 @@ proof
     hence phi.g in H "\/" K by GROUP_4:53;
   end;
 
-  hence H "\/" K is characteristic Subgroup of G by Th53;
+  hence H "\/" K is characteristic Subgroup of G by Th52;
 end;
-@ %def Th55
+@ %def Th54
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the set of
@@ -1683,7 +1683,7 @@ automorphisms of $G$.
 \end{theorem}
 
 <<Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable>>=
-theorem Th56:
+theorem Th55:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   for phi being Automorphism of G
@@ -1705,12 +1705,12 @@ proof
     B1: x = [.h,k.] and
     B2: h in H and
     B3: k in K by B0,GROUP_5:52;
-    phi.k in K & phi.h in H by B2,B3,Th53;
+    phi.k in K & phi.h in H by B2,B3,Th52;
     reconsider psi = phi" as Automorphism of G by GROUP_6:62;
     set a = psi.h;
     set b = psi.k;
-    B4: a in H by B2,Th53;
-    B5: b in K by B3,Th53;
+    B4: a in H by B2,Th52;
+    B5: b in K by B3,Th52;
     B6: psi.x = psi.([.h,k.]) by B1
     .= [.psi.h,psi.k.] by GROUP_6:34
     .= [.a,b.];
@@ -1738,9 +1738,9 @@ proof
     B4: h in H and
     B5: k in K by B2,GROUP_5:52;
     set a = phi.h;
-    B6: a in H by B4,Th53;
+    B6: a in H by B4,Th52;
     set b = phi.k;
-    B7: b in K by B5,Th53;
+    B7: b in K by B5,Th52;
     phi.x = phi.([. h,k .]) by B3
     .= [. phi.h, phi.k .] by GROUP_6:34;
     hence y in commutators(H,K) by B2,B6,B7,GROUP_5:52;
@@ -1748,7 +1748,7 @@ proof
   then phi .: commutators(H,K) c= commutators(H,K);
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
-@ %def Th56
+@ %def Th55
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator
@@ -1756,7 +1756,7 @@ subgroup $[H,K]$ is a characteristic subgroup.
 \end{theorem}
 
 <<Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic>>=
-theorem Th57:
+theorem Th56:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds [.H,K.] is characteristic Subgroup of G
@@ -1767,8 +1767,8 @@ proof
   A1: A is non empty Subset of G by GROUP_5:53;
   then reconsider A as non empty Subset of G;
   for phi being Automorphism of G
-  holds phi .: A = A by Th56;
-  then gr A is characteristic by A1, Th48;
+  holds phi .: A = A by Th55;
+  then gr A is characteristic by A1, Th47;
   hence [.H,K.] is characteristic Subgroup of G by GROUP_5:63;
 end;
-@ %def Th57
+@ %def Th56

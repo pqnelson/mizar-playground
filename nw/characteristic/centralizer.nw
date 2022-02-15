@@ -23,6 +23,8 @@
 
 <<Theorem: $\{x\}=\{y\}\iff x=y$>>
 
+<<Definition: Normalizer of group element>>
+
 <<Theorem: $h\in N_{G}(a)\iff a^{h}=a$>>
 
 @
@@ -189,7 +191,7 @@ $ag=ga$.
 \end{thm-remark}
 
 <<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>=
-theorem Th60:
+theorem Th59:
   for G being Group
   for A being Subset of G
   for g being Element of G
@@ -212,7 +214,7 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
-@ %def Th60
+@ %def Th59
 
 
 \begin{theorem}
@@ -221,7 +223,7 @@ end;
 \end{theorem}
 
 <<Theorem: $A\subset B\subset G\implies C_{G}(B)\subgroup C_{G}(A)$>>=
-theorem
+theorem Th60:
   for G being Group
   for A,B being Subset of G
   st A c= B
@@ -241,14 +243,14 @@ proof
       let a be Element of G;
       assume a in A;
       then a in B by A1;
-      hence g*a = a*g by B1,Th60;
+      hence g*a = a*g by B1,Th59;
     end;
-    then g is Element of Centralizer A by Th60;
+    then g is Element of Centralizer A by Th59;
     hence thesis;
   end;
   hence Centralizer B is Subgroup of Centralizer A by GROUP_2:58;
 end;
-@
+@ %def Th60
 
 \begin{definition}
 Let $G$ be a group, $H\subgroup G$ be a subgroup.
@@ -411,7 +413,7 @@ Let $A\subset G$ be a subset of a group. Then $A\subset C_{G}(C_{G}(A))$.
 \end{theorem}
 
 <<Theorem: $A\subset G\implies A\subset C_{G}(C_{G}(A))$>>=
-theorem
+theorem Th63:
   for G being Group
   for A being Subset of G
   holds A is Subset of Centralizer (Centralizer A)
@@ -427,14 +429,14 @@ proof
     assume B1: g in A;
     then reconsider g as Element of G by GROUP_2:40;
     for h being Element of G st h in H
-    holds g*h = h*g by B1,Th60;
+    holds g*h = h*g by B1,Th59;
     then g is Element of Centralizer H by Th62;
     hence thesis;
   end;
   then A c= the carrier of Centralizer H by TARSKI:def 3;
   hence A is Subset of Centralizer H;
 end;
-@
+@ %def Th63
 
 \begin{theorem}\label{thm:characteristic:centralizer:centralizer-of-char-group-is-char}
   Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
@@ -442,7 +444,7 @@ end;
 \end{theorem}
 
 <<Theorem: Centralizer of characteristic subgroups is characteristic>>=
-theorem Th63:
+theorem Th64:
   for G being Group
   for K being strict characteristic Subgroup of G
   holds (Centralizer K) is characteristic Subgroup of G
@@ -463,7 +465,7 @@ proof
     proof
       let k be Element of G;
       assume C1: k in K;
-      then C2: psi.k in K by Th53;
+      then C2: psi.k in K by Th52;
       set j = psi.k;
       C3: j in K by C2;
       then x*j = j*x by B1,Th62;
@@ -477,9 +479,9 @@ proof
     then y is Element of Centralizer K by Th62;
     hence thesis;
   end;
-  hence Centralizer K is characteristic Subgroup of G by Th53;
+  hence Centralizer K is characteristic Subgroup of G by Th52;
 end;
-@ %def Th63
+@ %def Th64
 
 \begin{definition}
 Let $G$ be a group, let $a\in G$ be any group element. Then the
@@ -644,7 +646,7 @@ proof
     consider H being strict Subgroup of G, a being Element of G such that
     C4: B = the carrier of H & a in A & H = Normalizer a by C3;
     g is Element of Centralizer A by Z2;
-    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th60;
+    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th59;
     then C5: g*a = a*g by C4;
     then C6: a |^ g = g" * a * g by GROUP_3:def 2
                    .= g" * (a * g) by GROUP_1:def 3
@@ -663,7 +665,7 @@ proof
     hence x in X by C2;
   end;
   hence x in meet Fam by A1,SETFAM_1:def 1;
-end;  
+end;
 @
 
 <<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>=
@@ -672,7 +674,7 @@ proof
   assume B1: x in meet Fam;
   then for X being set st X in Fam
   holds x in X by SETFAM_1:def 1;
-  
+
   B2: ex H being strict Subgroup of G st P[H]
   proof
     Fam <> {} by A1;
@@ -686,17 +688,17 @@ proof
     by C1;
     thus thesis by C3;
   end;
-  
+
   consider K being strict Subgroup of G such that
   B3: the carrier of K = meet Fam
   from GROUP_4:sch 1(B2);
-  
+
   B4: x in K by B1,B3;
   then reconsider g = x as Element of G by GROUP_2:42;
   B5: g in K by B4;
   then B6: for X being set st X in Fam
            holds g in X by B3,SETFAM_1:def 1;
-  
+
   B7: for a being Element of G st a in A
   holds g in Normalizer a
   proof
@@ -724,10 +726,10 @@ proof
          .= a * g by GROUP_1:def 4;
     hence g*a = a*g;
   end;
-  
-  then g is Element of Centralizer A by Th60;
+
+  then g is Element of Centralizer A by Th59;
   then g in Centralizer A;
   then x in Centralizer A;
   hence thesis;
 end;
-@ 
+@

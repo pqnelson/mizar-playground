@@ -51,10 +51,9 @@ environ
    FUNCT_2, NEWTON, PRALG_1, GROUP_7;
  theorems
    TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, CARD_1, RELAT_1,
-   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1,
+   SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1, CARD_3, PRALG_1, FINSEQ_1, FINSET_1, ZFMISC_1,
    GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2, NEWTON,
-   ZFMISC_1;
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, WELLORD2;
  schemes FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL;
 
 begin :: Preparatory Work
@@ -1126,6 +1125,7 @@ proof
 end;
 
 begin :: Characteristic Subgroups
+:: Dummit and Foote, Abstract Algebra, ch.4 section 4
 definition
   let G;
   let IT be Subgroup of G;
@@ -1589,57 +1589,7 @@ proof
   hence thesis by A4;
 end;
 
-definition
-  let G be finite Group;
-  let p be prime Nat;
-  func p-core_of_G -> strict Subgroup of G means
-  :Def7:
-  the carrier of it = meet{A where A is Subset of G :
-  ex P being strict Subgroup of G st A = the carrier of P &
-  P is_Sylow_p-subgroup_of_prime p};
-  existence
-  proof
-    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-    A1: ex P being strict Subgroup of G st SPS[P]
-    by GROUP_10:10;
-    ex H being strict Subgroup of G st the carrier of H = meet{A where
-    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
-    from GROUP_4:sch 1(A1);
-    hence thesis;
-  end;
-  uniqueness by GROUP_2:59;
-  correctness;
-end;
-
 theorem Th45:
-  for G being finite Group
-  for p being prime Nat
-  holds p-core_of_G is characteristic
-proof
-  let G be finite Group;
-  let p be prime Nat;
-  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
-
-  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
-  set MaxSubCarrs = {A where A is Subset of G :
-                     ex H being strict Subgroup of G
-                     st A = the carrier of H & P[H]};
-
-  A2: for phi being Automorphism of G
-  for P being strict Subgroup of G
-  st P[P]
-  holds P[Image(phi|P)] by Th22;
-
-  consider K being strict Subgroup of G such that
-  A4: the carrier of K = meet {A where A is Subset of G :
-      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
-  A5: K is characteristic
-  from MeetIsChar(A2,A1);
-  K = p-core_of_G by A4,Def7;
-  hence thesis by A5;
-end;
-
-theorem Th46:
   for phi being Automorphism of G
   holds phi .: commutators G = commutators G
 proof
@@ -1696,7 +1646,7 @@ proof
   hence commutators G = phi .: commutators G by P1,XBOOLE_0:def 10;
 end;
 
-theorem Th47:
+theorem Th46:
   for G being Group
   for phi being Automorphism of G
   for H being Subgroup of G
@@ -1731,7 +1681,7 @@ proof
   hence Image(phi|H) is Subgroup of H by GROUP_2:57;
 end;
 
-theorem Th48:
+theorem Th47:
   for G being Group
   for A being non empty Subset of G
   st (for phi being Automorphism of G
@@ -1838,23 +1788,23 @@ proof
       then phi.h in H by B2,C1;
       hence thesis;
     end;
-    hence Image(phi|H) is Subgroup of H by Th47;
+    hence Image(phi|H) is Subgroup of H by Th46;
   end;
   thus gr A is characteristic by A3,Th42;
 end;
 
-theorem Th49:
+theorem Th48:
   G` is characteristic
 proof
   [.1_G,1_G.] in commutators G;
   then A1: commutators G <> {};
   for phi being Automorphism of G holds phi .: commutators G =
-  commutators G by Th46;
-  then gr commutators G is characteristic by A1,Th48;
+  commutators G by Th45;
+  then gr commutators G is characteristic by A1,Th47;
   hence thesis;
 end;
 
-theorem Th50:
+theorem Th49:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1916,7 +1866,7 @@ proof
   thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
 end;
 
-theorem Th51:
+theorem Th50:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1978,7 +1928,7 @@ proof
   thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
 end;
 
-theorem Th52:
+theorem Th51:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -1997,9 +1947,9 @@ proof
     f is Element of G;
     B1: phi.f = g by Th6;
     B2: f * N = N * f by GROUP_3:117;
-    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th50
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th49
                       .= g * H by B1,A1;
-    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th51
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th50
                       .= (phi .: N)*g by B1
                       .= H*g by A1;
     hence g * H = H * g by B2,B3,B4;
@@ -2007,7 +1957,7 @@ proof
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
 
-theorem Th53:
+theorem Th52:
   for G being Group
   for H being strict Subgroup of G
   holds H is characteristic iff
@@ -2055,13 +2005,13 @@ proof
         then phi.g in H by B1;
         hence phi.x in H;
       end;
-      hence Image(phi|H) is Subgroup of H by Th47;
+      hence Image(phi|H) is Subgroup of H by Th46;
     end;
     hence H is characteristic by Th42;
   end;
 end;
 
-theorem
+theorem Th53:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H /\ K is characteristic Subgroup of G
@@ -2077,14 +2027,14 @@ proof
     let x be Element of G;
     assume B1: x in H /\ K;
     then B2: x in H & x in K by GROUP_2:82;
-    then B3: phi.x in H by Th53;
-    phi.x in K by B2,Th53;
+    then B3: phi.x in H by Th52;
+    phi.x in K by B2,Th52;
     hence phi.x in H /\ K by B3, GROUP_2:82;
   end;
-  hence H /\ K is characteristic Subgroup of G by Th53;
+  hence H /\ K is characteristic Subgroup of G by Th52;
 end;
 
-theorem Th55:
+theorem Th54:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H "\/" K is characteristic Subgroup of G
@@ -2107,9 +2057,9 @@ proof
     B3: h in carr H and
     B4: k in carr K by GROUP_2:8;
     h in H by B3;
-    then B5: phi.h in H by Th53;
+    then B5: phi.h in H by Th52;
     k in K by B4;
-    then B6: phi.k in K by Th53;
+    then B6: phi.k in K by Th52;
     then phi.k in carr K & phi.h in carr H by B5;
     then phi.h * phi.k in carr H*carr K by GROUP_2:def 2, GROUP_4:def 8;
     then phi.(h*k) in carr H * carr K by GROUP_6:def 6;
@@ -2118,10 +2068,10 @@ proof
     hence phi.g in H "\/" K by GROUP_4:53;
   end;
 
-  hence H "\/" K is characteristic Subgroup of G by Th53;
+  hence H "\/" K is characteristic Subgroup of G by Th52;
 end;
 
-theorem Th56:
+theorem Th55:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   for phi being Automorphism of G
@@ -2143,12 +2093,12 @@ proof
     B1: x = [.h,k.] and
     B2: h in H and
     B3: k in K by B0,GROUP_5:52;
-    phi.k in K & phi.h in H by B2,B3,Th53;
+    phi.k in K & phi.h in H by B2,B3,Th52;
     reconsider psi = phi" as Automorphism of G by GROUP_6:62;
     set a = psi.h;
     set b = psi.k;
-    B4: a in H by B2,Th53;
-    B5: b in K by B3,Th53;
+    B4: a in H by B2,Th52;
+    B5: b in K by B3,Th52;
     B6: psi.x = psi.([.h,k.]) by B1
     .= [.psi.h,psi.k.] by GROUP_6:34
     .= [.a,b.];
@@ -2176,9 +2126,9 @@ proof
     B4: h in H and
     B5: k in K by B2,GROUP_5:52;
     set a = phi.h;
-    B6: a in H by B4,Th53;
+    B6: a in H by B4,Th52;
     set b = phi.k;
-    B7: b in K by B5,Th53;
+    B7: b in K by B5,Th52;
     phi.x = phi.([. h,k .]) by B3
     .= [. phi.h, phi.k .] by GROUP_6:34;
     hence y in commutators(H,K) by B2,B6,B7,GROUP_5:52;
@@ -2187,7 +2137,7 @@ proof
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
 
-theorem Th57:
+theorem Th56:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds [.H,K.] is characteristic Subgroup of G
@@ -2198,8 +2148,8 @@ proof
   A1: A is non empty Subset of G by GROUP_5:53;
   then reconsider A as non empty Subset of G;
   for phi being Automorphism of G
-  holds phi .: A = A by Th56;
-  then gr A is characteristic by A1, Th48;
+  holds phi .: A = A by Th55;
+  then gr A is characteristic by A1, Th47;
   hence [.H,K.] is characteristic Subgroup of G by GROUP_5:63;
 end;
 
@@ -2235,7 +2185,7 @@ A2: the carrier of H = meet {A where A is Subset of G() :
   hence thesis by A2;
 end;
 
-theorem Th58:
+theorem Th57:
   for G being Group
   for H1,H2 being Subgroup of G
   st H1 is Subgroup of H2
@@ -2306,7 +2256,7 @@ proof
     let N be strict normal Subgroup of G();
     assume B1: P[N];
     then H is Subgroup of N by A4;
-    then H |^ a is Subgroup of N |^ a by Th58;
+    then H |^ a is Subgroup of N |^ a by Th57;
     hence H |^ a is Subgroup of N by GROUP_3:def 13;
   end;
   A6: for N being strict normal Subgroup of G() st carr N in Fam
@@ -2337,7 +2287,7 @@ proof
     assume B1: carr N in Fam;
     then P[N] by A6;
     then H is Subgroup of N by A4;
-    then H |^ a is Subgroup of N |^ a by Th58;
+    then H |^ a is Subgroup of N |^ a by Th57;
     hence H |^ a is Subgroup of N by GROUP_3:def 13;
   end;
   A8: for a being Element of G()
@@ -2400,7 +2350,7 @@ proof
 end;
 
 
-theorem Th59:
+theorem Th58:
   for G being Group
   for X being finite set
   st X <> {} & (for A being Element of X
@@ -2527,12 +2477,12 @@ definition
   let A be Subset of G;
   func Centralizer A -> strict Subgroup of G means
   :Def8:
-  the carrier of it = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
+  the carrier of it = { b where b is Element of G :
+                        for a being Element of G st a in A holds a*b = b*a };
   existence
   proof
-    set Car = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
+    set Car = {b where b is Element of G :
+               for a being Element of G st a in A holds a*b = b*a };
     C1: 1_G in Car
     proof
       for a being Element of G st a in A holds 1_G*a = a*1_G
@@ -2608,16 +2558,18 @@ definition
   uniqueness
   proof
     let H1,H2 be strict Subgroup of G such that
-A1: the carrier of H1 = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a } and
-A2: the carrier of H2 = {b where b is Element of G : for a being Element
-  of G st a in A holds a*b = b*a };
-     for g being Element of G holds g in H1 iff g in H2 by A1,A2;
-     hence thesis;
+A1: the carrier of H1 = {b where b is Element of G : for a being Element of G
+                                                     st a in A
+                                                     holds a*b = b*a } and
+A2: the carrier of H2 = {b where b is Element of G : for a being Element of G
+                                                     st a in A
+                                                     holds a*b = b*a };
+    for g being Element of G holds g in H1 iff g in H2 by A1,A2;
+    hence thesis;
   end;
 end;
 
-theorem Th60:
+theorem Th59:
   for G being Group
   for A being Subset of G
   for g being Element of G
@@ -2641,7 +2593,7 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
   hence thesis;
 end;
 
-theorem
+theorem Th60:
   for G being Group
   for A,B being Subset of G
   st A c= B
@@ -2661,12 +2613,11 @@ proof
       let a be Element of G;
       assume a in A;
       then a in B by A1;
-      hence g*a = a*g by B1,Th60;
+      hence g*a = a*g by B1,Th59;
     end;
-    then g is Element of Centralizer A by Th60;
+    then g is Element of Centralizer A by Th59;
     hence thesis;
   end;
-
   hence Centralizer B is Subgroup of Centralizer A by GROUP_2:58;
 end;
 
@@ -2688,7 +2639,8 @@ proof
   let G be Group;
   let H be Subgroup of G;
   set A = carr H;
-  set Car = {b where b is Element of G : for a being Element of G st a in H holds b*a=a*b};
+  set Car = {b where b is Element of G : for a being Element of G st a in H
+                                         holds b*a=a*b};
 
   A1: the carrier of Centralizer A = {b where b is Element of G : for a
   being Element of G st a in A holds b*a=a*b} by Def8;
@@ -2769,14 +2721,6 @@ A1: the carrier of Centralizer H = {b where b is Element of G : for a
   hence thesis;
 end;
 
-theorem Th62b:
-  for G being Group
-  for H being Subgroup of G
-  for g being Element of G
-  holds (for a being Element of G st a in H holds g*a = a*g) iff
-        g in H by Th62;
-::>             *4,4
-
 theorem Th63:
   for G being Group
   for A being Subset of G
@@ -2793,7 +2737,7 @@ proof
     assume B1: g in A;
     then reconsider g as Element of G by GROUP_2:40;
     for h being Element of G st h in H
-    holds g*h = h*g by B1,Th60;
+    holds g*h = h*g by B1,Th59;
     then g is Element of Centralizer H by Th62;
     hence thesis;
   end;
@@ -2801,206 +2745,7 @@ proof
   hence A is Subset of Centralizer H;
 end;
 
-::theorem GROUP_3:Th129:
-::  x in Normalizer A iff ex h st x = h & A |^ h = A
-
-definition
-  let G be Group;
-  let a be Element of G;
-  redefine func {a} -> Subset of G;
-  coherence
-  proof
-    for x being object st x in {a}
-    holds x in the carrier of G
-    proof
-      let x be object;
-      assume Z3: x in {a};
-      then x = a by TARSKI:def 1;
-      hence thesis;
-    end;
-    then {a} c= the carrier of G by TARSKI:def 3;
-    hence {a} is Subset of G;
-  end;
-end;
-
-definition
-  let G be Group;
-  let a be Element of G;
-  func Normalizer a -> strict Subgroup of G equals
-  Normalizer{a};
-  correctness;
-end;
-
-Lm111:
-for x,y being object
-holds {x} = {y} iff x = y
-proof
-  let x,y be object;
-  thus {x} = {y} implies x = y
-  proof
-    assume {x} = {y};
-    then {x} c= {y} by XBOOLE_0:def 10;
-    hence x = y by ZFMISC_1:3;
-  end;
-  thus x = y implies {x} = {y};
-end;
-
-theorem Th66:
-  for G being Group
-  for a,x being Element of G
-  holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
-proof
-  let G be Group;
-  let a,x be Element of G;
-  A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a} by GROUP_3:129;
-  then A2: x in Normalizer{a} iff {a} |^ x = {a};
-  A3: {a} |^ x = {a} |^ {x} by GROUP_3:def 3
-  .= {a |^ x} by GROUP_3:37;
-  then {a |^ x} = {a} iff a |^ x = a by Lm111;
-  then x in Normalizer{a} iff a |^ x = a by A2,A3;
-  hence thesis by A1;
-end;
-
-theorem Th67:
-  for G being Group
-  for A being non empty Subset of G
-  holds the carrier of Centralizer A = meet {B where B is Subset of G :
-  ex H being strict Subgroup of G st B = the carrier of H &
-  (ex a being Element of G st a in A & H = Normalizer a)}
-proof
-  let G be Group;
-  let A be non empty Subset of G;
-  defpred P[strict Subgroup of G] means (ex a being Element of G st a in A & $1 = Normalizer a);
-  set Fam = {B where B is Subset of G :
-  ex H being strict Subgroup of G st B = the carrier of H & P[H]};
-  A1: Fam <> {}
-  proof
-    consider a being object such that
-    B1: a in A
-    by XBOOLE_0:def 1;
-    reconsider a as Element of G by B1,GROUP_2:42;
-    consider H being strict Subgroup of G such that
-    B2: H = Normalizer a;
-    carr H in Fam by B1,B2;
-    hence thesis;
-  end;
-  for x being object
-  st x in the carrier of Centralizer A
-  holds x in meet Fam
-  proof
-    let x be object;
-    assume Z1: x in the carrier of Centralizer A;
-    then Z2: x in Centralizer A;
-    then x in G by GROUP_2:40;
-    then reconsider g = x as Element of G;
-    for X being set st X in Fam
-    holds x in X
-    proof
-      let X be set;
-      assume C1: X in Fam;
-      then consider B being Subset of G such that
-      C2: B = X and
-      C3: ex H being strict Subgroup of G
-          st B = the carrier of H & (ex a being Element of G st a in A & H = Normalizer a);
-      consider H being strict Subgroup of G, a being Element of G such that
-      C4: B = the carrier of H & a in A & H = Normalizer a by C3;
-      g is Element of Centralizer A by Z2;
-      then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th60;
-      then C5: g*a = a*g by C4;
-      then C6: a |^ g = g" * a * g by GROUP_3:def 2
-      .= g" * (a * g) by GROUP_1:def 3
-      .= g" * (g * a) by C5
-      .= (g" * g) * a by GROUP_1:def 3
-      .= (1_G) * a by GROUP_1:def 5
-      .= a by GROUP_1:def 4;
-      then {a} |^ g = {a} |^ {g} by GROUP_3:def 3
-      .= {a |^ g} by GROUP_3:37
-      .= {a} by C6;
-      then g in Normalizer a by GROUP_3:129;
-      then g in H by C4;
-      then x in H;
-      then x in the carrier of H by C4;
-      then x in B by C4;
-      hence x in X by C2;
-    end;
-    hence x in meet Fam by A1,SETFAM_1:def 1;
-  end;
-  then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
-
-  for x being object
-  st x in meet Fam
-  holds x in the carrier of Centralizer A
-  proof
-    let x be object;
-    assume B1: x in meet Fam;
-    then for X being set st X in Fam
-    holds x in X by SETFAM_1:def 1;
-
-    B2: ex H being strict Subgroup of G st P[H]
-    proof
-      Fam <> {} by A1;
-      then Fam is non empty;
-      then consider X being object such that
-      C1: X in Fam by A1, XBOOLE_0:def 1;
-      consider B being Subset of G such that
-      C2: B = X and
-      C3: ex H being strict Subgroup of G
-          st B = the carrier of H & P[H]
-      by C1;
-      thus thesis by C3;
-    end;
-
-    consider K being strict Subgroup of G such that
-    B3: the carrier of K = meet Fam
-    from GROUP_4:sch 1(B2);
-
-    B4: x in K by B1,B3;
-    then reconsider g = x as Element of G by GROUP_2:42;
-    B5: g in K by B4;
-    then B6: for X being set st X in Fam
-    holds g in X by B3,SETFAM_1:def 1;
-
-    B7: for a being Element of G st a in A
-    holds g in Normalizer a
-    proof
-      let a be Element of G;
-      assume C1: a in A;
-      set H = Normalizer a;
-      P[H] by C1;
-      then carr H in Fam;
-      then g in carr H by B6;
-      hence g in Normalizer a;
-    end;
-    for a being Element of G st a in A holds g*a = a*g
-    proof
-      let a be Element of G;
-      assume C1: a in A;
-      then g in Normalizer a by B7;
-      then consider h being Element of G such that
-      C2: g = h & a |^ h = a
-      by Th66;
-      C3: a = g" * a * g by C2,GROUP_3:def 2
-           .= g" * (a * g) by GROUP_1:def 3;
-      g * a = g * (g" * (a * g)) by C3
-           .= (g * g") * (a * g) by GROUP_1:def 3
-           .= 1_G * (a * g) by GROUP_1:def 5
-           .= a * g by GROUP_1:def 4;
-      hence g*a = a*g;
-    end;
-
-    then g is Element of Centralizer A by Th60;
-    then g in Centralizer A;
-    then x in Centralizer A;
-    hence thesis;
-  end;
-
-  then meet Fam c= the carrier of Centralizer A;
-  hence thesis by A2, XBOOLE_0:def 10;
-end;
-:: ( ex a being Element of G st a in A & H = Normalizer a)};
-
-
-theorem Th63:
+theorem Th64:
   for G being Group
   for K being strict characteristic Subgroup of G
   holds (Centralizer K) is characteristic Subgroup of G
@@ -3021,7 +2766,7 @@ proof
     proof
       let k be Element of G;
       assume C1: k in K;
-      then C2: psi.k in K by Th53;
+      then C2: psi.k in K by Th52;
       set j = psi.k;
       C3: j in K by C2;
       then x*j = j*x by B1,Th62;
@@ -3035,104 +2780,65 @@ proof
     then y is Element of Centralizer K by Th62;
     hence thesis;
   end;
-  hence Centralizer K is characteristic Subgroup of G by Th53;
+  hence Centralizer K is characteristic Subgroup of G by Th52;
 end;
 
+definition
+  let G be Group;
+  let a be Element of G;
+  redefine func {a} -> Subset of G;
+  coherence
+  proof
+    for x being object st x in {a}
+    holds x in the carrier of G
+    proof
+      let x be object;
+      assume Z3: x in {a};
+      then x = a by TARSKI:def 1;
+      hence thesis;
+    end;
+    then {a} c= the carrier of G by TARSKI:def 3;
+    hence {a} is Subset of G;
+  end;
+end;
 
-begin :: Residues and Radicals
-scheme :: Sch 3
-  XResidualIsChar{G() -> Group, P[Group]} :
-ex K being strict Subgroup of G()
-st the carrier of K = meet {A where A is Subset of G() :
-                            ex H being strict normal Subgroup of G()
-                            st A = the carrier of H & P[G()./.H]} &
-   K is characteristic
-provided
-A1: for phi being Automorphism of G()
-    for N being strict normal Subgroup of G()
-    st P[G()./.N]
-    holds ex H being strict normal Subgroup of G()
-          st H = Image(phi|N) & P[G()./.H] and
-A2: ex H being strict normal Subgroup of G() st P[G()./.H]
+theorem Th65:
+  for x,y being object
+  holds {x} = {y} iff x = y
 proof
-  defpred P2[Group] means ex N being strict normal Subgroup of G()
-                          st the multMagma of N = the multMagma of $1 &
-                             P[G() ./. N];
-  set Fam = {A where A is Subset of G() :
-             ex H being strict normal Subgroup of G()
-             st A = the carrier of H & P[G()./.H]};
-  set Fam2 = {A where A is Subset of G() :
-              ex H being strict Subgroup of G()
-              st A = the carrier of H & P2[H]};
-
-  A3: for phi being Automorphism of G()
-  for H being strict Subgroup of G()
-  st P2[H]
-  holds P2[Image(phi|H)]
+  let x,y be object;
+  thus {x} = {y} implies x = y
   proof
-    let phi be Automorphism of G();
-    let H be strict Subgroup of G();
-    assume B1: P2[H];
-
-    then consider N being strict normal Subgroup of G() such that
-    B2: the multMagma of N = the multMagma of H and
-    B3: P[G()./.N];
-
-    P[G()./.N] by B3;
-    then P2[N];
-    then consider N2 being strict normal Subgroup of G() such that
-    B4: N2 = Image(phi|N) & P[G()./.N2]
-    by A1;
-    P2[(Image(phi|N))] by B4,Th52;
-    hence P2[Image(phi|H)] by B2;
+    assume {x} = {y};
+    then {x} c= {y} by XBOOLE_0:def 10;
+    hence x = y by ZFMISC_1:3;
   end;
-  A4: ex H being strict Subgroup of G() st P2[H] by A2;
+  thus x = y implies {x} = {y};
+end;
 
-  consider K being strict Subgroup of G() such that
-  A5: the carrier of K = meet Fam2 and
-  A6: K is characteristic
-  from MeetIsChar(A3,A4);
-  take K;
-  for A being object
-  holds A in Fam iff A in Fam2
-  proof
-    let A be object;
-    thus A in Fam implies A in Fam2
-    proof
-      assume B1: A in Fam;
-      then consider A0 being Subset of G() such that
-      B2: A = A0 and
-      B3: ex H being strict normal Subgroup of G()
-      st A0 = the carrier of H & P[G()./.H];
-      consider H being strict normal Subgroup of G() such that
-      B4: A0 = the carrier of H and
-      B5: P[G()./.H]
-      by B3;
-      B6: A0 = carr H & H is strict Subgroup of G() & P2[H] by B4,B5;
-      then ex H2 being strict Subgroup of G() st A0 = carr H2 & P2[H2];
-      then A0 in Fam2;
-      hence thesis by B2;
-    end;
-    thus A in Fam2 implies A in Fam
-    proof
-      assume B1: A in Fam2;
-      then consider A0 being Subset of G() such that
-      B2: A = A0 and
-      B3: ex H being strict Subgroup of G()
-      st A0 = the carrier of H & P2[H];
-      consider H being strict Subgroup of G() such that
-      B4: A0 = the carrier of H and
-      B5: P2[H]
-      by B3;
-      B6: ex N being strict normal Subgroup of G() st N=H & P[G()./.N] by B5;
-      then A0 in Fam by B4;
-      hence thesis by B2;
-    end;
-  end;
-  then Fam = Fam2 by TARSKI:2;
-  then the carrier of K = meet Fam by A5;
-  hence thesis by A5,A6;
+definition
+  let G be Group;
+  let a be Element of G;
+  func Normalizer a -> strict Subgroup of G equals
+  Normalizer{a};
+  correctness;
+end;
+
+theorem Th66:
+  for G being Group
+  for a,x being Element of G
+  holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
+proof
+  let G be Group;
+  let a,x be Element of G;
+  A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a}
+  by GROUP_3:129;
+  then A2: x in Normalizer{a} iff {a} |^ x = {a};
+  A3: {a} |^ x = {a} |^ {x} by GROUP_3:def 3
+              .= {a |^ x} by GROUP_3:37;
+  then {a |^ x} = {a} iff a |^ x = a by Th65;
+  then x in Normalizer{a} iff a |^ x = a by A2,A3;
+  hence thesis by A1;
 end;
 
 
-::> 4: This inference is not accepted
