@@ -2947,7 +2947,7 @@ proof
 end;
 
 :: Gorenstein, Finite Groups, Theorem 2.1.3
-theorem
+theorem Th71:
   for G being finite Group
   for N being strict normal Subgroup of G
   st card N, index N are_coprime
@@ -3029,5 +3029,47 @@ proof
     hence Image(phi|N) = N;
   end;
   thus N is characteristic Subgroup of G by A5,Def6;
+end;
+
+theorem Th72:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for phi being Automorphism of G
+  st Image(phi|N) = N
+  ex sigma being Automorphism of G./.N
+  st (for x being Element of G holds sigma.(x*N) = (phi.x)*N);
+::>                                                         *4
+
+:: Gorenstein, Finite Groups, Theorem 2.1.2 (iv)
+theorem
+  for G being finite Group
+  for K being strict characteristic Subgroup of G
+  for H being strict Subgroup of G
+  st K is Subgroup of H & H./.(H,K)`*` is characteristic Subgroup of G./.K
+  holds H is characteristic Subgroup of G
+proof
+  let G be finite Group;
+  let K be strict characteristic Subgroup of G;
+  let H be strict Subgroup of G;
+  assume A1: K is Subgroup of H;
+  assume A2: H./.(H,K)`*` is characteristic Subgroup of G./.K;
+  for phi being Automorphism of G
+  holds Image(phi|H) is Subgroup of H
+  proof
+    let phi be Automorphism of G;
+    Image(phi|K) = K by Def6;
+    then consider sigma being Automorphism of G./.K such that
+    B1: for x being Element of G holds sigma.(x*K) = (phi.x)*K
+    by Th72;
+    consider J being strict characteristic Subgroup of G./.K such that
+    B2: J = (H./.(H,K)`*`) by A2;
+    Image(sigma|J) = J by B2,Def6;
+    for h being Element of G st h in H holds phi.h in H;
+::>                                                   *4
+    thus Image(phi|H) is Subgroup of H;
+::>                                  *4
+  end;
+
+  hence H is characteristic Subgroup of G by Th42;
 end;
 ::> 4: This inference is not accepted
