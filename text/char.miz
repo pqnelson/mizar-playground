@@ -2901,9 +2901,15 @@ proof
   assume A2: b divides c;
   assume A3: a*b,c are_coprime;
   then a*b gcd c = 1 by INT_2:def 3;
-  then for m being Nat st m divides a*b & m divides c holds m divides 1 by NAT_D:def 5;
+  then A4: for m being Nat st m divides a*b & m divides c holds m divides 1
+  by NAT_D:def 5;
 
+  consider q being Integer such that
+  A5: c = b*q by A2,INT_1:def 3;
 
+  for m being Nat st m divides a*b & m divides b*q holds m divides 1 by A4,A5;
+  then b=1;
+::>      *4
   thus b=1;
 ::>      *4
 end;
