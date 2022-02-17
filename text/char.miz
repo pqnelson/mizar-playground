@@ -2886,11 +2886,6 @@ proof
   thus thesis by A4, INT_1:def 3;
 end;
 
-:: nat_d :Def5:
-:: func k gcd n means
-::   :Def5:
-::   it divides k & it divides n &
-::   for m being Nat st m divides k & m divides n holds m divides it;
 theorem Th69:
   for a,b,c being Nat
   st b<>0 & b divides c & a*b,c are_coprime
@@ -2906,40 +2901,63 @@ proof
   hence b=1 by INT_2:13;
 end;
 
-
 theorem Th70:
+  for G1,G2 being finite Group
+  for N1 being normal Subgroup of G1
+  for N2 being normal Subgroup of G2
+  st G1./.N1, G2./.N2 are_isomorphic
+  holds card(N2)*card(G1)=card(N1)*card(G2)
+proof
+  let G1,G2 be finite Group;
+  let N1 be normal Subgroup of G1;
+  let N2 be normal Subgroup of G2;
+  assume A1: G1./.N1, G2./.N2 are_isomorphic;
+  then card(G1./.N1) = card(G2./.N2) by GROUP_6:73
+                    .= index N2 by GROUP_2:134,GROUP_6:27;
+  then A2: index N1 = index N2 by GROUP_2:134,GROUP_6:27;
+  set k = index N1;
+  A3: k = index N2 by A2;
+  A4: card(G1) = card(N1) * index(N1) by GROUP_2:147
+              .= card(N1) * k;
+  A5: card(G2) = card(N2) * index(N2) by GROUP_2:147
+              .= card(N2) * k by A3;
+  then card(N1)*card(G2) = card(N1)*card(N2)*k
+                        .= card(N2)*card(N1)*k
+                        .= card(N2)*(card(N1)*k)
+                        .= card(N2)*card(G1) by A4;
+  hence thesis;
+end;
+
+theorem Th71:
   for G being finite Group
   for K,N being strict normal Subgroup of G
   for m,d being Nat
-  st m = card N & d = card(K /\ N)
+  st m = card N & m = card K & d = card(K /\ N)
   holds d*card(N "\/" K) = m*m
 proof
   let G be finite Group;
   let K,N be strict normal Subgroup of G;
   let m,d be Nat;
   assume A1: m = card N;
-  assume A2: d = card(K /\ N);
-  set J = N /\ K;
-  J is strict Subgroup of G & J is normal Subgroup of G by GROUP_2:def 10,GROUP_3:115;
-  then reconsider J as strict normal Subgroup of G;
+  assume A2: m = card K;
+  assume A3: d = card(K /\ N);
   reconsider B=K as Subgroup of G;
-::  consider J being strict normal Subgroup of G such that
-::  A3: J = N /\ K by GROUP_3:115;
+  A4: card(B) = m by A2;
+
+  N is Subgroup of B "\/" N by GROUP_4:60;
+  then A5: (B "\/" N,N)`*` = the multMagma of N by GROUP_6:def 1;
+
   (B "\/" N)./.(B "\/" N,N)`*`, B./.(B /\ N) are_isomorphic by GROUP_6:81;
-  card(B /\ N)*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`);
-::>                                                           *4
-
-  N is normal Subgroup of G;
-  then card(G./.N) = Index N by GROUP_6:26;
-
-  ::A3: (N "\/" K)./.(N "\/" K,K)`*`, N./.J are_isomorphic by GROUP_6:81;
-::  A3: (N "\/" K)./.(N "\/" K, K)`*`, N./.(N /\ K) are_isomorphic by GROUP_6:81;
-  thus d*card(N "\/" K) = m*m;
-::>                         *4
+  then card(B /\ N)*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by Th70;
+  then d*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by A3
+                       .= card(B)*card(N) by A5
+                       .= card(B)*m by A1
+                       .= m*m by A4;
+  hence d*card(N "\/" K) = m*m;
 end;
 
 :: Gorenstein, Finite Groups, Theorem 2.1.3
-theorem Th71:
+theorem Th72:
   for G being finite Group
   for N being strict normal Subgroup of G
   st card N, index N are_coprime
@@ -2989,7 +3007,7 @@ proof
         hence thesis by GROUP_2:59;
       end;
       then m = card N & d = card(K /\ N) by A2,B11;
-      then d*card(N "\/" K) = m*m by Th70;
+      then d*card(N "\/" K) = m*m by B1,Th71;
       then d*card(N "\/" K) = m*(d*q) by B21
       .= m*d*q
       .= d*m*q
@@ -3023,7 +3041,7 @@ proof
   thus N is characteristic Subgroup of G by A5,Def6;
 end;
 
-theorem Th72:
+theorem Th73:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -3052,7 +3070,7 @@ proof
     Image(phi|K) = K by Def6;
     then consider sigma being Automorphism of G./.K such that
     B1: for x being Element of G holds sigma.(x*K) = (phi.x)*K
-    by Th72;
+    by Th73;
     consider J being strict characteristic Subgroup of G./.K such that
     B2: J = (H./.(H,K)`*`) by A2;
     Image(sigma|J) = J by B2,Def6;
