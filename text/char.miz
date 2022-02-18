@@ -12,7 +12,7 @@
 
 environ
 
- vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS, QC_LANG1,
+ vocabularies MOD_4, CHAR, CARD_3, RLVECT_1, UPROOTS, QC_LANG1, RLSUB_1,
    RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1, FINSEQ_1,
    FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, EQREL_1,
@@ -3050,36 +3050,504 @@ theorem Th73:
   st (for x being Element of G holds sigma.(x*N) = (phi.x)*N);
 ::>                                                         *4
 
+theorem Th74:
+  for G being finite Group
+  for H being strict characteristic Subgroup of G
+  for K being strict Subgroup of G
+  st H is Subgroup of K
+  holds H is normal Subgroup of K;
+::>                             *4
 :: Gorenstein, Finite Groups, Theorem 2.1.2 (iv)
 theorem
   for G being finite Group
-  for K being strict characteristic Subgroup of G
-  for H being strict Subgroup of G
-  st K is Subgroup of H & H./.(H,K)`*` is characteristic Subgroup of G./.K
-  holds H is characteristic Subgroup of G
+  for H being strict characteristic Subgroup of G
+  for K being strict Subgroup of G
+  st H is Subgroup of K &
+  K./.(K,H)`*` is characteristic Subgroup of G./.H
+  holds K is characteristic Subgroup of G
 proof
   let G be finite Group;
-  let K be strict characteristic Subgroup of G;
-  let H be strict Subgroup of G;
-  assume A1: K is Subgroup of H;
-  assume A2: H./.(H,K)`*` is characteristic Subgroup of G./.K;
+  let H be strict characteristic Subgroup of G;
+  let K be strict Subgroup of G;
+  assume A1: H is Subgroup of K;
+  assume A2: K./.(K,H)`*` is characteristic Subgroup of G./.H;
+  A3: (K,H)`*` = H by A1,GROUP_6:def 1;
+  then A5: carr((K,H)`*`) = carr(H);
+  A4: H is normal Subgroup of K by A1,Th74;
   for phi being Automorphism of G
-  holds Image(phi|H) is Subgroup of H
+  for k being Element of G st k in K
+  holds phi.k in K
   proof
     let phi be Automorphism of G;
-    Image(phi|K) = K by Def6;
-    then consider sigma being Automorphism of G./.K such that
-    B1: for x being Element of G holds sigma.(x*K) = (phi.x)*K
+    let k be Element of G;
+    assume B1: k in K;
+    Image(phi|H) = H by Def6;
+    then consider sigma being Automorphism of G./.H such that
+    B2: for x being Element of G holds sigma.(x*H) = (phi.x)*H
     by Th73;
-    consider J being strict characteristic Subgroup of G./.K such that
-    B2: J = (H./.(H,K)`*`) by A2;
-    Image(sigma|J) = J by B2,Def6;
-    for h being Element of G st h in H holds phi.h in H;
-::>                                                   *4
-    thus Image(phi|H) is Subgroup of H;
-::>                                  *4
+    consider J being strict characteristic Subgroup of G./.H such that
+    B3: J = (K./.(K,H)`*`) by A2;
+    B4: for j being Element of G./.H st j in J holds sigma.j in J by Th52;
+    Image(sigma|J) = J by Def6;
+
+    B5: for k1 being Element of G holds k1 in K iff k1*H in J
+    proof
+      let k1 be Element of G;
+      thus k1 in K implies k1*H in J
+      proof
+        assume C1: k1 in K;
+        then reconsider k2=k1 as Element of K;
+        C2: k2*((K,H)`*`) in J by B3, GROUP_2:def 15;
+        C3: k1 = k2;
+        C4: k2*((K,H)`*`) = k2*carr(((K,H)`*`));
+        for x being object holds x in k2*carr((K,H)`*`) iff x in k1*carr(H)
+        proof
+          let x be object;
+          thus x in k2*carr((K,H)`*`) implies x in k1*carr(H)
+          proof
+            assume Z1: x in k2*carr((K,H)`*`);
+            K is Group &
+            k2 is Element of K & (K,H)`*` is normal Subgroup of K by GROUP_6:def 1;
+            then x in k2*((K,H)`*`) iff
+                 ex g being Element of K st (x = k2*g & g in (K,H)`*`)
+            by GROUP_2:103;
+            then consider huh being Element of K such that
+            Z2: x = k2*huh & huh in (K,H)`*` by Z1; :: , GROUP_2:103, GROUP_6:def 1;
+            huh in (K,H)`*` by Z2;
+            then Z3: huh in H by A3;
+            then reconsider huh2=huh as Element of G by GROUP_2:42;
+            set x2 = k1*huh2;
+            k1=k2 by C3;
+            then k2*huh=k1*huh2;
+::>                           *4
+            x = k1*huh2 by C3,Z2,Z3;
+::>                      *4
+            hence thesis;
+::>                    *4
+          end;
+          assume Z2: x in k1*carr(H);
+          thus x in k2*carr((K,H)`*`);
+::>                                 *4
+        end;
+
+        then k2*carr(((K,H)`*`)) = k1*carr(H) by TARSKI:2
+        .= k1*H;
+        hence k1*H in J by A3,C2;
+      end;
+      thus k1*H in J implies k1 in K
+      proof
+        assume C1: k1*H in J;
+        thus k1 in K;
+::>                *4
+      end;
+    end;
+    then B6: k*H in J by B1;
+    then reconsider kH = k*H as Element of G./.H by GROUP_2:42;
+    kH in J by B6;
+    then sigma.(kH) in J by B4;
+    then sigma.(k*H) in J & sigma.(k*H) = (phi.k)*H by B1,B2,B4;
+    then (phi.k)*H in J by B4,B5;
+    then phi.k in K by B5;
+    hence thesis;
   end;
 
-  hence H is characteristic Subgroup of G by Th42;
+  hence K is characteristic Subgroup of G by Th52;
+end;
+
+theorem
+  for G being Group
+  for H being Subgroup of G
+  holds H is Subgroup of Centralizer H iff H is commutative Group
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  thus H is Subgroup of Centralizer H implies H is commutative Group
+  proof
+    assume A1: H is Subgroup of Centralizer H;
+    A2: for g,h being Element of G st g in H & h in H holds g*h=h*g
+    proof
+      let g,h be Element of G;
+      assume B1: g in H;
+      assume B2: h in H;
+      g in Centralizer H by B1,A1,GROUP_2:40;
+      hence g*h=h*g by B2,Th62;
+    end;
+    for g,h being Element of H holds g*h=h*g
+    proof
+      let g,h be Element of H;
+      B1: g in H & h in H;
+      reconsider g1=g, h1=h as Element of G by GROUP_2:42;
+      g1 in H & h1 in H by B1;
+      then B2: g1*h1=h1*g1 by A2;
+      g*h = g1*h1 by GROUP_2:43
+         .= h1*g1 by B2
+         .= h*g by GROUP_2:43;
+      hence thesis;
+    end;
+    hence thesis by GROUP_1:def 12;
+  end;
+
+  thus H is commutative Group implies H is Subgroup of Centralizer H
+  proof
+    assume A1: H is commutative Group;
+    A2: for g,h being Element of H holds g*h=h*g by A1,GROUP_1:def 12;
+    A3: for g,h being Element of G st g in H & h in H holds g*h=h*g
+    proof
+      let g,h be Element of G;
+      assume B1: g in H;
+      assume B2: h in H;
+      reconsider g1=g,h1=h as Element of H by B1,B2;
+      g*h = g1*h1 by GROUP_2:43
+         .= h1*g1 by A2
+         .= h*g by GROUP_2:43;
+      hence g*h=h*g;
+    end;
+    for g being Element of G st g in H holds g in Centralizer H
+    proof
+      let g be Element of G;
+      assume B1: g in H;
+      for a being Element of G st a in H holds g*a = a*g by B1,A3;
+      then g is Element of Centralizer H by Th62;
+      hence g in Centralizer H;
+    end;
+    hence thesis by GROUP_2:58;
+  end;
+end;
+
+theorem
+  for G being Group
+  holds Centralizer (Omega).G = center G
+proof
+  let G be Group;
+  A1: for g being Element of G holds g in Centralizer (Omega).G iff g in center G
+  proof
+    let g be Element of G;
+    thus g in Centralizer (Omega).G implies g in center G
+    proof
+      assume B1: g in Centralizer (Omega).G;
+      then B2: for a being Element of G st a in (Omega).G holds g*a = a*g by Th62;
+      for a being Element of G holds g*a = a*g
+      proof
+        let a be Element of G;
+        a in G;
+        then a in (Omega).G by GROUP_2:def 8;
+        hence g*a = a*g by B2;
+      end;
+      hence g in center G by GROUP_5:77;
+    end;
+
+    thus g in center G implies g in Centralizer (Omega).G
+    proof
+      assume B1: g in center G;
+      then for b being Element of G holds g*b = b*g by GROUP_5:77;
+      then for b being Element of G st b in (Omega).G holds g*b = b*g
+      by GROUP_2:def 8;
+      then g is Element of Centralizer (Omega).G by Th62;
+      hence thesis;
+    end;
+
+  end;
+  hence Centralizer (Omega).G = center G by GROUP_2:60;
+end;
+
+:: Th62:
+:: for g being Element of G
+:: holds (for a being Element of G st a in H holds g*a = a*g) iff
+::        g is Element of Centralizer H
+Lm8:
+  for G being Group
+  for H being Subgroup of G
+  holds Centralizer H is strict Subgroup of Normalizer H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  set Z = Centralizer H;
+  for g being Element of G st g in Centralizer H holds g in Normalizer H
+  proof
+    let g be Element of G;
+    assume A1: g in Centralizer H;
+    then g is Element of Centralizer H;
+    then A2: for a being Element of G st a in H holds g*a = a*g by Th62;
+    A3: for a being Element of G st a in H holds a = (g")*a*g
+    proof
+      let a be Element of G;
+      assume B1: a in H;
+      then B2: g*a = a*g by A2;
+      then g" * (a * g) = g" * (g*a)
+                       .= (g" * g)*a by GROUP_1:def 3
+                       .= (1_G)*a by GROUP_1:def 5
+                       .= a by GROUP_1:def 4;
+      hence a = (g")*a*g by GROUP_1:def 3;
+    end;
+    for a being Element of G holds a in H iff a in (H |^ g)
+    proof
+      let a be Element of G;
+      thus a in H implies a in H |^ g
+      proof
+        assume B1: a in H;
+        then B2: a = a |^ g by A3, GROUP_3:def 2;
+        hence a in H |^ g by B1, GROUP_3:58;
+      end;
+      thus a in H |^ g implies a in H
+      proof
+        assume B1: a in H |^ g;
+        then consider h being Element of G such that
+        B2: a = h |^ g & h in H
+        by GROUP_3:58;
+        (h |^ g) = a |^ g by B2,A3;
+        then B3: h = a by GROUP_3:16;
+        hence a in H by B2;
+      end;
+    end;
+    then A4: the multMagma of H = the multMagma of (H |^ g) by GROUP_2:60;
+    then A5: carr H = carr(H |^ g);
+    the carrier of H |^ g = carr(H) |^ g by GROUP_3:def 6;
+    then A6: carr H = carr(H) |^ g by A5;
+    then ex h being Element of G st h=g & carr(H) |^ h = carr H;
+    then g in Normalizer carr(H) by GROUP_3:129;
+    hence g in Normalizer H;
+  end;
+  hence Centralizer H is strict Subgroup of Normalizer H by GROUP_2:58;
+end;
+
+:: GROUP_3:134
+:: for x being set
+:: for G being Group
+:: for H being strict Subgroup of G holds
+:: ( x in Normalizer H iff ex h being Element of G st
+:: ( x = h & H |^ h = H ) )
+theorem
+  for G being Group
+  for H being Subgroup of G
+  holds Centralizer H is normal Subgroup of Normalizer H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  A1: Centralizer H is strict Subgroup of Normalizer H by Lm8;
+  then reconsider Z=Centralizer H as strict Subgroup of Normalizer H;
+  A2: carr(Z) = carr(Centralizer H);
+
+  A3: for z,n,h being Element of G
+  st z in Centralizer H & n in Normalizer H & h in H
+  holds h |^ (z |^ n) = h
+  proof
+    let z,n,h be Element of G;
+    assume B1: z in Centralizer H;
+    assume B2: n in Normalizer H;
+    assume B3: h in H;
+    n in Normalizer (carr H) by B2, GROUP_3:def 15;
+    then ex a being Element of G st a=n & carr(H) |^ a = carr(H) by GROUP_3:129;
+    then B4: carr(H) |^ n = carr(H);
+    h in carr(H) by B3;
+    then B5: h |^ n in H by B4,GROUP_3:41;
+    thus h |^ (z |^ n) = h;
+::>                      *4
+  end;
+
+  A4: for z,n,h being Element of G
+  st z in Centralizer H & n in Normalizer H & h in H
+  holds (z |^ n)*h = h*(z |^ n)
+  proof
+    let z,n,h be Element of G;
+    assume Z1: z in Centralizer H;
+    assume Z2: n in Normalizer H;
+    assume Z3: h in H;
+    then h |^ (z |^ n) = h by Z1,Z2,A3;
+    hence (z |^ n)*h = h*(z |^ n) by GROUP_3:22;
+  end;
+
+  A5: for n being Element of G st n in Normalizer H
+  holds (for z being Element of G st z in Centralizer H holds (z |^ n) in Centralizer H)
+  proof
+    let n be Element of G;
+    assume Z1: n in Normalizer H;
+    let z be Element of G;
+    assume Z2: z in Centralizer H;
+    set g = z |^ n;
+    for h being Element of G st h in H holds g*h = h*g by Z1,Z2,A4;
+    then g is Element of Centralizer H by Th62;
+    hence thesis;
+  end;
+
+  A6: for n being Element of G st n in Normalizer H
+  holds (Centralizer H) is Subgroup of (Centralizer H) |^ n
+  proof
+    let n be Element of G;
+    assume B1: n in Normalizer H;
+    for z being Element of G st z in Centralizer H
+    holds z in (Centralizer H) |^ n
+    proof
+      let z be Element of G;
+      assume B2: z in Centralizer H;
+      n" in Normalizer H by B1,GROUP_2:51;
+      then (z |^ n") in Centralizer H by B1,B2,A5;
+      then (z |^ n") |^ n in (Centralizer H) |^ n by GROUP_3:58;
+      hence z in (Centralizer H) |^ n by GROUP_3:25;
+    end;
+    hence (Centralizer H) is Subgroup of (Centralizer H) |^ n by GROUP_2:58;
+  end;
+  A7: for n being Element of G st n in Normalizer H
+  holds the carrier of (Centralizer H) c= the carrier of ((Centralizer H) |^ n)
+  proof
+    let n be Element of G;
+    assume Z1: n in Normalizer H;
+    then (Centralizer H) is Subgroup of (Centralizer H) |^ n by A6;
+    hence thesis by GROUP_2:def 5;
+  end;
+  A8: for n being Element of G st n in Normalizer H
+  holds (Centralizer H)*n c= n*(Centralizer H)
+  proof
+    let n be Element of G;
+    assume Z1: n in Normalizer H;
+    then Z2: (Centralizer H) is Subgroup of (Centralizer H) |^ n by A6;
+    Z3: n" in Normalizer H by Z1,GROUP_2:51;
+
+    Z4: (Centralizer H) |^ n" * n = n"" * (Centralizer H) * n" * n by GROUP_3:59
+                                 .= n""*(Centralizer H)*(n" * n) by GROUP_2:34
+                                 .= n""*(Centralizer H)*1_G by GROUP_1:def 5
+                                 .= n"" * (Centralizer H) by GROUP_2:37
+                                 .= n * (Centralizer H);
+
+    Centralizer H is Subgroup of (Centralizer H) |^ n" by Z3, A6;
+    then (Centralizer H)*n c= n*(Centralizer H) by Z4,GROUP_3:6;
+
+    hence thesis;
+  end;
+  A9: for n being Element of G st n in Normalizer H
+  holds (Centralizer H)*n = n*(Centralizer H);
+::>                                         *4
+  (Centralizer H) is normal Subgroup of Normalizer H
+  proof
+    reconsider Z=Centralizer H as strict Subgroup of Normalizer H by Lm8;
+    Z3: Centralizer H = Z;
+    set N = Normalizer H;
+    for a being Element of N
+    holds the carrier of (Z |^ a) = the carrier of Z
+    proof
+      let a be Element of N;
+      reconsider a1 = a as Element of G by GROUP_2:42;
+      the carrier of (Z |^ a) = the carrier of ((Centralizer H) |^ a1);
+::>                                                                  *4
+      thus the carrier of (Z |^ a) = the carrier of Z;
+::>                                                 *4
+    end;
+    then for a being Element of N
+    holds (Z |^ a) = the multMagma of Z by GROUP_2:59;
+    then Z is normal Subgroup of N by GROUP_3:def 13;
+    hence thesis by Z3,GROUP_2:59;
+  end;
+  hence thesis by Lm8;
+end;
+
+
+theorem
+  for G being Group
+  for N being normal Subgroup of G
+  holds Centralizer N is normal Subgroup of G
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  A1: for x,n being Element of G st x in Centralizer N & n in N holds x*n = n*x
+  proof
+    let x,n be Element of G;
+    assume B1: x in Centralizer N;
+    assume B2: n in N;
+    x is Element of Centralizer N by B1;
+    hence x*n = n*x by B1,B2,Th62;
+  end;
+
+  A2: for g,n being Element of G st n in N holds n |^ g in N
+  proof
+    let g,n be Element of G;
+    assume B1: n in N;
+    N is normal Subgroup of G;
+    then the multMagma of N = the multMagma of (N |^ g) by GROUP_3:def 13;
+    then B2: the carrier of N = the carrier of (N |^ g) by GROUP_3:def 13;
+    n |^ g in N |^ g by B1,GROUP_3:58;
+    then n |^ g in the carrier of (N |^ g);
+    then n |^ g in the carrier of N by B2;
+    hence thesis;
+  end;
+
+  A3: for g,x,n being Element of G st x in Centralizer N & n in N
+  holds (x |^ g)*n = n*(x |^ g)
+  proof
+    let g,x,n be Element of G;
+    assume B1: x in Centralizer N;
+    assume B2: n in N;
+    consider n2 being Element of G such that
+    B3: n2 = g * n * g";
+    B4: n2 = n |^ g" by B3,GROUP_3:22;
+    then B5: n2 in N by B2,A2;
+    x is Element of Centralizer N by B1;
+    then x * n2 = n2 * x by B5,Th62;
+    then (x * n2) |^ g = (n2 * x) |^ g
+                      .= (n2 |^ g) * (x |^ g) by GROUP_3:23;
+    then (x |^ g) * (n2 |^ g) = (n2 |^ g) * (x |^ g) by GROUP_3:23
+                             .= n * (x |^ g) by B4,GROUP_3:25;
+    then (x |^ g) * n = n * (x |^ g) by B4,GROUP_3:25;
+    hence thesis;
+  end;
+
+  A4: for g,z being Element of G st z in Centralizer N holds z |^ g in Centralizer N
+  proof
+    let g,z be Element of G;
+    assume Z1: z in Centralizer N;
+    then for n being Element of G st n in N holds
+    (z |^ g)*n = n*(z |^ g) by A3;
+    then (z |^ g) is Element of Centralizer N by Th62;
+    hence z |^ g in Centralizer N;
+  end;
+
+
+  for g being Element of G holds (Centralizer N) |^ g = Centralizer N
+  proof
+    let g be Element of G;
+
+    B1: for z being Element of G st z in Centralizer N
+    holds z |^ g in Centralizer N by A4;
+
+    for z being Element of G
+    holds z |^ g in (Centralizer N) |^ g iff z |^ g in (Centralizer N)
+    proof
+      let z be Element of G;
+      thus z |^ g in (Centralizer N) |^ g implies z |^ g in (Centralizer N)
+      proof
+        assume B3: z |^ g in (Centralizer N) |^ g;
+        then consider g3 being Element of G such that
+        B4: z |^ g = g3 |^ g and
+        B5: g3 in Centralizer N
+        by GROUP_3:58;
+        z = g3 by B4,GROUP_3:16;
+        then z in Centralizer N by B4,B5;
+        hence z |^ g in (Centralizer N) by B1;
+      end;
+      assume Z4: z |^ g in (Centralizer N);
+      then (z |^ g) |^ g" in (Centralizer N) by A4;
+      then z in Centralizer N by GROUP_3:25;
+      hence z |^ g in (Centralizer N) |^ g by GROUP_3:58;
+    end;
+    for z being Element of G
+    holds z in (Centralizer N) |^ g iff z in (Centralizer N)
+    proof
+      let z be Element of G;
+      hereby
+        assume z in (Centralizer N) |^ g;
+        then (z |^ g") in ((Centralizer N) |^ g) |^ g" by GROUP_3:58;
+        then (z |^ g") in Centralizer N by GROUP_3:62;
+        then (z |^ g") |^ g in Centralizer N by A4;
+        hence z in (Centralizer N) by GROUP_3:25;
+      end;
+      assume z in (Centralizer N);
+      then (z |^ g") in (Centralizer N) by A4;
+      then (z |^ g") |^ g in (Centralizer N) |^ g by GROUP_3:58;
+      hence z in (Centralizer N) |^ g by GROUP_3:25;
+    end;
+
+    hence (Centralizer N) |^ g = Centralizer N by GROUP_2:60;
+  end;
+  hence Centralizer N is normal Subgroup of G by GROUP_3:def 13;
 end;
 ::> 4: This inference is not accepted
+::> 51: Invalid conclusion
+::> 396: Formula expected
