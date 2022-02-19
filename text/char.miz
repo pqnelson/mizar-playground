@@ -27,15 +27,15 @@ environ
    SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
    XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
    BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
-   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, GROUP_7, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON;
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, PRALG_1, GROUP_7, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, GROUP_6;
  notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
    FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
    ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, ARYTM_2, ARYTM_3, INT_2,
    FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
    BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
-   GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
-   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7;
+   GROUP_3, GROUP_4, GROUP_5, REALSET1, NAT_D, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, PRALG_1, GROUP_7, GROUP_6;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
    ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
@@ -3041,22 +3041,309 @@ proof
   thus N is characteristic Subgroup of G by A5,Def6;
 end;
 
+theorem Th73a:
+  for G1,G2,G3 being Group
+  for f1 being Homomorphism of G1,G2
+  for f2 being Homomorphism of G2,G3
+  for A being Subgroup of G1
+  holds the multMagma of f2 .: (f1 .: A) = the multMagma of ((f2 * f1) .: A);
+::>                                                                        *4
+
 theorem Th73:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
   st Image(phi|N) = N
   ex sigma being Automorphism of G./.N
-  st (for x being Element of G holds sigma.(x*N) = (phi.x)*N);
-::>                                                         *4
+  st (for x being Element of G holds sigma.(x*N) = (phi.x)*N)
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let phi be Automorphism of G;
+  assume A1: Image(phi|N) = N;
+  defpred P[set,set] means ex a being Element of G st $1 = a*N & $2 = (phi.a)*N;
+  A2: for x being Element of G./.N ex y being Element of G./.N st P[x,y]
+  proof
+    let x be Element of G./.N;
+    x in Cosets N;
+    then consider a being Element of G such that
+    B1: x = a*N by GROUP_2:def 15;
+    (phi.a)*N in Cosets N by GROUP_2:def 15;
+    then consider y being Element of G./.N such that
+    B2: y = (phi.a)*N;
+    take y;
+    thus P[x,y] by B1,B2;
+  end;
+
+  consider sigma being Function of G./.N, G./.N such that
+  A3: for x being Element of G./.N holds P[x, sigma.x]
+  from FUNCT_2:sch 3(A2);
+
+  A4: for a being Element of G holds sigma.(a*N) = (phi.a)*N
+  proof
+    let a be Element of G;
+    B0: dom sigma = the carrier of G./.N by FUNCT_2:def 1;
+    B1: a*N in Cosets N by GROUP_2:def 15;
+    then consider x being Element of G./.N such that
+    B2: x = a*N;
+
+    P[x, sigma.x] by A3;
+    then consider b being Element of G such that
+    B3: x = b*N & sigma.x = (phi.b)*N;
+    B4: a*N = b*N by B2,B3;
+    then B6: b" * a in N by GROUP_2:114;
+    consider n being Element of G such that
+    B7: n = b" * a & n in N by B6;
+
+    b*n = b*(b" * a) by B7
+    .= (b * b") * a by GROUP_1:def 3
+    .= 1_G * a by GROUP_1:def 5
+    .= a by GROUP_1:def 4;
+    then B8: b*n = a;
+
+    dom phi = the carrier of G & n in N by B7, FUNCT_2:def 1;
+    then phi.n in phi .: (the carrier of N) by FUNCT_1:def 6;
+    then phi.n in the carrier of (phi .: N) by GRSOLV_1:8;
+    then phi.n in Image(phi|N) by GRSOLV_1:def 3;
+    then B9: phi.n in N by A1;
+    B10: phi.n * N = carr N by B9, GROUP_2:113;
+    phi.a * N = phi.(b * n) * N by B8
+    .= (phi.b * phi.n) * N by GROUP_6:def 6
+    .= phi.b * (phi.n * N) by GROUP_2:105
+    .= phi.b * N by B10
+    .= sigma.x by B3;
+    hence thesis by B2;
+  end;
+
+  for x,y being Element of G./.N holds sigma.(x*y) = sigma.x * sigma.y
+  proof
+    let x,y be Element of G./.N;
+    P[x, sigma.x] by A3;
+    then consider a being Element of G such that
+    B1: x = a*N & sigma.x = (phi.a)*N;
+    P[y, sigma.y] by A3;
+    then consider b being Element of G such that
+    B2: y = b*N & sigma.y = (phi.b)*N;
+    B3: for g1,g2 being Element of G holds (g1*N)*(g2*N) = g1*g2*N
+    proof
+      let g1,g2 be Element of G;
+      (g1*N)*(g2*N) = (g1 * N) * (N * g2) by GROUP_3:117
+                   .= g1 * N * N * g2 by GROUP_3:11
+                   .= g1 * (N*N) * g2 by GROUP_4:45
+                   .= g1 * N * g2 by GROUP_2:76
+                   .= g1 * (N * g2) by GROUP_2:106
+                   .= g1 * (g2 * N) by GROUP_3:117
+                   .= g1 * g2 * N by GROUP_2:105;
+      hence thesis;
+    end;
+
+    B4: x * y = @x * @y by GROUP_6:def 3
+             .= (a * N) * (b * N) by B1,B2
+             .= a * b * N by B3;
+
+    B5: (sigma.x) * (sigma.y) = phi.(a*b) * N
+    proof
+      sigma.x * sigma.y = @(sigma.x) * @(sigma.y) by GROUP_6:def 3
+                       .= ((phi.a)*N) * ((phi.b) * N) by B1,B2
+                       .= (phi.a) * (phi.b) * N by B3
+                       .= phi.(a*b) * N by GROUP_6:def 6;
+      hence thesis;
+    end;
+    sigma.(x * y) = sigma.(a * b * N) by B1,B2,B4
+                 .= phi.(a*b) * N by A4
+                 .= sigma.x * sigma.y by B5;
+    hence sigma.(x*y) = sigma.x * sigma.y;
+  end;
+
+  then reconsider sigma as Homomorphism of G./.N, G./.N by GROUP_6:def 6;
+  sigma is bijective
+  proof
+     :: phi.n in N;
+    BB1: for x being Element of G holds x*N in Ker sigma iff x in N
+    proof
+      let x be Element of G;
+      x*N in Left_Cosets N by GROUP_2:def 15;
+      then reconsider z = x*N as Element of G./.N by GROUP_6:def 4;
+      B1: z = x*N;
+      B2: dom phi = the carrier of G by FUNCT_2:def 1;
+      B3: (phi").(phi.x) = x by FUNCT_2:26;
+      thus x*N in Ker sigma implies x in N
+      proof
+        assume Z1: (x*N) in Ker sigma;
+        then z in Ker sigma;
+        then sigma.z = 1_(G./.N) by GROUP_6:41;
+        then Z2: sigma.(x*N) = 1_(G./.N) by GROUP_6:41
+                            .= carr N by GROUP_6:24;
+        (phi.x)*N = sigma.(x*N) by A4,B1
+                 .= carr N by Z2;
+        then Z3: phi.x in N by GROUP_2:113;
+        then phi.x in Image(phi|N) by A1;
+        then Z33: phi.x in phi .: N by GRSOLV_1:def 3;
+        Z4: phi" is Automorphism of G by GROUP_6:62;
+        then Z5: dom (phi") = the carrier of G by FUNCT_2:def 1;
+        then phi.x in dom (phi") by B2,Z3;
+        then (phi").(phi.x) in phi" .: (the carrier of N) by Z3,Z4,B2,FUNCT_1:def 6;
+        then Z6: x in phi" .: (the carrier of N) by B3;
+        consider psi being Automorphism of G such that
+        Z7: psi = phi" and
+        Z8: the multMagma of Image(phi|Image(psi|N)) = the multMagma of N
+        by Th18;
+        reconsider i = id the carrier of G as Automorphism of G by GROUP_6:38;
+        the carrier of G <> {} & phi is onto;
+        then Z7a: psi * phi = id the carrier of G by Z7,FUNCT_2:29,FUNCT_2:60;
+        dom psi = the carrier of G by FUNCT_2:def 1;
+        then phi.x in dom psi by Z3,GROUP_2:39;
+        then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by Z33,FUNCT_1:def 6;
+        then psi.(phi.x) in the carrier of (psi .: (phi .: N)) by GRSOLV_1:8;
+        then psi.(phi.x) in psi .: (phi .: N);
+        then psi.(phi.x) in (psi * phi) .: N by Th73a;
+        then (phi").(phi.x) in (psi * phi) .: N by Z7;
+        then x in (psi * phi) .: N by B3;
+        then x in i .: N by Z7a;
+        then x in the carrier of (i .: N);
+        then x in i .: (the carrier of N) by GRSOLV_1:8;
+        then Z8: x in (id the carrier of G) .: (the carrier of N);
+        the carrier of N is Subset of the carrier of G by GROUP_2:def 5;
+        then x in (the carrier of N) by Z8,FUNCT_1:92;
+        hence x in N;
+      end;
+      thus x in N implies x*N in Ker sigma
+      proof
+        assume Z1: x in N;
+        then x * N = carr N by GROUP_2:113;
+        then Z2: x * N = 1_(G./.N) by GROUP_6:24;
+        then sigma.(x*N) = 1_(G./.N) by GROUP_6:31;
+        hence x*N in Ker sigma by Z2,GROUP_6:41;
+      end;
+    end;
+    for x being Element of G./.N holds x in Ker sigma iff x in (1).(G./.N)
+    proof
+      let x be Element of G./.N;
+      thus x in Ker sigma implies x in (1).(G./.N)
+      proof
+        assume Z1: x in Ker sigma;
+        x in G./.N;
+        then consider g being Element of G such that
+        Z2: x = g*N by GROUP_2:def 15;
+        g*N in Ker sigma by Z1,Z2;
+        then g in N by BB1;
+        then g*N = carr N by GROUP_2:113;
+        then Z3: g*N = 1_(G./.N) by GROUP_6:24;
+        then g*N in {1_(G./.N)} by TARSKI:def 1;
+        then g*N in (1).(G./.N) by GROUP_2:def 7;
+        hence x in (1).(G./.N) by Z2;
+      end;
+      thus x in (1).(G./.N) implies x in Ker sigma
+      proof
+        assume Z1: x in (1).(G./.N);
+        then x in the carrier of (1).(G./.N);
+        then x in {1_(G./.N)} by GROUP_2:def 7;
+        then x = 1_(G./.N) by TARSKI:def 1;
+        then sigma.x = 1_(G./.N) by GROUP_6:31;
+        hence x in Ker sigma by GROUP_6:41;
+      end;
+    end;
+
+    then Ker sigma = (1).(G./.N) by GROUP_2:61;
+    hence sigma is one-to-one by GROUP_6:56;
+
+    for y being Element of G./.N holds y in Image sigma
+    proof
+      let y be Element of G./.N;
+      y in G./.N;
+      then consider b being Element of G such that
+      B2: y = b*N by GROUP_2:def 15;
+      reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+      psi" = phi by Th5;
+      consider a being Element of G such that
+      B3: a = psi.b;
+      a*N in Cosets N by GROUP_2:def 15;
+      then a*N in G./.N;
+      then consider x being Element of G./.N such that
+      B4: x = a*N;
+      a = (phi").b by B3;
+      then phi.a = phi.((phi").b)
+      .= b by Th6;
+      then B5: phi.a = b;
+      sigma.x = sigma.(a*N) by B4
+      .= (phi.a)*N by A4
+      .= b*N by B5
+      .= y by B2;
+      then B6: y = sigma.x;
+      then y in Image sigma by GROUP_6:45;
+      hence thesis;
+    end;
+    then Image sigma = G./.N by GROUP_2:62;
+    hence sigma is onto by GROUP_6:57;
+  end;
+  then reconsider sigma as Automorphism of G./.N;
+  take sigma;
+  let x be Element of G;
+  thus sigma.(x*N) = (phi.x)*N by A4;
+end;
+
 
 theorem Th74:
   for G being finite Group
   for H being strict characteristic Subgroup of G
   for K being strict Subgroup of G
   st H is Subgroup of K
-  holds H is normal Subgroup of K;
-::>                             *4
+  holds H is normal Subgroup of K
+proof
+  let G be finite Group;
+  let H be strict characteristic Subgroup of G;
+  let K be strict Subgroup of G;
+  assume A1: H is Subgroup of K;
+  H is normal Subgroup of G;
+  then A2: Ker (nat_hom H) = H by GROUP_6:43;
+  then A3: for g being Element of G
+  holds g in Ker (nat_hom H) iff g in H by GROUP_2:60;
+
+  reconsider R = Ker ((nat_hom H)|K) as strict Subgroup of K;
+
+  A4: for k being Element of K
+  holds k in H iff k in Ker ((nat_hom H)|K)
+  proof
+    let k be Element of K;
+    reconsider g=k as Element of G by GROUP_2:42;
+    B2: g = k;
+    then B4: g in K;
+    thus k in H implies k in Ker ((nat_hom H)|K)
+    proof
+      assume B1: k in H;
+      B3: g in H by B1;
+      then B4: g in K by A1;
+      g is Element of G;
+      then g in Ker (nat_hom H) iff g in H by A3;
+      then (nat_hom H).g = 1_(G./.H) by B3,GROUP_6:41;
+      then ((nat_hom H)|K).g = 1_(G./.H) by B4,Th2;
+      then ((nat_hom H)|K).k = 1_(G./.H) by B1,GRSOLV_1:def 2,GROUP_6:41;
+      then k in Ker ((nat_hom H)|K) by GROUP_6:41;
+      hence thesis;
+    end;
+    thus k in Ker ((nat_hom H)|K) implies k in H
+    proof
+      assume Z1: k in Ker ((nat_hom H)|K);
+      then Z2: g in Ker ((nat_hom H)|K) by B2;
+      then ((nat_hom H)|K).g = (nat_hom H).g by B4,Th2;
+      then (nat_hom H).g = 1_(G./.H) by Z2,GROUP_6:41;
+      then g in Ker (nat_hom H) by GROUP_6:41;
+      then g in H by GROUP_6:43;
+      hence k in H by B2;
+    end;
+
+  end;
+  reconsider H1=H as strict Subgroup of K by A1;
+  for k being Element of K holds k in H1 iff k in R
+  proof
+    let k be Element of K;
+    thus k in H1 implies k in R by A4;
+    thus k in R implies k in H1 by A4;
+  end;
+  then the multMagma of R = the multMagma of H1 by GROUP_2:60;
+  hence thesis;
+end;
+
 :: Gorenstein, Finite Groups, Theorem 2.1.2 (iv)
 theorem
   for G being finite Group
@@ -3549,5 +3836,3 @@ proof
   hence Centralizer N is normal Subgroup of G by GROUP_3:def 13;
 end;
 ::> 4: This inference is not accepted
-::> 51: Invalid conclusion
-::> 396: Formula expected
