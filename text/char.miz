@@ -3465,27 +3465,90 @@ proof
             then reconsider huh2=huh as Element of G by GROUP_2:42;
             set x2 = k1*huh2;
             k1=k2 by C3;
-            then k2*huh=k1*huh2;
-::>                           *4
-            x = k1*huh2 by C3,Z2,Z3;
-::>                      *4
-            hence thesis;
-::>                    *4
+            then k2*huh=k1*huh2 by GROUP_2:43;
+            x = k1*huh2 by C3,Z2,Z3,GROUP_2:43;
+            hence thesis by Z1,C3,Z3,GROUP_2:27;
           end;
           assume Z2: x in k1*carr(H);
-          thus x in k2*carr((K,H)`*`);
-::>                                 *4
+          then consider h1 being Element of G such that
+          Z3: x = k1*h1 & h1 in carr(H) by GROUP_2:27;
+          the multMagma of ((K,H)`*`) = the multMagma of H by A1, GROUP_6:def 1;
+          then Z4: the carrier of H = the carrier of ((K,H)`*`) by GROUP_6:def 1;
+          h1 in carr H by Z3;
+          then Z5: h1 in carr((K,H)`*`) by Z4,GROUP_6:def 1;
+          then h1 in carr(H) by Z4,GROUP_6:def 1;
+          Z6: h1 in H by Z3;
+          then reconsider h2=h1 as Element of K by A1,GROUP_2:42;
+          reconsider H1=H as normal Subgroup of K by A1,A4;
+          Z7: k1*h1 = k2*h2 by GROUP_2:43;
+          then Z8: x = k2*h2 by Z3;
+          (K,H)`*` is normal Subgroup of K by GROUP_6:def 1;
+          then the multMagma of ((K,H)`*`) = the multMagma of H by A1,GROUP_6:def 1;
+          then Z11: the carrier of H = the carrier of ((K,H)`*`) by GROUP_6:def 1;
+          Z9: carr H1 = carr H;
+          then the carrier of H1 = the carrier of H;
+          then the carrier of H1 = the carrier of ((K,H)`*`) by Z4;
+          then carr H1 = carr((K,H)`*`);
+          then Z10: carr H1 = carr((K,H)`*`) by Z11;
+          then k2*carr(H1) = k2*carr((K,H)`*`);
+          h2 in H1 by Z6,Z9;
+          then k2*h2 in k2*carr(H1) by C3,Z5,Z7,GROUP_2:27;
+          then x in k2*carr(H1) by Z8;
+          then x in k2*carr((K,H)`*`) by Z9,Z11;
+          then x in k2*carr((K,H)`*`);
+          hence x in k2*carr((K,H)`*`);
         end;
 
         then k2*carr(((K,H)`*`)) = k1*carr(H) by TARSKI:2
-        .= k1*H;
+                                .= k1*H;
         hence k1*H in J by A3,C2;
       end;
       thus k1*H in J implies k1 in K
       proof
         assume C1: k1*H in J;
-        thus k1 in K;
-::>                *4
+        :: B3: J = (K./.(K,H)`*`)
+        set x = k1*H;
+        C2: x in J by C1;
+        then x in (K./.(K,H)`*`) by B3,C2;
+        then consider a being Element of K such that
+        C3: x = a*(K,H)`*` & x = ((K,H)`*`)*a by GROUP_6:23;
+        C4: H = (K,H)`*` by A4,GROUP_6:def 1;
+        then x = k1*(K,H)`*`;
+        then C5: a*(K,H)`*` = k1 *(K,H)`*` by C3;
+       :: then (a1") * k1 in H by C4,GROUP_2:114,GROUP_6:def 1;
+        reconsider a1=a as Element of G by GROUP_2:42;
+        a1 = a;
+        then a*(K,H)`*` = a1*(K,H)`*`;
+::>                                 *4
+        then a1*(K,H)`*` = k1*(K,H)`*` by C5;
+        then (a1") * k1 in (K,H)`*` by GROUP_2:114,GROUP_6:def 1;
+        k1 is Element of G;
+        a in K;
+        then C6: a1 in K;
+        then C7: a1" in K by GROUP_2:51;
+        a1 * H is set;
+        for z being object holds z in a1 * carr H iff z in a*carr (K,H)`*`;
+::>                                                                      *4,4
+        then a1 * carr H = k1 * carr H by TARSKI:2;
+::>                                     *4
+        proof
+::>         *396
+          D1: the carrier of H = the carrier of (K,H)`*` by C4;
+          D2: a * (K,H)`*` = a*carr((K,H)`*`) by C4,GROUP_2:def 13;
+          a1 = a;
+          a1*H = a*(K,H)`*`;
+::>                       *4
+          hence thesis by C3;
+        end;
+        then (a1") * k1 in H by GROUP_2:114,GROUP_6:def 1;
+        then a1 in K & ((a1") * k1) in K by C6,A1,GROUP_2:40;
+        then C8: a1 * ((a1") * k1) in K by GROUP_2:50;
+        a1 * ((a1") * k1) = (a1 * a1") * k1 by GROUP_1:def 3
+        .= 1_G * k1 by GROUP_1:def 5
+        .= k1 by GROUP_1:def 4;
+        then C9: a1 * ((a1") * k1) = k1;
+        a1 * ((a1") * k1) in K by C8;
+        hence k1 in K by C9;
       end;
     end;
     then B6: k*H in J by B1;
@@ -4062,3 +4125,4 @@ proof
   hence thesis by Lm8;
 end;
 ::> 4: This inference is not accepted
+::> 396: Formula expected
