@@ -3046,8 +3046,68 @@ theorem Th73a:
   for f1 being Homomorphism of G1,G2
   for f2 being Homomorphism of G2,G3
   for A being Subgroup of G1
-  holds the multMagma of f2 .: (f1 .: A) = the multMagma of ((f2 * f1) .: A);
-::>                                                                        *4
+  holds the multMagma of f2 .: (f1 .: A) = the multMagma of ((f2 * f1) .: A)
+proof
+  let G1,G2,G3 be Group;
+  let f1 be Homomorphism of G1,G2;
+  let f2 be Homomorphism of G2,G3;
+  let A be Subgroup of G1;
+  for z being Element of G3
+  holds z in f2 .: (f1 .: A) iff z in (f2 * f1) .: A
+  proof
+    let z be Element of G3;
+    thus z in f2 .: (f1 .: A) implies z in (f2 * f1) .: A
+    proof
+      assume A1: z in f2 .: (f1 .: A);
+      then z in the carrier of f2 .: (f1 .: A);
+      then z in f2 .: (the carrier of f1 .: A) by GRSOLV_1:8;
+      then consider y being object such that
+      A2: y in dom f2 and
+      A3: y in the carrier of (f1 .: A) and
+      A4: z = f2.y by FUNCT_1:def 6;
+      y in f1 .: (the carrier of A) by A3,GRSOLV_1:8;
+      then consider x being object such that
+      A5: x in dom f1 & x in the carrier of A & y = f1.x by FUNCT_1:def 6;
+      A6: x in dom(f2 * f1) by A2,A5,FUNCT_1:11;
+      z = f2.y by A4;
+      then z = f2.(f1.x) by A5;
+      then A7: z = (f2 * f1).x by A3,A6,FUNCT_1:12;
+      x in dom(f2 * f1) & x in the carrier of A & z = (f2 * f1).x by A5,A6,A7;
+      then z in (f2 * f1) .: the carrier of A by FUNCT_1:def 6;
+      hence thesis by GRSOLV_1:8;
+    end;
+
+    thus z in (f2 * f1) .: A implies z in f2 .: (f1 .: A)
+    proof
+      assume A1: z in (f2 * f1) .: A;
+      then z in the carrier of (f2 * f1) .: A;
+      then z in (f2 * f1) .: the carrier of A by GRSOLV_1:8;
+      then consider x being object such that
+      A2: x in dom (f2 * f1) & x in the carrier of A & z = (f2 * f1).x
+      by FUNCT_1:def 6;
+      A3: x in dom f1 & f1.x in dom f2 by A2,FUNCT_1:11;
+      A4: (f2 * f1).x = f2.(f1.x) by A2,FUNCT_1:12;
+
+      set y = f1.x;
+      x in dom f1 & x in the carrier of A & y = f1.x by A2,A3;
+      then A5: y in f1 .: (the carrier of A) by FUNCT_1:def 6;
+      y in dom f2 by A3;
+      z = (f2 * f1).x by A2
+      .= f2.(f1.x) by A4
+      .= f2.y;
+      then y in dom f2 & y in f1.:(the carrier of A) & z = f2.y by A3,A4,A5;
+      then z in f2 .: (f1 .: (the carrier of A)) by FUNCT_1:def 6;
+      then z in f2 .: (the carrier of (f1 .: A)) by GRSOLV_1:8;
+      then z in the carrier of (f2 .: (f1 .: A)) by GRSOLV_1:8;
+      hence z in f2 .: (f1 .: A);
+    end;
+
+  end;
+
+  hence the multMagma of f2 .: (f1 .: A) = the multMagma of ((f2 * f1) .: A)
+  by GROUP_2:60;
+end;
+
 
 theorem Th73:
   for G being Group
