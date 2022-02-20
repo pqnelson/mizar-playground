@@ -3778,8 +3778,27 @@ theorem Th81:
   for H being Subgroup of G
   for h,n being Element of G
   st h in H & n in Normalizer H
-  holds h |^ n in H;
-::>               *4
+  holds h |^ n in H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let h,n be Element of G;
+  assume A1: h in H;
+  assume A2: n in Normalizer H;
+  then A2a: n" in Normalizer H by GROUP_2:51;
+  then n" in Normalizer (carr H);
+  then consider g being Element of G such that
+  A3: n" = g & (carr H) |^ g = carr H by GROUP_3:129;
+  h in carr H by A1;
+  then h in (carr H) |^ g by A3;
+  then consider h1 being Element of G such that
+  A4: h = h1 |^ g & h1 in carr H by GROUP_3:41;
+  h |^ n = (h1 |^ (n")) |^ n by A3,A4
+        .= h1 by GROUP_3:25;
+  then h |^ n in carr H by A4;
+  hence h |^ n in H;
+end;
+
 
 theorem Th82:
   for G being Group
