@@ -3437,7 +3437,73 @@ proof
     B4: for j being Element of G./.H st j in J holds sigma.j in J by Th52;
     Image(sigma|J) = J by Def6;
 
-    B5: for k1 being Element of G holds k1 in K iff k1*H in J
+    B5: for k1 being Element of G st k1*H in J holds k1 in K
+    proof
+      let k1 be Element of G;
+      assume C1: k1*H in J;
+      C2: the carrier of H = the carrier of ((K,H)`*`) by A1,GROUP_6:def 1;
+      then k1*H = k1*(carr H) by GROUP_2:def 14
+      .= k1*(K,H)`*` by C2;
+      then C3: k1*H = k1*(K,H)`*`;
+      set x = k1*(K,H)`*`;
+      C3a: k1*H = x by C3;
+      C4: x in J by C1,C3;
+      then x in (K./.(K,H)`*`) by B3;
+      then C5: x in Cosets (K,H)`*` by GROUP_6:def 4;
+      then consider a being Element of K such that
+      C6: x = a*(K,H)`*` by GROUP_2:def 15;
+
+      reconsider a1 = a as Element of G by GROUP_2:42;
+      C7: a1 in K;
+      for j1 being object holds j1 in a*(K,H)`*` iff j1 in a1*H
+      proof
+        let j1 be object;
+        thus j1 in a*(K,H)`*` implies j1 in a1*H
+        proof
+          assume Z1: j1 in a*(K,H)`*`;
+          Z2: H = (K,H)`*` by A1,GROUP_6:def 1;
+          consider g1 being Element of K such that
+          Z3: j1 = a*g1 & g1 in (K,H)`*` by Z1,GROUP_2:103;
+          reconsider g=g1 as Element of G by GROUP_2:42;
+          g1=g & a1=a;
+          then Z4a: a*g1 = a1*g by GROUP_2:43;
+          then Z4: j1 = a1*g by Z3;
+          g in H by Z2,Z3;
+          then a1*g in a1*H by GROUP_2:103;
+          hence j1 in a1*H by Z4;
+        end;
+
+        thus j1 in a1*H implies j1 in a*(K,H)`*`
+        proof
+          assume Z1: j1 in a1*H;
+          then consider g1 being Element of G such that
+          Z2: j1 = a1*g1 & g1 in H by GROUP_2:103;
+          Z3: H = (K,H)`*` by A1, GROUP_6:def 1;
+          then reconsider g=g1 as Element of K by Z2,GROUP_2:42;
+          g in H by Z2;
+          then Z3b: g in (K,H)`*` by Z3;
+          then a=a1 & g=g1 & g in (K,H)`*`;
+          then Z4a: a1*g1 = a*g by GROUP_2:43;
+          then Z4: j1 = a*g by Z2;
+          g in (K,H)`*` by Z3b;
+          then a*g in a*(K,H)`*` by GROUP_2:103;
+          hence j1 in a*(K,H)`*` by Z4;
+        end;
+
+      end;
+      then a*(K,H)`*` = a1*H by TARSKI:2;
+      then a1*H = x by C6
+      .= k1*H by C3;
+      then (a1") * k1 in H by GROUP_2:114;
+      then (a1") * k1 in K by A4,GROUP_2:41;
+      then C8: a1 * ((a1") * k1) in K by C7,GROUP_2:50;
+      a1 * ((a1") * k1) = (a1 * a1") * k1 by GROUP_1:def 3
+      .= 1_G * k1 by GROUP_1:def 5
+      .= k1 by GROUP_1:def 4;
+      hence k1 in K by C8;
+    end;
+
+    B6: for k1 being Element of G holds k1 in K iff k1*H in J
     proof
       let k1 be Element of G;
       thus k1 in K implies k1*H in J
@@ -3503,53 +3569,7 @@ proof
                                 .= k1*H;
         hence k1*H in J by A3,C2;
       end;
-      thus k1*H in J implies k1 in K
-      proof
-        assume C1: k1*H in J;
-        :: B3: J = (K./.(K,H)`*`)
-        set x = k1*H;
-        C2: x in J by C1;
-        then x in (K./.(K,H)`*`) by B3,C2;
-        then consider a being Element of K such that
-        C3: x = a*(K,H)`*` & x = ((K,H)`*`)*a by GROUP_6:23;
-        C4: H = (K,H)`*` by A4,GROUP_6:def 1;
-        then x = k1*(K,H)`*`;
-        then C5: a*(K,H)`*` = k1 *(K,H)`*` by C3;
-       :: then (a1") * k1 in H by C4,GROUP_2:114,GROUP_6:def 1;
-        reconsider a1=a as Element of G by GROUP_2:42;
-        a1 = a;
-        then a*(K,H)`*` = a1*(K,H)`*`;
-::>                                 *4
-        then a1*(K,H)`*` = k1*(K,H)`*` by C5;
-        then (a1") * k1 in (K,H)`*` by GROUP_2:114,GROUP_6:def 1;
-        k1 is Element of G;
-        a in K;
-        then C6: a1 in K;
-        then C7: a1" in K by GROUP_2:51;
-        a1 * H is set;
-        for z being object holds z in a1 * carr H iff z in a*carr (K,H)`*`;
-::>                                                                      *4,4
-        then a1 * carr H = k1 * carr H by TARSKI:2;
-::>                                     *4
-        proof
-::>         *396
-          D1: the carrier of H = the carrier of (K,H)`*` by C4;
-          D2: a * (K,H)`*` = a*carr((K,H)`*`) by C4,GROUP_2:def 13;
-          a1 = a;
-          a1*H = a*(K,H)`*`;
-::>                       *4
-          hence thesis by C3;
-        end;
-        then (a1") * k1 in H by GROUP_2:114,GROUP_6:def 1;
-        then a1 in K & ((a1") * k1) in K by C6,A1,GROUP_2:40;
-        then C8: a1 * ((a1") * k1) in K by GROUP_2:50;
-        a1 * ((a1") * k1) = (a1 * a1") * k1 by GROUP_1:def 3
-        .= 1_G * k1 by GROUP_1:def 5
-        .= k1 by GROUP_1:def 4;
-        then C9: a1 * ((a1") * k1) = k1;
-        a1 * ((a1") * k1) in K by C8;
-        hence k1 in K by C9;
-      end;
+      thus k1*H in J implies k1 in K by B5;
     end;
     then B6: k*H in J by B1;
     then reconsider kH = k*H as Element of G./.H by GROUP_2:42;
@@ -4124,5 +4144,3 @@ proof
   end;
   hence thesis by Lm8;
 end;
-::> 4: This inference is not accepted
-::> 396: Formula expected
