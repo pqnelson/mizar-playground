@@ -2954,7 +2954,7 @@ proof
   thus N is characteristic Subgroup of G by A5,Def6;
 end;
 
-theorem Th73a:
+theorem Th73:
   for G1,G2,G3 being Group
   for f1 being Homomorphism of G1,G2
   for f2 being Homomorphism of G2,G3
@@ -3021,7 +3021,7 @@ proof
 end;
 
 
-theorem Th73:
+theorem Th74:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -3162,7 +3162,7 @@ proof
         then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by Z33,FUNCT_1:def 6;
         then psi.(phi.x) in the carrier of (psi .: (phi .: N)) by GRSOLV_1:8;
         then psi.(phi.x) in psi .: (phi .: N);
-        then psi.(phi.x) in (psi * phi) .: N by Th73a;
+        then psi.(phi.x) in (psi * phi) .: N by Th73;
         then (phi").(phi.x) in (psi * phi) .: N by Z7;
         then x in (psi * phi) .: N by B3;
         then x in i .: N by Z7a;
@@ -3248,7 +3248,7 @@ proof
 end;
 
 
-theorem Th74:
+theorem Th75:
   for G being finite Group
   for H being strict characteristic Subgroup of G
   for K being strict Subgroup of G
@@ -3303,7 +3303,7 @@ proof
 end;
 
 :: Gorenstein, Finite Groups, Theorem 2.1.2 (iv)
-theorem
+theorem Th76:
   for G being finite Group
   for H being strict characteristic Subgroup of G
   for K being strict Subgroup of G
@@ -3465,7 +3465,7 @@ proof
   hence K is characteristic Subgroup of G by Th52;
 end;
 
-theorem
+theorem Th77:
   for G being Group
   for H being Subgroup of G
   holds H is Subgroup of Centralizer H iff H is commutative Group
@@ -3525,7 +3525,7 @@ proof
   end;
 end;
 
-theorem
+theorem Th78:
   for G being Group
   holds Centralizer (Omega).G = center G
 proof
@@ -3619,7 +3619,7 @@ proof
   hence Centralizer H is strict Subgroup of Normalizer H by GROUP_2:58;
 end;
 
-theorem
+theorem Th79:
   for G being Group
   for N being normal Subgroup of G
   holds Centralizer N is normal Subgroup of G
@@ -3705,7 +3705,7 @@ end;
 :: ( x in Normalizer H iff ex h being Element of G st
 :: ( x = h & H |^ h = H ) )
 
-theorem Th81:
+theorem Th80:
   for G being Group
   for H being Subgroup of G
   for h,n being Element of G
@@ -3732,7 +3732,7 @@ proof
 end;
 
 
-theorem Th82:
+theorem Th81:
   for G being Group
   for H being Subgroup of G
   holds H is Subgroup of Normalizer H
@@ -3795,7 +3795,7 @@ end;
 
 
 :: Perhaps consider the group morphism sending n in Normalizer H to the associated inner Automorphism of H, which has the centralizer H as its kernel?
-theorem
+theorem Th82:
   for G being Group
   for H being Subgroup of G
   holds Centralizer H is strict normal Subgroup of Normalizer H
@@ -3841,7 +3841,7 @@ proof
         then not z1 is Element of Centralizer H;
         then consider g being Element of G such that
         Z2: g in H & g*z1 <> z1 * g by Th62;
-        Z3: H is Subgroup of Normalizer H by Th82;
+        Z3: H is Subgroup of Normalizer H by Th81;
         g in H by Z2;
         then g in Normalizer H by Z3, GROUP_2:41;
         then reconsider n=g as Element of N;
@@ -3891,7 +3891,7 @@ proof
         D5: a" in N by D1,GROUP_2:51;
         then D6: a*b*a" in N by D4,GROUP_2:50;
         a" in N & b in H by D2,D5;
-        then b |^ a" in H by Th81;
+        then b |^ a" in H by Th80;
         then a*b*a" in H;
         hence a*b*a" in H;
         thus a*b*a" in N by D6;
