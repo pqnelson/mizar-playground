@@ -72,13 +72,6 @@ registration
   coherence;
 end;
 
-LmSubgroupEltTrans:
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for g being Element of G
-  st g in H1 & H1 is Subgroup of H2
-  holds g in H2 by GROUP_2:40;
-
 theorem Th2:
   for G1,G2 being Group
   for H being Subgroup of G1
@@ -501,7 +494,7 @@ proof
     let g be Element of G1;
     assume A2: g in Ker(f|H);
     Ker(f|H) is Subgroup of H;
-    then A3: g in H by A2, LmSubgroupEltTrans;
+    then A3: g in H by A2, GROUP_2:40;
     then A4: (f|H).g = f.g by Th2;
     g is Element of H by A3;
     then 1_G2 = f.g by A2,A4,GROUP_6:41;
@@ -3317,7 +3310,7 @@ proof
   assume A1: H is Subgroup of K;
   assume A2: K./.(K,H)`*` is characteristic Subgroup of G./.H;
   A3: (K,H)`*` = H by A1,GROUP_6:def 1;
-  A4: H is normal Subgroup of K by A1,Th74;
+  then A4: H is normal Subgroup of K by A1,Th74;
   for phi being Automorphism of G
   for k being Element of G st k in K
   holds phi.k in K
@@ -3328,7 +3321,7 @@ proof
     Image(phi|H) = H by Def6;
     then consider sigma being Automorphism of G./.H such that
     B2: for x being Element of G holds sigma.(x*H) = (phi.x)*H
-    by Th73;
+    by Th74;
     consider J being strict characteristic Subgroup of G./.H such that
     B3: J = (K./.(K,H)`*`) by A2;
     B4: for j being Element of G./.H st j in J holds sigma.j in J by Th52;
