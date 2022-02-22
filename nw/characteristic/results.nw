@@ -16,6 +16,8 @@ We now arrive at the meat of the matter: characteristic subgroups!
 
 <<Register characteristic subgroups are normal>>
 
+<<Theorem: two group morphisms which coincide on subgroup have the same image>>
+
 <<Theorem: unique subgroup of order $n$ is [[characteristic]]>>
 
 <<Theorem: characteristic subgroup of a normal subgroup is normal>>
@@ -75,11 +77,11 @@ definition
   let G;
   let IT be Subgroup of G;
   attr IT is characteristic means
-  :Def6:
+  :Def3:
   for f being Automorphism of G
   holds Image (f|IT) = IT;
 end;
-@ %def characteristic Def6
+@ %def characteristic Def3
 
 \begin{voc}
 Before rushing off to prove properties concerning characteristic
@@ -105,7 +107,7 @@ proof
   for f being Automorphism of G holds Image(f|(1).G) = (1).G
   proof
     let f be Automorphism of G;
-    reconsider I = Image(f|(1).G) as Subgroup of (1).G by Th16;
+    reconsider I = Image(f|(1).G) as Subgroup of (1).G by Th14;
     (1).G = I by Lm8;
     hence Image(f|(1).G) = (1).G;
   end;
@@ -146,13 +148,13 @@ characteristic. Thus the result.
 
 <<Theorem: Existence of characteristic subgroups>>=
 
-theorem Th36:
+theorem Th34:
   ex H st H is characteristic
 proof
   take H = (1).G;
   thus H is characteristic by Lm7;
 end;
-@ %def Th36
+@ %def Th34
 
 \begin{registration}
 Now we can instruct Mizar to recognize [[characteristic]] as an
@@ -163,7 +165,7 @@ adjective of [[Subgroup]].
 registration
   let G;
   cluster characteristic for Subgroup of G;
-  existence by Th36;
+  existence by Th34;
 end;
 @
 
@@ -206,7 +208,7 @@ have $K^{a}=K$. Then $K\normalSubgroup G$.
 \end{proof}
 
 <<Theorem: characteristic subgroups are normal>>=
-theorem Th37:
+theorem Th35:
   K is normal Subgroup of G
 proof
 A1:  for a being Element of G holds K |^ a = K
@@ -215,7 +217,7 @@ A1:  for a being Element of G holds K |^ a = K
   then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
   hence K is normal Subgroup of G by GROUP_3:def 13;
 end;
-@ %def Th37
+@ %def Th35
 
 \begin{proof}[Sub-proof (characteristic subgroups invariant under conjugation)]
 Really, proving a characteristic subgroup is normal amounts to proving
@@ -228,9 +230,9 @@ proof
   let a be Element of G;
   consider f being inner Automorphism of G such that
 A2: for x being Element of G holds f.x = x |^ a
-  by Th34;
-  K = Image(f|K) by Def6
-   .= K |^ a by A2,Th30;
+  by Th32;
+  K = Image(f|K) by Def3
+   .= K |^ a by A2,Th28;
   hence thesis;
 end;
 @
@@ -245,117 +247,11 @@ have to tell Mizar where to find the proof.
 registration
   let G be Group;
   cluster characteristic -> normal for Subgroup of G;
-  coherence by Th37;
+  coherence by Th35;
 end;
 @
 
-\begin{theorem}
-  If $H$ is the unique subgroup of a given order in a group $G$,
-  then $H$ is characteristic in $G$.
-\end{theorem}
-
-\begin{proof}
-Let $H$ be a subgroup of $G$. Assume there are no other subgroups of
-order $|H|$. Then for any $\varphi\in\Aut(G)$, we'd have $\varphi(H)=H$
-since $\varphi(H)$ has the same order as $H$ by
-Theorem~\ref{thm:pure-math:iso-subgroups-have-same-order}, but we
-assumed there is only one (namely, $H$).
-\end{proof}
-
-<<Theorem: unique subgroup of order $n$ is [[characteristic]]>>=
-theorem Th38:
-  for H being strict Subgroup of G
-  st (for K being strict Subgroup of G
-      st card K = card H
-      holds H = K)
-  holds H is characteristic
-proof
-  let H be strict Subgroup of G;
-  assume A1: for K being strict Subgroup of G st card K = card H holds H = K;
-  H is characteristic
-  proof
-    let phi be Automorphism of G;
-    Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then card H = card Image(phi|H) by Th20,GROUP_6:73;
-    hence Image(phi|H) = H by A1;
-  end;
-  hence thesis;
-end;
-@ %def Th38
-
-\begin{theorem}
-If $K\subgroup H$ is characteristic, and if $H\normalSubgroup G$ is normal,
-then $K\normalSubgroup G$ is normal.
-\end{theorem}
-
-This required a surprising amount of legwork, even when carving it out
-into a helper theorem! The ``architecture'' of the proof follows what we
-would find in a textbook. It's just that a textbook will gloss over
-facts about morphisms which we'd need to prove.
-
-\begin{proof}
-Let $K$ be a characteristic subgroup of $N$ and $N\normalSubgroup G$ be
-a normal subgroup. Then consider conjugation of $N$ by any element $a\in G$.
-This corresponds to an inner Automorphism of $G$, $\varphi\in\Inn(G)$, and an
-automorphism $\varphi|_{N}\in\Aut(N)$ of $N$. But since $K$ is
-characteristic in $N$, it follows $\varphi|_{N}(K)=K$. Then $K$,
-considered as a subgroup of $G$, must be invariant under $\varphi$ and
-therefore a normal subgroup of $G$ by Theorem~\ref{thm:characteristic:preparatory:normal-subgroup}.
-\end{proof}
-
-\begin{thm-remark}
-The [[strict]] hypothesis on [[N]] is necessary, since Definition~\mml[def6]{group2}%
-\MizDef{GROUP\_2}[06]{6} defines equality only on \emph{strict} subgroups.
-\end{thm-remark}
-
-<<Theorem: characteristic subgroup of a normal subgroup is normal>>=
-<<Lemma: two group morphisms which coincide on subgroup have the same image>>
-
-theorem Th39:
-  for N being strict normal Subgroup of G
-  for K being characteristic Subgroup of N
-  holds K is normal Subgroup of G
-proof
-  let N be strict normal Subgroup of G;
-  let K be characteristic Subgroup of N;
-  for a being Element of G holds K |^ a = K
-  <<Proof: $\forall a\in G, K^{a}=K$>>
-  hence K is normal Subgroup of G by Th4;
-end;
-@ %def Th39
-
-\begin{proof}[Sub-proof ($\forall a\in G, K^{a}=K$)]
-Given an arbitrary $a\in G$, we construct an inner automorphism
-$\varphi\in\Inn(G)$ defined by $\varphi(x)=x^{a}$. Then $\varphi(N)=N$
-by Theorem~\ref{thm:characteristic:inner:subgroup-is-normal-iff-invariant-under-every-inner-automorphism}
-which implies $\varphi|_{N}\in\Aut(N)$ by Theorem~\ref{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}.
-Viewed
-as an automorphism of $N$, $\varphi|_{N}=:\psi\in\Aut(N)$, we must have
-$\psi(K)=K$ by virtue of $K$ being characteristic subgroup of $N$. But
-$\psi(K)=\varphi(K)$ due to a sub-sub-proof that $\forall k\in K,\psi(k)=\varphi(k)$.
-Then the result follows.
-\end{proof}
-
-<<Proof: $\forall a\in G, K^{a}=K$>>=
-proof
-  let a be Element of G;
-  consider g being inner Automorphism of G such that
-  A1: for x being Element of G holds g.x = x |^ a
-  by Th34;
-
-  Image(g|N) = N by Th35;
-  then reconsider f = g|N as Automorphism of N by Th24;
-  A2: Image(f|K) = K by Def6;
-
-  for k being Element of G st k in K holds f.k = g.k by Th2,GROUP_2:40;
-  then Image(f|K) = Image(g|K) by Th40;
-  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th30;
-  then K = K |^ a;
-  hence thesis;
-end;
-@
-
-
+% Theorem 38
 \begin{theorem}
 If we have two morphisms $f\colon G_{1}\to G_{2}$ and $g\colon H_{1}\to
 H_{2}$, where $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$, and if
@@ -381,8 +277,8 @@ hypothesis that $\varphi$ and $\psi$ were automorphisms, they could be
 generic morphisms.
 \end{thm-remark}
 
-<<Lemma: two group morphisms which coincide on subgroup have the same image>>=
-theorem Th40:
+<<Theorem: two group morphisms which coincide on subgroup have the same image>>=
+theorem Th36:
   for G1,G2 being Group
   for H1 being Subgroup of G1
   for K being Subgroup of H1
@@ -406,7 +302,7 @@ proof
   <<Proof: $y\in f(K)\iff y\in g(K)$>>
   hence Image(f|K) = Image(g|K) by A2,GROUP_2:59,TARSKI:2;
 end;
-@ %def Th40
+@ %def Th36
 
 \begin{proof}[Sub-proof ($\forall y,y\in f(K)\iff y\in g(K)$)]
   We show, for any $y$, that both $y\in f(K)\implies y\in g(K)$ and
@@ -438,9 +334,9 @@ proof
   by STRUCT_0:def 5,GROUP_6:45;
   B2: h is Element of G1 & h is Element of H1 & h in K by GROUP_2:42;
   f.h = g.h by A1,B2
-     .= (g|K).h by B2, Th2;
+     .= (g|K).h by B2, Th1;
   then (g|K).h = f.h
-              .= (f|K).h by B2,Th2
+              .= (f|K).h by B2,Th1
               .= y by B1;
   hence y in the carrier of Image(g|K) by STRUCT_0:def 5,GROUP_6:45;
 end;
@@ -459,13 +355,120 @@ proof
   by STRUCT_0:def 5,GROUP_6:45;
   C2: h is Element of H1 & h is Element of G1 & h in K by GROUP_2:42;
   g.h = f.h by A1,C2
-     .= (f|K).h by C2,Th2;
+     .= (f|K).h by C2,Th1;
   then (f|K).h = g.h
-              .= (g|K).h by C2,Th2
+              .= (g|K).h by C2,Th1
               .= y by C1;
   hence y in the carrier of Image(f|K) by STRUCT_0:def 5,GROUP_6:45;
 end;
 @
+
+
+\begin{theorem}
+  If $H$ is the unique subgroup of a given order in a group $G$,
+  then $H$ is characteristic in $G$.
+\end{theorem}
+
+\begin{proof}
+Let $H$ be a subgroup of $G$. Assume there are no other subgroups of
+order $|H|$. Then for any $\varphi\in\Aut(G)$, we'd have $\varphi(H)=H$
+since $\varphi(H)$ has the same order as $H$ by
+Theorem~\ref{thm:pure-math:iso-subgroups-have-same-order}, but we
+assumed there is only one (namely, $H$).
+\end{proof}
+
+<<Theorem: unique subgroup of order $n$ is [[characteristic]]>>=
+theorem Th37:
+  for H being strict Subgroup of G
+  st (for K being strict Subgroup of G
+      st card K = card H
+      holds H = K)
+  holds H is characteristic
+proof
+  let H be strict Subgroup of G;
+  assume A1: for K being strict Subgroup of G st card K = card H holds H = K;
+  H is characteristic
+  proof
+    let phi be Automorphism of G;
+    Image(phi|H) = phi .: H by GRSOLV_1:def 3;
+    then card H = card Image(phi|H) by Th18,GROUP_6:73;
+    hence Image(phi|H) = H by A1;
+  end;
+  hence thesis;
+end;
+@ %def Th37
+
+\begin{theorem}
+If $K\subgroup H$ is characteristic, and if $H\normalSubgroup G$ is normal,
+then $K\normalSubgroup G$ is normal.
+\end{theorem}
+
+This required a surprising amount of legwork, even when carving it out
+into a helper theorem! The ``architecture'' of the proof follows what we
+would find in a textbook. It's just that a textbook will gloss over
+facts about morphisms which we'd need to prove.
+
+\begin{proof}
+Let $K$ be a characteristic subgroup of $N$ and $N\normalSubgroup G$ be
+a normal subgroup. Then consider conjugation of $N$ by any element $a\in G$.
+This corresponds to an inner Automorphism of $G$, $\varphi\in\Inn(G)$, and an
+automorphism $\varphi|_{N}\in\Aut(N)$ of $N$. But since $K$ is
+characteristic in $N$, it follows $\varphi|_{N}(K)=K$. Then $K$,
+considered as a subgroup of $G$, must be invariant under $\varphi$ and
+therefore a normal subgroup of $G$ by Theorem~\ref{thm:characteristic:preparatory:normal-subgroup}.
+\end{proof}
+
+\begin{thm-remark}
+The [[strict]] hypothesis on [[N]] is necessary, since Definition~\mml[def6]{group2}%
+\MizDef{GROUP\_2}[06]{6} defines equality only on \emph{strict} subgroups.
+\end{thm-remark}
+
+<<Theorem: characteristic subgroup of a normal subgroup is normal>>=
+theorem Th38:
+  for N being strict normal Subgroup of G
+  for K being characteristic Subgroup of N
+  holds K is normal Subgroup of G
+proof
+  let N be strict normal Subgroup of G;
+  let K be characteristic Subgroup of N;
+  for a being Element of G holds K |^ a = K
+  <<Proof: $\forall a\in G, K^{a}=K$>>
+  hence K is normal Subgroup of G by Th2;
+end;
+@ %def Th38
+
+\begin{proof}[Sub-proof ($\forall a\in G, K^{a}=K$)]
+Given an arbitrary $a\in G$, we construct an inner automorphism
+$\varphi\in\Inn(G)$ defined by $\varphi(x)=x^{a}$. Then $\varphi(N)=N$
+by Theorem~\ref{thm:characteristic:inner:subgroup-is-normal-iff-invariant-under-every-inner-automorphism}
+which implies $\varphi|_{N}\in\Aut(N)$ by Theorem~\ref{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}.
+Viewed
+as an automorphism of $N$, $\varphi|_{N}=:\psi\in\Aut(N)$, we must have
+$\psi(K)=K$ by virtue of $K$ being characteristic subgroup of $N$. But
+$\psi(K)=\varphi(K)$ due to a sub-sub-proof that $\forall k\in K,\psi(k)=\varphi(k)$.
+Then the result follows.
+\end{proof}
+
+<<Proof: $\forall a\in G, K^{a}=K$>>=
+proof
+  let a be Element of G;
+  consider g being inner Automorphism of G such that
+  A1: for x being Element of G holds g.x = x |^ a
+  by Th32;
+
+  Image(g|N) = N by Th33;
+  then reconsider f = g|N as Automorphism of N by Th22;
+  A2: Image(f|K) = K by Def3;
+
+  for k being Element of G st k in K holds f.k = g.k by Th1,GROUP_2:40;
+  then Image(f|K) = Image(g|K) by Th36;
+  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th28;
+  then K = K |^ a;
+  hence thesis;
+end;
+@
+
+
 
 \begin{theorem}
 If $N\subgroup G$ is characteristic, and if $K\subgroup N$ is
@@ -497,16 +500,16 @@ proof
   for g being Automorphism of G holds Image(g|K) = K
   proof
     let g be Automorphism of G;
-    Image(g|N) = N by Def6;
-    then reconsider f = g|N as Automorphism of N by Th24;
-    A1: Image(f|K) = K by Def6;
+    Image(g|N) = N by Def3;
+    then reconsider f = g|N as Automorphism of N by Th22;
+    A1: Image(f|K) = K by Def3;
 
-    for k being Element of G st k in K holds f.k = g.k by Th2, GROUP_2:40;
-    then Image(g|K) = Image(f|K) by Th40
+    for k being Element of G st k in K holds f.k = g.k by Th1, GROUP_2:40;
+    then Image(g|K) = Image(f|K) by Th36
                    .= K by A1;
     hence Image(g|K) = K;
   end;
-  hence K is characteristic Subgroup of G by Def6;
+  hence K is characteristic Subgroup of G by Def3;
 end;
 @ %def Th41
 
@@ -562,7 +565,7 @@ $H\subgroup H$ then applying the definition of characteristic subgroup.
 proof
   assume B1: H is characteristic Subgroup of G;
   let phi be Automorphism of G;
-  Image(phi|H) = H & H is Subgroup of H by B1,GROUP_2:54,Def6;
+  Image(phi|H) = H & H is Subgroup of H by B1,GROUP_2:54,Def3;
   hence Image(phi|H) is Subgroup of H;
 end;
 @
@@ -591,7 +594,7 @@ proof
     by A1,A2;
     hence H = Image(phi|H) by GROUP_2:55;
   end;
-  hence H is characteristic Subgroup of G by Def6;
+  hence H is characteristic Subgroup of G by Def3;
 end;
 @
 
@@ -611,10 +614,10 @@ proof
   let phi be Automorphism of G;
   consider psi being Automorphism of G such that
   B1: psi = phi" and
-  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th17;
+  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th15;
   consider psi2 being Automorphism of G such that
   B3: psi2 = phi" and
-  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th18;
+  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th16;
   thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
 end;
 @
@@ -683,11 +686,11 @@ proof
   let y,z be Element of G;
   assume B1: z in Z;
   set x = (phi").y;
-  (phi.z)*y = (phi.z)*(phi.x) by Th6
+  (phi.z)*y = (phi.z)*(phi.x) by Th4
            .= phi.(z*x) by GROUP_6:def 6
            .= phi.(x*z) by B1,GROUP_5:77
            .= (phi.x)*(phi.z) by GROUP_6:def 6
-           .= y*(phi.z) by Th6;
+           .= y*(phi.z) by Th4;
   hence thesis;
 end;
 @
@@ -706,7 +709,7 @@ proof
   assume B1: z in Z;
   then for y being Element of G holds (phi.z)*y=y*(phi.z) by A1;
   then (phi.z) in Z by GROUP_5:77;
-  hence ((phi|Z).z) in Z by B1,Th2;
+  hence ((phi|Z).z) in Z by B1,Th1;
 end;
 @
 
@@ -726,7 +729,7 @@ proof
   <<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>
   then for w being Element of G st w in rng(phi|Z) holds w in the carrier of Z
   by STRUCT_0:def 5;
-  then rng(phi|Z) c= the carrier of Z by B1,SUBSET_1:2;
+  then rng(phi|Z) c= the carrier of Z;
   then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
   hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
 end;
@@ -865,7 +868,7 @@ proof
     by C2;
     consider psi being Automorphism of G() such that
     C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
-    by Th18;
+    by Th16;
     x in K by C1,B1,C3;
     then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
     P[Image(psi|K)] by C3,A1;
@@ -898,7 +901,7 @@ proof
   reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
   B4: dom phi = the carrier of G() by FUNCT_2:def 1;
   B5: psi.x in meet Fam by B1,A5;
-  B6: phi.(psi.x) = x by B3,Th6;
+  B6: phi.(psi.x) = x by B3,Th4;
   psi is bijective & x in G() by B2, GROUP_2:40;
   then psi.x in dom phi by B4, FUNCT_2:5;
   hence x in phi .: meet Fam by B6,B5,FUNCT_1:def 6;
@@ -1042,7 +1045,7 @@ proof
   A2: for phi being Automorphism of G
   for H being strict Subgroup of G
   st P[H]
-  holds P[Image(phi|H)] by Th26;
+  holds P[Image(phi|H)] by Th24;
 
   consider K being strict Subgroup of G such that
   A3: the carrier of K = meet {A where A is Subset of G :
@@ -1129,7 +1132,7 @@ proof
        .= [.psi.a,psi.b.] by GROUP_6:34
        .= h;
   then B4: psi.g = h;
-  B5: phi.((phi").g) = g by Th6;
+  B5: phi.((phi").g) = g by Th4;
   h in dom phi & h in commutators G by B3;
   then phi.h in phi .: commutators G by FUNCT_1:def 6;
   then phi.(psi.g) in phi .: commutators G by B4;
@@ -1206,7 +1209,7 @@ proof
     B3: x in H by B1;
     then reconsider x as Element of H;
     x is Element of G by GROUP_2:42;
-    then (phi|H).x = phi.x by B3,Th2;
+    then (phi|H).x = phi.x by B3,Th1;
     then B4: y = phi.x by B2;
     phi.x in H by A1;
     hence y in the carrier of H by B4;
@@ -1407,7 +1410,7 @@ proof
     by GROUP_6:45;
     B5: x in H & x is Element of G1 by GROUP_2:42;
     reconsider x as Element of G1 by GROUP_2:42;
-    (f|H).x = f.x by B5,Th2;
+    (f|H).x = f.x by B5,Th1;
     then B6: g = f.x by B4;
     B7: y = (f.a)*g by B2
          .= (f.a)*(f.x) by B6
@@ -1476,7 +1479,7 @@ proof
     by GROUP_6:45;
     B5: x in H & x is Element of G1 by GROUP_2:42;
     reconsider x as Element of G1 by GROUP_2:42;
-    (f|H).x = f.x by B5,Th2;
+    (f|H).x = f.x by B5,Th1;
     then B6: g = f.x by B4;
     B7: y = g*(f.a) by B2
          .= (f.x)*(f.a) by B6
@@ -1516,7 +1519,7 @@ proof
     let g be Element of G;
     set f = (phi").g;
     f is Element of G;
-    B1: phi.f = g by Th6;
+    B1: phi.f = g by Th4;
     B2: f * N = N * f by GROUP_3:117;
     B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th49
                       .= g * H by B1,A1;
@@ -1562,7 +1565,7 @@ proof
     let phi be Automorphism of G;
     let x be Element of G;
     assume B2: x in H;
-    B3: H = Image(phi|H) by B1, Def6
+    B3: H = Image(phi|H) by B1, Def3
          .= phi .: H by GRSOLV_1:def 3;
     dom phi = the carrier of G by FUNCT_2:def 1;
     then x in dom phi;
@@ -1715,7 +1718,7 @@ proof
     .= [.psi.h,psi.k.] by GROUP_6:34
     .= [.a,b.];
     phi.([. a,b .]) = phi.(psi.x) by B6
-    .= g by Th6;
+    .= g by Th4;
     then B7: x = phi.([. a,b .]);
     B8: [. a, b .] in commutators(H,K) by B4,B5,GROUP_5:52;
     then [. a,b .] in the carrier of G;
