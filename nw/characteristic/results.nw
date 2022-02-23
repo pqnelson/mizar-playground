@@ -391,7 +391,7 @@ proof
   proof
     let phi be Automorphism of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then card H = card Image(phi|H) by Th18,GROUP_6:73;
+    then card H = card Image(phi|H) by Th19,GROUP_6:73;
     hence Image(phi|H) = H by A1;
   end;
   hence thesis;
@@ -490,7 +490,7 @@ established $f(K)=K$, therefore $g(K)=K$.
 \end{proof}
 
 <<Theorem: transitivity of characteristic subgroups>>=
-theorem Th41:
+theorem Th39:
   for N being characteristic Subgroup of G
   for K being characteristic Subgroup of N
   holds K is characteristic Subgroup of G
@@ -511,7 +511,7 @@ proof
   end;
   hence K is characteristic Subgroup of G by Def3;
 end;
-@ %def Th41
+@ %def Th39
 
 \begin{theorem}\label{thm:results:alt-def-of-char-subgroup}
   Let $H\subgroup G$.
@@ -535,7 +535,7 @@ characteristic subgroup of $G$.
 \end{proof}
 
 <<Theorem: $H\subgroup G$ is characteristic iff $\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
-theorem Th42:
+theorem Th40:
   for G being Group
   for H being strict Subgroup of G
   holds H is characteristic Subgroup of G iff
@@ -553,7 +553,7 @@ proof
 
   thus thesis;
 end;
-@ %def Th42
+@ %def Th40
 
 \begin{proof}[Sub-proof ($H\charSubgroup G\implies\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$).]
 The proof in the forward direction boils down to the observation
@@ -614,10 +614,10 @@ proof
   let phi be Automorphism of G;
   consider psi being Automorphism of G such that
   B1: psi = phi" and
-  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th15;
+  B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th16;
   consider psi2 being Automorphism of G such that
   B3: psi2 = phi" and
-  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th16;
+  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th17;
   thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
 end;
 @
@@ -649,15 +649,15 @@ Definition~\mml[def10]{group5}\MizDef{GROUP\_5}{10}.
 
 <<Theorem: $Z(G)$ is characteristic subgroup>>=
 
-theorem Th43:
+theorem Th41:
   center G is characteristic Subgroup of G
 proof
   set Z = center G;
   <<Prove $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>
 
-  hence Z is characteristic Subgroup of G by Th42;
+  hence Z is characteristic Subgroup of G by Th40;
 end;
-@ %def Th43
+@ %def Th41
 
 \begin{proof}[Proof branch ($\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$)]
 The heart of the proof amounts to showing, for any Automorphism
@@ -782,7 +782,7 @@ $\varphi(\bigcap\mathcal{F})\supset\bigcap\mathcal{F}$. The result then follows.
 <<Scheme: if $H\subgroup G\land P[H]$ and $\forall\varphi\in\Aut(G),P[\varphi(H)]$, then $\bigcap\{H\subgroup G\mid P[H]\}$ is $\Aut(G)$-invariant>>=
 reserve A1,A2 for set;
 
-scheme
+scheme :: sch 1
   CharMeet{G() -> Group, P[set]} :
   for phi being Automorphism of G()
   holds phi .: meet{A where A is Subset of G() : ex K being strict Subgroup
@@ -813,12 +813,12 @@ A3: P[H]
   for x being object st x in meet Fam
   holds x in phi .: meet Fam
   <<Proof step: $x\in\bigcap\mathcal{F}\implies x\in\varphi(\bigcap\mathcal{F})$>>
-  then P1: meet Fam c= phi .: meet Fam by TARSKI:def 3;
+  then P1: meet Fam c= phi .: meet Fam;
 
   for y being object st y in phi .: meet Fam
   holds y in meet Fam
   <<Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$>>
-  then P2: phi .: meet Fam c= meet Fam by TARSKI:def 3;
+  then P2: phi .: meet Fam c= meet Fam;
 
   thus thesis by P1,P2,XBOOLE_0:def 10;
 
@@ -868,7 +868,7 @@ proof
     by C2;
     consider psi being Automorphism of G() such that
     C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
-    by Th16;
+    by Th17;
     x in K by C1,B1,C3;
     then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
     P[Image(psi|K)] by C3,A1;
@@ -962,7 +962,7 @@ automorphisms $\varphi\in G$.
 \end{proof}
 
 <<Scheme: $\bigcap\{A\subset G\mid\exists H\subgroup G, A=H, P[H]\}$ is characteristic>>=
-scheme
+scheme :: sch 2
   MeetIsChar{G() -> Group, P[set]} :
   ex K being strict Subgroup of G() st
   the carrier of K = meet {A where A is Subset of G() :
@@ -1030,7 +1030,7 @@ as a scheme.
 \end{thm-remark}
 
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>=
-theorem Th44:
+theorem Th42:
   for G being non trivial Group
   holds (ex H being strict Subgroup of G st H is maximal) implies
   Phi(G) is characteristic Subgroup of G
@@ -1055,7 +1055,7 @@ proof
   K = Phi(G) by A1,A3,GROUP_4:def 7;
   hence thesis by A4;
 end;
-@ %def Th44
+@ %def Th42
 
 
 \subsection{Derived Subgroup is Characteristic}
@@ -1080,7 +1080,7 @@ We will prove $\varphi(C)\subset C$ and $\varphi(C)\supset C$.
 \end{proof}
 
 <<Theorem: $\forall\varphi\in G,\varphi(\Commutators(G))=\Commutators(G)$>>=
-theorem Th45:
+theorem Th43:
   for phi being Automorphism of G
   holds phi .: commutators G = commutators G
 proof
@@ -1089,15 +1089,15 @@ proof
   st g in commutators G
   holds g in phi .: commutators G
   <<Proof: $\varphi(\Commutators(G))\supset\Commutators(G)$>>
-  then P1: commutators G c= phi .: commutators G by TARSKI:def 3;
+  then P1: commutators G c= phi .: commutators G;
   for h being object
   st h in phi .: commutators G
   holds h in commutators G
   <<Proof: $\varphi(\Commutators(G))\subset\Commutators(G)$>>
-  then phi .: commutators G c= commutators G by TARSKI:def 3;
+  then phi .: commutators G c= commutators G;
   hence commutators G = phi .: commutators G by P1,XBOOLE_0:def 10;
 end;
-@ %def Th45
+@ %def Th43
 
 \begin{proof}[{Proof step [$\varphi(\Commutators(G))\supset\Commutators(G)$]}.]
   Let $g\in\Commutators(G)$. Then consider $a,b\in G$ such that
@@ -1183,8 +1183,13 @@ Let $H\subgroup G$ be a subgroup, $\varphi\in\Aut(G)$ be an automorphism.
 If every $h\in H$ satisfies $\varphi(h)\in H$, then $\varphi(H)\subgroup H$.
 \end{theorem}
 
+\begin{proof}
+We have $\varphi(H)\subgroup H$ follow from the underlying set
+inclusions, and unfolding the definitions.
+\end{proof}
+
 <<Theorem: $\forall h\in H,\varphi(h)\in H$ implies $\varphi(H)\subgroup H$>>=
-theorem Th46:
+theorem Th44:
   for G being Group
   for phi being Automorphism of G
   for H being Subgroup of G
@@ -1196,9 +1201,7 @@ proof
   let phi be Automorphism of G;
   let H be Subgroup of G;
   assume A1: for h being Element of H holds phi.h in H;
-  for y being object
-  st y in rng(phi|H)
-  holds y in the carrier of H
+  for y being object st y in rng(phi|H) holds y in the carrier of H
   proof
     let y be object;
     assume y in rng(phi|H);
@@ -1214,11 +1217,11 @@ proof
     phi.x in H by A1;
     hence y in the carrier of H by B4;
   end;
-  then rng(phi|H) c= the carrier of H by TARSKI:def 3;
+  then rng(phi|H) c= the carrier of H;
   then the carrier of Image(phi|H) c= the carrier of H by GROUP_6:44;
   hence Image(phi|H) is Subgroup of H by GROUP_2:57;
 end;
-@ %def Th46
+@ %def Th44
 
 \begin{theorem}
 If $A\subset G$ is a nonempty subset such that, for any automorphism
@@ -1226,8 +1229,16 @@ $\varphi\in\Aut(G)$ we have $\varphi(A) = A$, then the generated
 subgroup $\langle A\rangle$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We should recall that a generic element of $\langle A\rangle$ is given
+by the product of finitely many elements of $A$. The first thing we
+prove is $(A_{2})$ for any automorphism $\varphi\in\Aut(G)$ and for any
+$a\in A$, we have $\varphi(a)\in A$. Then we prove
+$\varphi(\langle A\rangle)=\langle A\rangle$, which establishes the result.
+\end{proof}
+
 <<Theorem: $A\subset G$ s.t. $\forall\varphi\in\Aut(G),\varphi(A)=A$, then $\langle A\rangle$ is characteristic>>=
-theorem Th47:
+theorem Th45:
   for G being Group
   for A being non empty Subset of G
   st (for phi being Automorphism of G
@@ -1237,9 +1248,7 @@ proof
   let G be Group;
   let A be non empty Subset of G;
   assume A1: for phi being Automorphism of G holds phi .: A = A;
-  A2: for phi being Automorphism of G
-  for a being Element of A
-  holds phi.a in A
+  A2: for phi being Automorphism of G for a being Element of A holds phi.a in A
   proof
     let phi be Automorphism of G;
     let a be Element of A;
@@ -1252,81 +1261,9 @@ proof
   A3: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
   proof
     let phi be Automorphism of G;
-    B2: for h being Element of G
-    st h in H
-    holds phi.h in H
-    proof
-      let h be Element of G;
-      assume h in H;
-      then consider F1 being FinSequence of the carrier of G,
-                    I being FinSequence of INT such that
-      C2: len F1 = len I and
-      C3: rng F1 c= A and
-      C4: Product(F1 |^ I) = h
-      by GROUP_4:28;
-      deffunc F(Nat) = phi.(F1/.$1);
-      consider F2 being FinSequence such that
-      C5: len(F2) = len F1 and
-      C6: for k being Nat st k in dom F2 holds F2.k = F(k)
-      from FINSEQ_1:sch 2;
-      C7: dom F2 = dom F1 by C5,FINSEQ_3:29;
-      C8: F2 is FinSequence of the carrier of G & rng F2 c= A
-      proof
-        D1: for y being object st y in rng F2 holds y in A
-        proof
-          let y be object;
-          assume y in rng F2;
-          then consider k being object such that
-          E2: k in dom F2 and
-          E3: y = F2.k by FUNCT_1:def 3;
-          reconsider k as Element of NAT by E2;
-          set x = F1.k;
-          x in rng F1 by FUNCT_1:def 3, E2, C7;
-          then reconsider x as Element of A by C3;
-          E4: x = F1/.k by E2,C7,PARTFUN1:def 6;
-          y = F(k) by E2,E3,C6
-           .= phi.(F1/.k)
-           .= phi.(x) by E4;
-          then y in A by A2;
-          then E5: y is Element of A;
-          thus thesis by E5;
-        end;
-        D2: rng F2 c= A by D1, TARSKI:def 3;
-        for y being object st y in rng F2 holds y in the carrier of G
-        proof
-          let y be object;
-          assume y in rng F2;
-          then y in A by D1;
-          hence y in the carrier of G;
-        end;
-        hence rng F2 c= the carrier of G by TARSKI:def 3;
-        thus rng F2 c= A by D2;
-      end;
-      then reconsider F2 as FinSequence of the carrier of G;
-      set h2 = Product(F2 |^ I);
-      C9: (for k being Nat st k in dom F1
-      holds F2.k = phi.(F1.k)) & len F1 = len I & len F2 = len I
-      proof
-        thus (for k being Nat st k in dom F1
-        holds F2.k = phi.(F1.k))
-        proof
-          let k be Nat;
-          assume D1: k in dom F1;
-          then k in dom F2 by C7;
-          then F2.k = F(k) by C6
-                   .= phi.(F1/.k);
-          hence F2.k = phi.(F1.k) by D1,PARTFUN1:def 6;
-        end;
-        thus len F1 = len I by C2;
-        thus len F2 = len I by C2,C5;
-      end;
-      then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by GROUP_9:125;
-      then len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
-      by C4,C9,C8;
-      hence phi.h in H by GROUP_4:28;
-    end;
-    for h being Element of H
-    holds phi.h in H
+    B2: for h being Element of G st h in H holds phi.h in H
+    <<Proof: $\forall h\in G, h\in H\implies \varphi(h)\in H$>>
+    for h being Element of H holds phi.h in H
     proof
       let h be Element of H;
       C1: h in H;
@@ -1334,36 +1271,124 @@ proof
       then phi.h in H by B2,C1;
       hence thesis;
     end;
-    hence Image(phi|H) is Subgroup of H by Th46;
+    hence Image(phi|H) is Subgroup of H by Th44;
   end;
-  thus gr A is characteristic by A3,Th42;
+  thus gr A is characteristic by A3,Th40;
 end;
-@ %def Th47
+@ %def Th45
+
+\begin{proof}[Proof step ($\forall h\in G, h\in H\implies \varphi(h)\in H$).]
+Taking two finite sequences $F^{(1)}=(a_{1},\dots,a_{n})$ and $F^{(2)}_{j}=\varphi(F^{(1)}_{j})$,
+we prove $(C_{8})$ that $F^{(2)}$ is a sequence of elements of $A$, then $\varphi(\prod_{j}F^{(1)}_{j})=\prod_{j}\varphi(F^{(1)}_{j})=\prod_{j}F^{(2)}_{j}$
+implies $\prod_{j}F^{(2)}_{j}\in H$.
+\end{proof}
+
+<<Proof: $\forall h\in G, h\in H\implies \varphi(h)\in H$>>=
+proof
+  let h be Element of G;
+  assume h in H;
+  then consider F1 being FinSequence of the carrier of G,
+                I being FinSequence of INT such that
+  C2: len F1 = len I and
+  C3: rng F1 c= A and
+  C4: Product(F1 |^ I) = h
+  by GROUP_4:28;
+  deffunc F(Nat) = phi.(F1/.$1);
+  consider F2 being FinSequence such that
+  C5: len(F2) = len F1 and
+  C6: for k being Nat st k in dom F2 holds F2.k = F(k)
+  from FINSEQ_1:sch 2;
+  C7: dom F2 = dom F1 by C5,FINSEQ_3:29;
+  C8: F2 is FinSequence of the carrier of G & rng F2 c= A
+  proof
+    D1: for y being object st y in rng F2 holds y in A
+    proof
+      let y be object;
+      assume y in rng F2;
+      then consider k being object such that
+      E2: k in dom F2 and
+      E3: y = F2.k by FUNCT_1:def 3;
+      reconsider k as Element of NAT by E2;
+      set x = F1.k;
+      x in rng F1 by FUNCT_1:def 3, E2, C7;
+      then reconsider x as Element of A by C3;
+      E4: x = F1/.k by E2,C7,PARTFUN1:def 6;
+      y = F(k) by E2,E3,C6
+       .= phi.(F1/.k)
+       .= phi.(x) by E4;
+      hence y in A by A2;
+    end;
+    D2: rng F2 c= A by D1;
+    for y being object st y in rng F2 holds y in the carrier of G
+    proof
+      let y be object;
+      assume y in rng F2;
+      then y in A by D1;
+      hence y in the carrier of G;
+    end;
+    hence rng F2 c= the carrier of G;
+    thus rng F2 c= A by D2;
+  end;
+  then reconsider F2 as FinSequence of the carrier of G;
+  set h2 = Product(F2 |^ I);
+  C9: (for k being Nat st k in dom F1
+       holds F2.k = phi.(F1.k)) & len F1 = len I & len F2 = len I
+  proof
+    thus (for k being Nat st k in dom F1 holds F2.k = phi.(F1.k))
+    proof
+      let k be Nat;
+      assume D1: k in dom F1;
+      then k in dom F2 by C7;
+      then F2.k = F(k) by C6
+               .= phi.(F1/.k);
+      hence F2.k = phi.(F1.k) by D1,PARTFUN1:def 6;
+    end;
+    thus len F1 = len I by C2;
+    thus len F2 = len I by C2,C5;
+  end;
+  then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by GROUP_9:125;
+  then len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
+  by C4,C9,C8;
+  hence phi.h in H by GROUP_4:28;
+end;
+@
 
 \begin{theorem}
 The derived subgroup $G'=[G,G]$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{proof}[Proof sketch.]
+We simply use the fact that, for any automorphism (indeed, any
+endomorphism) $\varphi\in\Aut(G)$, we have
+$\varphi(\{[x,y]\mid x,y\in G\})=\{[x,y]\mid x,y\in G\})$. Then from the
+previous theorem, we have $\varphi([G,G])=[G,G]$.
+\end{proof}
+
 <<Theorem: The derived subgroup is characteristic>>=
-theorem Th48:
+theorem Th46:
   G` is characteristic
 proof
   [.1_G,1_G.] in commutators G;
   then A1: commutators G <> {};
-  for phi being Automorphism of G holds phi .: commutators G =
-  commutators G by Th45;
-  then gr commutators G is characteristic by A1,Th47;
+  for phi being Automorphism of G holds phi .: commutators G = commutators G
+  by Th43;
+  then gr commutators G is characteristic by A1,Th45;
   hence thesis;
 end;
-@ %def Th48
+@ %def Th46
 
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
 $\varphi\in\Aut(G)$, then $\varphi(aH)=\varphi(a)\varphi(H)$.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We prove set equality by showing $\varphi(aH)\subset\varphi(a)\varphi(H)$ and then
+$\varphi(a)\varphi(H)\subset\varphi(aH)$, which then proves the result.
+\end{proof}
+
 <<Theorem: $H\subgroup G, a\in G$, $\varphi(aH)=\varphi(a)\varphi(H)$>>=
-theorem Th49:
+theorem Th47:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1388,14 +1413,14 @@ proof
     by B2,GROUP_2:103;
     B5: y = f.(a*h) by B3,B4
          .= (f.a)*(f.h) by GROUP_6:def 6;
-    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
-    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4;
+    then f.h in f.:(the carrier of H) by FUNCT_1:def 6;
     then f.h in the carrier of (f.:H) by GRSOLV_1:8;
     then f.h in f.:H;
     then (f.a)*(f.h) in (f.a)*(f.:H) by GROUP_2:103;
     hence y in (f.a) * (f .: H) by B5;
   end;
-  then A1: f.:(a * H) c= (f.a) * (f .: H) by TARSKI:def 3;
+  then A1: f.:(a * H) c= (f.a) * (f .: H);
   for y being object st y in (f.a)*(f.:H) holds y in f.:(a * H)
   proof
     let y be object;
@@ -1404,7 +1429,7 @@ proof
     B2: y = (f.a)*g and
     B3: g in (f.:H)
     by GROUP_2:103;
-    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    g in Image(f|H) by B3,GRSOLV_1:def 3;
     then consider x being Element of H such that
     B4: g = (f|H).x
     by GROUP_6:45;
@@ -1417,22 +1442,24 @@ proof
          .= f.(a*x) by GROUP_6:def 6;
     B8: a*x in a*H by B5,GROUP_2:103;
     dom f = the carrier of G1 by FUNCT_2:def 1;
-    then a*x in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
-    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by A1,B7,B8;
-    hence y in f.:(a * H) by A1,B7,B8,FUNCT_1:def 6;
+    then a*x in the carrier of G1 & dom f = the carrier of G1;
+    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by B7,B8;
+    hence y in f.:(a * H) by FUNCT_1:def 6;
   end;
-  then A2: (f.a) * (f .: H) c= f.:(a * H) by TARSKI:def 3;
+  then A2: (f.a) * (f .: H) c= f.:(a * H);
   thus f.:(a * H) = (f.a) * (f .: H) by A1,A2,XBOOLE_0:def 10;
 end;
-@ %def Th49
+@ %def Th47
 
 \begin{theorem}
 If $H\subgroup G$ is any subgroup, $a\in G$ is any group element, and
 $\varphi\in\Aut(G)$, then $\varphi(Ha)=\varphi(H)\varphi(a)$.
 \end{theorem}
 
+The proof boils down to the same steps as the previous one.
+
 <<Theorem: $H\subgroup G, a\in G$, $\varphi(Ha)=\varphi(H)\varphi(a)$>>=
-theorem Th50:
+theorem Th48:
   for G1,G2 being Group
   for H being Subgroup of G1
   for a being Element of G1
@@ -1457,14 +1484,14 @@ proof
     by B2,GROUP_2:104;
     B5: y = f.(h*a) by B3,B4
          .= (f.h)*(f.a) by GROUP_6:def 6;
-    dom f = the carrier of G1 & h in H & h in G1 by A1, B4, GROUP_2:40;
-    then f.h in f.:(the carrier of H) by B4,FUNCT_1:def 6;
+    dom f = the carrier of G1 & h in H & h in G1 by A1, B4;
+    then f.h in f.:(the carrier of H) by FUNCT_1:def 6;
     then f.h in the carrier of (f.:H) by GRSOLV_1:8;
     then f.h in f.:H;
     then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
     hence thesis by B5;
   end;
-  then A1: f.:(H * a) c= (f .: H) * (f.a) by TARSKI:def 3;
+  then A1: f.:(H * a) c= (f .: H) * (f.a);
   for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
   proof
     let y be object;
@@ -1473,7 +1500,7 @@ proof
     B2: y = g*(f.a) and
     B3: g in (f.:H)
     by GROUP_2:104;
-    g in Image(f|H) by B3,GRSOLV_1:def 2,def 3;
+    g in Image(f|H) by B3,GRSOLV_1:def 3;
     then consider x being Element of H such that
     B4: g = (f|H).x
     by GROUP_6:45;
@@ -1486,14 +1513,14 @@ proof
          .= f.(x*a) by GROUP_6:def 6;
     B8: x*a in H*a by B5,GROUP_2:104;
     dom f = the carrier of G1 by FUNCT_2:def 1;
-    then x*a in the carrier of G1 & dom f = the carrier of G1 by A1,B8;
-    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by A1,B7,B8;
-    hence y in f.:(H * a) by A1,B7,B8,FUNCT_1:def 6;
+    then x*a in the carrier of G1 & dom f = the carrier of G1;
+    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B7,B8;
+    hence y in f.:(H * a) by FUNCT_1:def 6;
   end;
-  then A2: (f .: H) * (f.a) c= f.:(H * a) by TARSKI:def 3;
+  then A2: (f .: H) * (f.a) c= f.:(H * a);
   thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
 end;
-@ %def Th50
+@ %def Th48
 
 \begin{theorem}\label{thm:characteristic:automorphisms-preserve-normal-subgroups}
 If $N\normalSubgroup G$, then given any automorphism $\varphi\in\Aut(G)$
@@ -1501,8 +1528,21 @@ of $G$ we have our automorphism map $N$ to another normal subgroup
 $\varphi(N)\normalSubgroup G$.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We recall $gN=Ng$ for any $g\in G$ and normal subgroup $N\normalSubgroup
+G$.
+Then
+\begin{subequations}
+  \begin{align}
+    \varphi(g)\varphi(N) &= \varphi(gN)\\
+    &=\varphi(Ng)\\
+    &=\varphi(N)\varphi(g).\qedhere
+  \end{align}
+\end{subequations}
+\end{proof}
+
 <<Theorem: $N\normalSubgroup G$, $\varphi\in\Aut(G)$ implies $\varphi(N)\normalSubgroup G$>>=
-theorem Th51:
+theorem Th49:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -1513,24 +1553,22 @@ proof
   let phi be Automorphism of G;
   set H = Image(phi|N);
   A1: H = phi .: N by GRSOLV_1:def 3;
-  for g being Element of G
-  holds g * H = H * g
+  for g being Element of G holds g * H = H * g
   proof
     let g be Element of G;
     set f = (phi").g;
-    f is Element of G;
     B1: phi.f = g by Th4;
     B2: f * N = N * f by GROUP_3:117;
-    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th49
+    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th47
                       .= g * H by B1,A1;
-    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th50
+    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th48
                       .= (phi .: N)*g by B1
                       .= H*g by A1;
-    hence g * H = H * g by B2,B3,B4;
+    hence g * H = H * g by B2,B3;
   end;
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
-@ %def Th51
+@ %def Th49
 
 \begin{theorem}
 Let $H\subgroup G$. Then $H$ is characteristic if and only if for any
@@ -1544,8 +1582,17 @@ characteristic subgroup requires $\forall\varphi\in\Aut(G),\varphi(H)=H$.
 Without strictness, we cannot have subgroup equality.
 \end{thm-remark}
 
+\begin{proof}[Proof sketch.]
+There are two key moments to this proof:
+\begin{enumerate}
+\item $H$ is characteristic implies $\forall\varphi\in\Aut(G),\forall x\in H,\varphi(x)\in H$;
+\item $\forall\varphi\in\Aut(G),\forall x\in H,\varphi(x)\in H$ implies $H$ is characteristic.
+\end{enumerate}
+The result follows immediately.
+\end{proof}
+
 <<Theorem: $H\subgroup G$ characteristic $\iff\forall\varphi\in\Aut(G)\forall x\in H,\varphi(x)\in H$>>=
-theorem Th52:
+theorem Th50:
   for G being Group
   for H being strict Subgroup of G
   holds H is characteristic iff
@@ -1565,11 +1612,11 @@ proof
     let phi be Automorphism of G;
     let x be Element of G;
     assume B2: x in H;
-    B3: H = Image(phi|H) by B1, Def3
+    B3: H = Image(phi|H) by B1
          .= phi .: H by GRSOLV_1:def 3;
     dom phi = the carrier of G by FUNCT_2:def 1;
     then x in dom phi;
-    then phi.x in phi .: (the carrier of H) by B2,B3,FUNCT_1:def 6;
+    then phi.x in phi .: (the carrier of H) by B2,FUNCT_1:def 6;
     then phi.x in the carrier of (phi .: H) by GRSOLV_1:8;
     then phi.x in the carrier of H by B3;
     hence thesis;
@@ -1589,24 +1636,36 @@ proof
         let x be Element of H;
         C1: x in H;
         reconsider g=x as Element of G by GROUP_2:42;
-        g in H by C1;
+        g in H;
         then phi.g in H by B1;
         hence phi.x in H;
       end;
-      hence Image(phi|H) is Subgroup of H by Th46;
+      hence Image(phi|H) is Subgroup of H by Th44;
     end;
-    hence H is characteristic by Th42;
+    hence H is characteristic by Th40;
   end;
 end;
-@ %def Th52
+@ %def Th50
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are strict characteristic subgroups,
-then $H\cap G$ is a characteristic subgroup.
+then $H\cap K$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{thm-remark}
+Although we don't use this result in this article, it is important in
+other settings.
+\end{thm-remark}
+
+\begin{proof}[Proof sketch]
+For any $x\in H\cap K$ and automorphism $\varphi\in\Aut(G)$, we have
+$\varphi(x)\in H$ and $\varphi(x)\in K$, hence $\varphi(x)\in H\cap K$.
+Since $x$ was arbitrary, this establishes $\varphi(H\cap K)\subgroup H\cap K$,
+which implies $H\cap K$ is characteristic.
+\end{proof}
+
 <<Theorem: $H,K\subgroup G$ characteristic implies $H\cap K$ characteristic>>=
-theorem Th53:
+theorem Th51:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H /\ K is characteristic Subgroup of G
@@ -1614,21 +1673,20 @@ proof
   let G be Group;
   let H,K be strict characteristic Subgroup of G;
   for phi being Automorphism of G
-  for x being Element of G
-  st x in H /\ K
+  for x being Element of G st x in H /\ K
   holds phi.x in H /\ K
   proof
     let phi be Automorphism of G;
     let x be Element of G;
-    assume B1: x in H /\ K;
-    then B2: x in H & x in K by GROUP_2:82;
-    then B3: phi.x in H by Th52;
-    phi.x in K by B2,Th52;
-    hence phi.x in H /\ K by B3, GROUP_2:82;
+    assume x in H /\ K;
+    then B1: x in H & x in K by GROUP_2:82;
+    then B2: phi.x in H by Th50;
+    phi.x in K by B1,Th50;
+    hence phi.x in H /\ K by B2, GROUP_2:82;
   end;
-  hence H /\ K is characteristic Subgroup of G by Th52;
+  hence H /\ K is characteristic Subgroup of G by Th50;
 end;
-@ %def Th53
+@ %def Th51
 
 \begin{theorem}
   If $H\subgroup G$ and $K\subgroup G$ are characteristic subgroups,
@@ -1640,8 +1698,14 @@ More generally, if $\{K_{i}\}_{i\in I}$ is any family of characteristic subgroup
 of $G$, then their join $\langle K_{i}\rangle_{i\in I}$.
 \end{thm-remark}
 
+\begin{proof}[Proof sketch]
+This amounts to showing the product of subsets $U(H)U(K)$ is stable
+under automorphisms of $G$, then it generates a characteristic subgroup
+of $G$.
+\end{proof}
+
 <<Theorem: $H,K\subgroup G$ characteristic implies $\langle H, K\rangle$ is characteristic>>=
-theorem Th54:
+theorem Th52:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds H "\/" K is characteristic Subgroup of G
@@ -1650,34 +1714,33 @@ proof
   let H,K be strict characteristic Subgroup of G;
 
   for phi being Automorphism of G
-  for g being Element of G
-  st g in H "\/" K
+  for g being Element of G st g in H "\/" K
   holds phi.g in H "\/" K
   proof
     let phi be Automorphism of G;
     let g be Element of G;
     assume B1: g in H "\/" K;
     then g in H*K by GROUP_4:53;
-    then g in carr H * carr K by GROUP_4:def 8;
+    then g in carr H * carr K;
     then consider h, k being Element of G such that
     B2: g = h*k and
     B3: h in carr H and
-    B4: k in carr K by GROUP_2:8;
+    B4: k in carr K;
     h in H by B3;
-    then B5: phi.h in H by Th52;
+    then B5: phi.h in H by Th50;
     k in K by B4;
-    then B6: phi.k in K by Th52;
+    then B6: phi.k in K by Th50;
     then phi.k in carr K & phi.h in carr H by B5;
-    then phi.h * phi.k in carr H*carr K by GROUP_2:def 2, GROUP_4:def 8;
+    then phi.h * phi.k in carr H*carr K;
     then phi.(h*k) in carr H * carr K by GROUP_6:def 6;
     then phi.g in carr H * carr K by B2;
-    then phi.g in H*K by GROUP_4:def 8;
+    then phi.g in H*K;
     hence phi.g in H "\/" K by GROUP_4:53;
   end;
 
-  hence H "\/" K is characteristic Subgroup of G by Th52;
+  hence H "\/" K is characteristic Subgroup of G by Th50;
 end;
-@ %def Th54
+@ %def Th52
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the set of
@@ -1686,7 +1749,7 @@ automorphisms of $G$.
 \end{theorem}
 
 <<Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable>>=
-theorem Th55:
+theorem Th53:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   for phi being Automorphism of G
@@ -1697,9 +1760,7 @@ proof
   let phi be Automorphism of G;
   A1: dom phi = the carrier of G by FUNCT_2:def 1;
 
-  for x being object
-  st x in commutators(H,K)
-  holds x in phi .: commutators(H,K)
+  for x being object st x in commutators(H,K) holds x in phi .: commutators(H,K)
   proof
     let x be object;
     assume B0: x in commutators(H,K);
@@ -1708,28 +1769,24 @@ proof
     B1: x = [.h,k.] and
     B2: h in H and
     B3: k in K by B0,GROUP_5:52;
-    phi.k in K & phi.h in H by B2,B3,Th52;
     reconsider psi = phi" as Automorphism of G by GROUP_6:62;
     set a = psi.h;
     set b = psi.k;
-    B4: a in H by B2,Th52;
-    B5: b in K by B3,Th52;
+    B4: a in H by B2,Th50;
+    B5: b in K by B3,Th50;
     B6: psi.x = psi.([.h,k.]) by B1
-    .= [.psi.h,psi.k.] by GROUP_6:34
-    .= [.a,b.];
+             .= [.psi.h,psi.k.] by GROUP_6:34
+             .= [.a,b.];
     phi.([. a,b .]) = phi.(psi.x) by B6
-    .= g by Th4;
+                   .= g by Th4;
     then B7: x = phi.([. a,b .]);
-    B8: [. a, b .] in commutators(H,K) by B4,B5,GROUP_5:52;
-    then [. a,b .] in the carrier of G;
-    then phi.([. a,b .]) in phi .: commutators(H,K) by A1,B8,FUNCT_1:def 6;
+    [. a, b .] in commutators(H,K) by B4,B5;
+    then phi.([. a,b .]) in phi .: commutators(H,K) by A1,FUNCT_1:def 6;
     hence x in phi .: commutators(H,K) by B7;
   end;
   then A2: commutators(H,K) c= phi .: commutators(H,K);
 
-  for y being object
-  st y in phi .: commutators(H,K)
-  holds y in commutators(H,K)
+  for y being object st y in phi .: commutators(H,K) holds y in commutators(H,K)
   proof
     let y be object;
     assume B1: y in phi .: commutators(H,K);
@@ -1741,25 +1798,30 @@ proof
     B4: h in H and
     B5: k in K by B2,GROUP_5:52;
     set a = phi.h;
-    B6: a in H by B4,Th52;
+    B6: a in H by B4,Th50;
     set b = phi.k;
-    B7: b in K by B5,Th52;
+    B7: b in K by B5,Th50;
     phi.x = phi.([. h,k .]) by B3
-    .= [. phi.h, phi.k .] by GROUP_6:34;
-    hence y in commutators(H,K) by B2,B6,B7,GROUP_5:52;
+         .= [. phi.h, phi.k .] by GROUP_6:34;
+    hence y in commutators(H,K) by B2,B6,B7;
   end;
   then phi .: commutators(H,K) c= commutators(H,K);
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
-@ %def Th55
+@ %def Th53
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator
 subgroup $[H,K]$ is a characteristic subgroup.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We use the fact $\varphi([H,K]) = [\varphi(H),\varphi(K)]$, then since
+$H$ and $K$ are characteristic the result follows immediately.
+\end{proof}
+
 <<Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic>>=
-theorem Th56:
+theorem Th54:
   for G being Group
   for H,K being strict characteristic Subgroup of G
   holds [.H,K.] is characteristic Subgroup of G
@@ -1769,9 +1831,8 @@ proof
   set A = commutators(H,K);
   A1: A is non empty Subset of G by GROUP_5:53;
   then reconsider A as non empty Subset of G;
-  for phi being Automorphism of G
-  holds phi .: A = A by Th55;
-  then gr A is characteristic by A1, Th47;
-  hence [.H,K.] is characteristic Subgroup of G by GROUP_5:63;
+  for phi being Automorphism of G holds phi .: A = A by Th53;
+  then gr A is characteristic by Th45;
+  hence [.H,K.] is characteristic Subgroup of G;
 end;
-@ %def Th56
+@ %def Th54

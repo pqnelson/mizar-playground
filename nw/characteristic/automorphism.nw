@@ -223,7 +223,7 @@ Then $\ker(\varphi|H)\subgroup\ker(\varphi)$.
 \end{proof}
 
 <<Theorem: for $\varphi\in\Aut(G)$ and $H\subgroup G$, we have $\ker(\varphi|H)\subgroup\ker(\varphi)$>>=
-theorem Th21:
+theorem Th15:
   for G1,G2 being Group
   for f being Homomorphism of G1,G2
   for H being Subgroup of G1
@@ -237,10 +237,9 @@ proof
   st g in Ker(f|H)
   holds g in Ker(f)
   <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>
-  then Ker(f|H) is Subgroup of Ker(f) by A1,GROUP_2:58;
-  hence thesis;
+  hence thesis by A1,GROUP_2:58;
 end;
-@ %def Th21
+@ %def Th15
 
 \begin{proof}[Sub-proof ($\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$).]
 Any $g\in\ker(\varphi|_{H})$ is defined to be $\varphi|_{H}(g)=1_{G_{2}}$.
@@ -252,11 +251,9 @@ $\varphi(g)=1_{G_{2}}$, which implies $g\in\ker(\varphi)$ by Theorem~\mml[Th41]{
 proof
   let g be Element of G1;
   assume A2: g in Ker(f|H);
-  Ker(f|H) is Subgroup of H;
-  then A3: g in H by A2, GROUP_2:40;
+  then A3: g in H by GROUP_2:40;
   then A4: (f|H).g = f.g by Th1;
-  g is Element of H by A3;
-  then 1_G2 = f.g by A2,A4,GROUP_6:41;
+  then 1_G2 = f.g by A2,A3,GROUP_6:41;
   hence g in Ker(f) by GROUP_6:41;
 end;
 @
@@ -283,7 +280,7 @@ Lm3:
 proof
   thus phi|H is Homomorphism of H,Image(phi|H) by GROUP_6:49;
   Ker(phi) = (1).G by GROUP_6:56;
-  then Ker(phi|H) is Subgroup of (1).G by Th21;
+  then Ker(phi|H) is Subgroup of (1).G by Th15;
   then Ker(phi|H) = (1).G by Lm2
                  .= (1).H by GROUP_2:63;
   hence (phi|H) is one-to-one by GROUP_6:56;
@@ -305,7 +302,7 @@ the codomain. Then $\phi(\psi(H))\subgroup\phi(H)$.
 \end{proof}
 
 <<Theorem: $(\forall\varphi\in\Aut(G),\varphi(H)\subgroup H)\implies\varphi[\varphi^{-1}(H)]\subgroup \varphi(H)$>>=
-theorem Th15:
+theorem Th16:
   (for f being Automorphism of G holds Image(f|H) is Subgroup of H) implies
   ex psi being Automorphism of G
   st psi = phi" & Image(phi|Image(psi|H)) is Subgroup of Image(phi|H)
@@ -319,7 +316,7 @@ proof
   then Image(phi|Image(psi|H)) is Subgroup of phi .: H by GRSOLV_1:def 3;
   hence Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by GRSOLV_1:def 3;
 end;
-@ %def Th15
+@ %def Th16
 
 \begin{theorem}\label{thm:characteristic:automorphism:phi-phiInv-H-is-H}
   Let $G$ be a group, and $H\subgroup G$ be a subgroup.
@@ -338,7 +335,7 @@ The result then follows that they are equal as groups using Theorem~\mml[Th60]{g
 \end{proof}
 
 <<Theorem: $\forall\varphi\in\Aut(G), \varphi[\varphi^{-1}(H)]=H$>>=
-theorem Th16:
+theorem Th17:
   ex psi being Automorphism of G
   st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
 proof
@@ -349,7 +346,7 @@ proof
   <<Proof: $\forall g\in G$, $g\in\varphi[\varphi^{-1}(H)]\iff g\in H$>>
   hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
-@ %def Th16
+@ %def Th17
 
 \begin{proof}[{Sub-proof ($\forall g\in G, g\in\varphi[\varphi^{-1}(H)]\implies g\in H$)}.]
 The bones of the proof for this claim amounts to unfolding the
@@ -383,9 +380,7 @@ proof
   <<$\exists a\in\varphi^{-1}(H),g=\varphi(a)$>>
   <<$\exists b\in H, a = \varphi^{-1}(b)$>>
   then b = phi.(psi.b) by Th4
-        .= phi.((psi|H).b) by M2,Th1
-        .= phi.a by B3
-        .= g by B2;
+        .= g by M2,B2,B3,Th1;
   hence g in H;
 end;
 @
@@ -445,12 +440,9 @@ The first step follows by unfolding definitions.
 
 <<Sub-step 1: $a\in\varphi^{-1}(H)$>>=
 proof
-  dom(psi|H) = the carrier of H by FUNCT_2:def 1;
-  then g in dom(psi|H) by B1;
+  g in dom(psi|H) by B1,FUNCT_2:def 1;
   then (psi|H).g in (psi|H) .: (the carrier of H) by FUNCT_1:def 6;
-  then (psi|H).g in the carrier of Image(psi|H) by GROUP_6:def 10;
-  then (psi|H).g in Image(psi|H);
-  hence a in Image(psi|H);
+  hence a in Image(psi|H) by GROUP_6:def 10;
 end;
 @
 
@@ -460,12 +452,9 @@ The next step, like the first, follows from definitions.
 
 <<Sub-step 2: $b\in\varphi[\varphi^{-1}(H)]$>>=
 proof
-  dom(phi|K) = the carrier of K by FUNCT_2:def 1;
-  then a in dom(phi|K) by B2;
+  a in dom(phi|K) by B2, FUNCT_2:def 1;
   then (phi|K).a in (phi|K) .: (the carrier of K) by FUNCT_1:def 6;
-  then (phi|K).a in the carrier of Image(phi|K) by GROUP_6:def 10;
-  then (phi|K).a in Image(phi|K);
-  hence b in Image(phi|K);
+  hence b in Image(phi|K) by GROUP_6:def 10;
 end;
 @
 
@@ -478,18 +467,10 @@ these deductions to show $b=\varphi(\varphi^{-1}(g))$ which proves the claim.
 
 <<Sub-step 3: $g\in\varphi[\varphi^{-1}(H)]$>>=
 proof
-  H is Subgroup of G & g in H & g is Element of G by B1;
-  then B4: psi.g = (psi|H).g by Th1
-                .= a;
-  B5: a is Element of K & K is Subgroup of G & a in K & phi is
-  Homomorphism of G,G by B2;
-  then a is Element of G by GROUP_2:42;
-  then B6: (phi|K).a =  phi.a  by B5,Th1
-                    .= phi.(psi.g) by B4
-                    .= phi.((phi").g)
-                    .= g by Th4;
-  b = (phi|K).((psi|H).g)
-   .= g by B6;
+  B4: psi.g = a by B1,Th1;
+  a is Element of G by B2,GROUP_2:42;
+  then (phi|K).a = phi.a by B2,Th1
+                .= g by B4,Th4;
   hence thesis by B3;
 end;
 @
@@ -510,7 +491,7 @@ I need to work on my numbering scheme\dots
 \end{thm-remark}
 
 <<Theorem: $\varphi(H)\subgroup K\implies H\subgroup\varphi^{-1}(K)$>>=
-theorem Th17:
+theorem Th18:
   for H being strict Subgroup of G
   for K being Subgroup of G
   st Image(phi|H) is Subgroup of K
@@ -523,19 +504,16 @@ proof
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
   thus psi = phi";
-  A2: psi" = phi by Th3;
   consider phi0 being Automorphism of G such that
-  A3: phi0 = psi" and
-  A4: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
-  by Th16;
-  phi = phi0 by A2,A3;
-  then A5: Image(psi|Image(phi|H)) = H by A4;
+  A2: phi0 = psi" and
+  A3: the multMagma of Image(psi|Image(phi0|H)) = the multMagma of H
+  by Th17;
+  A4: phi = phi0 by A2,Th3;
   psi .: Image(phi|H) is Subgroup of psi .: K by A1,GRSOLV_1:12;
   then Image(psi|Image(phi|H)) is Subgroup of psi .: K by GRSOLV_1:def 3;
-  then Image(psi|Image(phi|H)) is Subgroup of Image(psi|K) by GRSOLV_1:def 3;
-  hence H is Subgroup of Image(psi|K) by A5;
+  hence H is Subgroup of Image(psi|K) by A3,A4,GRSOLV_1:def 3;
 end;
-@ %def Th17
+@ %def Th18
 
 \begin{theorem}
 Let $G$ be a group, $H\subgroup G$ be any subgroup, and
@@ -549,15 +527,14 @@ injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-
 \end{proof}
 
 <<Theorem: for any $\varphi\in\Aut(G)$ and $H\subgroup G$ we have $H\iso\varphi(H)$>>=
-theorem Th18:
+theorem Th19:
   H,phi .: H are_isomorphic
 proof
   reconsider H2 = phi .: H as Subgroup of G;
-  phi|H is one-to-one by Lm3;
-  then H,Image(phi|H) are_isomorphic by GROUP_6:68;
+  H,Image(phi|H) are_isomorphic by Lm3,GROUP_6:68;
   hence H,phi .: H are_isomorphic by GRSOLV_1:def 3;
 end;
-@ %def Th18
+@ %def Th19
 
 \begin{theorem}
 Let $H_{1}\subgroup G$ and $H_{2}\subgroup G$ be isomorphic
@@ -565,7 +542,7 @@ subgroups. Suppose $G$ is a finite group. Then $\Index{G}{H_{1}}=\Index{G}{H_{2}
 \end{theorem}
 
 <<Theorem: isomorphic subgroups have equal indices>>=
-theorem Th19:
+theorem Th20:
   for G being finite Group
   for H1,H2 being strict Subgroup of G
   st H1,H2 are_isomorphic
@@ -573,14 +550,13 @@ theorem Th19:
 proof
   let G be finite Group;
   let H1,H2 be strict Subgroup of G;
-  assume H1,H2 are_isomorphic;
-  then A1: card H1 = card H2 by GROUP_6:73;
+  assume A1: H1,H2 are_isomorphic;
   card H1 * index H1 = card G by GROUP_2:147
                     .= card H2 * index H2 by GROUP_2:147;
-  then index H1 * card H1 = index H2 * card H1 by A1;
+  then index H1 * card H1 = index H2 * card H1 by A1,GROUP_6:73;
   hence index H1 = index H2 by XCMPLX_1:5;
 end;
-@ %def Th19
+@ %def Th20
 
 \begin{theorem}
 Let $G$ be a finite group, $p\in\NN$ be prime. If $\varphi\in\Aut(G)$ is
@@ -589,7 +565,7 @@ $\varphi(P)$ is a Sylow $p$-subgroup.
 \end{theorem}
 
 <<Theorem: Sylow $p$-Subgroups invariant under $\Aut(G)$>>=
-theorem Th20:
+theorem Th21:
   G is finite implies
   for p being prime Nat
   for P being strict Subgroup of G
@@ -602,20 +578,17 @@ proof
   assume A1: P is_Sylow_p-subgroup_of_prime p;
   then A2: P is p-group by GROUP_10:def 18;
   set Q = (phi .: P);
-  A3: P,Q are_isomorphic by Th18;
-  then A4: card P = card Q by GROUP_6:75;
   consider r being Nat such that
-  A5: card P = p |^ r
+  A3: card P = p |^ r
   by A2,GROUP_10:def 17;
-  card Q = p |^ r by A4,A5;
-  then A6: Q is p-group by GROUP_10:def 17;
-  A7: index P = index Q by A0,A3,Th19;
-  A8: Q = Image(phi|P) by GRSOLV_1:def 3;
+  card Q = p |^ r by A3,Th19,GROUP_6:75;
+  then A4: Q is p-group by GROUP_10:def 17;
+  A5: Q = Image(phi|P) by GRSOLV_1:def 3;
   not p divides index P by A1, GROUP_10:def 18;
-  then not p divides index Q by A7;
-  hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A6, A8, GROUP_10:def 18;
+  then not p divides index Q by A0,Th19,Th20;
+  hence Image(phi|P) is_Sylow_p-subgroup_of_prime p by A4, A5, GROUP_10:def 18;
 end;
-@ %def Th20
+@ %def Th21
 
 \begin{theorem}\label{thm:characteristic:automorphism:automorphism-which-leaves-subgroup-invariant-is-automorphism-of-subgroup}
   Let $H\subgroup G$ be any subgroup.
@@ -650,14 +623,11 @@ theorem Th22:
 proof
   let f be Automorphism of G;
   assume A1: Image(f|H) = H;
-  then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by Lm3;
+  A2: f|H is one-to-one by Lm3;
 
   f|H is onto Endomorphism of H
   <<Proof: $\varphi|_{H}$ is surjective>>
-  then f|H is bijective Homomorphism of H,H by C2;
-  then f|H is Automorphism of H;
-  hence thesis;
+  hence thesis by A2;
 end;
 @ %def Th22
 
@@ -679,10 +649,8 @@ I am starting to think that the claim [[f is onto]] is different than
 <<Proof: $\varphi|_{H}$ is surjective>>=
 proof
   set UH = the carrier of H;
-  f|H is Function of UH,UH & rng(f|H) = the carrier of H by C1, GROUP_6:44, A1;
-  then f|H is onto Function of UH,UH by FUNCT_2:def 3;
-  then f|H is onto Homomorphism of H,H by C1;
-  hence thesis;
+  f|H is Function of UH,UH & rng(f|H) = the carrier of H by A1, GROUP_6:44,49;
+  hence thesis by A3,GROUP_6:49,FUNCT_1:def 3;
 end;
 @
 
@@ -714,8 +682,7 @@ proof
   A3: x in G & not x in H by A2,XBOOLE_0:def 5;
   A4: <<$\varphi(x)\notin\varphi(H)$>>
   <<$\varphi(x)\in G$>>
-  then ex y being Element of G st not y in phi .: H by A4;
-  then phi .: H is proper;
+  then phi .: H is proper by A4;
   hence Image(phi|H) is proper Subgroup of G by GRSOLV_1:def 3;
 end;
 @ %def Th23
@@ -749,8 +716,7 @@ Then $\varphi(x)\in G$.
 phi.x is Element of G
 proof
   dom phi = UG & rng phi = UG by A1, FUNCT_2:def 1;
-  then phi.x in UG by A3, FUNCT_1:def 3;
-  hence phi.x is Element of G;
+  hence phi.x is Element of G by A2,XBOOLE_0:def 5, FUNCT_1:def 3;
 end;
 @
 
@@ -808,7 +774,7 @@ proof
   then consider psi being Automorphism of G such that
   B3: psi = phi" and
   B4: H is Subgroup of Image(psi|K)
-  by Th17;
+  by Th18;
   set UK = the carrier of K;
   reconsider K as non trivial strict Subgroup of G by A2,B1,B2,Th12;
   UK \ (the carrier of Image(phi|H)) is non empty by B1,B2,Def1,Th11;
@@ -860,7 +826,7 @@ proof
   consider phi2 being Automorphism of G such that
   C3: phi2 = psi" and
   C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
-  by Th16;
+  by Th17;
   phi2=phi by C3,B3, Th3;
   then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
   set UPH = the carrier of Image(phi|H);
@@ -901,7 +867,7 @@ proof
   consider psi2 being Automorphism of G such that
   C1: psi2 = phi" and
   C2: the multMagma of Image(phi|Image(psi2|K)) = the multMagma of K
-  by Th16;
+  by Th17;
   thus Image(phi|Image(psi|K)) = K by B3,C1,C2;
 end;
 @

@@ -32,7 +32,7 @@ is minimal.
 \end{proof}
 
 <<Scheme: $\bigcap\mathcal{F}$ is minimal>>=
-scheme
+scheme :: sch3
   MeetIsMinimal{G() -> Group, P[set]} :
   ex H being strict Subgroup of G() st
   the carrier of H = meet {A where A is Subset of G() :
@@ -79,7 +79,7 @@ Theorem~\mml[Th57]{group2}.
 \end{proof}
 
 <<Theorem: $H_{1}\subgroup H_{2}\subgroup G$ and $a\in G$ implies ${H_{1}}^{a}\subgroup {H_{2}}^{a}$>>=
-theorem Th57:
+theorem Th55:
   for G being Group
   for H1,H2 being Subgroup of G
   st H1 is Subgroup of H2
@@ -90,9 +90,7 @@ proof
   let H1,H2 be Subgroup of G;
   assume A1: H1 is Subgroup of H2;
   let a be Element of G;
-  for h being Element of G
-  st h in H1 |^ a
-  holds h in H2 |^ a
+  for h being Element of G st h in H1 |^ a holds h in H2 |^ a
   proof
     let h be Element of G;
     assume B1: h in H1 |^ a;
@@ -106,7 +104,7 @@ proof
   end;
   hence H1 |^ a is Subgroup of H2 |^ a by GROUP_2:58;
 end;
-@ %def Th57
+@ %def Th55
 
 \begin{scheme}
 Let $G$ be a group, $P[-]$ an arbitrary unary predicate.
@@ -116,7 +114,7 @@ is a normal subgroup of $G$.
 \end{scheme}
 
 <<Scheme: $\bigcap\{N\normalSubgroup G\mid P[N]\}\normalSubgroup G$>>=
-scheme
+scheme :: sch4
   MeetOfNormsIsNormal{G() -> Group, P[set]} :
   for H being strict Subgroup of G()
   st the carrier of H = meet {A where A is Subset of G() :
@@ -140,8 +138,7 @@ proof
     carr N in Fam by B1;
     hence thesis;
   end;
-  A4: for N being strict normal Subgroup of G() st P[N]
-      holds H is Subgroup of N
+  A4: for N being strict normal Subgroup of G() st P[N] holds H is Subgroup of N
   proof
     let N be strict normal Subgroup of G();
     assume P[N];
@@ -159,11 +156,10 @@ proof
     let N be strict normal Subgroup of G();
     assume B1: P[N];
     then H is Subgroup of N by A4;
-    then H |^ a is Subgroup of N |^ a by Th57;
+    then H |^ a is Subgroup of N |^ a by Th55;
     hence H |^ a is Subgroup of N by GROUP_3:def 13;
   end;
-  A6: for N being strict normal Subgroup of G() st carr N in Fam
-  holds P[N]
+  A6: for N being strict normal Subgroup of G() st carr N in Fam holds P[N]
   proof
     let N be strict normal Subgroup of G();
     assume B1: carr N in Fam;
@@ -190,7 +186,7 @@ proof
     assume B1: carr N in Fam;
     then P[N] by A6;
     then H is Subgroup of N by A4;
-    then H |^ a is Subgroup of N |^ a by Th57;
+    then H |^ a is Subgroup of N |^ a by Th55;
     hence H |^ a is Subgroup of N by GROUP_3:def 13;
   end;
   A8: for a being Element of G()
@@ -204,13 +200,12 @@ proof
     hence carr(H |^ a) c= carr N by GROUP_2:def 5;
   end;
 
-  for a being Element of G()
-  holds H |^ a is Subgroup of H
+  for a being Element of G() holds H |^ a is Subgroup of H
   proof
     let a be Element of G();
     B1: Fam <> {} by A3;
     B2: (for N being strict normal Subgroup of G() st carr N in Fam
-    holds carr(H |^ a) c= carr N) by A3,A8,GROUP_2:def 5;
+    holds carr(H |^ a) c= carr N) by A8;
     B3: for A being Subset of G() st A in Fam holds carr(H |^ a) c= A
     proof
       let A be Subset of G();
@@ -223,8 +218,8 @@ proof
       C3: A0 = the carrier of H0 & H0 is normal & P[H0]
       by C2;
       reconsider H0 as strict normal Subgroup of G() by C3;
-      carr H0 in Fam by C0,C1,C3;
-      then carr(H |^ a) c= carr H0 by B1,B2;
+      carr H0 in Fam by C3;
+      then carr(H |^ a) c= carr H0 by B2;
       hence carr(H |^ a) c= A by C1,C3;
     end;
     for x being object st x in carr (H |^ a) holds x in meet Fam
@@ -244,14 +239,13 @@ proof
       end;
       hence thesis by B1,SETFAM_1:def 1;
     end;
-    then carr (H |^ a) c= meet Fam by B1,SETFAM_1:def 1;
+    then carr (H |^ a) c= meet Fam;
     then carr (H |^ a) c= carr H by A2;
     hence thesis by GROUP_2:57;
   end;
   then H is normal by GROUP_3:122;
   hence thesis;
 end;
-
 @ %def MeetOfNormsIsNormal
 
 \begin{theorem}
@@ -267,7 +261,7 @@ conjunction with other theorems in justifying a claim.
 \end{thm-remark}
 
 <<Theorem: Meet of family of normal subgroups is normal>>=
-theorem Th58:
+theorem Th56:
   for G being Group
   for X being finite set
   st X <> {} & (for A being Element of X
@@ -307,8 +301,8 @@ proof
   consider N being strict Subgroup of G such that
   A4: the carrier of N = meet Fam
   from GROUP_4:sch 1(A3);
-  for A being object
-  holds A in Fam iff A in Fam2
+
+  for A being object holds A in Fam iff A in Fam2
   proof
     let A be object;
     thus A in Fam implies A in Fam2
@@ -321,8 +315,7 @@ proof
       consider N being strict Subgroup of G such that
       B4: A0 = the carrier of N & P[N]
       by B3;
-      B5: N is normal by B4;
-      hence A in Fam2 by B2,B3,B4,B5;
+      thus A in Fam2 by B2,B4;
     end;
     thus A in Fam2 implies A in Fam
     proof
@@ -335,41 +328,25 @@ proof
     end;
   end;
   then A5: Fam = Fam2 by TARSKI:2;
-  B3: ex H being strict normal Subgroup of G st P[H]
-  proof
-    consider H being strict Subgroup of G such that
-    B1: P[H]
-    by A3;
-    H is strict normal Subgroup of G & the carrier of H in X by B1;
-    then reconsider H as strict normal Subgroup of G;
-    take H;
-    thus thesis by B1;
-  end;
-  A6: for H being strict Subgroup of G
-  st the carrier of H = meet Fam2
+
+  A6: ex H being strict normal Subgroup of G st P[H] by A3;
+  for H being strict Subgroup of G st the carrier of H = meet Fam2
   holds H is strict normal Subgroup of G
-  from MeetOfNormsIsNormal(B3);
+  from MeetOfNormsIsNormal(A6);
   then N is normal by A4,A5;
   then reconsider N as strict normal Subgroup of G;
   take N;
 
-  for A being object
-  holds A in Fam iff A in X
+  for A being object holds A in Fam iff A in X
   proof
     let A be object;
     thus A in Fam implies A in X
     proof
-      assume B1: A in Fam;
+      assume A in Fam;
       then consider A0 being Subset of G such that
-      B3: A = A0 and
-      B2: ex N being strict Subgroup of G st A0 = the carrier of N & P[N];
-
-      consider N being strict Subgroup of G such that
-      B4: A0 = the carrier of N & P[N]
-      by B2;
-      reconsider N as strict normal Subgroup of G by B4;
-      the carrier of N in X by B4;
-      hence thesis by B2,B3,B4;
+      B1: A = A0 &
+          ex N being strict Subgroup of G st A0 = the carrier of N & P[N];
+      thus thesis by B1;
     end;
     thus A in X implies A in Fam
     proof
@@ -383,7 +360,6 @@ proof
     end;
   end;
   then Fam = X by TARSKI:2;
-  hence the carrier of N = meet X by A4,A5,TARSKI:2;
+  hence the carrier of N = meet X by A4;
 end;
-
-@ %def Th58
+@ %def Th56

@@ -218,9 +218,7 @@ proof
   consider y being object such that
   Z1: y = f.x;
   x = g.y by A1,Z1,FUNCT_2:26;
-  then h.x = y by A1,Z1,FUNCT_2:26
-          .= f.x by Z1;
-  hence thesis;
+  hence thesis by A1,Z1,FUNCT_2:26;
 end;
 @
 
@@ -455,8 +453,7 @@ proof
     then consider x being object such that
     A1: the carrier of G = {x};
     x = 1_G by A1, TARSKI:def 1;
-    then the carrier of G = {1_G} by A1;
-    then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
+    then the carrier of G = the carrier of (1).G by A1,GROUP_2:def 7;
     hence the multMagma of G = (1).G by GROUP_2:61;
   end;
   thus the multMagma of G = (1).G implies G is trivial;
@@ -480,14 +477,11 @@ LmFiniteNontrivial:
   not INT.Group(2) is trivial
 proof
   set G = INT.Group(2);
-  A1: the carrier of G = Segm 2
-                      .= 2 by ORDINAL1:def 17;
   the carrier of (1).G = {1_G} by GROUP_2:def 7
-                      .= {0} by GR_CY_1:14
-                      .= {} \/ {0}
+                      .= {} \/ {0} by GR_CY_1:14
                       .= succ 0 by ORDINAL1:def 1
                       .= 1;
-  then the carrier of (1).G <> the carrier of G by A1;
+  then the carrier of (1).G <> the carrier of G by ORDINAL1:def 17;
   hence not INT.Group(2) is trivial by Th6;
 end;
 @ %def LmFiniteNontrivial
@@ -590,7 +584,6 @@ proof
     then {1_G} c= the carrier of H by GROUP_2:def 7;
     hence the carrier of H = {1_G} by B1,XBOOLE_0:def 10;
   end;
-  then ex x being object st the carrier of H = {x};
   hence H is trivial Subgroup of G;
 end;
 @ %def Th9
@@ -767,8 +760,6 @@ proof
   assume A1: H is proper;
   UH c= UG & UH <> UG by A1,Th10, GROUP_2:def 5;
   then (for x holds x in UH implies x in UG) &
-  the carrier of H <> the carrier of G;
-  then (for x holds x in UH implies x in UG) &
   not (for x holds x in UH iff x in UG) by TARSKI:2;
   hence (the carrier of G) \ (the carrier of H) is non empty set
   by XBOOLE_0:def 5;
@@ -786,14 +777,8 @@ equality, these are clearly different sets. Thus $H\properSubgroup G$
 proof
   assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
   set GH = UG \ UH;
-  not (GH is empty) by A1;
-  then ex x st x in GH by XBOOLE_0:def 1;
-  then consider y such that
-  A2: y in GH;
-  y in UG & not y in UH by A2, XBOOLE_0:def 5;
-  then UG <> UH;
-  then the multMagma of G <> the multMagma of H;
-  hence H is proper;
+  ex x st x in GH by A1, XBOOLE_0:def 1;
+  hence H is proper by XBOOLE_0:def 5;
 end;
 @
 
@@ -886,10 +871,8 @@ proof
   not (K is non trivial Subgroup of G) implies contradiction
   proof
     assume B1: not K is non trivial Subgroup of G;
-    then K is trivial Subgroup of G;
     then H is trivial Subgroup of G by A1,Th9;
-    then the multMagma of H = the multMagma of K by B1,Th8;
-    hence contradiction by A2;
+    hence contradiction by A2,B1,Th8;
   end;
   hence K is non trivial Subgroup of G;
 end;

@@ -27,6 +27,8 @@
 
 <<Theorem: $h\in N_{G}(a)\iff a^{h}=a$>>
 
+<<Theorem: $A\subset G$, $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$>>
+
 <<Theorem: $|H_{1}\cap H_{2}|=|H_{1}|=|H_{2}|\implies H_{1}=H_{2}$>>
 
 <<Theorem: $\forall a,b,c\in\NN, c\neq0\land c|a\land c|b\implies a|b$>>
@@ -51,13 +53,13 @@
 
 <<Theorem: $C_{G}(G)=Z(G)$>>
 
-<<Lemma: $C_{G}(H)\subgroup N_{G}(H)$>>
-
 <<Theorem: $N\normalSubgroup G\implies C_{G}(H)\normalSubgroup G$>>
 
 <<Theorem: $\forall h\in H,n\in N_{G}(H), n^{-1}hn\in H$>>
 
 <<Theorem: $\forall H\subgroup G, H\subgroup N_{G}(H)$>>
+
+<<Lemma: $C_{G}(H)\subgroup N_{G}(H)$>>
 
 <<Theorem: $C_{G}(H)\normalSubgroup N_{G}(H)$>>
 @
@@ -103,7 +105,7 @@ definition
   let G be Group;
   let A be Subset of G;
   func Centralizer A -> strict Subgroup of G means
-  :Def8:
+  :Def4:
   the carrier of it = { b where b is Element of G :
                         for a being Element of G st a in A holds a*b = b*a };
   existence
@@ -139,7 +141,7 @@ A2: the carrier of H2 = {b where b is Element of G : for a being Element of G
     hence thesis;
   end;
 end;
-@ %def Centralizer Def8
+@ %def Centralizer Def4
 
 <<Proof: $\forall x, x\in C_{G}(A)\implies x\in G$>>=
 proof
@@ -158,8 +160,8 @@ proof
   proof
     let a be Element of G;
     assume a in A;
-    then 1_G*a = a by GROUP_1:def 4
-              .= a*1_G by GROUP_1:def 4;
+    1_G*a = a by GROUP_1:def 4
+         .= a*1_G by GROUP_1:def 4;
     hence thesis;
   end;
   hence thesis;
@@ -180,9 +182,9 @@ proof
     let a be Element of G;
     assume Z1: a in A;
     a*(g1*g2) = (a*g1)*g2 by GROUP_1:def 3
-             .= (g1*a)*g2 by B1,Z1,B3
+             .= (g1*a)*g2 by Z1,B3
              .= g1*(a*g2) by GROUP_1:def 3
-             .= g1*(g2*a) by B2,Z1,B4
+             .= g1*(g2*a) by Z1,B4
              .= g1*g2*a by GROUP_1:def 3;
     hence thesis;
   end;
@@ -200,12 +202,11 @@ proof
   proof
     let a be Element of G;
     assume Z3: a in A;
-    g" * (g * a) = a by GROUP_3:1;
-    then g" * ((a*g) * g") = g" * ((g*a) * g") by Z3,Z2
-                          .= (g" * (g * a)) * g" by GROUP_1:def 3
-                          .= ((g" * g) * a) * g"  by GROUP_1:def 3
-                          .= (1_G * a) * g"  by GROUP_1:def 5
-                          .= a * g"  by GROUP_1:def 4;
+    g" * ((a*g) * g") = g" * ((g*a) * g") by Z3,Z2
+                     .= (g" * (g * a)) * g" by GROUP_1:def 3
+                     .= ((g" * g) * a) * g"  by GROUP_1:def 3
+                     .= (1_G * a) * g"  by GROUP_1:def 5
+                     .= a * g"  by GROUP_1:def 4;
     then g" * a = a * g" by GROUP_3:1;
     hence thesis;
   end;
@@ -224,7 +225,7 @@ $ag=ga$.
 \end{thm-remark}
 
 <<Theorem: $A\subset G$ and $g\in G$, have $g\in C_{G}(A)\iff(\forall a\in A, ga=ag)$>>=
-theorem Th59:
+theorem Th57:
   for G being Group
   for A being Subset of G
   for g being Element of G
@@ -235,7 +236,7 @@ proof
   let A be Subset of G;
   let g be Element of G;
 A1: the carrier of Centralizer A = {b where b is Element of G : for a
-  being Element of G st a in A holds b*a=a*b} by Def8;
+  being Element of G st a in A holds b*a=a*b} by Def4;
   hereby
     assume for a being Element of G st a in A holds g*a = a*g;
     then g in the carrier of Centralizer A by A1;
@@ -247,7 +248,7 @@ A1: the carrier of Centralizer A = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
-@ %def Th59
+@ %def Th57
 
 
 \begin{theorem}
@@ -256,7 +257,7 @@ end;
 \end{theorem}
 
 <<Theorem: $A\subset B\subset G\implies C_{G}(B)\subgroup C_{G}(A)$>>=
-theorem Th60:
+theorem Th58:
   for G being Group
   for A,B being Subset of G
   st A c= B
@@ -270,20 +271,14 @@ proof
   proof
     let g be Element of G;
     assume B1: g in Centralizer B;
-    for a being Element of G st a in A
-    holds g*a = a*g
-    proof
-      let a be Element of G;
-      assume a in A;
-      then a in B by A1;
-      hence g*a = a*g by B1,Th59;
-    end;
-    then g is Element of Centralizer A by Th59;
+    then for a being Element of G st a in A
+    holds g*a = a*g by A1,Th57;
+    then g is Element of Centralizer A by Th57;
     hence thesis;
   end;
   hence Centralizer B is Subgroup of Centralizer A by GROUP_2:58;
 end;
-@ %def Th60
+@ %def Th58
 
 \begin{definition}
 Let $G$ be a group, $H\subgroup G$ be a subgroup.
@@ -337,7 +332,7 @@ end;
 \end{proof}
 
 <<Theorem: carrier of $C_{G}(H) = \{b\in G\mid\forall a\in H, ba=ab\}$>>=
-theorem Th61:
+theorem Th59:
   for G being Group
   for H being Subgroup of G
   holds the carrier of Centralizer H = {b where b is Element of G : for a
@@ -350,9 +345,7 @@ proof
                                          holds b*a=a*b};
 
   A1: the carrier of Centralizer A = {b where b is Element of G : for a
-  being Element of G st a in A holds b*a=a*b} by Def8;
-  A2: the carrier of Centralizer A = the carrier of Centralizer carr H by Def9;
-
+  being Element of G st a in A holds b*a=a*b} by Def4;
   for x being object st x in Car holds x in the carrier of Centralizer H
   proof
     let x be object;
@@ -374,10 +367,10 @@ proof
       end;
       hence thesis by B2;
     end;
-    then x in the carrier of Centralizer carr H by A1,A2;
+    then x in the carrier of Centralizer carr H by A1;
     hence thesis by Def9;
   end;
-  then A3: Car c= the carrier of Centralizer H by TARSKI:def 3;
+  then A3: Car c= the carrier of Centralizer H;
 
   for x being object st x in the carrier of Centralizer H holds x in Car
   proof
@@ -386,7 +379,7 @@ proof
     then B2: x in the carrier of Centralizer carr H by Def9;
     then B3: ex b being Element of G
     st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
-    by A1,A2;
+    by A1;
     ex b being Element of G
     st (x=b) & (for a being Element of G st a in H holds b*a=a*b)
     proof
@@ -399,11 +392,11 @@ proof
     then x in Car;
     hence thesis;
   end;
-  then the carrier of Centralizer H c= Car by TARSKI:def 3;
+  then the carrier of Centralizer H c= Car;
   hence thesis by A3,XBOOLE_0:def 10;
 end;
 
-@ %def Th61
+@ %def Th59
 
 \begin{theorem}
 Let $H\subgroup G$ and $g\in G$.
@@ -416,7 +409,7 @@ the set underlying $H$.
 \end{proof}
 
 <<Theorem: Let $g\in G$. Then $g\in C_{G}(H)\iff\forall h\in H,gh=hg$>>=
-theorem Th62:
+theorem Th60:
   for G being Group
   for H being Subgroup of G
   for g being Element of G
@@ -427,7 +420,7 @@ proof
   let H be Subgroup of G;
   let g be Element of G;
 A1: the carrier of Centralizer H = {b where b is Element of G : for a
-  being Element of G st a in H holds b*a=a*b} by Th61;
+  being Element of G st a in H holds b*a=a*b} by Th59;
   hereby
     assume B1: for a being Element of G st a in H holds g*a = a*g;
     then g in the carrier of Centralizer H by A1;
@@ -439,14 +432,14 @@ A1: the carrier of Centralizer H = {b where b is Element of G : for a
   holds b*a = a*b) by A1;
   hence thesis;
 end;
-@ %def Th62
+@ %def Th60
 
 \begin{theorem}
 Let $A\subset G$ be a subset of a group. Then $A\subset C_{G}(C_{G}(A))$.
 \end{theorem}
 
 <<Theorem: $A\subset G\implies A\subset C_{G}(C_{G}(A))$>>=
-theorem Th63:
+theorem Th61:
   for G being Group
   for A being Subset of G
   holds A is Subset of Centralizer (Centralizer A)
@@ -460,16 +453,16 @@ proof
   proof
     let g be object;
     assume B1: g in A;
-    then reconsider g as Element of G by GROUP_2:40;
+    then reconsider g as Element of G;
     for h being Element of G st h in H
-    holds g*h = h*g by B1,Th59;
-    then g is Element of Centralizer H by Th62;
+    holds g*h = h*g by B1,Th57;
+    then g is Element of Centralizer H by Th60;
     hence thesis;
   end;
-  then A c= the carrier of Centralizer H by TARSKI:def 3;
+  then A c= the carrier of Centralizer H;
   hence A is Subset of Centralizer H;
 end;
-@ %def Th63
+@ %def Th61
 
 \begin{theorem}\label{thm:characteristic:centralizer:centralizer-of-char-group-is-char}
   Let $G$ be a group, let $K\subgroup G$ be a characteristic subgroup.
@@ -477,7 +470,7 @@ end;
 \end{theorem}
 
 <<Theorem: Centralizer of characteristic subgroups is characteristic>>=
-theorem Th64:
+theorem Th62:
   for G being Group
   for K being strict characteristic Subgroup of G
   holds (Centralizer K) is characteristic Subgroup of G
@@ -498,28 +491,28 @@ proof
     proof
       let k be Element of G;
       assume C1: k in K;
-      then C2: psi.k in K by Th52;
+      then C2: psi.k in K by Th50;
       set j = psi.k;
       C3: j in K by C2;
-      then x*j = j*x by B1,Th62;
-      then phi.(x*j) = phi.(j*x) by C3
+      then x*j = j*x by B1,Th60;
+      then phi.(x*j) = phi.(j*x)
                     .= phi.j * phi.x by GROUP_6:def 6;
       then phi.x * phi.j = phi.j * phi.x by GROUP_6:def 6;
       then y * phi.(psi.k) = phi.(psi.k) * y
                           .= k * y by Th4;
       hence y * k = k * y by Th4;
     end;
-    then y is Element of Centralizer K by Th62;
+    then y is Element of Centralizer K by Th60;
     hence thesis;
   end;
-  hence Centralizer K is characteristic Subgroup of G by Th52;
+  hence Centralizer K is characteristic Subgroup of G by Th50;
 end;
-@ %def Th64
+@ %def Th62
 
-\begin{definition}
+\begin{definition*}
 Let $G$ be a group, let $a\in G$ be any group element. Then the
 singleton $\{a\}$ is a subset of $G$.
-\end{definition}
+\end{definition*}
 
 \begin{def-remark}
 Singletons in Mizar seem to be just a ``generic set'', so this claim is
@@ -539,20 +532,20 @@ definition
     holds x in the carrier of G
     proof
       let x be object;
-      assume Z3: x in {a};
+      assume x in {a};
       then x = a by TARSKI:def 1;
       hence thesis;
     end;
-    then {a} c= the carrier of G by TARSKI:def 3;
+    then {a} c= the carrier of G;
     hence {a} is Subset of G;
   end;
 end;
 @
 
-\begin{definition}
+\begin{definition*}
 Let $G$ be a group, let $a\in G$. The \define{Normalizer of $a$} is the
 strict subgroup of $G$ given by $N_{G}(\{a\})$.
-\end{definition}
+\end{definition*}
 
 <<Definition: Normalizer of group element>>=
 definition
@@ -569,20 +562,10 @@ For any $x$, $y$ we have $\{x\}=\{y\}$ if and only if $x=y$.
 \end{theorem}
 
 <<Theorem: $\{x\}=\{y\}\iff x=y$>>=
-theorem Th65:
+theorem Th63:
   for x,y being object
-  holds {x} = {y} iff x = y
-proof
-  let x,y be object;
-  thus {x} = {y} implies x = y
-  proof
-    assume {x} = {y};
-    then {x} c= {y} by XBOOLE_0:def 10;
-    hence x = y by ZFMISC_1:3;
-  end;
-  thus x = y implies {x} = {y};
-end;
-@ %def Th65
+  holds {x} = {y} iff x = y by ZFMISC_1:3;
+@ %def Th63
 
 \begin{theorem}
 Let $G$ be a group, $a\in G$ an arbitrary group element.
@@ -591,7 +574,7 @@ such that $x=h$ and conjugates $a = a^{h}$.
 \end{theorem}
 
 <<Theorem: $h\in N_{G}(a)\iff a^{h}=a$>>=
-theorem Th66:
+theorem Th64:
   for G being Group
   for a,x being Element of G
   holds x in Normalizer a iff ex h being Element of G st x = h & a |^ h = a
@@ -601,13 +584,165 @@ proof
   A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a}
   by GROUP_3:129;
   then A2: x in Normalizer{a} iff {a} |^ x = {a};
-  A3: {a} |^ x = {a} |^ {x} by GROUP_3:def 3
+  A3: {a} |^ x = {a} |^ {x}
               .= {a |^ x} by GROUP_3:37;
-  then {a |^ x} = {a} iff a |^ x = a by Th65;
+  {a |^ x} = {a} iff a |^ x = a by Th63;
   then x in Normalizer{a} iff a |^ x = a by A2,A3;
-  hence thesis by A1;
+  hence thesis;
 end;
-@ %def Th66
+@ %def Th64
+
+\begin{theorem}
+Let $G$ be a group and $A\subset G$.
+Then $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+We prove this in two steps. Step one $C_{G}(A)\subset \bigcap_{a\in A} N_{G}(a)$.
+Step two $\bigcap_{a\in A} N_{G}(a) \subset C_{G}(A)$.
+\end{proof}
+
+<<Theorem: $A\subset G$, $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$>>=
+theorem Th65:
+  for G being Group
+  for A being non empty Subset of G
+  holds the carrier of Centralizer A = meet {B where B is Subset of G :
+  ex H being strict Subgroup of G st B = the carrier of H &
+  (ex a being Element of G st a in A & H = Normalizer a)}
+proof
+  let G be Group;
+  let A be non empty Subset of G;
+  defpred P[strict Subgroup of G] means (ex a being Element of G
+                                         st a in A & $1 = Normalizer a);
+  set Fam = {B where B is Subset of G :
+  ex H being strict Subgroup of G st B = the carrier of H & P[H]};
+  A1: Fam <> {}
+  proof
+    consider a being object such that
+    B1: a in A
+    by XBOOLE_0:def 1;
+    reconsider a as Element of G by B1;
+    consider H being strict Subgroup of G such that
+    B2: H = Normalizer a;
+    carr H in Fam by B1,B2;
+    hence thesis;
+  end;
+  for x being object st x in the carrier of Centralizer A
+  holds x in meet Fam
+  <<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>
+  then A2: the carrier of Centralizer A c= meet Fam;
+
+  for x being object st x in meet Fam
+  holds x in the carrier of Centralizer A
+  <<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>
+  then meet Fam c= the carrier of Centralizer A;
+  hence thesis by A2, XBOOLE_0:def 10;
+end;
+@ %def Th65
+
+<<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>=
+proof
+  let x be object;
+  assume Z1: x in the carrier of Centralizer A;
+  then Z2: x in Centralizer A;
+  then x in G by GROUP_2:40;
+  then reconsider g = x as Element of G;
+  for X being set st X in Fam
+  holds x in X
+  proof
+    let X be set;
+    assume C1: X in Fam;
+    then consider B being Subset of G such that
+    C2: B = X and
+    C3: ex H being strict Subgroup of G
+        st B = the carrier of H &
+           (ex a being Element of G st a in A & H = Normalizer a);
+    consider H being strict Subgroup of G, a being Element of G such that
+    C4: B = the carrier of H & a in A & H = Normalizer a by C3;
+    g is Element of Centralizer A by Z2;
+    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th57;
+    then C5: g*a = a*g by C4;
+    C6: a |^ g = g" * a * g
+              .= g" * (a * g) by GROUP_1:def 3
+              .= g" * (g * a) by C5
+              .= (g" * g) * a by GROUP_1:def 3
+              .= (1_G) * a by GROUP_1:def 5
+              .= a by GROUP_1:def 4;
+    {a} |^ g = {a} |^ {g}
+            .= {a |^ g} by GROUP_3:37
+            .= {a} by C6;
+    then g in Normalizer a by GROUP_3:129;
+    then g in H by C4;
+    then x in H;
+    then x in the carrier of H;
+    then x in B by C4;
+    hence x in X by C2;
+  end;
+  hence x in meet Fam by A1,SETFAM_1:def 1;
+end;
+@
+
+<<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>=
+proof
+  let x be object;
+  assume B1: x in meet Fam;
+  B2: ex H being strict Subgroup of G st P[H]
+  proof
+    consider X being object such that
+    C1: X in Fam by A1, XBOOLE_0:def 1;
+    consider B being Subset of G such that
+    C2: B = X and
+    C3: ex H being strict Subgroup of G
+        st B = the carrier of H & P[H]
+    by C1;
+    thus thesis by C3;
+  end;
+
+  consider K being strict Subgroup of G such that
+  B3: the carrier of K = meet Fam
+  from GROUP_4:sch 1(B2);
+
+  B4: x in K by B1,B3;
+  then reconsider g = x as Element of G by GROUP_2:42;
+  B5: g in K by B4;
+  then B6: for X being set st X in Fam
+           holds g in X by B3,SETFAM_1:def 1;
+
+  B7: for a being Element of G st a in A
+  holds g in Normalizer a
+  proof
+    let a be Element of G;
+    assume C1: a in A;
+    set H = Normalizer a;
+    P[H] by C1;
+    then carr H in Fam;
+    then g in carr H by B6;
+    hence g in Normalizer a;
+  end;
+  for a being Element of G st a in A holds g*a = a*g
+  proof
+    let a be Element of G;
+    assume C1: a in A;
+    then g in Normalizer a by B7;
+    then consider h being Element of G such that
+    C2: g = h & a |^ h = a
+    by Th64;
+    C3: a = g" * a * g by C2
+         .= g" * (a * g) by GROUP_1:def 3;
+    g * a = g * (g" * (a * g)) by C3
+         .= (g * g") * (a * g) by GROUP_1:def 3
+         .= 1_G * (a * g) by GROUP_1:def 5
+         .= a * g by GROUP_1:def 4;
+    hence g*a = a*g;
+  end;
+
+  then g is Element of Centralizer A by Th57;
+  then g in Centralizer A;
+  then x in Centralizer A;
+  hence thesis;
+end;
+@
+
 
 
 \begin{theorem}
@@ -616,7 +751,7 @@ $|H_{1}\cap H_{2}|=|H_{1}|$ and $|H_{1}\cap H_{2}|=|H_{2}|$, then $H_{1}=H_{2}$.
 \end{theorem}
 
 <<Theorem: $|H_{1}\cap H_{2}|=|H_{1}|=|H_{2}|\implies H_{1}=H_{2}$>>=
-theorem Th67:
+theorem Th66:
   for G being finite Group
   for H1,H2 being strict Subgroup of G
   st card(H1 /\ H2) = card H1 & card(H1 /\ H2) = card H2
@@ -642,14 +777,14 @@ proof
   end;
   hence thesis by A3;
 end;
-@ %def Th67
+@ %def Th66
 
 \begin{theorem}
 For any natural numbers $a,b,c$ with $c\neq0$. If $c|a$ and $c|b$, then $a|b$.
 \end{theorem}
 
 <<Theorem: $\forall a,b,c\in\NN, c\neq0\land c|a\land c|b\implies a|b$>>=
-theorem Th68:
+theorem Th67:
   for a,b,c being Nat
   st c <> 0 & c*a divides c*b
   holds a divides b
@@ -664,7 +799,7 @@ proof
   take q;
   thus thesis by A4;
 end;
-@ %def Th68
+@ %def Th67
 
 \begin{theorem}
 For any natural numbers $a,b,c\in\NN$ with $b|c$ and $\gcd(ab,c)=1$, we
@@ -672,7 +807,7 @@ have $b=1$.
 \end{theorem}
 
 <<Theorem: $a,b,c\in\NN, b|c\land\gcd(ab,c)=1\implies b=1$>>=
-theorem Th69:
+theorem Th68:
   for a,b,c being Nat
   st b<>0 & b divides c & a*b,c are_coprime
   holds b=1
@@ -686,7 +821,7 @@ proof
   then b divides 1 by A3, INT_2:def 3;
   hence b=1 by INT_2:13;
 end;
-@ %def Th69
+@ %def Th68
 
 \begin{theorem}
 If $N_{1}\normalSubgroup G_{1}$ and $N_{2}\normalSubgroup G_{2}$ and
@@ -694,7 +829,7 @@ $G_{1}/N_{1}\iso G_{2}/N_{2}$, then $|N_{2}|\cdot|G_{1}|=|N_{1}|\cdot|G_{2}|$.
 \end{theorem}
 
 <<Theorem: $G_{1}/N_{1}\iso G_{2}/N_{2}\implies |N_{2}|\cdot|G_{1}|=|N_{1}|\cdot|G_{2}|$>>=
-theorem Th70:
+theorem Th69:
   for G1,G2 being finite Group
   for N1 being normal Subgroup of G1
   for N2 being normal Subgroup of G2
@@ -720,7 +855,7 @@ proof
                         .= card(N2)*card(G1) by A4;
   hence thesis;
 end;
-@ %def Th70
+@ %def Th69
 
 \begin{theorem}
 Let $G$ be a finite group.
@@ -729,7 +864,7 @@ then $|K\cap N|\cdot|KN|=|K|\cdot|N|$.
 \end{theorem}
 
 <<Theorem: $K,N\normalSubgroup G\implies |KN|\cdot|K\cap N|=|K|\cdot|N|$>>=
-theorem Th71:
+theorem Th70:
   for G being finite Group
   for K,N being strict normal Subgroup of G
   for m,d being Nat
@@ -749,14 +884,14 @@ proof
   then A5: (B "\/" N,N)`*` = the multMagma of N by GROUP_6:def 1;
 
   (B "\/" N)./.(B "\/" N,N)`*`, B./.(B /\ N) are_isomorphic by GROUP_6:81;
-  then card(B /\ N)*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by Th70;
+  then card(B /\ N)*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by Th69;
   then d*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by A3
                        .= card(B)*card(N) by A5
                        .= card(B)*m by A1
                        .= m*m by A4;
   hence d*card(N "\/" K) = m*m;
 end;
-@ %def Th71
+@ %def Th70
 
 \begin{theorem}[{\cite[Th2.1.3]{gorenstein1980finite}}]
 Let $G$ be a finite group, $N\normalSubgroup G$.
@@ -764,7 +899,7 @@ If $\gcd(|N|, [G:N])=1$, then $N$ is a characteristic subgroup of $G$.
 \end{theorem}
 
 <<Theorem: $N\normalSubgroup G$ with $|N|$ and $[G:N]$ coprime implies $N$ is characteristic>>=
-theorem Th72:
+theorem Th71:
   for G being finite Group
   for N being strict normal Subgroup of G
   st card N, index N are_coprime
@@ -783,10 +918,10 @@ proof
   proof
     let phi be Automorphism of G;
     set K = Image(phi|N);
-    K is normal Subgroup of G by Th51;
+    K is normal Subgroup of G by Th49;
     then reconsider K as strict normal Subgroup of G;
     K = phi .: N by GRSOLV_1:def 3;
-    then N,K are_isomorphic by Th18;
+    then N,K are_isomorphic by Th19;
     then B1: card K = card N by GROUP_6:73;
     set d = card(N /\ K);
     B10: d <> 0;
@@ -811,7 +946,7 @@ proof
         hence thesis by GROUP_2:59;
       end;
       then m = card N & d = card(K /\ N) by A2;
-      then d*card(N "\/" K) = m*m by B1,Th71;
+      then d*card(N "\/" K) = m*m by B1,Th70;
       then d*card(N "\/" K) = m*(d*q) by B21
                            .= m*d*q
                            .= d*m*q
@@ -820,17 +955,17 @@ proof
       hence thesis;
     end;
     B4: m*q divides m*n by A4,B3,GROUP_2:148;
-    then B5: q divides n by A6,Th68;
+    then B5: q divides n by A6,Th67;
     d*q, n are_coprime by A1,A2,A3,B21;
-    then q=1 by B22,B5,Th69;
+    then q=1 by B22,B5,Th68;
     then m = d by B21;
     then card(K) = card(N /\ K) & card(N) = card(N /\ K) by A2,B1;
-    then N=K by Th67;
+    then N=K by Th66;
     hence Image(phi|N) = N;
   end;
   thus N is characteristic Subgroup of G by A5,Def3;
 end;
-@ %def Th72
+@ %def Th71
 
 \begin{theorem}
 Let $f_{1}\colon G_{1}\to G_{2}$, $f_{2}\colon G_{2}\to G_{3}$ be group morphisms.
@@ -838,7 +973,7 @@ If $A\subset G_{1}$, then $f_{2}(f_{1}(A))=(f_{2}\circ f_{1})(A)$.
 \end{theorem}
 
 <<Theorem: $f_{2}(f_{1}(A))=(f_{2}\circ f_{1})(A)$ for group morphisms>>=
-theorem Th73:
+theorem Th72:
   for G1,G2,G3 being Group
   for f1 being Homomorphism of G1,G2
   for f2 being Homomorphism of G2,G3
@@ -903,7 +1038,7 @@ proof
   hence the multMagma of f2 .: (f1 .: A) = the multMagma of ((f2 * f1) .: A)
   by GROUP_2:60;
 end;
-@ %def Th73
+@ %def Th72
 
 \begin{theorem}
 Let $N\normalSubgroup G$, $\varphi\in\Aut(G)$ such that $\varphi(N)=N$.
@@ -913,7 +1048,7 @@ $x\in G$, $\sigma(xN)=\varphi(x)N$.
 \end{theorem}
 
 <<Theorem: $\varphi\in\Aut(G)$, $\varphi(N)=N$, $\exists\sigma\in\Aut(G/N),\sigma(xN)=\varphi(x)N$>>=
-theorem Th74:
+theorem Th73:
   for G being Group
   for N being strict normal Subgroup of G
   for phi being Automorphism of G
@@ -1045,7 +1180,7 @@ proof
         consider psi being Automorphism of G such that
         Z7: psi = phi" and
             the multMagma of Image(phi|Image(psi|N)) = the multMagma of N
-        by Th16;
+        by Th17;
         reconsider i = id the carrier of G as Automorphism of G by GROUP_6:38;
         the carrier of G <> {} & phi is onto;
         then Z7a: psi * phi = id the carrier of G by Z7,FUNCT_2:29;
@@ -1054,7 +1189,7 @@ proof
         then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by Z33,FUNCT_1:def 6;
         then psi.(phi.x) in the carrier of (psi .: (phi .: N)) by GRSOLV_1:8;
         then psi.(phi.x) in psi .: (phi .: N);
-        then psi.(phi.x) in (psi * phi) .: N by Th73;
+        then psi.(phi.x) in (psi * phi) .: N by Th72;
         then (phi").(phi.x) in (psi * phi) .: N by Z7;
         then x in (psi * phi) .: N by B3;
         then x in i .: N by Z7a;
@@ -1138,7 +1273,7 @@ proof
   let x be Element of G;
   thus sigma.(x*N) = (phi.x)*N by A4;
 end;
-@ %def Th74
+@ %def Th73
 
 \begin{theorem}
 Let $G$ be a finite group $H\subgroup K\subgroup G$ and $H$ be a characteristic
@@ -1146,7 +1281,7 @@ subgroup. Then $H$ is a normal subgroup of $K$.
 \end{theorem}
 
 <<Theorem: $H$ char $G$ and $H\subgroup K\subgroup G$, then $H\normalSubgroup K$>>=
-theorem Th75:
+theorem Th74:
   for G being finite Group
   for H being strict characteristic Subgroup of G
   for K being strict Subgroup of G
@@ -1199,16 +1334,17 @@ proof
   then the multMagma of R = the multMagma of H1 by GROUP_2:60;
   hence thesis;
 end;
-@ %def Th75
+@ %def Th74
 
-\begin{theorem}
+\begin{theorem}[{Gorenstein~\cite[Th2.1.2(iv)]{gorenstein1980finite}}]
 Let $G$ be a finite group, $H$ a characteristic subgroup of $G$, and
 $H\subgroup K\subgroup G$. If $K/H$ is a characteristic subgroup of $G/H$,
 then $K$ is a characteristic subgroup of $G$.
 \end{theorem}
 
 <<Theorem: $H\subgroup K\subgroup G$, $H$ char $G$, $K/H$ char $G/H$ implies $K$ is characteristic>>=
-theorem Th76:
+:: Gorenstein, Finite Groups, Theorem 2.1.2 (iv)
+theorem Th75:
   for G being finite Group
   for H being strict characteristic Subgroup of G
   for K being strict Subgroup of G
@@ -1222,7 +1358,7 @@ proof
   assume A1: H is Subgroup of K;
   assume A2: K./.(K,H)`*` is characteristic Subgroup of G./.H;
   A3: (K,H)`*` = H by A1,GROUP_6:def 1;
-  then A4: H is normal Subgroup of K by A1,Th74;
+  then A4: H is normal Subgroup of K;
   for phi being Automorphism of G
   for k being Element of G st k in K
   holds phi.k in K
@@ -1233,10 +1369,10 @@ proof
     Image(phi|H) = H by Def3;
     then consider sigma being Automorphism of G./.H such that
     B2: for x being Element of G holds sigma.(x*H) = (phi.x)*H
-    by Th74;
+    by Th73;
     consider J being strict characteristic Subgroup of G./.H such that
     B3: J = (K./.(K,H)`*`) by A2;
-    B4: for j being Element of G./.H st j in J holds sigma.j in J by Th52;
+    B4: for j being Element of G./.H st j in J holds sigma.j in J by Th50;
 
     B5: for k1 being Element of G st k1*H in J holds k1 in K
     proof
@@ -1367,9 +1503,9 @@ proof
     hence thesis;
   end;
 
-  hence K is characteristic Subgroup of G by Th52;
+  hence K is characteristic Subgroup of G by Th50;
 end;
-@ %def Th76
+@ %def Th75
 
 \begin{theorem}
 Let $H\subgroup G$.
@@ -1377,7 +1513,7 @@ Then $H\subgroup C_{G}(H)$ if and only if $H$ is a commutative group.
 \end{theorem}
 
 <<Theorem: $H\subgroup G$, $H\subgroup C_{G}(H)\iff$ $H$ is commutative>>=
-theorem Th77:
+theorem Th76:
   for G being Group
   for H being Subgroup of G
   holds H is Subgroup of Centralizer H iff H is commutative Group
@@ -1393,7 +1529,7 @@ proof
       assume B1: g in H;
       assume B2: h in H;
       g in Centralizer H by B1,A1,GROUP_2:40;
-      hence g*h=h*g by B2,Th62;
+      hence g*h=h*g by B2,Th60;
     end;
     for g,h being Element of H holds g*h=h*g
     proof
@@ -1430,20 +1566,20 @@ proof
       let g be Element of G;
       assume B1: g in H;
       for a being Element of G st a in H holds g*a = a*g by B1,A3;
-      then g is Element of Centralizer H by Th62;
+      then g is Element of Centralizer H by Th60;
       hence g in Centralizer H;
     end;
     hence thesis by GROUP_2:58;
   end;
 end;
-@ %def Th77
+@ %def Th76
 
 \begin{theorem}
 For any group $G$, $C_{G}(G)=Z(G)$.
 \end{theorem}
 
 <<Theorem: $C_{G}(G)=Z(G)$>>=
-theorem Th78:
+theorem Th77:
   for G being Group
   holds Centralizer (Omega).G = center G
 proof
@@ -1454,7 +1590,7 @@ proof
     thus g in Centralizer (Omega).G implies g in center G
     proof
       assume B1: g in Centralizer (Omega).G;
-      then B2: for a being Element of G st a in (Omega).G holds g*a = a*g by Th62;
+      then B2: for a being Element of G st a in (Omega).G holds g*a = a*g by Th60;
       for a being Element of G holds g*a = a*g
       proof
         let a be Element of G;
@@ -1469,83 +1605,21 @@ proof
       assume B1: g in center G;
       then for b being Element of G holds g*b = b*g by GROUP_5:77;
       then for b being Element of G st b in (Omega).G holds g*b = b*g;
-      then g is Element of Centralizer (Omega).G by Th62;
+      then g is Element of Centralizer (Omega).G by Th60;
       hence thesis;
     end;
 
   end;
   hence Centralizer (Omega).G = center G;
 end;
-@ %def Th78
-
-\begin{lemma}
-Let $H\subgroup G$ be a subgroup. Then $C_{G}(H)\subgroup N_{G}(H)$.
-\end{lemma}
-
-<<Lemma: $C_{G}(H)\subgroup N_{G}(H)$>>=
-Lm8:
-  for G being Group
-  for H being Subgroup of G
-  holds Centralizer H is strict Subgroup of Normalizer H
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  set Z = Centralizer H;
-  for g being Element of G st g in Centralizer H holds g in Normalizer H
-  proof
-    let g be Element of G;
-    assume A1: g in Centralizer H;
-    then g is Element of Centralizer H;
-    then A2: for a being Element of G st a in H holds g*a = a*g by Th62;
-    A3: for a being Element of G st a in H holds a = (g")*a*g
-    proof
-      let a be Element of G;
-      assume B1: a in H;
-      then g*a = a*g by A2;
-      then g" * (a * g) = g" * (g*a)
-                       .= (g" * g)*a by GROUP_1:def 3
-                       .= (1_G)*a by GROUP_1:def 5
-                       .= a by GROUP_1:def 4;
-      hence a = (g")*a*g by GROUP_1:def 3;
-    end;
-    for a being Element of G holds a in H iff a in (H |^ g)
-    proof
-      let a be Element of G;
-      thus a in H implies a in H |^ g
-      proof
-        assume B1: a in H;
-        then a = a |^ g by A3;
-        hence a in H |^ g by B1, GROUP_3:58;
-      end;
-      thus a in H |^ g implies a in H
-      proof
-        assume B1: a in H |^ g;
-        then consider h being Element of G such that
-        B2: a = h |^ g & h in H
-        by GROUP_3:58;
-        (h |^ g) = a |^ g by B2,A3;
-        then h = a by GROUP_3:16;
-        hence a in H by B2;
-      end;
-    end;
-    then the multMagma of H = the multMagma of (H |^ g) by GROUP_2:60;
-    then A5: carr H = carr(H |^ g);
-    the carrier of H |^ g = carr(H) |^ g by GROUP_3:def 6;
-    then carr H = carr(H) |^ g by A5;
-    then ex h being Element of G st h=g & carr(H) |^ h = carr H;
-    then g in Normalizer carr(H) by GROUP_3:129;
-    hence g in Normalizer H;
-  end;
-  hence Centralizer H is strict Subgroup of Normalizer H by GROUP_2:58;
-end;
-@
+@ %def Th77
 
 \begin{theorem}
 Let $N\normalSubgroup G$ be a subgroup. Then $C_{G}(N)\normalSubgroup G$.
 \end{theorem}
 
 <<Theorem: $N\normalSubgroup G\implies C_{G}(H)\normalSubgroup G$>>=
-theorem Th79:
+theorem Th78:
   for G being Group
   for N being normal Subgroup of G
   holds Centralizer N is normal Subgroup of G
@@ -1576,7 +1650,7 @@ proof
     B4: n2 = n |^ g" by B3;
     then B5: n2 in N by B2,A2;
     x is Element of Centralizer N by B1;
-    then x * n2 = n2 * x by B5,Th62;
+    then x * n2 = n2 * x by B5,Th60;
     then (x * n2) |^ g = (n2 * x) |^ g
                       .= (n2 |^ g) * (x |^ g) by GROUP_3:23;
     then (x |^ g) * (n2 |^ g) = (n2 |^ g) * (x |^ g) by GROUP_3:23
@@ -1591,7 +1665,7 @@ proof
     assume Z1: z in Centralizer N;
     then for n being Element of G st n in N holds
     (z |^ g)*n = n*(z |^ g) by A3;
-    then (z |^ g) is Element of Centralizer N by Th62;
+    then (z |^ g) is Element of Centralizer N by Th60;
     hence z |^ g in Centralizer N;
   end;
 
@@ -1623,7 +1697,7 @@ proof
   end;
   hence Centralizer N is normal Subgroup of G by GROUP_3:def 13;
 end;
-@ %def Th79
+@ %def Th78
 
 \begin{theorem}
 Let $H\subgroup G$, $h\in H$ and $n\in N_{G}(H)$. Then
@@ -1631,7 +1705,7 @@ $h^{n}=n^{-1}hn\in H$.
 \end{theorem}
 
 <<Theorem: $\forall h\in H,n\in N_{G}(H), n^{-1}hn\in H$>>=
-theorem Th80:
+theorem Th79:
   for G being Group
   for H being Subgroup of G
   for h,n being Element of G
@@ -1656,14 +1730,14 @@ proof
   then h |^ n in carr H by A4;
   hence h |^ n in H;
 end;
-@ %def Th80
+@ %def Th79
 
 \begin{theorem}
 For any subgroup $H\subgroup G$, we have $H\subgroup N_{G}(H)$.
 \end{theorem}
 
 <<Theorem: $\forall H\subgroup G, H\subgroup N_{G}(H)$>>=
-theorem Th81:
+theorem Th80:
   for G being Group
   for H being Subgroup of G
   holds H is Subgroup of Normalizer H
@@ -1723,14 +1797,98 @@ proof
 
   hence H is Subgroup of Normalizer H by GROUP_2:58;
 end;
-@ %def Th81
+@ %def Th80
+
+\begin{lemma}
+Let $H\subgroup G$ be a subgroup. Then $C_{G}(H)\subgroup N_{G}(H)$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+We find every $g\in C_{G}(H)$ also lives in $g\in N_{G}(H)$. The result
+follows immediately.
+\end{proof}
+
+<<Lemma: $C_{G}(H)\subgroup N_{G}(H)$>>=
+Lm8:
+  for G being Group
+  for H being Subgroup of G
+  holds Centralizer H is strict Subgroup of Normalizer H
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  set Z = Centralizer H;
+  for g being Element of G st g in Centralizer H holds g in Normalizer H
+  <<Proof: $\forall g\in G, g\in C_{G}(H)\implies g\in N_{G}(H)$>>
+  hence Centralizer H is strict Subgroup of Normalizer H by GROUP_2:58;
+end;
+@ %def Lm8
+
+\begin{proof}[Proof step ($\forall g\in G, g\in C_{G}(H)\implies g\in N_{G}(H)$).]
+We will show, for any arbitrary $g\in C_{G}(H)$, that $H^{g} = H$. This
+implies $g\in N_{G}(H)$ by definition of the normalizer.
+\end{proof}
+
+<<Proof: $\forall g\in G, g\in C_{G}(H)\implies g\in N_{G}(H)$>>=
+proof
+  let g be Element of G;
+  assume A1: g in Centralizer H;
+  then g is Element of Centralizer H;
+  then A2: for a being Element of G st a in H holds g*a = a*g by Th60;
+  A3: for a being Element of G st a in H holds a = (g")*a*g
+  proof
+    let a be Element of G;
+    assume B1: a in H;
+    then g*a = a*g by A2;
+    then g" * (a * g) = g" * (g*a)
+                     .= (g" * g)*a by GROUP_1:def 3
+                     .= (1_G)*a by GROUP_1:def 5
+                     .= a by GROUP_1:def 4;
+    hence a = (g")*a*g by GROUP_1:def 3;
+  end;
+
+  for a being Element of G holds a in H iff a in (H |^ g)
+  proof
+    let a be Element of G;
+    thus a in H implies a in H |^ g
+    proof
+      assume B1: a in H;
+      then a = a |^ g by A3;
+      hence a in H |^ g by B1, GROUP_3:58;
+    end;
+    thus a in H |^ g implies a in H
+    proof
+      assume B1: a in H |^ g;
+      then consider h being Element of G such that
+      B2: a = h |^ g & h in H
+      by GROUP_3:58;
+      (h |^ g) = a |^ g by B2,A3;
+      then h = a by GROUP_3:16;
+      hence a in H by B2;
+    end;
+  end;
+  then the multMagma of H = the multMagma of (H |^ g) by GROUP_2:60;
+  then A5: carr H = carr(H |^ g);
+  the carrier of H |^ g = carr(H) |^ g by GROUP_3:def 6;
+  then carr H = carr(H) |^ g by A5;
+  then ex h being Element of G st h=g & carr(H) |^ h = carr H;
+  then g in Normalizer carr(H) by GROUP_3:129;
+  hence g in Normalizer H;
+end;
+@
 
 \begin{theorem}
 Let $H\subgroup G$. Then $C_{G}(H)\normalSubgroup N_{G}(H)$.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We will show $(B_{4})$, for arbitrary $z\in C_{G}(H)$ and $n\in N_{G}(H)$, that
+$z^{n}=n^{-1}zn$ commutes with any $h\in H$. This implies $(B_{5})$ that
+$z^{n}\in C_{G}(H)$ and thus $C_{G}(H)\subgroup n^{-1}C_{G}(H)n$. It
+follows that $C_{G}(H)\normalSubgroup N_{G}(H)$.
+\end{proof}
+
 <<Theorem: $C_{G}(H)\normalSubgroup N_{G}(H)$>>=
-theorem Th82:
+theorem Th81:
   for G being Group
   for H being Subgroup of G
   holds Centralizer H is strict normal Subgroup of Normalizer H
@@ -1743,56 +1901,10 @@ proof
     reconsider Z=Centralizer H as strict Subgroup of Normalizer H by Lm8;
     set N = Normalizer H;
 
-    B62: for z being Element of N
+    B60: for z being Element of N
     holds (for n being Element of N st n in H holds z*n = n*z) iff
           z is Element of Z
-    proof
-      let z be Element of N;
-      C0: z in N;
-      reconsider z1=z as Element of G by GROUP_2:42;
-
-      C2: z is Element of Z implies (for n being Element of N st n in H holds z*n = n*z)
-      proof
-        assume Z1: z is Element of Z;
-        let n be Element of N;
-        assume Z2: n in H;
-        reconsider n1=n as Element of G by GROUP_2:42;
-        Z3: n1 in H by Z2;
-        z in Z by Z1;
-        then z in carr(Centralizer H);
-        then z1 in Centralizer H;
-        then z1 is Element of Centralizer H;
-        then z1*n1 = n1*z1 by Z3,Th62
-        .= n*z by GROUP_2:43;
-        then z*n = n*z by GROUP_2:43;
-        hence thesis;
-      end;
-      not (z is Element of Z) implies not (for n being Element of N st n in H
-      holds z*n = n*z)
-      proof
-        assume Z1: not z is Element of Z;
-        then not z in Z;
-        then not z1 in Centralizer H;
-        then not z1 is Element of Centralizer H;
-        then consider g being Element of G such that
-        Z2: g in H & g*z1 <> z1 * g by Th62;
-        Z3: H is Subgroup of Normalizer H by Th81;
-        g in H by Z2;
-        then g in Normalizer H by Z3, GROUP_2:41;
-        then reconsider n=g as Element of N;
-        Z6: n in H by Z2;
-        Z4: g*z1 = n*z by GROUP_2:43;
-        z1*g = z*n by GROUP_2:43;
-        then Z5: n*z <> z*n by Z2,Z4;
-        take n;
-        thus thesis by Z5,Z6;
-      end;
-      hence
-      (for n being Element of N st n in H holds z*n = n*z) implies z is Element of Z;
-
-      thus z is Element of Z implies (for n being Element of N st n in H
-      holds z*n = n*z) by C2;
-    end;
+    <<Proof: $\forall z\in N_{G}(H), (\forall n\in N_{G}(H), n\in H\implies zn=nz)\iff z\in C_{G}(H)$>>
 
 
     B3: for z,n,h being Element of N
@@ -1826,7 +1938,7 @@ proof
         D5: a" in N by D1,GROUP_2:51;
         then D6: a*b*a" in N by D4,GROUP_2:50;
         a" in N & b in H by D2,D5;
-        then b |^ a" in H by Th80;
+        then b |^ a" in H by Th79;
         then a*b*a" in H;
         hence a*b*a" in H;
         thus a*b*a" in N by D6;
@@ -1848,7 +1960,7 @@ proof
       C5: n * h * n" = h2 & h2 in H;
 
       z is Element of Z by C1;
-      then for n0 being Element of N st n0 in H holds z*n0 = n0*z by B62;
+      then for n0 being Element of N st n0 in H holds z*n0 = n0*z by B60;
       then z*h2 = h2*z by C5;
       then z"*(z * h2) = z" * (h2 * z);
       then (z" * z) * h2 = z" * (h2 * z) by GROUP_1:def 3
@@ -1901,7 +2013,7 @@ proof
       assume C1: z in Z;
       set g = z |^ n;
       for h being Element of N st h in H holds g*h = h*g by C1,B4;
-      then g is Element of Z by B62;
+      then g is Element of Z by B60;
       hence thesis;
     end;
 
@@ -1925,167 +2037,59 @@ proof
   end;
   hence thesis;
 end;
-@ %def Th82
+@ %def Th81
 
-\begin{theorem}
-Let $G$ be a group and $A\subset G$.
-Then $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$.
-\end{theorem}
-
-\begin{proof}[Proof outline]
-We prove this in two steps. Step one $C_{G}(A)\subset \bigcap_{a\in A} N_{G}(a)$.
-Step two $\bigcap_{a\in A} N_{G}(a) \subset C_{G}(A)$.
+\begin{proof}[Proof step ($B_{60}$).]
+We prove the analogous result from theorem 60, but when restricting
+quantifiers to the normalizer.
 \end{proof}
 
-<<Theorem: $A\subset G$, $C_{G}(A) = \bigcap_{a\in A}N_{G}(a)$>>=
-theorem Th68:
-  for G being Group
-  for A being non empty Subset of G
-  holds the carrier of Centralizer A = meet {B where B is Subset of G :
-  ex H being strict Subgroup of G st B = the carrier of H &
-  (ex a being Element of G st a in A & H = Normalizer a)}
+<<Proof: $\forall z\in N_{G}(H), (\forall n\in N_{G}(H), n\in H\implies zn=nz)\iff z\in C_{G}(H)$>>=
 proof
-  let G be Group;
-  let A be non empty Subset of G;
-  defpred P[strict Subgroup of G] means (ex a being Element of G
-                                         st a in A & $1 = Normalizer a);
-  set Fam = {B where B is Subset of G :
-  ex H being strict Subgroup of G st B = the carrier of H & P[H]};
-  A1: Fam <> {}
+  let z be Element of N;
+  C0: z in N;
+  reconsider z1=z as Element of G by GROUP_2:42;
+
+  C2: z is Element of Z implies (for n being Element of N st n in H holds z*n = n*z)
   proof
-    consider a being object such that
-    B1: a in A
-    by XBOOLE_0:def 1;
-    reconsider a as Element of G by B1,GROUP_2:42;
-    consider H being strict Subgroup of G such that
-    B2: H = Normalizer a;
-    carr H in Fam by B1,B2;
+    assume Z1: z is Element of Z;
+    let n be Element of N;
+    assume Z2: n in H;
+    reconsider n1=n as Element of G by GROUP_2:42;
+    Z3: n1 in H by Z2;
+    z in Z by Z1;
+    then z in carr(Centralizer H);
+    then z1 in Centralizer H;
+    then z1 is Element of Centralizer H;
+    then z1*n1 = n1*z1 by Z3,Th60
+              .= n*z by GROUP_2:43;
+    then z*n = n*z by GROUP_2:43;
     hence thesis;
   end;
-  for x being object
-  st x in the carrier of Centralizer A
-  holds x in meet Fam
-  <<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>
-  then A2: the carrier of Centralizer A c= meet Fam by TARSKI:def 3;
+  not (z is Element of Z) implies not (for n being Element of N st n in H
+  holds z*n = n*z)
+  proof
+    assume Z1: not z is Element of Z;
+    then not z in Z;
+    then not z1 in Centralizer H;
+    then not z1 is Element of Centralizer H;
+    then consider g being Element of G such that
+    Z2: g in H & g*z1 <> z1 * g by Th60;
+    Z3: H is Subgroup of Normalizer H by Th80;
+    g in H by Z2;
+    then g in Normalizer H by Z3, GROUP_2:41;
+    then reconsider n=g as Element of N;
+    Z6: n in H by Z2;
+    Z4: g*z1 = n*z by GROUP_2:43;
+    z1*g = z*n by GROUP_2:43;
+    then Z5: n*z <> z*n by Z2,Z4;
+    take n;
+    thus thesis by Z5,Z6;
+  end;
+  hence
+  (for n being Element of N st n in H holds z*n = n*z) implies z is Element of Z;
 
-  for x being object
-  st x in meet Fam
-  holds x in the carrier of Centralizer A
-  <<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>
-  then meet Fam c= the carrier of Centralizer A;
-  hence thesis by A2, XBOOLE_0:def 10;
+  thus z is Element of Z implies (for n being Element of N st n in H
+  holds z*n = n*z) by C2;
 end;
 @
-
-<<Proof: $\forall x, x\in C_{G}(A)\implies x\in\bigcap_{a}N_{G}(a)$>>=
-proof
-  let x be object;
-  assume Z1: x in the carrier of Centralizer A;
-  then Z2: x in Centralizer A;
-  then x in G by GROUP_2:40;
-  then reconsider g = x as Element of G;
-  for X being set st X in Fam
-  holds x in X
-  proof
-    let X be set;
-    assume C1: X in Fam;
-    then consider B being Subset of G such that
-    C2: B = X and
-    C3: ex H being strict Subgroup of G
-        st B = the carrier of H &
-           (ex a being Element of G st a in A & H = Normalizer a);
-    consider H being strict Subgroup of G, a being Element of G such that
-    C4: B = the carrier of H & a in A & H = Normalizer a by C3;
-    g is Element of Centralizer A by Z2;
-    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th59;
-    then C5: g*a = a*g by C4;
-    then C6: a |^ g = g" * a * g by GROUP_3:def 2
-                   .= g" * (a * g) by GROUP_1:def 3
-                   .= g" * (g * a) by C5
-                   .= (g" * g) * a by GROUP_1:def 3
-                   .= (1_G) * a by GROUP_1:def 5
-                   .= a by GROUP_1:def 4;
-    then {a} |^ g = {a} |^ {g} by GROUP_3:def 3
-                 .= {a |^ g} by GROUP_3:37
-                 .= {a} by C6;
-    then g in Normalizer a by GROUP_3:129;
-    then g in H by C4;
-    then x in H;
-    then x in the carrier of H by C4;
-    then x in B by C4;
-    hence x in X by C2;
-  end;
-  hence x in meet Fam by A1,SETFAM_1:def 1;
-end;
-@
-
-<<Proof: $\forall x, x\in\bigcap_{a}N_{G}(a)\implies x\in C_{G}(A)$>>=
-proof
-  let x be object;
-  assume B1: x in meet Fam;
-  then for X being set st X in Fam
-  holds x in X by SETFAM_1:def 1;
-
-  B2: ex H being strict Subgroup of G st P[H]
-  proof
-    Fam <> {} by A1;
-    then Fam is non empty;
-    then consider X being object such that
-    C1: X in Fam by A1, XBOOLE_0:def 1;
-    consider B being Subset of G such that
-    C2: B = X and
-    C3: ex H being strict Subgroup of G
-        st B = the carrier of H & P[H]
-    by C1;
-    thus thesis by C3;
-  end;
-
-  consider K being strict Subgroup of G such that
-  B3: the carrier of K = meet Fam
-  from GROUP_4:sch 1(B2);
-
-  B4: x in K by B1,B3;
-  then reconsider g = x as Element of G by GROUP_2:42;
-  B5: g in K by B4;
-  then B6: for X being set st X in Fam
-           holds g in X by B3,SETFAM_1:def 1;
-
-  B7: for a being Element of G st a in A
-  holds g in Normalizer a
-  proof
-    let a be Element of G;
-    assume C1: a in A;
-    set H = Normalizer a;
-    P[H] by C1;
-    then carr H in Fam;
-    then g in carr H by B6;
-    hence g in Normalizer a;
-  end;
-  for a being Element of G st a in A holds g*a = a*g
-  proof
-    let a be Element of G;
-    assume C1: a in A;
-    then g in Normalizer a by B7;
-    then consider h being Element of G such that
-    C2: g = h & a |^ h = a
-    by Th66;
-    C3: a = g" * a * g by C2,GROUP_3:def 2
-         .= g" * (a * g) by GROUP_1:def 3;
-    g * a = g * (g" * (a * g)) by C3
-         .= (g * g") * (a * g) by GROUP_1:def 3
-         .= 1_G * (a * g) by GROUP_1:def 5
-         .= a * g by GROUP_1:def 4;
-    hence g*a = a*g;
-  end;
-
-  then g is Element of Centralizer A by Th59;
-  then g in Centralizer A;
-  then x in Centralizer A;
-  hence thesis;
-end;
-@
-
-
-\begin{theorem}
-
-\end{theorem}
