@@ -12,7 +12,7 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
-
+NW_UNDERSCORE=-filter 'sed "/^@use /s/_/\\\\_/g;/^@defn /s/_/\\\\_/g"'
 all: doc
 
 check:
@@ -39,8 +39,8 @@ dumb_extract_text:
 	noweave $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
 
 code:
-	notangle -RTEXT/char.miz $(CHARACTERISTIC_SUBGROUP) > text/char.miz
-	notangle -RDICT/CHAR.VOC $(CHARACTERISTIC_SUBGROUP) > dict/char.voc
+	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
+	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
 
 without_bib:
 	$(TEX) $(BOOK)

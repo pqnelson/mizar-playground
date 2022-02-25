@@ -14,19 +14,19 @@ This is complicated and kind of a distraction. The reader can skip ahead
 to where we start proving theorems and defining concepts in
 \S\ref{sec:characteristic:preparatory:start}.
 
-<<Environment for [[char.miz]]>>=
+<<Environment for [[group_22.miz]]>>=
 environ
 
- <<[[char.miz]] vocabularies>>;
- <<[[char.miz]] constructors>>;
- <<[[char.miz]] notations>>;
- <<[[char.miz]] registrations>>;
- <<[[char.miz]] requirements>>;
- <<[[char.miz]] definitions>>;
- <<[[char.miz]] equalities>>;
- <<[[char.miz]] expansions>>;
- <<[[char.miz]] theorems>>;
- <<[[char.miz]] schemes>>;
+ <<[[group_22.miz]] vocabularies>>;
+ <<[[group_22.miz]] constructors>>;
+ <<[[group_22.miz]] notations>>;
+ <<[[group_22.miz]] registrations>>;
+ <<[[group_22.miz]] requirements>>;
+ <<[[group_22.miz]] definitions>>;
+ <<[[group_22.miz]] equalities>>;
+ <<[[group_22.miz]] expansions>>;
+ <<[[group_22.miz]] theorems>>;
+ <<[[group_22.miz]] schemes>>;
 @
 
 \begin{remark}
@@ -54,8 +54,8 @@ it turned out to be a huge distraction.)
 Similarly, [[MOD_4]] introduces the tokens [[Endomorphism]] and
 [[Automorphism]], which I want to use, so I add them, too.
 
-<<[[char.miz]] vocabularies>>=
-vocabularies MOD_4, CHAR, CARD_3, QC_LANG1, RLSUB_1,
+<<[[group_22.miz]] vocabularies>>=
+vocabularies MOD_4, GROUP_22, CARD_3, QC_LANG1, RLSUB_1,
   <<Functions and subset tokens>>,
   <<Group and subgroups tokens>>,
   <<Group conjugation and normal subgroups tokens>>
@@ -63,7 +63,7 @@ vocabularies MOD_4, CHAR, CARD_3, QC_LANG1, RLSUB_1,
 
 \begin{remark}[VOC file]\index{Voc File@\texttt{.VOC} File}
 For our article, we will need to define new tokens. They are placed in
-[[./DICT/CHAR.VOC]] (relative to whatever directory we have made our
+[[./DICT/GROUP_22.VOC]] (relative to whatever directory we have made our
 Mizar workstation). As we introduce new terms, we will check if it
 exists already in Mizar by running ``[[findvoc -w "term"]]''.\index{Findvoc@\texttt{findvoc}} If Mizar
 is unfamiliar with the term, then nothing will be reported, and we will
@@ -124,25 +124,25 @@ Often we just copy the articles imported for the notations section, but
 in my experience it's often a strict subset of the notations. I'm lazy,
 so I'll just copy the constructor imports:
 
-<<[[char.miz]] constructors>>=
-constructors <<Set theoretic constructors for [[char.miz]]>>
-  <<Number constructors for [[char.miz]]>>
-  <<Group theory constructors for [[char.miz]]>>
+<<[[group_22.miz]] constructors>>=
+constructors <<Set theoretic constructors for [[group_22.miz]]>>
+  <<Number constructors for [[group_22.miz]]>>
+  <<Group theory constructors for [[group_22.miz]]>>
 @
 
-<<Set theoretic constructors for [[char.miz]]>>=
+<<Set theoretic constructors for [[group_22.miz]]>>=
 TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
 RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
 @
 
-<<Number constructors for [[char.miz]]>>=
+<<Number constructors for [[group_22.miz]]>>=
 CARD_1, CARD_3, NUMBERS, REAL_1, SETWISEO,
 ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
 SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
 XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
 @
 
-<<Group theory constructors for [[char.miz]]>>=
+<<Group theory constructors for [[group_22.miz]]>>=
 BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
 GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, PRALG_1, GROUP_7, GRSOLV_1,
 AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, GROUP_6
@@ -173,7 +173,7 @@ The group theoretic notions are a grab bag of binary operators
 I'll also be using products of groups (established in [[GROUP_7]]) and
 need some helper results ([[PRALG_1]]).
 
-<<[[char.miz]] notations>>=
+<<[[group_22.miz]] notations>>=
 notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1,
   ZFMISC_1, CARD_1, CARD_3, INT_1, NAT_1, ARYTM_2, ARYTM_3, INT_2,
@@ -193,21 +193,21 @@ portion of the environment. For our purposes, we may need basic facts
 about relations ([[RELAT_1]]), functions and partial functions ([[FUNCT_1]],
 [[PARTFUN1]], [[FUNCT_2]]), relations between sets ([[RELSET_1]]).
 
-<<[[char.miz]] registrations>>=
-registrations <<Register set theoretic clusters for [[char.miz]]>>,
-  <<Register number clusters for [[char.miz]]>>,
-  <<Register group theoretic clusters for [[char.miz]]>>
+<<[[group_22.miz]] registrations>>=
+registrations <<Register set theoretic clusters for [[group_22.miz]]>>,
+  <<Register number clusters for [[group_22.miz]]>>,
+  <<Register group theoretic clusters for [[group_22.miz]]>>
 @
 
 %\M
 The clusters we want to use from set theory are defined in the ``same''
 scattering of places.
 
-<<Register set theoretic clusters for [[char.miz]]>>=
+<<Register set theoretic clusters for [[group_22.miz]]>>=
 XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
 @
 
-<<Register number clusters for [[char.miz]]>>=
+<<Register number clusters for [[group_22.miz]]>>=
 ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
 ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2
 @
@@ -215,7 +215,7 @@ ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2
 %\M
 We also need to register adjectives germane to group theory.
 
-<<Register group theoretic clusters for [[char.miz]]>>=
+<<Register group theoretic clusters for [[group_22.miz]]>>=
 STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, GROUP_6, GR_CY_1, GROUP_7
 @
 
@@ -224,9 +224,9 @@ a proof. Specifically, automatically unfolding predicates from specific
 articles. If we want this to be automated, we can cite the article in
 the [[definitions]] portion of the [[environ]].
 
-<<[[char.miz]] definitions>>=
-definitions <<Include set theoretic definitions for [[char.miz]]>>,
-  <<Group theoretic definitions for [[char.miz]]>>
+<<[[group_22.miz]] definitions>>=
+definitions <<Include set theoretic definitions for [[group_22.miz]]>>,
+  <<Group theoretic definitions for [[group_22.miz]]>>
 @
 
 \begin{remark}
@@ -239,7 +239,7 @@ Arguably, we want to be using basic predicates concerning subsets
 ([[SUBSET_1]]), functions ([[FUNCT_1]] and [[FUNCT_2]]), and set theory
 ([[TARSKI]]), so let's just add them.
 
-<<Include set theoretic definitions for [[char.miz]]>>=
+<<Include set theoretic definitions for [[group_22.miz]]>>=
 TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1, INT_1
 @
 
@@ -247,7 +247,7 @@ TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1, INT_1
 But we also want to use facts concerning normal subgroups ([[GROUP_3]])
 and the automorphism group $\aut(G)$ ([[AUTGROUP]]).
 
-<<Group theoretic definitions for [[char.miz]]>>=
+<<Group theoretic definitions for [[group_22.miz]]>>=
 PRALG_1, GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON,
 XXREAL_0, GROUP_7
 @
@@ -260,24 +260,24 @@ theorems and definitions in proofs (i.e., if we want to use the
 \emph{results} of previous articles), then we need to add those cited
 articles to the [[theorems]] environment.
 
-<<[[char.miz]] theorems>>=
+<<[[group_22.miz]] theorems>>=
 theorems
-  <<Import set-theoretic theorems for [[char.miz]]>>,
-  <<Import group-theoretic theorems for [[char.miz]]>>
+  <<Import set-theoretic theorems for [[group_22.miz]]>>,
+  <<Import group-theoretic theorems for [[group_22.miz]]>>
 @
 
 %\M
 We have the usual cast of set theoretic characters. There are a large
 number of articles we refer to for using the real numbers.
 
-<<Import set-theoretic theorems for [[char.miz]]>>=
+<<Import set-theoretic theorems for [[group_22.miz]]>>=
 TARSKI, RELSET_1, FUNCT_1, FUNCT_2, XBOOLE_0, INT_2, SETFAM_1, FINSEQ_3,
 PARTFUN1, ORDINAL1, ZFMISC_1, NAT_D, INT_1
 @
 
 %\M
 Again, we import the usual group theoretic theorems.
-<<Import group-theoretic theorems for [[char.miz]]>>=
+<<Import group-theoretic theorems for [[group_22.miz]]>>=
 GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1,
 AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1
 @
@@ -286,7 +286,7 @@ AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, XCMPLX_1
 If we want to cite and use a scheme defined elsewhere, then we need the
 article's name cited in the [[schemes]] portion of the environment.
 
-<<[[char.miz]] schemes>>=
+<<[[group_22.miz]] schemes>>=
 schemes FUNCT_2, GROUP_4, FINSEQ_1
 @
 
@@ -298,7 +298,7 @@ find was in Kornilowics~\cite{kornilowicz2015definitional}.
 Expansions of terms defined by [[equals]] are imported by a new
 [[environ]] directive [[equalities]].
 
-<<[[char.miz]] equalities>>=
+<<[[group_22.miz]] equalities>>=
 equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1,
   ALGSTR_0, NEWTON, PRALG_1, GROUP_7
@@ -308,7 +308,7 @@ equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
 Import expansions of predicates and adjectives from the specified
 articles.
 
-<<[[char.miz]] expansions>>=
+<<[[group_22.miz]] expansions>>=
 expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
   FUNCT_2, NEWTON, PRALG_1, GROUP_7
 @
@@ -327,6 +327,6 @@ in 9 easy steps''), the only possibilities for the [[requirements]] are:
 [[BOOLE]], [[SUBSET]], [[NUMERALS]], [[ARITHM]], [[REAL]].
 \end{remark}
 
-<<[[char.miz]] requirements>>=
+<<[[group_22.miz]] requirements>>=
 requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL
 @
