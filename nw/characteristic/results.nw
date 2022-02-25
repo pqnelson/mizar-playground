@@ -586,7 +586,8 @@ have the hypothesis that $H$ is a strict subgroup of $G$.
 
 <<Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$>>=
 proof
-  assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
+  assume A1: for phi being Automorphism of G
+  holds Image(phi|H) is Subgroup of H;
   A2: for phi being Automorphism of G holds H is Subgroup of Image(phi|H)
   <<Proof: $\forall\varphi\in\Aut(G),H\subgroup\varphi(H)$>>
   for phi being Automorphism of G holds H = Image(phi|H)
@@ -619,7 +620,7 @@ proof
   B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th16;
   consider psi2 being Automorphism of G such that
   B3: psi2 = phi" and
-  B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th17;
+  B4: the multMagma of H = Image(phi|Image(psi2|H)) by Th17;
   thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
 end;
 @
@@ -856,16 +857,18 @@ proof
     let A be set;
     assume C1: A in Fam;
     consider A0 being Subset of G() such that
-    C2: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
+    C2: A0=A & ex H being strict Subgroup of G()
+               st A0 = the carrier of H & P[H]
     by C1;
     consider K being strict Subgroup of G() such that
     C3: A = the carrier of K & P[K]
     by C2;
     consider psi being Automorphism of G() such that
-    C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
+    C4: psi = phi0" & Image(phi0|Image(psi|K)) = the multMagma of K
     by Th17;
     x in K by C1,B1,C3;
-    then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
+    then C5: x in G() & dom phi0 = the carrier of G()
+    by GROUP_2:40,FUNCT_2:def 1;
     P[Image(psi|K)] by C3,A1;
     then carr Image(psi|K) in Fam;
     then x in carr Image(psi|K) by B1;
@@ -890,7 +893,8 @@ Hence $x\in\varphi(\bigcap\mathcal{F})$.
 proof
   let x be object;
   assume B1: x in meet Fam;
-  then carr H in Fam & for A1 holds A1 in Fam implies x in A1 by A3,SETFAM_1:def 1;
+  then carr H in Fam & for A1 holds A1 in Fam implies x in A1
+  by A3,SETFAM_1:def 1;
   then B2: x in H;
   then B3: x is Element of G() by GROUP_2:42;
   reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
@@ -1591,7 +1595,8 @@ proof
         holds phi.x in H)
        implies H is characteristic
   proof
-    assume B1: for phi being Automorphism of G for x being Element of G st x in H holds phi.x in H;
+    assume B1: for phi being Automorphism of G
+               for x being Element of G st x in H holds phi.x in H;
     for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
     proof
       let phi be Automorphism of G;

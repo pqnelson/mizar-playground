@@ -331,7 +331,7 @@ theorem Th11:
 proof
   set UG = the carrier of G;
   set UH = the carrier of H;
-  thus H is proper implies (the carrier of G) \ (the carrier of H) is non empty set
+  thus H is proper implies UG \ UH is non empty set
   proof
     assume A1: H is proper;
     UH c= UG & UH <> UG by A1,Th10, GROUP_2:def 5;
@@ -340,7 +340,7 @@ proof
     hence (the carrier of G) \ (the carrier of H) is non empty set
     by XBOOLE_0:def 5;
   end;
-  thus (the carrier of G) \ (the carrier of H) is non empty set implies H is proper
+  thus UG \ UH is non empty set implies H is proper
   proof
     assume A1: (the carrier of G) \ (the carrier of H) is non empty set;
     set GH = UG \ UH;
@@ -502,7 +502,7 @@ end;
 
 theorem Th17:
   ex psi being Automorphism of G
-  st psi = phi" & the multMagma of Image(phi|Image(psi|H)) = the multMagma of H
+  st psi = phi" & Image(phi|Image(psi|H)) = the multMagma of H
 proof
   reconsider psi = phi" as Automorphism of G by GROUP_6:62;
   take psi;
@@ -557,7 +557,7 @@ proof
     end;
     thus thesis;
   end;
-  hence the multMagma of Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
+  hence Image(phi|Image(psi|H)) = the multMagma of H by GROUP_2:60;
 end;
 
 theorem Th18:
@@ -789,7 +789,8 @@ notation
 end;
 
 theorem Th25:
-  for x being Element of G holds (id the carrier of G).x = x |^ 1_G by GROUP_3:19;
+  for x being Element of G holds (id the carrier of G).x = x |^ 1_G
+  by GROUP_3:19;
 
 registration
   let G;
@@ -1010,10 +1011,12 @@ end;
 
 theorem Th33:
   for H being strict Subgroup of G
-  holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
+  holds (H is normal) iff (for f being inner Automorphism of G
+                           holds Image(f|H)=H)
 proof
   let H be strict Subgroup of G;
-  A1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
+  A1: (H is normal) implies (for f being inner Automorphism of G
+                             holds Image(f|H)=H)
   proof
     assume B1: H is normal;
     let f be inner Automorphism of G;
@@ -1025,7 +1028,8 @@ proof
               .= H;
     hence Image(f|H)=H;
   end;
-  A2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
+  A2: not ((for f being inner Automorphism of G holds Image(f|H)=H)
+           implies H is normal)
   implies contradiction
   proof
     assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
@@ -1260,7 +1264,8 @@ proof
   thus (for phi being Automorphism of G holds Image(phi|H) is Subgroup of H)
        implies H is characteristic Subgroup of G
   proof
-    assume A1: for phi being Automorphism of G holds Image(phi|H) is Subgroup of H;
+    assume A1: for phi being Automorphism of G
+    holds Image(phi|H) is Subgroup of H;
     A2: for phi being Automorphism of G holds H is Subgroup of Image(phi|H)
     proof
       let phi be Automorphism of G;
@@ -1269,7 +1274,7 @@ proof
       B2: Image(phi|Image(psi|H)) is Subgroup of Image(phi|H) by A1,Th16;
       consider psi2 being Automorphism of G such that
       B3: psi2 = phi" and
-      B4: the multMagma of H = the multMagma of Image(phi|Image(psi2|H)) by Th17;
+      B4: the multMagma of H = Image(phi|Image(psi2|H)) by Th17;
       thus H is Subgroup of Image(phi|H) by B1,B2,B3,B4;
     end;
     for phi being Automorphism of G holds H = Image(phi|H)
@@ -1377,16 +1382,18 @@ A3: P[H]
       let A be set;
       assume C1: A in Fam;
       consider A0 being Subset of G() such that
-      C2: A0=A & ex H being strict Subgroup of G() st A0 = the carrier of H & P[H]
+      C2: A0=A & ex H being strict Subgroup of G()
+                 st A0 = the carrier of H & P[H]
       by C1;
       consider K being strict Subgroup of G() such that
       C3: A = the carrier of K & P[K]
       by C2;
       consider psi being Automorphism of G() such that
-      C4: psi = phi0" & the multMagma of Image(phi0|Image(psi|K)) = the multMagma of K
+      C4: psi = phi0" & Image(phi0|Image(psi|K)) = the multMagma of K
       by Th17;
       x in K by C1,B1,C3;
-      then C5: x in G() & dom phi0 = the carrier of G() by GROUP_2:40,FUNCT_2:def 1;
+      then C5: x in G() & dom phi0 = the carrier of G()
+      by GROUP_2:40,FUNCT_2:def 1;
       P[Image(psi|K)] by C3,A1;
       then carr Image(psi|K) in Fam;
       then x in carr Image(psi|K) by B1;
@@ -1402,7 +1409,8 @@ A3: P[H]
   proof
     let x be object;
     assume B1: x in meet Fam;
-    then carr H in Fam & for A1 holds A1 in Fam implies x in A1 by A3,SETFAM_1:def 1;
+    then carr H in Fam & for A1 holds A1 in Fam implies x in A1
+    by A3,SETFAM_1:def 1;
     then B2: x in H;
     then B3: x is Element of G() by GROUP_2:42;
     reconsider psi = phi" as Automorphism of G() by GROUP_6:62;
@@ -1851,7 +1859,8 @@ proof
         holds phi.x in H)
        implies H is characteristic
   proof
-    assume B1: for phi being Automorphism of G for x being Element of G st x in H holds phi.x in H;
+    assume B1: for phi being Automorphism of G
+               for x being Element of G st x in H holds phi.x in H;
     for phi being Automorphism of G holds Image(phi|H) is Subgroup of H
     proof
       let phi be Automorphism of G;
@@ -3035,7 +3044,8 @@ proof
         the carrier of G <> {} & phi is onto;
         then D4: psi * phi = id the carrier of G by D3,FUNCT_2:29;
         dom psi = the carrier of G by FUNCT_2:def 1;
-        then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by D2,FUNCT_1:def 6;
+        then psi.(phi.x) in psi .: (the carrier of (phi .: N))
+        by D2,FUNCT_1:def 6;
         then psi.(phi.x) in the carrier of (psi .: (phi .: N)) by GRSOLV_1:8;
         then x in i .: N by C1,D3,D4,Th72;
         then D5: x in (id the carrier of G) .: (the carrier of N) by GRSOLV_1:8;
@@ -3359,7 +3369,8 @@ proof
     thus g in center G implies g in Centralizer (Omega).G
     proof
       assume g in center G;
-      then for b being Element of G st b in (Omega).G holds g*b = b*g by GROUP_5:77;
+      then for b being Element of G st b in (Omega).G holds g*b = b*g
+      by GROUP_5:77;
       then g is Element of Centralizer (Omega).G by Th60;
       hence thesis;
     end;
@@ -3578,7 +3589,8 @@ proof
       let z be Element of N;
       reconsider z1=z as Element of G by GROUP_2:42;
 
-      C1: z is Element of Z implies (for n being Element of N st n in H holds z*n = n*z)
+      C1: z is Element of Z implies (for n being Element of N st n in H
+                                     holds z*n = n*z)
       proof
         assume D1: z is Element of Z;
         let n be Element of N;
@@ -3601,8 +3613,8 @@ proof
         take n;
         thus thesis by D1,D2,GROUP_2:43;
       end;
-      hence
-      (for n being Element of N st n in H holds z*n = n*z) implies z is Element of Z;
+      hence (for n being Element of N st n in H holds z*n = n*z) implies
+      z is Element of Z;
 
       thus z is Element of Z implies (for n being Element of N st n in H
       holds z*n = n*z) by C1;
@@ -3729,3 +3741,4 @@ proof
   end;
   hence thesis;
 end;
+
