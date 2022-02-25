@@ -601,7 +601,6 @@ proper subset $X\properSubset Y$.
 <<Theorem: $H\subgroup G$ is proper iff $G\setminus H\neq\emptyset$>>
 
 <<Register: proper subgroup for nontrivial groups>>
-<<Register: proper subgroups of nontrivial subgroups>>
 
 <<Lemma: maximal subgroups are proper>>
 
@@ -775,41 +774,6 @@ proof
   set GH = UG \ UH;
   ex x st x in GH by A1, XBOOLE_0:def 1;
   hence H is proper by XBOOLE_0:def 5;
-end;
-@
-
-\begin{registration}
-For any nontrivial group $G$, we can call \define{Proper Subgroup} of
-$G$ a subgroup which is proper.
-\end{registration}
-
-<<Register: proper subgroup for nontrivial groups>>=
-registration
-  let G be non trivial Group;
-  cluster proper for Subgroup of G;
-  existence
-  proof
-    take (1).G;
-    thus (1).G is proper;
-  end;
-end;
-@
-
-\begin{registration}
-For any nontrivial group $G$ with nontrivial subgroup $H\subgroup G$, we
-can call \define{Proper Subgroup} of $H$ a subgroup $K\subgroup H$ which is proper.
-\end{registration}
-
-<<Register: proper subgroups of nontrivial subgroups>>=
-registration
-  let G be non trivial Group;
-  let H be non trivial Subgroup of G;
-  cluster proper for Subgroup of H;
-  existence
-  proof
-    take (1).H;
-    thus (1).H is proper;
-  end;
 end;
 @
 
