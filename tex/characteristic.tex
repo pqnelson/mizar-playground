@@ -553,12 +553,12 @@ subgroup, but this strictness condition is not necessary.
 theorem \nwlinkedidentc{Th2}{NW18nMBU-4Nsdji-1}:
   for G being Group
   for H being Subgroup of G
-  st (for a being Element of G holds H |^ a = H)
+  st (for a being Element of G holds H |^ a = the multMagma of H)
   holds H is normal Subgroup of G
 proof
   let G be Group;
   let H be Subgroup of G;
-  assume for a being Element of G holds H |^ a = H;
+  assume for a being Element of G holds H |^ a = the multMagma of H;
   then for a being Element of G holds the carrier of H |^ a = the carrier of H;
   then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
@@ -2903,6 +2903,13 @@ The other definition which is routinely given is that $H$ is a
 characteristic subgroup of $G$ if for any $\varphi\in\Aut(G)$ we have
 $\varphi(H)\subgroup H$. We prove this later as equivalent in Theorem~\ref{thm:results:alt-def-of-char-subgroup}.
 \end{def-remark}
+\begin{def-remark}
+We need to formalize this definition to make the image equal to
+\lstinline{the multMagma of IT} because subgroup equality is defined
+only for strict subgroups. If we tried just using the ``obvious''
+definition, ``\lstinline{Image(f|IT) = IT}'', then a neferious Mizar
+user could obtain inconsistent results by clever means.
+\end{def-remark}
 
 \nwenddocs{}\nwbegincode{3}\sublabel{NW47t2dy-qejLV-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-qejLV-1}}}\moddef{Definition: \code{}characteristic\edoc{} attribute~{\nwtagstyle{}\subpageref{NW47t2dy-qejLV-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 :: Dummit and Foote, Abstract Algebra, ch.4 section 4
@@ -2912,7 +2919,7 @@ definition
   attr IT is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} means
   :\nwlinkedidentc{Def3}{NW47t2dy-qejLV-1}:
   for f being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
-  holds Image (f|IT) = IT;
+  holds Image (f|IT) = the multMagma of IT;
 end;
 \nwindexdefn{\nwixident{characteristic}}{characteristic}{NW47t2dy-qejLV-1}\nwindexdefn{\nwixident{Def3}}{Def3}{NW47t2dy-qejLV-1}\eatline
 \nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Def3}}{Def3}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-qejLV-1}\nwendcode{}\nwbegindocs{4}\nwdocspar
@@ -3044,7 +3051,7 @@ have $K^{a}=K$. Then $K\normalSubgroup G$.
 theorem \nwlinkedidentc{Th35}{NW47t2dy-xos9m-1}:
   K is normal Subgroup of G
 proof
-A1:  for a being Element of G holds K |^ a = K
+A1:  for a being Element of G holds K |^ a = the multMagma of K
   \LA{}Sub-proof: characteristic subgroups invariant under conjugation~{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}\RA{}
   for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
   then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
@@ -3064,8 +3071,8 @@ proof
   consider f being \nwlinkedidentc{inner}{NW3Mfp8C-1Tb4wZ-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G such that
 A2: for x being Element of G holds f.x = x |^ a
   by \nwlinkedidentc{Th32}{NW3Mfp8C-arh13-1};
-  K = Image(f|K) by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1}
-   .= K |^ a by A2,\nwlinkedidentc{Th28}{NW3Mfp8C-2zspfg-1};
+  the multMagma of K = Image(f|K) by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1}
+                    .= K |^ a by A2,\nwlinkedidentc{Th28}{NW3Mfp8C-2zspfg-1};
   hence thesis;
 end;
 \nwused{\\{NW47t2dy-xos9m-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def3}}{Def3}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th28}}{Th28}}\\{{\nwixident{Th32}}{Th32}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Def3}}{Def3}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{inner}}{inner}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Th28}}{Th28}{NW47t2dy-2mkOw1-1}\nwindexuse{\nwixident{Th32}}{Th32}{NW47t2dy-2mkOw1-1}\nwendcode{}\nwbegindocs{22}\nwdocspar
@@ -3225,7 +3232,7 @@ proof
     let phi be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
     then card H = card Image(phi|H) by \nwlinkedidentc{Th19}{NW1Nnu7l-3WScXE-1},GROUP_6:73;
-    hence Image(phi|H) = H by A1;
+    hence Image(phi|H) = the multMagma of H by A1;
   end;
   hence thesis;
 end;
@@ -3264,7 +3271,7 @@ theorem \nwlinkedidentc{Th38}{NW47t2dy-4WQdGY-1}:
 proof
   let N be strict normal Subgroup of G;
   let K be \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of N;
-  for a being Element of G holds K |^ a = K
+  for a being Element of G holds K |^ a = the multMagma of K
   \LA{}Proof: $\forall a\in G, K^{a}=K$~{\nwtagstyle{}\subpageref{NW47t2dy-4CFIX3-1}}\RA{}
   hence K is normal Subgroup of G by \nwlinkedidentc{Th2}{NW18nMBU-4Nsdji-1};
 end;
@@ -3291,10 +3298,11 @@ proof
 
   Image(g|N) = N by \nwlinkedidentc{Th33}{NW3Mfp8C-4Qqcti-1};
   then reconsider f = g|N as \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of N by \nwlinkedidentc{Th22}{NW1Nnu7l-1QHEJY-1};
-  A2: Image(f|K) = K by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
+  A2: Image(f|K) = the multMagma of K by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
 
   for k being Element of G st k in K holds f.k = g.k by \nwlinkedidentc{Th1}{NW18nMBU-32pfqx-1},GROUP_2:40;
-  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,\nwlinkedidentc{Th28}{NW3Mfp8C-2zspfg-1},\nwlinkedidentc{Th36}{NW47t2dy-2MyoVP-1};
+  then Image(g|K) = the multMagma of K & Image(g|K) = K |^ a
+  by A1,A2,\nwlinkedidentc{Th28}{NW3Mfp8C-2zspfg-1},\nwlinkedidentc{Th36}{NW47t2dy-2MyoVP-1};
   hence thesis;
 end;
 \nwused{\\{NW47t2dy-4WQdGY-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Def3}}{Def3}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th1}}{Th1}}\\{{\nwixident{Th22}}{Th22}}\\{{\nwixident{Th28}}{Th28}}\\{{\nwixident{Th32}}{Th32}}\\{{\nwixident{Th33}}{Th33}}\\{{\nwixident{Th36}}{Th36}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Def3}}{Def3}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{inner}}{inner}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th1}}{Th1}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th22}}{Th22}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th28}}{Th28}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th32}}{Th32}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th33}}{Th33}{NW47t2dy-4CFIX3-1}\nwindexuse{\nwixident{Th36}}{Th36}{NW47t2dy-4CFIX3-1}\nwendcode{}\nwbegindocs{38}\nwdocspar
@@ -3328,15 +3336,15 @@ theorem \nwlinkedidentc{Th39}{NW47t2dy-2ur0LT-1}:
 proof
   let N be \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G;
   let K be \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of N;
-  for g being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G holds Image(g|K) = K
+  for g being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G holds Image(g|K) = the multMagma of K
   proof
     let g be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
-    Image(g|N) = N by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
+    Image(g|N) = the multMagma of N by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
     then reconsider f = g|N as \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of N by \nwlinkedidentc{Th22}{NW1Nnu7l-1QHEJY-1};
-    A1: Image(f|K) = K by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
+    A1: Image(f|K) = the multMagma of K by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
 
     for k being Element of G st k in K holds f.k = g.k by \nwlinkedidentc{Th1}{NW18nMBU-32pfqx-1}, GROUP_2:40;
-    hence Image(g|K) = K by A1,\nwlinkedidentc{Th36}{NW47t2dy-2MyoVP-1};
+    hence Image(g|K) = the multMagma of K by A1,\nwlinkedidentc{Th36}{NW47t2dy-2MyoVP-1};
   end;
   hence K is \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1};
 end;

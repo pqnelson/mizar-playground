@@ -91,12 +91,12 @@ end;
 theorem Th2:
   for G being Group
   for H being Subgroup of G
-  st (for a being Element of G holds H |^ a = H)
+  st (for a being Element of G holds H |^ a = the multMagma of H)
   holds H is normal Subgroup of G
 proof
   let G be Group;
   let H be Subgroup of G;
-  assume for a being Element of G holds H |^ a = H;
+  assume for a being Element of G holds H |^ a = the multMagma of H;
   then for a being Element of G holds the carrier of H |^ a = the carrier of H;
   then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
@@ -1072,7 +1072,7 @@ definition
   attr IT is characteristic means
   :Def3:
   for f being Automorphism of G
-  holds Image (f|IT) = IT;
+  holds Image (f|IT) = the multMagma of IT;
 end;
 
 Lm8: H is Subgroup of (1).G implies the multMagma of H = the multMagma of (1).G
@@ -1122,14 +1122,14 @@ end;
 theorem Th35:
   K is normal Subgroup of G
 proof
-A1:  for a being Element of G holds K |^ a = K
+A1:  for a being Element of G holds K |^ a = the multMagma of K
   proof
     let a be Element of G;
     consider f being inner Automorphism of G such that
   A2: for x being Element of G holds f.x = x |^ a
     by Th32;
-    K = Image(f|K) by Def3
-     .= K |^ a by A2,Th28;
+    the multMagma of K = Image(f|K) by Def3
+                      .= K |^ a by A2,Th28;
     hence thesis;
   end;
   for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
@@ -1213,7 +1213,7 @@ proof
     let phi be Automorphism of G;
     Image(phi|H) = phi .: H by GRSOLV_1:def 3;
     then card H = card Image(phi|H) by Th19,GROUP_6:73;
-    hence Image(phi|H) = H by A1;
+    hence Image(phi|H) = the multMagma of H by A1;
   end;
   hence thesis;
 end;
@@ -1225,7 +1225,7 @@ theorem Th38:
 proof
   let N be strict normal Subgroup of G;
   let K be characteristic Subgroup of N;
-  for a being Element of G holds K |^ a = K
+  for a being Element of G holds K |^ a = the multMagma of K
   proof
     let a be Element of G;
     consider g being inner Automorphism of G such that
@@ -1234,10 +1234,11 @@ proof
 
     Image(g|N) = N by Th33;
     then reconsider f = g|N as Automorphism of N by Th22;
-    A2: Image(f|K) = K by Def3;
+    A2: Image(f|K) = the multMagma of K by Def3;
 
     for k being Element of G st k in K holds f.k = g.k by Th1,GROUP_2:40;
-    then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th28,Th36;
+    then Image(g|K) = the multMagma of K & Image(g|K) = K |^ a
+    by A1,A2,Th28,Th36;
     hence thesis;
   end;
   hence K is normal Subgroup of G by Th2;
@@ -1250,15 +1251,15 @@ theorem Th39:
 proof
   let N be characteristic Subgroup of G;
   let K be characteristic Subgroup of N;
-  for g being Automorphism of G holds Image(g|K) = K
+  for g being Automorphism of G holds Image(g|K) = the multMagma of K
   proof
     let g be Automorphism of G;
-    Image(g|N) = N by Def3;
+    Image(g|N) = the multMagma of N by Def3;
     then reconsider f = g|N as Automorphism of N by Th22;
-    A1: Image(f|K) = K by Def3;
+    A1: Image(f|K) = the multMagma of K by Def3;
 
     for k being Element of G st k in K holds f.k = g.k by Th1, GROUP_2:40;
-    hence Image(g|K) = K by A1,Th36;
+    hence Image(g|K) = the multMagma of K by A1,Th36;
   end;
   hence K is characteristic Subgroup of G by Def3;
 end;
