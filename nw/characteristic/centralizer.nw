@@ -39,9 +39,9 @@
 
 <<Theorem: $K,N\normalSubgroup G\implies |KN|\cdot|K\cap N|=|K|\cdot|N|$>>
 
-<<Theorem: $f_{2}(f_{1}(A))=(f_{2}\circ f_{1})(A)$ for group morphisms>>
-
 <<Theorem: $N\normalSubgroup G$ with $|N|$ and $[G:N]$ coprime implies $N$ is characteristic>>
+
+<<Theorem: $f_{2}(f_{1}(A))=(f_{2}\circ f_{1})(A)$ for group morphisms>>
 
 <<Theorem: $\varphi\in\Aut(G)$, $\varphi(N)=N$, $\exists\sigma\in\Aut(G/N),\sigma(xN)=\varphi(x)N$>>
 
@@ -195,20 +195,19 @@ end;
 <<Proof: $\forall g\in C_{G}(A), g^{-1}\in C_{G}(A)$>>=
 proof
   let g be Element of G;
-  assume Z1: g in Car;
-  then Z2: ex z1 being Element of G st (z1 = g) & (for a being
+  assume g in Car;
+  then Z1: ex z1 being Element of G st (z1 = g) & (for a being
   Element of G st a in A holds z1*a=a*z1);
   for a being Element of G st a in A holds g" * a = a * g"
   proof
     let a be Element of G;
-    assume Z3: a in A;
-    g" * ((a*g) * g") = g" * ((g*a) * g") by Z3,Z2
-                     .= (g" * (g * a)) * g" by GROUP_1:def 3
-                     .= ((g" * g) * a) * g"  by GROUP_1:def 3
-                     .= (1_G * a) * g"  by GROUP_1:def 5
-                     .= a * g"  by GROUP_1:def 4;
-    then g" * a = a * g" by GROUP_3:1;
-    hence thesis;
+    assume a in A;
+    then g" * ((a*g) * g") = g" * ((g*a) * g") by Z1
+                          .= (g" * (g * a)) * g" by GROUP_1:def 3
+                          .= ((g" * g) * a) * g"  by GROUP_1:def 3
+                          .= (1_G * a) * g"  by GROUP_1:def 5
+                          .= a * g"  by GROUP_1:def 4;
+    hence g" * a = a * g" by GROUP_3:1;
   end;
   hence thesis;
 end;
@@ -270,7 +269,7 @@ proof
   holds g in Centralizer A
   proof
     let g be Element of G;
-    assume B1: g in Centralizer B;
+    assume g in Centralizer B;
     then for a being Element of G st a in A
     holds g*a = a*g by A1,Th57;
     then g is Element of Centralizer A by Th57;
@@ -357,11 +356,10 @@ proof
       B2: x = b and
       B3: for a being Element of G st a in H holds b*a=a*b
       by B1;
-      B4: for a being Element of G st a in carr H holds b*a=a*b
+      for a being Element of G st a in carr H holds b*a=a*b
       proof
         let a be Element of G;
-        assume Z1: a in carr H;
-        then a in the carrier of H;
+        assume a in carr H;
         then a in H;
         hence b*a=a*b by B3;
       end;
@@ -375,22 +373,18 @@ proof
   for x being object st x in the carrier of Centralizer H holds x in Car
   proof
     let x be object;
-    assume B1: x in the carrier of Centralizer H;
-    then B2: x in the carrier of Centralizer carr H by Def9;
-    then B3: ex b being Element of G
-    st (x = b) & (for a being Element of G st a in carr(H) holds b*a=a*b)
-    by A1;
+    assume x in the carrier of Centralizer H;
+    then B1: x in the carrier of Centralizer carr H by Def9;
     ex b being Element of G
     st (x=b) & (for a being Element of G st a in H holds b*a=a*b)
     proof
       consider b being Element of G such that
       Z1: x = b  & (for a being Element of G st a in carr H holds b*a=a*b)
-      by B3;
+      by A1,B1;
       for a being Element of G st a in H holds b*a=a*b by Z1;
       hence thesis by Z1;
     end;
-    then x in Car;
-    hence thesis;
+    hence x in Car;
   end;
   then the carrier of Centralizer H c= Car;
   hence thesis by A3,XBOOLE_0:def 10;
@@ -422,11 +416,11 @@ proof
 A1: the carrier of Centralizer H = {b where b is Element of G : for a
   being Element of G st a in H holds b*a=a*b} by Th59;
   hereby
-    assume B1: for a being Element of G st a in H holds g*a = a*g;
+    assume for a being Element of G st a in H holds g*a = a*g;
     then g in the carrier of Centralizer H by A1;
     hence g is Element of Centralizer H;
   end;
-  assume A2: g is Element of Centralizer H;
+  assume g is Element of Centralizer H;
   then g in the carrier of Centralizer H;
   then ex b being Element of G st (b = g) & (for a being Element of G st a in H
   holds b*a = a*b) by A1;
@@ -491,14 +485,10 @@ proof
     proof
       let k be Element of G;
       assume C1: k in K;
-      then C2: psi.k in K by Th50;
       set j = psi.k;
-      C3: j in K by C2;
-      then x*j = j*x by B1,Th60;
-      then phi.(x*j) = phi.(j*x)
-                    .= phi.j * phi.x by GROUP_6:def 6;
-      then phi.x * phi.j = phi.j * phi.x by GROUP_6:def 6;
-      then y * phi.(psi.k) = phi.(psi.k) * y
+      phi.(x*j) = phi.(j*x) by B1,C1,Th50,Th60
+               .= phi.j * phi.x by GROUP_6:def 6;
+      then y * phi.(psi.k) = phi.(psi.k) * y by GROUP_6:def 6
                           .= k * y by Th4;
       hence y * k = k * y by Th4;
     end;
@@ -583,11 +573,9 @@ proof
   let a,x be Element of G;
   A1: x in Normalizer{a} iff ex h being Element of G st x = h & {a} |^ h = {a}
   by GROUP_3:129;
-  then A2: x in Normalizer{a} iff {a} |^ x = {a};
-  A3: {a} |^ x = {a} |^ {x}
-              .= {a |^ x} by GROUP_3:37;
-  {a |^ x} = {a} iff a |^ x = a by Th63;
-  then x in Normalizer{a} iff a |^ x = a by A2,A3;
+  {a} |^ x = {a} |^ {x}
+          .= {a |^ x} by GROUP_3:37;
+  then x in Normalizer{a} iff a |^ x = a by A1,Th63;
   hence thesis;
 end;
 @ %def Th64
@@ -644,39 +632,32 @@ end;
 proof
   let x be object;
   assume Z1: x in the carrier of Centralizer A;
-  then Z2: x in Centralizer A;
+  then x in Centralizer A;
   then x in G by GROUP_2:40;
   then reconsider g = x as Element of G;
   for X being set st X in Fam
   holds x in X
   proof
     let X be set;
-    assume C1: X in Fam;
+    assume X in Fam;
     then consider B being Subset of G such that
-    C2: B = X and
-    C3: ex H being strict Subgroup of G
+    C1: B = X and
+    C2: ex H being strict Subgroup of G
         st B = the carrier of H &
            (ex a being Element of G st a in A & H = Normalizer a);
     consider H being strict Subgroup of G, a being Element of G such that
-    C4: B = the carrier of H & a in A & H = Normalizer a by C3;
-    g is Element of Centralizer A by Z2;
-    then (for a1 being Element of G st a1 in A holds g*a1 = a1*g) by Th57;
-    then C5: g*a = a*g by C4;
-    C6: a |^ g = g" * a * g
+    C3: B = the carrier of H & a in A & H = Normalizer a by C2;
+    C4: a |^ g = g" * a * g
               .= g" * (a * g) by GROUP_1:def 3
-              .= g" * (g * a) by C5
+              .= g" * (g * a) by Z1,C3,Th57
               .= (g" * g) * a by GROUP_1:def 3
               .= (1_G) * a by GROUP_1:def 5
               .= a by GROUP_1:def 4;
     {a} |^ g = {a} |^ {g}
             .= {a |^ g} by GROUP_3:37
-            .= {a} by C6;
+            .= {a} by C4;
     then g in Normalizer a by GROUP_3:129;
-    then g in H by C4;
-    then x in H;
-    then x in the carrier of H;
-    then x in B by C4;
-    hence x in X by C2;
+    hence x in X by C1,C3;
   end;
   hence x in meet Fam by A1,SETFAM_1:def 1;
 end;
@@ -691,45 +672,36 @@ proof
     consider X being object such that
     C1: X in Fam by A1, XBOOLE_0:def 1;
     consider B being Subset of G such that
-    C2: B = X and
-    C3: ex H being strict Subgroup of G
-        st B = the carrier of H & P[H]
+    C2: B = X & ex H being strict Subgroup of G st B = the carrier of H & P[H]
     by C1;
-    thus thesis by C3;
+    thus thesis by C2;
   end;
 
   consider K being strict Subgroup of G such that
   B3: the carrier of K = meet Fam
   from GROUP_4:sch 1(B2);
 
-  B4: x in K by B1,B3;
-  then reconsider g = x as Element of G by GROUP_2:42;
-  B5: g in K by B4;
-  then B6: for X being set st X in Fam
-           holds g in X by B3,SETFAM_1:def 1;
-
-  B7: for a being Element of G st a in A
+  reconsider g = x as Element of G by B1,B3,GROUP_2:42;
+  B4: for a being Element of G st a in A
   holds g in Normalizer a
   proof
     let a be Element of G;
     assume C1: a in A;
     set H = Normalizer a;
-    P[H] by C1;
-    then carr H in Fam;
-    then g in carr H by B6;
-    hence g in Normalizer a;
+    carr H in Fam by C1;
+    hence g in Normalizer a by B1,SETFAM_1:def 1;
   end;
   for a being Element of G st a in A holds g*a = a*g
   proof
     let a be Element of G;
-    assume C1: a in A;
-    then g in Normalizer a by B7;
+    assume a in A;
+    then g in Normalizer a by B4;
     then consider h being Element of G such that
-    C2: g = h & a |^ h = a
+    C1: g = h & a |^ h = a
     by Th64;
-    C3: a = g" * a * g by C2
+    C2: a = g" * a * g by C1
          .= g" * (a * g) by GROUP_1:def 3;
-    g * a = g * (g" * (a * g)) by C3
+    g * a = g * (g" * (a * g)) by C2
          .= (g * g") * (a * g) by GROUP_1:def 3
          .= 1_G * (a * g) by GROUP_1:def 5
          .= a * g by GROUP_1:def 4;
@@ -737,8 +709,6 @@ proof
   end;
 
   then g is Element of Centralizer A by Th57;
-  then g in Centralizer A;
-  then x in Centralizer A;
   hence thesis;
 end;
 @
@@ -791,13 +761,12 @@ theorem Th67:
 proof
   let a,b,c be Nat;
   assume A1: c <> 0;
-  assume A2: c*a divides c*b;
+  assume c*a divides c*b;
   then consider q being Integer such that
-  A3: c*b = c*a*q by INT_1:def 3;
-  b*c = a*q*c by A3;
-  then A4: b = a*q by A1,XCMPLX_1:5;
+  A2: c*b = c*a*q by INT_1:def 3;
   take q;
-  thus thesis by A4;
+  b*c = a*q*c by A2;
+  hence thesis by A1,XCMPLX_1:5;
 end;
 @ %def Th67
 
@@ -813,12 +782,12 @@ theorem Th68:
   holds b=1
 proof
   let a,b,c be Nat;
-  assume A1: b<>0;
-  assume A2: b divides c;
-  assume A3: a*b,c are_coprime;
+  assume b<>0;
+  assume A1: b divides c;
+  assume A2: a*b,c are_coprime;
   b divides a*b by INT_1:def 3;
-  then b divides (a*b gcd c) by A2,INT_2:22;
-  then b divides 1 by A3, INT_2:def 3;
+  then b divides (a*b gcd c) by A1,INT_2:22;
+  then b divides 1 by A2, INT_2:def 3;
   hence b=1 by INT_2:13;
 end;
 @ %def Th68
@@ -839,20 +808,18 @@ proof
   let G1,G2 be finite Group;
   let N1 be normal Subgroup of G1;
   let N2 be normal Subgroup of G2;
-  assume A1: G1./.N1, G2./.N2 are_isomorphic;
-  then card(G1./.N1) = card(G2./.N2) by GROUP_6:73
-                    .= index N2 by GROUP_6:27;
-  then A2: index N1 = index N2 by GROUP_6:27;
+  assume G1./.N1, G2./.N2 are_isomorphic;
+  then A1: card(G1./.N1) = card(G2./.N2) by GROUP_6:73
+                        .= index N2 by GROUP_6:27;
   set k = index N1;
-  A3: k = index N2 by A2;
-  A4: card(G1) = card(N1) * index(N1) by GROUP_2:147
+  A2: card(G1) = card(N1) * index(N1) by GROUP_2:147
               .= card(N1) * k;
-  A5: card(G2) = card(N2) * index(N2) by GROUP_2:147
-              .= card(N2) * k by A3;
+  card(G2) = card(N2) * index(N2) by GROUP_2:147
+          .= card(N2) * k by A1,GROUP_6:27;
   then card(N1)*card(G2) = card(N1)*card(N2)*k
                         .= card(N2)*card(N1)*k
                         .= card(N2)*(card(N1)*k)
-                        .= card(N2)*card(G1) by A4;
+                        .= card(N2)*card(G1) by A2;
   hence thesis;
 end;
 @ %def Th69
@@ -878,17 +845,12 @@ proof
   assume A2: m = card K;
   assume A3: d = card(K /\ N);
   reconsider B=K as Subgroup of G;
-  A4: card(B) = m by A2;
-
-  N is Subgroup of B "\/" N by GROUP_4:60;
-  then A5: (B "\/" N,N)`*` = the multMagma of N by GROUP_6:def 1;
-
+  A4: N is Subgroup of B "\/" N by GROUP_4:60;
   (B "\/" N)./.(B "\/" N,N)`*`, B./.(B /\ N) are_isomorphic by GROUP_6:81;
-  then card(B /\ N)*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by Th69;
-  then d*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by A3
-                       .= card(B)*card(N) by A5
+  then d*card(B "\/" N) = card(B) * card((B "\/" N,N)`*`) by A3,Th69
+                       .= card(B)*card(N) by A4,GROUP_6:def 1
                        .= card(B)*m by A1
-                       .= m*m by A4;
+                       .= m*m by A2;
   hence d*card(N "\/" K) = m*m;
 end;
 @ %def Th70
@@ -910,7 +872,6 @@ proof
   assume A1: card N, index N are_coprime;
   consider m being Nat such that
   A2: m = card N;
-  A6: m <> 0 by A2;
   consider n being Nat such that
   A3: n = index N;
   A4: card G = m*n by A2,A3,GROUP_2:147;
@@ -918,23 +879,18 @@ proof
   proof
     let phi be Automorphism of G;
     set K = Image(phi|N);
-    K is normal Subgroup of G by Th49;
-    then reconsider K as strict normal Subgroup of G;
+    reconsider K as strict normal Subgroup of G by Th49;
     K = phi .: N by GRSOLV_1:def 3;
-    then N,K are_isomorphic by Th19;
-    then B1: card K = card N by GROUP_6:73;
+    then B1: card K = card N by Th19,GROUP_6:73;
     set d = card(N /\ K);
-    B10: d <> 0;
-    B11: d = card(N /\ K);
-    B2: d divides m
+    d divides m
     proof
       N /\ K is Subgroup of N by GROUP_2:88;
-      then card(N /\ K) divides card N by GROUP_2:148;
-      hence thesis by A2;
+      hence thesis by A2,GROUP_2:148;
     end;
     then consider q being Nat such that
     B21: m = d*q by NAT_D:def 3;
-    B22: q<>0 by B21,A6;
+    B22: q<>0 by B21,A2;
     B3: card(N "\/" K) = m*q
     proof
       K /\ N = N /\ K
@@ -942,26 +898,17 @@ proof
         carr(K /\ N) = (carr K) /\ (carr N) by GROUP_2:def 10
                     .= carr(N) /\ carr(K)
                     .= carr(N /\ K) by GROUP_2:def 10;
-        then carr(K /\ N) = carr(N /\ K);
         hence thesis by GROUP_2:59;
       end;
-      then m = card N & d = card(K /\ N) by A2;
-      then d*card(N "\/" K) = m*m by B1,Th70;
-      then d*card(N "\/" K) = m*(d*q) by B21
+      then d*card(N "\/" K) = m*(d*q) by A2,B1,B21,Th70
                            .= m*d*q
                            .= d*m*q
                            .= d*(m*q);
-      then card(N "\/" K) = m*q by XCMPLX_1:5;
-      hence thesis;
+      hence card(N "\/" K) = m*q by XCMPLX_1:5;
     end;
-    B4: m*q divides m*n by A4,B3,GROUP_2:148;
-    then B5: q divides n by A6,Th67;
-    d*q, n are_coprime by A1,A2,A3,B21;
-    then q=1 by B22,B5,Th68;
-    then m = d by B21;
-    then card(K) = card(N /\ K) & card(N) = card(N /\ K) by A2,B1;
-    then N=K by Th66;
-    hence Image(phi|N) = N;
+    B5: q divides n by A2,A4,B3,Th67,GROUP_2:148;
+    q=1 by A1,A2,A3,B21,B22,B5,Th68;
+    hence Image(phi|N) = N by A2,B1,B21,Th66;
   end;
   thus N is characteristic Subgroup of G by A5,Def3;
 end;
@@ -990,8 +937,7 @@ proof
     let z be Element of G3;
     thus z in f2 .: (f1 .: A) implies z in (f2 * f1) .: A
     proof
-      assume A1: z in f2 .: (f1 .: A);
-      then z in the carrier of f2 .: (f1 .: A);
+      assume z in f2 .: (f1 .: A);
       then z in f2 .: (the carrier of f1 .: A) by GRSOLV_1:8;
       then consider y being object such that
       A2: y in dom f2 and
@@ -1001,36 +947,29 @@ proof
       then consider x being object such that
       A5: x in dom f1 & x in the carrier of A & y = f1.x by FUNCT_1:def 6;
       A6: x in dom(f2 * f1) by A2,A5,FUNCT_1:11;
-      z = f2.y by A4;
-      then z = f2.(f1.x) by A5;
-      then A7: z = (f2 * f1).x by A6,FUNCT_1:12;
-      x in dom(f2 * f1) & x in the carrier of A & z = (f2 * f1).x by A5,A6,A7;
-      then z in (f2 * f1) .: the carrier of A by FUNCT_1:def 6;
+      then x in the carrier of A & z = (f2 * f1).x by A4,A5,FUNCT_1:12;
+      then z in (f2 * f1) .: the carrier of A by A6,FUNCT_1:def 6;
       hence thesis by GRSOLV_1:8;
     end;
 
     thus z in (f2 * f1) .: A implies z in f2 .: (f1 .: A)
     proof
-      assume A1: z in (f2 * f1) .: A;
-      then z in the carrier of (f2 * f1) .: A;
+      assume z in (f2 * f1) .: A;
       then z in (f2 * f1) .: the carrier of A by GRSOLV_1:8;
       then consider x being object such that
       A2: x in dom (f2 * f1) & x in the carrier of A & z = (f2 * f1).x
       by FUNCT_1:def 6;
       A3: x in dom f1 & f1.x in dom f2 by A2,FUNCT_1:11;
-      A4: (f2 * f1).x = f2.(f1.x) by A2,FUNCT_1:12;
 
       set y = f1.x;
-      x in dom f1 & x in the carrier of A & y = f1.x by A2,A3;
+      x in dom f1 & x in the carrier of A & y = f1.x by A2,FUNCT_1:11;
       then A5: y in f1 .: (the carrier of A) by FUNCT_1:def 6;
       z = (f2 * f1).x by A2
-       .= f2.(f1.x) by A4
+       .= f2.(f1.x) by A2,FUNCT_1:12
        .= f2.y;
-      then y in dom f2 & y in f1.:(the carrier of A) & z = f2.y by A3,A5;
-      then z in f2 .: (f1 .: (the carrier of A)) by FUNCT_1:def 6;
+      then z in f2 .: (f1 .: (the carrier of A)) by A3,A5,FUNCT_1:def 6;
       then z in f2 .: (the carrier of (f1 .: A)) by GRSOLV_1:8;
-      then z in the carrier of (f2 .: (f1 .: A)) by GRSOLV_1:8;
-      hence z in f2 .: (f1 .: A);
+      hence z in f2 .: (f1 .: A) by GRSOLV_1:8;
     end;
 
   end;
@@ -1085,30 +1024,24 @@ proof
     then consider x being Element of G./.N such that
     B2: x = a*N;
 
-    P[x, sigma.x] by A3;
-    then consider b being Element of G such that
-    B3: x = b*N & sigma.x = (phi.b)*N;
-    a*N = b*N by B2,B3;
-    then B6: b" * a in N by GROUP_2:114;
+    consider b being Element of G such that
+    B3: x = b*N & sigma.x = (phi.b)*N by A3;
     consider n being Element of G such that
-    B7: n = b" * a & n in N by B6;
+    B7: n = b" * a & n in N by B2,B3,GROUP_2:114;
 
-    b*n = b*(b" * a) by B7
-    .= (b * b") * a by GROUP_1:def 3
-    .= 1_G * a by GROUP_1:def 5
-    .= a by GROUP_1:def 4;
-    then B8: b*n = a;
+    B8: b*n = b*(b" * a) by B7
+           .= (b * b") * a by GROUP_1:def 3
+           .= 1_G * a by GROUP_1:def 5
+           .= a by GROUP_1:def 4;
 
     dom phi = the carrier of G & n in N by B7, FUNCT_2:def 1;
     then phi.n in phi .: (the carrier of N) by FUNCT_1:def 6;
     then phi.n in the carrier of (phi .: N) by GRSOLV_1:8;
-    then phi.n in Image(phi|N) by GRSOLV_1:def 3;
-    then B9: phi.n in N by A1;
-    B10: phi.n * N = carr N by B9, GROUP_2:113;
+    then B9: phi.n in N by A1,GRSOLV_1:def 3;
     phi.a * N = phi.(b * n) * N by B8
              .= (phi.b * phi.n) * N by GROUP_6:def 6
              .= phi.b * (phi.n * N) by GROUP_2:105
-             .= phi.b * N by B10
+             .= phi.b * N by B9, GROUP_2:113
              .= sigma.x by B3;
     hence thesis by B2;
   end;
@@ -1116,12 +1049,10 @@ proof
   for x,y being Element of G./.N holds sigma.(x*y) = sigma.x * sigma.y
   proof
     let x,y be Element of G./.N;
-    P[x, sigma.x] by A3;
-    then consider a being Element of G such that
-    B1: x = a*N & sigma.x = (phi.a)*N;
-    P[y, sigma.y] by A3;
-    then consider b being Element of G such that
-    B2: y = b*N & sigma.y = (phi.b)*N;
+    consider a being Element of G such that
+    B1: x = a*N & sigma.x = (phi.a)*N by A3;
+    consider b being Element of G such that
+    B2: y = b*N & sigma.y = (phi.b)*N by A3;
     B3: for g1,g2 being Element of G holds (g1*N)*(g2*N) = g1*g2*N
     proof
       let g1,g2 be Element of G;
@@ -1159,54 +1090,40 @@ proof
     BB1: for x being Element of G holds x*N in Ker sigma iff x in N
     proof
       let x be Element of G;
-      x*N in Left_Cosets N by GROUP_2:def 15;
-      then reconsider z = x*N as Element of G./.N;
-      B1: z = x*N;
-      B2: dom phi = the carrier of G by FUNCT_2:def 1;
+      reconsider z = x*N as Element of G./.N by GROUP_2:def 15;
       B3: (phi").(phi.x) = x by FUNCT_2:26;
       thus x*N in Ker sigma implies x in N
       proof
-        assume Z1: (x*N) in Ker sigma;
-        then z in Ker sigma;
+        assume (x*N) in Ker sigma;
         then sigma.z = 1_(G./.N) by GROUP_6:41;
-        then Z2: sigma.(x*N) = 1_(G./.N)
+        then Z1: sigma.(x*N) = 1_(G./.N)
                             .= carr N by GROUP_6:24;
         (phi.x)*N = sigma.(x*N) by A4
-                 .= carr N by Z2;
-        then Z3: phi.x in N by GROUP_2:113;
-        then phi.x in Image(phi|N) by A1;
-        then Z33: phi.x in phi .: N by GRSOLV_1:def 3;
-        Z4: phi" is Automorphism of G by GROUP_6:62;
+                 .= carr N by Z1;
+        then phi.x in Image(phi|N) by A1,GROUP_2:113;
+        then Z2: phi.x in phi .: N by GRSOLV_1:def 3;
         consider psi being Automorphism of G such that
-        Z7: psi = phi" and
+        Z3: psi = phi" and
             the multMagma of Image(phi|Image(psi|N)) = the multMagma of N
         by Th17;
         reconsider i = id the carrier of G as Automorphism of G by GROUP_6:38;
         the carrier of G <> {} & phi is onto;
-        then Z7a: psi * phi = id the carrier of G by Z7,FUNCT_2:29;
+        then Z4: psi * phi = id the carrier of G by Z3,FUNCT_2:29;
         dom psi = the carrier of G by FUNCT_2:def 1;
-        then phi.x in dom psi;
-        then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by Z33,FUNCT_1:def 6;
+        then psi.(phi.x) in psi .: (the carrier of (phi .: N)) by Z2,FUNCT_1:def 6;
         then psi.(phi.x) in the carrier of (psi .: (phi .: N)) by GRSOLV_1:8;
-        then psi.(phi.x) in psi .: (phi .: N);
-        then psi.(phi.x) in (psi * phi) .: N by Th72;
-        then (phi").(phi.x) in (psi * phi) .: N by Z7;
-        then x in (psi * phi) .: N by B3;
-        then x in i .: N by Z7a;
-        then x in the carrier of (i .: N);
-        then x in i .: (the carrier of N) by GRSOLV_1:8;
-        then Z8: x in (id the carrier of G) .: (the carrier of N);
+        then x in i .: N by B3,Z3,Z4,Th72;
+        then Z5: x in (id the carrier of G) .: (the carrier of N) by GRSOLV_1:8;
         the carrier of N is Subset of the carrier of G by GROUP_2:def 5;
-        then x in (the carrier of N) by Z8,FUNCT_1:92;
-        hence x in N;
+        hence x in N by Z5,FUNCT_1:92;
       end;
       thus x in N implies x*N in Ker sigma
       proof
-        assume Z1: x in N;
-        then x * N = carr N by GROUP_2:113;
-        then Z2: x * N = 1_(G./.N) by GROUP_6:24;
+        assume x in N;
+        then Z1: x * N = carr N by GROUP_2:113
+                      .= 1_(G./.N) by GROUP_6:24;
         then sigma.(x*N) = 1_(G./.N) by GROUP_6:31;
-        hence x*N in Ker sigma by Z2,GROUP_6:41;
+        hence x*N in Ker sigma by Z1,GROUP_6:41;
       end;
     end;
     for x being Element of G./.N holds x in Ker sigma iff x in (1).(G./.N)
@@ -1218,18 +1135,14 @@ proof
         x in G./.N;
         then consider g being Element of G such that
         Z2: x = g*N by GROUP_2:def 15;
-        g*N in Ker sigma by Z1,Z2;
-        then g in N by BB1;
-        then g*N = carr N by GROUP_2:113;
+        g*N = carr N by BB1,Z1,Z2,GROUP_2:113;
         then g*N = 1_(G./.N) by GROUP_6:24;
         then g*N in {1_(G./.N)} by TARSKI:def 1;
-        then g*N in (1).(G./.N) by GROUP_2:def 7;
-        hence x in (1).(G./.N) by Z2;
+        hence x in (1).(G./.N) by Z2,GROUP_2:def 7;
       end;
       thus x in (1).(G./.N) implies x in Ker sigma
       proof
-        assume Z1: x in (1).(G./.N);
-        then x in the carrier of (1).(G./.N);
+        assume x in (1).(G./.N);
         then x in {1_(G./.N)} by GROUP_2:def 7;
         then x = 1_(G./.N) by TARSKI:def 1;
         then sigma.x = 1_(G./.N) by GROUP_6:31;
@@ -1249,24 +1162,18 @@ proof
       reconsider psi = phi" as Automorphism of G by GROUP_6:62;
       consider a being Element of G such that
       B3: a = psi.b;
-      a*N in Cosets N by GROUP_2:def 15;
-      then a*N in G./.N;
+      a*N in G./.N by GROUP_2:def 15;
       then consider x being Element of G./.N such that
       B4: x = a*N;
-      a = (phi").b by B3;
-      then phi.a = phi.((phi").b)
-      .= b by Th4;
-      then B5: phi.a = b;
+      B5: phi.a = phi.((phi").b) by B3
+               .= b by Th4;
       sigma.x = sigma.(a*N) by B4
-      .= (phi.a)*N by A4
-      .= b*N by B5
-      .= y by B2;
-      then y = sigma.x;
-      then y in Image sigma by GROUP_6:45;
-      hence thesis;
+             .= (phi.a)*N by A4
+             .= b*N by B5
+             .= y by B2;
+      hence y in Image sigma by GROUP_6:45;
     end;
-    then Image sigma = G./.N by GROUP_2:62;
-    hence sigma is onto by GROUP_6:57;
+    hence sigma is onto by GROUP_2:62,GROUP_6:57;
   end;
   then reconsider sigma as Automorphism of G./.N;
   take sigma;
@@ -1292,9 +1199,8 @@ proof
   let H be strict characteristic Subgroup of G;
   let K be strict Subgroup of G;
   assume A1: H is Subgroup of K;
-  Ker (nat_hom H) = H by GROUP_6:43;
-  then A3: for g being Element of G
-  holds g in Ker (nat_hom H) iff g in H;
+  A3: for g being Element of G
+  holds g in Ker (nat_hom H) iff g in H by GROUP_6:43;
 
   reconsider R = Ker ((nat_hom H)|K) as strict Subgroup of K;
 
@@ -1303,35 +1209,27 @@ proof
   proof
     let k be Element of K;
     reconsider g=k as Element of G by GROUP_2:42;
-    B1: g = k;
-    B2: g in K;
+    B1: g in K;
     thus k in H implies k in Ker ((nat_hom H)|K)
     proof
-      assume k in H;
-      then C1: g in H;
+      assume C1: k in H;
       C2: g in K;
-      g in Ker (nat_hom H) iff g in H by A3;
-      then (nat_hom H).g = 1_(G./.H) by C1,GROUP_6:41;
+      (nat_hom H).g = 1_(G./.H) by A3,C1,GROUP_6:41;
       then ((nat_hom H)|K).g = 1_(G./.H) by C2,Th1;
-      then ((nat_hom H)|K).k = 1_(G./.H);
-      then k in Ker ((nat_hom H)|K) by GROUP_6:41;
-      hence thesis;
+      hence k in Ker ((nat_hom H)|K) by GROUP_6:41;
     end;
     thus k in Ker ((nat_hom H)|K) implies k in H
     proof
       assume C1: k in Ker ((nat_hom H)|K);
-      then C2: g in Ker ((nat_hom H)|K);
-      ((nat_hom H)|K).g = (nat_hom H).g by B2,Th1;
-      then (nat_hom H).g = 1_(G./.H) by C2,GROUP_6:41;
+      ((nat_hom H)|K).g = (nat_hom H).g by B1,Th1;
+      then (nat_hom H).g = 1_(G./.H) by C1,GROUP_6:41;
       then g in Ker (nat_hom H) by GROUP_6:41;
-      then g in H by GROUP_6:43;
-      hence k in H;
+      hence k in H by GROUP_6:43;
     end;
 
   end;
   reconsider H1=H as strict Subgroup of K by A1;
-  for k being Element of K holds k in H1 iff k in R by A4;
-  then the multMagma of R = the multMagma of H1 by GROUP_2:60;
+  the multMagma of R = the multMagma of H1 by A4,GROUP_2:60;
   hence thesis;
 end;
 @ %def Th74
@@ -1358,7 +1256,6 @@ proof
   assume A1: H is Subgroup of K;
   assume A2: K./.(K,H)`*` is characteristic Subgroup of G./.H;
   A3: (K,H)`*` = H by A1,GROUP_6:def 1;
-  then A4: H is normal Subgroup of K;
   for phi being Automorphism of G
   for k being Element of G st k in K
   holds phi.k in K
@@ -1372,22 +1269,16 @@ proof
     by Th73;
     consider J being strict characteristic Subgroup of G./.H such that
     B3: J = (K./.(K,H)`*`) by A2;
-    B4: for j being Element of G./.H st j in J holds sigma.j in J by Th50;
 
     B5: for k1 being Element of G st k1*H in J holds k1 in K
     proof
       let k1 be Element of G;
       assume C1: k1*H in J;
-      C2: the carrier of H = the carrier of ((K,H)`*`) by A1,GROUP_6:def 1;
-      k1*H = k1*(carr H)
-          .= k1*(K,H)`*` by C2;
-      then C3: k1*H = k1*(K,H)`*`;
+      C3: k1*H = k1*(carr H)
+              .= k1*(K,H)`*` by A1,GROUP_6:def 1;
       set x = k1*(K,H)`*`;
-      x in J by C1,C3;
-      then x in (K./.(K,H)`*`) by B3;
-      then C5: x in Cosets (K,H)`*`;
-      then consider a being Element of K such that
-      C6: x = a*(K,H)`*` by GROUP_2:def 15;
+      consider a being Element of K such that
+      C6: x = a*(K,H)`*` by B3,C1,C3,GROUP_2:def 15;
 
       reconsider a1 = a as Element of G by GROUP_2:42;
       C7: a1 in K;
@@ -1396,56 +1287,45 @@ proof
         let j1 be object;
         thus j1 in a*(K,H)`*` implies j1 in a1*H
         proof
-          assume Z1: j1 in a*(K,H)`*`;
-          Z2: H = (K,H)`*` by A1,GROUP_6:def 1;
-          consider g1 being Element of K such that
-          Z3: j1 = a*g1 & g1 in (K,H)`*` by Z1,GROUP_2:103;
+          assume j1 in a*(K,H)`*`;
+          then consider g1 being Element of K such that
+          Z1: j1 = a*g1 & g1 in (K,H)`*` by GROUP_2:103;
           reconsider g=g1 as Element of G by GROUP_2:42;
-          a*g1 = a1*g by GROUP_2:43;
-          then Z4: j1 = a1*g by Z3;
-          g in H by Z2,Z3;
-          then a1*g in a1*H by GROUP_2:103;
-          hence j1 in a1*H by Z4;
+          Z2: j1 = a1*g by Z1,GROUP_2:43;
+          g in H by Z1,A1,GROUP_6:def 1;
+          hence j1 in a1*H by Z2,GROUP_2:103;
         end;
 
         thus j1 in a1*H implies j1 in a*(K,H)`*`
         proof
-          assume Z1: j1 in a1*H;
+          assume j1 in a1*H;
           then consider g1 being Element of G such that
-          Z2: j1 = a1*g1 & g1 in H by GROUP_2:103;
-          Z3: H = (K,H)`*` by A1, GROUP_6:def 1;
-          then reconsider g=g1 as Element of K by Z2,GROUP_2:42;
-          g in H by Z2;
-          then Z4: g in (K,H)`*` by Z3;
-          a1*g1 = a*g by GROUP_2:43;
-          then Z5: j1 = a*g by Z2;
-          g in (K,H)`*` by Z4;
-          then a*g in a*(K,H)`*` by GROUP_2:103;
-          hence j1 in a*(K,H)`*` by Z5;
+          Z1: j1 = a1*g1 & g1 in H by GROUP_2:103;
+          reconsider g=g1 as Element of K by A1,Z1,GROUP_2:42;
+          Z2: j1 = a*g by Z1,GROUP_2:43;
+          g in (K,H)`*` by Z1,A1, GROUP_6:def 1;
+          hence j1 in a*(K,H)`*` by Z2,GROUP_2:103;
         end;
 
       end;
-      then a*(K,H)`*` = a1*H by TARSKI:2;
-      then a1*H = x by C6
+      then a1*H = x by TARSKI:2,C6
                .= k1*H by C3;
       then (a1") * k1 in H by GROUP_2:114;
-      then (a1") * k1 in K by A4,GROUP_2:41;
-      then C8: a1 * ((a1") * k1) in K by C7,GROUP_2:50;
+      then C8: (a1") * k1 in K by A1,GROUP_2:41;
       a1 * ((a1") * k1) = (a1 * a1") * k1 by GROUP_1:def 3
                        .= 1_G * k1 by GROUP_1:def 5
                        .= k1 by GROUP_1:def 4;
-      hence k1 in K by C8;
+      hence k1 in K by C7,C8,GROUP_2:50;
     end;
 
-    for k1 being Element of G holds k1 in K iff k1*H in J
+    B6: for k1 being Element of G holds k1 in K iff k1*H in J
     proof
       let k1 be Element of G;
       thus k1 in K implies k1*H in J
       proof
-        assume C1: k1 in K;
+        assume k1 in K;
         then reconsider k2=k1 as Element of K;
         C2: k2*((K,H)`*`) in J by B3, GROUP_2:def 15;
-        C3: k1 = k2;
         for x being object holds x in k2*carr((K,H)`*`) iff x in k1*carr(H)
         proof
           let x be object;
@@ -1457,34 +1337,20 @@ proof
             by GROUP_2:103;
             then consider huh being Element of K such that
             Z2: x = k2*huh & huh in (K,H)`*` by Z1;
-            huh in (K,H)`*` by Z2;
-            then Z3: huh in H by A3;
+            Z3: huh in H by A1,Z2,GROUP_6:def 1;
             reconsider huh2=huh as Element of G by GROUP_2:42;
             set x2 = k1*huh2;
             x = k1*huh2 by Z2,GROUP_2:43;
             hence thesis by Z3,GROUP_2:27;
           end;
-          assume Z2: x in k1*carr(H);
+          assume x in k1*carr(H);
           then consider h1 being Element of G such that
-          Z3: x = k1*h1 & h1 in carr(H) by GROUP_2:27;
-          the multMagma of ((K,H)`*`) = the multMagma of H by A1, GROUP_6:def 1;
-          then Z4: the carrier of H = the carrier of ((K,H)`*`);
-          h1 in carr H by Z3;
-          then Z5: h1 in carr((K,H)`*`) by Z4;
-          Z6: h1 in H by Z3;
-          then reconsider h2=h1 as Element of K by A1,GROUP_2:42;
-          reconsider H1=H as normal Subgroup of K by A4;
-          Z7: k1*h1 = k2*h2 by GROUP_2:43;
-          then Z8: x = k2*h2 by Z3;
-          the multMagma of ((K,H)`*`) = the multMagma of H by A1,GROUP_6:def 1;
-          then Z11: the carrier of H = the carrier of ((K,H)`*`);
-          Z9: carr H1 = carr H;
-          h2 in H1 by Z6;
-          then k2*h2 in k2*carr(H1) by GROUP_2:27;
-          then x in k2*carr(H1) by Z8;
-          then x in k2*carr((K,H)`*`) by Z11;
-          then x in k2*carr((K,H)`*`);
-          hence x in k2*carr((K,H)`*`);
+          Z2: x = k1*h1 & h1 in carr(H) by GROUP_2:27;
+          reconsider h2=h1 as Element of K by A1,Z2,GROUP_2:42;
+          reconsider H1=H as normal Subgroup of K by A3;
+          Z3: the carrier of H = the carrier of ((K,H)`*`) by A1,GROUP_6:def 1;
+          k2*h2 in k2*carr(H1) by Z2,GROUP_2:27;
+          hence x in k2*carr((K,H)`*`) by Z2,Z3,GROUP_2:43;
         end;
 
         then k2*carr(((K,H)`*`)) = k1*carr(H) by TARSKI:2
@@ -1493,14 +1359,11 @@ proof
       end;
       thus k1*H in J implies k1 in K by B5;
     end;
-    then B6: k*H in J by B1;
+    then k*H in J by B1;
     then reconsider kH = k*H as Element of G./.H by GROUP_2:42;
-    kH in J by B6;
-    then sigma.(kH) in J by B4;
+    sigma.(kH) in J by Th50,B1,B6;
     then sigma.(k*H) in J & sigma.(k*H) = (phi.k)*H by B2;
-    then (phi.k)*H in J;
-    then phi.k in K by B5;
-    hence thesis;
+    hence phi.k in K by B5;
   end;
 
   hence K is characteristic Subgroup of G by Th50;
@@ -1536,10 +1399,8 @@ proof
       let g,h be Element of H;
       B1: g in H & h in H;
       reconsider g1=g, h1=h as Element of G by GROUP_2:42;
-      g1 in H & h1 in H;
-      then B2: g1*h1=h1*g1 by A2;
       g*h = g1*h1 by GROUP_2:43
-         .= h1*g1 by B2
+         .= h1*g1 by A2,B1
          .= h*g by GROUP_2:43;
       hence thesis;
     end;
@@ -1549,15 +1410,14 @@ proof
   thus H is commutative Group implies H is Subgroup of Centralizer H
   proof
     assume A1: H is commutative Group;
-    A2: for g,h being Element of H holds g*h=h*g by A1,GROUP_1:def 12;
-    A3: for g,h being Element of G st g in H & h in H holds g*h=h*g
+    A2: for g,h being Element of G st g in H & h in H holds g*h=h*g
     proof
       let g,h be Element of G;
       assume B1: g in H;
       assume B2: h in H;
       reconsider g1=g,h1=h as Element of H by B1,B2;
       g*h = g1*h1 by GROUP_2:43
-         .= h1*g1 by A2
+         .= h1*g1 by A1,GROUP_1:def 12
          .= h*g by GROUP_2:43;
       hence g*h=h*g;
     end;
@@ -1565,7 +1425,7 @@ proof
     proof
       let g be Element of G;
       assume B1: g in H;
-      for a being Element of G st a in H holds g*a = a*g by B1,A3;
+      for a being Element of G st a in H holds g*a = a*g by B1,A2;
       then g is Element of Centralizer H by Th60;
       hence g in Centralizer H;
     end;
@@ -1590,21 +1450,19 @@ proof
     thus g in Centralizer (Omega).G implies g in center G
     proof
       assume B1: g in Centralizer (Omega).G;
-      then B2: for a being Element of G st a in (Omega).G holds g*a = a*g by Th60;
       for a being Element of G holds g*a = a*g
       proof
         let a be Element of G;
         a in (Omega).G;
-        hence g*a = a*g by B2;
+        hence g*a = a*g by B1,Th60;
       end;
       hence g in center G by GROUP_5:77;
     end;
 
     thus g in center G implies g in Centralizer (Omega).G
     proof
-      assume B1: g in center G;
-      then for b being Element of G holds g*b = b*g by GROUP_5:77;
-      then for b being Element of G st b in (Omega).G holds g*b = b*g;
+      assume g in center G;
+      then for b being Element of G st b in (Omega).G holds g*b = b*g by GROUP_5:77;
       then g is Element of Centralizer (Omega).G by Th60;
       hence thesis;
     end;
@@ -1631,12 +1489,9 @@ proof
   proof
     let g,n be Element of G;
     assume B1: n in N;
-    the multMagma of N = the multMagma of (N |^ g) by GROUP_3:def 13;
-    then B2: the carrier of N = the carrier of (N |^ g);
+    B2: the multMagma of N = the multMagma of (N |^ g) by GROUP_3:def 13;
     n |^ g in N |^ g by B1,GROUP_3:58;
-    then n |^ g in the carrier of (N |^ g);
-    then n |^ g in the carrier of N by B2;
-    hence thesis;
+    hence thesis by B2;
   end;
 
   A3: for g,x,n being Element of G st x in Centralizer N & n in N
@@ -1648,21 +1503,18 @@ proof
     consider n2 being Element of G such that
     B3: n2 = g * n * g";
     B4: n2 = n |^ g" by B3;
-    then B5: n2 in N by B2,A2;
-    x is Element of Centralizer N by B1;
-    then x * n2 = n2 * x by B5,Th60;
-    then (x * n2) |^ g = (n2 * x) |^ g
+    then (x * n2) |^ g = (n2 * x) |^ g by B1,B2,A2,Th60
                       .= (n2 |^ g) * (x |^ g) by GROUP_3:23;
     then (x |^ g) * (n2 |^ g) = (n2 |^ g) * (x |^ g) by GROUP_3:23
                              .= n * (x |^ g) by B4,GROUP_3:25;
-    then (x |^ g) * n = n * (x |^ g) by B4,GROUP_3:25;
-    hence thesis;
+    hence (x |^ g) * n = n * (x |^ g) by B4,GROUP_3:25;
   end;
 
-  A4: for g,z being Element of G st z in Centralizer N holds z |^ g in Centralizer N
+  A4: for g,z being Element of G st z in Centralizer N
+  holds z |^ g in Centralizer N
   proof
     let g,z be Element of G;
-    assume Z1: z in Centralizer N;
+    assume z in Centralizer N;
     then for n being Element of G st n in N holds
     (z |^ g)*n = n*(z |^ g) by A3;
     then (z |^ g) is Element of Centralizer N by Th60;
@@ -1673,9 +1525,6 @@ proof
   for g being Element of G holds (Centralizer N) |^ g = Centralizer N
   proof
     let g be Element of G;
-
-    B1: for z being Element of G st z in Centralizer N
-    holds z |^ g in Centralizer N by A4;
     for z being Element of G
     holds z in (Centralizer N) |^ g iff z in (Centralizer N)
     proof
@@ -1688,8 +1537,7 @@ proof
         hence z in (Centralizer N) by GROUP_3:25;
       end;
       assume z in (Centralizer N);
-      then (z |^ g") in (Centralizer N) by A4;
-      then (z |^ g") |^ g in (Centralizer N) |^ g by GROUP_3:58;
+      then (z |^ g") |^ g in (Centralizer N) |^ g by A4,GROUP_3:58;
       hence z in (Centralizer N) |^ g by GROUP_3:25;
     end;
 
@@ -1716,19 +1564,14 @@ proof
   let H be Subgroup of G;
   let h,n be Element of G;
   assume A1: h in H;
-  assume A2: n in Normalizer H;
-  then n" in Normalizer H by GROUP_2:51;
-  then n" in Normalizer (carr H);
+  assume n in Normalizer H;
   then consider g being Element of G such that
-  A3: n" = g & (carr H) |^ g = carr H by GROUP_3:129;
-  h in carr H by A1;
-  then h in (carr H) |^ g by A3;
-  then consider h1 being Element of G such that
-  A4: h = h1 |^ g & h1 in carr H by GROUP_3:41;
-  h |^ n = (h1 |^ (n")) |^ n by A3,A4
+  A2: n" = g & (carr H) |^ g = carr H by GROUP_2:51,GROUP_3:129;
+  consider h1 being Element of G such that
+  A3: h = h1 |^ g & h1 in carr H by A1,A2,GROUP_3:41;
+  h |^ n = (h1 |^ (n")) |^ n by A2,A3
         .= h1 by GROUP_3:25;
-  then h |^ n in carr H by A4;
-  hence h |^ n in H;
+  hence h |^ n in H by A3;
 end;
 @ %def Th79
 
@@ -1750,16 +1593,13 @@ proof
     let g be Element of G;
     assume B1: g in H;
     let x be Element of G;
-    assume B2: x in (carr H) |^ g;
+    assume x in (carr H) |^ g;
     then consider h being Element of G such that
-    B3: x = h |^ g & h in carr H by GROUP_3:41;
-    B4: h in H by B3;
+    B2: x = h |^ g & h in carr H by GROUP_3:41;
+    B3: h in H by B2;
     g" in H by B1,GROUP_2:51;
-    then g" * h in H by B4, GROUP_2:50;
-    then (g" * h)*g in H by B1, GROUP_2:50;
-    then g" * h * g in H;
-    then h |^ g in H;
-    then x in H by B3;
+    then g" * h in H by B3, GROUP_2:50;
+    then x in H by B1,B2, GROUP_2:50;
     hence x in carr H;
   end;
 
@@ -1767,32 +1607,26 @@ proof
   proof
     let g be Element of G;
     assume B1: g in H;
-    B2: for x being Element of G st x in (carr H) |^ g holds x in carr H by A1,B1;
     for x being Element of G st x in carr H holds x in (carr H) |^ g
     proof
       let x be Element of G;
       thus x in carr H implies x in (carr H) |^ g
       proof
-        assume B3: x in carr H;
-        then B4: x in H;
+        assume x in carr H;
+        then C1: x in H;
         set h = x |^ g";
-        B5: h = g * x * g";
         g" in H by B1,GROUP_2:51;
-        then x * g" in H by B4,GROUP_2:50;
+        then x * g" in H by C1,GROUP_2:50;
         then g * (x * g") in H by B1,GROUP_2:50;
-        then g * x * g" in H by GROUP_1:def 3;
-        then h in H;
-        then B4: h in (carr H);
-        B5: h |^ g = (x |^ g") |^ g
+        then C2: h in (carr H) by GROUP_1:def 3;
+        C3: h |^ g = (x |^ g") |^ g
                   .= x by GROUP_3:25;
-        h |^ g in (carr H) |^ g by B4, GROUP_3:41;
-        hence x in (carr H) |^ g by B5;
+        thus x in (carr H) |^ g by C2,C3,GROUP_3:41;
       end;
     end;
-    then (carr H) |^ g c= carr H & carr H c= (carr H) |^ g by B2;
+    then (carr H) |^ g c= carr H & carr H c= (carr H) |^ g by A1,B1;
     then (carr H) |^ g = carr H by XBOOLE_0:def 10;
-    then g in Normalizer carr H by GROUP_3:129;
-    hence g in Normalizer H;
+    hence g in Normalizer H by GROUP_3:129;
   end;
 
   hence H is Subgroup of Normalizer H by GROUP_2:58;
@@ -1832,14 +1666,11 @@ implies $g\in N_{G}(H)$ by definition of the normalizer.
 proof
   let g be Element of G;
   assume A1: g in Centralizer H;
-  then g is Element of Centralizer H;
-  then A2: for a being Element of G st a in H holds g*a = a*g by Th60;
-  A3: for a being Element of G st a in H holds a = (g")*a*g
+  A2: for a being Element of G st a in H holds a = (g")*a*g
   proof
     let a be Element of G;
-    assume B1: a in H;
-    then g*a = a*g by A2;
-    then g" * (a * g) = g" * (g*a)
+    assume a in H;
+    then g" * (a * g) = g" * (g*a) by A1,Th60
                      .= (g" * g)*a by GROUP_1:def 3
                      .= (1_G)*a by GROUP_1:def 5
                      .= a by GROUP_1:def 4;
@@ -1852,27 +1683,21 @@ proof
     thus a in H implies a in H |^ g
     proof
       assume B1: a in H;
-      then a = a |^ g by A3;
+      then a = a |^ g by A2;
       hence a in H |^ g by B1, GROUP_3:58;
     end;
     thus a in H |^ g implies a in H
     proof
-      assume B1: a in H |^ g;
+      assume a in H |^ g;
       then consider h being Element of G such that
-      B2: a = h |^ g & h in H
+      B1: a = h |^ g & h in H
       by GROUP_3:58;
-      (h |^ g) = a |^ g by B2,A3;
-      then h = a by GROUP_3:16;
-      hence a in H by B2;
+      thus a in H by A2,B1;
     end;
   end;
   then the multMagma of H = the multMagma of (H |^ g) by GROUP_2:60;
-  then A5: carr H = carr(H |^ g);
-  the carrier of H |^ g = carr(H) |^ g by GROUP_3:def 6;
-  then carr H = carr(H) |^ g by A5;
-  then ex h being Element of G st h=g & carr(H) |^ h = carr H;
-  then g in Normalizer carr(H) by GROUP_3:129;
-  hence g in Normalizer H;
+  then carr H = carr(H) |^ g by GROUP_3:def 6;
+  hence g in Normalizer H by GROUP_3:129;
 end;
 @
 
@@ -1913,9 +1738,9 @@ proof
     proof
       let z,n,h be Element of N;
       assume C1: z in Z;
-      assume C2: n in N;
-      assume C3: h in H;
-      C4: h |^ (z |^ n) = (z |^ n)" * h * (z |^ n)
+      assume n in N;
+      assume C2: h in H;
+      C3: h |^ (z |^ n) = (z |^ n)" * h * (z |^ n)
       .= (z" |^ n) * h * (z |^ n) by GROUP_3:26
       .= (n" * z" * n) * h * (n" * z * n)
       .= ((n" * z") * n) * h * (n" * (z * n)) by GROUP_1:def 3
@@ -1927,7 +1752,7 @@ proof
       .= (n" * z") * ((n * h) * n") * (z * n) by GROUP_1:def 3
       .= (n" * z") * (n * h * n") * (z * n);
 
-      C4a: for a,b being Element of G
+      C4: for a,b being Element of G
       holds a in N & b in H & b in N implies a*b*a" in H & a*b*a" in N
       proof
         let a,b be Element of G;
@@ -1935,13 +1760,10 @@ proof
         assume D2: b in H;
         assume D3: b in N;
         D4: a*b in N by D1,D3,GROUP_2:50;
-        D5: a" in N by D1,GROUP_2:51;
-        then D6: a*b*a" in N by D4,GROUP_2:50;
-        a" in N & b in H by D2,D5;
+        D5: a" in N & b in H by D1,D2,GROUP_2:51;
         then b |^ a" in H by Th79;
-        then a*b*a" in H;
         hence a*b*a" in H;
-        thus a*b*a" in N by D6;
+        thus a*b*a" in N by D4,D5,GROUP_2:50;
       end;
 
       n * h * n" in H
@@ -1952,28 +1774,23 @@ proof
         then n1*(h1*n1") = n*(h*n") by GROUP_2:43
                         .= n*h*n" by GROUP_1:def 3;
         then D1: n1*h1*n1" = n*h*n" by GROUP_1:def 3;
-        h1 in N & n1 in N & h1 in H by C3;
-        then n1*h1*n1" in H & n1*h1*n1" in N by C4a;
-        hence thesis by D1;
+        h1 in N & n1 in N & h1 in H by C2;
+        hence thesis by C4,D1;
       end;
       then consider h2 being Element of N such that
       C5: n * h * n" = h2 & h2 in H;
 
-      z is Element of Z by C1;
-      then for n0 being Element of N st n0 in H holds z*n0 = n0*z by B60;
-      then z*h2 = h2*z by C5;
-      then z"*(z * h2) = z" * (h2 * z);
+      z*h2 = h2*z by B60,C1,C5;
       then (z" * z) * h2 = z" * (h2 * z) by GROUP_1:def 3
                         .= (z" * h2) * z by GROUP_1:def 3;
       then (z" * h2) * z = (z" * z) * h2
                         .= 1_N * h2 by GROUP_1:def 5
                         .= h2 by GROUP_1:def 4;
-      then h2 * z" = ((z" * h2) * z) * z"
-                  .= (z" * h2) * (z * z") by GROUP_1:def 3
-                  .= (z" * h2) * 1_N by GROUP_1:def 5
-                  .= z" * h2 by GROUP_1:def 4;
-      then C6: z" * h2 = h2 * z";
-      h |^ (z |^ n) = (n" * z") * (n * h * n") * (z * n) by C4
+      then C6: h2 * z" = ((z" * h2) * z) * z"
+                      .= (z" * h2) * (z * z") by GROUP_1:def 3
+                      .= (z" * h2) * 1_N by GROUP_1:def 5
+                      .= z" * h2 by GROUP_1:def 4;
+      h |^ (z |^ n) = (n" * z") * (n * h * n") * (z * n) by C3
                    .= (n" * z") * h2 * (z * n) by C5
                    .= (n" * z") * (h2 * (z * n)) by GROUP_1:def 3
                    .= n" * (z" * (h2 * (z * n))) by GROUP_1:def 3
@@ -2024,16 +1841,14 @@ proof
       for z being Element of N st z in Z holds z in Z |^ n
       proof
         let z be Element of N;
-        assume C1: z in Z;
-        (z |^ n") in Z by C1,B5;
-        then (z |^ n") |^ n in (Z |^ n) by GROUP_3:58;
+        assume z in Z;
+        then (z |^ n") |^ n in (Z |^ n) by B5,GROUP_3:58;
         hence z in Z |^ n by GROUP_3:25;
       end;
 
       hence Z is Subgroup of Z |^ n by GROUP_2:58;
     end;
-    then Z is normal Subgroup of N by GROUP_3:121;
-    hence thesis;
+    hence thesis by GROUP_3:121;
   end;
   hence thesis;
 end;
@@ -2047,7 +1862,6 @@ quantifiers to the normalizer.
 <<Proof: $\forall z\in N_{G}(H), (\forall n\in N_{G}(H), n\in H\implies zn=nz)\iff z\in C_{G}(H)$>>=
 proof
   let z be Element of N;
-  C0: z in N;
   reconsider z1=z as Element of G by GROUP_2:42;
 
   C2: z is Element of Z implies (for n being Element of N st n in H holds z*n = n*z)
@@ -2056,35 +1870,22 @@ proof
     let n be Element of N;
     assume Z2: n in H;
     reconsider n1=n as Element of G by GROUP_2:42;
-    Z3: n1 in H by Z2;
-    z in Z by Z1;
-    then z in carr(Centralizer H);
-    then z1 in Centralizer H;
-    then z1 is Element of Centralizer H;
-    then z1*n1 = n1*z1 by Z3,Th60
-              .= n*z by GROUP_2:43;
-    then z*n = n*z by GROUP_2:43;
-    hence thesis;
+    z1*n1 = n1*z1 by Z1,Z2,Th60
+         .= n*z by GROUP_2:43;
+    hence z*n = n*z by GROUP_2:43;
   end;
   not (z is Element of Z) implies not (for n being Element of N st n in H
   holds z*n = n*z)
   proof
-    assume Z1: not z is Element of Z;
-    then not z in Z;
-    then not z1 in Centralizer H;
-    then not z1 is Element of Centralizer H;
+    assume not z is Element of Z;
     then consider g being Element of G such that
-    Z2: g in H & g*z1 <> z1 * g by Th60;
-    Z3: H is Subgroup of Normalizer H by Th80;
-    g in H by Z2;
-    then g in Normalizer H by Z3, GROUP_2:41;
+    Z1: g in H & g*z1 <> z1 * g by Th60;
+    H is Subgroup of Normalizer H by Th80;
+    then g in Normalizer H by Z1, GROUP_2:41;
     then reconsider n=g as Element of N;
-    Z6: n in H by Z2;
-    Z4: g*z1 = n*z by GROUP_2:43;
-    z1*g = z*n by GROUP_2:43;
-    then Z5: n*z <> z*n by Z2,Z4;
+    Z2: g*z1 = n*z by GROUP_2:43;
     take n;
-    thus thesis by Z5,Z6;
+    thus thesis by Z1,Z2,GROUP_2:43;
   end;
   hence
   (for n being Element of N st n in H holds z*n = n*z) implies z is Element of Z;

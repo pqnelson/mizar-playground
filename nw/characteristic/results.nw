@@ -461,9 +461,7 @@ proof
   A2: Image(f|K) = K by Def3;
 
   for k being Element of G st k in K holds f.k = g.k by Th1,GROUP_2:40;
-  then Image(f|K) = Image(g|K) by Th36;
-  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th28;
-  then K = K |^ a;
+  then Image(g|K) = K & Image(g|K) = K |^ a by A1,A2,Th28,Th36;
   hence thesis;
 end;
 @
@@ -505,9 +503,7 @@ proof
     A1: Image(f|K) = K by Def3;
 
     for k being Element of G st k in K holds f.k = g.k by Th1, GROUP_2:40;
-    then Image(g|K) = Image(f|K) by Th36
-                   .= K by A1;
-    hence Image(g|K) = K;
+    hence Image(g|K) = K by A1,Th36;
   end;
   hence K is characteristic Subgroup of G by Def3;
 end;
@@ -679,8 +675,7 @@ present, then dismiss the rest of the proof as ``trivial'' or
 
 
 <<Step 1: $\forall\varphi\in\Aut(G)\forall y\in G\forall z\in Z(G), \varphi(z)y = y\varphi(z)$>>=
-A1: for y,z being Element of G
-st z in Z
+A1: for y,z being Element of G st z in Z
 holds (phi.z)*y = y*phi.z
 proof
   let y,z be Element of G;
@@ -701,8 +696,7 @@ unfolding definitions.
 \end{proof}
 
 <<Step 2: $\forall\varphi\in\Aut(G)\forall z\in G, z\in Z(G)\implies \varphi(z)\in Z(G)$>>=
-A2: for z being Element of G
-st z in Z
+A2: for z being Element of G st z in Z
 holds (phi|Z).z in Z
 proof
   let z be Element of G;
@@ -724,12 +718,9 @@ $w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$.
 <<Step 3: $\forall\varphi\in\Aut(G),\varphi(Z(G))\subgroup Z(G)$>>=
 Image(phi|Z) is Subgroup of Z
 proof
-  B1: the carrier of Z c= the carrier of G by GROUP_2:def 5;
   for w being Element of G st w in rng(phi|Z) holds w in Z
   <<Sub-step 3.1: $\forall w\in G,w\in\rng(\varphi|_{Z(G)})\implies w\in Z(G)$>>
-  then for w being Element of G st w in rng(phi|Z) holds w in the carrier of Z
-  by STRUCT_0:def 5;
-  then rng(phi|Z) c= the carrier of Z;
+  then rng(phi|Z) c= the carrier of Z by STRUCT_0:def 5;
   then the carrier of Image(phi|Z) c= the carrier of Z by GROUP_6:44;
   hence Image(phi|Z) is Subgroup of Z by GROUP_2:57;
 end;
@@ -1029,6 +1020,10 @@ $\bigcap\mathcal{F}$ is characteristic. We can formulate this argument
 as a scheme.
 \end{thm-remark}
 
+\begin{thm-remark}
+The proof is an extra step, because I believe it worth the cost to
+stress at a human-readable level that $K=\Phi(G)$.
+\end{thm-remark}
 <<Theorem: $\FrattiniSubgroup(G)$ is characteristic>>=
 theorem Th42:
   for G being non trivial Group
@@ -1052,7 +1047,7 @@ proof
       ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
   A4: K is characteristic
   from MeetIsChar(A2,A1);
-  K = Phi(G) by A1,A3,GROUP_4:def 7;
+  K = Phi(G) by A1,A3,GROUP_4:def 7; :: sic
   hence thesis by A4;
 end;
 @ %def Th42
@@ -1127,18 +1122,11 @@ proof
   set y = psi.b;
   set h = [.x,y.];
   dom phi = the carrier of G by FUNCT_2:def 1;
-  then B3: h in dom phi;
+  then B3: h in dom phi & h in commutators G & phi.((phi").g) = g by Th4;
   psi.g = psi.([.a,b.]) by B2
        .= [.psi.a,psi.b.] by GROUP_6:34
        .= h;
-  then B4: psi.g = h;
-  B5: phi.((phi").g) = g by Th4;
-  h in dom phi & h in commutators G by B3;
-  then phi.h in phi .: commutators G by FUNCT_1:def 6;
-  then phi.(psi.g) in phi .: commutators G by B4;
-  then phi.((phi").g) in phi .: commutators G;
-  then g in phi .: commutators G by B5;
-  hence thesis;
+  hence thesis by B3, FUNCT_1:def 6;
 end;
 @
 
@@ -1210,12 +1198,9 @@ proof
     B2: y = (phi|H).x
     by FUNCT_1:def 3;
     B3: x in H by B1;
-    then reconsider x as Element of H;
-    x is Element of G by GROUP_2:42;
-    then (phi|H).x = phi.x by B3,Th1;
-    then B4: y = phi.x by B2;
-    phi.x in H by A1;
-    hence y in the carrier of H by B4;
+    reconsider x as Element of H by B1;
+    phi.x in H & x is Element of G by A1,GROUP_2:42;
+    hence y in the carrier of H by B2,B3,Th1;
   end;
   then rng(phi|H) c= the carrier of H;
   then the carrier of Image(phi|H) c= the carrier of H by GROUP_6:44;
@@ -1253,7 +1238,6 @@ proof
     let phi be Automorphism of G;
     let a be Element of A;
     dom phi = the carrier of G by FUNCT_2:def 1;
-    then a in dom phi;
     then phi.a in phi .: A by FUNCT_1:def 6;
     hence phi.a in A by A1;
   end;
@@ -1268,8 +1252,7 @@ proof
       let h be Element of H;
       C1: h in H;
       h is Element of G by GROUP_2:42;
-      then phi.h in H by B2,C1;
-      hence thesis;
+      hence phi.h in H by B2,C1;
     end;
     hence Image(phi|H) is Subgroup of H by Th44;
   end;
@@ -1314,11 +1297,9 @@ proof
       then reconsider x as Element of A by C3;
       E4: x = F1/.k by E2,C7,PARTFUN1:def 6;
       y = F(k) by E2,E3,C6
-       .= phi.(F1/.k)
-       .= phi.(x) by E4;
-      hence y in A by A2;
+       .= phi.(F1/.k);
+      hence y in A by A2,E4;
     end;
-    D2: rng F2 c= A by D1;
     for y being object st y in rng F2 holds y in the carrier of G
     proof
       let y be object;
@@ -1327,7 +1308,7 @@ proof
       hence y in the carrier of G;
     end;
     hence rng F2 c= the carrier of G;
-    thus rng F2 c= A by D2;
+    thus rng F2 c= A by D1;
   end;
   then reconsider F2 as FinSequence of the carrier of G;
   set h2 = Product(F2 |^ I);
@@ -1338,7 +1319,7 @@ proof
     proof
       let k be Nat;
       assume D1: k in dom F1;
-      then k in dom F2 by C7;
+      then k in dom F2 by C5,FINSEQ_3:29;
       then F2.k = F(k) by C6
                .= phi.(F1/.k);
       hence F2.k = phi.(F1.k) by D1,PARTFUN1:def 6;
@@ -1346,9 +1327,8 @@ proof
     thus len F1 = len I by C2;
     thus len F2 = len I by C2,C5;
   end;
-  then phi.(Product(F1 |^ I)) = Product(F2 |^ I) by GROUP_9:125;
   then len F2 = len I & rng F2 c= A & Product(F2 |^ I) = phi.h
-  by C4,C9,C8;
+  by C4,C8,GROUP_9:125;
   hence phi.h in H by GROUP_4:28;
 end;
 @
@@ -1368,12 +1348,10 @@ previous theorem, we have $\varphi([G,G])=[G,G]$.
 theorem Th46:
   G` is characteristic
 proof
-  [.1_G,1_G.] in commutators G;
-  then A1: commutators G <> {};
+  A1: [.1_G,1_G.] in commutators G;
   for phi being Automorphism of G holds phi .: commutators G = commutators G
   by Th43;
-  then gr commutators G is characteristic by A1,Th45;
-  hence thesis;
+  hence thesis by A1,Th45;
 end;
 @ %def Th46
 
@@ -1403,47 +1381,41 @@ proof
   for y being object st y in f.:(a * H) holds y in (f.a)*(f.:H)
   proof
     let y be object;
-    assume B1: y in f .: (a * H);
+    assume y in f .: (a * H);
     then consider x being object such that
-    B2: x in the carrier of G1 & x in (a * H) and
-    B3: y = f.x
+    B1: x in the carrier of G1 & x in (a * H) and
+    B2: y = f.x
     by A1,FUNCT_1:def 6;
     consider h being Element of G1 such that
-    B4: x = a*h & h in H
-    by B2,GROUP_2:103;
-    B5: y = f.(a*h) by B3,B4
+    B3: x = a*h & h in H
+    by B1,GROUP_2:103;
+    B4: y = f.(a*h) by B2,B3
          .= (f.a)*(f.h) by GROUP_6:def 6;
-    dom f = the carrier of G1 & h in H & h in G1 by A1, B4;
+    dom f = the carrier of G1 & h in H & h in G1 by B3,FUNCT_2:def 1;
     then f.h in f.:(the carrier of H) by FUNCT_1:def 6;
-    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
-    then f.h in f.:H;
-    then (f.a)*(f.h) in (f.a)*(f.:H) by GROUP_2:103;
-    hence y in (f.a) * (f .: H) by B5;
+    then f.h in f.:H by GRSOLV_1:8;
+    hence y in (f.a) * (f .: H) by B4,GROUP_2:103;
   end;
   then A1: f.:(a * H) c= (f.a) * (f .: H);
   for y being object st y in (f.a)*(f.:H) holds y in f.:(a * H)
   proof
     let y be object;
-    assume B1: y in (f.a)*(f.:H);
+    assume y in (f.a)*(f.:H);
     then consider g being Element of G2 such that
-    B2: y = (f.a)*g and
-    B3: g in (f.:H)
+    B1: y = (f.a)*g and
+    B2: g in (f.:H)
     by GROUP_2:103;
-    g in Image(f|H) by B3,GRSOLV_1:def 3;
+    g in Image(f|H) by B2,GRSOLV_1:def 3;
     then consider x being Element of H such that
-    B4: g = (f|H).x
+    B3: g = (f|H).x
     by GROUP_6:45;
-    B5: x in H & x is Element of G1 by GROUP_2:42;
+    B4: x in H & x is Element of G1 by GROUP_2:42;
     reconsider x as Element of G1 by GROUP_2:42;
-    (f|H).x = f.x by B5,Th1;
-    then B6: g = f.x by B4;
-    B7: y = (f.a)*g by B2
-         .= (f.a)*(f.x) by B6
+    B5: y = (f.a)*g by B1
+         .= (f.a)*(f.x) by B3,B4,Th1
          .= f.(a*x) by GROUP_6:def 6;
-    B8: a*x in a*H by B5,GROUP_2:103;
-    dom f = the carrier of G1 by FUNCT_2:def 1;
-    then a*x in the carrier of G1 & dom f = the carrier of G1;
-    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by B7,B8;
+    a*x in the carrier of G1 & dom f = the carrier of G1 by FUNCT_2:def 1;
+    then (a*x) in dom f & (a*x) in a*H & y=f.(a*x) by B4,B5,GROUP_2:103;
     hence y in f.:(a * H) by FUNCT_1:def 6;
   end;
   then A2: (f.a) * (f .: H) c= f.:(a * H);
@@ -1474,47 +1446,40 @@ proof
   for y being object st y in f.:(H * a) holds y in (f.:H)*(f.a)
   proof
     let y be object;
-    assume B1: y in f .: (H * a);
+    assume y in f .: (H * a);
     then consider x being object such that
-    B2: x in the carrier of G1 & x in (H * a) and
-    B3: y = f.x
+    B1: x in the carrier of G1 & x in (H * a) and
+    B2: y = f.x
     by A1,FUNCT_1:def 6;
     consider h being Element of G1 such that
-    B4: x = h*a & h in H
-    by B2,GROUP_2:104;
-    B5: y = f.(h*a) by B3,B4
-         .= (f.h)*(f.a) by GROUP_6:def 6;
-    dom f = the carrier of G1 & h in H & h in G1 by A1, B4;
+    B3: x = h*a & h in H
+    by B1,GROUP_2:104;
+    dom f = the carrier of G1 & h in H & h in G1 by FUNCT_2:def 1, B3;
     then f.h in f.:(the carrier of H) by FUNCT_1:def 6;
-    then f.h in the carrier of (f.:H) by GRSOLV_1:8;
-    then f.h in f.:H;
+    then f.h in f.:H by GRSOLV_1:8;
     then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
-    hence thesis by B5;
+    hence thesis by B2,B3,GROUP_6:def 6;
   end;
   then A1: f.:(H * a) c= (f .: H) * (f.a);
   for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
   proof
     let y be object;
-    assume B1: y in (f.:H)*(f.a);
+    assume y in (f.:H)*(f.a);
     then consider g being Element of G2 such that
-    B2: y = g*(f.a) and
-    B3: g in (f.:H)
+    B1: y = g*(f.a) and
+    B2: g in (f.:H)
     by GROUP_2:104;
-    g in Image(f|H) by B3,GRSOLV_1:def 3;
+    g in Image(f|H) by B2,GRSOLV_1:def 3;
     then consider x being Element of H such that
-    B4: g = (f|H).x
+    B3: g = (f|H).x
     by GROUP_6:45;
-    B5: x in H & x is Element of G1 by GROUP_2:42;
+    B4: x in H & x is Element of G1 by GROUP_2:42;
     reconsider x as Element of G1 by GROUP_2:42;
-    (f|H).x = f.x by B5,Th1;
-    then B6: g = f.x by B4;
-    B7: y = g*(f.a) by B2
-         .= (f.x)*(f.a) by B6
+    B5: y = g*(f.a) by B1
+         .= (f.x)*(f.a) by B3,B4,Th1
          .= f.(x*a) by GROUP_6:def 6;
-    B8: x*a in H*a by B5,GROUP_2:104;
-    dom f = the carrier of G1 by FUNCT_2:def 1;
-    then x*a in the carrier of G1 & dom f = the carrier of G1;
-    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B7,B8;
+    x*a in the carrier of G1 & dom f = the carrier of G1 by FUNCT_2:def 1;
+    then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B4,B5,GROUP_2:104;
     hence y in f.:(H * a) by FUNCT_1:def 6;
   end;
   then A2: (f .: H) * (f.a) c= f.:(H * a);
@@ -1552,19 +1517,17 @@ proof
   let N be strict normal Subgroup of G;
   let phi be Automorphism of G;
   set H = Image(phi|N);
-  A1: H = phi .: N by GRSOLV_1:def 3;
   for g being Element of G holds g * H = H * g
   proof
     let g be Element of G;
     set f = (phi").g;
     B1: phi.f = g by Th4;
-    B2: f * N = N * f by GROUP_3:117;
-    B3: phi .: (f * N) = (phi.f) * (phi .: N) by Th47
-                      .= g * H by B1,A1;
-    B4: phi .: (N * f) = (phi .: N)*(phi.f) by Th48
-                      .= (phi .: N)*g by B1
-                      .= H*g by A1;
-    hence g * H = H * g by B2,B3;
+    B2: phi .: (f * N) = (phi.f) * (phi .: N) by Th47
+                      .= g * H by B1,GRSOLV_1:def 3;
+    phi .: (N * f) = (phi .: N)*(phi.f) by Th48
+                  .= (phi .: N)*g by Th4
+                  .= H*g by GRSOLV_1:def 3;
+    hence g * H = H * g by B2,GROUP_3:117;
   end;
   hence H is normal Subgroup of G by GROUP_3:117;
 end;
@@ -1615,11 +1578,8 @@ proof
     B3: H = Image(phi|H) by B1
          .= phi .: H by GRSOLV_1:def 3;
     dom phi = the carrier of G by FUNCT_2:def 1;
-    then x in dom phi;
     then phi.x in phi .: (the carrier of H) by B2,FUNCT_1:def 6;
-    then phi.x in the carrier of (phi .: H) by GRSOLV_1:8;
-    then phi.x in the carrier of H by B3;
-    hence thesis;
+    hence thesis by B3,GRSOLV_1:8;
   end;
   thus (for phi being Automorphism of G
         for x being Element of G
@@ -1634,11 +1594,9 @@ proof
       for x being Element of H holds phi.x in H
       proof
         let x be Element of H;
-        C1: x in H;
         reconsider g=x as Element of G by GROUP_2:42;
         g in H;
-        then phi.g in H by B1;
-        hence phi.x in H;
+        hence thesis by B1;
       end;
       hence Image(phi|H) is Subgroup of H by Th44;
     end;
@@ -1719,22 +1677,18 @@ proof
   proof
     let phi be Automorphism of G;
     let g be Element of G;
-    assume B1: g in H "\/" K;
+    assume g in H "\/" K;
     then g in H*K by GROUP_4:53;
-    then g in carr H * carr K;
     then consider h, k being Element of G such that
-    B2: g = h*k and
-    B3: h in carr H and
-    B4: k in carr K;
-    h in H by B3;
-    then B5: phi.h in H by Th50;
-    k in K by B4;
-    then B6: phi.k in K by Th50;
-    then phi.k in carr K & phi.h in carr H by B5;
-    then phi.h * phi.k in carr H*carr K;
-    then phi.(h*k) in carr H * carr K by GROUP_6:def 6;
-    then phi.g in carr H * carr K by B2;
-    then phi.g in H*K;
+    B1: g = h*k and
+    B2: h in carr H and
+    B3: k in carr K;
+    h in H by B2;
+    then B4: phi.h in H by Th50;
+    k in K by B3;
+    then phi.k in K by Th50;
+    then phi.h * phi.k in carr H*carr K by B4;
+    then phi.g in H*K by B1,GROUP_6:def 6;
     hence phi.g in H "\/" K by GROUP_4:53;
   end;
 
@@ -1767,43 +1721,35 @@ proof
     then reconsider g=x as Element of G;
     consider h,k being Element of G such that
     B1: x = [.h,k.] and
-    B2: h in H and
-    B3: k in K by B0,GROUP_5:52;
+    B2: h in H & k in K by B0,GROUP_5:52;
     reconsider psi = phi" as Automorphism of G by GROUP_6:62;
     set a = psi.h;
     set b = psi.k;
-    B4: a in H by B2,Th50;
-    B5: b in K by B3,Th50;
-    B6: psi.x = psi.([.h,k.]) by B1
+    B3: a in H & b in K by B2,Th50;
+    B4: psi.x = psi.([.h,k.]) by B1
              .= [.psi.h,psi.k.] by GROUP_6:34
              .= [.a,b.];
-    phi.([. a,b .]) = phi.(psi.x) by B6
-                   .= g by Th4;
-    then B7: x = phi.([. a,b .]);
-    [. a, b .] in commutators(H,K) by B4,B5;
-    then phi.([. a,b .]) in phi .: commutators(H,K) by A1,FUNCT_1:def 6;
-    hence x in phi .: commutators(H,K) by B7;
+    B5: phi.([. a,b .]) = phi.(psi.x) by B4
+                       .= g by Th4;
+    [. a, b .] in commutators(H,K) by B3;
+    hence x in phi .: commutators(H,K) by B5,A1,FUNCT_1:def 6;
   end;
   then A2: commutators(H,K) c= phi .: commutators(H,K);
 
   for y being object st y in phi .: commutators(H,K) holds y in commutators(H,K)
   proof
     let y be object;
-    assume B1: y in phi .: commutators(H,K);
+    assume y in phi .: commutators(H,K);
     then consider x being object such that
     B2: x in dom phi & x in commutators(H,K) & y = phi.x
     by FUNCT_1:def 6;
     consider h,k being Element of G such that
     B3: x = [.h,k.] and
-    B4: h in H and
-    B5: k in K by B2,GROUP_5:52;
-    set a = phi.h;
-    B6: a in H by B4,Th50;
-    set b = phi.k;
-    B7: b in K by B5,Th50;
+    B4: h in H & k in K by B2,GROUP_5:52;
+    B5: phi.h in H & phi.k in K by B4,Th50;
     phi.x = phi.([. h,k .]) by B3
          .= [. phi.h, phi.k .] by GROUP_6:34;
-    hence y in commutators(H,K) by B2,B6,B7;
+    hence y in commutators(H,K) by B2,B5;
   end;
   then phi .: commutators(H,K) c= commutators(H,K);
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
@@ -1829,10 +1775,8 @@ proof
   let G be Group;
   let H,K be strict characteristic Subgroup of G;
   set A = commutators(H,K);
-  A1: A is non empty Subset of G by GROUP_5:53;
-  then reconsider A as non empty Subset of G;
+  reconsider A as non empty Subset of G by GROUP_5:53;
   for phi being Automorphism of G holds phi .: A = A by Th53;
-  then gr A is characteristic by Th45;
-  hence [.H,K.] is characteristic Subgroup of G;
+  hence [.H,K.] is characteristic Subgroup of G by Th45;
 end;
 @ %def Th54

@@ -286,15 +286,11 @@ proof
   let x be Element of X;
   assume A1: not x in A;
   let f be Function of X,Y;
-  assume f is one-to-one;
-  then A2: not ex a being object st x in dom f & a in dom f & a in A & f.a = f.x
-  by A1, FUNCT_1:def 4;
-  dom f = X by FUNCT_2:def 1;
-  then A3: x in dom f;
+  assume A2: f is one-to-one;
+  A3: dom f = X by FUNCT_2:def 1;
   f.x in (f .: A) iff ex a being object st a in dom f & a in A & f.x = f.a
   by FUNCT_1:def 6;
-  then f.x in (f .: A) implies contradiction by A2,A3;
-  hence not (f.x in (f .: A));
+  hence f.x in (f .: A) implies contradiction by A2,A3,A1,FUNCT_1:def 4;
 end;
 @ %def Th5
 

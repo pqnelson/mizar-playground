@@ -233,9 +233,7 @@ proof
   let f be Homomorphism of G1,G2;
   let H be Subgroup of G1;
   A1: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
-  for g being Element of G1
-  st g in Ker(f|H)
-  holds g in Ker(f)
+  for g being Element of G1 st g in Ker(f|H) holds g in Ker(f)
   <<Proof: $\forall g\in G, g\in\ker(\varphi|H)\implies g\in\ker(H)$>>
   hence thesis by A1,GROUP_2:58;
 end;
@@ -252,7 +250,7 @@ proof
   let g be Element of G1;
   assume A2: g in Ker(f|H);
   then A3: g in H by GROUP_2:40;
-  then A4: (f|H).g = f.g by Th1;
+  (f|H).g = f.g by A2,Th1,GROUP_2:40;
   then 1_G2 = f.g by A2,A3,GROUP_6:41;
   hence g in Ker(f) by GROUP_6:41;
 end;
@@ -650,7 +648,7 @@ I am starting to think that the claim [[f is onto]] is different than
 proof
   set UH = the carrier of H;
   f|H is Function of UH,UH & rng(f|H) = the carrier of H by A1, GROUP_6:44,49;
-  hence thesis by A3,GROUP_6:49,FUNCT_1:def 3;
+  hence thesis by A1,GROUP_6:49,FUNCT_2:def 3;
 end;
 @
 
@@ -716,7 +714,7 @@ Then $\varphi(x)\in G$.
 phi.x is Element of G
 proof
   dom phi = UG & rng phi = UG by A1, FUNCT_2:def 1;
-  hence phi.x is Element of G by A2,XBOOLE_0:def 5, FUNCT_1:def 3;
+  hence phi.x is Element of G by A2, FUNCT_1:def 3;
 end;
 @
 
@@ -821,19 +819,16 @@ proof
   set UPH = the carrier of Image(phi|H);
   C1: phi is one-to-one & phi is onto & UPH is non empty Subset of UG &
   phi is Function of UG,UG by GROUP_2:def 5;
-  k in G & not k in Image(phi|H) by B6, XBOOLE_0:def 5, GROUP_2:41;
-  then C2: not psi.k in (psi .: UPH) by C1,Th5;
+  C2: k in G & not k in Image(phi|H) by B6, XBOOLE_0:def 5, GROUP_2:41;
   consider phi2 being Automorphism of G such that
   C3: phi2 = psi" and
   C4: the multMagma of Image(psi|Image(phi2|H)) = the multMagma of H
   by Th17;
-  phi2=phi by C3,B3, Th3;
-  then C5: the multMagma of Image(psi|Image(phi|H)) = the multMagma of H by C4;
+  C5: phi2=phi by C3,B3, Th3;
   set UPH = the carrier of Image(phi|H);
   psi .: UPH = the carrier of (psi .: Image(phi|H)) by GRSOLV_1:8
             .= the carrier of Image(psi|Image(phi|H)) by GRSOLV_1:def 3;
-  then the carrier of H <> the carrier of L by B8,C2,C5;
-  hence thesis;
+  hence thesis by B8,C1,C2,C4,C5,Th5;
 end;
 @
 
@@ -845,16 +840,13 @@ $\varphi(L)=\varphi(G)$ and $\varphi(G)=G$ gives the result.
 <<Proof: $\varphi(L)=G$>>=
 proof
   L = the multMagma of G by A1,B4,B9,GROUP_4:def 6;
-  then phi is Function of UG,UG & phi is onto & the carrier of L = UG;
   then phi .: the carrier of L = phi .: UG
                               .= rng phi by RELSET_1:22
                               .= UG by FUNCT_2:def 3;
   then UG = phi .: (the carrier of L)
          .= the carrier of (phi .: L) by GRSOLV_1:8
          .= the carrier of Image(phi|L) by GRSOLV_1:def 3;
-  then the carrier of Image(phi|L) = the carrier of G;
-  then the multMagma of Image(phi|L) = the multMagma of G by GROUP_2:61;
-  hence thesis;
+  hence thesis by GROUP_2:61;
 end;
 @
 
