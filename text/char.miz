@@ -653,20 +653,30 @@ end;
 
 theorem Th22:
   for f being Automorphism of G
-  st Image(f|H) = H
+  st Image(f|H) = the multMagma of H
   holds f|H is Automorphism of H
 proof
   let f be Automorphism of G;
-  assume A1: Image(f|H) = H;
-  A2: f|H is one-to-one by Lm3;
-
-  f|H is onto Endomorphism of H
+  assume A1: Image(f|H) = the multMagma of H;
+  set UH = the carrier of H;
+  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:44,49;
+  A2: fH is bijective
   proof
-    set UH = the carrier of H;
-    f|H is Function of UH,UH & rng(f|H) = the carrier of H by A1, GROUP_6:44,49;
-    hence thesis by A1,GROUP_6:49,FUNCT_2:def 3;
+    thus fH is one-to-one by Lm3;
+    UH = rng(f|H) by A1, GROUP_6:44,49
+      .= rng(fH);
+    hence fH is onto by FUNCT_2:def 3;
   end;
-  hence thesis by A2;
+  for x,y being Element of H holds fH.(x*y) = (fH.x) * (fH.y)
+  proof
+    let x,y be Element of H;
+    B1: fH.(x * y) = (f|H).(x * y)
+                  .= (f|H).x * (f|H).y by Lm3,GROUP_6:def 6;
+    (f|H).x = fH.x & (f|H).y = fH.y;
+    then (f|H).x * (f|H).y = fH.x * fH.y by GROUP_2:43;
+    hence thesis by B1;
+  end;
+  hence thesis by A2,GROUP_6:def 6;
 end;
 
 theorem Th23:

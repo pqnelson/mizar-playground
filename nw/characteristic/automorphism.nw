@@ -599,33 +599,57 @@ This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
 \begin{proof}[Proof outline]
-  We have for any $\varphi\in\Aut(G)$ such that
-  \begin{equation*}
-    \tag{$A_{1}$} \varphi|_{H}(H)=H
-  \end{equation*}
-  be a morphism $\varphi|_{H}\colon H\to H$ by Theorem~\mml[Th49]{group6}%
-\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
-  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
-  and hypothesis $A_{1}$.
+  Our proof consists of several steps. First, we work with the
+  underlying function restricted to the underlying set $U(H)$ of $H$, and show
+  it is a function $f|_{H}\colon U(H)\to U(H)$.
 
-  The nontrivial part of the proof is establishing $\varphi|_{H}$ is
-  surjective. Once established, it follows $\varphi|_{H}$ is bijective
-  and thus an automorphism.
+  Next, we show $f|_{H}$ is bijective as a function.
+
+  Finally, we show for any $x,y\in H$ that $f|_{H}(xy)=f|_{H}(x)f|_{H}(y)$,
+  which proves $f|_{H}$ is a group morphism.
+  When combined with the previous step, it shows $f|_{H}$ is an
+  automorphism of $H$.
 \end{proof}
+
+\begin{thm-remark}
+Since we only hypothesize that $H$ is a subgroup of $G$, not a
+\emph{strict} subgroup, we need the hypothesis to be
+\lstinline{Image(f|H) = the multMagma of H} --- i.e., the image of the
+group morphism restricted to $H$ is equal to $H$ \emph{as a group}. We
+could possibly have extra structure on $H$ (it could have topological
+structure, or it could be an algebraic variety, or\dots), but we do not
+care nor do we need it. We could greatly simplify the proof by demanding
+$H$ be a strict subgroup, but it would equally limit the applicability
+of the theorem.
+\end{thm-remark}
 
 <<Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$>>=
 theorem Th22:
   for f being Automorphism of G
-  st Image(f|H) = H
+  st Image(f|H) = the multMagma of H
   holds f|H is Automorphism of H
 proof
   let f be Automorphism of G;
-  assume A1: Image(f|H) = H;
-  A2: f|H is one-to-one by Lm3;
-
-  f|H is onto Endomorphism of H
-  <<Proof: $\varphi|_{H}$ is surjective>>
-  hence thesis by A2;
+  assume A1: Image(f|H) = the multMagma of H;
+  set UH = the carrier of H;
+  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:44,49;
+  A2: fH is bijective
+  proof
+    thus fH is one-to-one by Lm3;
+    UH = rng(f|H) by A1, GROUP_6:44,49
+      .= rng(fH);
+    hence fH is onto by FUNCT_2:def 3;
+  end;
+  for x,y being Element of H holds fH.(x*y) = (fH.x) * (fH.y)
+  proof
+    let x,y be Element of H;
+    B1: fH.(x * y) = (f|H).(x * y)
+                  .= (f|H).x * (f|H).y by Lm3,GROUP_6:def 6;
+    (f|H).x = fH.x & (f|H).y = fH.y;
+    then (f|H).x * (f|H).y = fH.x * fH.y by GROUP_2:43;
+    hence thesis by B1;
+  end;
+  hence thesis by A2,GROUP_6:def 6;
 end;
 @ %def Th22
 

@@ -1880,36 +1880,60 @@ This result isn't surprising, but proving surjectivity was surprisingly
 (and agonizingly) hard.
 
 \begin{proof}[Proof outline]
-  We have for any $\varphi\in\Aut(G)$ such that
-  \begin{equation*}
-    \tag{$A_{1}$} \varphi|_{H}(H)=H
-  \end{equation*}
-  be a morphism $\varphi|_{H}\colon H\to H$ by Theorem~\mml[Th49]{group6}%
-\MizThm{GROUP\_6}{49}. This is our first claim $C_{1}$.
-  Our next claim $C_{2}$ is that $\varphi|_{H}$ is injective by Lemma~\ref{lemma:characteristic:automorphism:restrict-automorphism-gives-monomorphism}
-  and hypothesis $A_{1}$.
+  Our proof consists of several steps. First, we work with the
+  underlying function restricted to the underlying set $U(H)$ of $H$, and show
+  it is a function $f|_{H}\colon U(H)\to U(H)$.
 
-  The nontrivial part of the proof is establishing $\varphi|_{H}$ is
-  surjective. Once established, it follows $\varphi|_{H}$ is bijective
-  and thus an automorphism.
+  Next, we show $f|_{H}$ is bijective as a function.
+
+  Finally, we show for any $x,y\in H$ that $f|_{H}(xy)=f|_{H}(x)f|_{H}(y)$,
+  which proves $f|_{H}$ is a group morphism.
+  When combined with the previous step, it shows $f|_{H}$ is an
+  automorphism of $H$.
 \end{proof}
+
+\begin{thm-remark}
+Since we only hypothesize that $H$ is a subgroup of $G$, not a
+\emph{strict} subgroup, we need the hypothesis to be
+\lstinline{Image(f|H) = the multMagma of H} --- i.e., the image of the
+group morphism restricted to $H$ is equal to $H$ \emph{as a group}. We
+could possibly have extra structure on $H$ (it could have topological
+structure, or it could be an algebraic variety, or\dots), but we do not
+care nor do we need it. We could greatly simplify the proof by demanding
+$H$ be a strict subgroup, but it would equally limit the applicability
+of the theorem.
+\end{thm-remark}
 
 \nwenddocs{}\nwbegincode{53}\sublabel{NW1Nnu7l-1QHEJY-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-1QHEJY-1}}}\moddef{Theorem: $\varphi\in\Aut(G)$ and $H\subgroup G$ such that $\varphi(H)=H$ implies $\varphi|H\in\Aut(H)$~{\nwtagstyle{}\subpageref{NW1Nnu7l-1QHEJY-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1CMOm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th22}{NW1Nnu7l-1QHEJY-1}:
   for f being \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G
-  st Image(f|H) = H
+  st Image(f|H) = the multMagma of H
   holds f|H is \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of H
 proof
   let f be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
-  assume A1: Image(f|H) = H;
-  A2: f|H is one-to-one by \nwlinkedidentc{Lm3}{NW1Nnu7l-2Beici-1};
-
-  f|H is onto \nwlinkedidentc{Endomorphism}{NW1Nnu7l-1U3x3j-1} of H
-  \LA{}Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}\RA{}
-  hence thesis by A2;
+  assume A1: Image(f|H) = the multMagma of H;
+  set UH = the carrier of H;
+  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:44,49;
+  A2: fH is bijective
+  proof
+    thus fH is one-to-one by \nwlinkedidentc{Lm3}{NW1Nnu7l-2Beici-1};
+    UH = rng(f|H) by A1, GROUP_6:44,49
+      .= rng(fH);
+    hence fH is onto by FUNCT_2:def 3;
+  end;
+  for x,y being Element of H holds fH.(x*y) = (fH.x) * (fH.y)
+  proof
+    let x,y be Element of H;
+    B1: fH.(x * y) = (f|H).(x * y)
+                  .= (f|H).x * (f|H).y by \nwlinkedidentc{Lm3}{NW1Nnu7l-2Beici-1},GROUP_6:def 6;
+    (f|H).x = fH.x & (f|H).y = fH.y;
+    then (f|H).x * (f|H).y = fH.x * fH.y by GROUP_2:43;
+    hence thesis by B1;
+  end;
+  hence thesis by A2,GROUP_6:def 6;
 end;
 \nwindexdefn{\nwixident{Th22}}{Th22}{NW1Nnu7l-1QHEJY-1}\eatline
-\nwused{\\{NW1Nnu7l-1CMOm-1}}\nwidentdefs{\\{{\nwixident{Th22}}{Th22}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Endomorphism}}{Endomorphism}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Endomorphism}}{Endomorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-1QHEJY-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
+\nwused{\\{NW1Nnu7l-1CMOm-1}}\nwidentdefs{\\{{\nwixident{Th22}}{Th22}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Lm3}}{Lm3}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW1Nnu7l-1QHEJY-1}\nwindexuse{\nwixident{Lm3}}{Lm3}{NW1Nnu7l-1QHEJY-1}\nwendcode{}\nwbegindocs{54}\nwdocspar
 \begin{proof}[Proof sketch (Surjectivity)]
 For reasons I do not adequately understand, I could not simply handle
 {\Tt{}f|H\nwendquote} as a {\Tt{}Homomorphism\ of\ H,H\nwendquote} (despite having established this
@@ -1925,13 +1949,13 @@ I am starting to think that the claim {\Tt{}f\ is\ onto\nwendquote} is different
 {\Tt{}f\ is\ onto\ Homomorphism\ of\ G1,G2\nwendquote}.
 \end{thm-remark}
 
-\nwenddocs{}\nwbegincode{55}\sublabel{NW1Nnu7l-41Pxbq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\moddef{Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW1Nnu7l-1QHEJY-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{55}\sublabel{NW1Nnu7l-41Pxbq-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\moddef{Proof: $\varphi|_{H}$ is surjective~{\nwtagstyle{}\subpageref{NW1Nnu7l-41Pxbq-1}}}\endmoddef\nwstartdeflinemarkup\nwenddeflinemarkup
 proof
   set UH = the carrier of H;
   f|H is Function of UH,UH & rng(f|H) = the carrier of H by A1, GROUP_6:44,49;
   hence thesis by A1,GROUP_6:49,FUNCT_2:def 3;
 end;
-\nwused{\\{NW1Nnu7l-1QHEJY-1}}\nwendcode{}\nwbegindocs{56}\nwdocspar
+\nwnotused{Proof: $\varphi|_{H}$ is surjective}\nwendcode{}\nwbegindocs{56}\nwdocspar
 
 \begin{theorem}
 Let $H\properSubgroup G$ be a proper subgroup. Then its image under any
@@ -4027,7 +4051,7 @@ end;
 \nwixlogsorted{c}{{Proof: $\varphi(\Commutators(G))\supset\Commutators(G)$}{NW47t2dy-22edeY-1}{\nwixu{NW47t2dy-1BwBWL-1}\nwixd{NW47t2dy-22edeY-1}}}%
 \nwixlogsorted{c}{{Proof: $\varphi(L) = K$}{NW1Nnu7l-3oqpnZ-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-3oqpnZ-1}}}%
 \nwixlogsorted{c}{{Proof: $\varphi(L)=G$}{NW1Nnu7l-13ZzHL-1}{\nwixu{NW1Nnu7l-2sFwyR-1}\nwixd{NW1Nnu7l-13ZzHL-1}}}%
-\nwixlogsorted{c}{{Proof: $\varphi|_{H}$ is surjective}{NW1Nnu7l-41Pxbq-1}{\nwixu{NW1Nnu7l-1QHEJY-1}\nwixd{NW1Nnu7l-41Pxbq-1}}}%
+\nwixlogsorted{c}{{Proof: $\varphi|_{H}$ is surjective}{NW1Nnu7l-41Pxbq-1}{\nwixd{NW1Nnu7l-41Pxbq-1}}}%
 \nwixlogsorted{c}{{Proof: $C_{G}(A)$ closed under multiplication}{NW4XxNUZ-2vNQYo-1}{\nwixu{NW4XxNUZ-1mdlmG-1}\nwixd{NW4XxNUZ-2vNQYo-1}}}%
 \nwixlogsorted{c}{{Proof: $H$ is maximal implies $K=G$}{NW1Nnu7l-2sFwyR-1}{\nwixu{NW1Nnu7l-39Q49p-1}\nwixd{NW1Nnu7l-2sFwyR-1}}}%
 \nwixlogsorted{c}{{Proof: $H\charSubgroup G\impliedby\forall\varphi\in\Aut(G),\varphi(H)\subgroup H$}{NW47t2dy-1WVJgD-1}{\nwixu{NW47t2dy-4Z20G4-1}\nwixd{NW47t2dy-1WVJgD-1}}}%
