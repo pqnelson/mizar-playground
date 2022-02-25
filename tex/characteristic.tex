@@ -559,8 +559,6 @@ proof
   let G be Group;
   let H be Subgroup of G;
   assume for a being Element of G holds H |^ a = the multMagma of H;
-  then for a being Element of G holds the carrier of H |^ a = the carrier of H;
-  then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
   hence H is normal Subgroup of G by GROUP_3:def 13;
 end;
 \nwindexdefn{\nwixident{Th2}}{Th2}{NW18nMBU-4Nsdji-1}\eatline
@@ -1877,22 +1875,21 @@ proof
   let f be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
   assume A1: Image(f|H) = the multMagma of H;
   set UH = the carrier of H;
-  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:44,49;
+  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:49;
   A2: fH is bijective
   proof
     thus fH is one-to-one by \nwlinkedidentc{Lm3}{NW1Nnu7l-2Beici-1};
-    UH = rng(f|H) by A1, GROUP_6:44,49
+    UH = rng(f|H) by A1, GROUP_6:44
       .= rng(fH);
-    hence fH is onto by FUNCT_2:def 3;
+    hence fH is onto;
   end;
   for x,y being Element of H holds fH.(x*y) = (fH.x) * (fH.y)
   proof
     let x,y be Element of H;
-    B1: fH.(x * y) = (f|H).(x * y)
-                  .= (f|H).x * (f|H).y by \nwlinkedidentc{Lm3}{NW1Nnu7l-2Beici-1},GROUP_6:def 6;
-    (f|H).x = fH.x & (f|H).y = fH.y;
-    then (f|H).x * (f|H).y = fH.x * fH.y by GROUP_2:43;
-    hence thesis by B1;
+    fH.(x * y) = (f|H).(x * y)
+              .= (f|H).x * (f|H).y by GROUP_6:def 6
+              .= fH.x * fH.y by GROUP_2:43;
+    hence thesis;
   end;
   hence thesis by A2,GROUP_6:def 6;
 end;
@@ -3015,10 +3012,8 @@ have $K^{a}=K$. Then $K\normalSubgroup G$.
 theorem \nwlinkedidentc{Th35}{NW47t2dy-xos9m-1}:
   K is normal Subgroup of G
 proof
-A1:  for a being Element of G holds K |^ a = the multMagma of K
+  for a being Element of G holds K |^ a = the multMagma of K
   \LA{}Sub-proof: characteristic subgroups invariant under conjugation~{\nwtagstyle{}\subpageref{NW47t2dy-2mkOw1-1}}\RA{}
-  for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
-  then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
   hence K is normal Subgroup of G by GROUP_3:def 13;
 end;
 \nwindexdefn{\nwixident{Th35}}{Th35}{NW47t2dy-xos9m-1}\eatline
@@ -3033,7 +3028,7 @@ along the way! We just have to point to our hard work from earlier.
 proof
   let a be Element of G;
   consider f being \nwlinkedidentc{inner}{NW3Mfp8C-1Tb4wZ-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G such that
-A2: for x being Element of G holds f.x = x |^ a
+  A2: for x being Element of G holds f.x = x |^ a
   by \nwlinkedidentc{Th32}{NW3Mfp8C-arh13-1};
   the multMagma of K = Image(f|K) by \nwlinkedidentc{Def3}{NW47t2dy-qejLV-1}
                     .= K |^ a by A2,\nwlinkedidentc{Th28}{NW3Mfp8C-2zspfg-1};
@@ -3614,10 +3609,8 @@ A3: P[H]
   for y being object st y in phi .: meet Fam
   holds y in meet Fam
   \LA{}Proof step: $y\in\varphi(\bigcap\mathcal{F})\implies y\in\bigcap\mathcal{F}$~{\nwtagstyle{}\subpageref{NW47t2dy-3LSeN1-1}}\RA{}
-  then P2: phi .: meet Fam c= meet Fam;
-
-  thus thesis by P1,P2,XBOOLE_0:def 10;
-
+  then phi .: meet Fam c= meet Fam;
+  hence thesis by P1,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{CharMeet}}{CharMeet}{NW47t2dy-3pFvE5-1}\eatline
 \nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{CharMeet}}{CharMeet}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-3pFvE5-1}\nwendcode{}\nwbegindocs{62}\nwdocspar
@@ -3651,7 +3644,7 @@ proof
   let phi0 be \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G();
   let x be object;
   assume x in meet Fam;
-  then B1: for A1 holds A1 in Fam implies x in A1 by SETFAM_1:def 1;
+  then B1: for A1 holds A1 in Fam implies x in A1 by SETFAM_1:def 1; :: sic
   for A being set holds A in Fam implies phi0.x in A
   proof
     let A be set;
@@ -6326,7 +6319,7 @@ proof
   then reconsider sigma as Homomorphism of G./.N, G./.N by GROUP_6:def 6;
   sigma is bijective
   proof
-    BB1: for x being Element of G holds x*N in Ker sigma iff x in N
+    B1: for x being Element of G holds x*N in Ker sigma iff x in N
     proof
       let x be Element of G;
       reconsider z = x*N as Element of G./.N by GROUP_2:def 15;
@@ -6374,7 +6367,7 @@ proof
         x in G./.N;
         then consider g being Element of G such that
         C2: x = g*N by GROUP_2:def 15;
-        g*N = carr N by BB1,C1,C2,GROUP_2:113;
+        g*N = carr N by B1,C1,C2,GROUP_2:113;
         then g*N = 1_(G./.N) by GROUP_6:24;
         then g*N in \{1_(G./.N)\} by TARSKI:def 1;
         hence x in (1).(G./.N) by C2,GROUP_2:def 7;

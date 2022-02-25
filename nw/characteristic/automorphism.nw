@@ -632,22 +632,21 @@ proof
   let f be Automorphism of G;
   assume A1: Image(f|H) = the multMagma of H;
   set UH = the carrier of H;
-  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:44,49;
+  reconsider fH=f|H as Function of UH,UH by A1,GROUP_6:49;
   A2: fH is bijective
   proof
     thus fH is one-to-one by Lm3;
-    UH = rng(f|H) by A1, GROUP_6:44,49
+    UH = rng(f|H) by A1, GROUP_6:44
       .= rng(fH);
-    hence fH is onto by FUNCT_2:def 3;
+    hence fH is onto;
   end;
   for x,y being Element of H holds fH.(x*y) = (fH.x) * (fH.y)
   proof
     let x,y be Element of H;
-    B1: fH.(x * y) = (f|H).(x * y)
-                  .= (f|H).x * (f|H).y by Lm3,GROUP_6:def 6;
-    (f|H).x = fH.x & (f|H).y = fH.y;
-    then (f|H).x * (f|H).y = fH.x * fH.y by GROUP_2:43;
-    hence thesis by B1;
+    fH.(x * y) = (f|H).(x * y)
+              .= (f|H).x * (f|H).y by GROUP_6:def 6
+              .= fH.x * fH.y by GROUP_2:43;
+    hence thesis;
   end;
   hence thesis by A2,GROUP_6:def 6;
 end;
