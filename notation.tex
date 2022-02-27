@@ -30,6 +30,27 @@
 \let\oldIm\Im
 \renewcommand\Im{\mathop{\mathrm{Im}}\nolimits}
 
+% https://tex.stackexchange.com/a/117035
+\def\localbig#1#2{%
+  \sbox\z@{$\m@th#1
+    \sbox\tw@{$#1()$}%
+    \dimen@=\ht\tw@\advance\dimen@\dp\tw@
+    \nulldelimiterspace\z@\left#2\vcenter to1.2\dimen@{}\right.
+  $}\box\z@}
+
+\newcommand{\divides}{\mathrel{\mathpalette\dividesaux\relax}}
+\newcommand{\ndivides}{\mathrel{\mathpalette\ndividesaux\relax}}
+
+\newcommand{\dividesaux}[2]{\mbox{$\m@th#1\localbig{#1}|$}}
+\newcommand{\ndividesaux}[2]{%
+  \mkern.5mu
+  \ooalign{%
+    \hidewidth$\m@th#1\localbig{#1}|$\hidewidth\cr
+    $\m@th#1\nmid$\cr%
+  }%
+}
+
+
 %%%
 %%% Group theory
 %%%
@@ -40,6 +61,7 @@
 \DeclareMathOperator\Inn{Inn}
 \DeclareMathOperator\Id{Id}
 \DeclareMathOperator\id{id}
+%\DeclareMathOperator\ker{ker}
 \newcommand\charSubgroup{\mathrel{char}}
 \newcommand\iso{\cong}
 \newcommand\Index[2]{[#1 : #2]}

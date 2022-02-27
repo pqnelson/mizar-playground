@@ -11,8 +11,11 @@ EXTRACT_CMD=$(foreach file, $(NWFILES), extract_text/$(file))
 CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
+RADRES=nw/002-radicals-residues
+RADICALS=$(RADRES).nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 NW_UNDERSCORE=-filter 'sed "/^@use /s/_/\\\\_/g;/^@defn /s/_/\\\\_/g"'
+
 all: doc
 
 check:
@@ -37,7 +40,7 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 
 dumb_extract_text:
 	noweave $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
-
+	noweave $(NOWEBOPTS) $(RADICALS) > tex/radicals.tex
 code:
 	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc

@@ -1,0 +1,870 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Products}
+
+\begin{road-map}
+We will want to consider a group $G$ and some family of normal subgroups
+$(N_{i})_{i\in I}$ where $N_{i}\normalSubgroup G$ for each $i\in I$. We
+want to specifically consider the morphism
+\begin{equation}
+\varphi\colon G\to\prod_{i\in I}(G/N_{i})
+\end{equation}
+such that, on each $i\in I$, we have
+\begin{equation}
+(\pi_{i}\circ\varphi)(g)=gN_{i}
+\end{equation}
+be the canonical morphism. The kernel of $\varphi$ is then isomorphic to
+\begin{equation}
+  \ker(\varphi)\iso G/(\bigcap_{i\in I}N_{i}).
+\end{equation}
+(To see this, consider $I=\{1,2\}$. An element of the kernel would look
+like $(gN_{1},gN_{2})$ with $g\in N_{1}$ and $g\in N_{2}$ so $(gN_{1})N_{1}=N_{1}$
+and $(gN_{2})N_{2}=N_{2}$, which are precisely in the kernel of the
+respective canonical morphisms. By replacing the indices with $i\in I$
+arbitrary, the reasoning is basically the same.)
+\end{road-map}
+
+\begin{theorem}
+Let $\mathcal{F}$ be a non-empty collection of groups.
+Then we can form an indexed-family of groups $(G_{i})_{i\in I}$ where
+for each $i\in I$ the group belongs to the family $G_{i}\in\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: existence of indexed-family of groups>>=
+theorem Th57:
+  for Fam being set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for G being Group st G in Fam holds F.G=G)
+proof
+  let Fam be set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = id Fam;
+  A3: F = id Fam;
+  dom F = Fam;
+  then F is total Fam-defined Function;
+  then F is ManySortedSet of Fam;
+  A3: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+  take F;
+  let G be Group;
+  assume A3: G in Fam;
+  thus F.G=G by A3,FUNCT_1:17;
+end;
+@
+
+\begin{theorem}
+For a finite non-empty family of groups $\mathcal{F}$,
+we can form a finite indexed-family $(G_{i})_{i=1,\dots,n}$ of groups
+from $\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: existence of finite sequence of groups>>=
+theorem Th58:
+  for Fam being finite set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  ex F being associative Group-like multMagma-Family of Seg (card Fam)
+  st F is one-to-one & (for i being Nat st i in Seg (card Fam) ex G
+  being Group st G in Fam & F.i=G)
+proof
+  let Fam be finite set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = canFS Fam;
+  set n = len F;
+  A21: n = len F;
+  A3: len F = card Fam by FINSEQ_1:93;
+  A31: n = card Fam by A21,A3;
+  F is PartFunc of NAT,Fam;
+  A4: F is one-to-one onto by FINSEQ_1:def 19;
+  F is Function of Seg n,Fam
+  proof
+    B1: dom F = Seg n by A1,FINSEQ_1:def 2,def 3;
+    then reconsider F1 = F|(dom F) as PartFunc of Seg n,Fam by PARTFUN1:10;
+    set F = F1;
+    F is PartFunc of Seg n,Fam &
+    dom F = Seg n by B1;
+    then F is quasi_total by A1,FUNCT_2:def 1;
+    hence thesis;
+  end;
+  then reconsider F as Function of Seg n,Fam by A4;
+  A40: rng F = Fam by A4;
+  A5: F is ManySortedSet of (Seg n)
+  proof
+    B1: dom F = Seg (card Fam) by A3,FINSEQ_1:def 3;
+    then B2: F is (Seg n)-defined Function by RELAT_1:def 16;
+    F is quasi_total Function of Seg n,Fam;
+    then dom F = (Seg n) by B1,A3;
+    then F is total by B1,PARTFUN1:def 2;
+    hence thesis;
+  end;
+  A6: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding by GROUP_7:def 1;
+  then F is multMagma-yielding ManySortedSet of Seg n by A5,A6,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Seg n;
+  F is associative Group-like multMagma-Family of Seg n
+  proof
+    for i being set st i in Seg n ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Seg n ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Seg
+  (card Fam) by A31;
+  take F;
+  thus F is one-to-one by A4;
+  let i be Nat;
+  assume A10: i in Seg (card Fam);
+  dom F = Seg n by A3,FINSEQ_1:def 3;
+  then i in dom F by A31,A10;
+  then F.i in rng F by FUNCT_1:3;
+  then A11: F.i in Fam by A40;
+  then F.i is Element of Fam;
+  then A12: F.i is Group by A2;
+  hence thesis by A11;
+end;
+@
+
+\begin{theorem}
+Let $G$ be a group, and $\mathcal{F}$ be some non-empty collection of
+normal subgroups of $G$. Then we can form an indexed-family
+$(N_{i})_{i\in I}$ of the normal subgroups appearing in $\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: existence of indexed-family of normal subgroups>>=
+theorem Th62:
+  for G being Group
+  for Fam being non empty set
+  st (for N being Element of Fam holds N is normal Subgroup of G)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for N being normal Subgroup of G st N in Fam holds F.N=G./.N)
+proof
+  let G be Group;
+  let Fam be non empty set;
+  defpred P[object,object] means ex N being normal Subgroup of G st $1=N & $2=G./.N;
+  assume A1: for N being Element of Fam holds N is normal Subgroup of G;
+  A2: for x,y1,y2 being object st x in Fam & P[x,y1] & P[x,y2] holds y1=y2;
+  A3: for x being object st x in Fam ex y being object st P[x,y]
+  proof
+    let x be object;
+    assume B1: x in Fam;
+    then x is normal Subgroup of G by A1;
+    then reconsider x as normal Subgroup of G;
+    consider N being normal Subgroup of G such that
+    B2: x = N;
+    consider y being Group such that
+    B3: y = G./.N;
+    reconsider y as object;
+    take y;
+    B5: P[x,y] by B2,B3;
+    hence thesis;
+  end;
+
+  consider F being Function such that
+  A4: dom F = Fam and
+  A5: for x being object st x in Fam holds P[x, F.x]
+  from FUNCT_1:sch 2(A2,A3);
+
+  A6: for x being normal Subgroup of G st x in Fam holds F.x = G./.x
+  proof
+    let x be normal Subgroup of G;
+    assume B1: x in Fam;
+    P[x, F.x] by A4,A5,B1;
+    then consider N being normal Subgroup of G such that
+    B2: x = N and
+    B3: F.x = G./.N;
+    thus F.x = G./.x by B2,B3;
+  end;
+  set codomain = rng F;
+  A7: codomain <> {}
+  proof
+    Fam is non empty;
+    then consider x being object such that
+    B1: x in Fam
+    by XBOOLE_0:def 1;
+    reconsider x as Element of Fam by B1;
+    F.x in rng F by A4,FUNCT_1:3;
+    then F.x in codomain;
+    hence thesis by XBOOLE_0:def 1;
+  end;
+  A8: for y being Element of codomain holds y is Group
+  proof
+    let y be Element of codomain;
+    y in codomain by A7;
+    then y in rng F;
+    then consider x being object such that
+    B1: x in dom F and
+    B2: y = F.x
+    by FUNCT_1:def 3;
+    P[x, y] by B1,B2,A4,A5;
+    then consider N being normal Subgroup of G such that
+    B3: x = N and
+    B4: y = G./.N;
+    thus y is Group by B4;
+  end;
+
+  reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
+  A9: F is Function of Fam,codomain by FUNCT_2:1;
+  F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
+  then A10: F is ManySortedSet of Fam;
+
+  A11: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F and
+    B3: y = F.x
+    by FUNCT_1:def 3;
+    x is Element of dom F by B2;
+    then x is normal Subgroup of G by B2,A1;
+    then reconsider x as normal Subgroup of G;
+    y in rng F by A4, B2, B3, FUNCT_1:3;
+    then y is Element of codomain;
+    then y is Group by A8;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by A10,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+
+  take F;
+  let N be normal Subgroup of G;
+  assume A8: N in Fam;
+  hence F.N=G./.N by A6;
+end;
+@
+
+\begin{theorem}[Universal property of group products]
+Let $\mathcal{F}=(G_{i})_{i\in I}$ be an indexed-family of groups.
+For any group $G$ and for any group morphisms $\varphi_{i}\colon G\to G_{i}$,
+there exists a group morphism $\varphi\colon G\to\prod\mathcal{F}$
+such that $\varphi_{i}=\pi_{i}\circ\varphi$ for each $i\in I$.
+\end{theorem}
+
+<<Theorem: universal property of group products>>=
+theorem 63:
+  for I being set
+  for F being Group-Family of I
+  for G being Group
+  for Maps being ManySortedSet of I
+  st (for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i)
+  ex f being Homomorphism of G,product F
+  st (for g being Element of G
+      for i being set st i in i
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g)
+proof
+  let I be set;
+  let F be Group-Family of I;
+  let G be Group;
+  let Maps be ManySortedSet of I;
+  assume A1: for i being set st i in I
+  for Fi being Group st Fi=F.i
+  ex fi being Homomorphism of G,Fi st fi = Maps.i;
+
+
+  defpred P[set,Function] means :: ex y1 being ManySortedSet of I st $2=y1 &
+  for j being set st j in I for Fj being Group st Fj=F.j
+  ex fj being Homomorphism of G,Fj st fj=Maps.j & $2.j = fj.$1;
+  set GP = product F;
+  set UG = the carrier of G;
+  set UF = the carrier of (product F);
+
+  A2: for x being Element of UG ex y being Element of UF st P[x,y]
+  proof
+    let x be Element of UG;
+    :: defpred P3[set,set] means for Fj being Group st Fj=F.$1
+    :: ex fj being Homomorphism of G,Fj st fj=Maps.$1 & $2=fj.x;
+    defpred P2[object,object] means $1 in I & for Fj being Group st Fj=F.$1
+    ex fj being Homomorphism of G,Fj st fj=Maps.$1 & $2=fj.x;
+
+    B0a: for i, y1, y2 being object st i in I & P2[i, y1] & P2[i, y2]
+    holds y1 = y2
+    proof
+      let i, y1, y2 be object;
+      assume C1: i in I;
+      assume C2: P2[i, y1];
+      assume C3: P2[i, y2];
+      reconsider Fj=F.i as Group by C1,GROUP_19:1;
+      C4: Fj=F.i;
+      then consider fj1 being Homomorphism of G,Fj such that
+      C5: fj1=Maps.i & y1=fj1.x by C1,C2;
+      consider fj2 being Homomorphism of G,Fj such that
+      C6: fj2=Maps.i & y2=fj2.x by C1,C4,C3;
+      fj1=fj2 by C5,C6,C1;
+      hence y1=y2 by C5,C6;
+    end;
+
+    B0b: for i being object st i in I holds ex y being object st P2[i, y]
+    proof
+      let i be object;
+      assume C1: i in I;
+      then reconsider Fj=F.i as Group by GROUP_19:1;
+      consider fj being Homomorphism of G,Fj such that
+      C2: fj=Maps.i by A1,C1;
+      consider y being object such that
+      C3: y = fj.x;
+      take y;
+      thus P2[i, y] by C1,C2,C3;
+    end;
+
+    :: consider y1 being ManySortedSet of I such that
+    consider y1 being Function such that
+    B2: dom y1 = I and
+    B1: for j being object st j in I holds P2[j, y1.j]
+    from FUNCT_1:sch 2(B0a, B0b);
+    reconsider y1 as ManySortedSet of I by B2,RELAT_1:def 18,PARTFUN1:def 2;
+    B3: dom Carrier F = I by PARTFUN1:def 2;
+    for i being object st i in I holds y1.i in (Carrier F).i
+    proof
+      let i be object;
+      assume C1: i in I;
+      then C2: i in dom y1 by B2;
+      then C3: ex R being 1-sorted st R = F.i & (Carrier F).i = the carrier of R
+      by PRALG_1:def 15;
+      reconsider j=i as Element of I by C1;
+      P2[j, y1.j] by C1,C2,B1;
+      then j in I & for Fj being Group st Fj=F.j
+      ex fj being Homomorphism of G,Fj st fj=Maps.j & y1.j=fj.x by C1,C2,B1;
+      reconsider Fi=F.i as Group by C1,GROUP_19:1;
+      Fi=F.j & j is Element of I & j in I by C1;
+      then ex fi being Homomorphism of G,Fi st fi=Maps.j & y1.i=fi.x by A1,B1,C1;
+      then ex fi being Homomorphism of G,Fi st fi=Maps.j & y1.i=fi.x by A1,B1,C1;
+      consider fi being Homomorphism of G,Fi such that
+      C4: fi=Maps.j & y1.j = fi.x by B1,C1;
+      y1.i=fi.x by C4;
+      then y1.i in Fi;
+      hence y1.i in (Carrier F).i by C3;
+    end;
+
+    then y1 in product Carrier F by B2,B3,CARD_3:9;
+    then reconsider y=y1 as Element of GP by GROUP_7:def 2;
+    take y;
+    B5: for j being set st j in I for Fj being Group st Fj=F.j
+    ex fj being Homomorphism of G,Fj st fj=Maps.j & y.j = fj.x
+    proof
+      let j be set;
+      assume Z1: j in I;
+      then reconsider i=j as Element of I;
+      Z2: j=i;
+      Z3: P2[i, y.i] by Z1,B1;
+      then Z4: for Fj being Group st Fj=F.i
+      ex fj being Homomorphism of G,Fj st fj=Maps.i & y.i=fj.x by Z1;
+      for Fj being Group st Fj=F.j
+      ex fj being Homomorphism of G,Fj st fj=Maps.j & y.j = fj.x
+      proof
+        let Fj be Group;
+        assume D1: Fj=F.j;
+        then consider fj being Homomorphism of G,Fj such that
+        D2: fj=Maps.i and
+        D3: y.i = fj.x by Z1,Z2,Z3,B1;
+        take fj;
+        thus fj = Maps.j by D2;
+        i = j;
+        then y.i = y.j
+                .= fj.x by D3;
+        hence thesis;
+      end;
+      hence thesis;
+    end;
+    then P[x, y];
+    hence thesis by B1;
+  end;
+
+  consider f being Function of UG,UF such that
+  A3: for x being Element of UG holds P[x,f.x]
+  from FUNCT_2:sch 3(A2);
+
+  for x1,x2 being Element of G
+  holds f.(x1*x2) = (f.x1)*(f.x2)
+  proof
+    let x1,x2 be Element of G;
+    for g1,g2,g3 being Function
+    for i being set st i in I
+    for Fi being Group st Fi=F.i
+    for p,q being Element of (product F) st p = f.x1 & q = f.x2
+    for x,y being Element of Fi st g1=p & g2=q & g3=p*q & g1.i = x & g2.i = y
+    holds x*y = g3.i by GROUP_7:1;
+
+    consider p,q,r being Element of (product F) such that
+    B1: p = f.x1 and
+    B2: q = f.x2 and
+    B3: r = f.(x1 * x2);
+    B4: dom Carrier F = I by PARTFUN1:def 2;
+    B5: dom p = I & dom q = I & dom r = I by B4,GROUP_19:3;
+    p*q is Element of (product F) by GROUP_7:def 2;
+    then B6: dom (p*q) = I by B4,GROUP_19:3;
+    for g1,g2,g3,g4 being Function st g1=p & g2=q & g3 = p*q & g4=r
+    holds g4 = g3
+    proof
+      let g1,g2,g3,g4 be Function;
+      assume C1: g1=p;
+      assume C2: g2=q;
+      assume C3: g3 = p*q;
+      assume C4: g4=r;
+      C5: dom g1 = I & dom g2 = I & dom g3 = I & dom g4 = I
+      by C1,C2,C3,C4,B5,B6;
+      then C6: dom g3 = dom g4;
+      for i being object st i in dom g3 holds g4.i = g3.i
+      proof
+        let i be object;
+        assume D1: i in dom g3;
+        then D2: i in I by C5;
+        reconsider Fi=F.i as Group by D2,GROUP_19:1;
+        g1 in product F & g2 in product F & g3 in product F & g4 in product F
+        by B1,B2,C1,C2,C3,C4;
+        then g1.i in Fi & g2.i in Fi & g3.i in Fi & g4.i in Fi
+        by C5,D1,GROUP_19:5;
+        then consider x,y,z,w being Element of Fi such that
+        D3: x=g1.i and
+        D4: y=g2.i and
+        D5: z=g3.i and
+        D6: w=g4.i;
+        D7: x*y = g3.i by D2,D3,D4,C1,C2,C3,GROUP_7:1;
+        consider fi being Homomorphism of G,Fi such that
+        D8: fi = Maps.i by D2,A1;
+        reconsider j=i as set by TARSKI:1;
+        D9: j in I & Fi=F.j & fi=Maps.j by D2,D8;
+        P[x1*x2, f.(x1*x2)] by A3;
+        then P[x1*x2, r] by B3;
+        then for j being set st j in I for Fj being Group st Fj=F.j
+        ex fj being Homomorphism of G,Fj st fj=Maps.j & r.j = fj.(x1*x2);
+        then consider fj being Homomorphism of G,Fi such that
+        D10: fj=Maps.j & r.j = fj.(x1*x2) by D9;
+        i = j;
+        then r.j = fj.(x1*x2) by D10;
+        then r.i = (fj.x1) * (fj.x2) by GROUP_6:def 6;
+        P[x1, f.x1] by A3;
+        then P[x1, p] by B1,B2;
+        then consider fj2 being Homomorphism of G,Fi such that
+        D11: fj2=Maps.j & p.j = fj2.x1  by D9;
+        P[x2, f.x2] by A3;
+        then P[x2, q] by B1,B2;
+        then consider fj3 being Homomorphism of G,Fi such that
+        D12: fj3=Maps.j & q.j=fj3.x2 by D9;
+        fj = fj2 by D10,D11;
+        then D13: p.j = fj.x1 by D11;
+        fj = fj3 by D10,D12;
+        then D14: q.j = fj.x2 by D12;
+        then p.j = fj.x1 & q.j=fj.x2 by D13,D4;
+        then D15: (the multF of Fi).((p.j), (q.j)) = (fj.x1) * (fj.x2)
+        .= fj.(x1 * x2) by GROUP_6:def 6
+        .= r.j by D10
+        .= g4.j by D6,C4,B3;
+        D16: (the multF of Fi).((p.j), (q.j)) = (fj.x1) * (fj.x2) by D13,D14
+        .= (the multF of Fi).((p.j), (q.j)) by D13,D14
+        .= (the multF of Fi).((g1.j), (g2.j)) by C1,C2
+        .= g3.j by D3,D4,D7,D5,C3;
+        thus g4.i = g3.i by D15,D16;
+      end;
+      hence thesis by C6,FUNCT_1:2;
+    end;
+    then B4: p*q = r by FUNCT_1:2; ::,PARTFUN1:5,GROUP_7:def 2;
+    thus f.(x1*x2) = (f.x1)*(f.x2) by B1,B2,B3,B4;
+  end;
+
+  then reconsider f as  Homomorphism of G,product F by GROUP_6:def 6;
+  take f;
+  let g be Element of G;
+  let i be set;
+  assume A4: i in i;
+  let Fi be Group;
+  assume A5: Fi=F.i;
+  then consider fi being Homomorphism of G,Fi such that
+  A6: fi=Maps.i by A1,A4;
+  take fi;
+  thus fi=Maps.i by A6;
+
+  P[g, f.g] by A3;
+  then consider fj being Homomorphism of G,Fi such that
+  A7: fj=Maps.i & (f.g).i = fj.g by A4;
+  fj = fi by A6,A7;
+  then (f.g).i = fi.i by A4,A7;
+  hence thesis by A3,A6,A7;
+end;
+@
+
+\begin{theorem}
+Let $\mathcal{F}=(G_{i})_{i\in I}$ be an indexed family of groups, let
+$G$ be a group, and $\varphi_{i}\colon G\to G_{i}$ be a family of group
+morphisms. Every element of the kernel of the induced morphism
+$\varphi\colon G\to \prod\mathcal{F}$ also belongs to the kernels of
+every $\varphi_{i}$ for $i\in I$.
+\end{theorem}
+
+<<Theorem: kernel into product is intersection of kernels>>=
+theorem Th64:
+  for I being set
+  for F being Group-Family of I
+  for G being Group
+  for Maps being ManySortedSet of I
+  st (for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i)
+  for f being Homomorphism of G,product F
+  st (for g being Element of G
+      for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g)
+  for g being Element of G
+  holds g in Ker f iff (for i being set st i in I
+                        for Fi being Group st Fi=F.i
+                        for fi being Homomorphism of G,Fi
+                        st fi = Maps.i
+                        holds g in Ker fi)
+proof
+  let I be set;
+  let F be Group-Family of I;
+  let G be Group;
+  let Maps be ManySortedSet of I;
+  assume A1: for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i;
+  let f be Homomorphism of G,product F;
+  assume A2: (for g being Element of G
+      for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g);
+  let g be Element of G;
+  thus g in Ker f implies (for i being set st i in I
+                           for Fi being Group st Fi=F.i
+                           for fi being Homomorphism of G,Fi
+                           st fi = Maps.i
+                           holds g in Ker fi)
+  proof
+    assume B1: g in Ker f;
+    let i be set;
+    assume B2: i in I;
+    let Fi be Group;
+    assume B3: Fi=F.i;
+    let fi be Homomorphism of G,Fi;
+    assume B4: fi = Maps.i;
+    then consider fi2 being Homomorphism of G,Fi such that
+    B5: fi2=Maps.i & (f.g).i = fi2.g
+    by A2,B2,B3;
+    fi2=fi by B4,B5;
+    then B6: (f.g).i = fi.g by B5;
+    f.g = 1_(product F) by B1,GROUP_6:41;
+    then (f.g).i = 1_Fi by B2,B3,B4,GROUP_7:6;
+    then fi.g = 1_Fi by B6;
+    hence g in Ker fi by GROUP_6:41;
+  end;
+  thus (for i being set st i in I
+        for Fi being Group st Fi=F.i
+        for fi being Homomorphism of G,Fi
+        st fi = Maps.i
+        holds g in Ker fi) implies g in Ker f
+  proof
+    assume B1: for i being set st i in I
+    for Fi being Group st Fi=F.i
+    for fi being Homomorphism of G,Fi st fi = Maps.i
+    holds g in Ker fi;
+
+    (f.g) is Function & dom (f.g) = I by GROUP_19:3;
+    then reconsider fg = (f.g) as ManySortedSet of I by PARTFUN1:def 2,RELAT_1:def 18;
+
+    for i being set st i in I
+    holds ex Fi being non empty Group-like multMagma
+    st (Fi = F . i & fg.i = 1_Fi)
+    proof
+      let i be set;
+      assume C1: i in I;
+      then reconsider Fi=F.i as Group by GROUP_19:1;
+      take Fi;
+      thus Fi=F.i;
+      Fi is Group & Fi=F.i;
+      then consider fi being Homomorphism of G,Fi such that
+      C2: fi = Maps.i & fg.i = fi.g by A2,C1;
+      g in Ker fi by B1,C1,C2;
+      then 1_Fi = fi.g by GROUP_6:41
+      .= fg.i by C2;
+      hence fg.i = 1_Fi;
+    end;
+    then B2: fg = 1_(product F) by B1,GROUP_7:5;
+    thus g in Ker f by B2,GROUP_6:41;
+  end;
+end;
+@
+
+\subsection{Specialized results for products of two factors}
+We can now produce analogous results for products of two factors, which
+are more handy when working specifically with products $G_{1}\times G_{2}$
+directly.
+
+\begin{theorem}
+Let $G$, $H$ be groups. Let $z_{1}=(x_{1},y_{1})\in G\times H$ and
+$z_{2}=(x_{2},y_{2})\in G\times H$. Then $z_{1}=z_{2}$ if and only if
+$x_{1}=x_{2}$ and $y_{1}=y_{2}$.
+\end{theorem}
+
+<<Theorem: $\forall z_{1},z_{2}\in G\times H$, $z_{1}=z_{2}$ if and only if $x_{1}=x_{2}$ and $y_{1}=y_{2}$>>=
+theorem Th64:
+  for G,H being Group
+  for x1,x2 being Element of G
+  for y1,y2 being Element of H
+  for z1,z2 being Element of product <*G,H*>
+  st z1 = <*x1,y1*> & z2 = <*x2,y2*>
+  holds z1 = z2 iff (x1 = x2 & y1 = y2)
+proof
+  let G,H be Group;
+  let x1,x2 be Element of G;
+  let y1,y2 be Element of H;
+  let z1,z2 be Element of product <*G,H*>;
+  assume A1: z1 = <*x1,y1*>;
+  assume A2: z2 = <*x2,y2*>;
+  A3: z1.1 = x1 & z1.2 = y1 by A1,FINSEQ_1:44;
+  A4: z2.1 = x2 & z2.2 = y2 by A2,FINSEQ_1:44;
+  A5: dom z1 = {1,2} by A1,FINSEQ_1:2,89;
+  dom z2 = {1,2} by A2,FINSEQ_1:2,89;
+  then A6: dom z1 = dom z2 by A5;
+  thus z1 = z2 implies (x1 = x2 & y1 = y2)
+  proof
+    assume B1: z1 = z2;
+    B4: for x being object st x in dom z1 holds z1.x = z2.x by B1,A5,A6,FUNCT_1:2;
+    1 in {1, 2} by TARSKI:def 2;
+    then 1 in dom z1 by A5, FINSEQ_1:2,89;
+    then z1.1 = z2.1 by B4;
+    then x1 = z2.1 by A3;
+    hence x1 = x2 by A4;
+    2 in {1, 2} by TARSKI:def 2;
+    then 2 in dom z1 by A5, FINSEQ_1:2,89;
+    then z1.2 = z2.2 by B4;
+    then y1 = z2.2 by A3;
+    hence y1 = y2 by A4;
+  end;
+
+  thus (x1 = x2 & y1 = y2) implies z1 = z2
+  proof
+    assume B1: x1 = x2;
+    assume B2: y1 = y2;
+    B3: for x being object st x in dom z1 holds z1.x = z2.x
+    proof
+      let x be object;
+      assume x in dom z1;
+      then C1: x in {1,2} by A5;
+      per cases by C1,TARSKI:def 2;
+      suppose C2: x=1;
+        x1 = x2 by B1;
+        then z1.x = x2 by C2,A3;
+        hence z1.x = z2.x by C2,A4;
+      end;
+      suppose C3: x=2;
+        y1 = y2 by B2;
+        then z1.x = y2 by C3,A3;
+        hence z1.x = z2.x by C3,A4;
+      end;
+    end;
+    hence z1 = z2 by A6, FUNCT_1:2;
+  end;
+end;
+@
+
+\begin{theorem}
+Let $\varphi_{i}\colon G\to H_{i}$ for $i=1,2$ and $\varphi\colon G\to H_{1}\times H_{2}$
+be defined by $\varphi(g)=(\varphi_{1}(g), \varphi_{2}(g))$. Then
+$\ker(\varphi)=\ker(\varphi_{1})\cap\ker(\varphi_{2})$.
+\end{theorem}
+
+<<Theorem: $\varphi=(\varphi_{1},\varphi_{2})$, then $\ker\varphi=\ker\varphi_{1}\cap\ker\varphi_{2}$>>=
+theorem Th65:
+  for G,H1,H2 being Group
+  for f1 being Homomorphism of G,H1
+  for f2 being Homomorphism of G,H2
+  for f being Homomorphism of G,product<*H1,H2*>
+  st for g being Element of G holds f.g = <*f1.g, f2.g*>
+  holds Ker f = Ker f1 /\ Ker f2
+proof
+  let G,H1,H2 be Group;
+  let f1 be Homomorphism of G,H1;
+  let f2 be Homomorphism of G,H2;
+  let f be Homomorphism of G,product<*H1,H2*>;
+  assume A1: for g being Element of G holds f.g = <*f1.g, f2.g*>;
+  set P = product <*H1,H2*>;
+  A2: 1_P = <*1_H1, 1_H2*> by GROUP_7:32;
+  then A3: for g being Element of G holds g in Ker f iff f.g = <*1_H1,1_H2*>
+  by GROUP_6:41;
+  A4: for g being Element of G holds g in Ker f iff f1.g = 1_H1 & f2.g = 1_H2
+  proof
+    let g be Element of G;
+    thus g in Ker f implies f1.g = 1_H1 & f2.g = 1_H2
+    proof
+      assume B1: g in Ker f;
+      then B2: <*1_H1, 1_H2*> = f.g by A3
+      .= <*f1.g, f2.g*> by A1;
+
+      thus f1.g = 1_H1 by B2,Th64;
+      thus f2.g = 1_H2 by B2,Th64;
+    end;
+    thus f1.g = 1_H1 & f2.g = 1_H2 implies g in Ker f
+    proof
+      assume B1: f1.g = 1_H1;
+      assume B2: f2.g = 1_H2;
+      f.g = <*f1.g, f2.g*> by A1
+      .= <*1_H1, 1_H2*> by B1,B2,Th64
+      .= 1_P by GROUP_7:32;
+      hence g in Ker f by GROUP_6:41;
+    end;
+    thus thesis;
+  end;
+  A5: for g being Element of G holds g in Ker f iff g in Ker f1 & g in Ker f2
+  proof
+    let g be Element of G;
+    thus g in Ker f implies g in Ker f1 & g in Ker f2
+    proof
+      assume B1: g in Ker f;
+      B2: f1.g = 1_H1 & f2.g = 1_H2 by B1,A4;
+      thus g in Ker f1 by B2, GROUP_6:41;
+      thus g in Ker f2 by B2, GROUP_6:41;
+    end;
+
+    thus g in Ker f1 & g in Ker f2 implies g in Ker f
+    proof
+      assume B1: g in Ker f1;
+      assume B2: g in Ker f2;
+      B3: f1.g = 1_H1 by B1, GROUP_6:41;
+      B4: f2.g = 1_H2 by B2, GROUP_6:41;
+      thus g in Ker f by B3,B4,A4;
+    end;
+
+  end;
+  A6: for g being Element of G holds g in Ker f1 /\ Ker f2 iff g in Ker f1 &
+  g in Ker f2 by GROUP_2:82;
+  for g being Element of G holds g in Ker f1 /\ Ker f2 iff g in Ker f
+  proof
+    let g be Element of G;
+    thus g in Ker f1 /\ Ker f2  implies g in Ker f
+    proof
+      assume B1: g in Ker f1 /\ Ker f2;
+      then g in Ker f1 & g in Ker f2 by A6;
+      hence g in Ker f by A5;
+    end;
+    thus g in Ker f implies g in Ker f1 /\ Ker f2
+    proof
+      assume B1: g in Ker f;
+      then g in Ker f1 & g in Ker f2 by A5;
+      hence g in Ker f1 /\ Ker f2 by A6;
+    end;
+
+  end;
+  hence Ker f = Ker f1 /\ Ker f2 by A5;
+end;
+@

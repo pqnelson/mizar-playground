@@ -12,7 +12,7 @@
 
 <<Theorem: Existence of $\pi$-Subgroup>>
 
-<<Register: $\pi$-group for finite group>
+<<Register: $\pi$-group for finite group>>
 
 <<Definition: $\pi$-Core>>
 
@@ -45,7 +45,7 @@ theorems, specifically Sylow $p$-subgroups.
 definition
   let G be finite Group;
   let p be prime Nat;
-  func p-core_of_G -> strict Subgroup of G means
+  func p-core G -> strict Subgroup of G means
   :Def7:
   the carrier of it = meet{A where A is Subset of G :
   ex P being strict Subgroup of G st A = the carrier of P &
@@ -63,15 +63,15 @@ definition
   uniqueness by GROUP_2:59;
   correctness;
 end;
-@ %def -core_of_G
+@ %def -core
 
 \begin{voc}
 Before proving the $p$-core is characteristic, we need to tell Mizar
-there is a new token in town: [[-core_of_]] which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
+there is a new token in town: [[-core]] which should be associated with Definition~\ref{defn:characteristic:results:p-core}.
 \end{voc}
 
 <<DICT/CHAR.VOC>>=
-O-core_of_
+O-core
 @
 
 \begin{theorem}
@@ -90,7 +90,7 @@ which gives us the results.
 theorem Th45:
   for G being finite Group
   for p being prime Nat
-  holds p-core_of_G is characteristic
+  holds p-core G is characteristic
 proof
   let G be finite Group;
   let p be prime Nat;
@@ -111,7 +111,7 @@ proof
       ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
   A5: K is characteristic
   from MeetIsChar(A2,A1);
-  K = p-core_of_G by A4,Def7;
+  K = p-core G by A4,Def7;
   hence thesis by A5;
 end;
 @ %def Th45
@@ -166,7 +166,7 @@ end;
 definition
   let Pi be Subset of SetPrimes;
   let G be finite Group;
-  func Pi-core_of_G -> strict Subgroup of G means
+  func Pi-core G -> strict Subgroup of G means
   :Def11:
   the carrier of it = meet {A where A is Subset of G :
   ex H being strict Subgroup of G st A = the carrier of H &
@@ -184,7 +184,7 @@ definition
   uniqueness by GROUP_2:59;
   correctness;
 end;
-@ %def Def11 Pi-core_of_G
+@ %def Def11 Pi-core
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
 theorem Th65:
@@ -238,15 +238,15 @@ end;
 theorem Th67:
   for p being prime Nat
   for G being finite Group
-  holds p-core_of_G = {p}-core_of_G
+  holds p-core G = {p}-core G
 proof
   let p be prime Nat;
   let G be finite Group;
-  A1: the carrier of {p}-core_of_G c= the carrier of p-core_of_G;
+  A1: the carrier of {p}-core G c= the carrier of p-core G;
 ::>                                                            *4
-  the carrier of p-core_of_G c= the carrier of {p}-core_of_G;
+  the carrier of p-core G c= the carrier of {p}-core G;
 ::>                                                        *4
-  then the carrier of p-core_of_G = the carrier of {p}-core_of_G by A1,XBOOLE_0:def 10;
+  then the carrier of p-core G = the carrier of {p}-core G by A1,XBOOLE_0:def 10;
   hence thesis by GROUP_2:59;
 end;
 @ %def Th67
@@ -255,11 +255,11 @@ end;
 theorem Th68:
   for Pi being Subset of SetPrimes
   for G being finite Group
-  holds Pi-core_of_G is Pi-group
+  holds Pi-core G is Pi-group
 proof
   let Pi be Subset of SetPrimes;
   let G be finite Group;
-  thus Pi-core_of_G is Pi-group;
+  thus Pi-core G is Pi-group;
 ::>                           *4
 end;
 @
@@ -268,13 +268,13 @@ end;
 theorem Th69:
   for p being prime Nat
   for G being finite Group
-  holds p-core_of_G is p-group
+  holds p-core G is p-group
 proof
   let p be prime Nat;
   let G be finite Group;
-  {p}-core_of_G is {p}-group by Th68;
-  then {p}-core_of_G is p-group by Th66;
-  then p-core_of_G is p-group by Th67;
+  {p}-core G is {p}-group by Th68;
+  then {p}-core G is p-group by Th66;
+  then p-core G is p-group by Th67;
   hence thesis;
 end;
 @
