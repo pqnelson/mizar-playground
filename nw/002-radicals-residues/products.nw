@@ -93,7 +93,8 @@ proof
   assume A3: G in Fam;
   thus F.G=G by A3,FUNCT_1:17;
 end;
-@
+@ %def Th57
+
 
 \begin{theorem}
 For a finite non-empty family of groups $\mathcal{F}$,
@@ -207,7 +208,7 @@ proof
   then A12: F.i is Group by A2;
   hence thesis by A11;
 end;
-@
+@ %def Th58
 
 \begin{theorem}
 Let $G$ be a group, and $\mathcal{F}$ be some non-empty collection of
@@ -349,7 +350,7 @@ proof
   assume A8: N in Fam;
   hence F.N=G./.N by A6;
 end;
-@
+@ %def Th62
 
 \begin{theorem}[Universal property of group products]
 Let $\mathcal{F}=(G_{i})_{i\in I}$ be an indexed-family of groups.
@@ -359,7 +360,7 @@ such that $\varphi_{i}=\pi_{i}\circ\varphi$ for each $i\in I$.
 \end{theorem}
 
 <<Theorem: universal property of group products>>=
-theorem 63:
+theorem Th63:
   for I being set
   for F being Group-Family of I
   for G being Group
@@ -601,7 +602,7 @@ proof
   then (f.g).i = fi.i by A4,A7;
   hence thesis by A3,A6,A7;
 end;
-@
+@ %def Th63
 
 \begin{theorem}
 Let $\mathcal{F}=(G_{i})_{i\in I}$ be an indexed family of groups, let
@@ -703,7 +704,7 @@ proof
     thus g in Ker f by B2,GROUP_6:41;
   end;
 end;
-@
+@ %def Th64
 
 \subsection{Specialized results for products of two factors}
 We can now produce analogous results for products of two factors, which
@@ -867,4 +868,45 @@ proof
   end;
   hence Ker f = Ker f1 /\ Ker f2 by A5;
 end;
-@
+@ %def Th65
+
+\begin{theorem}
+  Let $N_{1}\normalSubgroup G$ and $N_{2}\normalSubgroup G$.
+  Then there exists a group $H\subgroup (G/N_{1})\times(G/N_{2})$ such
+  that $G/(N_{1}\cap N_{2})\iso H$.
+\end{theorem}
+<<Theorem: $\exists H\subgroup(G/N_{1})\times(G/N_{2})$ such that $G/(N_{1}\cap N_{2})\iso H$>>=
+theorem Th67:
+  for G being Group
+  for N1,N2 being strict normal Subgroup of G
+  for N12 being strict normal Subgroup of G
+  st N12 = N1 /\ N2
+  holds ex H being Subgroup of product<*G./.N1,G./.N2*>
+  st G./.N12,H are_isomorphic
+proof
+  let G be Group;
+  let N1,N2 be strict normal Subgroup of G;
+  let N12 be strict normal Subgroup of G;
+  assume A1: N12 = N1 /\ N2;
+  set P = product <* G./.N1, G./.N2 *>;
+  P is Group;
+  consider phi being Homomorphism of G,P such that
+  A2: for g being Element of G holds phi.g = <*(nat_hom N1).g, (nat_hom N2).g*>
+  by Th63;
+
+  A3: Ker phi = N12
+  proof
+    B1: Ker (nat_hom N1) = N1 by GROUP_6:43;
+    B2: Ker (nat_hom N2) = N2 by GROUP_6:43;
+    Ker phi = Ker (nat_hom N1) /\ Ker (nat_hom N2) by A2, Th65
+    .= N1 /\ Ker (nat_hom N2) by B1
+    .= N1 /\ N2 by B2
+    .= N12 by A1;
+    hence thesis;
+  end;
+
+  take H = Image phi;
+  G./.(Ker phi),H are_isomorphic by GROUP_6:78;
+  hence thesis by A3;
+end;
+@ %def Th67

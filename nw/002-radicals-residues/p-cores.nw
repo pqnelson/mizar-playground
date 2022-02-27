@@ -87,7 +87,7 @@ which gives us the results.
 \end{proof}
 
 <<Theorem: $p$-Core is Characteristic>>=
-theorem Th45:
+theorem Th1:
   for G being finite Group
   for p being prime Nat
   holds p-core G is characteristic
@@ -114,7 +114,7 @@ proof
   K = p-core G by A4,Def7;
   hence thesis by A5;
 end;
-@ %def Th45
+@ %def Th1
 
 \begin{definition}
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
@@ -135,7 +135,7 @@ end;
 @ %def Def10 Pi-group
 
 <<Theorem: Existence of $\pi$-Subgroup>>=
-theorem Th64:
+theorem Th2:
   for Pi being Subset of SetPrimes
   for G being finite Group
   ex H being strict Subgroup of G
@@ -147,7 +147,7 @@ proof
   H is trivial;
   hence H is Pi-group by Def10;
 end;
-@
+@% def Th2
 
 <<Register: $\pi$-group for finite group>>=
 registration
@@ -187,7 +187,7 @@ end;
 @ %def Def11 Pi-core
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
-theorem Th65:
+theorem Th3:
   for p being prime Nat
   holds {p} is Subset of SetPrimes
 proof
@@ -207,12 +207,12 @@ end;
 definition
   let p be prime Nat;
   redefine func {p} -> Subset of SetPrimes;
-  coherence by Th65;
+  coherence by Th3;
 end;
-@ %def Th65
+@ %def Th3
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
-theorem Th66:
+theorem Th4:
   for p being prime Nat
   for G being finite Group
   holds G is p-group iff G is {p}-group
@@ -232,10 +232,10 @@ proof
 ::>                 *4
   end;
 end;
-@ %def Th66
+@ %def Th4
 
 <<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>=
-theorem Th67:
+theorem Th5:
   for p being prime Nat
   for G being finite Group
   holds p-core G = {p}-core G
@@ -249,10 +249,10 @@ proof
   then the carrier of p-core G = the carrier of {p}-core G by A1,XBOOLE_0:def 10;
   hence thesis by GROUP_2:59;
 end;
-@ %def Th67
+@ %def Th5
 
 <<Theorem: $\pCore{\pi}{G}$ is a $\pi$-Group>>=
-theorem Th68:
+theorem Th6:
   for Pi being Subset of SetPrimes
   for G being finite Group
   holds Pi-core G is Pi-group
@@ -262,10 +262,10 @@ proof
   thus Pi-core G is Pi-group;
 ::>                           *4
 end;
-@
+@ %def Th6
 
 <<Theorem: $\pCore{p}{G}$ is a $p$-Group>>=
-theorem Th69:
+theorem Th7:
   for p being prime Nat
   for G being finite Group
   holds p-core G is p-group
@@ -277,4 +277,4 @@ proof
   then p-core G is p-group by Th67;
   hence thesis;
 end;
-@
+@ %def Th7
