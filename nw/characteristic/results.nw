@@ -1468,7 +1468,7 @@ proof
     then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
     hence thesis by B2,B3,GROUP_6:def 6;
   end;
-  then A1: f.:(H * a) c= (f .: H) * (f.a);
+  then A2: f.:(H * a) c= (f .: H) * (f.a);
   for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
   proof
     let y be object;
@@ -1490,8 +1490,8 @@ proof
     then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B4,B5,GROUP_2:104;
     hence y in f.:(H * a) by FUNCT_1:def 6;
   end;
-  then A2: (f .: H) * (f.a) c= f.:(H * a);
-  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+  then (f .: H) * (f.a) c= f.:(H * a);
+  hence f.:(H * a) = (f .: H)*(f.a) by A2,XBOOLE_0:def 10;
 end;
 @ %def Th48
 
@@ -1711,6 +1711,12 @@ commutators $\{[h,k]\in G\mid h\in H, k\in K\}$ is invariant under
 automorphisms of $G$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+We prove equality by showing ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$
+and ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$,
+which proves equality.
+\end{proof}
+
 <<Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable>>=
 theorem Th53:
   for G being Group
@@ -1724,46 +1730,71 @@ proof
   A1: dom phi = the carrier of G by FUNCT_2:def 1;
 
   for x being object st x in commutators(H,K) holds x in phi .: commutators(H,K)
-  proof
-    let x be object;
-    assume B0: x in commutators(H,K);
-    then reconsider g=x as Element of G;
-    consider h,k being Element of G such that
-    B1: x = [.h,k.] and
-    B2: h in H & k in K by B0,GROUP_5:52;
-    reconsider psi = phi" as Automorphism of G by GROUP_6:62;
-    set a = psi.h;
-    set b = psi.k;
-    B3: a in H & b in K by B2,Th50;
-    B4: psi.x = psi.([.h,k.]) by B1
-             .= [.psi.h,psi.k.] by GROUP_6:34
-             .= [.a,b.];
-    B5: phi.([. a,b .]) = phi.(psi.x) by B4
-                       .= g by Th4;
-    [. a, b .] in commutators(H,K) by B3;
-    hence x in phi .: commutators(H,K) by B5,A1,FUNCT_1:def 6;
-  end;
+  <<Proof: ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$>>
   then A2: commutators(H,K) c= phi .: commutators(H,K);
 
   for y being object st y in phi .: commutators(H,K) holds y in commutators(H,K)
-  proof
-    let y be object;
-    assume y in phi .: commutators(H,K);
-    then consider x being object such that
-    B2: x in dom phi & x in commutators(H,K) & y = phi.x
-    by FUNCT_1:def 6;
-    consider h,k being Element of G such that
-    B3: x = [.h,k.] and
-    B4: h in H & k in K by B2,GROUP_5:52;
-    B5: phi.h in H & phi.k in K by B4,Th50;
-    phi.x = phi.([. h,k .]) by B3
-         .= [. phi.h, phi.k .] by GROUP_6:34;
-    hence y in commutators(H,K) by B2,B5;
-  end;
+  <<Proof: ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$>>
   then phi .: commutators(H,K) c= commutators(H,K);
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
 @ %def Th53
+
+\begin{proof}[Proof step (${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$)]
+We show $x\in{\rm Commutators}(H,K)$ looks like $x=[h,k]$ for some $h\in H$
+and $k\in K$. But then given an automorphism $\varphi\in\Aut(G)$, we can
+find $a=\varphi^{-1}(h)\in H$ and $b=\varphi^{-1}(k)\in K$ since $H$ and $K$ are
+characteristic subgroups. Then $[a,b]\in[H,K]$ and moreover
+$\varphi([a,b])=[h,k]$ which proves the claim.
+\end{proof}
+
+<<Proof: ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$>>=
+proof
+  let x be object;
+  assume B0: x in commutators(H,K);
+  then reconsider g=x as Element of G;
+  consider h,k being Element of G such that
+  B1: x = [.h,k.] and
+  B2: h in H & k in K by B0,GROUP_5:52;
+  reconsider psi = phi" as Automorphism of G by GROUP_6:62;
+  set a = psi.h;
+  set b = psi.k;
+  B3: a in H & b in K by B2,Th50;
+  B4: psi.x = psi.([.h,k.]) by B1
+           .= [.psi.h,psi.k.] by GROUP_6:34
+           .= [.a,b.];
+  B5: phi.([. a,b .]) = phi.(psi.x) by B4
+                     .= g by Th4;
+  [. a, b .] in commutators(H,K) by B3;
+  hence x in phi .: commutators(H,K) by B5,A1,FUNCT_1:def 6;
+end;
+@
+
+\begin{proof}[Proof step (${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$)]
+We begin with $y\in\varphi({\rm Commutators}(H,K))$, which means there
+is some $x\in{\rm Commutators}(H,K)$ such that $y=\varphi(x)$. Then
+there is some $h\in H$, $k\in K$ such that $x=[h,k]$. Since $H$ and $K$
+are characteristic subgroups, $\varphi(h)\in H$ and $\varphi(k)\in K$.
+Then $\varphi(x)=[\varphi(h),\varphi(k)]\in{\rm Commutators}(H,K)$
+which proves the claim.
+\end{proof}
+
+<<Proof: ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$>>=
+proof
+  let y be object;
+  assume y in phi .: commutators(H,K);
+  then consider x being object such that
+  B2: x in dom phi & x in commutators(H,K) & y = phi.x
+  by FUNCT_1:def 6;
+  consider h,k being Element of G such that
+  B3: x = [.h,k.] and
+  B4: h in H & k in K by B2,GROUP_5:52;
+  B5: phi.h in H & phi.k in K by B4,Th50;
+  phi.x = phi.([. h,k .]) by B3
+       .= [. phi.h, phi.k .] by GROUP_6:34;
+  hence y in commutators(H,K) by B2,B5;
+end;
+@
 
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator

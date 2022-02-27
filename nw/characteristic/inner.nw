@@ -297,7 +297,7 @@ proof
       f be inner Automorphism of G;
   assume
 A1: for x being Element of G holds f.x = x |^ a;
-C1: for h being Element of G st h in H holds (f|H).h = h |^ a
+A2: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
@@ -305,11 +305,11 @@ C1: for h being Element of G st h in H holds (f|H).h = h |^ a
                  .= h |^ a by A1;
   end;
 
-C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
+A3: for y being Element of G st y in Image(f|H) holds y in H |^ a
   <<Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$>>
-C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  for y being Element of G st y in H |^ a holds y in Image(f|H)
   <<Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$>>
-  thus (H |^ a) = Image(f|H) by C2,C3;
+  hence (H |^ a) = Image(f|H) by A3;
 end;
 @ %def Th28
 
@@ -326,7 +326,7 @@ proof
   B1: (f|H).h = y by GROUP_6:45;
   reconsider h as Element of G by GROUP_2:42;
   B2: h in H;
-  then h |^ a = (f|H).h by C1
+  then h |^ a = (f|H).h by A2
              .= y by B1;
   hence y in H |^ a by B2,GROUP_3:58;
 end;

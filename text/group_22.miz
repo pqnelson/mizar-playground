@@ -872,7 +872,7 @@ proof
       f be inner Automorphism of G;
   assume
 A1: for x being Element of G holds f.x = x |^ a;
-C1: for h being Element of G st h in H holds (f|H).h = h |^ a
+A2: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
@@ -888,7 +888,7 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
     B1: (f|H).h = y by GROUP_6:45;
     reconsider h as Element of G by GROUP_2:42;
     B2: h in H;
-    then h |^ a = (f|H).h by C1
+    then h |^ a = (f|H).h by A2
                .= y by B1;
     hence y in H |^ a by B2,GROUP_3:58;
   end;
@@ -1776,7 +1776,7 @@ proof
     then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
     hence thesis by B2,B3,GROUP_6:def 6;
   end;
-  then A1: f.:(H * a) c= (f .: H) * (f.a);
+  then A2: f.:(H * a) c= (f .: H) * (f.a);
   for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
   proof
     let y be object;
@@ -1798,8 +1798,8 @@ proof
     then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B4,B5,GROUP_2:104;
     hence y in f.:(H * a) by FUNCT_1:def 6;
   end;
-  then A2: (f .: H) * (f.a) c= f.:(H * a);
-  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+  then (f .: H) * (f.a) c= f.:(H * a);
+  hence f.:(H * a) = (f .: H)*(f.a) by A2,XBOOLE_0:def 10;
 end;
 
 theorem Th49:
@@ -3741,4 +3741,3 @@ proof
   end;
   hence thesis;
 end;
-

@@ -2428,7 +2428,7 @@ proof
       f be \nwlinkedidentc{inner}{NW3Mfp8C-1Tb4wZ-1} \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G;
   assume
 A1: for x being Element of G holds f.x = x |^ a;
-C1: for h being Element of G st h in H holds (f|H).h = h |^ a
+A2: for h being Element of G st h in H holds (f|H).h = h |^ a
   proof
     let h be Element of G;
     assume h in H;
@@ -2436,11 +2436,11 @@ C1: for h being Element of G st h in H holds (f|H).h = h |^ a
                  .= h |^ a by A1;
   end;
 
-C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
+A3: for y being Element of G st y in Image(f|H) holds y in H |^ a
   \LA{}Proof $\forall y\in G, y\in f(H)\implies y\in H^{a}$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1BjobC-1}}\RA{}
-C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  for y being Element of G st y in H |^ a holds y in Image(f|H)
   \LA{}Proof $\forall y\in G, y \in f(H)\impliedby y\in H^{a}$~{\nwtagstyle{}\subpageref{NW3Mfp8C-1b1ocA-1}}\RA{}
-  thus (H |^ a) = Image(f|H) by C2,C3;
+  hence (H |^ a) = Image(f|H) by A3;
 end;
 \nwindexdefn{\nwixident{Th28}}{Th28}{NW3Mfp8C-2zspfg-1}\eatline
 \nwused{\\{NW3Mfp8C-UGF1u-1}}\nwidentdefs{\\{{\nwixident{Th28}}{Th28}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{inner}}{inner}}\\{{\nwixident{Th1}}{Th1}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW3Mfp8C-2zspfg-1}\nwindexuse{\nwixident{inner}}{inner}{NW3Mfp8C-2zspfg-1}\nwindexuse{\nwixident{Th1}}{Th1}{NW3Mfp8C-2zspfg-1}\nwendcode{}\nwbegindocs{28}\nwdocspar
@@ -2457,7 +2457,7 @@ proof
   B1: (f|H).h = y by GROUP_6:45;
   reconsider h as Element of G by GROUP_2:42;
   B2: h in H;
-  then h |^ a = (f|H).h by C1
+  then h |^ a = (f|H).h by A2
              .= y by B1;
   hence y in H |^ a by B2,GROUP_3:58;
 end;
@@ -4033,6 +4033,8 @@ end;
 \nwixlogsorted{c}{{Proof: $y\in f(K)\iff y\in g(K)$}{NW47t2dy-1JehLA-1}{\nwixu{NW47t2dy-2MyoVP-1}\nwixd{NW47t2dy-1JehLA-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in f(K)\implies y\in g(K)$}{NW47t2dy-1yCGg9-1}{\nwixu{NW47t2dy-1JehLA-1}\nwixd{NW47t2dy-1yCGg9-1}}}%
 \nwixlogsorted{c}{{Proof: $y\in g(K)\implies y\in f(K)$}{NW47t2dy-1aEga6-1}{\nwixu{NW47t2dy-1JehLA-1}\nwixd{NW47t2dy-1aEga6-1}}}%
+\nwixlogsorted{c}{{Proof: ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$}{NW47t2dy-412Ya0-1}{\nwixu{NW47t2dy-41VHSD-1}\nwixd{NW47t2dy-412Ya0-1}}}%
+\nwixlogsorted{c}{{Proof: ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$}{NW47t2dy-1RjAjC-1}{\nwixu{NW47t2dy-41VHSD-1}\nwixd{NW47t2dy-1RjAjC-1}}}%
 \nwixlogsorted{c}{{Proof: existence of strict nontrivial subgroup of $G$}{NW18nMBU-lTKq-1}{\nwixu{NW18nMBU-2RiGxf-1}\nwixd{NW18nMBU-lTKq-1}}}%
 \nwixlogsorted{c}{{Proof: normal implies fixed by inner automorphisms}{NW3Mfp8C-ZiHjv-1}{\nwixu{NW3Mfp8C-4Qqcti-1}\nwixd{NW3Mfp8C-ZiHjv-1}}}%
 \nwixlogsorted{c}{{Proper Subgroups}{NW18nMBU-KQsbx-1}{\nwixu{NW18nMBU-1Vve9X-1}\nwixd{NW18nMBU-KQsbx-1}}}%
@@ -4589,7 +4591,7 @@ proof
     then (f.h)*(f.a) in (f.:H)*(f.a) by GROUP_2:104;
     hence thesis by B2,B3,GROUP_6:def 6;
   end;
-  then A1: f.:(H * a) c= (f .: H) * (f.a);
+  then A2: f.:(H * a) c= (f .: H) * (f.a);
   for y being object st y in (f.:H)*(f.a) holds y in f.:(H * a)
   proof
     let y be object;
@@ -4611,8 +4613,8 @@ proof
     then (x*a) in dom f & (x*a) in H*a & y=f.(x*a) by B4,B5,GROUP_2:104;
     hence y in f.:(H * a) by FUNCT_1:def 6;
   end;
-  then A2: (f .: H) * (f.a) c= f.:(H * a);
-  thus f.:(H * a) = (f .: H)*(f.a) by A1,A2,XBOOLE_0:def 10;
+  then (f .: H) * (f.a) c= f.:(H * a);
+  hence f.:(H * a) = (f .: H)*(f.a) by A2,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th48}}{Th48}{NW47t2dy-4LQhDT-1}\eatline
 \nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th48}}{Th48}}}\nwidentuses{\\{{\nwixident{Th1}}{Th1}}}\nwindexuse{\nwixident{Th1}}{Th1}{NW47t2dy-4LQhDT-1}\nwendcode{}\nwbegindocs{92}\nwdocspar
@@ -4832,6 +4834,12 @@ commutators $\{[h,k]\in G\mid h\in H, k\in K\}$ is invariant under
 automorphisms of $G$.
 \end{theorem}
 
+\begin{proof}[Proof outline]
+We prove equality by showing ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$
+and ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$,
+which proves equality.
+\end{proof}
+
 \nwenddocs{}\nwbegincode{101}\sublabel{NW47t2dy-41VHSD-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies ${\rm Commutators}(H,K)$ is stable~{\nwtagstyle{}\subpageref{NW47t2dy-41VHSD-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th53}{NW47t2dy-41VHSD-1}:
   for G being Group
@@ -4845,47 +4853,72 @@ proof
   A1: dom phi = the carrier of G by FUNCT_2:def 1;
 
   for x being object st x in commutators(H,K) holds x in phi .: commutators(H,K)
-  proof
-    let x be object;
-    assume B0: x in commutators(H,K);
-    then reconsider g=x as Element of G;
-    consider h,k being Element of G such that
-    B1: x = [.h,k.] and
-    B2: h in H & k in K by B0,GROUP_5:52;
-    reconsider psi = phi" as \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G by GROUP_6:62;
-    set a = psi.h;
-    set b = psi.k;
-    B3: a in H & b in K by B2,\nwlinkedidentc{Th50}{NW47t2dy-2u8tjJ-1};
-    B4: psi.x = psi.([.h,k.]) by B1
-             .= [.psi.h,psi.k.] by GROUP_6:34
-             .= [.a,b.];
-    B5: phi.([. a,b .]) = phi.(psi.x) by B4
-                       .= g by \nwlinkedidentc{Th4}{NW18nMBU-1Brdpy-1};
-    [. a, b .] in commutators(H,K) by B3;
-    hence x in phi .: commutators(H,K) by B5,A1,FUNCT_1:def 6;
-  end;
+  \LA{}Proof: ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$~{\nwtagstyle{}\subpageref{NW47t2dy-412Ya0-1}}\RA{}
   then A2: commutators(H,K) c= phi .: commutators(H,K);
 
   for y being object st y in phi .: commutators(H,K) holds y in commutators(H,K)
-  proof
-    let y be object;
-    assume y in phi .: commutators(H,K);
-    then consider x being object such that
-    B2: x in dom phi & x in commutators(H,K) & y = phi.x
-    by FUNCT_1:def 6;
-    consider h,k being Element of G such that
-    B3: x = [.h,k.] and
-    B4: h in H & k in K by B2,GROUP_5:52;
-    B5: phi.h in H & phi.k in K by B4,\nwlinkedidentc{Th50}{NW47t2dy-2u8tjJ-1};
-    phi.x = phi.([. h,k .]) by B3
-         .= [. phi.h, phi.k .] by GROUP_6:34;
-    hence y in commutators(H,K) by B2,B5;
-  end;
+  \LA{}Proof: ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$~{\nwtagstyle{}\subpageref{NW47t2dy-1RjAjC-1}}\RA{}
   then phi .: commutators(H,K) c= commutators(H,K);
   hence phi .: commutators(H,K) = commutators(H,K) by A2,XBOOLE_0:def 10;
 end;
 \nwindexdefn{\nwixident{Th53}}{Th53}{NW47t2dy-41VHSD-1}\eatline
-\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th53}}{Th53}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}\\{{\nwixident{Th4}}{Th4}}\\{{\nwixident{Th50}}{Th50}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th4}}{Th4}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-41VHSD-1}\nwendcode{}\nwbegindocs{102}\nwdocspar
+\nwused{\\{NW47t2dy-3NltVm-1}}\nwidentdefs{\\{{\nwixident{Th53}}{Th53}}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{characteristic}}{characteristic}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-41VHSD-1}\nwindexuse{\nwixident{characteristic}}{characteristic}{NW47t2dy-41VHSD-1}\nwendcode{}\nwbegindocs{102}\nwdocspar
+\begin{proof}[Proof step (${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$)]
+We show $x\in{\rm Commutators}(H,K)$ looks like $x=[h,k]$ for some $h\in H$
+and $k\in K$. But then given an automorphism $\varphi\in\Aut(G)$, we can
+find $a=\varphi^{-1}(h)\in H$ and $b=\varphi^{-1}(k)\in K$ since $H$ and $K$ are
+characteristic subgroups. Then $[a,b]\in[H,K]$ and moreover
+$\varphi([a,b])=[h,k]$ which proves the claim.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{103}\sublabel{NW47t2dy-412Ya0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-412Ya0-1}}}\moddef{Proof: ${\rm Commutators}(H,K)\subset\varphi({\rm Commutators}(H,K))$~{\nwtagstyle{}\subpageref{NW47t2dy-412Ya0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-41VHSD-1}}\nwenddeflinemarkup
+proof
+  let x be object;
+  assume B0: x in commutators(H,K);
+  then reconsider g=x as Element of G;
+  consider h,k being Element of G such that
+  B1: x = [.h,k.] and
+  B2: h in H & k in K by B0,GROUP_5:52;
+  reconsider psi = phi" as \nwlinkedidentc{Automorphism}{NW1Nnu7l-2qSYW4-1} of G by GROUP_6:62;
+  set a = psi.h;
+  set b = psi.k;
+  B3: a in H & b in K by B2,\nwlinkedidentc{Th50}{NW47t2dy-2u8tjJ-1};
+  B4: psi.x = psi.([.h,k.]) by B1
+           .= [.psi.h,psi.k.] by GROUP_6:34
+           .= [.a,b.];
+  B5: phi.([. a,b .]) = phi.(psi.x) by B4
+                     .= g by \nwlinkedidentc{Th4}{NW18nMBU-1Brdpy-1};
+  [. a, b .] in commutators(H,K) by B3;
+  hence x in phi .: commutators(H,K) by B5,A1,FUNCT_1:def 6;
+end;
+\nwused{\\{NW47t2dy-41VHSD-1}}\nwidentuses{\\{{\nwixident{Automorphism}}{Automorphism}}\\{{\nwixident{Th4}}{Th4}}\\{{\nwixident{Th50}}{Th50}}}\nwindexuse{\nwixident{Automorphism}}{Automorphism}{NW47t2dy-412Ya0-1}\nwindexuse{\nwixident{Th4}}{Th4}{NW47t2dy-412Ya0-1}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-412Ya0-1}\nwendcode{}\nwbegindocs{104}\nwdocspar
+
+\begin{proof}[Proof step (${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$)]
+We begin with $y\in\varphi({\rm Commutators}(H,K))$, which means there
+is some $x\in{\rm Commutators}(H,K)$ such that $y=\varphi(x)$. Then
+there is some $h\in H$, $k\in K$ such that $x=[h,k]$. Since $H$ and $K$
+are characteristic subgroups, $\varphi(h)\in H$ and $\varphi(k)\in K$.
+Then $\varphi(x)=[\varphi(h),\varphi(k)]\in{\rm Commutators}(H,K)$
+which proves the claim.
+\end{proof}
+
+\nwenddocs{}\nwbegincode{105}\sublabel{NW47t2dy-1RjAjC-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-1RjAjC-1}}}\moddef{Proof: ${\rm Commutators}(H,K)\supset\varphi({\rm Commutators}(H,K))$~{\nwtagstyle{}\subpageref{NW47t2dy-1RjAjC-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-41VHSD-1}}\nwenddeflinemarkup
+proof
+  let y be object;
+  assume y in phi .: commutators(H,K);
+  then consider x being object such that
+  B2: x in dom phi & x in commutators(H,K) & y = phi.x
+  by FUNCT_1:def 6;
+  consider h,k being Element of G such that
+  B3: x = [.h,k.] and
+  B4: h in H & k in K by B2,GROUP_5:52;
+  B5: phi.h in H & phi.k in K by B4,\nwlinkedidentc{Th50}{NW47t2dy-2u8tjJ-1};
+  phi.x = phi.([. h,k .]) by B3
+       .= [. phi.h, phi.k .] by GROUP_6:34;
+  hence y in commutators(H,K) by B2,B5;
+end;
+\nwused{\\{NW47t2dy-41VHSD-1}}\nwidentuses{\\{{\nwixident{Th50}}{Th50}}}\nwindexuse{\nwixident{Th50}}{Th50}{NW47t2dy-1RjAjC-1}\nwendcode{}\nwbegindocs{106}\nwdocspar
+
 \begin{theorem}
 If $H\subgroup G$ and $K\subgroup G$ are characteristic, then the commutator
 subgroup $[H,K]$ is a characteristic subgroup.
@@ -4896,7 +4929,7 @@ We use the fact $\varphi([H,K]) = [\varphi(H),\varphi(K)]$, then since
 $H$ and $K$ are characteristic the result follows immediately.
 \end{proof}
 
-\nwenddocs{}\nwbegincode{103}\sublabel{NW47t2dy-E9Ys0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
+\nwenddocs{}\nwbegincode{107}\sublabel{NW47t2dy-E9Ys0-1}\nwmargintag{{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\moddef{Theorem: $H,K\subgroup G$ characteristic implies $[H,K]$ is characteristic~{\nwtagstyle{}\subpageref{NW47t2dy-E9Ys0-1}}}\endmoddef\nwstartdeflinemarkup\nwusesondefline{\\{NW47t2dy-3NltVm-1}}\nwenddeflinemarkup
 theorem \nwlinkedidentc{Th54}{NW47t2dy-E9Ys0-1}:
   for G being Group
   for H,K being strict \nwlinkedidentc{characteristic}{NW47t2dy-qejLV-1} Subgroup of G
