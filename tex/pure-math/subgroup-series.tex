@@ -1,0 +1,105 @@
+\section{Subgroup Series}
+
+\begin{definition}
+Let $G$ be a group. A [finite] \define{Subgroup Series} of $G$ is a
+chain, either ascending $\trivialSubgroup=A_{0}\subgroup A_{1}\subgroup\dots\subgroup A_{n}=G$
+or descending $G=B_{0}\supgroup B_{1}\supgroup\dots\supgroup B_{n}=\trivialSubgroup$.
+\end{definition}
+
+\begin{def-remark}
+Mizar seems to take the convention of using descending series of subgroups
+$G=B_{1}\supgroup B_{2}\supgroup\dots\supgroup B_{n}=\trivialSubgroup$.
+\end{def-remark}
+
+\begin{example}[Central Series]
+The definition of a nilpotent group uses a central series\index{Central Series}
+$G=Z_{1}\supgroup Z_{2}\supgroup\dots\supgroup Z_{n}=\trivialSubgroup$ where
+each $Z_{k}\normalSubgroup G$ and the quotient satisfies
+$Z_{k}/Z_{k+1}\subgroup Z(G/Z_{k+1})$.
+\end{example}
+
+\begin{mizar}
+definition
+  let IT be Group;
+  attr IT is nilpotent means :Def2: :: GRNILP_1:def 2
+  ex F being FinSequence of the_normal_subgroups_of IT st
+  (len F > 0 & F.1 = (Omega).IT & F.(len F) = (1).IT &
+   (for i being Element of NAT st i in dom F & i+1 in dom F
+    for G1, G2 being strict normal Subgroup of IT
+    st G1 = F.i & G2 = F.(i + 1)
+    holds (G2 is Subgroup of G1 &
+           G1./.((G1,G2)`*`) is Subgroup of
+             center (IT./.G2))));
+end; 
+\end{mizar}
+
+\begin{example}[Subnormal Series]
+A solvable group is defined by having a subnormal series\index{Subnormal!Series}
+%$\trivialSubgroup = N_{n}\normalSubgroup\dots\normalSubgroup N_{2}\normalSubgroup N_{1}=G$
+$G=N_{1}\normalSupgroup N_{2}\normalSupgroup\dots\normalSupgroup N_{n}=\trivialSubgroup$
+--- that is, $N_{j+1}\normalSubgroup N_{j}$ for $j=0,\dots,n-1$ ---
+whose factor groups $N_{k}/N_{k+1}$ are Abelian.
+\end{example}
+
+\begin{mizar}
+definition
+  let IT be Group;
+  attr IT is solvable means :Def1: :: GRSOLV_1:def 1
+  ex F being FinSequence of Subgroups IT st
+  (len F > 0 & F.1 = (Omega).IT & F.(len F) = (1).IT &
+   (for i being Element of NAT st i in dom F & i+1 in dom F
+    for G1, G2 being strict Subgroup of IT
+    st G1 = F.i & G2 = F.(i+1)
+    holds (G2 is strict normal Subgroup of G1 &
+           (for N being normal Subgroup of G1 st N = G2
+            holds G1 ./. N is commutative))));
+end; 
+\end{mizar}
+
+\begin{example}[Composition Series]
+A famous example of a subgroup series is the composition
+series\index{Composition Series} for a
+group. Mizar defines it as a subgroup series
+$\trivialSubgroup=A_{n}\normalSubgroup\dots\normalSubgroup A_{2}\normalSubgroup A_{1}=G$.
+Although this seems to be using a strange convention, Mizar is following
+Bourbaki's \emph{Algbra}. The more familiar notion of a composition
+series (as a ``maximal'' subnormal series) requires the
+\lstinline{jordan_holder} attribute (again, this follows Bourbaki's
+\emph{Algebra} Definition~10 in I.4.7).
+\end{example}
+
+\begin{mizar}
+:: ALG I.4.7 Definition 9
+definition
+  let O be set;
+  let G be GroupWithOperators of O;
+  let IT be FinSequence of the_stable_subgroups_of G;
+  attr IT is composition_series means
+  :: GROUP_9:def 28
+  IT.1=(Omega).G & IT.(len IT)= (1).G &
+  for i being Nat st i in dom IT & i+1 in dom IT
+  for H1,H2 being StableSubgroup of G
+  st H1=IT.i & H2=IT.(i+1)
+  holds H2 is normal StableSubgroup of H1;
+end;
+\end{mizar}
+
+\begin{example}[Lower Central Series]
+The lower central series\index{Central Series!Lower} may be defined as
+$G=A_{1}\normalSupgroup A_{2}\normalSupgroup\dots\normalSupgroup A_{n}=\trivialSubgroup$,
+where $A_{k+1}=[A_{k},G]=[G,A_{k}]$.
+Mizar implicitly defines this in \mml[Th27]{grnilp1}.
+\end{example}
+
+\begin{mizar}
+theorem :: GRNILP_1:27
+  for G being Group
+  st ex F being FinSequence of the_normal_subgroups_of G
+     st len F > 0 & F.1 = (Omega).G & F.(len F) = (1).G &
+     for i st i in dom F & i+1 in dom F
+     for G1 being strict normal Subgroup of G st G1 = F.i
+     holds [.G1, (Omega).G.] = F.(i+1)
+  holds G is nilpotent
+proof end;
+\end{mizar}
+
