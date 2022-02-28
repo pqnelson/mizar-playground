@@ -3,7 +3,7 @@ TEX=latex
 BIB=bibtex
 BOOK=driver
 #NOWEBOPTS=-delay -index -latxe
-NOWEBOPTS=-latex
+NOWEBOPTS=-filter ./localdef -latex
 CHAR=nw/characteristic
 NWFILES=$(wildcard nw/characteristic.nw nw/characteristic/*.nw)
 DEFS_CMD=$(foreach file, $(NWFILES), def/$(file))
@@ -12,7 +12,7 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 RADRES=nw/002-radicals-residues
-RADICALS=$(RADRES).nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
+RADICALS=$(RADRES).nw $(RADRES)/pi-group.nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 NW_UNDERSCORE=-filter 'sed "/^@use /s/_/\\\\_/g;/^@defn /s/_/\\\\_/g"'
 
@@ -43,8 +43,9 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 # noweb many-file extraction voodoo ends here
 
 dumb_extract_text: defs
-	noweave $(NOWEBOPTS) -n -indexfrom 001.defs $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
-	noweave $(NOWEBOPTS) -n -indexfrom 002.defs $(RADICALS) > tex/radicals.tex
+	noweave $(NOWEBOPTS) -n -index $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
+	noweave $(NOWEBOPTS) -n -index $(RADICALS) > tex/radicals.tex
+#	noweave $(NOWEBOPTS) -n -indexfrom 002.defs $(RADICALS) > tex/radicals.tex
 code:
 	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc

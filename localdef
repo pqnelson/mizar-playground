@@ -1,0 +1,17 @@
+#!/bin/sh
+# turn backticks into definitions
+awk '
+/^@begin code / { code = 1 }
+/^@end code / { code = 0 }
+!code && /@text %localdef.*/ {
+    print "MATCH !!!"
+  if (i = match($0, /%localdef[ ]+.*/)) {
+      ids = substr($0, i+9, RLENGTH)
+      split(ids, localdefs, " ")
+      for (idx in localdefs) {
+          print "@index localdefn " localdefs[idx]
+      }
+  }
+  next
+}
+{print}'
