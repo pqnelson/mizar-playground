@@ -1,0 +1,166 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{$\pi$-Groups and $\pi$-Subgroups}
+
+We can generalize the notion of a $p$-group to a $\pi$-group, where
+$\pi$ is a set of prime numbers. This motivates analogous notions like
+Sylow $\pi$-subgroups, and Hall $\pi$-subgroups (which coincide for
+finite groups, but may be different in general).
+
+<<$\pi$-Groups and $\pi$-Subgroups>>=
+<<Definition: $\pi$-Group>>
+
+<<Theorem: Existence of $\pi$-Subgroup>>
+
+<<Register: $\pi$-group for finite group>>
+
+<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
+
+<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
+
+@
+
+Recall, the notion of a $p$-group is defined as:
+
+\begin{mizar}
+definition
+  let p be Nat;
+  let G be Group;
+  attr G is p-group means :: GROUP_10:def 17
+  ex r being Nat st card G = p |^ r;
+end;
+\end{mizar}
+
+\begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
+Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
+a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
+also belongs to $\pi\ni p$, or if the group is trivial $G=\trivialGroup$.
+\end{definition}
+
+<<Definition: $\pi$-Group>>=
+:: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be finite Group;
+  attr IT is Pi-group means
+  :Def10:
+  (for p being prime Nat st p divides card IT holds p in Pi)
+  or (IT is trivial);
+end;
+@ %def Def10 Pi-group
+
+\begin{theorem}
+Let $G$ be a finite group, $\pi$ a set of prime numbers.
+Then there exists a $\pi$-subgroup of $G$.
+\end{theorem}
+
+\begin{proof}
+Take $H=\trivialSubgroup_{G}$, which is trivially a $\pi$-subgroup of $G$.
+\end{proof}
+
+<<Theorem: Existence of $\pi$-Subgroup>>=
+theorem Th2:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  ex H being strict Subgroup of G
+  st H is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  take H = (1).G;
+  H is trivial;
+  hence H is Pi-group by Def10;
+end;
+@ %localdef Th2
+
+<<Register: $\pi$-group for finite group>>=
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for finite Group;
+  existence
+  proof
+    consider G being trivial Group such that not contradiction;
+    take G;
+    thus thesis by Def10;
+  end;
+end;
+@
+
+\begin{theorem}
+If $p\in\NN$ is prime, then $\{p\}$ is a subset of the collection of
+prime numbers.
+\end{theorem}
+
+\begin{thm-remark}
+We introduce this theorem for the purpose of a \emph{redefinition}\index{Redefine}
+of Mizar's functor \lstinline|{p}| to have as its type \lstinline{Subset of SetPrimes}
+rather than the generic \lstinline{set}.
+\end{thm-remark}
+
+<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
+theorem Th3:
+  for p being prime Nat
+  holds {p} is Subset of SetPrimes
+proof
+  let p be prime Nat;
+  for x being object st x in {p} holds x in SetPrimes
+  proof
+    let x be object;
+    assume A1: x in {p};
+    then A2: x = p by TARSKI:def 1;
+    p in SetPrimes by NEWTON:def 6;
+    hence thesis by A2;
+  end;
+  then {p} c= SetPrimes by TARSKI:def 3;
+  hence thesis;
+end;
+
+definition
+  let p be prime Nat;
+  redefine func {p} -> Subset of SetPrimes;
+  coherence by Th3;
+end;
+@ %def Th3
+
+\begin{theorem}
+Let $p$ be a prime number, $G$ a finite group.
+Then $G$ is a $p$-group if and only if $G$ is a $\{p\}$-group.
+\end{theorem}
+
+<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
+theorem Th4:
+  for p being prime Nat
+  for G being finite Group
+  holds G is p-group iff G is {p}-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  thus G is p-group implies G is {p}-group
+  proof
+    assume B1: G is p-group;
+    thus G is {p}-group;
+::>                   *4
+  end;
+  thus G is {p}-group implies G is p-group
+  proof
+    assume B1: G is {p}-group;
+    thus G is p-group;
+::>                 *4
+  end;
+end;
+@ %def Th4
+
+\begin{definition}
+Let $G$ be a group and $\pi$ be a set of primes. We define a
+\define{Sylow $\pi$-Subgroup} to be a $\pi$-subgroup $H\subgroup G$ such
+that it is a maximal $\pi$-subgroup, i.e., for any $\pi$-subgroup
+$K\subgroup G$ such that $H\subgroup K$ has $K=H$ or $K=G$.
+\end{definition}
+
+\begin{def-remark}
+This seems to be a relatively ``obscure'' definition, presumably because
+for finite groups it coincides with Hall $\pi$-subgroups. For further
+information about this, see Robinson~\cite{robinson2012course} and the
+bibliography for the entry ``Sylow subgroup'' in the
+\emph{Encyclopedia of Mathematics}\footnote{\url{https://encyclopediaofmath.org/wiki/Sylow_subgroup}}.
+\end{def-remark}

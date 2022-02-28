@@ -8,17 +8,7 @@
 
 <<Theorem: $p$-Core is Characteristic>>
 
-<<Definition: $\pi$-Group>>
-
-<<Theorem: Existence of $\pi$-Subgroup>>
-
-<<Register: $\pi$-group for finite group>>
-
 <<Definition: $\pi$-Core>>
-
-<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
-
-<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
 <<Theorem: $\pCore{\pi}{G}$ is a $\pi$-Group>>
 
@@ -116,51 +106,6 @@ proof
 end;
 @ %def Th1
 
-\begin{definition}
-Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
-a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
-also belongs to $\pi\ni p$, or if the group is trivial $G=\trivialGroup$.
-\end{definition}
-
-<<Definition: $\pi$-Group>>=
-:: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
-definition
-  let Pi be Subset of SetPrimes;
-  let IT be finite Group;
-  attr IT is Pi-group means
-  :Def10:
-  (for p being prime Nat st p divides card IT holds p in Pi)
-  or (IT is trivial);
-end;
-@ %def Def10 Pi-group
-
-<<Theorem: Existence of $\pi$-Subgroup>>=
-theorem Th2:
-  for Pi being Subset of SetPrimes
-  for G being finite Group
-  ex H being strict Subgroup of G
-  st H is Pi-group
-proof
-  let Pi be Subset of SetPrimes;
-  let G be finite Group;
-  take H = (1).G;
-  H is trivial;
-  hence H is Pi-group by Def10;
-end;
-@% def Th2
-
-<<Register: $\pi$-group for finite group>>=
-registration
-  let Pi be Subset of SetPrimes;
-  cluster Pi-group for finite Group;
-  existence
-  proof
-    consider G being trivial Group such that not contradiction;
-    take G;
-    thus thesis by Def10;
-  end;
-end;
-@
 
 <<Definition: $\pi$-Core>>=
 definition
@@ -185,54 +130,6 @@ definition
   correctness;
 end;
 @ %def Def11 Pi-core
-
-<<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
-theorem Th3:
-  for p being prime Nat
-  holds {p} is Subset of SetPrimes
-proof
-  let p be prime Nat;
-  for x being object st x in {p} holds x in SetPrimes
-  proof
-    let x be object;
-    assume A1: x in {p};
-    then A2: x = p by TARSKI:def 1;
-    p in SetPrimes by NEWTON:def 6;
-    hence thesis by A2;
-  end;
-  then {p} c= SetPrimes by TARSKI:def 3;
-  hence thesis;
-end;
-
-definition
-  let p be prime Nat;
-  redefine func {p} -> Subset of SetPrimes;
-  coherence by Th3;
-end;
-@ %def Th3
-
-<<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
-theorem Th4:
-  for p being prime Nat
-  for G being finite Group
-  holds G is p-group iff G is {p}-group
-proof
-  let p be prime Nat;
-  let G be finite Group;
-  thus G is p-group implies G is {p}-group
-  proof
-    assume B1: G is p-group;
-    thus G is {p}-group;
-::>                   *4
-  end;
-  thus G is {p}-group implies G is p-group
-  proof
-    assume B1: G is {p}-group;
-    thus G is p-group;
-::>                 *4
-  end;
-end;
-@ %def Th4
 
 <<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>=
 theorem Th5:
