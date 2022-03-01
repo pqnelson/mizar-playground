@@ -53,9 +53,147 @@ environ
    XBOOLE_0, CARD_1, RELAT_1, SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
    CARD_3, PRALG_1, FINSEQ_1, FINSET_1, GROUP_1, GROUP_2, GROUP_3,
    GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1, AUTGROUP, GROUP_9,
-   GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, MONOID_0, XTUPLE_0, GROUP_19;
+   GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, MONOID_0, XTUPLE_0, GROUP_19,
+   NAT_D;
 
  schemes FUNCT_1, FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL, XFAMILY, XBOOLE_0;
+
+begin :: pi-groups
+reserve Pi for Subset of SetPrimes;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be finite Group;
+  attr IT is Pi-group means
+  :Def1:
+  (for p being prime Nat st p divides card IT holds p in Pi)
+  or (IT is trivial);
+end;
+
+theorem Th2:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  ex H being strict Subgroup of G
+  st H is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  take H = (1).G;
+  H is trivial;
+  hence H is Pi-group by Def1;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for finite Group;
+  existence
+  proof
+    take G = the trivial Group;
+    thus thesis by Def1;
+  end;
+end;
+
+registration
+  let G be finite Group;
+  let N be normal Subgroup of G;
+  cluster G./.N -> finite;
+  coherence
+  proof
+    for G being finite Group
+    for N being normal Subgroup of G
+    holds G./.N is finite;
+    hence thesis;
+  end;
+end;
+
+Lm1:
+for G being trivial Group
+for H being Subgroup of G
+holds H is trivial;
+::>              *4
+
+Lm2:
+for G being Group
+holds G is trivial iff card G = 1;
+::>                             *4,4
+
+theorem Th5:
+  for G being Pi-group finite Group
+  for H being Subgroup of G
+  holds H is Pi-group
+proof
+  let G be Pi-group finite Group;
+  let H be Subgroup of G;
+  A1: card H divides card G by GROUP_2:148;
+  A2: G is trivial or (G is non trivial & H is trivial)
+  or (G is non trivial & H is non trivial);
+  per cases by A2;
+  suppose A3: G is non trivial & H is non trivial;
+    consider t being Nat such that
+    A4: card G = (card H)*t by A1,NAT_D:def 3;
+    A5: H is non trivial by A3;
+    A6: G is Pi-group;
+    for p being prime Nat st p divides card H holds p in Pi
+    proof
+      let p be prime Nat;
+      assume B1: p divides card H;
+      then p divides (card H)*t by NAT_D:9;
+      then p divides card G by A4;
+      hence p in Pi by A3,A6,Def1;
+    end;
+    hence thesis by A3,Def1;
+  end;
+  suppose G is non trivial & H is trivial;
+    hence thesis by Def1;
+  end;
+  suppose G is trivial;
+    then H is trivial by Lm1;
+    hence thesis by Def1;
+  end;
+end;
+
+Lm3:
+for G being Group
+for N being normal Subgroup of G
+st G./.N is non trivial
+holds G is non trivial;
+::>                  *4
+
+theorem Th6:
+  for G being Pi-group finite Group
+  for N being normal Subgroup of G
+  holds G./.N is Pi-group
+proof
+  let G be Pi-group finite Group;
+  let N be normal Subgroup of G;
+  A1: N is Pi-group by Th5;
+  card (G./.N) = index N by GROUP_2:134,GROUP_6:27;
+  then A2: card G = (card N)*(card (G./.N)) by GROUP_2:147;
+  A3: G./.N is trivial or G./.N is non trivial;
+  per cases by A3;
+  suppose A4: G./.N is non trivial;
+    A5: G is Pi-group;
+    for p being prime Nat
+    st p divides card (G./.N)
+    holds p in Pi
+    proof
+      let p be prime Nat;
+      assume B1: p divides card (G./.N);
+      then p divides (card N)*(card (G./.N)) by NAT_D:9;
+      then p divides card G by A2;
+      hence p in Pi by A4,A5,Lm3,Def1;
+    end;
+
+    hence thesis by Def1;
+  end;
+  suppose G./.N is trivial;
+    hence thesis by Def1;
+  end;
+end;
+
+proof end;
+::> *396
+
 
 begin
 

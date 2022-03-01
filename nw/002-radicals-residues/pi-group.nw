@@ -18,6 +18,10 @@ finite groups, but may be different in general).
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
+<<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>
+
+<<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
+
 @
 
 Recall, the notion of a $p$-group is defined as:
@@ -43,11 +47,11 @@ definition
   let Pi be Subset of SetPrimes;
   let IT be finite Group;
   attr IT is Pi-group means
-  :Def10:
+  :Def1:
   (for p being prime Nat st p divides card IT holds p in Pi)
   or (IT is trivial);
 end;
-@ %def Def10 Pi-group
+@ %def Def1 Pi-group
 
 \begin{theorem}
 Let $G$ be a finite group, $\pi$ a set of prime numbers.
@@ -69,7 +73,7 @@ proof
   let G be finite Group;
   take H = (1).G;
   H is trivial;
-  hence H is Pi-group by Def10;
+  hence H is Pi-group by Def1;
 end;
 @ %localdef Th2
 
@@ -81,7 +85,7 @@ registration
   proof
     consider G being trivial Group such that not contradiction;
     take G;
-    thus thesis by Def10;
+    thus thesis by Def1;
   end;
 end;
 @
@@ -149,6 +153,105 @@ proof
   end;
 end;
 @ %def Th4
+
+\begin{theorem}[{\cite[Th3.42]{rose1994course}}]
+Let $G$ be a finite $\pi$-group. Then any subgroup $H\subgroup G$ is a
+$\pi$-group.
+\end{theorem}
+
+<<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>=
+Lm1:
+for G being trivial Group
+for H being Subgroup of G
+holds H is trivial;
+::>              *4
+
+Lm2:
+for G being Group
+holds G is trivial iff card G = 1;
+::>                             *4,4
+
+theorem Th5:
+  for G being Pi-group finite Group
+  for H being Subgroup of G
+  holds H is Pi-group
+proof
+  let G be Pi-group finite Group;
+  let H be Subgroup of G;
+  A1: card H divides card G by GROUP_2:148;
+  A2: G is trivial or (G is non trivial & H is trivial)
+  or (G is non trivial & H is non trivial);
+  per cases by A2;
+  suppose A3: G is non trivial & H is non trivial;
+    consider t being Nat such that
+    A4: card G = (card H)*t by A1,NAT_D:def 3;
+    A5: H is non trivial by A3;
+    A6: G is Pi-group;
+    for p being prime Nat st p divides card H holds p in Pi
+    proof
+      let p be prime Nat;
+      assume B1: p divides card H;
+      then p divides (card H)*t by NAT_D:9;
+      then p divides card G by A4;
+      hence p in Pi by A3,A6,Def1;
+    end;
+    hence thesis by A3,Def1;
+  end;
+  suppose G is non trivial & H is trivial;
+    hence thesis by Def1;
+  end;
+  suppose G is trivial;
+    then H is trivial by Lm1;
+    hence thesis by Def1;
+  end;
+end;
+@ %def Th5
+
+\begin{theorem}[{\cite[Th3.42]{rose1994course}}]
+Let $G$ be a finite $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
+a $\pi$-group.
+\end{theorem}
+
+<<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>=
+Lm3:
+for G being Group
+for N being normal Subgroup of G
+st G./.N is non trivial
+holds G is non trivial;
+::>                  *4
+
+theorem Th6:
+  for G being Pi-group finite Group
+  for N being normal Subgroup of G
+  holds G./.N is Pi-group
+proof
+  let G be Pi-group finite Group;
+  let N be normal Subgroup of G;
+  A1: N is Pi-group by Th5;
+  card (G./.N) = index N by GROUP_2:134,GROUP_6:27;
+  then A2: card G = (card N)*(card (G./.N)) by GROUP_2:147;
+  A3: G./.N is trivial or G./.N is non trivial;
+  per cases by A3;
+  suppose A4: G./.N is non trivial;
+    A5: G is Pi-group;
+    for p being prime Nat
+    st p divides card (G./.N)
+    holds p in Pi
+    proof
+      let p be prime Nat;
+      assume B1: p divides card (G./.N);
+      then p divides (card N)*(card (G./.N)) by NAT_D:9;
+      then p divides card G by A2;
+      hence p in Pi by A4,A5,Lm3,Def1;
+    end;
+
+    hence thesis by Def1;
+  end;
+  suppose G./.N is trivial;
+    hence thesis by Def1;
+  end;
+end;
+@ %def Th6
 
 \begin{definition}
 Let $G$ be a group and $\pi$ be a set of primes. We define a

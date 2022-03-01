@@ -12,7 +12,7 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 RADRES=nw/002-radicals-residues
-RADICALS=$(RADRES).nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
+RADICALS=$(RADRES).nw $(RADRES)/pi-group.nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 NW_UNDERSCORE=-filter 'sed "/^@use /s/_/\\\\_/g;/^@defn /s/_/\\\\_/g"'
 
@@ -29,7 +29,7 @@ rm_defs:
 	-rm *.defs
 	touch 001.defs
 	touch 002.defs
-defs: rm_defs $(DEFS_CMD)
+defs: rm_defs
 	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
 	nodefs $(RADICALS) > 002.defs
 	sort -u 001.defs | cpif 001.defs
