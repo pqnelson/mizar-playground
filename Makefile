@@ -12,7 +12,9 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 RADRES=nw/002-radicals-residues
-RADICALS=$(RADRES).nw $(RADRES)/pi-group.nw $(RADRES)/p-cores.nw $(RADRES)/products.nw
+RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
+	$(RADRES)/pi-group.nw $(RADRES)/sylow-pi-groups.nw \
+	$(RADRES)/p-cores.nw $(RADRES)/products.nw
 DUMB_NWFILES=$(CHARACTERISTIC_SUBGROUP)
 NW_UNDERSCORE=-filter 'sed "/^@use /s/_/\\\\_/g;/^@defn /s/_/\\\\_/g"'
 

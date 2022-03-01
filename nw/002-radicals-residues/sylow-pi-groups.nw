@@ -1,0 +1,60 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Sylow $\pi$-Groups}
+
+We can generalize the notions surrounding Sylow's theorems from
+$p$-groups to $\pi$-groups. Towards this end, we will consciously follow
+the conventions laid down in the Mizar article concerning Sylow
+theorems~\mml{group10}. 
+
+<<Sylow $\pi$-Groups>>=
+
+@ 
+
+% Derek J.S. Robinson, _A Course in the Theory of Groups_, section 9.1
+\begin{definition}
+Let $G$ be a group and $\pi$ be a set of primes. We define a
+\define{Sylow $\pi$-Subgroup} to be a $\pi$-subgroup $H\subgroup G$ such
+that it is a maximal $\pi$-subgroup, i.e., for any $\pi$-subgroup
+$K\subgroup G$ such that $H\subgroup K$ has $K=H$ or $K=G$.
+\end{definition}
+
+\begin{def-remark}
+We will follow the formalization of maximal subgroups in
+Definition~\mml[def6]{group4}:
+\begin{mizar}
+definition
+  let G, H;
+  attr H is maximal means
+  :: GROUP_4:def 6
+  the multMagma of H <> the multMagma of G &
+for K being strict Subgroup of G
+  st the multMagma of H <> K & H is Subgroup of K
+  holds K = the multMagma of G;
+end;
+\end{mizar}
+Thus, we need to assert being proper and any other distinct subgroup
+satisfying the desired property must be a $\pi$-subgroup.
+\end{def-remark}
+
+\begin{def-remark}
+This seems to be a relatively ``obscure'' definition, presumably because
+for finite groups it coincides with Hall $\pi$-subgroups. For further
+information about this, see Robinson~\cite{robinson2012course} and the
+bibliography for the entry ``Sylow subgroup'' in the
+\emph{Encyclopedia of Mathematics}\footnote{\url{https://encyclopediaofmath.org/wiki/Sylow_subgroup}}.
+\end{def-remark}
+
+<<Definition: predicate ``is Sylow $\pi$-subgroup of primes [$\pi$]''>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  let IT be finite Subgroup of G;
+  pred IT is_Sylow_pi-subgroup_of_primes Pi means
+  :Def2:
+  IT is Pi-group & IT is proper &
+  for P being strict finite Subgroup of G
+  st P is Pi-group & P <> the multMagma of IT
+  holds P = the multMagma of G;
+end;
+@ %def is_Sylow_pi-subgroup_of_primes

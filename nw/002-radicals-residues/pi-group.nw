@@ -8,17 +8,28 @@ Sylow $\pi$-subgroups, and Hall $\pi$-subgroups (which coincide for
 finite groups, but may be different in general).
 
 <<$\pi$-Groups and $\pi$-Subgroups>>=
+<<Definition: $\pi$-element of Group>>
+
 <<Definition: $\pi$-Group>>
+
+<<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>
 
 <<Theorem: Existence of $\pi$-Subgroup>>
 
-<<Register: $\pi$-group for finite group>>
+<<Register: $\pi$-group for groups and finite groups>>
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
 <<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>
+
+<<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>
+
+<<Lemma: $g=h$ and $|g|\neq0$ implies $|g|=|h|$>>
+<<Theorem: for $g\in G$ and $h\in H\subgroup G$, if $g=h$, then $|g|=|h|$>>
+
+<<Register: quotient group of finite groups is finite>>
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
 
@@ -35,23 +46,126 @@ definition
 end;
 \end{mizar}
 
+<<Definition: $\pi$-element of Group>>=
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
+:: theorem 5.2.7
+definition
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  let IT be Element of G;
+  attr IT is Pi-element means
+  :Def1:
+  (for p being prime Nat st p divides (ord IT) holds p in Pi) &
+  (ord IT <> 0);
+end;
+@ %def Def1 Pi-element
+
 \begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
 a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
 also belongs to $\pi\ni p$, or if the group is trivial $G=\trivialGroup$.
 \end{definition}
 
+\begin{def-remark}
+We need to make this definition explicitly include the possibility of
+the group being trivial, since Mizar defines ``prime''~\mml[def4]{int2}
+as being greater than 1 \emph{and} its only divisors are 1 and itself.
+\end{def-remark}
+
 <<Definition: $\pi$-Group>>=
 :: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
 definition
   let Pi be Subset of SetPrimes;
-  let IT be finite Group;
+  let IT be Group;
   attr IT is Pi-group means
-  :Def1:
-  (for p being prime Nat st p divides card IT holds p in Pi)
-  or (IT is trivial);
+  :Def2:
+  (for g being Element of IT
+   holds g is Pi-element) or
+  (IT is trivial);
 end;
-@ %def Def1 Pi-group
+@ %def Def2 Pi-group
+
+\begin{theorem}
+Let $G$ be a nontrivial finite group, $\pi$ be a set of prime numbers.
+Then $G$ is a $\pi$-group iff every prime divisor $p$ of $|G|$ belongs
+to $\pi$.
+\end{theorem}
+
+<<Theorem: criteria for finite group to be $\pi$-group>>=
+theorem Th1:
+  for G being finite Group
+  st G is non trivial
+  holds G is Pi-group iff (for p being prime Nat st p divides card G
+                           holds p in Pi)
+proof
+  let G be finite Group;
+  assume A1: G is non trivial;
+  thus G is Pi-group implies (for p being prime Nat st p divides card G
+                              holds p in Pi)
+  proof
+    assume B1: G is Pi-group;
+    let p be prime Nat;
+    assume B2: p divides card G;
+    not p in Pi implies contradiction
+    proof
+      assume C1: not p in Pi;
+      consider g being Element of G such that
+      C2: ord g = p by B2,GROUP_10:11;
+      g is Pi-element by A1,B1,Def2;
+      then p in Pi by C2,Def1;
+      hence contradiction by C1;
+    end;
+    hence p in Pi;
+  end;
+  thus (for p being prime Nat st p divides card G holds p in Pi) implies
+  G is Pi-group
+  proof
+    assume B1: for p being prime Nat st p divides card G holds p in Pi;
+    for g being Element of G holds g is Pi-element
+    proof
+      let g be Element of G;
+      not g is being_of_order_0 by GR_CY_1:6;
+      then C1: ord g <> 0 by GROUP_1:def 11;
+      ord g divides card G by GR_CY_1:8;
+      then for p being prime Nat st p divides (ord g) holds p divides
+      (card G) by NAT_D:4;
+      then for p being prime Nat st p divides (ord g) holds p in Pi by B1;
+      hence thesis by C1,Def1;
+    end;
+    hence G is Pi-group by Def2;
+  end;
+end;
+@ %def Th1
+
+\begin{theorem}
+Let $G$ be a finite group, $\pi_{1}\subset\pi_{2}$ be sets of prime numbers.
+If $G$ is a $\pi_{1}$-group, then $G$ is a $\pi_{2}$-group.
+\end{theorem}
+
+<<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>=
+theorem Th2:
+  for Pi1,Pi2 being Subset of SetPrimes
+  st Pi1 c= Pi2
+  for G being finite Group
+  st G is Pi1-group
+  holds G is Pi2-group
+proof
+  let Pi1,Pi2 be Subset of SetPrimes;
+  assume A1: Pi1 c= Pi2;
+  let G be finite Group;
+  assume A2: G is Pi1-group;
+  A3: G is trivial or G is non trivial;
+  per cases by A3;
+  suppose G is trivial;
+    hence thesis by Def1;
+  end;
+  suppose A4: G is non trivial;
+    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th1;
+    then for p being prime Nat st p divides card G holds p in Pi2 by A1;
+    hence thesis by A4,Th1;
+  end;
+end;
+@ %def Th2
 
 \begin{theorem}
 Let $G$ be a finite group, $\pi$ a set of prime numbers.
@@ -63,29 +177,34 @@ Take $H=\trivialSubgroup_{G}$, which is trivially a $\pi$-subgroup of $G$.
 \end{proof}
 
 <<Theorem: Existence of $\pi$-Subgroup>>=
-theorem Th2:
+theorem Th3:
   for Pi being Subset of SetPrimes
-  for G being finite Group
+  for G being Group
   ex H being strict Subgroup of G
   st H is Pi-group
 proof
   let Pi be Subset of SetPrimes;
-  let G be finite Group;
+  let G be Group;
   take H = (1).G;
   H is trivial;
-  hence H is Pi-group by Def1;
+  hence H is Pi-group by Def2;
 end;
 @ %localdef Th2
 
-<<Register: $\pi$-group for finite group>>=
+<<Register: $\pi$-group for groups and finite groups>>=
 registration
   let Pi be Subset of SetPrimes;
+  cluster Pi-group for Group;
+  existence
+  proof
+    take the trivial Group;
+    thus thesis by Def2;
+  end;
   cluster Pi-group for finite Group;
   existence
   proof
-    consider G being trivial Group such that not contradiction;
-    take G;
-    thus thesis by Def1;
+    take the trivial Group;
+    thus thesis by Def2;
   end;
 end;
 @
@@ -154,58 +273,200 @@ proof
 end;
 @ %def Th4
 
+\begin{theorem}
+Let $H\subgroup G$ bea subgroup, $g\in G$ and $h\in H$.
+If $g=h$, then for any $n\in\NN_{0}$ we have $g^{n}=h^{n}$.
+\end{theorem}
+
+<<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>=
+theorem Th5:
+  for G being Group
+  for g being Element of G
+  for H being Subgroup of G
+  st g in H
+  for h being Element of H st g = h
+  for n being Nat holds h |^ n = g |^ n
+proof
+  let G be Group;
+  let g be Element of G;
+  let H be Subgroup of G;
+  assume A1: g in H;
+  let h be Element of H;
+  assume A2: g = h;
+  let n be Nat;
+  defpred P[Nat] means h |^ $1 = g |^ $1;
+  A3: P[0]
+  proof
+    g |^ 0 = 1_G by GROUP_1:25
+          .= 1_H by GROUP_2:44
+          .= h |^ 0 by GROUP_1:25;
+    hence thesis;
+  end;
+  A4: for k being Nat st P[k] holds P[k+1]
+  proof
+    let k be Nat;
+    assume B1: P[k];
+    then g |^ k = h |^ k;
+    then B2: g * (g |^ k) = h * (h |^ k) by A2,GROUP_2:43;
+    g * (g |^ k) = g |^ (k+1) & h * (h |^ k) = h |^ (k+1) by GROUP_1:34;
+    hence P[k+1] by B2;
+  end;
+  A5: for k being Nat holds P[k] from NAT_1:sch 2(A3,A4);
+  hence h |^ n = g |^ n;
+end;
+@ %def Th5
+
+\begin{lemma}
+If $g\in G$, $h\in H\subgroup H$, $h=g$ and $|g|\neq0$, then $|g|=|h|$.
+\end{lemma}
+
+<<Lemma: $g=h$ and $|g|\neq0$ implies $|g|=|h|$>>=
+Lm1:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  st not g is being_of_order_0 & g in H
+  for h being Element of H
+  st h = g
+  holds ord g = ord h
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+  assume A1: not g is being_of_order_0;
+  assume A2: g in H;
+  let h be Element of H;
+  assume A3: h = g;
+  consider n being Nat such that
+  A4: n = ord g
+  by A1,GROUP_1:def 11;
+  A5: n <> 0 & g |^ n = 1_G &
+      for m being Nat st g |^ m = 1_G & m <> 0 holds n <= m
+  by A1,A4,GROUP_1:def 11;
+  A6: h |^ n = 1_H
+  proof
+    h |^ n = g |^ n by A2,A3,Th5
+    .= 1_G by A5;
+    hence thesis by GROUP_2:44;
+  end;
+  A7: for m being Nat st h |^ m = 1_H & m <> 0 holds n <= m
+  proof
+    let m be Nat;
+    assume B1: h |^ m = 1_H;
+    assume B2: m <> 0;
+    g |^ m = h |^ m by A2,A3,Th5
+          .= 1_H by B1
+          .= 1_G by GROUP_2:44;
+    hence thesis by A1,A4,B2,GROUP_1:def 11;
+  end;
+  A8: n <> 0 by A5;
+  A9: not h is being_of_order_0 by A5,A6,GROUP_1:def 10;
+  consider k being Nat such that
+  A10: k = ord h by A9,GROUP_1:def 11;
+  h |^ k = 1_H & k <> 0 & (for m being Nat st h |^ m = 1_H & m <> 0
+  holds k <= m) 
+  by A9,A10,GROUP_1:def 11;
+  then n <= k & k <= n by A6,A7,A8;
+  then n = k by XXREAL_0:1;
+  hence ord g = ord h by A4,A10;
+end;
+@ %def Lm1
+
+\begin{theorem}
+Let $g\in G$, $H\subgroup G$, and $h\in H$
+If $g=h$, then $|g|=|h|$.
+\end{theorem}
+
+<<Theorem: for $g\in G$ and $h\in H\subgroup G$, if $g=h$, then $|g|=|h|$>>=
+theorem Th7:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  st g in H
+  for h being Element of H
+  st h = g
+  holds ord g = ord h
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+  assume A1: g in H;
+  let h be Element of H;
+  assume A2: h = g;
+  A3: g is being_of_order_0 or not (g is being_of_order_0);
+  per cases by A3;
+  suppose not (g is being_of_order_0);
+    hence thesis by A1,A2,A3,Lm1;
+  end;
+  suppose A4: g is being_of_order_0;
+    (ex n being Nat st n <> 0 & h |^ n = 1_H) implies contradiction
+    proof
+      given n being Nat such that 
+      B1: n <> 0 & h |^ n = 1_H;
+      g |^ n = h |^ n by A1,A2,Th5
+            .= 1_H by B1
+            .= 1_G by GROUP_2:44;
+      hence contradiction by A4,B1,GROUP_1:def 10;
+    end;
+    then A5: h is being_of_order_0 by GROUP_1:def 10;
+    then ord h = 0 & ord g = 0 by A4,GROUP_1:def 11;
+    hence ord g = ord h;
+  end;
+end;
+@ %def Th7
+
 \begin{theorem}[{\cite[Th3.42]{rose1994course}}]
 Let $G$ be a finite $\pi$-group. Then any subgroup $H\subgroup G$ is a
 $\pi$-group.
 \end{theorem}
 
 <<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>=
-Lm1:
-for G being trivial Group
-for H being Subgroup of G
-holds H is trivial;
-::>              *4
-
-Lm2:
-for G being Group
-holds G is trivial iff card G = 1;
-::>                             *4,4
-
-theorem Th5:
-  for G being Pi-group finite Group
+theorem Th8:
+  for G being Pi-group Group
   for H being Subgroup of G
   holds H is Pi-group
 proof
-  let G be Pi-group finite Group;
+  let G be Pi-group Group;
   let H be Subgroup of G;
-  A1: card H divides card G by GROUP_2:148;
-  A2: G is trivial or (G is non trivial & H is trivial)
-  or (G is non trivial & H is non trivial);
-  per cases by A2;
-  suppose A3: G is non trivial & H is non trivial;
-    consider t being Nat such that
-    A4: card G = (card H)*t by A1,NAT_D:def 3;
-    A5: H is non trivial by A3;
-    A6: G is Pi-group;
-    for p being prime Nat st p divides card H holds p in Pi
+  A1: H is trivial or H is non trivial;
+  per cases by A1;
+  suppose H is trivial;
+    hence thesis by Def2;
+  end;
+  suppose A2: H is non trivial;
+    then A3: G is non trivial by Lm1;
+    for h being Element of H holds h is Pi-element
     proof
-      let p be prime Nat;
-      assume B1: p divides card H;
-      then p divides (card H)*t by NAT_D:9;
-      then p divides card G by A4;
-      hence p in Pi by A3,A6,Def1;
+      let h be Element of H;
+      B1: h in H;
+      reconsider g=h as Element of G by GROUP_2:42;
+      g in H by B1;
+      then B2: ord g = ord h by Th7;
+      B3: g is Pi-element by A3,Def2;
+      then B4: ord g <> 0 by GR_CY_1:6,GROUP_1:def 11;
+      for p being prime Nat st p divides (ord g) holds p in Pi by B3,Def1;
+      then for p being prime Nat st p divides (ord h) holds p in Pi by B2;
+      hence h is Pi-element by B2,B4,Def1;
     end;
-    hence thesis by A3,Def1;
-  end;
-  suppose G is non trivial & H is trivial;
-    hence thesis by Def1;
-  end;
-  suppose G is trivial;
-    then H is trivial by Lm1;
-    hence thesis by Def1;
+    hence thesis by Def2;
   end;
 end;
-@ %def Th5
+@ %def Th8
+
+<<Register: quotient group of finite groups is finite>>=
+registration
+  let G be finite Group;
+  let N be normal Subgroup of G;
+  cluster G./.N -> finite;
+  coherence
+  proof
+    for G being finite Group
+    for N being normal Subgroup of G
+    holds G./.N is finite;
+    hence thesis;
+  end;
+end;
+@
 
 \begin{theorem}[{\cite[Th3.42]{rose1994course}}]
 Let $G$ be a finite $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
@@ -253,17 +514,3 @@ proof
 end;
 @ %def Th6
 
-\begin{definition}
-Let $G$ be a group and $\pi$ be a set of primes. We define a
-\define{Sylow $\pi$-Subgroup} to be a $\pi$-subgroup $H\subgroup G$ such
-that it is a maximal $\pi$-subgroup, i.e., for any $\pi$-subgroup
-$K\subgroup G$ such that $H\subgroup K$ has $K=H$ or $K=G$.
-\end{definition}
-
-\begin{def-remark}
-This seems to be a relatively ``obscure'' definition, presumably because
-for finite groups it coincides with Hall $\pi$-subgroups. For further
-information about this, see Robinson~\cite{robinson2012course} and the
-bibliography for the entry ``Sylow subgroup'' in the
-\emph{Encyclopedia of Mathematics}\footnote{\url{https://encyclopediaofmath.org/wiki/Sylow_subgroup}}.
-\end{def-remark}
