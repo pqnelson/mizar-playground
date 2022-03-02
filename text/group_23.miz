@@ -1,0 +1,1565 @@
+:: Radicals and Residues of Groups
+::  by Alex Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
+
+
+environ
+
+ vocabularies PRALG_1, MOD_4, CARD_3, RLVECT_1, UPROOTS, RLVECT_2,
+   EQREL_1,
+   FUNCT_3, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1,
+   FINSEQ_1, FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
+   FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, STRUCT_0,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GROUP_7,
+   BINOP_1, BINOP_2, ALGSTR_0, REALSET1, AUTGROUP, GR_CY_1, NATTRA_1,
+   NAT_1, INT_2, SETFAM_1, NEWTON, PRE_TOPC, GROUP_10, GROUP_19,
+   GROUP_23;
+
+ constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1, FUNCT_3,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, FINSEQ_1, FINSEQ_2, FINSOP_1,
+   CARD_1, NUMBERS, REAL_1, SETWISEO,
+   ARYTM_2, ARYTM_3, ORDINAL2, SQUARE_1,
+   SETFAM_1, ORDINAL1,INT_1, INT_2, PBOOLE,
+   XXREAL_2, XCMPLX_0, XXREAL_0, XREAL_0,  NAT_1, NAT_D,
+   BINOP_1, BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, REALSET1, MONOID_0,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, CARD_3, PRALG_1, GROUP_7, GROUP_19;
+ notations TARSKI, XBOOLE_0, SUBSET_1, XCMPLX_0, ORDINAL1, RELAT_1,
+   FUNCT_1, RELSET_1, FUNCT_2, FUNCOP_1, SETWISEO, PARTFUN1, FUNCT_3,
+   ZFMISC_1, CARD_1, INT_1, NAT_1, INT_2, ARYTM_2, ARYTM_3,
+   FINSEQ_2, REAL_1, SETFAM_1, NUMBERS, MEMBERED, PBOOLE, BINOP_1,
+   BINOP_2, FINSET_1, STRUCT_0, ALGSTR_0, XXREAL_0, FINSEQ_1, GROUP_1, GROUP_2,
+   GROUP_3, GROUP_4, GROUP_5, REALSET1, GROUP_6, NAT_D, GRSOLV_1,
+   AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, CARD_3, PRALG_1, GROUP_7, GROUP_19;
+ registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+   ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
+   ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
+   STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, MONOID_0, GROUP_6,
+   GR_CY_1, GROUP_7;
+ requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
+ definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, ARYTM_2, FINSEQ_1, PRALG_1, MONOID_0,
+   GROUP_1, GROUP_3, GROUP_4, GROUP_5, GROUP_6, AUTGROUP, NEWTON, XXREAL_0, GROUP_7,
+   GROUP_19;
+ equalities PARTFUN1, FINSET_1, BINOP_1, REALSET1, STRUCT_0, GROUP_2,
+   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GR_CY_1, MONOID_0,
+   ALGSTR_0, NEWTON, PRALG_1, GROUP_7, GROUP_19;
+ expansions TARSKI, FINSET_1, GROUP_1, GROUP_2, GROUP_6, STRUCT_0, BINOP_1,
+   FUNCT_2, NEWTON, PRALG_1, MONOID_0, GROUP_7, GROUP_19;
+
+ theorems TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, FUNCT_3,
+   XBOOLE_0, CARD_1, RELAT_1, SETFAM_1, FINSEQ_3, PARTFUN1, ORDINAL1,
+   CARD_3, PRALG_1, FINSEQ_1, FINSET_1, GROUP_1, GROUP_2, GROUP_3,
+   GROUP_4, GROUP_5, GROUP_6, STRUCT_0, GRSOLV_1, AUTGROUP, GROUP_9,
+   GROUP_10, GR_CY_1, XCMPLX_1, GROUP_7, MONOID_0, XTUPLE_0, GROUP_19,
+   NAT_D, XXREAL_0, NEWTON, INT_2;
+
+ schemes FUNCT_1, FUNCT_2, GROUP_4, FINSEQ_1, FRAENKEL, XFAMILY, XBOOLE_0,
+   NAT_1;
+
+begin :: pi-Groups and pi-Subgroups
+reserve Pi for Subset of SetPrimes;
+
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
+:: theorem 5.2.7
+definition
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  let IT be Element of G;
+  attr IT is Pi-element means
+  :Def1:
+  (for p being prime Nat st p divides (ord IT) holds p in Pi) &
+  (ord IT <> 0);
+end;
+
+theorem Th1:
+  for G being Group
+  holds 1_G is Pi-element
+proof
+  let G be Group;
+  A1: ord 1_G = 1 by GROUP_1:42;
+  for p being prime Nat st p divides (ord 1_G) holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides (ord 1_G);
+    then p divides 1 by GROUP_1:42;
+    then B2: p = 1 by INT_2:13;
+    p > 1 by INT_2:def 4;
+    then contradiction by B2;
+    hence p in Pi;
+  end;
+  hence 1_G is Pi-element by A1,Def1;
+end;
+
+:: See, e.g., Kurzweil & Stellmacher, "Theory of finite groups", Ch.1 section 1, pg 9
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be Group;
+  attr IT is Pi-group means
+  :Def2:
+  for g being Element of IT holds g is Pi-element;
+end;
+
+theorem Th2:
+  for G being trivial Group
+  holds G is Pi-group
+proof
+  let G be trivial Group;
+  consider x being object such that
+  A1: the carrier of G = {x} by GROUP_6:def 2;
+  1_G in G by GROUP_2:def 7;
+  then 1_G in {x} by A1;
+  then A2: x = 1_G by TARSKI:def 1;
+  A3: for g being Element of G holds g=1_G
+  proof
+    let g be Element of G;
+    g in {1_G} by A1,A2;
+    hence g=1_G by TARSKI:def 1;
+  end;
+  1_G is Pi-element by Th1;
+  hence G is Pi-group by A3,Def2;
+end;
+
+theorem Th3:
+  for G being finite Group
+  holds G is Pi-group iff (for p being prime Nat st p divides card G
+                           holds p in Pi)
+proof
+  let G be finite Group;
+  thus G is Pi-group implies (for p being prime Nat st p divides card G
+                              holds p in Pi)
+  proof
+    assume B1: G is Pi-group;
+    let p be prime Nat;
+    assume B2: p divides card G;
+    not p in Pi implies contradiction
+    proof
+      assume C1: not p in Pi;
+      consider g being Element of G such that
+      C2: ord g = p by B2,GROUP_10:11;
+      g is Pi-element by B1,Def2;
+      then p in Pi by C2,Def1;
+      hence contradiction by C1;
+    end;
+    hence p in Pi;
+  end;
+  thus (for p being prime Nat st p divides card G holds p in Pi) implies
+  G is Pi-group
+  proof
+    assume B1: for p being prime Nat st p divides card G holds p in Pi;
+    for g being Element of G holds g is Pi-element
+    proof
+      let g be Element of G;
+      not g is being_of_order_0 by GR_CY_1:6;
+      then C1: ord g <> 0 by GROUP_1:def 11;
+      ord g divides card G by GR_CY_1:8;
+      then for p being prime Nat st p divides (ord g) holds p divides
+      (card G) by NAT_D:4;
+      then for p being prime Nat st p divides (ord g) holds p in Pi by B1;
+      hence thesis by C1,Def1;
+    end;
+    hence G is Pi-group by Def2;
+  end;
+end;
+
+theorem Th4:
+  for Pi1,Pi2 being Subset of SetPrimes
+  st Pi1 c= Pi2
+  for G being finite Group
+  st G is Pi1-group
+  holds G is Pi2-group
+proof
+  let Pi1,Pi2 be Subset of SetPrimes;
+  assume A1: Pi1 c= Pi2;
+  let G be finite Group;
+  assume A2: G is Pi1-group;
+  A3: G is trivial or G is non trivial;
+  per cases by A3;
+  suppose G is trivial;
+    hence thesis by Th2;
+  end;
+  suppose A4: G is non trivial;
+    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th3;
+    then for p being prime Nat st p divides card G holds p in Pi2 by A1;
+    hence thesis by A4,Th3;
+  end;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for Group;
+  existence
+  proof
+    take the trivial Group;
+    thus thesis by Th2;
+  end;
+  cluster Pi-group for finite Group;
+  existence
+  proof
+    take the trivial Group;
+    thus thesis by Th2;
+  end;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  cluster Pi-group for normal Subgroup of G;
+  existence
+  proof
+    take N = (1).G;
+    thus thesis by Th2;
+  end;
+end;
+
+theorem Th5:
+  for p being prime Nat
+  holds {p} is Subset of SetPrimes
+proof
+  let p be prime Nat;
+  for x being object st x in {p} holds x in SetPrimes
+  proof
+    let x be object;
+    assume A1: x in {p};
+    then A2: x = p by TARSKI:def 1;
+    p in SetPrimes by NEWTON:def 6;
+    hence thesis by A2;
+  end;
+  then {p} c= SetPrimes by TARSKI:def 3;
+  hence thesis;
+end;
+
+definition
+  let p be prime Nat;
+  redefine func {p} -> Subset of SetPrimes;
+  coherence by Th5;
+end;
+
+theorem Th6:
+  for p being prime Nat
+  for G being finite Group
+  holds G is p-group iff G is {p}-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  thus G is p-group implies G is {p}-group
+  proof
+    assume B1: G is p-group;
+    thus G is {p}-group;
+::>                   *4
+  end;
+  thus G is {p}-group implies G is p-group
+  proof
+    assume B1: G is {p}-group;
+    thus G is p-group;
+::>                 *4
+  end;
+end;
+
+theorem Th7:
+  for G being Group
+  for g being Element of G
+  for H being Subgroup of G
+  st g in H
+  for h being Element of H st g = h
+  for n being Nat holds h |^ n = g |^ n
+proof
+  let G be Group;
+  let g be Element of G;
+  let H be Subgroup of G;
+  assume A1: g in H;
+  let h be Element of H;
+  assume A2: g = h;
+  let n be Nat;
+  defpred P[Nat] means h |^ $1 = g |^ $1;
+  A3: P[0]
+  proof
+    g |^ 0 = 1_G by GROUP_1:25
+          .= 1_H by GROUP_2:44
+          .= h |^ 0 by GROUP_1:25;
+    hence thesis;
+  end;
+  A4: for k being Nat st P[k] holds P[k+1]
+  proof
+    let k be Nat;
+    assume B1: P[k];
+    then g |^ k = h |^ k;
+    then B2: g * (g |^ k) = h * (h |^ k) by A2,GROUP_2:43;
+    g * (g |^ k) = g |^ (k+1) & h * (h |^ k) = h |^ (k+1) by GROUP_1:34;
+    hence P[k+1] by B2;
+  end;
+  A5: for k being Nat holds P[k] from NAT_1:sch 2(A3,A4);
+  hence h |^ n = g |^ n;
+end;
+
+Lm1:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  st not g is being_of_order_0 & g in H
+  for h being Element of H
+  st h = g
+  holds ord g = ord h
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+  assume A1: not g is being_of_order_0;
+  assume A2: g in H;
+  let h be Element of H;
+  assume A3: h = g;
+  consider n being Nat such that
+  A4: n = ord g
+  by A1,GROUP_1:def 11;
+  A5: n <> 0 & g |^ n = 1_G &
+      for m being Nat st g |^ m = 1_G & m <> 0 holds n <= m
+  by A1,A4,GROUP_1:def 11;
+  A6: h |^ n = 1_H
+  proof
+    h |^ n = g |^ n by A2,A3,Th7
+    .= 1_G by A5;
+    hence thesis by GROUP_2:44;
+  end;
+  A7: for m being Nat st h |^ m = 1_H & m <> 0 holds n <= m
+  proof
+    let m be Nat;
+    assume B1: h |^ m = 1_H;
+    assume B2: m <> 0;
+    g |^ m = h |^ m by A2,A3,Th7
+          .= 1_H by B1
+          .= 1_G by GROUP_2:44;
+    hence thesis by A1,A4,B2,GROUP_1:def 11;
+  end;
+  A8: n <> 0 by A5;
+  A9: not h is being_of_order_0 by A5,A6,GROUP_1:def 10;
+  consider k being Nat such that
+  A10: k = ord h by A9,GROUP_1:def 11;
+  h |^ k = 1_H & k <> 0 & (for m being Nat st h |^ m = 1_H & m <> 0
+  holds k <= m)
+  by A9,A10,GROUP_1:def 11;
+  then n <= k & k <= n by A6,A7,A8;
+  then n = k by XXREAL_0:1;
+  hence ord g = ord h by A4,A10;
+end;
+
+theorem Th8:
+  for G being Group
+  for H being Subgroup of G
+  for g being Element of G
+  st g in H
+  for h being Element of H
+  st h = g
+  holds ord g = ord h
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let g be Element of G;
+  assume A1: g in H;
+  let h be Element of H;
+  assume A2: h = g;
+  A3: g is being_of_order_0 or not (g is being_of_order_0);
+  per cases by A3;
+  suppose not (g is being_of_order_0);
+    hence thesis by A1,A2,A3,Lm1;
+  end;
+  suppose A4: g is being_of_order_0;
+    (ex n being Nat st n <> 0 & h |^ n = 1_H) implies contradiction
+    proof
+      given n being Nat such that
+      B1: n <> 0 & h |^ n = 1_H;
+      g |^ n = h |^ n by A1,A2,Th7
+            .= 1_H by B1
+            .= 1_G by GROUP_2:44;
+      hence contradiction by A4,B1,GROUP_1:def 10;
+    end;
+    then A5: h is being_of_order_0 by GROUP_1:def 10;
+    then ord h = 0 & ord g = 0 by A4,GROUP_1:def 11;
+    hence ord g = ord h;
+  end;
+end;
+
+Lm2:
+for G being Group
+for H being Subgroup of G st H is non trivial
+holds G is non trivial
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume A1: H is non trivial;
+  A2: the carrier of H c= the carrier of G by GROUP_2:def 5;
+  the multMagma of H <> (1).H by A1,LmGROUP226;
+  then the carrier of H <> the carrier of (1).H by GROUP_2:61;
+  then the carrier of H <> {1_H} by GROUP_2:def 7;
+  then A3: the carrier of H <> {1_G} by GROUP_2:44;
+  the multMagma of G <> (1).G
+  proof
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    then not (the carrier of H c= {1_G}) by A3,XBOOLE_0:def 10;
+    then consider x being object such that
+    B1: x in the carrier of H & not x in {1_G}
+    by A1,A3,GROUP_2:65;
+    B2: x in H by B1;
+    B3: x in G by B2,GROUP_2:40;
+    B5: x <> 1_G by B1,TARSKI:def 1;
+    then B4: x in (the carrier of G) \ {1_G} by B1,B3,XBOOLE_0:def 5;
+    then not (the carrier of G) c= {1_G} by B1,TARSKI:def 3;
+    not x in {1_G} by B1;
+    then not x in (1).G by GROUP_2:def 7;
+    then ex y being object st y in G & not y in (1).G by B3;
+    hence thesis by B3,B5,GROUP_2:def 6;
+  end;
+  hence G is non trivial by LmGROUP226;
+end;
+
+theorem Th9:
+  for G being Pi-group Group
+  for H being Subgroup of G
+  holds H is Pi-group
+proof
+  let G be Pi-group Group;
+  let H be Subgroup of G;
+  A1: H is trivial or H is non trivial;
+  per cases by A1;
+  suppose H is trivial;
+    hence thesis by Th2;
+  end;
+  suppose A2: H is non trivial;
+    then A3: G is non trivial by Lm2;
+    for h being Element of H holds h is Pi-element
+    proof
+      let h be Element of H;
+      B1: h in H;
+      reconsider g=h as Element of G by GROUP_2:42;
+      g in H by B1;
+      then B2: ord g = ord h by Th8;
+      B3: g is Pi-element by A3,Def2;
+      then B4: ord g <> 0 by GR_CY_1:6,GROUP_1:def 11;
+      for p being prime Nat st p divides (ord g) holds p in Pi by B3,Def1;
+      then for p being prime Nat st p divides (ord h) holds p in Pi by B2;
+      hence h is Pi-element by B2,B4,Def1;
+    end;
+    hence thesis by Def2;
+  end;
+end;
+
+registration
+  let G be finite Group;
+  let N be normal Subgroup of G;
+  cluster G./.N -> finite;
+  coherence
+  proof
+    for G being finite Group
+    for N being normal Subgroup of G
+    holds G./.N is finite;
+    hence thesis;
+  end;
+end;
+
+Lm3:
+  for G being Group
+  for N being normal Subgroup of G
+  st G./.N is non trivial
+  holds G is non trivial;
+::>                  *4
+
+theorem Th10:
+  for G being Pi-group finite Group
+  for N being normal Subgroup of G
+  holds G./.N is Pi-group
+proof
+  let G be Pi-group finite Group;
+  let N be normal Subgroup of G;
+  A1: N is Pi-group by Th9;
+  card (G./.N) = index N by GROUP_2:134,GROUP_6:27;
+  then A2: card G = (card N)*(card (G./.N)) by GROUP_2:147;
+  A3: G./.N is trivial or G./.N is non trivial;
+  per cases by A3;
+  suppose A4: G./.N is non trivial;
+    A5: G is Pi-group;
+    A6: G is non trivial by A4,Lm3;
+    for p being prime Nat
+    st p divides card (G./.N)
+    holds p in Pi
+    proof
+      let p be prime Nat;
+      assume B1: p divides card (G./.N);
+      then p divides (card N)*(card (G./.N)) by NAT_D:9;
+      then p divides card G by A2;
+      hence p in Pi by A5,A6,Th3;
+    end;
+    hence thesis by A4,Th3;
+  end;
+  suppose G./.N is trivial;
+    hence thesis by Th2;
+  end;
+end;
+
+theorem Th11:
+  for G1,G2 being Group
+  for phi being Homomorphism of G1,G2
+  st phi is bijective
+  for g being Element of G1
+  holds ord g = ord (phi.g)
+proof
+  let G1,G2 be Group;
+  let phi be Homomorphism of G1,G2;
+  assume A1: phi is bijective;
+  let g be Element of G1;
+  A2: phi" is Homomorphism of G2,G1 by A1,GROUP_6:62;
+  then reconsider psi=phi" as Homomorphism of G2,G1;
+  set n = ord g;
+  A3: g |^ n = 1_G1 by GROUP_1:41;
+  A4: (phi.g) |^ n = phi.(g |^ n) by GROUP_6:36
+              .= phi.(1_G1) by A3
+              .= 1_G2 by GROUP_6:31;
+  then A5: ord (phi.g) divides n by GROUP_1:44;
+  set n2 = ord (phi.g);
+  set g2 = phi.g;
+  A6: g = (phi").(phi.g) by A1,A2,FUNCT_2:26;
+  g |^ n2 = psi.g2 |^ n2 by A1,A2,A6
+         .= (phi").((phi.g) |^ n2) by GROUP_6:36
+         .= (phi").(1_G2) by GROUP_1:41
+         .= 1_G1 by A2,GROUP_6:31;
+  then n divides ord (phi.g) by A4,GROUP_1:44;
+  hence ord g = ord (phi.g) by A5,NAT_D:5;
+end;
+
+theorem Th12:
+  for G1,G2 being Group
+  for g being Element of G1 st g is Pi-element
+  for phi being Homomorphism of G1,G2
+  st phi is bijective
+  holds phi.g is Pi-element
+proof
+  let G1,G2 be Group;
+  let g be Element of G1;
+  assume A1: g is Pi-element;
+  let phi be Homomorphism of G1,G2;
+  assume A2: phi is bijective;
+  then A3: ord g = ord (phi.g) by Th11;
+  A4: ord g <> 0 by A1,Def1;
+  for p being prime Nat st p divides ord (phi.g) holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides ord (phi.g);
+    then p divides ord g by A3;
+    hence p in Pi by A1,Def1;
+  end;
+  hence phi.g is Pi-element by A3,A4,Def1;
+end;
+
+theorem
+  for G1,G2 being Group
+  st G1,G2 are_isomorphic & G1 is Pi-group
+  holds G2 is Pi-group
+proof
+  let G1,G2 be Group;
+  assume A1: G1,G2 are_isomorphic;
+  assume A2: G1 is Pi-group;
+  consider phi being Homomorphism of G1,G2 such that
+  A3: phi is bijective by A1,GROUP_6:def 11;
+  reconsider psi=phi" as Homomorphism of G2,G1 by A3,GROUP_6:62;
+  A4: psi is bijective by A3,GROUP_6:63;
+  phi is onto & phi is one-to-one by A3;
+  then A5: the carrier of G1 <> {} & the carrier of G2 <> {} &
+    rng phi = the carrier of G2 & phi is one-to-one &
+    rng psi = the carrier of G1 & psi is one-to-one
+    by A4,FUNCT_2:def 3;
+  for g2 being Element of G2 holds g2 is Pi-element
+  proof
+    let g2 be Element of G2;
+    psi is bijective by A3,GROUP_6:63;
+    then phi * phi" = id (the carrier of G2) by A3,A4,A5,FUNCT_2:29;
+    then phi * psi = id (the carrier of G2);
+    then phi = psi" by B1,FUNCT_2:30,FUNCT_2:def 3;
+    then B1: phi.(psi.g2) = g2 by A3,FUNCT_2:26;
+    psi.g2 is Element of G1;
+    psi.g2 is Pi-element by A4,Th12,A2,Def2;
+    then phi.(psi.g2) is Pi-element by A3,Th12;
+    hence g2 is Pi-element by B1;
+  end;
+  hence G2 is Pi-group by Def2;
+end;
+
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  for HN being strict Subgroup of G
+  st HN = H "\/" N
+  holds HN is Pi-group;
+
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  holds H /\ N is Pi-group;
+
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  holds (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group;
+
+
+begin :: Sylow pi-groups
+:: Derek J.S. Robinson, _A Course in the Theory of Groups_, section 9.1
+definition
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  let IT be Subgroup of G;
+  pred IT is_Sylow_pi-subgroup_of_primes Pi means
+  :Def2:
+  IT is Pi-group & IT is proper &
+  for P being strict Subgroup of G
+  st P is Pi-group & P <> the multMagma of IT & IT is Subgroup of P
+  holds P = the multMagma of G;
+end;
+
+begin :: p-Cores and pi-Cores
+
+definition
+  let G be finite Group;
+  let p be prime Nat;
+  func p-core G -> strict Subgroup of G means
+  :Def7:
+  the carrier of it = meet{A where A is Subset of G :
+  ex P being strict Subgroup of G st A = the carrier of P &
+  P is_Sylow_p-subgroup_of_prime p};
+  existence
+  proof
+    defpred SPS[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+    A1: ex P being strict Subgroup of G st SPS[P]
+    by GROUP_10:10;
+    ex H being strict Subgroup of G st the carrier of H = meet{A where
+    A is Subset of G: ex P being strict Subgroup of G st A = the carrier of P & SPS[P]}
+    from GROUP_4:sch 1(A1);
+    hence thesis;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+theorem Th1:
+  for G being finite Group
+  for p being prime Nat
+  holds p-core G is characteristic
+proof
+  let G be finite Group;
+  let p be prime Nat;
+  defpred P[Subgroup of G] means $1 is_Sylow_p-subgroup_of_prime p;
+
+  A1: ex H being strict Subgroup of G st P[H] by GROUP_10:10;
+  set MaxSubCarrs = {A where A is Subset of G :
+                     ex H being strict Subgroup of G
+                     st A = the carrier of H & P[H]};
+
+  A2: for phi being Automorphism of G
+  for P being strict Subgroup of G
+  st P[P]
+  holds P[Image(phi|P)] by Th22;
+
+  consider K being strict Subgroup of G such that
+  A4: the carrier of K = meet {A where A is Subset of G :
+      ex H being strict Subgroup of G st A = the carrier of H & P[H]} and
+  A5: K is characteristic
+  from MeetIsChar(A2,A1);
+  K = p-core G by A4,Def7;
+  hence thesis by A5;
+end;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  func Pi-core G -> strict Subgroup of G means
+  :Def11:
+  the carrier of it = meet {A where A is Subset of G :
+  ex H being strict Subgroup of G st A = the carrier of H &
+  H is Pi-group};
+  existence
+  proof
+    defpred PIG[Subgroup of G] means $1 is Pi-group;
+    A1: ex H being strict Subgroup of G st PIG[H] by Th64;
+    ex K being strict Subgroup of G
+    st the carrier of K = meet {A where A is Subset of G :
+    ex H being strict Subgroup of G st A = the carrier of H & PIG[H]}
+    from GROUP_4:sch 1(A1);
+    hence thesis;
+  end;
+  uniqueness by GROUP_2:59;
+  correctness;
+end;
+
+theorem Th6:
+  for Pi being Subset of SetPrimes
+  for G being finite Group
+  holds Pi-core G is Pi-group
+proof
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  thus Pi-core G is Pi-group;
+::>                           *4
+end;
+
+theorem Th5:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core G = {p}-core G
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  A1: the carrier of {p}-core G c= the carrier of p-core G;
+::>                                                            *4
+  the carrier of p-core G c= the carrier of {p}-core G;
+::>                                                        *4
+  then the carrier of p-core G = the carrier of {p}-core G by A1,XBOOLE_0:def 10;
+  hence thesis by GROUP_2:59;
+end;
+
+theorem Th7:
+  for p being prime Nat
+  for G being finite Group
+  holds p-core G is p-group
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  {p}-core G is {p}-group by Th68;
+  then {p}-core G is p-group by Th66;
+  then p-core G is p-group by Th67;
+  hence thesis;
+end;
+
+begin :: Quality-of-life results concerning group products
+theorem Th57:
+  for Fam being set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for G being Group st G in Fam holds F.G=G)
+proof
+  let Fam be set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = id Fam;
+  A3: F = id Fam;
+  dom F = Fam;
+  then F is total Fam-defined Function;
+  then F is ManySortedSet of Fam;
+  A3: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume i in Fam;
+      then reconsider i as Element of Fam;
+      i is Group by A2;
+      then consider Fi being Group such that
+      D1: Fi = i
+      by A2;
+      F.i=Fi by D1,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+  take F;
+  let G be Group;
+  assume A3: G in Fam;
+  thus F.G=G by A3,FUNCT_1:17;
+end;
+
+theorem Th58:
+  for Fam being finite set
+  st Fam <> {} & (for G being Element of Fam holds G is Group)
+  ex F being associative Group-like multMagma-Family of Seg (card Fam)
+  st F is one-to-one & (for i being Nat st i in Seg (card Fam) ex G
+  being Group st G in Fam & F.i=G)
+proof
+  let Fam be finite set;
+  assume A1: Fam <> {};
+  assume A2: for G being Element of Fam holds G is Group;
+  set F = canFS Fam;
+  set n = len F;
+  A21: n = len F;
+  A3: len F = card Fam by FINSEQ_1:93;
+  A31: n = card Fam by A21,A3;
+  F is PartFunc of NAT,Fam;
+  A4: F is one-to-one onto by FINSEQ_1:def 19;
+  F is Function of Seg n,Fam
+  proof
+    B1: dom F = Seg n by A1,FINSEQ_1:def 2,def 3;
+    then reconsider F1 = F|(dom F) as PartFunc of Seg n,Fam by PARTFUN1:10;
+    set F = F1;
+    F is PartFunc of Seg n,Fam &
+    dom F = Seg n by B1;
+    then F is quasi_total by A1,FUNCT_2:def 1;
+    hence thesis;
+  end;
+  then reconsider F as Function of Seg n,Fam by A4;
+  A40: rng F = Fam by A4;
+  A5: F is ManySortedSet of (Seg n)
+  proof
+    B1: dom F = Seg (card Fam) by A3,FINSEQ_1:def 3;
+    then B2: F is (Seg n)-defined Function by RELAT_1:def 16;
+    F is quasi_total Function of Seg n,Fam;
+    then dom F = (Seg n) by B1,A3;
+    then F is total by B1,PARTFUN1:def 2;
+    hence thesis;
+  end;
+  A6: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then y is Element of Fam;
+    then y is Group by A2;
+    hence thesis;
+  end;
+  then F is multMagma-yielding by GROUP_7:def 1;
+  then F is multMagma-yielding ManySortedSet of Seg n by A5,A6,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Seg n;
+  F is associative Group-like multMagma-Family of Seg n
+  proof
+    for i being set st i in Seg n ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Seg n ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Seg n;
+      then reconsider i as Element of Seg n;
+      dom F = Seg n by A3,FINSEQ_1:def 3;
+      then i in dom F by D1;
+      then F.i in rng F by FUNCT_1:3;
+      then F.i in Fam by A40;
+      then F.i is Element of Fam;
+      then F.i is Group by A2;
+      then consider Fi being Group such that
+      D2: Fi = F.i
+      by A2;
+      F.i=Fi by D2,FUNCT_1:17;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Seg
+  (card Fam) by A31;
+  take F;
+  thus F is one-to-one by A4;
+  let i be Nat;
+  assume A10: i in Seg (card Fam);
+  dom F = Seg n by A3,FINSEQ_1:def 3;
+  then i in dom F by A31,A10;
+  then F.i in rng F by FUNCT_1:3;
+  then A11: F.i in Fam by A40;
+  then F.i is Element of Fam;
+  then A12: F.i is Group by A2;
+  hence thesis by A11;
+end;
+
+theorem Th62:
+  for G being Group
+  for Fam being non empty set
+  st (for N being Element of Fam holds N is normal Subgroup of G)
+  holds ex F being associative Group-like multMagma-Family of Fam
+  st (for N being normal Subgroup of G st N in Fam holds F.N=G./.N)
+proof
+  let G be Group;
+  let Fam be non empty set;
+  defpred P[object,object] means ex N being normal Subgroup of G st $1=N & $2=G./.N;
+  assume A1: for N being Element of Fam holds N is normal Subgroup of G;
+  A2: for x,y1,y2 being object st x in Fam & P[x,y1] & P[x,y2] holds y1=y2;
+  A3: for x being object st x in Fam ex y being object st P[x,y]
+  proof
+    let x be object;
+    assume B1: x in Fam;
+    then x is normal Subgroup of G by A1;
+    then reconsider x as normal Subgroup of G;
+    consider N being normal Subgroup of G such that
+    B2: x = N;
+    consider y being Group such that
+    B3: y = G./.N;
+    reconsider y as object;
+    take y;
+    B5: P[x,y] by B2,B3;
+    hence thesis;
+  end;
+
+  consider F being Function such that
+  A4: dom F = Fam and
+  A5: for x being object st x in Fam holds P[x, F.x]
+  from FUNCT_1:sch 2(A2,A3);
+
+  A6: for x being normal Subgroup of G st x in Fam holds F.x = G./.x
+  proof
+    let x be normal Subgroup of G;
+    assume B1: x in Fam;
+    P[x, F.x] by A4,A5,B1;
+    then consider N being normal Subgroup of G such that
+    B2: x = N and
+    B3: F.x = G./.N;
+    thus F.x = G./.x by B2,B3;
+  end;
+  set codomain = rng F;
+  A7: codomain <> {}
+  proof
+    Fam is non empty;
+    then consider x being object such that
+    B1: x in Fam
+    by XBOOLE_0:def 1;
+    reconsider x as Element of Fam by B1;
+    F.x in rng F by A4,FUNCT_1:3;
+    then F.x in codomain;
+    hence thesis by XBOOLE_0:def 1;
+  end;
+  A8: for y being Element of codomain holds y is Group
+  proof
+    let y be Element of codomain;
+    y in codomain by A7;
+    then y in rng F;
+    then consider x being object such that
+    B1: x in dom F and
+    B2: y = F.x
+    by FUNCT_1:def 3;
+    P[x, y] by B1,B2,A4,A5;
+    then consider N being normal Subgroup of G such that
+    B3: x = N and
+    B4: y = G./.N;
+    thus y is Group by B4;
+  end;
+
+  reconsider F as Function of Fam,codomain by A4,FUNCT_2:1;
+  A9: F is Function of Fam,codomain by FUNCT_2:1;
+  F is total Fam-defined Function by A4,A6,A7,FUNCT_2:def 1;
+  then A10: F is ManySortedSet of Fam;
+
+  A11: for y being set st y in rng F holds y is non empty multMagma
+  proof
+    let y be set;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F and
+    B3: y = F.x
+    by FUNCT_1:def 3;
+    x is Element of dom F by B2;
+    then x is normal Subgroup of G by B2,A1;
+    then reconsider x as normal Subgroup of G;
+    y in rng F by A4, B2, B3, FUNCT_1:3;
+    then y is Element of codomain;
+    then y is Group by A8;
+    hence thesis;
+  end;
+  then F is multMagma-yielding ManySortedSet of Fam by A10,GROUP_7:def 1;
+  then reconsider F as multMagma-Family of Fam;
+  F is associative Group-like multMagma-Family of Fam
+  proof
+    for i being set st i in Fam ex Fi being Group-like non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B1: F is Group-like by GROUP_7:def 3;
+    for i being set st i in Fam ex Fi being associative non empty
+    multMagma st Fi = F.i
+    proof
+      let i be set;
+      assume D1: i in Fam;
+      then reconsider i as normal Subgroup of G by A1;
+      consider Fi being Group such that
+      D2: Fi = G./.i
+      by A6;
+      F.i = G./.i by D1,A6
+      .= Fi by D2;
+      hence thesis;
+    end;
+    then B2: F is associative by GROUP_7:def 4;
+    thus thesis by B1,B2;
+  end;
+  then reconsider F as associative Group-like multMagma-Family of Fam;
+
+  take F;
+  let N be normal Subgroup of G;
+  assume A8: N in Fam;
+  hence F.N=G./.N by A6;
+end;
+
+theorem Th63:
+  for I being set
+  for F being Group-Family of I
+  for G being Group
+  for Maps being ManySortedSet of I
+  st (for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i)
+  ex f being Homomorphism of G,product F
+  st (for g being Element of G
+      for i being set st i in i
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g)
+proof
+  let I be set;
+  let F be Group-Family of I;
+  let G be Group;
+  let Maps be ManySortedSet of I;
+  assume A1: for i being set st i in I
+  for Fi being Group st Fi=F.i
+  ex fi being Homomorphism of G,Fi st fi = Maps.i;
+
+
+  defpred P[set,Function] means :: ex y1 being ManySortedSet of I st $2=y1 &
+  for j being set st j in I for Fj being Group st Fj=F.j
+  ex fj being Homomorphism of G,Fj st fj=Maps.j & $2.j = fj.$1;
+  set GP = product F;
+  set UG = the carrier of G;
+  set UF = the carrier of (product F);
+
+  A2: for x being Element of UG ex y being Element of UF st P[x,y]
+  proof
+    let x be Element of UG;
+    :: defpred P3[set,set] means for Fj being Group st Fj=F.$1
+    :: ex fj being Homomorphism of G,Fj st fj=Maps.$1 & $2=fj.x;
+    defpred P2[object,object] means $1 in I & for Fj being Group st Fj=F.$1
+    ex fj being Homomorphism of G,Fj st fj=Maps.$1 & $2=fj.x;
+
+    B0a: for i, y1, y2 being object st i in I & P2[i, y1] & P2[i, y2]
+    holds y1 = y2
+    proof
+      let i, y1, y2 be object;
+      assume C1: i in I;
+      assume C2: P2[i, y1];
+      assume C3: P2[i, y2];
+      reconsider Fj=F.i as Group by C1,GROUP_19:1;
+      C4: Fj=F.i;
+      then consider fj1 being Homomorphism of G,Fj such that
+      C5: fj1=Maps.i & y1=fj1.x by C1,C2;
+      consider fj2 being Homomorphism of G,Fj such that
+      C6: fj2=Maps.i & y2=fj2.x by C1,C4,C3;
+      fj1=fj2 by C5,C6,C1;
+      hence y1=y2 by C5,C6;
+    end;
+
+    B0b: for i being object st i in I holds ex y being object st P2[i, y]
+    proof
+      let i be object;
+      assume C1: i in I;
+      then reconsider Fj=F.i as Group by GROUP_19:1;
+      consider fj being Homomorphism of G,Fj such that
+      C2: fj=Maps.i by A1,C1;
+      consider y being object such that
+      C3: y = fj.x;
+      take y;
+      thus P2[i, y] by C1,C2,C3;
+    end;
+
+    :: consider y1 being ManySortedSet of I such that
+    consider y1 being Function such that
+    B2: dom y1 = I and
+    B1: for j being object st j in I holds P2[j, y1.j]
+    from FUNCT_1:sch 2(B0a, B0b);
+    reconsider y1 as ManySortedSet of I by B2,RELAT_1:def 18,PARTFUN1:def 2;
+    B3: dom Carrier F = I by PARTFUN1:def 2;
+    for i being object st i in I holds y1.i in (Carrier F).i
+    proof
+      let i be object;
+      assume C1: i in I;
+      then C2: i in dom y1 by B2;
+      then C3: ex R being 1-sorted st R = F.i & (Carrier F).i = the carrier of R
+      by PRALG_1:def 15;
+      reconsider j=i as Element of I by C1;
+      P2[j, y1.j] by C1,C2,B1;
+      then j in I & for Fj being Group st Fj=F.j
+      ex fj being Homomorphism of G,Fj st fj=Maps.j & y1.j=fj.x by C1,C2,B1;
+      reconsider Fi=F.i as Group by C1,GROUP_19:1;
+      Fi=F.j & j is Element of I & j in I by C1;
+      then ex fi being Homomorphism of G,Fi st fi=Maps.j & y1.i=fi.x by A1,B1,C1;
+      then ex fi being Homomorphism of G,Fi st fi=Maps.j & y1.i=fi.x by A1,B1,C1;
+      consider fi being Homomorphism of G,Fi such that
+      C4: fi=Maps.j & y1.j = fi.x by B1,C1;
+      y1.i=fi.x by C4;
+      then y1.i in Fi;
+      hence y1.i in (Carrier F).i by C3;
+    end;
+
+    then y1 in product Carrier F by B2,B3,CARD_3:9;
+    then reconsider y=y1 as Element of GP by GROUP_7:def 2;
+    take y;
+    B5: for j being set st j in I for Fj being Group st Fj=F.j
+    ex fj being Homomorphism of G,Fj st fj=Maps.j & y.j = fj.x
+    proof
+      let j be set;
+      assume Z1: j in I;
+      then reconsider i=j as Element of I;
+      Z2: j=i;
+      Z3: P2[i, y.i] by Z1,B1;
+      then Z4: for Fj being Group st Fj=F.i
+      ex fj being Homomorphism of G,Fj st fj=Maps.i & y.i=fj.x by Z1;
+      for Fj being Group st Fj=F.j
+      ex fj being Homomorphism of G,Fj st fj=Maps.j & y.j = fj.x
+      proof
+        let Fj be Group;
+        assume D1: Fj=F.j;
+        then consider fj being Homomorphism of G,Fj such that
+        D2: fj=Maps.i and
+        D3: y.i = fj.x by Z1,Z2,Z3,B1;
+        take fj;
+        thus fj = Maps.j by D2;
+        i = j;
+        then y.i = y.j
+                .= fj.x by D3;
+        hence thesis;
+      end;
+      hence thesis;
+    end;
+    then P[x, y];
+    hence thesis by B1;
+  end;
+
+  consider f being Function of UG,UF such that
+  A3: for x being Element of UG holds P[x,f.x]
+  from FUNCT_2:sch 3(A2);
+
+  for x1,x2 being Element of G
+  holds f.(x1*x2) = (f.x1)*(f.x2)
+  proof
+    let x1,x2 be Element of G;
+    for g1,g2,g3 being Function
+    for i being set st i in I
+    for Fi being Group st Fi=F.i
+    for p,q being Element of (product F) st p = f.x1 & q = f.x2
+    for x,y being Element of Fi st g1=p & g2=q & g3=p*q & g1.i = x & g2.i = y
+    holds x*y = g3.i by GROUP_7:1;
+
+    consider p,q,r being Element of (product F) such that
+    B1: p = f.x1 and
+    B2: q = f.x2 and
+    B3: r = f.(x1 * x2);
+    B4: dom Carrier F = I by PARTFUN1:def 2;
+    B5: dom p = I & dom q = I & dom r = I by B4,GROUP_19:3;
+    p*q is Element of (product F) by GROUP_7:def 2;
+    then B6: dom (p*q) = I by B4,GROUP_19:3;
+    for g1,g2,g3,g4 being Function st g1=p & g2=q & g3 = p*q & g4=r
+    holds g4 = g3
+    proof
+      let g1,g2,g3,g4 be Function;
+      assume C1: g1=p;
+      assume C2: g2=q;
+      assume C3: g3 = p*q;
+      assume C4: g4=r;
+      C5: dom g1 = I & dom g2 = I & dom g3 = I & dom g4 = I
+      by C1,C2,C3,C4,B5,B6;
+      then C6: dom g3 = dom g4;
+      for i being object st i in dom g3 holds g4.i = g3.i
+      proof
+        let i be object;
+        assume D1: i in dom g3;
+        then D2: i in I by C5;
+        reconsider Fi=F.i as Group by D2,GROUP_19:1;
+        g1 in product F & g2 in product F & g3 in product F & g4 in product F
+        by B1,B2,C1,C2,C3,C4;
+        then g1.i in Fi & g2.i in Fi & g3.i in Fi & g4.i in Fi
+        by C5,D1,GROUP_19:5;
+        then consider x,y,z,w being Element of Fi such that
+        D3: x=g1.i and
+        D4: y=g2.i and
+        D5: z=g3.i and
+        D6: w=g4.i;
+        D7: x*y = g3.i by D2,D3,D4,C1,C2,C3,GROUP_7:1;
+        consider fi being Homomorphism of G,Fi such that
+        D8: fi = Maps.i by D2,A1;
+        reconsider j=i as set by TARSKI:1;
+        D9: j in I & Fi=F.j & fi=Maps.j by D2,D8;
+        P[x1*x2, f.(x1*x2)] by A3;
+        then P[x1*x2, r] by B3;
+        then for j being set st j in I for Fj being Group st Fj=F.j
+        ex fj being Homomorphism of G,Fj st fj=Maps.j & r.j = fj.(x1*x2);
+        then consider fj being Homomorphism of G,Fi such that
+        D10: fj=Maps.j & r.j = fj.(x1*x2) by D9;
+        i = j;
+        then r.j = fj.(x1*x2) by D10;
+        then r.i = (fj.x1) * (fj.x2) by GROUP_6:def 6;
+        P[x1, f.x1] by A3;
+        then P[x1, p] by B1,B2;
+        then consider fj2 being Homomorphism of G,Fi such that
+        D11: fj2=Maps.j & p.j = fj2.x1  by D9;
+        P[x2, f.x2] by A3;
+        then P[x2, q] by B1,B2;
+        then consider fj3 being Homomorphism of G,Fi such that
+        D12: fj3=Maps.j & q.j=fj3.x2 by D9;
+        fj = fj2 by D10,D11;
+        then D13: p.j = fj.x1 by D11;
+        fj = fj3 by D10,D12;
+        then D14: q.j = fj.x2 by D12;
+        then p.j = fj.x1 & q.j=fj.x2 by D13,D4;
+        then D15: (the multF of Fi).((p.j), (q.j)) = (fj.x1) * (fj.x2)
+        .= fj.(x1 * x2) by GROUP_6:def 6
+        .= r.j by D10
+        .= g4.j by D6,C4,B3;
+        D16: (the multF of Fi).((p.j), (q.j)) = (fj.x1) * (fj.x2) by D13,D14
+        .= (the multF of Fi).((p.j), (q.j)) by D13,D14
+        .= (the multF of Fi).((g1.j), (g2.j)) by C1,C2
+        .= g3.j by D3,D4,D7,D5,C3;
+        thus g4.i = g3.i by D15,D16;
+      end;
+      hence thesis by C6,FUNCT_1:2;
+    end;
+    then B4: p*q = r by FUNCT_1:2; ::,PARTFUN1:5,GROUP_7:def 2;
+    thus f.(x1*x2) = (f.x1)*(f.x2) by B1,B2,B3,B4;
+  end;
+
+  then reconsider f as  Homomorphism of G,product F by GROUP_6:def 6;
+  take f;
+  let g be Element of G;
+  let i be set;
+  assume A4: i in i;
+  let Fi be Group;
+  assume A5: Fi=F.i;
+  then consider fi being Homomorphism of G,Fi such that
+  A6: fi=Maps.i by A1,A4;
+  take fi;
+  thus fi=Maps.i by A6;
+
+  P[g, f.g] by A3;
+  then consider fj being Homomorphism of G,Fi such that
+  A7: fj=Maps.i & (f.g).i = fj.g by A4;
+  fj = fi by A6,A7;
+  then (f.g).i = fi.i by A4,A7;
+  hence thesis by A3,A6,A7;
+end;
+
+theorem Th64:
+  for I being set
+  for F being Group-Family of I
+  for G being Group
+  for Maps being ManySortedSet of I
+  st (for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i)
+  for f being Homomorphism of G,product F
+  st (for g being Element of G
+      for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g)
+  for g being Element of G
+  holds g in Ker f iff (for i being set st i in I
+                        for Fi being Group st Fi=F.i
+                        for fi being Homomorphism of G,Fi
+                        st fi = Maps.i
+                        holds g in Ker fi)
+proof
+  let I be set;
+  let F be Group-Family of I;
+  let G be Group;
+  let Maps be ManySortedSet of I;
+  assume A1: for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi = Maps.i;
+  let f be Homomorphism of G,product F;
+  assume A2: (for g being Element of G
+      for i being set st i in I
+      for Fi being Group st Fi=F.i
+      ex fi being Homomorphism of G,Fi st fi=Maps.i & (f.g).i = fi.g);
+  let g be Element of G;
+  thus g in Ker f implies (for i being set st i in I
+                           for Fi being Group st Fi=F.i
+                           for fi being Homomorphism of G,Fi
+                           st fi = Maps.i
+                           holds g in Ker fi)
+  proof
+    assume B1: g in Ker f;
+    let i be set;
+    assume B2: i in I;
+    let Fi be Group;
+    assume B3: Fi=F.i;
+    let fi be Homomorphism of G,Fi;
+    assume B4: fi = Maps.i;
+    then consider fi2 being Homomorphism of G,Fi such that
+    B5: fi2=Maps.i & (f.g).i = fi2.g
+    by A2,B2,B3;
+    fi2=fi by B4,B5;
+    then B6: (f.g).i = fi.g by B5;
+    f.g = 1_(product F) by B1,GROUP_6:41;
+    then (f.g).i = 1_Fi by B2,B3,B4,GROUP_7:6;
+    then fi.g = 1_Fi by B6;
+    hence g in Ker fi by GROUP_6:41;
+  end;
+  thus (for i being set st i in I
+        for Fi being Group st Fi=F.i
+        for fi being Homomorphism of G,Fi
+        st fi = Maps.i
+        holds g in Ker fi) implies g in Ker f
+  proof
+    assume B1: for i being set st i in I
+    for Fi being Group st Fi=F.i
+    for fi being Homomorphism of G,Fi st fi = Maps.i
+    holds g in Ker fi;
+
+    (f.g) is Function & dom (f.g) = I by GROUP_19:3;
+    then reconsider fg = (f.g) as ManySortedSet of I by PARTFUN1:def 2,RELAT_1:def 18;
+
+    for i being set st i in I
+    holds ex Fi being non empty Group-like multMagma
+    st (Fi = F . i & fg.i = 1_Fi)
+    proof
+      let i be set;
+      assume C1: i in I;
+      then reconsider Fi=F.i as Group by GROUP_19:1;
+      take Fi;
+      thus Fi=F.i;
+      Fi is Group & Fi=F.i;
+      then consider fi being Homomorphism of G,Fi such that
+      C2: fi = Maps.i & fg.i = fi.g by A2,C1;
+      g in Ker fi by B1,C1,C2;
+      then 1_Fi = fi.g by GROUP_6:41
+      .= fg.i by C2;
+      hence fg.i = 1_Fi;
+    end;
+    then B2: fg = 1_(product F) by B1,GROUP_7:5;
+    thus g in Ker f by B2,GROUP_6:41;
+  end;
+end;
+
+theorem Th64:
+  for G,H being Group
+  for x1,x2 being Element of G
+  for y1,y2 being Element of H
+  for z1,z2 being Element of product <*G,H*>
+  st z1 = <*x1,y1*> & z2 = <*x2,y2*>
+  holds z1 = z2 iff (x1 = x2 & y1 = y2)
+proof
+  let G,H be Group;
+  let x1,x2 be Element of G;
+  let y1,y2 be Element of H;
+  let z1,z2 be Element of product <*G,H*>;
+  assume A1: z1 = <*x1,y1*>;
+  assume A2: z2 = <*x2,y2*>;
+  A3: z1.1 = x1 & z1.2 = y1 by A1,FINSEQ_1:44;
+  A4: z2.1 = x2 & z2.2 = y2 by A2,FINSEQ_1:44;
+  A5: dom z1 = {1,2} by A1,FINSEQ_1:2,89;
+  dom z2 = {1,2} by A2,FINSEQ_1:2,89;
+  then A6: dom z1 = dom z2 by A5;
+  thus z1 = z2 implies (x1 = x2 & y1 = y2)
+  proof
+    assume B1: z1 = z2;
+    B4: for x being object st x in dom z1 holds z1.x = z2.x by B1,A5,A6,FUNCT_1:2;
+    1 in {1, 2} by TARSKI:def 2;
+    then 1 in dom z1 by A5, FINSEQ_1:2,89;
+    then z1.1 = z2.1 by B4;
+    then x1 = z2.1 by A3;
+    hence x1 = x2 by A4;
+    2 in {1, 2} by TARSKI:def 2;
+    then 2 in dom z1 by A5, FINSEQ_1:2,89;
+    then z1.2 = z2.2 by B4;
+    then y1 = z2.2 by A3;
+    hence y1 = y2 by A4;
+  end;
+
+  thus (x1 = x2 & y1 = y2) implies z1 = z2
+  proof
+    assume B1: x1 = x2;
+    assume B2: y1 = y2;
+    B3: for x being object st x in dom z1 holds z1.x = z2.x
+    proof
+      let x be object;
+      assume x in dom z1;
+      then C1: x in {1,2} by A5;
+      per cases by C1,TARSKI:def 2;
+      suppose C2: x=1;
+        x1 = x2 by B1;
+        then z1.x = x2 by C2,A3;
+        hence z1.x = z2.x by C2,A4;
+      end;
+      suppose C3: x=2;
+        y1 = y2 by B2;
+        then z1.x = y2 by C3,A3;
+        hence z1.x = z2.x by C3,A4;
+      end;
+    end;
+    hence z1 = z2 by A6, FUNCT_1:2;
+  end;
+end;
+
+theorem Th65:
+  for G,H1,H2 being Group
+  for f1 being Homomorphism of G,H1
+  for f2 being Homomorphism of G,H2
+  for f being Homomorphism of G,product<*H1,H2*>
+  st for g being Element of G holds f.g = <*f1.g, f2.g*>
+  holds Ker f = Ker f1 /\ Ker f2
+proof
+  let G,H1,H2 be Group;
+  let f1 be Homomorphism of G,H1;
+  let f2 be Homomorphism of G,H2;
+  let f be Homomorphism of G,product<*H1,H2*>;
+  assume A1: for g being Element of G holds f.g = <*f1.g, f2.g*>;
+  set P = product <*H1,H2*>;
+  A2: 1_P = <*1_H1, 1_H2*> by GROUP_7:32;
+  then A3: for g being Element of G holds g in Ker f iff f.g = <*1_H1,1_H2*>
+  by GROUP_6:41;
+  A4: for g being Element of G holds g in Ker f iff f1.g = 1_H1 & f2.g = 1_H2
+  proof
+    let g be Element of G;
+    thus g in Ker f implies f1.g = 1_H1 & f2.g = 1_H2
+    proof
+      assume B1: g in Ker f;
+      then B2: <*1_H1, 1_H2*> = f.g by A3
+      .= <*f1.g, f2.g*> by A1;
+
+      thus f1.g = 1_H1 by B2,Th64;
+      thus f2.g = 1_H2 by B2,Th64;
+    end;
+    thus f1.g = 1_H1 & f2.g = 1_H2 implies g in Ker f
+    proof
+      assume B1: f1.g = 1_H1;
+      assume B2: f2.g = 1_H2;
+      f.g = <*f1.g, f2.g*> by A1
+      .= <*1_H1, 1_H2*> by B1,B2,Th64
+      .= 1_P by GROUP_7:32;
+      hence g in Ker f by GROUP_6:41;
+    end;
+    thus thesis;
+  end;
+  A5: for g being Element of G holds g in Ker f iff g in Ker f1 & g in Ker f2
+  proof
+    let g be Element of G;
+    thus g in Ker f implies g in Ker f1 & g in Ker f2
+    proof
+      assume B1: g in Ker f;
+      B2: f1.g = 1_H1 & f2.g = 1_H2 by B1,A4;
+      thus g in Ker f1 by B2, GROUP_6:41;
+      thus g in Ker f2 by B2, GROUP_6:41;
+    end;
+
+    thus g in Ker f1 & g in Ker f2 implies g in Ker f
+    proof
+      assume B1: g in Ker f1;
+      assume B2: g in Ker f2;
+      B3: f1.g = 1_H1 by B1, GROUP_6:41;
+      B4: f2.g = 1_H2 by B2, GROUP_6:41;
+      thus g in Ker f by B3,B4,A4;
+    end;
+
+  end;
+  A6: for g being Element of G holds g in Ker f1 /\ Ker f2 iff g in Ker f1 &
+  g in Ker f2 by GROUP_2:82;
+  for g being Element of G holds g in Ker f1 /\ Ker f2 iff g in Ker f
+  proof
+    let g be Element of G;
+    thus g in Ker f1 /\ Ker f2  implies g in Ker f
+    proof
+      assume B1: g in Ker f1 /\ Ker f2;
+      then g in Ker f1 & g in Ker f2 by A6;
+      hence g in Ker f by A5;
+    end;
+    thus g in Ker f implies g in Ker f1 /\ Ker f2
+    proof
+      assume B1: g in Ker f;
+      then g in Ker f1 & g in Ker f2 by A5;
+      hence g in Ker f1 /\ Ker f2 by A6;
+    end;
+
+  end;
+  hence Ker f = Ker f1 /\ Ker f2 by A5;
+end;
+
+theorem Th67:
+  for G being Group
+  for N1,N2 being strict normal Subgroup of G
+  for N12 being strict normal Subgroup of G
+  st N12 = N1 /\ N2
+  holds ex H being Subgroup of product<*G./.N1,G./.N2*>
+  st G./.N12,H are_isomorphic
+proof
+  let G be Group;
+  let N1,N2 be strict normal Subgroup of G;
+  let N12 be strict normal Subgroup of G;
+  assume A1: N12 = N1 /\ N2;
+  set P = product <* G./.N1, G./.N2 *>;
+  P is Group;
+  consider phi being Homomorphism of G,P such that
+  A2: for g being Element of G holds phi.g = <*(nat_hom N1).g, (nat_hom N2).g*>
+  by Th63;
+
+  A3: Ker phi = N12
+  proof
+    B1: Ker (nat_hom N1) = N1 by GROUP_6:43;
+    B2: Ker (nat_hom N2) = N2 by GROUP_6:43;
+    Ker phi = Ker (nat_hom N1) /\ Ker (nat_hom N2) by A2, Th65
+    .= N1 /\ Ker (nat_hom N2) by B1
+    .= N1 /\ N2 by B2
+    .= N12 by A1;
+    hence thesis;
+  end;
+
+  take H = Image phi;
+  G./.(Ker phi),H are_isomorphic by GROUP_6:78;
+  hence thesis by A3;
+end;
+
+

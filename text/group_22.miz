@@ -880,7 +880,7 @@ A2: for h being Element of G st h in H holds (f|H).h = h |^ a
                  .= h |^ a by A1;
   end;
 
-C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
+A3: for y being Element of G st y in Image(f|H) holds y in H |^ a
   proof
     let y be Element of G;
     assume y in Image(f|H);
@@ -892,7 +892,7 @@ C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
                .= y by B1;
     hence y in H |^ a by B2,GROUP_3:58;
   end;
-C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
+  for y being Element of G st y in H |^ a holds y in Image(f|H)
   proof
     let y be Element of G;
     assume y in H |^ a;
@@ -906,7 +906,7 @@ C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
                .= y by B1;
     thus y in Image(f|H) by B2,B3,GROUP_6:45;
   end;
-  thus (H |^ a) = Image(f|H) by C2,C3;
+  hence (H |^ a) = Image(f|H) by A3;
 end;
 
 theorem Th29:
@@ -3741,3 +3741,4 @@ proof
   end;
   hence thesis;
 end;
+
