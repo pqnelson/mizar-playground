@@ -22,9 +22,9 @@ finite groups, but may be different in general).
 
 <<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>
 
-<<Theorem: Existence of $\pi$-Subgroup>>
-
 <<Register: $\pi$-group for groups and finite groups>>
+
+<<Register: $\pi$-group for normal Subgroups>>
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
 
@@ -43,6 +43,18 @@ finite groups, but may be different in general).
 <<Register: quotient group of finite groups is finite>>
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
+
+<<Theorem: isomorphic group elements have same order>>
+
+<<Theorem: $\varphi\colon G_{1}\iso G_{2}$ and $g\in G_{1}$ is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element>>
+
+<<Theorem: if $G_{1}$ is a $\pi$-group and $G_{1}\iso G_{2}$, then $G_{2}$ is a $\pi$-group>>
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $H\cap N$ is a $\pi$-subgroup of $G$>>
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN/N$ is a $\pi$-subgroup of $G$>>
 @
 
 
@@ -65,6 +77,15 @@ definition
 end;
 \end{mizar}
 
+\begin{definition}
+Let $\pi$ be a set of primes, $G$ a group.
+We call $g\in G$ a \define{$\pi$-Element} if
+\begin{enumerate}
+\item the element's order is nonzero $|g|\neq0$, and
+\item every prime divisors $p\divides|g|$ belongs to $p\in\pi$.
+\end{enumerate}
+\end{definition}
+
 <<Definition: $\pi$-element of Group>>=
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
 :: theorem 5.2.7
@@ -83,6 +104,12 @@ end;
 \begin{theorem}
 For any group $G$, its identity element is a $\pi$-element.
 \end{theorem}
+
+\begin{proof}[Proof sketch]
+This is because the set of prime divisors to $|\idElt{G}|=1$ is the empty
+set, which is a subset of every set. In particular, it's a subset to any
+$\pi$.
+\end{proof}
 
 <<Theorem: $1_{G}$ is a $\pi$-element>>=
 theorem Th1:
@@ -124,10 +151,20 @@ definition
   let IT be Group;
   attr IT is Pi-group means
   :Def2:
-  (for g being Element of IT holds g is Pi-element) or
-  (IT is trivial);
+  for g being Element of IT holds g is Pi-element;
 end;
 @ %def Def2 Pi-group
+
+\begin{theorem}
+  Let $\pi$ be any set of prime numbers.
+  The trivial group is a $\pi$-group.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Since the only element in the trivial group is the identity element
+$\idElt{G}$, which we proved to be a $\pi$-element. Thus the trivial
+group is trivially a $\pi$-group.
+\end{proof}
 
 <<Theorem: the trivial group is $\pi$-group>>=
 theorem Th2:
@@ -151,6 +188,10 @@ proof
 end;
 @
 
+\begin{registration}
+We can now speak of the trivial $\pi$-group, and register this with Mizar.
+\end{registration}
+
 <<Registration: trivial group is $\pi$-group>>=
 registration
   let Pi be Subset of SetPrimes;
@@ -164,7 +205,7 @@ end;
 @
 
 \begin{theorem}
-Let $G$ be a nontrivial finite group, $\pi$ be a set of prime numbers.
+Let $G$ be a finite group, $\pi$ be a set of prime numbers.
 Then $G$ is a $\pi$-group iff every prime divisor $p$ of $|G|$ belongs
 to $\pi$.
 \end{theorem}
@@ -172,12 +213,10 @@ to $\pi$.
 <<Theorem: criteria for finite group to be $\pi$-group>>=
 theorem Th3:
   for G being finite Group
-  st G is non trivial
   holds G is Pi-group iff (for p being prime Nat st p divides card G
                            holds p in Pi)
 proof
   let G be finite Group;
-  assume A1: G is non trivial;
   thus G is Pi-group implies (for p being prime Nat st p divides card G
                               holds p in Pi)
   proof
@@ -189,7 +228,7 @@ proof
       assume C1: not p in Pi;
       consider g being Element of G such that
       C2: ord g = p by B2,GROUP_10:11;
-      g is Pi-element by A1,B1,Def2;
+      g is Pi-element by B1,Def2;
       then p in Pi by C2,Def1;
       hence contradiction by C1;
     end;
@@ -245,30 +284,6 @@ proof
 end;
 @ %def Th4
 
-\begin{theorem}
-Let $G$ be a finite group, $\pi$ a set of prime numbers.
-Then there exists a $\pi$-subgroup of $G$.
-\end{theorem}
-
-\begin{proof}
-Take $H=\trivialSubgroup_{G}$, which is trivially a $\pi$-subgroup of $G$.
-\end{proof}
-
-<<Theorem: Existence of $\pi$-Subgroup>>=
-theorem Th5:
-  for Pi being Subset of SetPrimes
-  for G being Group
-  ex H being strict Subgroup of G
-  st H is Pi-group
-proof
-  let Pi be Subset of SetPrimes;
-  let G be Group;
-  take H = (1).G;
-  H is trivial;
-  hence H is Pi-group by Th2;
-end;
-@ %localdef Th5
-
 <<Register: $\pi$-group for groups and finite groups>>=
 registration
   let Pi be Subset of SetPrimes;
@@ -286,6 +301,23 @@ registration
   end;
 end;
 @
+
+\begin{registration}
+We may sensibly talk about normal $\pi$-subgroups.
+\end{registration}
+
+<<Register: $\pi$-group for normal Subgroups>>=
+registration
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  cluster Pi-group for normal Subgroup of G;
+  existence
+  proof
+    take N = (1).G;
+    thus thesis by Th2;
+  end;
+end;
+@ 
 
 \begin{theorem}
 If $p\in\NN$ is prime, then $\{p\}$ is a subset of the collection of
@@ -632,3 +664,172 @@ proof
   end;
 end;
 @ %def Th10
+
+\begin{theorem}
+  Let $G_{1}$, $G_{2}$ be groups and $g\in G$.
+  If $\varphi\colon G_{1}\iso G_{2}$ is an isomorphism, then
+  $|g| = |\varphi(g)|$.
+\end{theorem}
+
+<<Theorem: isomorphic group elements have same order>>=
+theorem Th11:
+  for G1,G2 being Group
+  for phi being Homomorphism of G1,G2
+  st phi is bijective
+  for g being Element of G1
+  holds ord g = ord (phi.g)
+proof
+  let G1,G2 be Group;
+  let phi be Homomorphism of G1,G2;
+  assume A1: phi is bijective;
+  let g be Element of G1;
+  A2: phi" is Homomorphism of G2,G1 by A1,GROUP_6:62;
+  then reconsider psi=phi" as Homomorphism of G2,G1;
+  set n = ord g;
+  A3: g |^ n = 1_G1 by GROUP_1:41;
+  A4: (phi.g) |^ n = phi.(g |^ n) by GROUP_6:36
+              .= phi.(1_G1) by A3
+              .= 1_G2 by GROUP_6:31;
+  then A5: ord (phi.g) divides n by GROUP_1:44;
+  set n2 = ord (phi.g);
+  set g2 = phi.g;
+  A6: g = (phi").(phi.g) by A1,A2,FUNCT_2:26;
+  g |^ n2 = psi.g2 |^ n2 by A1,A2,A6
+         .= (phi").((phi.g) |^ n2) by GROUP_6:36
+         .= (phi").(1_G2) by GROUP_1:41
+         .= 1_G1 by A2,GROUP_6:31;
+  then n divides ord (phi.g) by A4,GROUP_1:44;
+  hence ord g = ord (phi.g) by A5,NAT_D:5;
+end;
+@ %def Th11
+
+\begin{theorem}
+If $\varphi\colon G_{1}\to G_{2}$ is an isomorphism and $g\in G_{1}$
+is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element.
+\end{theorem}
+
+<<Theorem: $\varphi\colon G_{1}\iso G_{2}$ and $g\in G_{1}$ is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element>>=
+theorem Th12:
+  for G1,G2 being Group
+  for g being Element of G1 st g is Pi-element
+  for phi being Homomorphism of G1,G2
+  st phi is bijective
+  holds phi.g is Pi-element
+proof
+  let G1,G2 be Group;
+  let g be Element of G1;
+  assume A1: g is Pi-element;
+  let phi be Homomorphism of G1,G2;
+  assume A2: phi is bijective;
+  then A3: ord g = ord (phi.g) by Th11;
+  A4: ord g <> 0 by A1,Def1;
+  for p being prime Nat st p divides ord (phi.g) holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides ord (phi.g);
+    then p divides ord g by A3;
+    hence p in Pi by A1,Def1;
+  end;
+  hence phi.g is Pi-element by A3,A4,Def1;
+end;
+@ %def Th12
+
+\begin{theorem}
+Let $G_{1}$ be a $\pi$-group and $G_{1}\iso G_{2}$ be isomorphic groups.
+Then $G_{2}$ is a $\pi$-group.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+We consider some isomorphism $\varphi\colon G_{1}\to G_{2}$.
+Since $G_{1}$ is a $\pi$-group, every element $g\in G_{1}$ is a
+$\pi$-element. But we just proved this implies $\varphi(g)\in G_{2}$
+is a $\pi$-element. Since $\varphi$ is a bijection, that establishes
+every element of $G_{2}$ is a $\pi$-element, thus $G_{2}$ is a
+$\pi$-group by definition.
+\end{proof}
+
+<<Theorem: if $G_{1}$ is a $\pi$-group and $G_{1}\iso G_{2}$, then $G_{2}$ is a $\pi$-group>>=
+theorem
+  for G1,G2 being Group
+  st G1,G2 are_isomorphic & G1 is Pi-group
+  holds G2 is Pi-group
+proof
+  let G1,G2 be Group;
+  assume A1: G1,G2 are_isomorphic;
+  assume A2: G1 is Pi-group;
+  consider phi being Homomorphism of G1,G2 such that
+  A3: phi is bijective by A1,GROUP_6:def 11;
+  reconsider psi=phi" as Homomorphism of G2,G1 by A3,GROUP_6:62;
+  A4: psi is bijective by A3,GROUP_6:63;
+  phi is onto & phi is one-to-one by A3;
+  then A5: the carrier of G1 <> {} & the carrier of G2 <> {} &
+    rng phi = the carrier of G2 & phi is one-to-one &
+    rng psi = the carrier of G1 & psi is one-to-one
+    by A4,FUNCT_2:def 3;
+  for g2 being Element of G2 holds g2 is Pi-element
+  proof
+    let g2 be Element of G2;
+    psi is bijective by A3,GROUP_6:63;
+    then phi * phi" = id (the carrier of G2) by A3,A4,A5,FUNCT_2:29;
+    then phi * psi = id (the carrier of G2);
+    then phi = psi" by B1,FUNCT_2:30,FUNCT_2:def 3;
+    then B1: phi.(psi.g2) = g2 by A3,FUNCT_2:26;
+    psi.g2 is Element of G1;
+    psi.g2 is Pi-element by A4,Th12,A2,Def2;
+    then phi.(psi.g2) is Pi-element by A3,Th12;
+    hence g2 is Pi-element by B1;
+  end;
+  hence G2 is Pi-group by Def2;
+end;
+@
+
+\begin{theorem}
+If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
+then $HN$ is a $\pi$-subgroup of $G$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>=
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  for HN being strict Subgroup of G
+  st HN = H "\/" N
+  holds HN is Pi-group;
+@ 
+
+\begin{theorem}
+If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
+then $H\cap N$ is a $\pi$-subgroup of $G$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $H\cap N$ is a $\pi$-subgroup of $G$>>=
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  holds H /\ N is Pi-group;
+@ 
+
+\begin{theorem}
+If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
+then $HN/N$ is a $\pi$-subgroup of $G$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN/N$ is a $\pi$-subgroup of $G$>>=
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  holds (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group;
+
+@ 

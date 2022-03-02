@@ -5,10 +5,16 @@
 We can generalize the notions surrounding Sylow's theorems from
 $p$-groups to $\pi$-groups. Towards this end, we will consciously follow
 the conventions laid down in the Mizar article concerning Sylow
-theorems~\mml{group10}. 
+theorems~\mml{group10}.
+
+Note that, while Sylow $\pi$-subgroups always exist, they usually are
+not conjugate to one another (unless $\pi=\{p\}$ is a singleton). For
+this reason, people usually prefer working with Hall $\pi$-subgroups.
+And if $G$ is finite, then these two notions (Hall $\pi$-subgroups and
+Sylow $\pi$-subgroups) coincide.
 
 <<Sylow $\pi$-Groups>>=
-
+<<Definition: predicate ``is Sylow $\pi$-subgroup of primes [$\pi$]''>>
 @ 
 
 % Derek J.S. Robinson, _A Course in the Theory of Groups_, section 9.1
@@ -46,15 +52,25 @@ bibliography for the entry ``Sylow subgroup'' in the
 \end{def-remark}
 
 <<Definition: predicate ``is Sylow $\pi$-subgroup of primes [$\pi$]''>>=
+:: Derek J.S. Robinson, _A Course in the Theory of Groups_, section 9.1
 definition
   let Pi be Subset of SetPrimes;
-  let G be finite Group;
-  let IT be finite Subgroup of G;
+  let G be Group;
+  let IT be Subgroup of G;
   pred IT is_Sylow_pi-subgroup_of_primes Pi means
   :Def2:
   IT is Pi-group & IT is proper &
-  for P being strict finite Subgroup of G
-  st P is Pi-group & P <> the multMagma of IT
+  for P being strict Subgroup of G
+  st P is Pi-group & P <> the multMagma of IT & IT is Subgroup of P
   holds P = the multMagma of G;
 end;
 @ %def is_Sylow_pi-subgroup_of_primes
+
+\begin{voc}
+We need to add \lstinline{is_Sylow_pi-subgroup_of_primes} to our
+vocabulary.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+Ris_Sylow_pi-subgroup_of_primes
+@ 
