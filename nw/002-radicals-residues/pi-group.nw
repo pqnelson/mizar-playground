@@ -39,8 +39,8 @@ finite groups, but may be different in general).
 <<Register: quotient group of finite groups is finite>>
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
-
 @
+
 
 \begin{reserve}
 We will reserve \lstinline{Pi} for some subset of prime numbers.
@@ -75,6 +75,32 @@ definition
 end;
 @ %def Def1 Pi-element
 
+
+\begin{theorem}
+For any group $G$, its identity element is a $\pi$-element.
+\end{theorem}
+
+<<Theorem: $1_{G}$ is a $\pi$-element>>=
+theorem
+  for G being Group
+  holds 1_G is Pi-element
+proof
+  let G be Group;
+  A1: ord 1_G = 1 by GROUP_1:42;
+  for p being prime Nat st p divides (ord 1_G) holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides (ord 1_G);
+    then p divides 1 by GROUP_1:42;
+    then B2: p = 1 by INT_2:13;
+    p > 1 by INT_2:def 4;
+    then contradiction by B2;
+    hence p in Pi;
+  end;
+  hence 1_G is Pi-element by A1,Def1;
+end;
+@
+
 \begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
 a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
@@ -98,6 +124,40 @@ definition
   (IT is trivial);
 end;
 @ %def Def2 Pi-group
+
+<<Theorem: the trivial group is $\pi$-group>>=
+theorem Th1:
+  for G being trivial Group
+  holds G is Pi-group
+proof
+  let G be trivial Group;
+  consider x being object such that
+  A1: the carrier of G = {x} by GROUP_6:def 2;
+  1_G in G by GROUP_2:def 7;
+  then 1_G in {x} by A1;
+  then A2: x = 1_G by TARSKI:def 1;
+  A3: for g being Element of G holds g=1_G
+  proof
+    let g be Element of G;
+    g in {1_G} by A1,A2;
+    hence g=1_G by TARSKI:def 1;
+  end;
+  1_G is Pi-element by Lm1;
+  hence G is Pi-group by A3,Def2;
+end;
+@
+
+<<Registration: trivial group is $\pi$-group>>=
+registration
+  let Pi be Subset of SetPrimes;
+  cluster Pi-group for trivial Group;
+  existence
+  proof
+    take the trivial Group;
+    thus thesis by Th1;
+  end;
+end;
+@
 
 \begin{theorem}
 Let $G$ be a nontrivial finite group, $\pi$ be a set of prime numbers.
@@ -530,10 +590,10 @@ a $\pi$-group.
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>=
 Lm3:
-for G being Group
-for N being normal Subgroup of G
-st G./.N is non trivial
-holds G is non trivial;
+  for G being Group
+  for N being normal Subgroup of G
+  st G./.N is non trivial
+  holds G is non trivial;
 ::>                  *4
 
 theorem Th6:
@@ -550,6 +610,7 @@ proof
   per cases by A3;
   suppose A4: G./.N is non trivial;
     A5: G is Pi-group;
+    A6: G is non trivial by A4,Lm3;
     for p being prime Nat
     st p divides card (G./.N)
     holds p in Pi
@@ -558,13 +619,12 @@ proof
       assume B1: p divides card (G./.N);
       then p divides (card N)*(card (G./.N)) by NAT_D:9;
       then p divides card G by A2;
-      hence p in Pi by A4,A5,Lm3,Def1;
+      hence p in Pi by A5,A6,Th1;
     end;
-
-    hence thesis by Def1;
+    hence thesis by Th1;
   end;
   suppose G./.N is trivial;
-    hence thesis by Def1;
+    hence thesis by Def2;
   end;
 end;
 @ %def Th6
