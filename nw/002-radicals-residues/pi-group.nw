@@ -12,7 +12,11 @@ finite groups, but may be different in general).
 
 <<Definition: $\pi$-element of Group>>
 
+<<Theorem: $1_{G}$ is a $\pi$-element>>
+
 <<Definition: $\pi$-Group>>
+
+<<Theorem: the trivial group is $\pi$-group>>
 
 <<Theorem: criteria for finite group to be $\pi$-group>>
 
@@ -81,7 +85,7 @@ For any group $G$, its identity element is a $\pi$-element.
 \end{theorem}
 
 <<Theorem: $1_{G}$ is a $\pi$-element>>=
-theorem
+theorem Th1:
   for G being Group
   holds 1_G is Pi-element
 proof
@@ -126,7 +130,7 @@ end;
 @ %def Def2 Pi-group
 
 <<Theorem: the trivial group is $\pi$-group>>=
-theorem Th1:
+theorem Th2:
   for G being trivial Group
   holds G is Pi-group
 proof
@@ -142,7 +146,7 @@ proof
     g in {1_G} by A1,A2;
     hence g=1_G by TARSKI:def 1;
   end;
-  1_G is Pi-element by Lm1;
+  1_G is Pi-element by Th1;
   hence G is Pi-group by A3,Def2;
 end;
 @
@@ -154,7 +158,7 @@ registration
   existence
   proof
     take the trivial Group;
-    thus thesis by Th1;
+    thus thesis by Th2;
   end;
 end;
 @
@@ -166,7 +170,7 @@ to $\pi$.
 \end{theorem}
 
 <<Theorem: criteria for finite group to be $\pi$-group>>=
-theorem Th1:
+theorem Th3:
   for G being finite Group
   st G is non trivial
   holds G is Pi-group iff (for p being prime Nat st p divides card G
@@ -209,7 +213,7 @@ proof
     hence G is Pi-group by Def2;
   end;
 end;
-@ %def Th1
+@ %def Th3
 
 \begin{theorem}
 Let $G$ be a finite group, $\pi_{1}\subset\pi_{2}$ be sets of prime numbers.
@@ -217,7 +221,7 @@ If $G$ is a $\pi_{1}$-group, then $G$ is a $\pi_{2}$-group.
 \end{theorem}
 
 <<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>=
-theorem Th2:
+theorem Th4:
   for Pi1,Pi2 being Subset of SetPrimes
   st Pi1 c= Pi2
   for G being finite Group
@@ -231,15 +235,15 @@ proof
   A3: G is trivial or G is non trivial;
   per cases by A3;
   suppose G is trivial;
-    hence thesis by Def1;
+    hence thesis by Th2;
   end;
   suppose A4: G is non trivial;
-    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th1;
+    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th3;
     then for p being prime Nat st p divides card G holds p in Pi2 by A1;
-    hence thesis by A4,Th1;
+    hence thesis by A4,Th3;
   end;
 end;
-@ %def Th2
+@ %def Th4
 
 \begin{theorem}
 Let $G$ be a finite group, $\pi$ a set of prime numbers.
@@ -251,7 +255,7 @@ Take $H=\trivialSubgroup_{G}$, which is trivially a $\pi$-subgroup of $G$.
 \end{proof}
 
 <<Theorem: Existence of $\pi$-Subgroup>>=
-theorem Th3:
+theorem Th5:
   for Pi being Subset of SetPrimes
   for G being Group
   ex H being strict Subgroup of G
@@ -261,9 +265,9 @@ proof
   let G be Group;
   take H = (1).G;
   H is trivial;
-  hence H is Pi-group by Def2;
+  hence H is Pi-group by Th2;
 end;
-@ %localdef Th2
+@ %localdef Th5
 
 <<Register: $\pi$-group for groups and finite groups>>=
 registration
@@ -272,13 +276,13 @@ registration
   existence
   proof
     take the trivial Group;
-    thus thesis by Def2;
+    thus thesis by Th2;
   end;
   cluster Pi-group for finite Group;
   existence
   proof
     take the trivial Group;
-    thus thesis by Def2;
+    thus thesis by Th2;
   end;
 end;
 @
@@ -295,7 +299,7 @@ rather than the generic \lstinline{set}.
 \end{thm-remark}
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
-theorem Th3:
+theorem Th5:
   for p being prime Nat
   holds {p} is Subset of SetPrimes
 proof
@@ -315,9 +319,9 @@ end;
 definition
   let p be prime Nat;
   redefine func {p} -> Subset of SetPrimes;
-  coherence by Th3;
+  coherence by Th5;
 end;
-@ %def Th3
+@ %def Th5
 
 \begin{theorem}
 Let $p$ be a prime number, $G$ a finite group.
@@ -325,7 +329,7 @@ Then $G$ is a $p$-group if and only if $G$ is a $\{p\}$-group.
 \end{theorem}
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
-theorem Th4:
+theorem Th6:
   for p being prime Nat
   for G being finite Group
   holds G is p-group iff G is {p}-group
@@ -345,7 +349,7 @@ proof
 ::>                 *4
   end;
 end;
-@ %def Th4
+@ %def Th6
 
 \begin{theorem}
 Let $H\subgroup G$ bea subgroup, $g\in G$ and $h\in H$.
@@ -353,7 +357,7 @@ If $g=h$, then for any $n\in\NN_{0}$ we have $g^{n}=h^{n}$.
 \end{theorem}
 
 <<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>=
-theorem Th5:
+theorem Th7:
   for G being Group
   for g being Element of G
   for H being Subgroup of G
@@ -388,7 +392,7 @@ proof
   A5: for k being Nat holds P[k] from NAT_1:sch 2(A3,A4);
   hence h |^ n = g |^ n;
 end;
-@ %def Th5
+@ %def Th7
 
 \begin{lemma}
 If $g\in G$, $h\in H\subgroup H$, $h=g$ and $|g|\neq0$, then $|g|=|h|$.
@@ -419,7 +423,7 @@ proof
   by A1,A4,GROUP_1:def 11;
   A6: h |^ n = 1_H
   proof
-    h |^ n = g |^ n by A2,A3,Th5
+    h |^ n = g |^ n by A2,A3,Th7
     .= 1_G by A5;
     hence thesis by GROUP_2:44;
   end;
@@ -428,7 +432,7 @@ proof
     let m be Nat;
     assume B1: h |^ m = 1_H;
     assume B2: m <> 0;
-    g |^ m = h |^ m by A2,A3,Th5
+    g |^ m = h |^ m by A2,A3,Th7
           .= 1_H by B1
           .= 1_G by GROUP_2:44;
     hence thesis by A1,A4,B2,GROUP_1:def 11;
@@ -452,7 +456,7 @@ If $g=h$, then $|g|=|h|$.
 \end{theorem}
 
 <<Theorem: for $g\in G$ and $h\in H\subgroup G$, if $g=h$, then $|g|=|h|$>>=
-theorem Th7:
+theorem Th8:
   for G being Group
   for H being Subgroup of G
   for g being Element of G
@@ -477,7 +481,7 @@ proof
     proof
       given n being Nat such that
       B1: n <> 0 & h |^ n = 1_H;
-      g |^ n = h |^ n by A1,A2,Th5
+      g |^ n = h |^ n by A1,A2,Th7
             .= 1_H by B1
             .= 1_G by GROUP_2:44;
       hence contradiction by A4,B1,GROUP_1:def 10;
@@ -487,7 +491,7 @@ proof
     hence ord g = ord h;
   end;
 end;
-@ %def Th7
+@ %def Th8
 
 \begin{lemma}
 If $H\subgroup G$ and $H$ is nontrivial, then $G$ is nontrivial.
@@ -536,7 +540,7 @@ $\pi$-group.
 \end{theorem}
 
 <<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>=
-theorem Th8:
+theorem Th9:
   for G being Pi-group Group
   for H being Subgroup of G
   holds H is Pi-group
@@ -546,7 +550,7 @@ proof
   A1: H is trivial or H is non trivial;
   per cases by A1;
   suppose H is trivial;
-    hence thesis by Def2;
+    hence thesis by Th2;
   end;
   suppose A2: H is non trivial;
     then A3: G is non trivial by Lm2;
@@ -556,7 +560,7 @@ proof
       B1: h in H;
       reconsider g=h as Element of G by GROUP_2:42;
       g in H by B1;
-      then B2: ord g = ord h by Th7;
+      then B2: ord g = ord h by Th8;
       B3: g is Pi-element by A3,Def2;
       then B4: ord g <> 0 by GR_CY_1:6,GROUP_1:def 11;
       for p being prime Nat st p divides (ord g) holds p in Pi by B3,Def1;
@@ -566,7 +570,7 @@ proof
     hence thesis by Def2;
   end;
 end;
-@ %def Th8
+@ %def Th9
 
 <<Register: quotient group of finite groups is finite>>=
 registration
@@ -596,14 +600,14 @@ Lm3:
   holds G is non trivial;
 ::>                  *4
 
-theorem Th6:
+theorem Th10:
   for G being Pi-group finite Group
   for N being normal Subgroup of G
   holds G./.N is Pi-group
 proof
   let G be Pi-group finite Group;
   let N be normal Subgroup of G;
-  A1: N is Pi-group by Th5;
+  A1: N is Pi-group by Th9;
   card (G./.N) = index N by GROUP_2:134,GROUP_6:27;
   then A2: card G = (card N)*(card (G./.N)) by GROUP_2:147;
   A3: G./.N is trivial or G./.N is non trivial;
@@ -619,12 +623,12 @@ proof
       assume B1: p divides card (G./.N);
       then p divides (card N)*(card (G./.N)) by NAT_D:9;
       then p divides card G by A2;
-      hence p in Pi by A5,A6,Th1;
+      hence p in Pi by A5,A6,Th3;
     end;
-    hence thesis by Th1;
+    hence thesis by A4,Th3;
   end;
   suppose G./.N is trivial;
-    hence thesis by Def2;
+    hence thesis by Th2;
   end;
 end;
-@ %def Th6
+@ %def Th10
