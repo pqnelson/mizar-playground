@@ -8,9 +8,13 @@ Sylow $\pi$-subgroups, and Hall $\pi$-subgroups (which coincide for
 finite groups, but may be different in general).
 
 <<$\pi$-Groups and $\pi$-Subgroups>>=
+<<Reserve: $\pi$ for subset of primes>>
+
 <<Definition: $\pi$-element of Group>>
 
 <<Definition: $\pi$-Group>>
+
+<<Theorem: criteria for finite group to be $\pi$-group>>
 
 <<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>
 
@@ -22,17 +26,28 @@ finite groups, but may be different in general).
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
-<<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>
-
 <<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>
 
 <<Lemma: $g=h$ and $|g|\neq0$ implies $|g|=|h|$>>
+
 <<Theorem: for $g\in G$ and $h\in H\subgroup G$, if $g=h$, then $|g|=|h|$>>
+
+<<Lemma: $H\subgroup G$ and $H$ is nontrivial implies $G$ is nontrivial>>
+
+<<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>
 
 <<Register: quotient group of finite groups is finite>>
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
 
+@
+
+\begin{reserve}
+We will reserve \lstinline{Pi} for some subset of prime numbers.
+\end{reserve}
+
+<<Reserve: $\pi$ for subset of primes>>=
+reserve Pi for Subset of SetPrimes;
 @
 
 Recall, the notion of a $p$-group is defined as:
@@ -79,8 +94,7 @@ definition
   let IT be Group;
   attr IT is Pi-group means
   :Def2:
-  (for g being Element of IT
-   holds g is Pi-element) or
+  (for g being Element of IT holds g is Pi-element) or
   (IT is trivial);
 end;
 @ %def Def2 Pi-group
@@ -364,7 +378,7 @@ proof
   consider k being Nat such that
   A10: k = ord h by A9,GROUP_1:def 11;
   h |^ k = 1_H & k <> 0 & (for m being Nat st h |^ m = 1_H & m <> 0
-  holds k <= m) 
+  holds k <= m)
   by A9,A10,GROUP_1:def 11;
   then n <= k & k <= n by A6,A7,A8;
   then n = k by XXREAL_0:1;
@@ -401,7 +415,7 @@ proof
   suppose A4: g is being_of_order_0;
     (ex n being Nat st n <> 0 & h |^ n = 1_H) implies contradiction
     proof
-      given n being Nat such that 
+      given n being Nat such that
       B1: n <> 0 & h |^ n = 1_H;
       g |^ n = h |^ n by A1,A2,Th5
             .= 1_H by B1
@@ -414,6 +428,47 @@ proof
   end;
 end;
 @ %def Th7
+
+\begin{lemma}
+If $H\subgroup G$ and $H$ is nontrivial, then $G$ is nontrivial.
+\end{lemma}
+
+<<Lemma: $H\subgroup G$ and $H$ is nontrivial implies $G$ is nontrivial>>=
+Lm2:
+for G being Group
+for H being Subgroup of G st H is non trivial
+holds G is non trivial
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  assume A1: H is non trivial;
+  A2: the carrier of H c= the carrier of G by GROUP_2:def 5;
+  the multMagma of H <> (1).H by A1,LmGROUP226;
+  then the carrier of H <> the carrier of (1).H by GROUP_2:61;
+  then the carrier of H <> {1_H} by GROUP_2:def 7;
+  then A3: the carrier of H <> {1_G} by GROUP_2:44;
+  the multMagma of G <> (1).G
+  proof
+    (1).G is Subgroup of H by GROUP_2:65;
+    then the carrier of (1).G c= the carrier of H by GROUP_2:def 5;
+    then {1_G} c= the carrier of H by GROUP_2:def 7;
+    then not (the carrier of H c= {1_G}) by A3,XBOOLE_0:def 10;
+    then consider x being object such that
+    B1: x in the carrier of H & not x in {1_G}
+    by A1,A3,GROUP_2:65;
+    B2: x in H by B1;
+    B3: x in G by B2,GROUP_2:40;
+    B5: x <> 1_G by B1,TARSKI:def 1;
+    then B4: x in (the carrier of G) \ {1_G} by B1,B3,XBOOLE_0:def 5;
+    then not (the carrier of G) c= {1_G} by B1,TARSKI:def 3;
+    not x in {1_G} by B1;
+    then not x in (1).G by GROUP_2:def 7;
+    then ex y being object st y in G & not y in (1).G by B3;
+    hence thesis by B3,B5,GROUP_2:def 6;
+  end;
+  hence G is non trivial by LmGROUP226;
+end;
+@
 
 \begin{theorem}[{\cite[Th3.42]{rose1994course}}]
 Let $G$ be a finite $\pi$-group. Then any subgroup $H\subgroup G$ is a
@@ -434,7 +489,7 @@ proof
     hence thesis by Def2;
   end;
   suppose A2: H is non trivial;
-    then A3: G is non trivial by Lm1;
+    then A3: G is non trivial by Lm2;
     for h being Element of H holds h is Pi-element
     proof
       let h be Element of H;
@@ -513,4 +568,3 @@ proof
   end;
 end;
 @ %def Th6
-
