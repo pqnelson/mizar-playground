@@ -15,7 +15,13 @@ Sylow $\pi$-subgroups) coincide.
 
 <<Sylow $\pi$-Groups>>=
 <<Definition: predicate ``is Sylow $\pi$-subgroup of primes [$\pi$]''>>
-@ 
+
+<<Theorem: Existence of Sylow $\pi$-subgroup>>
+
+<<Definition: $\SylowSubgroups{\pi}{G}$ the collection of Sylow $\pi$-Subgroups>>
+
+<<Register: $\SylowSubgroups{\pi}{G}$ is non empty set>>
+@
 
 % Derek J.S. Robinson, _A Course in the Theory of Groups_, section 9.1
 \begin{definition}
@@ -24,6 +30,10 @@ Let $G$ be a group and $\pi$ be a set of primes. We define a
 that it is a maximal $\pi$-subgroup, i.e., for any $\pi$-subgroup
 $K\subgroup G$ such that $H\subgroup K$ has $K=H$ or $K=G$.
 \end{definition}
+
+\begin{def-remark}
+This is defined in direct analogy to Definition~\mml[def18]{group10}.
+\end{def-remark}
 
 \begin{def-remark}
 We will follow the formalization of maximal subgroups in
@@ -58,11 +68,11 @@ definition
   let G be Group;
   let IT be Subgroup of G;
   pred IT is_Sylow_pi-subgroup_of_primes Pi means
-  :Def2:
-  IT is Pi-group & IT is proper &
+  :Def3:
+  IT is Pi-group & :: IT is proper &
   for P being strict Subgroup of G
-  st P is Pi-group & P <> the multMagma of IT & IT is Subgroup of P
-  holds P = the multMagma of G;
+  st P is Pi-group & P <> the multMagma of G & IT is Subgroup of P
+  holds P = the multMagma of IT;
 end;
 @ %def is_Sylow_pi-subgroup_of_primes
 
@@ -73,4 +83,78 @@ vocabulary.
 
 <<DICT/GROUP-23.VOC>>=
 Ris_Sylow_pi-subgroup_of_primes
-@ 
+@
+
+\begin{theorem}[First Sylow $\pi$ Theorem]
+For any group $G$ and set of primes $\pi$, there exists a Sylow
+$\pi$-subgroup of $G$.
+\end{theorem}
+
+\begin{thm-remark}
+Again, we consciously model our exact phrasing off of Theorem~\mml[Th10]{group10},
+the formalization of the first Sylow theorem.
+\end{thm-remark}
+
+<<Theorem: Existence of Sylow $\pi$-subgroup>>=
+theorem Th2001:
+  for G being Group
+  ex P being strict Subgroup of G
+  st P is_Sylow_pi-subgroup_of_primes Pi;
+@
+
+
+\begin{definition}
+Let $G$ be a group, $\pi$ be a set of prime numbers. We define
+$\SylowSubgroups{\pi}{G}$ to be the set of $\pi$-subgroups of $G$.
+\end{definition}
+
+<<Definition: $\SylowSubgroups{\pi}{G}$ the collection of Sylow $\pi$-Subgroups>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  func the_sylow_pi-subgroups_of_primes (Pi,G) -> Subset of (Subgroups G) equals
+  :Def4:
+  { H where H is Element of Subgroups G : ex P being strict Subgroup of G st
+   P = H & P is_Sylow_pi-subgroup_of_primes Pi };
+  correctness
+  proof
+    set X = { H where H is Element of Subgroups G :
+    ex P being strict Subgroup of G
+    st P = H & P is_Sylow_pi-subgroup_of_primes Pi };
+    for x being object st x in X holds x in Subgroups G
+    proof
+      let x be object;
+      assume x in X;
+      then ex H being Element of Subgroups G st x = H & ex P being strict
+      Subgroup of G st P = H & P is_Sylow_pi-subgroup_of_primes Pi;
+      hence x in Subgroups G;
+    end;
+    hence thesis by TARSKI:def 3;
+  end;
+end;
+@
+
+\begin{voc}
+We need to add \lstinline{the_sylow_pi-subgroups_of_primes} to our
+vocabulary.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+Othe_sylow_pi-subgroups_of_primes
+@
+
+<<Register: $\SylowSubgroups{\pi}{G}$ is non empty set>>=
+registration
+  let G be Group;
+  let Pi be Subset of SetPrimes;
+  cluster the_sylow_pi-subgroups_of_primes (Pi,G) -> non empty;
+  correctness
+  proof
+    consider P being strict Subgroup of G such that
+    A1: P is_Sylow_pi-subgroup_of_primes Pi by Th2001;
+    reconsider H9=(Omega).P as Element of Subgroups G by GROUP_3:def 1;
+    H9 in the_sylow_pi-subgroups_of_primes (Pi,G) by A1;
+    hence thesis;
+  end;
+end;
+@

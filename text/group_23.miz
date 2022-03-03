@@ -626,11 +626,40 @@ definition
   let G be Group;
   let IT be Subgroup of G;
   pred IT is_Sylow_pi-subgroup_of_primes Pi means
-  :Def2:
-  IT is Pi-group & IT is proper &
+  :Def3:
+  IT is Pi-group & :: IT is proper &
   for P being strict Subgroup of G
-  st P is Pi-group & P <> the multMagma of IT & IT is Subgroup of P
-  holds P = the multMagma of G;
+  st P is Pi-group & P <> the multMagma of G & IT is Subgroup of P
+  holds P = the multMagma of IT;
+end;
+
+theorem Th2001:
+  for G being Group
+  ex P being strict Subgroup of G
+  st P is_Sylow_pi-subgroup_of_primes Pi;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  func the_sylow_pi-subgroups_of_primes (Pi,G) -> Subset of (Subgroups G) equals
+  :Def4:
+  { H where H is Element of Subgroups G : ex P being strict Subgroup of G st
+   P = H & P is_Sylow_pi-subgroup_of_primes Pi };
+  correctness
+  proof
+    set X = { H where H is Element of Subgroups G :
+    ex P being strict Subgroup of G
+    st P = H & P is_Sylow_pi-subgroup_of_primes Pi };
+    for x being object st x in X holds x in Subgroups G
+    proof
+      let x be object;
+      assume x in X;
+      then ex H being Element of Subgroups G st x = H & ex P being strict
+      Subgroup of G st P = H & P is_Sylow_pi-subgroup_of_primes Pi;
+      hence x in Subgroups G;
+    end;
+    hence thesis by TARSKI:def 3;
+  end;
 end;
 
 begin :: p-Cores and pi-Cores
