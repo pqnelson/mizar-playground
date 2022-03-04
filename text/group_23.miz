@@ -13,7 +13,7 @@
 environ
 
  vocabularies PRALG_1, MOD_4, CARD_3, RLVECT_1, UPROOTS, RLVECT_2,
-   EQREL_1, RLSUB_1, QC_LANG1,
+   EQREL_1, RLSUB_1, QC_LANG1, XCMPLX_0,
    FUNCT_3, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, XXREAL_0, XXREAL_1,
    FINSEQ_1, FINSET_1, NUMBERS, WELLORD1, SUBSET_1, XBOOLE_0, PARTFUN1,
    FUNCT_2, CARD_1, ARYTM_3, CQC_SIM1, ORDINAL1, PBOOLE, STRUCT_0,
@@ -40,7 +40,7 @@ environ
    AUTGROUP, GROUP_9, GROUP_10, GR_CY_1, NEWTON, CARD_3, PRALG_1, GROUP_7, GROUP_19;
  registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
    ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, NAT_1, INT_1, INT_2, XCMPLX_0,
-   ARYTM_3, XREAL_0, ARYTM_2, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
+   ARYTM_3, XREAL_0, ARYTM_2, NAT_6, SETWISEO, CARD_1, NEWTON, FINSEQ_2,
    STRUCT_0, BINOP_1, GROUP_1, GROUP_2, GROUP_3, MONOID_0, GROUP_6,
    GR_CY_1, GROUP_7;
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
@@ -65,6 +65,43 @@ environ
 
 begin :: pi-Groups and pi-Subgroups
 reserve Pi for Subset of SetPrimes;
+
+registration
+  cluster positive for Nat;
+  existence
+  proof
+    take 1;
+    thus thesis;
+  end;
+  cluster zero for natural number;
+  existence
+  proof
+    take 0;
+    thus thesis;
+  end;
+  cluster non zero for Nat; :: natural number;
+  existence
+  proof
+    take 1;
+    thus thesis;
+  end;
+end;
+
+registration
+  cluster non zero -> positive for Nat;
+  coherence
+  proof
+    for x being Nat st x is non zero holds x is positive
+    proof
+      let x be Nat;
+      assume A1: x is non zero;
+      then x <> 0;
+      then x > 0;
+      hence x is positive;
+    end;
+    hence thesis;
+  end;
+end;
 
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
 :: theorem 5.2.7
@@ -145,13 +182,6 @@ definition
   attr IT is Pi-group means
   :Def2:
   for g being Element of IT holds g is Pi-element;
-end;
-
-registration
-  let Pi;
-  let G be Pi-group Group;
-  cluster -> Pi-element for Element of G;
-  coherence by Def2;
 end;
 
 theorem Th2:
@@ -263,6 +293,13 @@ registration
     take the trivial Group;
     thus thesis by Th2;
   end;
+end;
+
+registration
+  let Pi;
+  let G be Pi-group Group;
+  cluster -> Pi-element for Element of G;
+  coherence by Def2;
 end;
 
 registration
@@ -615,7 +652,7 @@ theorem ThB:
   for N being normal Subgroup of G
   for x being Element of G./.N
   for g being Element of G st x = g*N
-  holds ord x = ord g
+  holds ord x divides ord g
 proof
   let G be Group;
   let N be normal Subgroup of G;
@@ -627,17 +664,7 @@ proof
             .= (1_G)*N by GROUP_1:41
             .= carr N by GROUP_2:37
             .= 1_(G./.N) by GROUP_6:24;
-  then A3: ord x divides n by GROUP_1:44;
-  A4: g is being_of_order_0 or not (g is being_of_order_0);
-  per cases by A4;
-  suppose g is being_of_order_0;
-    thus ord x = ord g;
-::>                  *4
-  end;
-  suppose not g is being_of_order_0;
-    thus ord x = ord g;
-::>                  *4
-  end;
+  hence ord x divides n by GROUP_1:44;
 end;
 
 Lm3:
@@ -662,8 +689,16 @@ proof
     then consider g being Element of G such that
     B1: x = g*N & x = N*g by GROUP_6:23;
     B2: g is Pi-element by Def2;
-    ord x = ord g by B1,ThB;
-    hence x is Pi-element by B2;
+    B3: ord x divides ord g by B1,ThB;
+    then B4: ord x <> 0 by B2,B3,Def1,INT_2:3;
+    for p being prime Nat st p divides (ord x) holds p in Pi
+    proof
+      let p be prime Nat;
+      assume C1: p divides (ord x);
+      then p divides (ord g) by B3,NAT_D:4;
+      hence p in Pi by B2,Def1;
+    end;
+    hence x is Pi-element by B4,Def1;
   end;
   hence G./.N is Pi-group by Def2;
 end;
@@ -745,7 +780,7 @@ proof
     psi is bijective by A3,GROUP_6:63;
     then phi * phi" = id (the carrier of G2) by A3,A4,A5,FUNCT_2:29;
     then phi * psi = id (the carrier of G2);
-    then phi = psi" by B1,FUNCT_2:30,FUNCT_2:def 3;
+    then phi = psi" by A5,FUNCT_2:30,FUNCT_2:def 3;
     then B1: phi.(psi.g2) = g2 by A3,FUNCT_2:26;
     psi.g2 is Element of G1;
     psi.g2 is Pi-element by A4,Th12,A2,Def2;
