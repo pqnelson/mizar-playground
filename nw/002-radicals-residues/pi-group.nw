@@ -14,9 +14,19 @@ finite groups, but may be different in general).
 
 <<Theorem: $1_{G}$ is a $\pi$-element>>
 
+<<Theorem: if $|a|=|b|$ and $a$ is a $\pi$-element, then $b$ is a $\pi$-element>>
+
+<<Theorem: $a$ is a $\pi$-element and $b$ arbitrary, then $b^{-1}ab$ is a $\pi$-element>>
+
+<<Theorem: $a\in G$ is a $\pi$-element implies $a^{-1}$ is a $\pi$-element>>
+
 <<Definition: $\pi$-Group>>
 
+<<Register: Elements of a $\pi$-group are $\pi$-elements>>
+
 <<Theorem: the trivial group is $\pi$-group>>
+
+<<Registration: trivial group is $\pi$-group>>
 
 <<Theorem: criteria for finite group to be $\pi$-group>>
 
@@ -40,7 +50,13 @@ finite groups, but may be different in general).
 
 <<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>
 
+<<Register: subgroup of $\pi$-group is $\pi$-group>>
+
 <<Register: quotient group of finite groups is finite>>
+
+<<Theorem: $x\in G/N$, $x=gN$, and $n\in\NN$ implies $x^{n}=g^{n}N$>>
+
+<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|=|g|$>>
 
 <<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>
 
@@ -132,6 +148,67 @@ proof
 end;
 @
 
+\begin{theorem}
+  Let $G$ be a group, let $a,b\in G$. If $a$ is a $\pi$-element, and if
+  $|a|=|b|$, then $b$ is a $\pi$-element.
+\end{theorem}
+
+<<Theorem: if $|a|=|b|$ and $a$ is a $\pi$-element, then $b$ is a $\pi$-element>>=
+theorem Th2:
+  for G being Group
+  for a,b being Element of G
+  st a is Pi-element & ord a = ord b
+  holds b is Pi-element
+proof
+  let G be Group;
+  let a,b be Element of G;
+  assume A1: a is Pi-element;
+  assume A2: ord a = ord b;
+  A3: ord b <> 0 by A1,A2,Def1;
+  for p being prime Nat st p divides (ord b) holds p in Pi by A1,A2,Def1;
+  hence b is Pi-element by A3;
+end;
+@ %def Th2
+
+\begin{theorem}
+Let $G$ be a group, $a\in G$ be a $\pi$-element, and $b\in G$ arbitrary.
+Then $b^{-1}ab$ is a $\pi$-element.
+\end{theorem}
+
+<<Theorem: $a$ is a $\pi$-element and $b$ arbitrary, then $b^{-1}ab$ is a $\pi$-element>>=
+theorem
+  for G being Group
+  for a,b being Element of G
+  st a is Pi-element
+  holds a |^ b is Pi-element
+proof
+  let G be Group;
+  let a,b be Element of G;
+  assume A1: a is Pi-element;
+  A2: ord (a |^ b) = ord a by GROUPP_1:6;
+  hence thesis by A1,Th2;
+end;
+@
+
+\begin{theorem}
+If $a\in G$ is a $\pi$-element, then $a^{-1}$ is a $\pi$-element.
+\end{theorem}
+
+<<Theorem: $a\in G$ is a $\pi$-element implies $a^{-1}$ is a $\pi$-element>>=
+theorem
+  for G being Group
+  for a,b being Element of G
+  st a is Pi-element
+  holds a" is Pi-element
+proof
+  let G be Group;
+  let a,b be Element of G;
+  assume A1: a is Pi-element;
+  A2: ord (a") = ord a by GROUPP_1:5;
+  hence thesis by A1,Th2;
+end;
+@
+
 \begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
 a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
@@ -154,6 +231,15 @@ definition
   for g being Element of IT holds g is Pi-element;
 end;
 @ %def Def2 Pi-group
+
+<<Register: Elements of a $\pi$-group are $\pi$-elements>>=
+registration
+  let Pi;
+  let G be Pi-group Group;
+  cluster -> Pi-element for Element of G;
+  coherence by Def2;
+end;
+@
 
 \begin{theorem}
   Let $\pi$ be any set of prime numbers.
@@ -316,8 +402,39 @@ registration
     take N = (1).G;
     thus thesis by Th2;
   end;
+  cluster Pi-group for Subgroup of G;
+  existence
+  proof
+    take N = (1).G;
+    thus thesis by Th2;
+  end;
+  cluster Pi-group for strict Subgroup of G;
+  existence
+  proof
+    take N = (1).G;
+    thus thesis by Th2;
+  end;
 end;
-@ 
+registration
+  let Pi be Subset of SetPrimes;
+  cluster trivial Pi-group for Group;
+  existence
+  proof
+    take N = the trivial Group;
+    thus thesis by Th2;
+  end;
+end;
+registration
+  let Pi be Subset of SetPrimes;
+  let G be Group;
+  cluster trivial Pi-group for Subgroup of G;
+  existence
+  proof
+    take N = (1).G;
+    thus thesis by Th2;
+  end;
+end;
+@
 
 \begin{theorem}
 If $p\in\NN$ is prime, then $\{p\}$ is a subset of the collection of
@@ -604,6 +721,15 @@ proof
 end;
 @ %def Th9
 
+<<Register: subgroup of $\pi$-group is $\pi$-group>>=
+registration
+  let Pi;
+  let G be Pi-group Group;
+  cluster -> Pi-group for Subgroup of G;
+  coherence by Th9;
+end;
+@
+
 <<Register: quotient group of finite groups is finite>>=
 registration
   let G be finite Group;
@@ -619,8 +745,103 @@ registration
 end;
 @
 
+\begin{theorem}
+  If $N\normalSubgroup G$ and $x\in N$ is $x=gN$ for some $g\in G$,
+  then for any $n\in\NN$ we have $x^{n} = g^{n}N$.
+\end{theorem}
+
+<<Theorem: $x\in G/N$, $x=gN$, and $n\in\NN$ implies $x^{n}=g^{n}N$>>=
+theorem ThA:
+  for G being Group
+  for N being normal Subgroup of G
+  for x being Element of G./.N
+  for n being Nat
+  for g being Element of G
+  st x = g*N
+  holds x |^ n = (g |^ n)*N & x |^ n = N*(g |^ n)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let x be Element of G./.N;
+  let n be Nat;
+  let g be Element of G;
+  assume A1: x = g*N;
+  defpred P[Nat] means x |^ $1 = (g |^ $1)*N;
+  A2: P[0]
+  proof
+    x |^ 0 = 1_(G./.N) by GROUP_1:25
+    .= carr N by GROUP_6:24
+    .= (1_G)*N by GROUP_2:37
+    .= (g |^ 0)*N by GROUP_1:25;
+    then x |^ 0 = (g |^ 0)*N;
+    hence thesis;
+  end;
+  A3: for k be Nat st P[k] holds P[k + 1]
+  proof
+    let k be Nat;
+    assume P[k];
+    then B1: x |^ k = (g |^ k)*N;
+    then B2: x |^ (k + 1) = x * (x |^ k) by GROUP_1:34
+    .= @x * ((g |^ k)*N) by B1,GROUP_6:def 3
+    .= (g*N) * ((g |^ k)*N) by A1;
+    B3: (g * N) * ((g |^ k)*N) = g * N * (g |^ k)*N by GROUP_2:30,31
+    .= g * (N * (g |^ k)) * N by GROUP_2:31
+    .= g * ((g |^ k) * N) * N by GROUP_3:117
+    .= g * (((g |^ k) * N) * N) by GROUP_2:29
+    .= g * ((g |^ k) * (N * N)) by GROUP_4:45
+    .= g * ((g |^ k) * N) by GROUP_2:76
+    .= (g * (g |^ k)) * N by GROUP_2:32
+    .= (g |^ (k + 1)) * N by GROUP_1:34;
+    then (g |^ (k + 1))*N = x |^ (k + 1) by B2;
+    hence thesis by A1,B2;
+  end;
+
+  A4: for k being Nat holds P[k] from NAT_1:sch 2(A2,A3);
+  thus x |^ n = (g |^ n)*N by A4;
+  (g |^ n)*N = N*(g |^ n) by GROUP_3:117;
+  hence x |^ n = N*(g |^ n) by A4;
+end;
+@
+
+\begin{theorem}
+Let $N\normalSubgroup G$. If $x\in G/N$ and $g\in G$ such that $x=gN$,
+then $|x|=|g|$.
+\end{theorem}
+
+<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|=|g|$>>=
+theorem ThB:
+  for G being Group
+  for N being normal Subgroup of G
+  for x being Element of G./.N
+  for g being Element of G st x = g*N
+  holds ord x = ord g
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let x be Element of G./.N;
+  let g be Element of G;
+  assume A1: x = g*N;
+  set n = ord g;
+  A2: x |^ n = (g |^ n)*N by A1,ThA
+            .= (1_G)*N by GROUP_1:41
+            .= carr N by GROUP_2:37
+            .= 1_(G./.N) by GROUP_6:24;
+  then A3: ord x divides n by GROUP_1:44;
+  A4: g is being_of_order_0 or not (g is being_of_order_0);
+  per cases by A4;
+  suppose g is being_of_order_0;
+    thus ord x = ord g;
+::>                  *4
+  end;
+  suppose not g is being_of_order_0;
+    thus ord x = ord g;
+::>                  *4
+  end;
+end;
+@
+
 \begin{theorem}[{\cite[Th3.42]{rose1994course}}]
-Let $G$ be a finite $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
+Let $G$ be a $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
 a $\pi$-group.
 \end{theorem}
 
@@ -633,35 +854,24 @@ Lm3:
 ::>                  *4
 
 theorem Th10:
-  for G being Pi-group finite Group
+  for G being Pi-group Group
   for N being normal Subgroup of G
   holds G./.N is Pi-group
 proof
-  let G be Pi-group finite Group;
+  let G be Pi-group Group;
   let N be normal Subgroup of G;
-  A1: N is Pi-group by Th9;
-  card (G./.N) = index N by GROUP_2:134,GROUP_6:27;
-  then A2: card G = (card N)*(card (G./.N)) by GROUP_2:147;
-  A3: G./.N is trivial or G./.N is non trivial;
-  per cases by A3;
-  suppose A4: G./.N is non trivial;
-    A5: G is Pi-group;
-    A6: G is non trivial by A4,Lm3;
-    for p being prime Nat
-    st p divides card (G./.N)
-    holds p in Pi
-    proof
-      let p be prime Nat;
-      assume B1: p divides card (G./.N);
-      then p divides (card N)*(card (G./.N)) by NAT_D:9;
-      then p divides card G by A2;
-      hence p in Pi by A5,A6,Th3;
-    end;
-    hence thesis by A4,Th3;
+  for x being Element of G./.N
+  holds x is Pi-element
+  proof
+    let x be Element of G./.N;
+    x in G./.N;
+    then consider g being Element of G such that
+    B1: x = g*N & x = N*g by GROUP_6:23;
+    B2: g is Pi-element by Def2;
+    ord x = ord g by B1,ThB;
+    hence x is Pi-element by B2;
   end;
-  suppose G./.N is trivial;
-    hence thesis by Th2;
-  end;
+  hence G./.N is Pi-group by Def2;
 end;
 @ %def Th10
 
@@ -749,7 +959,7 @@ $\pi$-group by definition.
 \end{proof}
 
 <<Theorem: if $G_{1}$ is a $\pi$-group and $G_{1}\iso G_{2}$, then $G_{2}$ is a $\pi$-group>>=
-theorem
+theorem Th16:
   for G1,G2 being Group
   st G1,G2 are_isomorphic & G1 is Pi-group
   holds G2 is Pi-group
@@ -799,7 +1009,7 @@ theorem
   for HN being strict Subgroup of G
   st HN = H "\/" N
   holds HN is Pi-group;
-@ 
+@
 
 \begin{theorem}
 If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
@@ -815,7 +1025,7 @@ theorem
   for N being normal Subgroup of G
   st H is Pi-group & N is Pi-group
   holds H /\ N is Pi-group;
-@ 
+@
 
 \begin{theorem}
 If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
@@ -832,4 +1042,4 @@ theorem
   st H is Pi-group & N is Pi-group
   holds (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group;
 
-@ 
+@
