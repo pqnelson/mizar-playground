@@ -40,6 +40,8 @@ finite groups, but may be different in general).
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
 
+<<Theorem: $\{p\}$-group is Sylow $p$-group>>
+
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
 <<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>
@@ -121,7 +123,7 @@ registration
     hence thesis;
   end;
 end;
-@ 
+@
 
 Recall, the notion of a $p$-group is defined as:
 
@@ -514,6 +516,84 @@ end;
 @ %def Th5
 
 \begin{theorem}
+If $p\in\NN$ is prime and $G$ is a $\{p\}$-group, then $G$ is a Sylow $p$-group.
+\end{theorem}
+
+<<Theorem: $\{p\}$-group is Sylow $p$-group>>=
+theorem ThDiv:
+  for p being prime Nat
+  for G being finite Group
+  st G is {p}-group & G is non trivial
+  holds (Omega).G is_Sylow_p-subgroup_of_prime p
+proof
+  let p be prime Nat;
+  let G be finite Group;
+  assume A1: G is {p}-group;
+  assume A2: G is non trivial;
+  A3: for q being prime Nat st q divides card G holds q=p
+  proof
+    let q be prime Nat;
+    assume B1: q divides card G;
+    then q in {p} by A1,Th3;
+    hence q = p by TARSKI:def 1;
+  end;
+  A5: p divides card G
+  proof
+    B1: card G >= 1 by GROUP_1:45;
+    G is non trivial implies card G <> 1 by GROUP_6:11;
+    then card G <> 1 by A2;
+    then B2: card G > 1 by B1,GROUP_6:11,NAT_2:19;
+    then card G is non trivial by NAT_2:def 1;
+    then card G >= 2 by NAT_2:29;
+    then consider q being Element of NAT such that
+    B3: q is prime and
+    B4: q divides card G by INT_2:31;
+    reconsider q as prime Nat by B3;
+    q = p by A3,B4;
+    hence thesis by B4;
+  end;
+  then consider P being strict Subgroup of G such that
+  A4: P is_Sylow_p-subgroup_of_prime p by GROUP_10:10;
+  A5: index P = 1
+  proof
+    B1: card G = (card P)*(index P) by GROUP_2:147;
+    B2: not p divides index P by A4,GROUP_10:def 18;
+    (ex q being Element of NAT st q is prime & q divides index P) implies contradiction
+    proof
+      given q being Element of NAT such that
+      C1: q is prime & q divides index P;
+      reconsider q1=q as prime Nat by C1;
+      q1 divides (card P)*(index P) by C1,INT_2:2;
+      then q1 divides (card G) by B1,C1;
+      then C2: q1=p by A3;
+      hence contradiction by B2,C1;
+    end;
+    then index P < 2 by INT_2:31;
+    then not index P >= 2;
+    then index P is trivial Nat by NAT_2:29;
+    then B3: index P = 0 or index P = 1 by NAT_2:def 1;
+    card G >= 1 by GROUP_1:45;
+    then (card P)*(index P) >= 1 by B1;
+    then index P >= 1 by B3,XREAL_1:64;
+    hence index P = 1 by B3;
+  end;
+  A6: card G = (card P)*(index P) by GROUP_2:147
+            .= card P by A5;
+  P is p-group by A4,GROUP_10:def 18;
+  then consider r being Nat such that
+  A7: card P = p |^ r by GROUP_10:def 17;
+  card G = p |^ r by A6,A7;
+  then A8: card (Omega).G = p |^ r;
+  then A9: (Omega).G is p-group by GROUP_10:def 17;
+  not p divides index P by A4,GROUP_10:def 18;
+  then not p divides 1 by A5;
+  then A10: not p divides index (Omega).G by GROUP_2:150;
+  hence (Omega).G is_Sylow_p-subgroup_of_prime p by A9,GROUP_10:def 18;
+end;
+
+@
+
+\begin{theorem}
 Let $p$ be a prime number, $G$ a finite group.
 Then $G$ is a $p$-group if and only if $G$ is a $\{p\}$-group.
 \end{theorem}
@@ -526,17 +606,47 @@ theorem Th6:
 proof
   let p be prime Nat;
   let G be finite Group;
+
   thus G is p-group implies G is {p}-group
   proof
     assume B1: G is p-group;
-    thus G is {p}-group;
-::>                   *4
+    for g being Element of G holds g is {p}-element
+    proof
+      let g be Element of G;
+      g is p-power by B1;
+      then consider r being Nat such that
+      C1: ord g = p |^ r by GROUPP_1:def 1;
+      C2: for q being prime Nat st q divides ord g holds q in {p}
+      proof
+        let q be prime Nat;
+        assume D1: q divides ord g;
+        then q divides p |^ r by C1;
+        then q = p by D1,NAT_3:6;
+        hence q in {p} by TARSKI:def 1;
+      end;
+      not g is being_of_order_0 by GR_CY_1:6;
+      then ord g <> 0 by GROUP_1:def 11;
+      hence g is {p}-element by C1,C2,Def1;
+    end;
+    hence G is {p}-group by Def2;
   end;
-  thus G is {p}-group implies G is p-group
-  proof
-    assume B1: G is {p}-group;
-    thus G is p-group;
-::>                 *4
+  assume A1: G is {p}-group;
+  A2: G is trivial or G is non trivial;
+  per cases by A2;
+  suppose A3: G is trivial;
+    A4: card G = 1 by A3,GROUP_6:11
+              .= p |^ 0 by NEWTON:4;
+    hence thesis by GROUP_10:def 17;
+  end;
+  suppose A5: G is non trivial;
+    then (Omega).G is_Sylow_p-subgroup_of_prime p by A1,ThDiv;
+    then (Omega).G is p-group by GROUP_10:def 18;
+    then consider r being Nat such that
+    A6: card (Omega).G = p |^ r by GROUP_10:def 17;
+    card (Omega).G = card (the carrier of G)
+                  .= card G;
+    then card G = p |^ r by A6;
+    hence thesis by GROUP_10:def 17;
   end;
 end;
 @ %def Th6
