@@ -770,12 +770,63 @@ proof
   hence ord x divides n by GROUP_1:44;
 end;
 
+LmFiniteNontrivial:
+  not INT.Group(2) is trivial
+proof
+  set G = INT.Group(2);
+  G is finite;
+  then G is trivial implies card G = 1 by GROUP_6:11;
+  then A1: not card G = 1 implies not G is trivial;
+  card G = card (Segm 2) by GR_CY_1:def 5
+  .= card 2 by ORDINAL1:def 17
+  .= 2;
+  hence not INT.Group(2) is trivial by A1;
+end;
+
+registration
+  cluster non trivial for finite Group;
+  existence by LmFiniteNontrivial;
+end;
+
+theorem ThNontrivial:
+  for G being non trivial Group
+  ex g being Element of G st g <> 1_G
+proof
+  let G be non trivial Group;
+  A1: the carrier of G <> {1_G} by GROUP_6:def 2;
+  (1).G is Subgroup of G;
+  then the carrier of (1).G c= the carrier of G by GROUP_2:def 5;
+  then {1_G} c= the carrier of G by GROUP_2:def 7;
+  then not (the carrier of G c= {1_G}) by A1,XBOOLE_0:def 10;
+  then consider x being object such that
+  A2: x in the carrier of G & not x in {1_G};
+  x in G by A2;
+  then reconsider g=x as Element of G;
+  take g;
+  thus g <> 1_G by A2,TARSKI:def 1;
+end;
+
 Lm3:
   for G being Group
   for N being normal Subgroup of G
   st G./.N is non trivial
-  holds G is non trivial;
-::>                  *4
+  holds G is non trivial
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+
+  assume A1: G./.N is non trivial;
+  then consider S being Element of G./.N such that
+  A2: S <> 1_(G./.N) by ThNontrivial;
+  consider g being Element of G such that
+  A3: S = g*N & S = N*g by GROUP_6:21;
+  g*N <> 1_(G./.N) by A2,A3;
+  then g*N <> carr N by GROUP_6:24;
+  then A4: not g in N by GROUP_2:113;
+  1_G in N by GROUP_2:46;
+  then g <> 1_G by A4;
+  hence G is non trivial by GROUP_6:def 2;
+end;
 
 theorem Th10:
   for G being Pi-group Group
