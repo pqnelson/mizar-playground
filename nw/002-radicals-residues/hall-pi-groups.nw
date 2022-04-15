@@ -1,0 +1,113 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Hall $\pi$-Groups}
+
+We can generalize the notions surrounding Sylow's theorems from
+$p$-groups to $\pi$-groups. Towards this end, we will consciously follow
+the conventions laid down in the Mizar article concerning Sylow
+theorems~\mml{group10}.
+
+There is an obscure notion of ``Sylow $\pi$-subgroups''.
+However, in general, they are not conjugate to one another. For
+this reason, they are not very popular, and fallen by the
+wayside.\footnote{In fact, but for Robinson~\cite{robinson2012course} and the
+bibliography for the entry ``Sylow subgroup'' in the
+\emph{Encyclopedia of Mathematics} (\url{https://encyclopediaofmath.org/wiki/Sylow_subgroup}),
+I wouldn't have known of them.}
+
+Instead people usually prefer working with Hall $\pi$-subgroups.
+And if $G$ is finite, then these two notions (Hall $\pi$-subgroups and
+Sylow $\pi$-subgroups) coincide.
+
+<<Hall $\pi$-Groups>>=
+<<Definition: predicate ``is Hall $\pi$-subgroup of primes [$\pi$]''>>
+
+<<Definition: $\HallSubgroups{\pi}{G}$ the collection of Hall $\pi$-Subgroups>>
+
+@
+
+\begin{definition}
+Let $G$ be a finite group, $\pi$ a set of primes, and $H\subgroup G$
+some subgroup. We call $H$ a \define{Hall Subgroup} if every prime
+$p\in\pi$ does not divide the index $p\ndivides\Index{G}{H}$.
+\end{definition}
+
+\begin{def-remark}
+Not every finite group has a Hall subgroup, so we cannot make an
+attribute ``Hall'' for \lstinline{Subgroup of G}. Fortunately,
+Definition~\mml[def18]{group10} defines a predicate for Sylow subgroup,
+and we follow suite.
+\end{def-remark}
+
+<<Definition: predicate ``is Hall $\pi$-subgroup of primes [$\pi$]''>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  let IT be Subgroup of G;
+  pred IT is_Hall_pi-subgroup_of_primes Pi means
+  :Def3:
+  IT is Pi-group & 
+  for p being prime Nat
+  st p in Pi
+  holds not p divides index IT;
+end;
+@ %def is_Hall_pi-subgroup_of_primes
+
+\begin{voc}
+We need to add \lstinline{is_Hall_pi-subgroup_of_primes} to our
+vocabulary.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+Ris_Hall_pi-subgroup_of_primes
+@
+
+
+\begin{definition}
+Let $G$ be a finite group, $\pi$ a set of prime numbers.
+We define the set of Hall $\pi$-subgroups of $G$ as $\HallSubgroups{\pi}{G}$.
+\end{definition}
+
+\begin{def-remark}
+This defines a new Mizar functor, which will require proving the set
+$\HallSubgroups{\pi}{G}$ exists and is unique.
+\end{def-remark}
+
+\begin{def-remark}
+We should also register the fact that if we have
+``\lstinline[breaklines=true]{H is Element of the_hall_pi-subgroups_of_primes (Pi,G)}'',
+then ``\lstinline[breaklines=true]{H is Pi-group Subgroup of G}''.
+\end{def-remark}
+
+<<Definition: $\HallSubgroups{\pi}{G}$ the collection of Hall $\pi$-Subgroups>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let G be finite Group;
+  func the_hall_pi-subgroups_of_primes (Pi,G) -> Subset of (Subgroups G) equals
+  :Def4:
+  { H where H is Element of Subgroups G : ex P being strict Subgroup of G st
+   P = H & P is_Hall_pi-subgroup_of_primes Pi };
+  correctness
+  proof
+    set X = {H where H is Element of Subgroups G: ex P being strict Subgroup
+    of G st P = H & P is_Hall_pi-subgroup_of_primes Pi};
+    now
+      let x be object;
+      assume x in X;
+      then ex H being Element of Subgroups G st x = H & ex P being strict
+      Subgroup of G st P = H & P is_Hall_pi-subgroup_of_primes Pi;
+      hence x in Subgroups G;
+    end;
+    hence thesis by TARSKI:def 3;
+  end;
+end;
+@ %def the_hall_pi-subgroups_of_primes
+
+\begin{voc}
+We need to add \lstinline{the_hall_pi-subgroups_of_primes} to our
+vocabulary.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+Othe_hall_pi-subgroups_of_primes
+@

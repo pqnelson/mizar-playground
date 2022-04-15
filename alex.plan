@@ -880,3 +880,96 @@ My current TODO list:
 
 - [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
 - [ ] Prove handier versions of the theorems I've proven with full generality
+
+# 2022-03-07T07:47:27
+
+I am in the process of proving many facts concerning pi-groups. In fact,
+I think I may revise it, to define a pi-number (since I use some facts
+concerning them)...or, at least, prove properties concerning pi-numbers.
+
+I fear this will spawn a new article (say, `groupp_2`), rather than the
+one intended. This is perfectly fine.
+
+## Subgroup Series
+
+We often come across (Mizar) functors which define a subgroup, like the
+derived subgroup, or `center`, etc. Let `F(G)` denote this functor
+acting on a given group. We use these to define a subnormal
+subgroup series `U`:
+
+- `U.0 = (1).G`
+- `U.(n+1) ./. U.n = F(G ./. U.n)`
+
+The other approach is to construct a "lower series" by
+
+- `L.0 = G`
+- `L.(n+1) = F(L.n)`
+
+## TODO List
+
+### Pi-group items
+
+- [ ] Prove the p-core of G is the largest normal p-subgroup of G
+
+### p-Groups
+
+- [ ] Omega subgroup
+- [ ] Agemo subgroup
+- [ ] Double check the precedence of set complement ```Pi` ``` binds
+      tighter than `-group`, so it would be possible to write
+      ```Pi`-group``` and so on.
+
+### Generalize definition of `gr`
+- [ ] Define `gr` for `X being Subset of Subgroups G` as
+      `gr (union {A where A is Subset of G : ex H being strict Subgroup of G
+      st A = carr H & H in X})`
+- [ ] Prove the p-core of G is `gr {N where N is Element of Subgroups
+      G : N is p-group & N is normal}`
+- [ ] 
+
+### Direct Products
+
+- [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
+- [ ] Prove handier versions of the theorems I've proven with full generality
+
+## Milestones
+
+This is like a "todo list", but of a grander scope and longer timeline.
+
+- [ ] `grnilp_2`
+  - [ ] Fitting Subgroup 
+    - Prove, for a finite group `G`, the Fitting subgroup is the direct
+      product of the p-cores for all primes `p`
+    - Prove the Frattini subgroup is contained inside the Fitting subgroup
+  - [ ] Generalized Fitting Subgroup
+- [ ] Definitions I hope to define (eventually)
+  - [ ] [Brauer core](https://groupprops.subwiki.org/wiki/Brauer_core)
+  - [ ] Layer subgroup `E(G)`
+  - [ ] Radical subgroup `R(G) = E(G)*F(G)`
+
+# 2022-04-15
+
+How time flies! I submitted the first article for publication, and then
+got distracted with life. Now, I will return to formalizing group
+theory. After thinking about it a bit, the dependency tree for the
+classification theorem for finite simple groups is a mess. Here's a
+fragment of the dependencies for the classification theorems for
+quasithin groups and finite simple groups:
+
+- Classification of Quasithin groups
+  - Feit-Thompson theorem
+    - Character theory
+    - Local analysis of groups
+  - Moufang generalized polygons
+  - Glauberman-Niles Theorem
+  - "Pushing up"
+  - Amalgams
+  - irreducible $\mathbb{F}_{2}$-representations of the Mathieu groups
+  - 1-cohomology of certain $\mathbb{F}_{2}$-modules
+  - Some results concerning representations of groups of Lie type
+  - Zassenhaus groups
+- Classification of Finite Simple Groups
+  - Finite groups of Lie type
+  - ...a lot more.
+  
+I'm certain I am forgetting more than a few things.
