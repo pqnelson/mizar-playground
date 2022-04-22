@@ -10,17 +10,36 @@ theorems~\mml{group10}.
 There is an obscure notion of ``Sylow $\pi$-subgroups''.
 However, in general, they are not conjugate to one another. For
 this reason, they are not very popular, and fallen by the
-wayside.\footnote{In fact, but for Robinson~\cite{robinson2012course} and the
+wayside.\footnote{In fact, but for Robinson~\cite{robinson1995course} and the
 bibliography for the entry ``Sylow subgroup'' in the
 \emph{Encyclopedia of Mathematics} (\url{https://encyclopediaofmath.org/wiki/Sylow_subgroup}),
 I wouldn't have known of them.}
 
 Instead people usually prefer working with Hall $\pi$-subgroups.
 And if $G$ is finite, then these two notions (Hall $\pi$-subgroups and
-Sylow $\pi$-subgroups) coincide.
+Sylow $\pi$-subgroups) coincide. However, unlike Sylow $p$-subgroups,
+existence of Hall subgroups is not guaranteed. For a concrete example of
+this, the alternating group $A_{5}$ has no Hall $\{2,5\}$-subgroup, nor
+does $A_{5}$ have a Hall $\{3,5\}$-subgroup.
+
+Also be warned: unlike the Sylow subgroups, there is no guarantee of
+conjugacy among the Hall $\pi$-subgroups.
+
+This motivates the natural objective: establish criteria for when
+analogous results hold for Hall subgroups as the Sylow theorems. In the
+literature, we find the results referred to by the following names:
+\begin{itemize}
+  \item[{$(E_{\pi})$}] A Hall $\pi$-subgroup of $G$ exists
+  \item[{$(C_{\pi})$}] Any two Hall $\pi$-subgroups of $G$ are conjugate to
+    each other
+  \item[{$(D_{\pi})$}] If $P$ is a $\pi$-subgroup of $G$, then there exists
+    a Hall $\pi$-subgroup $H\subgroup G$ such that $P\subgroup H$.
+\end{itemize}
 
 <<Hall $\pi$-Groups>>=
 <<Definition: predicate ``is Hall $\pi$-subgroup of primes [$\pi$]''>>
+
+<<Theorem: $H$ is a Hall $\pi$-subgroup iff $|H|$ is coprime to $\Index{G}{H}$>>
 
 <<Definition: $\HallSubgroups{\pi}{G}$ the collection of Hall $\pi$-Subgroups>>
 
@@ -31,6 +50,10 @@ Let $G$ be a finite group, $\pi$ a set of primes, and $H\subgroup G$
 some subgroup. We call $H$ a \define{Hall Subgroup} if every prime
 $p\in\pi$ does not divide the index $p\ndivides\Index{G}{H}$.
 \end{definition}
+
+\begin{def-remark}
+  An equivalent condition is that $\gcd(|H|, \Index{G}{H})=1$.
+\end{def-remark}
 
 \begin{def-remark}
 Not every finite group has a Hall subgroup, so we cannot make an
@@ -62,6 +85,18 @@ vocabulary.
 Ris_Hall_pi-subgroup_of_primes
 @
 
+\begin{theorem}
+Let $\pi$ be a set of primes, $G$ be a finite group, $H\subgroup G$ be
+a subgroup.
+Then $H$ is a Hall $\pi$-subgroup if and only if $\gcd(|H|,\Index{G}{H})=1$.
+\end{theorem}
+
+<<Theorem: $H$ is a Hall $\pi$-subgroup iff $|H|$ is coprime to $\Index{G}{H}$>>=
+theorem
+  for H being Subgroup of G
+  holds H is_Hall_pi-subgroup_of_primes Pi iff card H, index H are_coprime;
+@ 
+
 
 \begin{definition}
 Let $G$ be a finite group, $\pi$ a set of prime numbers.
@@ -77,6 +112,11 @@ $\HallSubgroups{\pi}{G}$ exists and is unique.
 We should also register the fact that if we have
 ``\lstinline[breaklines=true]{H is Element of the_hall_pi-subgroups_of_primes (Pi,G)}'',
 then ``\lstinline[breaklines=true]{H is Pi-group Subgroup of G}''.
+\end{def-remark}
+
+\begin{def-remark}
+This is analogous to definition~\mml[def19]{group10} for the set of
+Sylow $p$-subgroups of $G$. In fact, the analogy guides our definition.
 \end{def-remark}
 
 <<Definition: $\HallSubgroups{\pi}{G}$ the collection of Hall $\pi$-Subgroups>>=

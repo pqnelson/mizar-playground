@@ -15,6 +15,10 @@
 <<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>
 
 <<Theorem: $\pCore{p}{G}$ is a $p$-Group>>
+
+<<Theorem: for any group $G$, if $H\subgroup G$ is subnormal $\pi$-subgroup, then $H\subgroup\pCore{\pi}{G}$>>
+
+<<Theorem: if $G$ has a Hall $\pi$-subgroup, then $\bigcap\HallSubgroups{\pi}{G} = \pCore{\pi}{G}$>>
 @
 
 \begin{definition}\label{defn:characteristic:results:p-core}
@@ -106,6 +110,24 @@ proof
 end;
 @ %def Th1
 
+\begin{definition}[{\cite[Exercise 1B7]{isaacs2008finite}}]
+Let $G$ be a group, $\pi$ a subset of prime numbers.
+The \define{$\pi$-Core} of $G$ is a normal $\pi$-subgroup
+$\pCore{\pi}{G}\normalSubgroup G$ such that whenever $M\normalSubgroup G$ is a
+$\pi$-subgroup, $M\subgroup\pCore{\pi}{G}$.
+\end{definition}
+
+\begin{def-remark}
+Another more explicit definition is that $\pCore{\pi}{G}$ is generated
+by all normal $\pi$-subgroups of $G$. That is to say, if
+$\Pi(G)=\{P\normalSubgroup{G}\mid \pi(P)\subset\pi\}$, then
+\begin{equation}
+\pCore{\pi}{G} = \left\langle\bigcup_{N\in\Pi(G)}N\right\rangle.
+\end{equation}
+This is given as the definition in
+Rotman~\cite[ch.5 pg.111]{rotman1994introduction}, and
+Robinson~\cite[ch.9\S1]{robinson1995course}.
+\end{def-remark}
 
 <<Definition: $\pi$-Core>>=
 definition
@@ -131,6 +153,10 @@ definition
 end;
 @ %def Def11 Pi-core
 
+\begin{theorem}
+If $\pi=\{p\}$ is a singleton, then $\pCore{\pi}{G}=\pCore{p}{G}$.
+\end{theorem}
+
 <<Theorem: $\pCore{p}{G}=\pCore{\{p\}}{G}$>>=
 theorem Th5:
   for p being prime Nat
@@ -148,6 +174,10 @@ proof
 end;
 @ %def Th5
 
+\begin{theorem}
+The $\pi$-core is a $\pi$-subgroup.
+\end{theorem}
+
 <<Theorem: $\pCore{\pi}{G}$ is a $\pi$-Group>>=
 theorem Th6:
   for Pi being Subset of SetPrimes
@@ -160,6 +190,10 @@ proof
 ::>                           *4
 end;
 @ %def Th6
+
+\begin{theorem}
+The $p$-core is a $p$-subgroup.
+\end{theorem}
 
 <<Theorem: $\pCore{p}{G}$ is a $p$-Group>>=
 theorem Th7:
@@ -176,7 +210,7 @@ proof
 end;
 @ %def Th7
 
-\begin{theorem}[{\cite[Th9.1.1]{robinson2012course}}]
+\begin{theorem}[{\cite[Th9.1.1]{robinson1995course}}]
 Let $G$ be a group, $\pi$ be a set of primes.
 If $H$ is a subnormal $\pi$-subgroup of $G$, then $H\subgroup\pCore{\pi}{G}$.
 \end{theorem}
@@ -187,4 +221,20 @@ theorem
   for H being Subgroup of G
   st H is Pi-group & H is subnormal
   holds H is Subgroup of Pi-core G;
-@ 
+@
+
+\begin{theorem}
+Let $G$ be a finite group, $\pi$ some set of prime numbers.
+If $\HallSubgroups{\pi}{G}\neq\emptyset$, then
+\begin{equation}
+\bigcap\HallSubgroups{\pi}{G} = \pCore{\pi}{G}.
+\end{equation}
+\end{theorem}
+
+<<Theorem: if $G$ has a Hall $\pi$-subgroup, then $\bigcap\HallSubgroups{\pi}{G} = \pCore{\pi}{G}$>>=
+theorem
+  the_hall_pi-subgroups_of_primes (Pi,G) is non empty implies
+  the carrier of Pi-core G = meet {A where A is Subset of G :
+  ex H being Subgroup of G
+  st A = the carrier of H & H is_Hall_pi-subgroup_of_primes Pi};
+@
