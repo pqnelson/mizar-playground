@@ -40,7 +40,7 @@ finite groups, but may be different in general).
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>
 
-<<Theorem: $\{p\}$-group is Sylow $p$-group>>
+<<Theorem: If $G$ is a $\{p\}$-group, then it is Sylow $p$-group>>
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>
 
@@ -152,6 +152,23 @@ We call $g\in G$ a \define{$\pi$-Element} if
 \item every prime divisors $p\divides|g|$ belongs to $p\in\pi$.
 \end{enumerate}
 \end{definition}
+
+\begin{def-remark}
+In the literature, we often find $\pi'$ for the set of primes
+\emph{except} those found in $\pi$. In Mizar, we would write
+``\lstinline{Pi `}''. For this reason, I will not be defining an
+``\lstinline{Pi'-element}''.
+\end{def-remark}
+
+\begin{theorem}[Sylow C {Issacs 1.12}]
+  If $S$ and $T$ are Sylow $p$-subgroups of a finite group $G$,
+  then there exists some $g\in G$ such that $T = S^{g} = g^{-1}Sg$.
+\end{theorem}
+
+\begin{theorem}[Sylow D (Isaacs 1.14)]
+Let $P$ be a $p$-subgroup of a finite group $G$. Then $P$ is contained
+in some Sylow $p$-subgroup of $G$.
+\end{theorem}
 
 <<Definition: $\pi$-element of Group>>=
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
@@ -527,7 +544,7 @@ end;
 If $p\in\NN$ is prime and $G$ is a $\{p\}$-group, then $G$ is a Sylow $p$-group.
 \end{theorem}
 
-<<Theorem: $\{p\}$-group is Sylow $p$-group>>=
+<<Theorem: If $G$ is a $\{p\}$-group, then it is Sylow $p$-group>>=
 theorem ThDiv:
   for p being prime Nat
   for G being finite Group
