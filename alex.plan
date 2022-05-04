@@ -1,380 +1,414 @@
 <!--- -*- mode: Markdown; var: -*- -->
-# 2021-12-07T09:03:50
+# 2022-04-15
 
-I am just jotting my thoughts and findings down as I go along. This file
-could be viewed as a "blog" specific to this experiment.
+How time flies! I submitted the first article for publication, and then
+got distracted with life. Now, I will return to formalizing group
+theory. After thinking about it a bit, the dependency tree for the
+classification theorem for finite simple groups is a mess. Here's a
+fragment of the dependencies for the classification theorems for
+quasithin groups and finite simple groups:
 
-My first milestone will be to define a "characteristic subgroup". I
-never learned this as an undergraduate, and I don't recall seeing it in
-graduate algebra courses. Basically: a subgroup H of G is characteristic
-if H is invariant under every automorphism of G.
+- Classification of Quasithin groups
+  - Feit-Thompson theorem
+    - Character theory
+    - Local analysis of groups
+  - Moufang generalized polygons
+  - Glauberman-Niles Theorem
+  - "Pushing up"
+  - Amalgams
+  - irreducible $\mathbb{F}_{2}$-representations of the Mathieu groups
+  - 1-cohomology of certain $\mathbb{F}_{2}$-modules
+  - Some results concerning representations of groups of Lie type
+  - Zassenhaus groups
+- Classification of Finite Simple Groups
+  - Finite groups of Lie type
+  - [Trichotomy theorem](https://en.wikipedia.org/wiki/Trichotomy_theorem)
+  - [Signalizer functor](https://en.wikipedia.org/wiki/Signalizer_functor)
+  - [Brauer–Fowler theorem](https://en.wikipedia.org/wiki/Brauer%E2%80%93Fowler_theorem)
+  - [Balance theorem](https://en.wikipedia.org/wiki/Balance_theorem)
+  - [Gilman-Griess theorem](https://en.wikipedia.org/wiki/Gilman%E2%80%93Griess_theorem)
+  - [Gorenstein–Harada theorem](https://en.wikipedia.org/wiki/Gorenstein%E2%80%93Harada_theorem)
+  - [B-theorem](https://en.wikipedia.org/wiki/B-theorem)
+  - [Brauer–Suzuki theorem](https://en.wikipedia.org/wiki/Brauer%E2%80%93Suzuki_theorem)
+  - ...a lot more.
+  
+I'm certain I am forgetting more than a few things.
 
-Thus I need a notion of automorphism of a group. This would appear to be
-done in `AUTGROUP.MIZ`, but that article unwisely chose to define `Aut G`
-as the collection of bijective functions on the underlying set of G.
-Instead, I want an automorphism to be a bijective group endomorphism.
+# 2022-03-07T07:47:27
 
-Once I have this notion well-defined, I can introduce an _attribute_
-`characteristic` of `Subgroup`. Then, as I understand it, I need to
-register the attribute as a cluster, so I can write things like
-`let H be characteristic Subgroup of G`.
+I am in the process of proving many facts concerning pi-groups. In fact,
+I think I may revise it, to define a pi-number (since I use some facts
+concerning them)...or, at least, prove properties concerning pi-numbers.
 
-In Mizar, defining an attribute requires proving at least one object
-exists with it. This is easy for a characteristic subgroup: the trivial
-group is characteristic. The first few theorems are written with this in
-mind.
+I fear this will spawn a new article (say, `groupp_2`), rather than the
+one intended. This is perfectly fine.
 
-## Problem: `id G` cannot be obviously redefined as Homomorphism of G,G
+## Subgroup Series
 
-**Problem:** I want to have `id G` be the identity group morphism
-$id\colon G\to G$, but...that's hard to do? When I try `redefine func id`,
-proving `coherence` is obvious to me but not to Mizar, and it's unclear
-what the goal is:
+We often come across (Mizar) functors which define a subgroup, like the
+derived subgroup, or `center`, etc. Let `F(G)` denote this functor
+acting on a given group. We use these to define a subnormal
+subgroup series `U`:
 
-```mizar
-definition :: Def4
-  let G;
-  redefine func id G -> Homomorphism of G,G;
-  coherence
-  proof
-  :: ???
-  end;
-end;
-```
+- `U.0 = (1).G`
+- `U.(n+1) ./. U.n = F(G ./. U.n)`
 
-**Hacky Solution:** I introduced an identity morphism `Id_G`. I proved
-`Id_G = id (the carrier of G)` in theorem 5. It's totally unclear to me
-how to take advantage of this.
+The other approach is to construct a "lower series" by
 
-## Current Road map
+- `L.0 = G`
+- `L.(n+1) = F(L.n)`
 
-**TODO List:**
-- [X] Prove `Id_G` is an Automorphism of G (Th4)
-- [X] Prove `Id_G` is an inner Automorphism of G (Th5)
-- [ ] Prove normal subgroups are invariant under inner automorphisms
-  - It seems like either (a) it may be useful to define a notion of
-    invariance, or (b) it will be a huge detour
-  - `group_5.miz` may be useful, specifically `Th3`
-- [ ] Prove characteristic subgroups are normal
-- [ ] Prove `center G is characteristic Subgroup of G`
-  - `Th78` of `group_5.miz` proves `center G is normal Subgroup of G`
-- [ ] Prove the derived subgroup ``G` `` is a characteristic Subgroup of G
-  - Definition 9 of `group_5.miz` defines the derived Subgroup as the
-    strict normal subgroup, the smallest one containing `[G,G]`, and
-    Th72 confirms this property
-  - **Caution:** the commutator is defined in the manner typical for
-    finite group theory, contra its definition in Lie groups, as
-    $[x,y]=x^{-1}y^{-1}xy$
-  - Also note: for any subsets A,B of G, the notation is `[.A,B.]` is
-    the strict Subgroup of G generated by commutators of elements
-    $[a,b]$ for $a\in A$ and $b\in B$
-- [ ] Define the `normal_closure` of a subset X of G
-  - `gr X |^ (the carrier of G)` using `GROUP_3:def 3`
-- [X] Look into whether we can redefine `Aut G` (the set of bijective
-      Homomorphisms of G,G) from `AUTGROUP:def 1` to be instead
-      `for f being Element of it holds f is Automorphism of G`
+## TODO List
 
-# 2021-12-07
+### Pi-group items
 
-**Observation 1.** Managing the `environ` part of the article is a nightmare. When
-designing a theorem prover, it's important to make it easy for the user,
-and managing the "import system" should not hinder the user.
+- [ ] Prove the p-core of G is the largest normal p-subgroup of G
 
-There should be a script which let's me say, "OK, I want to refer to X
-from article A", and the script will update my `environ` for me. I know
-the `constr` utility, but it's still bewildering.
+### p-Groups
 
-**Observation 2.** Having a separate `.voc` file is a nuissance. I've
-frequently been bitten by forgetting to add a definition to it. A better
-design would avoid such a thing if possible.
+- [ ] Omega subgroup
+- [ ] Agemo subgroup
+- [ ] Double check the precedence of set complement ```Pi` ``` binds
+      tighter than `-group`, so it would be possible to write
+      ```Pi`-group``` and so on.
 
-**Remark.** I recognize this design decision (having a `.voc` file) was presumably
-made with the design decision of having an `environ` section in a Mizar
-article. I also recognize that when the decisions were made, there were
-few examples to refer to (and none of them were _good_ examples).
+### Generalize definition of `gr`
+- [ ] Define `gr` for `X being Subset of Subgroups G` as
+      `gr (union {A where A is Subset of G : ex H being strict Subgroup of G
+      st A = carr H & H in X})`
+- [ ] Prove the p-core of G is `gr {N where N is Element of Subgroups
+      G : N is p-group & N is normal}`
+- [ ] 
 
-But I think it might be useful to take a page from Fortran, and redesign
-the Mizar language to (a) avoid the tedious aspects which are now
-antiquated, and (b) be backwards compatible to avoid rewriting the MML.
-(End of Remark)
+### Direct Products
 
-----
+- [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
+- [ ] Prove handier versions of the theorems I've proven with full generality
 
-If you are trying to use Mizar mode on Emacs, I found a fascinating bug
-caused by `$MIZFILES` not expanding in Emacs correctly. The only remedy
-I could contrive was to add to the file `/etc/environment` the line:
+## Milestones
 
-```
-MIZFILES=/usr/local/share/mizar
-```
+This is like a "todo list", but of a grander scope and longer timeline.
 
-After rebooting the computer, Emacs expands
-`(substitute-in-file-name "$MIZFILES")` correctly to
-`/usr/local/share/mizar`. Now I can compile a Mizar file with
-`C-c Ret`. Neat!
+- [ ] `grnilp_2`
+  - [ ] Fitting Subgroup 
+    - Prove, for a finite group `G`, the Fitting subgroup is the direct
+      product of the p-cores for all primes `p`
+    - Prove the Frattini subgroup is contained inside the Fitting subgroup
+  - [ ] Generalized Fitting Subgroup
+- [ ] Definitions I hope to define (eventually)
+  - [ ] [Brauer core](https://groupprops.subwiki.org/wiki/Brauer_core)
+  - [ ] Layer subgroup `E(G)`
+  - [ ] Radical subgroup `R(G) = E(G)*F(G)`
 
-# 2021-12-08T06:19:40
+# 2022-02-27
 
-I am making good progress at defining inner automorphisms, but I hit a
-cryptic snag: apparently `inner` is not recognized as an attribute. I
-have no idea what could be causing the problem, my only reference for
-something like this is:
-
-- Adam Grabowski and Christoph Schwarzweller,
-  "Towards Standard Environments for Formalizing Mathematics".
-  [PDF](https://inf.ug.edu.pl/~schwarzw/papers/6pcm.pdf), page 7.
-
-And even then, I am uncertain how to remedy my problem.
-
-# 2021-12-09T11:38:14
-
-The starting point for anyone interested in formalizing groups in Mizar
-would be familiarizing yourself with `struct_0.miz` and possibly
-`algstr_0.miz`. One confusing thing: the terminology uses antiquated
-notions like "loops", etc. Apparently these terms Mizar uses, well, they
-come from:
-
-- Wanda Szmielew, _From Affine to Euclidean Geometry_
-
-A loop is a unital magma with division. It is **not** a group, because
-we do not require associativity. (The term "loop" does not seem to
-appear in Bourbaki's _Algebra_, at least not the English translation.)
-
-(**Addendum:** the reason I say Szmiewlew is the source for these
-notions is because in
-[ALGSTR_1](http://mizar.org/JFM/Vol2/algstr_1.html) and
-[ALGSTR_2](http://mizar.org/JFM/Vol2/algstr_2.html), they cite
-Szmielew's book.)
-
-------
-
-I have been mulling over the notion of "literate formal mathematics",
-and I think something like `noweb` would fit the bill. I don't know if I
-agree with the procedural theorem proving community that "just inserting
-comments stating what the goal is at each step" qualifies...because,
-well, how am I supposed to know _why_ you defined `lpStrGrMgm` to be
-whatever?
-
-In this regard, Knuth was right in arguing presenting the material twice
-(once informally, the second time formally). Even with declarative proof
-styles, like Mizar, I am finding myself writing notes to remind myself
-_why_ a mode or functor was defined the way to it was. It would be
-useful to bundle these notes together with the code, but as
-comments...that isn't the correct way.
-
-And, being a boring stick-in-the-mud myself, I prefer Knuth's WEB style
-of numbered paragraphs with some English commentary in TeX, some "code
-snippet" in Mizar (or Coq or whatever), and so on.
-
-# 2021-12-09T13:49:41
-
-Adam Grabowski kindly helped me, pointing out I needed to register
-`Id_G` is bijective before I could start treating it like an
-Automorphism automatically. Dr Grabowski also pointed out the command
-line utility `checkvoc text/tmp` to determine if I am accidentally
-defining duplicate terms (like Isomorphism or Endomorphism). I really
-appreciate his help and kind feedback, it's really wonderful.
-
-# 2021-12-11
-
-I have just spent the day writing some LaTeX macros to pretty-print
-Mizar, and used existing notation in my Mizar explorations
-(`Isomorphism`, `Endomorphism`, `Automorphism`). There is still quite a
-bit left to work out, but it's a good first stab.
-
-The big lingering lemma to establish before moving on to working with
-characteristic subgroups:
-
-- [ ] Prove lemma `for f is inner Automorphism of G holds ex a st Image(f|N) = N |^ a`
-- [ ] Prove characteristic subgroups are normal (this is done in the
-      last registration)
-- [ ] Prove `center G is characteristic Subgroup of G`
-  - `Th78` of `group_5.miz` proves `center G is normal Subgroup of G`
-- [ ] Prove the derived subgroup ``G` `` is a characteristic Subgroup of G
-  - Definition 9 of `group_5.miz` defines the derived Subgroup as the
-    strict normal subgroup, the smallest one containing `[G,G]`, and
-    Th72 confirms this property
-  - **Caution:** the commutator is defined in the manner typical for
-    finite group theory, contra its definition in Lie groups, as
-    $[x,y]=x^{-1}y^{-1}xy$
-  - Also note: for any subsets A,B of G, the notation is `[.A,B.]` is
-    the strict Subgroup of G generated by commutators of elements
-    $[a,b]$ for $a\in A$ and $b\in B$
-- [ ] Define the `normal_closure` of a subset X of G
-  - `gr X |^ (the carrier of G)` using `GROUP_3:def 3`
-
-# 2021-12-12T17:11:40
-
-What is the deal with `x in X` versus `x is Element of X`? Well, `x in X`
-is a proposition (formula), whereas `x is Element of X` is a typing
-statement. Why are there two versions? ...I dunno. But `subset.miz`
-relates them, which is why we add `requirements SUBSET` to the
-environment section.
-
-# 2021-12-12T17:27:12
-
-It seems like few of the `funct_1.miz` theorems hold for Group
-homomorphisms, for reasons that elude me. I have a group homomorphism
-`f being Homomorphism G,K` and `H being Subgroup of G`, then I would
-expect `for h being Element of H holds (f|H).h = f.h`, as `FUNCT_1:48`
-clearly indicates. But this is not the case. It stymies my attempt to
-show, if `f is Automorphism of G` then `Image(f) = G`.
-
-# 2021-12-13T15:03:27
-
-I have written a few helper lemmas which I think should have been
-provided in earlier Mizar articles. For example,
-`for f being Homomorphism of G1,G2 for g being Element of G1 st g in H
-holds (f|H).g = f.g`. I also have another helper lemma to show
-`for g being Element of G st g in H holds g is Element of H`, which
-isn't hard, but it's a claim that shows up quite often (in my
-incompetent bumbling around Mizar, at least).
-
-
-# 2021-12-13T18:07:25
-
-I think I should probably stick to `f.:A` for $f(A)$ when $f\colon X\to Y$
-is a function and $A\subset X$ is some subset. Right now, I haphazardly
-use `Image(f)` when `f` is a group morphism. I'm on the fence, because
-`GRSOLV_1` defines `Image(f|H) = f .: H`, and `GROUP_6:def 10` defines
-`Image(f)` as the subgroup `the carrier of it = f .: (the carrier of G)`.
-
-# 2021-12-14T15:18:42
-
-I have started using noweb with Mizar, and I really like it. It makes
-tracking progress and goal-setting quite easy. The only difficulty I
-have is navigating the noweb file. I think it may be easier if I split
-it up into further files.
-
-# 2021-12-15
-
-It seems like good practice to write literate Mizar using the book
-or article class. (Book if you are doing an article series that depend
-on each other.)
-
-Each `\section` begins with an outline of the results. For example, in
-section 1.2.2 on Automorphisms, I just list the definitions,
-registrations, and theorems as chunks:
-
-```
-⟨Inner and outer automorphisms 10b ⟩≡
-begin
-
-⟨Reserve symbols for inner and outer automorphisms 10c ⟩
-⟨Define Endomorphism 11a ⟩
-⟨Register bijective for Endomorphism 11b ⟩
-⟨Define Automorphism 11c ⟩
-⟨Endomorphisms preserve the trivial subgroup 11d ⟩
-⟨Automorphisms map trivial subgroups to themselves 12a ⟩
-⟨Define Id G 12b ⟩
-⟨Id_G is the same as id the carrier of G 13b ⟩
-⟨Register Id_G is bijective 13c ⟩
-⟨Define inner for Automorphism 14b ⟩
-⟨Id G is effectively inner 15a ⟩
-⟨Register inner for Automorphism 15b ⟩
-⟨Relate Automorphism of G to elements of Aut G 16a ⟩
-⟨Theorem: f in InnAut G iff f is inner Automorphism of G 17a ⟩
-⟨Theorem: inner automorphism acting on subgroup is conjugate of argument 19 ⟩
-```
-
-This makes it easier to keep track of what I'm doing, where I'm going,
-and so on.
-
-# 2021-12-15T16:48:16
-
-One item on my todo list:
-
-- [ ] If H is a subgroup of G such that for any automorphism f of G we
-      have Image(f|H) is a Subgroup of H, then H is a characteristic
-      Subgroup of G.
-
-But it is becoming increasingly evident I will need to prove
-$O_{p}(G) = \bigcap_{H\in Syl_{p}(G)}H$ is characteristic.
+I've run into a problem with noweb, namely, how to index local variables
+properly. For example, every article will have `Th1`, but I don't want
+to link it to the first article's `Th1`. Right now, I honestly do not
+understand the whole `@index localdefn <label>` mechanism, nor can I get
+it working properly.
 
 ----
 
-I also realize that I am not adequately counting the theorem
-numbers. I'm considering writing a script to print out the statement of
-a theorem (`$ statethm FUNCT_1:5` would lookup the fifth theorem in
-`FUNCT_1` and print out its statement). Maybe I'll do that after
-dinner...
+I have successfully formalized the universal property of products, for
+Groups, and proved my cherished lemma:
 
-
-# 2021-12-17
-
-Just some notes:
-
-- the order of an element is `ord g` and defined in `GROUP_1`
-- the order of a group is `card G` and defined in `GROUP_1`
-- the index of a subgroup is `index H` and defined in `GROUP_2`
+Let $G$ be a group, suppose we have a family of normal subgroups
+`$N_{i}\normalSubgroup G$` for `$i\in I$`. We have the induced morphism
+`$\varphi\colon G\to\prod_{i\in I}G/N_{i}$` induced by the canonical
+morphisms `\varphi_{i}(g)=gN_{i}`. Then the kernel of `\varphi` is
+given by the intersection of the kernels `\bigcap_{i}\ker(\varphi_{i})`.
 
 ---
 
-I have found my `statethm` package really useful. I might write
-something similar for definitions...
+My current TODO list:
+
+- [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
+- [ ] Prove handier versions of the theorems I've proven with full generality
+
+# 2022-02-25
+
+Alright, I believe I have finished writing my first article. I have
+reached a "steady state" after running the irrelevant utilities. So far
+I have written 164 pages of literate code, 81 theorems, 4 definitions.
+
+# 2022-02-24
+
+Alright, I am making progress cleaning up proofs. I've trimmed down the
+literate program to 164 pages.
+
+
+- [ ] Clean up, edit, and revise
+  - [X] Eliminate unused code
+  - [X] Remove un-necessary proof statements
+  - [X] Remove un-necessary environment inclusions
+  - [X] Remove the comments of definition numbers for expandable types
+  - [X] Be sure the exported theorems are numbered correctly
+  - [ ] Removed non-exported theorems
+
+# 2022-02-21
+
+I finished my proofs yesterday, and now I am currently ordering the
+material, numbering the theorems, and cleaning it up.
+
+So far, it is 170 pages long. (If I continue at this rate, I should meet
+Euler's productivity in 33 years.)
+
+- [X] Finish proof
+- [ ] Clean up, edit, and revise
+  - [X] Eliminate unused code
+  - [X] Remove un-necessary proof statements
+  - [X] Remove un-necessary environment inclusions
+  - [X] Remove the comments of definition numbers for expandable types
+  - [ ] Be sure the exported theorems are numbered correctly
+  - [ ] Removed non-exported theorems
+
+# 2022-02-20
+
+I'm almost finished with my first article, I have literally one line in
+one proof left to justify.
+
+Then I'll need to clean up the code, since it's
+considerably...well...it's a first draft, let's put it that way.
+
+Also, I learned that if I have a mode definition using `is` (like
+`Endomorphism of G is Homomorphism of G,G`), then it's not numbered. I
+should revise my literate Mizar code to reflect this.
+
+My current TODO list then:
+
+- [ ] Finish proof
+- [ ] Clean up, edit, and revise
+  - [ ] Eliminate unused code
+  - [ ] Remove un-necessary proof statements
+  - [ ] Remove un-necessary environment inclusions
+  - [ ] Remove the comments of definition numbers for expandable types
+  - [ ] Be sure the exported theorems are numbered correctly
+  - [ ] Removed non-exported theorems
+
+# 2022-02-15
+
+I've started re-factoring the Makefile to extract text for each article,
+and will update it accordingly.
+
+I have also modified the little python script to state theorems to work
+on local files, by passing `-f<path>` or `--file=<path>`.
+
+I think I will add a script to update the theorem numbering in noweb
+files, so I will not have to do it by hand.
+
+# 2022-02-13
+
+I realize that I should write this as a sequence of articles, and thus
+it should be ordered. Consequently, the `nw` directory will have
+subdirectories whose name is prefixed by 3-digit numbers, reflecting the order.
+
+I also think I will push my work on the p-core and pi-core to my next
+article on residues and radicals.
+
+# 2022-02-12
+
+Alright, I'm nearing the end for my first article. It looks like I have
+a half-dozen theorems left to prove, which will define the p-core and
+pi-core of a group.
+
+I've written 148 pages, so far.
+
+# 2022-02-10
+
+After making good progress over the past month, I realize I need to
+refactor my article to have another article solely about residues and
+radicals of groups.
+
+I think I need to state and prove the universal property of quotient
+groups in the process of finishing the remaining proofs.
 
 ---
 
-I think I may have to skip working out Isomorphism, it's too much work
-and not relevant enough for my goal.
+Oh, and I've written 134 pages so far. I need to write some explanatory
+sketches for a couple proofs.
+
+# 2022-01-10
+
+I'm making good progress formalizing results about the X-residual of a
+finite group.
+
+## TODO
+
+- [ ] Revise my proofs to use `XBOOLE_0:def 10` instead of `TARSKI:2`,
+      when possible
+
+# 2022-01-07
+
+I am starting an attempt to formalize the argument that, given some
+class `X` of groups closed under isomorphisms, taking subgroups, and
+taking finite products, then we may construct the `X`-residual of it.
+
+So far I'm up to 120 pages of notes.
+
+## TODO
 
 
-# 2021-12-20
+- [X] Prove, if $N$ is a normal subgroup of $G$ and $\varphi$ is any
+      automorphism of $G$, then $\varphi(N)$ is a normal subgroup of $G$
+- [-] Formalize the X-residual argument (working on it)
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
+- [ ] Reorganize literate code for proofs of:
+  - [ ] theorem 48
+  - [ ] theorem 49
+  - [ ] theorem 50
+  - [ ] theorem 51
 
-I have written 53 pages of notes and literate code.
+# 2022-01-05T16:15:57
 
-# 2021-12-23T13:15:12
+I proved the derived subgroup of $G$ is characteristic. Although it's a
+first draft, and I would like to go back and clean up a lot of
+irrelevant steps, etc.
 
-So far I have written 73 pages of notes and literate code. I've written
-some macros to track definitions and theorems from the Mizar
-mathematical library, within an index.
+I have also decided to just use the default page width for the amsbook
+class. So now I am up to 112 pages.
 
-# 2021-12-24
+After mulling it over, I think I will add notes about the $p$-residual
+and whatnot, lumped in with my formalization of characteristic subgroups.
 
-I just finished proving the center of a group is characteristic (last
-night around 10:30pm). My notes clocked in at 79 pages, before cleaning
-it up. This morning, I cleaned up the proof, and the notes clock in at
-75 pages.
+## TODO
 
-Also, Peter Cameron has a [blog](https://cameroncounts.wordpress.com/)
-with an interesting
-[post](https://cameroncounts.wordpress.com/2020/09/06/surprising-fun-fact/)
-talking about an inverse Frattini group. I wonder if I could formalize
-this in Mizar.
+- [ ] Prove, if $N$ is a normal subgroup of $G$ and $\varphi$ is any
+      automorphism of $G$, then $\varphi(N)$ is a normal subgroup of $G$
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
+- [X] Prove: the derived subgroup ``G` `` is characteristic
+- [ ] Research the related constructs, specifically if this is a bridge
+      too far for characteristic subgroups. Right now we're at about
+      1600 lines in the Mizar article, adding too much about p-cores
+      (and friends) may push us over into too large an article
+  - [ ] p'-core, which is the largest normal subgroup of G whose order
+        is coprime to p, can we define `'-core` as a functor?
+  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
+        functor?
+  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
+        analogy to what we have?
 
------
+# 2022-01-04T15:04:54
 
-Currently on my to-do list:
-- [ ] Rework the theorem numbers
-- [ ] Prove: if $H$ is a maximal subgroup of $G$, then for any
+I have revised some of the proofs, and jettisoned a lot of the unused
+lemmas. In the meantime, I have also "promoted" many of the lemmas into
+theorems. I tried to number them sequentially, but have not fully
+succeeded.
+
+My notes grew to about 104 pages before I started editing the Mizar
+code, then it shrank down to 90 pages. After proving the $p$-core is a
+characteristic subgroup, and refactoring "common code" into schemes, the
+notes have grown to 94 pages.
+
+----
+
+## Current TODO List
+
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
+- [-] Prove: the derived subgroup ``G` `` is characteristic
+  - I've written out its formal proof sketch
+- [X] Define the p-core for a group
+  - [X] Prove the class of Sylow p-subgroups for a group is closed under automorphisms
+  - [X] Prove the p-core is characteristic
+- [ ] Research the related constructs, specifically if this is a bridge
+      too far for characteristic subgroups. Right now we're at about
+      1600 lines in the Mizar article, adding too much about p-cores
+      (and friends) may push us over into too large an article
+  - [ ] p'-core, which is the largest normal subgroup of G whose order
+        is coprime to p, can we define `'-core` as a functor?
+  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
+        functor?
+  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
+        analogy to what we have?
+
+# 2022-01-02
+
+Happy New Year! I have finished proving the Frattini subgroup is
+characteristic. At the time of writing, there are now 102 pages in my notes.
+
+---
+
+After some tinkering around, I refactored my helper lemma into a scheme,
+because I will be using _exactly_ the same argument for a few different situations.
+This made me add a `scheme` theorem-environment.
+
+This will be useful to prove the p-core is characteristic, once I
+establish that automorphisms map Sylow p-subgroups to Sylow p-subgroups.
+
+
+## Current TODO List
+
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
+- [X] Prove: the Frattini subgroup is characteristic
+- [-] Prove: the derived subgroup ``G` `` is characteristic
+  - I've written out its formal proof sketch
+- [X] Define the p-core for a group
+  - [ ] Prove the class of Sylow p-subgroups for a group is closed under automorphisms
+  - [ ] Prove the p-core is characteristic
+- [ ] Research the related constructs, specifically if this is a bridge
+      too far for characteristic subgroups. Right now we're at about
+      1600 lines in the Mizar article, adding too much about p-cores
+      (and friends) may push us over into too large an article
+  - [ ] p'-core, which is the largest normal subgroup of G whose order
+        is coprime to p, can we define `'-core` as a functor?
+  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
+        functor?
+  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
+        analogy to what we have?
+
+# 2021-12-29
+
+I am making slow progress, but I have proved automorphisms map maximal
+subgroups to maximal subgroups. I have not yet written the proof up in
+Noweb, and I need to clean up the proof I have formulated to make it
+slicker. But I have a first draft, and that's all I need!
+
+So far my notes are 88 pages long. [Addendum: by the end of the day, it
+grew to 94 pages.] I spent yesterday adding a second
+bibliography for Mizar articles being cited. In print, I can say
+something like "This is show by Theorem~\mml[Th12]{article}" and it
+typesets it in a beautiful amalgam of styles. I particularly like it, I
+don't know if others will like it, though.
+
+## Current TODO List
+
+- [X] Prove: if $H$ is a maximal subgroup of $G$, then for any
       automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
-      maximal subgroup of $G$.
-- [ ] Prove: if $H$ is a proper subgroup of $G$, then under any
-      automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
-      proper subgroup
+      maximal subgroup of $G$. (This is critical to finish before
+      proving the Frattini subgroup is characteristic.)
+- [ ] Prove the remaining "miscellaneous results" about characteristic
+      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
+      subgroups, and `H` is characteristic in `G`, then `K/H` is
+      characteristic in `G/H` (I think...).
 - [ ] Prove: the Frattini subgroup is characteristic
 - [ ] Prove: the derived subgroup ``G` `` is characteristic
-- [ ] Think about introducing attribute `trivial` for Groups, `proper`
-      for subgroups,
-  - This would be a nightmare for  `maximal` for Subgroup of non trivial
-    group, since this is not known what is sufficient for a Group to
-    have a maximal subgroup.
-
-Also, I'm ending the day at 77 pages of notes written.
-
-# 2021-12-25
-
-Merry Christmas! I am rewriting my literate program to use `amsbook`
-correctly, without Knuth-style WEB macros. I've removed nearly all
-instances of `\M` and `\N` used for theorems and proofs and definitions.
-Now the notes stand at 88 pages long.
-
----
-
-Actually, it seems like bad spacing makes this much longer. By tweaking
-the margins slightly, and modifying the `\nwendcode` to be just
-`{\endtrivlist\endgroup}`, we can break noweb code chunks across pages.
-
+- [ ] Define the p-core for a group
+  - [ ] Prove the p-core is characteristic
+- [ ] Research the related constructs, specifically if this is a bridge
+      too far for characteristic subgroups. Right now we're at about
+      1600 lines in the Mizar article, adding too much about p-cores
+      (and friends) may push us over into too large an article
+  - [ ] p'-core, which is the largest normal subgroup of G whose order
+        is coprime to p, can we define `'-core` as a functor?
+  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
+        functor?
+  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
+        analogy to what we have?
+- [X] Start researching Lie algebras with an eye towards formalizing
+      them.
+- [X] Consider purchasing Wanda Szmielew, _From Affine to Euclidean Geometry_
 
 # 2021-12-27
 
@@ -566,410 +600,377 @@ scheme --- I could also make changes to the LaTeX macros its own
 "feature branch", merge it back into the `develop` branch, then have all
 my articles pull them).
 
-# 2021-12-29
+# 2021-12-25
 
-I am making slow progress, but I have proved automorphisms map maximal
-subgroups to maximal subgroups. I have not yet written the proof up in
-Noweb, and I need to clean up the proof I have formulated to make it
-slicker. But I have a first draft, and that's all I need!
+Merry Christmas! I am rewriting my literate program to use `amsbook`
+correctly, without Knuth-style WEB macros. I've removed nearly all
+instances of `\M` and `\N` used for theorems and proofs and definitions.
+Now the notes stand at 88 pages long.
 
-So far my notes are 88 pages long. [Addendum: by the end of the day, it
-grew to 94 pages.] I spent yesterday adding a second
-bibliography for Mizar articles being cited. In print, I can say
-something like "This is show by Theorem~\mml[Th12]{article}" and it
-typesets it in a beautiful amalgam of styles. I particularly like it, I
-don't know if others will like it, though.
+---
 
-## Current TODO List
+Actually, it seems like bad spacing makes this much longer. By tweaking
+the margins slightly, and modifying the `\nwendcode` to be just
+`{\endtrivlist\endgroup}`, we can break noweb code chunks across pages.
 
-- [X] Prove: if $H$ is a maximal subgroup of $G$, then for any
+# 2021-12-24
+
+I just finished proving the center of a group is characteristic (last
+night around 10:30pm). My notes clocked in at 79 pages, before cleaning
+it up. This morning, I cleaned up the proof, and the notes clock in at
+75 pages.
+
+Also, Peter Cameron has a [blog](https://cameroncounts.wordpress.com/)
+with an interesting
+[post](https://cameroncounts.wordpress.com/2020/09/06/surprising-fun-fact/)
+talking about an inverse Frattini group. I wonder if I could formalize
+this in Mizar.
+
+-----
+
+Currently on my to-do list:
+- [ ] Rework the theorem numbers
+- [ ] Prove: if $H$ is a maximal subgroup of $G$, then for any
       automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
-      maximal subgroup of $G$. (This is critical to finish before
-      proving the Frattini subgroup is characteristic.)
-- [ ] Prove the remaining "miscellaneous results" about characteristic
-      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
-      subgroups, and `H` is characteristic in `G`, then `K/H` is
-      characteristic in `G/H` (I think...).
+      maximal subgroup of $G$.
+- [ ] Prove: if $H$ is a proper subgroup of $G$, then under any
+      automorphism $\varphi$ of $G$ we have $\varphi(H)$ also be a
+      proper subgroup
 - [ ] Prove: the Frattini subgroup is characteristic
 - [ ] Prove: the derived subgroup ``G` `` is characteristic
-- [ ] Define the p-core for a group
-  - [ ] Prove the p-core is characteristic
-- [ ] Research the related constructs, specifically if this is a bridge
-      too far for characteristic subgroups. Right now we're at about
-      1600 lines in the Mizar article, adding too much about p-cores
-      (and friends) may push us over into too large an article
-  - [ ] p'-core, which is the largest normal subgroup of G whose order
-        is coprime to p, can we define `'-core` as a functor?
-  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
-        functor?
-  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
-        analogy to what we have?
-- [X] Start researching Lie algebras with an eye towards formalizing
-      them.
-- [X] Consider purchasing Wanda Szmielew, _From Affine to Euclidean Geometry_
+- [ ] Think about introducing attribute `trivial` for Groups, `proper`
+      for subgroups,
+  - This would be a nightmare for  `maximal` for Subgroup of non trivial
+    group, since this is not known what is sufficient for a Group to
+    have a maximal subgroup.
 
-# 2022-01-02
+Also, I'm ending the day at 77 pages of notes written.
 
-Happy New Year! I have finished proving the Frattini subgroup is
-characteristic. At the time of writing, there are now 102 pages in my notes.
+# 2021-12-23T13:15:12
+
+So far I have written 73 pages of notes and literate code. I've written
+some macros to track definitions and theorems from the Mizar
+mathematical library, within an index.
+
+# 2021-12-20
+
+I have written 53 pages of notes and literate code.
+
+# 2021-12-17
+
+Just some notes:
+
+- the order of an element is `ord g` and defined in `GROUP_1`
+- the order of a group is `card G` and defined in `GROUP_1`
+- the index of a subgroup is `index H` and defined in `GROUP_2`
 
 ---
 
-After some tinkering around, I refactored my helper lemma into a scheme,
-because I will be using _exactly_ the same argument for a few different situations.
-This made me add a `scheme` theorem-environment.
+I have found my `statethm` package really useful. I might write
+something similar for definitions...
 
-This will be useful to prove the p-core is characteristic, once I
-establish that automorphisms map Sylow p-subgroups to Sylow p-subgroups.
+---
 
+I think I may have to skip working out Isomorphism, it's too much work
+and not relevant enough for my goal.
 
-## Current TODO List
+# 2021-12-15T16:48:16
 
-- [ ] Prove the remaining "miscellaneous results" about characteristic
-      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
-      subgroups, and `H` is characteristic in `G`, then `K/H` is
-      characteristic in `G/H` (I think...).
-- [X] Prove: the Frattini subgroup is characteristic
-- [-] Prove: the derived subgroup ``G` `` is characteristic
-  - I've written out its formal proof sketch
-- [X] Define the p-core for a group
-  - [ ] Prove the class of Sylow p-subgroups for a group is closed under automorphisms
-  - [ ] Prove the p-core is characteristic
-- [ ] Research the related constructs, specifically if this is a bridge
-      too far for characteristic subgroups. Right now we're at about
-      1600 lines in the Mizar article, adding too much about p-cores
-      (and friends) may push us over into too large an article
-  - [ ] p'-core, which is the largest normal subgroup of G whose order
-        is coprime to p, can we define `'-core` as a functor?
-  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
-        functor?
-  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
-        analogy to what we have?
+One item on my todo list:
 
+- [ ] If H is a subgroup of G such that for any automorphism f of G we
+      have Image(f|H) is a Subgroup of H, then H is a characteristic
+      Subgroup of G.
 
-# 2022-01-04T15:04:54
-
-I have revised some of the proofs, and jettisoned a lot of the unused
-lemmas. In the meantime, I have also "promoted" many of the lemmas into
-theorems. I tried to number them sequentially, but have not fully
-succeeded.
-
-My notes grew to about 104 pages before I started editing the Mizar
-code, then it shrank down to 90 pages. After proving the $p$-core is a
-characteristic subgroup, and refactoring "common code" into schemes, the
-notes have grown to 94 pages.
+But it is becoming increasingly evident I will need to prove
+$O_{p}(G) = \bigcap_{H\in Syl_{p}(G)}H$ is characteristic.
 
 ----
 
-## Current TODO List
+I also realize that I am not adequately counting the theorem
+numbers. I'm considering writing a script to print out the statement of
+a theorem (`$ statethm FUNCT_1:5` would lookup the fifth theorem in
+`FUNCT_1` and print out its statement). Maybe I'll do that after
+dinner...
 
-- [ ] Prove the remaining "miscellaneous results" about characteristic
-      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
-      subgroups, and `H` is characteristic in `G`, then `K/H` is
-      characteristic in `G/H` (I think...).
-- [-] Prove: the derived subgroup ``G` `` is characteristic
-  - I've written out its formal proof sketch
-- [X] Define the p-core for a group
-  - [X] Prove the class of Sylow p-subgroups for a group is closed under automorphisms
-  - [X] Prove the p-core is characteristic
-- [ ] Research the related constructs, specifically if this is a bridge
-      too far for characteristic subgroups. Right now we're at about
-      1600 lines in the Mizar article, adding too much about p-cores
-      (and friends) may push us over into too large an article
-  - [ ] p'-core, which is the largest normal subgroup of G whose order
-        is coprime to p, can we define `'-core` as a functor?
-  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
-        functor?
-  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
-        analogy to what we have?
+# 2021-12-15
 
+It seems like good practice to write literate Mizar using the book
+or article class. (Book if you are doing an article series that depend
+on each other.)
 
-# 2022-01-05T16:15:57
+Each `\section` begins with an outline of the results. For example, in
+section 1.2.2 on Automorphisms, I just list the definitions,
+registrations, and theorems as chunks:
 
-I proved the derived subgroup of $G$ is characteristic. Although it's a
-first draft, and I would like to go back and clean up a lot of
-irrelevant steps, etc.
+```
+⟨Inner and outer automorphisms 10b ⟩≡
+begin
 
-I have also decided to just use the default page width for the amsbook
-class. So now I am up to 112 pages.
+⟨Reserve symbols for inner and outer automorphisms 10c ⟩
+⟨Define Endomorphism 11a ⟩
+⟨Register bijective for Endomorphism 11b ⟩
+⟨Define Automorphism 11c ⟩
+⟨Endomorphisms preserve the trivial subgroup 11d ⟩
+⟨Automorphisms map trivial subgroups to themselves 12a ⟩
+⟨Define Id G 12b ⟩
+⟨Id_G is the same as id the carrier of G 13b ⟩
+⟨Register Id_G is bijective 13c ⟩
+⟨Define inner for Automorphism 14b ⟩
+⟨Id G is effectively inner 15a ⟩
+⟨Register inner for Automorphism 15b ⟩
+⟨Relate Automorphism of G to elements of Aut G 16a ⟩
+⟨Theorem: f in InnAut G iff f is inner Automorphism of G 17a ⟩
+⟨Theorem: inner automorphism acting on subgroup is conjugate of argument 19 ⟩
+```
 
-After mulling it over, I think I will add notes about the $p$-residual
-and whatnot, lumped in with my formalization of characteristic subgroups.
+This makes it easier to keep track of what I'm doing, where I'm going,
+and so on.
 
-## TODO
+# 2021-12-14T15:18:42
 
-- [ ] Prove, if $N$ is a normal subgroup of $G$ and $\varphi$ is any
-      automorphism of $G$, then $\varphi(N)$ is a normal subgroup of $G$
-- [ ] Prove the remaining "miscellaneous results" about characteristic
-      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
-      subgroups, and `H` is characteristic in `G`, then `K/H` is
-      characteristic in `G/H` (I think...).
-- [X] Prove: the derived subgroup ``G` `` is characteristic
-- [ ] Research the related constructs, specifically if this is a bridge
-      too far for characteristic subgroups. Right now we're at about
-      1600 lines in the Mizar article, adding too much about p-cores
-      (and friends) may push us over into too large an article
-  - [ ] p'-core, which is the largest normal subgroup of G whose order
-        is coprime to p, can we define `'-core` as a functor?
-  - [ ] `pi-core` for some set of prime numbers `pi` can be defined as a
-        functor?
-  - [ ] `pi'-core` for some set of prime numbers `pi`, defined in
-        analogy to what we have?
+I have started using noweb with Mizar, and I really like it. It makes
+tracking progress and goal-setting quite easy. The only difficulty I
+have is navigating the noweb file. I think it may be easier if I split
+it up into further files.
 
+# 2021-12-13T18:07:25
 
+I think I should probably stick to `f.:A` for $f(A)$ when $f\colon X\to Y$
+is a function and $A\subset X$ is some subset. Right now, I haphazardly
+use `Image(f)` when `f` is a group morphism. I'm on the fence, because
+`GRSOLV_1` defines `Image(f|H) = f .: H`, and `GROUP_6:def 10` defines
+`Image(f)` as the subgroup `the carrier of it = f .: (the carrier of G)`.
 
-# 2022-01-07
+# 2021-12-13T15:03:27
 
-I am starting an attempt to formalize the argument that, given some
-class `X` of groups closed under isomorphisms, taking subgroups, and
-taking finite products, then we may construct the `X`-residual of it.
+I have written a few helper lemmas which I think should have been
+provided in earlier Mizar articles. For example,
+`for f being Homomorphism of G1,G2 for g being Element of G1 st g in H
+holds (f|H).g = f.g`. I also have another helper lemma to show
+`for g being Element of G st g in H holds g is Element of H`, which
+isn't hard, but it's a claim that shows up quite often (in my
+incompetent bumbling around Mizar, at least).
 
-So far I'm up to 120 pages of notes.
+# 2021-12-12T17:27:12
 
-## TODO
+It seems like few of the `funct_1.miz` theorems hold for Group
+homomorphisms, for reasons that elude me. I have a group homomorphism
+`f being Homomorphism G,K` and `H being Subgroup of G`, then I would
+expect `for h being Element of H holds (f|H).h = f.h`, as `FUNCT_1:48`
+clearly indicates. But this is not the case. It stymies my attempt to
+show, if `f is Automorphism of G` then `Image(f) = G`.
 
+# 2021-12-12T17:11:40
 
-- [X] Prove, if $N$ is a normal subgroup of $G$ and $\varphi$ is any
-      automorphism of $G$, then $\varphi(N)$ is a normal subgroup of $G$
-- [-] Formalize the X-residual argument (working on it)
-- [ ] Prove the remaining "miscellaneous results" about characteristic
-      subgroups from, e.g., if `H\subgroup K` and `K\subgroup G` are
-      subgroups, and `H` is characteristic in `G`, then `K/H` is
-      characteristic in `G/H` (I think...).
-- [ ] Reorganize literate code for proofs of:
-  - [ ] theorem 48
-  - [ ] theorem 49
-  - [ ] theorem 50
-  - [ ] theorem 51
+What is the deal with `x in X` versus `x is Element of X`? Well, `x in X`
+is a proposition (formula), whereas `x is Element of X` is a typing
+statement. Why are there two versions? ...I dunno. But `subset.miz`
+relates them, which is why we add `requirements SUBSET` to the
+environment section.
 
+# 2021-12-11
 
-# 2022-01-10
+I have just spent the day writing some LaTeX macros to pretty-print
+Mizar, and used existing notation in my Mizar explorations
+(`Isomorphism`, `Endomorphism`, `Automorphism`). There is still quite a
+bit left to work out, but it's a good first stab.
 
-I'm making good progress formalizing results about the X-residual of a
-finite group.
+The big lingering lemma to establish before moving on to working with
+characteristic subgroups:
 
-## TODO
+- [ ] Prove lemma `for f is inner Automorphism of G holds ex a st Image(f|N) = N |^ a`
+- [ ] Prove characteristic subgroups are normal (this is done in the
+      last registration)
+- [ ] Prove `center G is characteristic Subgroup of G`
+  - `Th78` of `group_5.miz` proves `center G is normal Subgroup of G`
+- [ ] Prove the derived subgroup ``G` `` is a characteristic Subgroup of G
+  - Definition 9 of `group_5.miz` defines the derived Subgroup as the
+    strict normal subgroup, the smallest one containing `[G,G]`, and
+    Th72 confirms this property
+  - **Caution:** the commutator is defined in the manner typical for
+    finite group theory, contra its definition in Lie groups, as
+    $[x,y]=x^{-1}y^{-1}xy$
+  - Also note: for any subsets A,B of G, the notation is `[.A,B.]` is
+    the strict Subgroup of G generated by commutators of elements
+    $[a,b]$ for $a\in A$ and $b\in B$
+- [ ] Define the `normal_closure` of a subset X of G
+  - `gr X |^ (the carrier of G)` using `GROUP_3:def 3`
 
-- [ ] Revise my proofs to use `XBOOLE_0:def 10` instead of `TARSKI:2`,
-      when possible
+# 2021-12-09T13:49:41
 
-# 2022-02-10
+Adam Grabowski kindly helped me, pointing out I needed to register
+`Id_G` is bijective before I could start treating it like an
+Automorphism automatically. Dr Grabowski also pointed out the command
+line utility `checkvoc text/tmp` to determine if I am accidentally
+defining duplicate terms (like Isomorphism or Endomorphism). I really
+appreciate his help and kind feedback, it's really wonderful.
 
-After making good progress over the past month, I realize I need to
-refactor my article to have another article solely about residues and
-radicals of groups.
+# 2021-12-09T11:38:14
 
-I think I need to state and prove the universal property of quotient
-groups in the process of finishing the remaining proofs.
+The starting point for anyone interested in formalizing groups in Mizar
+would be familiarizing yourself with `struct_0.miz` and possibly
+`algstr_0.miz`. One confusing thing: the terminology uses antiquated
+notions like "loops", etc. Apparently these terms Mizar uses, well, they
+come from:
 
----
+- Wanda Szmielew, _From Affine to Euclidean Geometry_
 
-Oh, and I've written 134 pages so far. I need to write some explanatory
-sketches for a couple proofs.
+A loop is a unital magma with division. It is **not** a group, because
+we do not require associativity. (The term "loop" does not seem to
+appear in Bourbaki's _Algebra_, at least not the English translation.)
 
-# 2022-02-12
+(**Addendum:** the reason I say Szmiewlew is the source for these
+notions is because in
+[ALGSTR_1](http://mizar.org/JFM/Vol2/algstr_1.html) and
+[ALGSTR_2](http://mizar.org/JFM/Vol2/algstr_2.html), they cite
+Szmielew's book.)
 
-Alright, I'm nearing the end for my first article. It looks like I have
-a half-dozen theorems left to prove, which will define the p-core and
-pi-core of a group.
+------
 
-I've written 148 pages, so far.
+I have been mulling over the notion of "literate formal mathematics",
+and I think something like `noweb` would fit the bill. I don't know if I
+agree with the procedural theorem proving community that "just inserting
+comments stating what the goal is at each step" qualifies...because,
+well, how am I supposed to know _why_ you defined `lpStrGrMgm` to be
+whatever?
 
-# 2022-02-13
+In this regard, Knuth was right in arguing presenting the material twice
+(once informally, the second time formally). Even with declarative proof
+styles, like Mizar, I am finding myself writing notes to remind myself
+_why_ a mode or functor was defined the way to it was. It would be
+useful to bundle these notes together with the code, but as
+comments...that isn't the correct way.
 
-I realize that I should write this as a sequence of articles, and thus
-it should be ordered. Consequently, the `nw` directory will have
-subdirectories whose name is prefixed by 3-digit numbers, reflecting the order.
+And, being a boring stick-in-the-mud myself, I prefer Knuth's WEB style
+of numbered paragraphs with some English commentary in TeX, some "code
+snippet" in Mizar (or Coq or whatever), and so on.
 
-I also think I will push my work on the p-core and pi-core to my next
-article on residues and radicals.
+# 2021-12-08T06:19:40
 
-# 2022-02-15
+I am making good progress at defining inner automorphisms, but I hit a
+cryptic snag: apparently `inner` is not recognized as an attribute. I
+have no idea what could be causing the problem, my only reference for
+something like this is:
 
-I've started re-factoring the Makefile to extract text for each article,
-and will update it accordingly.
+- Adam Grabowski and Christoph Schwarzweller,
+  "Towards Standard Environments for Formalizing Mathematics".
+  [PDF](https://inf.ug.edu.pl/~schwarzw/papers/6pcm.pdf), page 7.
 
-I have also modified the little python script to state theorems to work
-on local files, by passing `-f<path>` or `--file=<path>`.
+And even then, I am uncertain how to remedy my problem.
 
-I think I will add a script to update the theorem numbering in noweb
-files, so I will not have to do it by hand.
+# 2021-12-07
 
-# 2022-02-20
+**Observation 1.** Managing the `environ` part of the article is a nightmare. When
+designing a theorem prover, it's important to make it easy for the user,
+and managing the "import system" should not hinder the user.
 
-I'm almost finished with my first article, I have literally one line in
-one proof left to justify.
+There should be a script which let's me say, "OK, I want to refer to X
+from article A", and the script will update my `environ` for me. I know
+the `constr` utility, but it's still bewildering.
 
-Then I'll need to clean up the code, since it's
-considerably...well...it's a first draft, let's put it that way.
+**Observation 2.** Having a separate `.voc` file is a nuissance. I've
+frequently been bitten by forgetting to add a definition to it. A better
+design would avoid such a thing if possible.
 
-Also, I learned that if I have a mode definition using `is` (like
-`Endomorphism of G is Homomorphism of G,G`), then it's not numbered. I
-should revise my literate Mizar code to reflect this.
+**Remark.** I recognize this design decision (having a `.voc` file) was presumably
+made with the design decision of having an `environ` section in a Mizar
+article. I also recognize that when the decisions were made, there were
+few examples to refer to (and none of them were _good_ examples).
 
-My current TODO list then:
-
-- [ ] Finish proof
-- [ ] Clean up, edit, and revise
-  - [ ] Eliminate unused code
-  - [ ] Remove un-necessary proof statements
-  - [ ] Remove un-necessary environment inclusions
-  - [ ] Remove the comments of definition numbers for expandable types
-  - [ ] Be sure the exported theorems are numbered correctly
-  - [ ] Removed non-exported theorems
-
-# 2022-02-21
-
-I finished my proofs yesterday, and now I am currently ordering the
-material, numbering the theorems, and cleaning it up.
-
-So far, it is 170 pages long. (If I continue at this rate, I should meet
-Euler's productivity in 33 years.)
-
-- [X] Finish proof
-- [ ] Clean up, edit, and revise
-  - [X] Eliminate unused code
-  - [X] Remove un-necessary proof statements
-  - [X] Remove un-necessary environment inclusions
-  - [X] Remove the comments of definition numbers for expandable types
-  - [ ] Be sure the exported theorems are numbered correctly
-  - [ ] Removed non-exported theorems
-
-# 2022-02-24
-
-Alright, I am making progress cleaning up proofs. I've trimmed down the
-literate program to 164 pages.
-
-
-- [ ] Clean up, edit, and revise
-  - [X] Eliminate unused code
-  - [X] Remove un-necessary proof statements
-  - [X] Remove un-necessary environment inclusions
-  - [X] Remove the comments of definition numbers for expandable types
-  - [X] Be sure the exported theorems are numbered correctly
-  - [ ] Removed non-exported theorems
-
-# 2022-02-25
-
-Alright, I believe I have finished writing my first article. I have
-reached a "steady state" after running the irrelevant utilities. So far
-I have written 164 pages of literate code, 81 theorems, 4 definitions.
-
-# 2022-02-27
-
-I've run into a problem with noweb, namely, how to index local variables
-properly. For example, every article will have `Th1`, but I don't want
-to link it to the first article's `Th1`. Right now, I honestly do not
-understand the whole `@index localdefn <label>` mechanism, nor can I get
-it working properly.
+But I think it might be useful to take a page from Fortran, and redesign
+the Mizar language to (a) avoid the tedious aspects which are now
+antiquated, and (b) be backwards compatible to avoid rewriting the MML.
+(End of Remark)
 
 ----
 
-I have successfully formalized the universal property of products, for
-Groups, and proved my cherished lemma:
+If you are trying to use Mizar mode on Emacs, I found a fascinating bug
+caused by `$MIZFILES` not expanding in Emacs correctly. The only remedy
+I could contrive was to add to the file `/etc/environment` the line:
 
-Let $G$ be a group, suppose we have a family of normal subgroups
-`$N_{i}\normalSubgroup G$` for `$i\in I$`. We have the induced morphism
-`$\varphi\colon G\to\prod_{i\in I}G/N_{i}$` induced by the canonical
-morphisms `\varphi_{i}(g)=gN_{i}`. Then the kernel of `\varphi` is
-given by the intersection of the kernels `\bigcap_{i}\ker(\varphi_{i})`.
+```
+MIZFILES=/usr/local/share/mizar
+```
 
----
+After rebooting the computer, Emacs expands
+`(substitute-in-file-name "$MIZFILES")` correctly to
+`/usr/local/share/mizar`. Now I can compile a Mizar file with
+`C-c Ret`. Neat!
 
-My current TODO list:
+# 2021-12-07T09:03:50
 
-- [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
-- [ ] Prove handier versions of the theorems I've proven with full generality
+I am just jotting my thoughts and findings down as I go along. This file
+could be viewed as a "blog" specific to this experiment.
 
-# 2022-03-07T07:47:27
+My first milestone will be to define a "characteristic subgroup". I
+never learned this as an undergraduate, and I don't recall seeing it in
+graduate algebra courses. Basically: a subgroup H of G is characteristic
+if H is invariant under every automorphism of G.
 
-I am in the process of proving many facts concerning pi-groups. In fact,
-I think I may revise it, to define a pi-number (since I use some facts
-concerning them)...or, at least, prove properties concerning pi-numbers.
+Thus I need a notion of automorphism of a group. This would appear to be
+done in `AUTGROUP.MIZ`, but that article unwisely chose to define `Aut G`
+as the collection of bijective functions on the underlying set of G.
+Instead, I want an automorphism to be a bijective group endomorphism.
 
-I fear this will spawn a new article (say, `groupp_2`), rather than the
-one intended. This is perfectly fine.
+Once I have this notion well-defined, I can introduce an _attribute_
+`characteristic` of `Subgroup`. Then, as I understand it, I need to
+register the attribute as a cluster, so I can write things like
+`let H be characteristic Subgroup of G`.
 
-## Subgroup Series
+In Mizar, defining an attribute requires proving at least one object
+exists with it. This is easy for a characteristic subgroup: the trivial
+group is characteristic. The first few theorems are written with this in
+mind.
 
-We often come across (Mizar) functors which define a subgroup, like the
-derived subgroup, or `center`, etc. Let `F(G)` denote this functor
-acting on a given group. We use these to define a subnormal
-subgroup series `U`:
+## Problem: `id G` cannot be obviously redefined as Homomorphism of G,G
 
-- `U.0 = (1).G`
-- `U.(n+1) ./. U.n = F(G ./. U.n)`
+**Problem:** I want to have `id G` be the identity group morphism
+$id\colon G\to G$, but...that's hard to do? When I try `redefine func id`,
+proving `coherence` is obvious to me but not to Mizar, and it's unclear
+what the goal is:
 
-The other approach is to construct a "lower series" by
+```mizar
+definition :: Def4
+  let G;
+  redefine func id G -> Homomorphism of G,G;
+  coherence
+  proof
+  :: ???
+  end;
+end;
+```
 
-- `L.0 = G`
-- `L.(n+1) = F(L.n)`
+**Hacky Solution:** I introduced an identity morphism `Id_G`. I proved
+`Id_G = id (the carrier of G)` in theorem 5. It's totally unclear to me
+how to take advantage of this.
 
-## TODO List
+## Current Road map
 
-### Pi-group items
+**TODO List:**
+- [X] Prove `Id_G` is an Automorphism of G (Th4)
+- [X] Prove `Id_G` is an inner Automorphism of G (Th5)
+- [ ] Prove normal subgroups are invariant under inner automorphisms
+  - It seems like either (a) it may be useful to define a notion of
+    invariance, or (b) it will be a huge detour
+  - `group_5.miz` may be useful, specifically `Th3`
+- [ ] Prove characteristic subgroups are normal
+- [ ] Prove `center G is characteristic Subgroup of G`
+  - `Th78` of `group_5.miz` proves `center G is normal Subgroup of G`
+- [ ] Prove the derived subgroup ``G` `` is a characteristic Subgroup of G
+  - Definition 9 of `group_5.miz` defines the derived Subgroup as the
+    strict normal subgroup, the smallest one containing `[G,G]`, and
+    Th72 confirms this property
+  - **Caution:** the commutator is defined in the manner typical for
+    finite group theory, contra its definition in Lie groups, as
+    $[x,y]=x^{-1}y^{-1}xy$
+  - Also note: for any subsets A,B of G, the notation is `[.A,B.]` is
+    the strict Subgroup of G generated by commutators of elements
+    $[a,b]$ for $a\in A$ and $b\in B$
+- [ ] Define the `normal_closure` of a subset X of G
+  - `gr X |^ (the carrier of G)` using `GROUP_3:def 3`
+- [X] Look into whether we can redefine `Aut G` (the set of bijective
+      Homomorphisms of G,G) from `AUTGROUP:def 1` to be instead
+      `for f being Element of it holds f is Automorphism of G`
 
-- [ ] Prove the p-core of G is the largest normal p-subgroup of G
 
-### p-Groups
-
-- [ ] Omega subgroup
-- [ ] Agemo subgroup
-- [ ] Double check the precedence of set complement ```Pi` ``` binds
-      tighter than `-group`, so it would be possible to write
-      ```Pi`-group``` and so on.
-
-### Generalize definition of `gr`
-- [ ] Define `gr` for `X being Subset of Subgroups G` as
-      `gr (union {A where A is Subset of G : ex H being strict Subgroup of G
-      st A = carr H & H in X})`
-- [ ] Prove the p-core of G is `gr {N where N is Element of Subgroups
-      G : N is p-group & N is normal}`
-- [ ] 
-
-### Direct Products
-
-- [ ] Prove if `N\cap K=1` and `G=NK`, then `G=N\times K`
-- [ ] Prove handier versions of the theorems I've proven with full generality
-
-## Milestones
-
-This is like a "todo list", but of a grander scope and longer timeline.
-
-- [ ] `grnilp_2`
-  - [ ] Fitting Subgroup 
-    - Prove, for a finite group `G`, the Fitting subgroup is the direct
-      product of the p-cores for all primes `p`
-    - Prove the Frattini subgroup is contained inside the Fitting subgroup
-  - [ ] Generalized Fitting Subgroup
-- [ ] Definitions I hope to define (eventually)
-  - [ ] [Brauer core](https://groupprops.subwiki.org/wiki/Brauer_core)
-  - [ ] Layer subgroup `E(G)`
-  - [ ] Radical subgroup `R(G) = E(G)*F(G)`
-
-# 2022-04-15
-
-How time flies! I submitted the first article for publication, and then
-got distracted with life. Now, I will return to formalizing group
-theory. After thinking about it a bit, the dependency tree for the
-classification theorem for finite simple groups is a mess. Here's a
-fragment of the dependencies for the classification theorems for
-quasithin groups and finite simple groups:
-
-- Classification of Quasithin groups
-  - Feit-Thompson theorem
-    - Character theory
-    - Local analysis of groups
-  - Moufang generalized polygons
-  - Glauberman-Niles Theorem
-  - "Pushing up"
-  - Amalgams
-  - irreducible $\mathbb{F}_{2}$-representations of the Mathieu groups
-  - 1-cohomology of certain $\mathbb{F}_{2}$-modules
-  - Some results concerning representations of groups of Lie type
-  - Zassenhaus groups
-- Classification of Finite Simple Groups
-  - Finite groups of Lie type
-  - ...a lot more.
-  
-I'm certain I am forgetting more than a few things.
