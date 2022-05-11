@@ -22,6 +22,8 @@ finite groups, but may be different in general).
 
 <<Theorem: $a\in G$ is a $\pi$-element implies $a^{-1}$ is a $\pi$-element>>
 
+<<Theorem: if $g$ is a $\pi$-element and $|h|$ divides $|g|$, then $h$ is a $\pi$-element>>
+
 <<Definition: $\pi$-Group>>
 
 <<Theorem: the trivial group is $\pi$-group>>
@@ -60,7 +62,7 @@ finite groups, but may be different in general).
 
 <<Theorem: $x\in G/N$, $x=gN$, and $n\in\NN$ implies $x^{n}=g^{n}N$>>
 
-<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|=|g|$>>
+<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|\divides|g|$>>
 
 <<Theorem: $G\neq\trivialGroup\implies\exists g\in G,g\neq\idElt{G}$>>
 
@@ -68,15 +70,23 @@ finite groups, but may be different in general).
 
 <<Theorem: isomorphic group elements have same order>>
 
+<<Theorem: $N$ and $G/N$ are $\pi$-groups $\implies$ $G$ is a $\pi$-group>>
+
 <<Theorem: $\varphi\colon G_{1}\iso G_{2}$ and $g\in G_{1}$ is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element>>
 
 <<Theorem: if $G_{1}$ is a $\pi$-group and $G_{1}\iso G_{2}$, then $G_{2}$ is a $\pi$-group>>
 
-<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>
-
 <<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $H\cap N$ is a $\pi$-subgroup of $G$>>
 
 <<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN/N$ is a $\pi$-subgroup of $G$>>
+
+<<Corollary: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>
+
+<<Theorem: $\forall H_{1},H_{2}\subgroup G,\quad U(H_{1})=U(H_{2})\implies H_{1}\iso H_{2}$>>
+
+<<Theorem: $H\subgroup B\subgroup G$ implies the underlying magma of $H$ is a strict subgroup of $B$>>
+
+<<Theorem: $(N)_{B}\iso N$>>
 @
 
 
@@ -144,7 +154,7 @@ definition
 end;
 \end{mizar}
 
-\begin{definition}
+\begin{definition}\label{defn:002:pi-groups:pi-element}
 Let $\pi$ be a set of primes, $G$ a group.
 We call $g\in G$ a \define{$\pi$-Element} if
 \begin{enumerate}
@@ -160,15 +170,15 @@ In the literature, we often find $\pi'$ for the set of primes
 ``\lstinline{Pi'-element}''.
 \end{def-remark}
 
-\begin{theorem}[Sylow C {Issacs 1.12}]
-  If $S$ and $T$ are Sylow $p$-subgroups of a finite group $G$,
-  then there exists some $g\in G$ such that $T = S^{g} = g^{-1}Sg$.
-\end{theorem}
+%% \begin{theorem}[Sylow C {Issacs 1.12}]
+%%   If $S$ and $T$ are Sylow $p$-subgroups of a finite group $G$,
+%%   then there exists some $g\in G$ such that $T = S^{g} = g^{-1}Sg$.
+%% \end{theorem}
 
-\begin{theorem}[Sylow D (Isaacs 1.14)]
-Let $P$ be a $p$-subgroup of a finite group $G$. Then $P$ is contained
-in some Sylow $p$-subgroup of $G$.
-\end{theorem}
+%% \begin{theorem}[Sylow D (Isaacs 1.14)]
+%% Let $P$ be a $p$-subgroup of a finite group $G$. Then $P$ is contained
+%% in some Sylow $p$-subgroup of $G$.
+%% \end{theorem}
 
 <<Definition: $\pi$-element of Group>>=
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, note before
@@ -277,6 +287,43 @@ proof
 end;
 @
 
+
+
+\begin{theorem}
+Let $G$ be a group, $\pi$ a set of primes.
+If $g\in G$ is a $\pi$-element and $h\in G$ such that $|h|$ divides $|g|$,
+then $h$ is a $\pi$-element.
+\end{theorem}
+
+\begin{proof}[Proof sketch.]
+Every prime divisor $p$ of $|h|$ is also a prime divisor of $|g|$.
+But since $g$ is a $\pi$-element, it follows that $p\in\pi$ by Definition~\ref{defn:002:pi-groups:pi-element}.
+Hence $h$ is a $\pi$-element.
+\end{proof}
+
+<<Theorem: if $g$ is a $\pi$-element and $|h|$ divides $|g|$, then $h$ is a $\pi$-element>>=
+theorem
+  for G being Group
+  for g,h being Element of G
+  st g is Pi-element
+  holds ord h divides ord g implies h is Pi-element
+proof
+  let G be Group;
+  let g,h be Element of G;
+  assume A1: g is Pi-element;
+  assume A2: ord h divides ord g;
+  then A3: ord h <> 0 by A1,Def1,INT_2:3;
+  for p being prime Nat st p divides ord h holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides ord h;
+    then p divides ord g by A2,INT_2:9;
+    hence p in Pi by A1,Def1;
+  end;
+  hence h is Pi-element by A3,Def1;
+end;
+@ 
+
 \begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
 a \define{$\pi$-Group} if every prime divisor of the group's order $p\divides|G|$
@@ -365,7 +412,7 @@ to $\pi$.
 \end{theorem}
 
 <<Theorem: criteria for finite group to be $\pi$-group>>=
-theorem Th3:
+theorem Th7:
   for G being finite Group
   holds G is Pi-group iff (for p being prime Nat st p divides card G
                            holds p in Pi)
@@ -406,7 +453,7 @@ proof
     hence G is Pi-group by Def2;
   end;
 end;
-@ %def Th3
+@ %def Th7
 
 \begin{theorem}
 Let $G$ be a finite group, $\pi_{1}\subset\pi_{2}$ be sets of prime numbers.
@@ -414,7 +461,7 @@ If $G$ is a $\pi_{1}$-group, then $G$ is a $\pi_{2}$-group.
 \end{theorem}
 
 <<Theorem: if $\pi_{1}\subset\pi_{2}$ and $G$ is $\pi_{1}$-group, then $G$ is $\pi_{2}$-group>>=
-theorem Th4:
+theorem Th8:
   for Pi1,Pi2 being Subset of SetPrimes
   st Pi1 c= Pi2
   for G being finite Group
@@ -431,12 +478,12 @@ proof
     hence thesis by Th2;
   end;
   suppose A4: G is non trivial;
-    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th3;
+    then for p being prime Nat st p divides card G holds p in Pi1 by A2,Th7;
     then for p being prime Nat st p divides card G holds p in Pi2 by A1;
-    hence thesis by A4,Th3;
+    hence thesis by A4,Th7;
   end;
 end;
-@ %def Th4
+@ %def Th8
 
 <<Register: $\pi$-group for groups and finite groups>>=
 registration
@@ -516,7 +563,7 @@ rather than the generic \lstinline{set}.
 \end{thm-remark}
 
 <<Redefine: if $p$ is prime, then $\{p\}$ is subset of prime numbers>>=
-theorem Th5:
+theorem Th9:
   for p being prime Nat
   holds {p} is Subset of SetPrimes
 proof
@@ -536,16 +583,16 @@ end;
 definition
   let p be prime Nat;
   redefine func {p} -> Subset of SetPrimes;
-  coherence by Th5;
+  coherence by Th9;
 end;
-@ %def Th5
+@ %def Th9
 
 \begin{theorem}
 If $p\in\NN$ is prime and $G$ is a $\{p\}$-group, then $G$ is a Sylow $p$-group.
 \end{theorem}
 
 <<Theorem: If $G$ is a $\{p\}$-group, then it is Sylow $p$-group>>=
-theorem ThDiv:
+theorem Th10:
   for p being prime Nat
   for G being finite Group
   st G is {p}-group & G is non trivial
@@ -559,7 +606,7 @@ proof
   proof
     let q be prime Nat;
     assume B1: q divides card G;
-    then q in {p} by A1,Th3;
+    then q in {p} by A1,Th7;
     hence q = p by TARSKI:def 1;
   end;
   A5: p divides card G
@@ -615,8 +662,7 @@ proof
   then A10: not p divides index (Omega).G by GROUP_2:150;
   hence (Omega).G is_Sylow_p-subgroup_of_prime p by A9,GROUP_10:def 18;
 end;
-
-@
+@ %def Th10
 
 \begin{theorem}
 Let $p$ be a prime number, $G$ a finite group.
@@ -624,7 +670,7 @@ Then $G$ is a $p$-group if and only if $G$ is a $\{p\}$-group.
 \end{theorem}
 
 <<Theorem: $G$ is a $p$-group iff $G$ is a $\{p\}$-group>>=
-theorem Th6:
+theorem Th11:
   for p being prime Nat
   for G being finite Group
   holds G is p-group iff G is {p}-group
@@ -664,7 +710,7 @@ proof
     hence thesis by GROUP_10:def 17;
   end;
   suppose A5: G is non trivial;
-    then (Omega).G is_Sylow_p-subgroup_of_prime p by A1,ThDiv;
+    then (Omega).G is_Sylow_p-subgroup_of_prime p by A1,Th10;
     then (Omega).G is p-group by GROUP_10:def 18;
     then consider r being Nat such that
     A6: card (Omega).G = p |^ r by GROUP_10:def 17;
@@ -674,7 +720,7 @@ proof
     hence thesis by GROUP_10:def 17;
   end;
 end;
-@ %def Th6
+@ %def Th11
 
 \begin{theorem}
 Let $H\subgroup G$ bea subgroup, $g\in G$ and $h\in H$.
@@ -682,7 +728,7 @@ If $g=h$, then for any $n\in\NN_{0}$ we have $g^{n}=h^{n}$.
 \end{theorem}
 
 <<Theorem: if $g\in G$ and $h\in H\subgroup G$ such that $g=h$, then for any $n\in\NN$ we have $g^{n}=h^{n}$>>=
-theorem Th7:
+theorem Th12:
   for G being Group
   for g being Element of G
   for H being Subgroup of G
@@ -717,7 +763,7 @@ proof
   A5: for k being Nat holds P[k] from NAT_1:sch 2(A3,A4);
   hence h |^ n = g |^ n;
 end;
-@ %def Th7
+@ %def Th12
 
 \begin{lemma}
 If $g\in G$, $h\in H\subgroup H$, $h=g$ and $|g|\neq0$, then $|g|=|h|$.
@@ -748,7 +794,7 @@ proof
   by A1,A4,GROUP_1:def 11;
   A6: h |^ n = 1_H
   proof
-    h |^ n = g |^ n by A2,A3,Th7
+    h |^ n = g |^ n by A2,A3,Th12
     .= 1_G by A5;
     hence thesis by GROUP_2:44;
   end;
@@ -757,7 +803,7 @@ proof
     let m be Nat;
     assume B1: h |^ m = 1_H;
     assume B2: m <> 0;
-    g |^ m = h |^ m by A2,A3,Th7
+    g |^ m = h |^ m by A2,A3,Th12
           .= 1_H by B1
           .= 1_G by GROUP_2:44;
     hence thesis by A1,A4,B2,GROUP_1:def 11;
@@ -781,7 +827,7 @@ If $g=h$, then $|g|=|h|$.
 \end{theorem}
 
 <<Theorem: for $g\in G$ and $h\in H\subgroup G$, if $g=h$, then $|g|=|h|$>>=
-theorem Th8:
+theorem Th13:
   for G being Group
   for H being Subgroup of G
   for g being Element of G
@@ -806,7 +852,7 @@ proof
     proof
       given n being Nat such that
       B1: n <> 0 & h |^ n = 1_H;
-      g |^ n = h |^ n by A1,A2,Th7
+      g |^ n = h |^ n by A1,A2,Th12
             .= 1_H by B1
             .= 1_G by GROUP_2:44;
       hence contradiction by A4,B1,GROUP_1:def 10;
@@ -816,7 +862,7 @@ proof
     hence ord g = ord h;
   end;
 end;
-@ %def Th8
+@ %def Th13
 
 \begin{lemma}
 If $H\subgroup G$ and $H$ is nontrivial, then $G$ is nontrivial.
@@ -859,13 +905,13 @@ proof
 end;
 @
 
-\begin{theorem}[{\cite[Th3.42]{rose1994course}}]
+\begin{theorem}[{\cite[Th7.42]{rose1994course}}]
 Let $G$ be a finite $\pi$-group. Then any subgroup $H\subgroup G$ is a
 $\pi$-group.
 \end{theorem}
 
 <<Theorem: if $G$ is a $\pi$-group, then $H\subgroup G$ is a $\pi$-group>>=
-theorem Th9:
+theorem Th14:
   for G being Pi-group Group
   for H being Subgroup of G
   holds H is Pi-group
@@ -885,7 +931,7 @@ proof
       B1: h in H;
       reconsider g=h as Element of G by GROUP_2:42;
       g in H by B1;
-      then B2: ord g = ord h by Th8;
+      then B2: ord g = ord h by Th13;
       B3: g is Pi-element by A3,Def2;
       then B4: ord g <> 0 by GR_CY_1:6,GROUP_1:def 11;
       for p being prime Nat st p divides (ord g) holds p in Pi by B3,Def1;
@@ -895,14 +941,14 @@ proof
     hence thesis by Def2;
   end;
 end;
-@ %def Th9
+@ %def Th14
 
 <<Register: subgroup of $\pi$-group is $\pi$-group>>=
 registration
   let Pi;
   let G be Pi-group Group;
   cluster -> Pi-group for Subgroup of G;
-  coherence by Th9;
+  coherence by Th14;
 end;
 @
 
@@ -927,7 +973,7 @@ end;
 \end{theorem}
 
 <<Theorem: $x\in G/N$, $x=gN$, and $n\in\NN$ implies $x^{n}=g^{n}N$>>=
-theorem ThA:
+theorem Th15:
   for G being Group
   for N being normal Subgroup of G
   for x being Element of G./.N
@@ -977,15 +1023,15 @@ proof
   (g |^ n)*N = N*(g |^ n) by GROUP_3:117;
   hence x |^ n = N*(g |^ n) by A4;
 end;
-@
+@ %def Th15
 
 \begin{theorem}
 Let $N\normalSubgroup G$. If $x\in G/N$ and $g\in G$ such that $x=gN$,
-then $|x|=|g|$.
+then $|x|\divides|g|$.
 \end{theorem}
 
-<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|=|g|$>>=
-theorem ThB:
+<<Theorem: $x\in G/N$ and $g\in G$ such that $x=gN$, then $|x|\divides|g|$>>=
+theorem Th16:
   for G being Group
   for N being normal Subgroup of G
   for x being Element of G./.N
@@ -998,20 +1044,19 @@ proof
   let g be Element of G;
   assume A1: x = g*N;
   set n = ord g;
-  A2: x |^ n = (g |^ n)*N by A1,ThA
+  A2: x |^ n = (g |^ n)*N by A1,Th15
             .= (1_G)*N by GROUP_1:41
             .= carr N by GROUP_2:37
             .= 1_(G./.N) by GROUP_6:24;
   hence ord x divides n by GROUP_1:44;
 end;
-@
+@ %def Th16
 
-\begin{theorem}
-If $G\neq\trivialGroup$, then there is a $g\in G$ which is not the
-identity element.
-\end{theorem}
+\begin{lemma}
+The finite cyclic group $\cyclicGroup{2}$ is nontrivial.
+\end{lemma}
 
-<<Theorem: $G\neq\trivialGroup\implies\exists g\in G,g\neq\idElt{G}$>>=
+<<Lemma: existence of finite nontrivial group>>=
 LmFiniteNontrivial:
   not INT.Group(2) is trivial
 proof
@@ -1024,13 +1069,30 @@ proof
   .= 2;
   hence not INT.Group(2) is trivial by A1;
 end;
+@ 
 
+\begin{registration}
+We can use ``\lstinline{non trivial}'' as an adjective for finite groups.
+\end{registration}
+
+<<Register: non-trivial for finite group>>=
+<<Lemma: existence of finite nontrivial group>>
 registration
   cluster non trivial for finite Group;
   existence by LmFiniteNontrivial;
 end;
 
-theorem ThNontrivial:
+@ 
+
+\begin{theorem}
+If $G\neq\trivialGroup$, then there is a $g\in G$ which is not the
+identity element.
+\end{theorem}
+
+<<Theorem: $G\neq\trivialGroup\implies\exists g\in G,g\neq\idElt{G}$>>=
+<<Register: non-trivial for finite group>>
+
+theorem Th17:
   for G being non trivial Group
   ex g being Element of G st g <> 1_G
 proof
@@ -1047,14 +1109,13 @@ proof
   take g;
   thus g <> 1_G by A2,TARSKI:def 1;
 end;
-@
+@ %def Th17
 
-\begin{theorem}[{\cite[Th3.42]{rose1994course}}]
-Let $G$ be a $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
-a $\pi$-group.
-\end{theorem}
+\begin{lemma}
+Let $N\normalSubgroup G$. If $G/N$ is nontrivial, then $G$ is nontrivial.
+\end{lemma}
 
-<<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>=
+<<Lemma: if $G/N$ is nontrivial, then $G$ is nontrivial>>=
 Lm3:
   for G being Group
   for N being normal Subgroup of G
@@ -1066,7 +1127,7 @@ proof
 
   assume A1: G./.N is non trivial;
   then consider S being Element of G./.N such that
-  A2: S <> 1_(G./.N) by ThNontrivial;
+  A2: S <> 1_(G./.N) by Th17;
   consider g being Element of G such that
   A3: S = g*N & S = N*g by GROUP_6:21;
   g*N <> 1_(G./.N) by A2,A3;
@@ -1077,7 +1138,16 @@ proof
   hence G is non trivial by GROUP_6:def 2;
 end;
 
-theorem Th10:
+@
+
+\begin{theorem}[{\cite[Th7.42]{rose1994course}}]\label{thm:002:quotient-of-pi-group-is-pi-group}
+Let $G$ be a $\pi$-group. If $N\normalSubgroup G$, then $G/N$ is
+a $\pi$-group.
+\end{theorem}
+
+<<Theorem: if $G$ is a $\pi$-group and $N\normalSubgroup G$, then $G/N$ is a $\pi$-group>>=
+<<Lemma: if $G/N$ is nontrivial, then $G$ is nontrivial>>
+theorem Th18:
   for G being Pi-group Group
   for N being normal Subgroup of G
   holds G./.N is Pi-group
@@ -1092,7 +1162,7 @@ proof
     then consider g being Element of G such that
     B1: x = g*N & x = N*g by GROUP_6:23;
     B2: g is Pi-element by Def2;
-    B3: ord x divides ord g by B1,ThB;
+    B3: ord x divides ord g by B1,Th16;
     then B4: ord x <> 0 by B2,B3,Def1,INT_2:3;
     for p being prime Nat st p divides (ord x) holds p in Pi
     proof
@@ -1105,7 +1175,7 @@ proof
   end;
   hence G./.N is Pi-group by Def2;
 end;
-@ %def Th10
+@ %def Th18
 
 \begin{theorem}
   Let $G_{1}$, $G_{2}$ be groups and $g\in G$.
@@ -1114,7 +1184,7 @@ end;
 \end{theorem}
 
 <<Theorem: isomorphic group elements have same order>>=
-theorem Th11:
+theorem Th19:
   for G1,G2 being Group
   for phi being Homomorphism of G1,G2
   st phi is bijective
@@ -1143,7 +1213,38 @@ proof
   then n divides ord (phi.g) by A4,GROUP_1:44;
   hence ord g = ord (phi.g) by A5,NAT_D:5;
 end;
-@ %def Th11
+@ %def Th19
+
+\begin{theorem}
+Let $N\normalSubgroup G$ and $\pi$ be a set of primes.
+If $G/N$ is a $\pi$-group, then $G$ is a $\pi$-group.
+\end{theorem}
+
+<<Theorem: $N$ and $G/N$ are $\pi$-groups $\implies$ $G$ is a $\pi$-group>>=
+theorem
+  for G being finite Group
+  for N being normal Subgroup of G
+  st N is Pi-group
+  holds G./.N is Pi-group implies G is Pi-group
+proof
+  let G be finite Group;
+  let N be normal Subgroup of G;
+  assume A1: N is Pi-group;
+  assume A2: G./.N is Pi-group;
+  A3: card G = (card N)*(index N) by GROUP_2:147
+            .= (card N)*(card (G./.N)) by GROUP_6:27;
+  for p being prime Nat
+  st p divides card G
+  holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides card G;
+    then p divides card N or p divides card (G./.N) by A3,NEWTON:80;
+    hence thesis by A1,A2,Th7;
+  end;
+  hence G is Pi-group by Th7;
+end;
+@ 
 
 \begin{theorem}
 If $\varphi\colon G_{1}\to G_{2}$ is an isomorphism and $g\in G_{1}$
@@ -1151,7 +1252,7 @@ is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element.
 \end{theorem}
 
 <<Theorem: $\varphi\colon G_{1}\iso G_{2}$ and $g\in G_{1}$ is a $\pi$-element, then $\varphi(g)\in G_{2}$ is a $\pi$-element>>=
-theorem Th12:
+theorem Th21:
   for G1,G2 being Group
   for g being Element of G1 st g is Pi-element
   for phi being Homomorphism of G1,G2
@@ -1163,7 +1264,7 @@ proof
   assume A1: g is Pi-element;
   let phi be Homomorphism of G1,G2;
   assume A2: phi is bijective;
-  then A3: ord g = ord (phi.g) by Th11;
+  then A3: ord g = ord (phi.g) by Th19;
   A4: ord g <> 0 by A1,Def1;
   for p being prime Nat st p divides ord (phi.g) holds p in Pi
   proof
@@ -1174,7 +1275,7 @@ proof
   end;
   hence phi.g is Pi-element by A3,A4,Def1;
 end;
-@ %def Th12
+@ %def Th21
 
 \begin{theorem}
 Let $G_{1}$ be a $\pi$-group and $G_{1}\iso G_{2}$ be isomorphic groups.
@@ -1191,7 +1292,7 @@ $\pi$-group by definition.
 \end{proof}
 
 <<Theorem: if $G_{1}$ is a $\pi$-group and $G_{1}\iso G_{2}$, then $G_{2}$ is a $\pi$-group>>=
-theorem Th16:
+theorem Th22:
   for G1,G2 being Group
   st G1,G2 are_isomorphic & G1 is Pi-group
   holds G2 is Pi-group
@@ -1217,31 +1318,13 @@ proof
     then phi = psi" by A5,FUNCT_2:30,FUNCT_2:def 3;
     then B1: phi.(psi.g2) = g2 by A3,FUNCT_2:26;
     psi.g2 is Element of G1;
-    psi.g2 is Pi-element by A4,Th12,A2,Def2;
-    then phi.(psi.g2) is Pi-element by A3,Th12;
+    psi.g2 is Pi-element by A4,Th21,A2,Def2;
+    then phi.(psi.g2) is Pi-element by A3,Th21;
     hence g2 is Pi-element by B1;
   end;
   hence G2 is Pi-group by Def2;
 end;
-@
-
-\begin{theorem}
-If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
-then $HN$ is a $\pi$-subgroup of $G$.
-\end{theorem}
-
-<<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>=
-:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
-:: in passim
-theorem
-  for G being Group
-  for H being Subgroup of G
-  for N being normal Subgroup of G
-  st H is Pi-group & N is Pi-group
-  for HN being strict Subgroup of G
-  st HN = H "\/" N
-  holds HN is Pi-group;
-@
+@ %def Th22
 
 \begin{theorem}
 If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
@@ -1251,27 +1334,283 @@ then $H\cap N$ is a $\pi$-subgroup of $G$.
 <<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $H\cap N$ is a $\pi$-subgroup of $G$>>=
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
 :: in passim
-theorem
+theorem Th23:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
   st H is Pi-group & N is Pi-group
-  holds H /\ N is Pi-group;
-@
+  holds H /\ N is Pi-group
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume A1: H is Pi-group;
+  assume A2: N is Pi-group;
+  H /\ N is Subgroup of H by GROUP_6:9;
+  hence H /\ N is Pi-group by A1,Th14;
+end;
+@ %def Th23
 
 \begin{theorem}
 If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
 then $HN/N$ is a $\pi$-subgroup of $G$.
 \end{theorem}
 
+\begin{proof}[Proof sketch]
+We know that $HN/N\iso H/(H\cap N)$ by the second isomorphism theorem.
+We know $H$ is a $\pi$-group and $H\cap N\normalSubgroup H$, which means
+we know from Theorem~\ref{thm:002:quotient-of-pi-group-is-pi-group}
+$H/(H\cap N)$ is a $\pi$-group. Hence the result.
+\end{proof}
+
 <<Theorem: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN/N$ is a $\pi$-subgroup of $G$>>=
 :: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
 :: in passim
-theorem
+theorem Th24:
   for G being Group
   for H being Subgroup of G
-  for N being normal Subgroup of G
+  for N being strict normal Subgroup of G
   st H is Pi-group & N is Pi-group
-  holds (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group;
+  holds (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be strict normal Subgroup of G;
+  assume A1: H is Pi-group;
+  assume A2: N is Pi-group;
+  A3: (H "\/" N)./.((H "\/" N,N)`*`), H./.(H /\ N) are_isomorphic
+  by GROUP_6:81;
+  H./.(H /\ N) is Pi-group by A1,Th18;
+  hence (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group by A3,Th22;
+end;
+@ %def Th24
 
+\begin{corollary}
+If $H$, $N$ are $\pi$-subgroups of $G$, and $N\normalSubgroup G$,
+then $HN$ is a $\pi$-subgroup of $G$.
+\end{corollary}
+
+<<Corollary: $H\subgroup G$ and $N\normalSubgroup G$ both $\pi$-groups implies $HN$ is a $\pi$-subgroup of $G$>>=
+:: Derek J.S. Rose, _A Course in the Theory of Groups_, section 9.1,
+:: in passim
+theorem Th25:
+  for G being finite Group
+  for H being Subgroup of G
+  for N being strict normal Subgroup of G
+  st H is Pi-group & N is Pi-group
+  holds H "\/" N is Pi-group
+proof
+  let G be finite Group;
+  let H be Subgroup of G;
+  let N be strict normal Subgroup of G;
+  assume A1: H is Pi-group;
+  assume A2: N is Pi-group;
+  A3: (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group by A1,A2,Th24;
+  
+  A4: card(H "\/" N)
+   = index((H "\/" N,N)`*`) * card((H "\/" N,N)`*`) by GROUP_2:147
+  .= card((H "\/" N)./.((H "\/" N,N)`*`)) * card((H "\/" N,N)`*`) by GROUP_6:27;
+  A5: N is Subgroup of H "\/" N by GROUP_4:60;
+  
+  A6: card ((H "\/" N,N)`*`)
+  = card (the carrier of ((H "\/" N,N)`*`)) by STRUCT_0:def 16
+  .= card (the carrier of N) by A5,GROUP_6:def 1
+  .= card N by STRUCT_0:def 16;
+
+  for p being prime Nat
+  st p divides card(H "\/" N)
+  holds p in Pi
+  proof
+    let p be prime Nat;
+    assume B1: p divides card(H "\/" N);
+    then p divides card((H "\/" N)./.((H "\/" N,N)`*`)) * card((H "\/" N,N)`*`)
+    by A4;
+    then p divides card((H "\/" N)./.((H "\/" N,N)`*`)) or
+    p divides card((H "\/" N,N)`*`) by NEWTON:80;
+    then per cases;
+    suppose p divides card((H "\/" N)./.((H "\/" N,N)`*`));
+      hence p in Pi by A3,Th7;
+    end;
+    suppose B2: p divides card((H "\/" N,N)`*`);
+      then p divides card N by A6;
+      hence p in Pi by A2,Th7;
+    end;
+  end;
+
+  hence H "\/" N is Pi-group by Th7;
+end;
+@ %def Th25
+
+\begin{theorem}
+If $H_{1}\subgroup G$ and $H_{2}\subgroup G$ have the same underlying
+sets $U(H_{1})=U(H_{2})$, then $H_{1}\iso H_{2}$.
+\end{theorem}
+
+\begin{thm-remark}
+This theorems seems silly, but we really care more about isomorphic
+groups than strict equality. And it's a bit trickier to prove formally
+than one would expect!
+\end{thm-remark}
+
+\begin{proof}[Proof outline]
+We establish that $f\colon H_{1}\to H_{2}$ defined by $f(x)=x$ for every
+$x\in U(H_{1})$ is a homomorphism. Then we prove it is
+bijective. Injectivity is easy. But surjectivity requires a separate
+subproof. Thus we establish an isomorphism $f$ exists, which proves the
+theorem. 
+\end{proof}
+
+<<Theorem: $\forall H_{1},H_{2}\subgroup G,\quad U(H_{1})=U(H_{2})\implies H_{1}\iso H_{2}$>>=
+theorem Th26:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  st the carrier of H1 = the carrier of H2
+  holds H1,H2 are_isomorphic
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  assume A1: the carrier of H1 = the carrier of H2;
+  A2: id H1 is Function of H1,H2 by A1;
+  reconsider f=id H1 as Function of H1,H2 by A1;
+  A3: for x being Element of H1 holds f.x = (id H1).x;
+  A5: the multF of H1 = (the multF of G)||the carrier of H1 by GROUP_2:def 5
+                     .= (the multF of G)||the carrier of H2 by A1
+                     .= the multF of H2 by GROUP_2:def 5;
+  for a, b being Element of H1 holds f.(a * b) = f.a * f.b
+  proof
+    let a, b be Element of H1;
+    f.(a * b) = (id H1).(a * b) by A3
+             .= (id H1).a * (id H1).b by GROUP_6:38
+             .= (the multF of H2).((id H1).a, (id H1).b) by A5
+             .= (the multF of H2).((id H1).a, f.b) by A3
+             .= (the multF of H2).(f.a, f.b) by A3
+             .= f.a * f.b by A3;
+    hence f.(a * b) = f.a * f.b;
+  end;
+  then A6: f is Homomorphism of H1,H2 by A2,GROUP_6:def 6;
+  then reconsider f as Homomorphism of H1,H2;
+  A7: f is one-to-one;
+  f is onto
+  <<Proof: $\id\colon H_{1}\to H_{2}$ is onto>>
+  then f is bijective by A7;
+  hence H1,H2 are_isomorphic by A3,GROUP_6:def 11;
+end;
+@ %def Th26
+
+\begin{proof}[Proof step ($\id\colon H_{1}\to H_{2}$ is onto)]
+We need to prove that $\id_{H_{1}}(H_{1})=H_{2}$, which we do by
+appealing directly to the axiom of extensionality: every element in the
+image is also an element of $H_{2}$.
+\end{proof}
+
+<<Proof: $\id\colon H_{1}\to H_{2}$ is onto>>=
+proof
+  B1: rng f = the carrier of (Image f) by GROUP_6:44;
+  B2: for y being object
+  holds y in H2 iff ex a being Element of H1 st y = f.a
+  proof
+    let y be object;
+    thus y in H2 implies ex a being Element of H1 st y = f.a
+    proof
+      assume y in H2;
+      then reconsider y as Element of H2;
+      consider a being Element of H1 such that
+      Z1: a = y by A1;
+      take a;
+      f.a = (id H1).a
+         .= a
+         .= y by Z1;
+      hence thesis;
+    end;
+    given a being Element of H1 such that 
+    Z2: y = f.a;
+    thus y in H2 by Z2;
+  end;
+  for x being object
+  holds x in the carrier of Image f iff x in the carrier of H2
+  proof
+    let x be object;
+    thus x in the carrier of Image f implies x in the carrier of H2
+    proof
+      assume x in the carrier of Image f;
+      then x in Image f;
+      then consider a being Element of H1 such that
+      Z1: x = f.a by GROUP_6:45;
+      x in H2 by Z1,B2;
+      hence thesis;
+    end;
+    assume x in the carrier of H2;
+    then x in H2;
+    then consider a being Element of H1 such that
+    Z2: x = f.a by B2;
+    x in Image f by Z2,GROUP_6:45;
+    hence thesis;
+    end;
+  then the carrier of Image f = the carrier of H2 by TARSKI:2;
+  hence thesis by B1;
+end;
 @
+
+\begin{theorem}
+Let $H\subgroup G$, $B\subgroup G$.
+If $H\subgroup B$, then the underlying magma of $H$ is a strict subgroup of $B$.
+\end{theorem}
+
+<<Theorem: $H\subgroup B\subgroup G$ implies the underlying magma of $H$ is a strict subgroup of $B$>>=
+theorem Th27:
+  for G being Group
+  for H,B being Subgroup of G
+  st H is Subgroup of B
+  holds the multMagma of H is strict Subgroup of B
+proof
+  let G be Group;
+  let H,B be Subgroup of G;
+  assume A1: H is Subgroup of B;
+  then reconsider H1=H as Subgroup of B;
+  A2: H1 is Group-like non empty multMagma;
+  H1 is Subgroup of B;
+  then A3: the carrier of H1 c= the carrier of B &
+       the multF of H1 = (the multF of B)||the carrier of H1 by GROUP_2:def 5;
+
+  A4: multMagma(# the carrier of H1, the multF of H1 #) is Subgroup of B
+  proof
+    the carrier of multMagma(# the carrier of H1, the multF of H1 #)
+    = the carrier of H1;
+    then B1: the carrier of multMagma(# the carrier of H1, the multF of H1 #)
+    c= the carrier of B by A3;
+    the multF of multMagma(# the carrier of H1, the multF of H1 #)
+    = the multF of H1;
+    then B2: the multF of multMagma(# the carrier of H1, the multF of H1 #)
+    = (the multF of B)||(the carrier of multMagma(# the carrier of H1, the multF of H1 #)) by A3;
+    multMagma(# the carrier of H1, the multF of H1 #) is Group-like non
+    empty multMagma;
+    hence thesis by B1,B2,GROUP_2:def 5;
+  end;
+  hence thesis;
+end;
+
+@ %def Th27 
+
+\begin{theorem}
+Let $N\normalSubgroup G$ and $B\subgroup G$. If $N\subgroup B$, then
+$(N)_{B}\iso N$.
+\end{theorem}
+
+<<Theorem: $(N)_{B}\iso N$>>=
+theorem
+  for G being Group
+  for B being Subgroup of G
+  for N being normal Subgroup of G
+  st N is Subgroup of B
+  holds (B,N)`*`, N are_isomorphic
+proof
+  let G be Group;
+  let B be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume A1: N is Subgroup of B;
+  then reconsider N1=the multMagma of N as strict Subgroup of B by Th27;
+  N1 = (B,N)`*` by GROUP_6:def 1;
+  hence thesis by Th26;
+end;
+
+@ 
