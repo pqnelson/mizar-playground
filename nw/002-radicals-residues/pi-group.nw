@@ -87,6 +87,12 @@ finite groups, but may be different in general).
 <<Theorem: $H\subgroup B\subgroup G$ implies the underlying magma of $H$ is a strict subgroup of $B$>>
 
 <<Theorem: $(N)_{B}\iso N$>>
+
+<<Theorem: $\SymmetricGroup{2}$ is finite>>
+
+<<Theorem: $\SymmetricGroup{2}$ is simple>>
+
+<<Register: strict finite simple group>>
 @
 
 
@@ -322,7 +328,7 @@ proof
   end;
   hence h is Pi-element by A3,Def1;
 end;
-@ 
+@
 
 \begin{definition}[{\cite[ch.1\S1]{kurzweil2004theory}}]
 Let $G$ be a finite group, $\pi$ be a set of prime numbers. We call $G$
@@ -1069,7 +1075,7 @@ proof
   .= 2;
   hence not INT.Group(2) is trivial by A1;
 end;
-@ 
+@
 
 \begin{registration}
 We can use ``\lstinline{non trivial}'' as an adjective for finite groups.
@@ -1082,7 +1088,7 @@ registration
   existence by LmFiniteNontrivial;
 end;
 
-@ 
+@
 
 \begin{theorem}
 If $G\neq\trivialGroup$, then there is a $g\in G$ which is not the
@@ -1244,7 +1250,7 @@ proof
   end;
   hence G is Pi-group by Th7;
 end;
-@ 
+@
 
 \begin{theorem}
 If $\varphi\colon G_{1}\to G_{2}$ is an isomorphism and $g\in G_{1}$
@@ -1406,12 +1412,12 @@ proof
   assume A1: H is Pi-group;
   assume A2: N is Pi-group;
   A3: (H "\/" N)./.((H "\/" N,N)`*`) is Pi-group by A1,A2,Th24;
-  
+
   A4: card(H "\/" N)
    = index((H "\/" N,N)`*`) * card((H "\/" N,N)`*`) by GROUP_2:147
   .= card((H "\/" N)./.((H "\/" N,N)`*`)) * card((H "\/" N,N)`*`) by GROUP_6:27;
   A5: N is Subgroup of H "\/" N by GROUP_4:60;
-  
+
   A6: card ((H "\/" N,N)`*`)
   = card (the carrier of ((H "\/" N,N)`*`)) by STRUCT_0:def 16
   .= card (the carrier of N) by A5,GROUP_6:def 1
@@ -1457,7 +1463,7 @@ We establish that $f\colon H_{1}\to H_{2}$ defined by $f(x)=x$ for every
 $x\in U(H_{1})$ is a homomorphism. Then we prove it is
 bijective. Injectivity is easy. But surjectivity requires a separate
 subproof. Thus we establish an isomorphism $f$ exists, which proves the
-theorem. 
+theorem.
 \end{proof}
 
 <<Theorem: $\forall H_{1},H_{2}\subgroup G,\quad U(H_{1})=U(H_{2})\implies H_{1}\iso H_{2}$>>=
@@ -1522,7 +1528,7 @@ proof
          .= y by Z1;
       hence thesis;
     end;
-    given a being Element of H1 such that 
+    given a being Element of H1 such that
     Z2: y = f.a;
     thus y in H2 by Z2;
   end;
@@ -1589,7 +1595,7 @@ proof
   hence thesis;
 end;
 
-@ %def Th27 
+@ %def Th27
 
 \begin{theorem}
 Let $N\normalSubgroup G$ and $B\subgroup G$. If $N\subgroup B$, then
@@ -1613,4 +1619,125 @@ proof
   hence thesis by Th26;
 end;
 
-@ 
+@
+
+\begin{theorem}
+The symmetric group $\SymmetricGroup{2}$ is finite.
+\end{theorem}
+
+<<Theorem: $\SymmetricGroup{2}$ is finite>>=
+theorem Th29:
+  Group_of_Perm 2 is strict finite Group
+proof
+  set G = Group_of_Perm 2;
+  A1: G is strict Group;
+  Permutations 2 is finite;
+  then the carrier of G is finite by MATRIX_1:def 13;
+  hence thesis;
+end;
+@ %def Th29
+
+\begin{theorem}
+The symmetric group $\SymmetricGroup{2}$ is simple.
+\end{theorem}
+
+<<Theorem: $\SymmetricGroup{2}$ is simple>>=
+theorem Th30:
+  Group_of_Perm 2 is simple
+proof
+  set G = Group_of_Perm 2;
+A1: for H being strict normal Subgroup of G
+  st H <> (Omega).G & H <> (1).G
+  holds contradiction
+  proof
+    let H be strict normal Subgroup of G;
+    assume
+A2: H <> (Omega).G;
+    assume
+A3: H <> (1).G;
+    1_G in H by GROUP_2:46;
+    then 1_G in the carrier of H by STRUCT_0:def 5;
+    then {1_G} c= the carrier of H by ZFMISC_1:31;
+    then {<*1,2*>} c= the carrier of H by FINSEQ_2:52,MATRIX_1:15;
+    then
+A4: <*1,2*> in the carrier of H by ZFMISC_1:31;
+    the carrier of H c= the carrier of G by GROUP_2:def 5;
+    then
+A5: the carrier of H c= {<*1,2*>,<*2,1*>} by MATRIX_1:def 13,MATRIX_7:3;
+    per cases by A5,ZFMISC_1:36;
+    suppose
+      the carrier of H = {};
+      hence contradiction;
+    end;
+    suppose
+      the carrier of H = {<*1,2*>};
+      then {1_G} = the carrier of H by FINSEQ_2:52,MATRIX_1:15;
+      hence contradiction by A3,GROUP_2:def 7;
+    end;
+    suppose
+      the carrier of H = {<*2,1*>};
+      then <*2,1*>.1 = <*1,2*>.1 by A4,TARSKI:def 1;
+      then 2 = <*1,2*>.1 by FINSEQ_1:44;
+      hence contradiction by FINSEQ_1:44;
+    end;
+    suppose
+      the carrier of H = {<*1,2*>,<*2,1*>};
+      then the carrier of H = the carrier of G by MATRIX_1:def 13,MATRIX_7:3;
+      hence contradiction by A2,GROUP_2:61;
+    end;
+  end;
+  now
+    assume G is trivial;
+    then consider e be object such that
+A6: the carrier of G = {e} by GROUP_6:def 2, GROUP_2:def 7;
+    Permutations 2 = {e} by A6,MATRIX_1:def 13;
+    then <*2,1*> = <*1,2*> by MATRIX_7:3,ZFMISC_1:5;
+    then 2 = <*1,2*>.1 by FINSEQ_1:44;
+    hence contradiction by FINSEQ_1:44;
+  end;
+  hence thesis by A1,GROUP_9:def 12;
+end;
+@ %def Th30
+
+\begin{registration}
+We have ``\lstinline{strict finite simple}'' for ``\lstinline{Group}''
+be a sensible string of adjectives.
+\end{registration}
+
+<<Register: strict finite simple group>>=
+registration
+  cluster strict finite simple for Group;
+  existence by Th29,Th30;
+end;
+@
+
+\begin{theorem}
+Let $n\in\NN$. Since the collection of even elements of $\SymmetricGroup{n}$
+is closed under multiplication and inversion, they form a subgroup of $\SymmetricGroup{n}$.
+\end{theorem}
+
+<<Theorem: existence of alternating group>>=
+theorem Th31:
+  for n being Nat
+  for G being Group_of_Perm n
+  for A being Subset of G st A <> {} &
+  (for g being Element of G st g is even Permutation of (Seg n) holds g in A)
+  holds (for g1, g2 being Element of G st g1 in A & g2 in A holds
+  g1 * g2 in A) & (for g being Element of G st g in A holds g" in A);
+@ %def Th31
+
+\begin{definition}
+Let $n\in\NN$. We define the \define{Alternating Group} of $n$ elements
+to be the subgroup of $\SymmetricGroup{n}$ consisting of even permutations.
+\end{definition}
+
+<<Definition: Alternating Group>>=
+definition
+  let n be Nat;
+  func AlternatingGroup(n) -> strict Subgroup of Group_of_Perm n means :Def3:
+  for g being Element of Group_of_Perm n holds
+  g in it iff g is even;
+  existence by Th31,GROUP_2:52;
+  uniqueness;
+end;
+@
