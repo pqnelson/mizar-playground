@@ -41,6 +41,12 @@ literature, we find the results referred to by the following names:
 <<Hall $\pi$-Groups>>=
 <<Definition: predicate ``is Hall $\pi$-subgroup of primes [$\pi$]''>>
 
+<<Theorem: for any $G$ finite and $\pi(G)\subset\pi$, $G$ is a Hall $\pi$-subgroup of itself>>
+
+<<Theorem: for any finite $G$ and set of primes $\pi$, $\trivialSubgroup$ is a Hall $\pi$-subgroup of $G$>>
+
+<<Theorem: $p\divides ab\implies [\gcd(a,b)=1\iff (p\divides a\land p\ndivides b)\lor(p\ndivides a\land p\divides b)]$>>
+
 <<Theorem: $H$ is a Hall $\pi$-subgroup iff $|H|$ is coprime to $\Index{G}{H}$>>
 
 <<Definition: $\HallSubgroups{\pi}{G}$ the collection of Hall $\pi$-Subgroups>>
@@ -51,13 +57,12 @@ literature, we find the results referred to by the following names:
 
 \begin{definition}
 Let $G$ be a finite group, $\pi$ a set of primes, and $H\subgroup G$
-some subgroup. We call $H$ a \define{Hall Subgroup} if every prime
-$p\in\pi$ does not divide the index $p\ndivides\Index{G}{H}$.
+some subgroup. We call $H$ a \define{Hall $\pi$-Subgroup} if its index
+$\Index{G}{H}$ is coprime to its order $|H|$:
+\begin{equation}
+  \gcd(|H|, \Index{G}{H})=1.
+\end{equation}
 \end{definition}
-
-\begin{def-remark}
-  An equivalent condition is that $\gcd(|H|, \Index{G}{H})=1$.
-\end{def-remark}
 
 \begin{def-remark}
 Not every finite group has a Hall subgroup, so we cannot make an
@@ -74,9 +79,7 @@ definition
   pred IT is_Hall_pi-subgroup_of_primes Pi means
   :Def3:
   IT is Pi-group &
-  for p being prime Nat
-  st p in Pi
-  holds not p divides index IT;
+  card IT, index IT are_coprime;
 end;
 @ %def is_Hall_pi-subgroup_of_primes
 
@@ -90,20 +93,107 @@ Ris_Hall_pi-subgroup_of_primes
 @
 
 \begin{theorem}
+Let $\pi$ be a set of primes. Let $G$ be a finite group,
+let $\pi(G)\subset \pi$ be the set of prime divisors of $|G|$.
+Then $G$ is a Hall $\pi$-subgroup of itself.
+\end{theorem}
+
+<<Theorem: for any $G$ finite and $\pi(G)\subset\pi$, $G$ is a Hall $\pi$-subgroup of itself>>=
+theorem
+  for G being finite Group
+  for Pi being Subset of SetPrimes
+  st support (prime_factorization card G) c= Pi
+  holds (Omega).G is_Hall_pi-subgroup_of_primes Pi;
+@
+
+\begin{theorem}
+Let $\pi$ be a set of primes.
+Let $G$ be a finite group. Then $\trivialSubgroup\subgroup G$ is a Hall
+$\pi$-subgroup of $G$.
+\end{theorem}
+
+<<Theorem: for any finite $G$ and set of primes $\pi$, $\trivialSubgroup$ is a Hall $\pi$-subgroup of $G$>>=
+theorem
+  for G being finite Group
+  holds (1).G is_Hall_pi-subgroup_of_primes Pi;
+@
+
+\begin{theorem}
+Let $a,b\in\NN$ and let $p\in\NN$ be prime.
+Suppose $p\divides ab$.
+Then $a$, $b$ are coprime if and only if
+$p$ divides $a$ or $p$ divides $b$ but $p$ does not divide both.
+\end{theorem}
+
+<<Theorem: $p\divides ab\implies [\gcd(a,b)=1\iff (p\divides a\land p\ndivides b)\lor(p\ndivides a\land p\divides b)]$>>=
+theorem
+  for a,b being Nat
+  for p being prime Nat
+  st p divides a*b
+  holds (a,b are_coprime) iff
+        ((p divides a & not p divides b) or
+         (not p divides a & p divides b));
+@
+
+\begin{theorem}
 Let $\pi$ be a set of primes, $G$ be a finite group, $H\subgroup G$ be
 a subgroup.
-Then $H$ is a Hall $\pi$-subgroup if and only if $\gcd(|H|,\Index{G}{H})=1$.
+Then $H$ is a Hall $\pi$-subgroup if and only if
+every prime divisor $p\divides|G|$ divides exactly one of $|H|$ or $\Index{G}{H}$.
 \end{theorem}
 
 <<Theorem: $H$ is a Hall $\pi$-subgroup iff $|H|$ is coprime to $\Index{G}{H}$>>=
 theorem
   for H being Subgroup of G
-  holds H is_Hall_pi-subgroup_of_primes Pi iff card H, index H are_coprime;
+  st H is Pi-group
+  holds H is_Hall_pi-subgroup_of_primes Pi iff
+        (for p being prime Nat st p divides card G
+        holds (p divides index H & not p divides card H) or
+              (not p divides index H & p divides card H))
+proof
+  let G be finite Group;
+  let H be Subgroup of G;
+  assume A1: H is Pi-group;
+  thus H is_Hall_pi-subgroup_of_primes Pi implies
+       (for p being prime Nat st p divides card G
+        holds (p divides index H & not p divides card H) or
+              (not p divides index H & p divides card H))
+  proof
+    assume B1: H is_Hall_pi-subgroup_of_primes Pi;
+    let p be prime Nat;
+    assume B2: p divides card G;
+    assume B3: not (p divides index H & not p divides card H);
+    thus not p divides index H;
+::>                          *4
+    thus p divides card H;
+::>                     *4
+  end;
+  thus (for p being prime Nat st p divides card G
+        holds (p divides index H & not p divides card H) or
+              (not p divides index H & p divides card H)) implies
+       H is_Hall_pi-subgroup_of_primes Pi
+  proof
+    assume B1: for p being prime Nat st p divides card G
+               holds (p divides index H & not p divides card H) or
+                     (not p divides index H & p divides card H);
+    index H,card H are_coprime;
+::>                          *4
+    hence H is_Hall_pi-subgroup_of_primes Pi by A1,Def3;
+  end;
+end;
 @
 
 \begin{lemma}
 If $\pi$ is a set of primes and $2\notin\pi$, then every $p\in\pi$ is odd.
 \end{lemma}
+
+<<Lemma: $2\notin\pi$ implies every prime $p\in\pi$ is odd>>=
+Lm5:
+  for Pi being Subset of SetPrimes
+  st not 2 in Pi
+  for p being prime Nat
+  holds p is odd;
+@
 
 
 \begin{definition}
@@ -170,8 +260,9 @@ $\pi$-subgroups of $G$ (if any) are all conjugate.
 :: Bull. London Math. Soc. 19, no.4 (1987) 311-319
 theorem
   not 2 in Pi implies
-  for H being Subgroup of G
-  st H is_Hall_pi-subgroup_of_primes Pi
-  for g being Element of G
-  holds H |^ g is_Hall_pi-subgroup_of_primes Pi;
+  for G being finite Group
+  for H1,H2 being Subgroup of G
+  st H1 is_Hall_pi-subgroup_of_primes Pi &
+     H2 is_Hall_pi-subgroup_of_primes Pi
+  holds H1,H2 are_conjugated;
 @
