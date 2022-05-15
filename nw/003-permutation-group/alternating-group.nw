@@ -1,0 +1,270 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Formalizing the Alternating Group}
+
+<<Formalizing alternating group>>=
+begin :: Definition of Alternating Group
+<<Definition: [[even]] for [[Element of Group_of_Perm n]]>>
+<<Theorem: $\idElt{\SymmetricGroup{n}}$ is even>>
+<<Register: [[even]] for [[Element of Group_of_Perm n]]>>
+<<Register: Symmetric group is [[finite]]>>
+<<Theorem: $\SymmetricGroup{0}$ is trivial>>
+<<Theorem: $\SymmetricGroup{1}$ is trivial>>
+<<Register: [[Group_of_Perm 0,1]] are both [[trivial]]>>
+<<Lemma: even elements of $\SymmetricGroup{n}$ closed under multiplication>>
+<<Lemma: even elements of $\SymmetricGroup{n}$ closed under inverse>>
+<<Theorem: even elements of $\SymmetricGroup{n}$ form subgroup>>
+<<Definition: Alternating Group $\AltGroup{n}$>>
+@
+
+\begin{definition}
+Let $n\in\NN$. We call an element $g\in\SymmetricGroup{n}$ \define{Even}
+if it is an even permutation.
+\end{definition}
+
+<<Definition: [[even]] for [[Element of Group_of_Perm n]]>>=
+definition
+  let n be Nat;
+  let IT be Element of Group_of_Perm n;
+  attr IT is even means
+  ex p being Permutation of (Seg n) st p = IT & p is even;
+end;
+@ %def even
+
+\begin{theorem}
+Let $n\in\NN$.
+The identity element of $\SymmetricGroup{n}$ is even.
+\end{theorem}
+
+<<Theorem: $\idElt{\SymmetricGroup{n}}$ is even>>=
+theorem Th1:
+  for n being Nat
+  holds 1_(Group_of_Perm n) is even
+proof
+  let n be Nat;
+  set G = Group_of_Perm n;
+  A1: 1_G = idseq n by MATRIX_1:15;
+  idseq n = id (Seg n) by FINSEQ_2:def 1;
+  then A2: 1_G = id (Seg n) by A1;
+  id (Seg n) is even by MATRIX_1:16;
+  hence 1_G is even by A2;
+end;
+@
+
+\begin{registration}
+We can now associate [[even]] as an adjective for [[Element of Group_of_Perm n]].
+\end{registration}
+
+<<Register: [[even]] for [[Element of Group_of_Perm n]]>>=
+registration
+  let n be Nat;
+  cluster even for Element of Group_of_Perm(n);
+  existence
+  proof
+    take g = 1_(Group_of_Perm n);
+    g is even by Th1;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{registration}
+The [[Group_of_Perm n]] is a [[finite]] group.
+\end{registration}
+
+<<Register: Symmetric group is [[finite]]>>=
+registration
+  let n be Nat;
+  cluster Group_of_Perm n -> finite;
+  coherence
+  proof
+    A1: the carrier of Group_of_Perm n = Permutations n by MATRIX_1:def 13;
+    Permutations n is finite;
+    then the carrier of Group_of_Perm n is finite by A1;
+    then Group_of_Perm n is finite;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{theorem}
+The symmetric group of zero element $\SymmetricGroup{0}$ is trivial.
+\end{theorem}
+
+<<Theorem: $\SymmetricGroup{0}$ is trivial>>=
+theorem Th2:
+  Group_of_Perm 0 is trivial
+proof
+  set G = Group_of_Perm 0;
+  A1: the carrier of G = Permutations 0 by MATRIX_1:def 13;
+  A2: Seg 0 = {};
+  then A3: for g being Permutation of {} holds g = id {};
+  A4: for g being Element of Permutations 0 holds g = id {}
+  proof
+    let g be Element of Permutations 0;
+    g is Permutation of {} by A2,MATRIX_1:def 12;
+    hence g = id {} by A3;
+  end;
+  for g being object holds g in Permutations 0 iff g in {(id {})}
+  proof
+    let g be object;
+    thus g in Permutations 0 implies g in {(id {})}
+    proof
+      assume B1: g in Permutations 0;
+      then g = id {} by A4;
+      hence g in {(id {})} by TARSKI:def 1;
+    end;
+    thus g in {(id {})} implies g in Permutations 0
+    proof
+      assume B1: g in {(id {})};
+      then B2: g = id {} by TARSKI:def 1;
+      id (Seg 0) is Permutation of (Seg 0);
+      hence g in Permutations 0 by B2,MATRIX_1:def 12;
+    end;
+  end;
+  then Permutations 0 = {(id {})} by TARSKI:2;
+  then card (Permutations 0) = 1 by CARD_1:30;
+  then card G = 1 by A1;
+  hence thesis by GROUP_6:11;
+end;
+
+@ %def Th2
+
+\begin{theorem}
+The symmetric group of 1 element $\SymmetricGroup{1}$ is trivial.
+\end{theorem}
+
+<<Theorem: $\SymmetricGroup{1}$ is trivial>>=
+theorem Th3:
+  Group_of_Perm 1 is trivial
+proof
+  set G = Group_of_Perm 1;
+  A1: the carrier of G = Permutations 1 by MATRIX_1:def 13;
+  A2: Permutations 1 = {(idseq 1)} by MATRIX_1:10;
+  then card (Permutations 1) = 1 by CARD_1:30;
+  then card G = 1 by A1;
+  hence thesis by GROUP_6:11;
+end;
+@ %def Th3
+
+\begin{registration}
+The symmetric group of 0 or 1 elements is trivial.
+\end{registration}
+
+<<Register: [[Group_of_Perm 0,1]] are both [[trivial]]>>=
+registration
+  cluster Group_of_Perm 0 -> trivial;
+  correctness by Th2;
+  cluster Group_of_Perm 1 -> trivial;
+  correctness by Th3;
+end;
+@
+
+\begin{lemma}
+The collection of even elements of $\SymmetricGroup{n}$ is closed under
+multiplication.
+\end{lemma}
+
+<<Lemma: even elements of $\SymmetricGroup{n}$ closed under multiplication>>=
+Lm7:
+  for n being Nat
+  for g1,g2 being even Element of (Group_of_Perm n)
+  holds g1*g2 is even Element of (Group_of_Perm n)
+proof end;
+@
+
+\begin{lemma}
+The collection of even elements of $\SymmetricGroup{n}$ is closed under
+group inversion.
+\end{lemma}
+
+<<Lemma: even elements of $\SymmetricGroup{n}$ closed under inverse>>=
+Lm8:
+  for n being Nat
+  for g being even Element of (Group_of_Perm n)
+  holds g" is even Element of (Group_of_Perm n)
+proof end;
+@
+
+\begin{theorem}
+The collection of even elements of $\SymmetricGroup{n}$ forms a subgroup.
+\end{theorem}
+
+<<Theorem: even elements of $\SymmetricGroup{n}$ form subgroup>>=
+theorem Th31:
+  for n being Nat
+  for G being Group st G = Group_of_Perm n
+  for A being Subset of G st (for g being Element of G
+                              holds g is even Element of Group_of_Perm n
+                               iff g in A)
+  holds A <> {} &
+        (for g1, g2 being Element of G st g1 in A & g2 in A
+         holds g1 * g2 in A) &
+        (for g being Element of G st g in A holds g" in A)
+proof
+  let n be Nat;
+  let G be Group;
+  assume A0: G = Group_of_Perm n;
+  let A be Subset of G;
+  assume A1: for g being Element of G
+             holds g is even Element of Group_of_Perm n
+             iff g in A;
+  1_(Group_of_Perm n) is even by Lm6;
+  then
+  A3: 1_G in A by A0,A1;
+  hence A <> {} by MATRIX_1:16;
+
+  thus for g1, g2 being Element of G st g1 in A & g2 in A
+       holds g1 * g2 in A
+  proof
+    let g1, g2 be Element of G;
+    assume B1: g1 in A;
+    assume B2: g2 in A;
+    B3: g1 is even Element of Group_of_Perm(n) & g2 is even Element of
+    Group_of_Perm(n) by A1,B1,B2;
+    then g1*g2 is even Element of Group_of_Perm(n) by A0,Lm7;
+    hence g1 * g2 in A by A1;
+  end;
+
+  thus for g being Element of G st g in A holds g" in A
+  proof
+    let g be Element of G;
+    assume B1: g in A;
+    n = 0 or n >= 1;
+    then per cases;
+    suppose B2: n = 0;
+      then g = id_G;
+      hence thesis;
+    end;
+    suppose B3: n >= 1;
+      g is Element of Permutations n by B1;
+      then g is even by A1;
+      hence thesis by A1,B1,B3,MATRIX_7:28;
+    end;
+  end;
+end;
+
+@
+
+\begin{definition}
+Let $n\in\NN$. The \define{Alternating Group} of $n$ elements is the
+subgroup $\AltGroup{n}$ of $\SymmetricGroup{n}$ consisting of even elements.
+\end{definition}
+
+<<Definition: Alternating Group $\AltGroup{n}$>>=
+definition
+  let n be Nat;
+  func AlternatingGroup(n) -> strict Subgroup of Group_of_Perm n means :Def3:
+  for g being Element of Group_of_Perm n holds
+  g in it iff g is even;
+  existence by Th31,GROUP_2:52;
+  uniqueness;
+end;
+@
+
+\begin{voc}
+We need to register [[AlternatingGroup]] as a functor.
+\end{voc}
+
+<<DICT/GROUP-24.VOC>>=
+OAlternatingGroup
+@
