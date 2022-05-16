@@ -143,41 +143,44 @@ every prime divisor $p\divides|G|$ divides exactly one of $|H|$ or $\Index{G}{H}
 \end{theorem}
 
 <<Theorem: $H$ is a Hall $\pi$-subgroup iff $|H|$ is coprime to $\Index{G}{H}$>>=
+
 theorem
+  for G being finite Group
   for H being Subgroup of G
   st H is Pi-group
   holds H is_Hall_pi-subgroup_of_primes Pi iff
         (for p being prime Nat st p divides card G
-        holds (p divides index H & not p divides card H) or
-              (not p divides index H & p divides card H))
+        holds not (p divides index H & p divides card H))
 proof
   let G be finite Group;
   let H be Subgroup of G;
   assume A1: H is Pi-group;
   thus H is_Hall_pi-subgroup_of_primes Pi implies
        (for p being prime Nat st p divides card G
-        holds (p divides index H & not p divides card H) or
-              (not p divides index H & p divides card H))
+        holds not (p divides index H & p divides card H))
   proof
     assume B1: H is_Hall_pi-subgroup_of_primes Pi;
     let p be prime Nat;
     assume B2: p divides card G;
-    assume B3: not (p divides index H & not p divides card H);
-    thus not p divides index H;
-::>                          *4
-    thus p divides card H;
-::>                     *4
+    thus not (p divides index H & p divides card H) by B1,B2,PYTHTRIP:def 2;
   end;
   thus (for p being prime Nat st p divides card G
-        holds (p divides index H & not p divides card H) or
-              (not p divides index H & p divides card H)) implies
+        holds not (p divides index H & p divides card H)) implies
        H is_Hall_pi-subgroup_of_primes Pi
   proof
     assume B1: for p being prime Nat st p divides card G
-               holds (p divides index H & not p divides card H) or
-                     (not p divides index H & p divides card H);
-    index H,card H are_coprime;
-::>                          *4
+               holds not (p divides index H & p divides card H);
+    for p being prime Nat
+    holds not p divides index H or not p divides card H
+    proof
+      let p be prime Nat;
+      assume C1: p divides index H;
+      then p divides (index H)*(card H) by INT_2:2;
+      then p divides card G by GROUP_2:147;
+      then not (p divides index H & p divides card H) by B1;
+      hence not p divides card H by C1;
+    end;
+    then index H,card H are_coprime by PYTHTRIP:def 2;
     hence H is_Hall_pi-subgroup_of_primes Pi by A1,Def3;
   end;
 end;
