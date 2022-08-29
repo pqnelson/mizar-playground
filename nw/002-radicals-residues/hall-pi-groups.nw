@@ -39,6 +39,10 @@ literature, we find the results referred to by the following names:
 \end{itemize}
 
 <<Hall $\pi$-Groups>>=
+<<Theorem: existence of $\pi$-restricted prime factorization>>
+
+<<Definition: $\pi$-part of $n$>>
+
 <<Definition: predicate ``is Hall $\pi$-subgroup of primes [$\pi$]''>>
 
 <<Theorem: for any $G$ finite and $\pi(G)\subset\pi$, $G$ is a Hall $\pi$-subgroup of itself>>
@@ -55,12 +59,272 @@ literature, we find the results referred to by the following names:
 
 @
 
+\begin{theorem}
+For any nonzero number $n$ and set of primes $\pi$, there exists a
+sequence of exponents $\{A_{p}\}_{p\in\pi}$ such that if
+$n=\prod_{p}p^{e_{p}}$ is the prime factorization, then $A_{p}=e_{p}$
+when $p\in\pi$ and $A_{p}=0$ if $p\notin\pi$.
+\end{theorem}
+
+<<Theorem: existence of $\pi$-restricted prime factorization>>=
+theorem Th32:
+  for n being non zero Nat
+  ex A being bag of SetPrimes
+  st (for p being object st p in Pi /\ support(ppf n) holds A.p = (ppf n).p) &
+  (for p being object st not (p in Pi /\ support(ppf n)) holds A.p = 0);
+@ %def Th32
+
+\begin{definition}
+Let $\pi$ be a set of primes, $n\in\NN$. We define the
+\define{$\pi$-part} of $n$ to be the number
+\begin{equation}
+n_{\pi} = \prod_{p\in\pi}p^{e_{p}}
+\end{equation}
+where $n = \prod_{p}p^{e_{p}}$ is the prime factorization of $n$. If
+$n=0$, we define $0_{\pi}=0$ by convention.
+\end{definition}
+
+\begin{todo}
+Refactor these proofs (of existence and uniqueness).
+\end{todo}
+
+<<Definition: $\pi$-part of $n$>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let n be Nat;
+  func Pi -part n -> Nat means
+  :Def4:
+  it = 0 if n = 0
+  otherwise ex n1 being non zero Nat st n1 = n & ex A being bag of SetPrimes
+  st support A = Pi /\ support (ppf n1) &
+  (for p being Prime st p in support A holds A.p = (ppf n1).p) &
+  it = Product A;
+  existence
+  proof
+    thus n=0 implies ex k being Nat st k=0;
+    assume n <> 0;
+    then reconsider n as non zero Nat;
+    consider A being bag of SetPrimes such that
+    A1: for p being object st p in Pi /\ support(ppf n) holds A.p = (ppf n).p and
+    A2: for p being object st not (p in Pi /\ support(ppf n)) holds A.p = 0
+    by Th32;
+
+    A3: for p being object holds p in Pi /\ support(ppf n) iff A.p <> 0
+    proof
+      let p be object;
+      thus p in Pi /\ support(ppf n) implies A.p <> 0
+      proof
+        assume B1: p in Pi /\ support(ppf n);
+        then B2: p in support(ppf n) by XBOOLE_0:def 4;
+        then p in support(pfexp n) by NAT_3:def 9;
+        then B3: p is Prime by TARSKI:1,NAT_3:34;
+        (ppf n).p <> 0 by B2,PRE_POLY:def 7;
+        hence A.p <> 0 by B1,B2,B3,A1;
+      end;
+      B1: (not p in Pi /\ support(ppf n) implies A.p = 0) implies
+      (not A.p = 0 implies p in Pi /\ support(ppf n));
+      not p in Pi /\ support(ppf n) implies A.p = 0 by A2;
+      hence thesis by B1;
+    end;
+
+    A4: for x being object holds x in support A iff x in Pi /\ support(ppf n)
+    by A3,PRE_POLY:def 7;
+    then
+    A5: support A = Pi /\ support(ppf n) by TARSKI:2;
+    A6: for p being Prime st p in support A holds A.p = (ppf n).p
+    proof
+      let p be Prime;
+      assume B1: p in support A;
+      reconsider x=p as object;
+      B2: x in support A by B1;
+      then x in Pi /\ support(ppf n) by A4;
+      then A.x = (ppf n).x by A1;
+      hence A.p = (ppf n).p;
+    end;
+
+    take k = Product A;
+    thus thesis by A5,A6;
+  end;
+  uniqueness
+  proof
+    defpred P[Nat] means ex n1 being non zero Nat st n=n1 &
+    ex A being bag of SetPrimes
+    st support A = Pi /\ support (ppf n1) &
+    (for p being Prime st p in support A holds A.p = (ppf n1).p) &
+    $1 = Product A;
+
+    let k1,k2 be Nat;
+    thus n=0 & k1=0 & k2=0 implies k1=k2;
+
+    assume n <> 0;
+    then reconsider n as non zero Nat;
+    
+    assume A1: P[k1];
+    assume A2: P[k2];
+    consider A1 being bag of SetPrimes such that
+    A3: support A1 = Pi /\ support(ppf n) and
+    A4: for p being Prime st p in support A1 holds A1.p = (ppf n).p and
+    A5: k1 = Product A1
+    by A1;
+
+    consider A2 being bag of SetPrimes such that
+    A6: support A2 = Pi /\ support(ppf n) and
+    A7: for p being Prime st p in support A2 holds A2.p = (ppf n).p and
+    A8: k2 = Product A2
+    by A2;
+
+    for x being object st x in SetPrimes
+    holds A1.x = A2.x
+    proof
+      let x be object;
+      assume B1: x in SetPrimes;
+      then reconsider x as Prime by NEWTON:def 6;
+      x in Pi /\ support (ppf n) or not x in Pi /\ support (ppf n) by B1;
+      then per cases;
+      suppose B2: x in Pi /\ support (ppf n);
+        then C1: x in support A1 by A3;
+        C2: x in support A2 by A6,B2;
+        A2.x = (ppf n).x by A7,C2
+            .= A1.x by A4,C1;
+        hence thesis;
+      end;
+      suppose B3: not x in Pi /\ support (ppf n);
+        then C1: not x in support A1 by A3;
+        not x in support A2 by B3,A6;
+        then A2.x = 0 by PRE_POLY:def 7
+                 .= A1.x by C1,PRE_POLY:def 7;
+        hence thesis;
+      end;
+    end;
+
+    then A1 = A2 by PBOOLE:3;
+    hence k1 = k2 by A5,A8;
+  end;
+  consistency;
+end;
+@ 
+
+\begin{theorem}
+The $\pi$-part of a non-zero $n\in\NN$ is given by a sequence of
+non-zero exponents $\{A_{p}=p^{e_{p}}\mid e_{p}\neq0\}_{p\in\pi}$ from the
+prime-factorization of $n=\prod_{p}p^{e_{p}}$.
+\end{theorem}
+
+<<Theorem: $n\neq 0$ has a sequence of $\pi$-exponents>>=
+theorem Th33:
+  for n being non zero Nat
+  ex A being bag of SetPrimes
+  st support A = Pi /\ support (ppf n) &
+  (for p being Prime st p in support A holds A.p = (ppf n).p) &
+  Pi-part n = Product A
+proof
+  let n be non zero Nat;
+  A1: not n = 0;
+  not n = 0 implies ex n1 being non zero Nat st n1 = n & ex A being bag
+  of SetPrimes st support A = Pi /\ support (ppf n1) &
+  (for p being Prime st p in support A holds A.p = (ppf n1).p) &
+  Pi-part n = Product A by Def4;
+  hence thesis by A1;
+end;
+@ %def Th33
+
+\begin{theorem}
+Let $n\in\NN$ and $\pi$ be a set of primes. If no prime $p\in\pi$
+divides $n$ (i.e., $n$ is a $\pi'$-number),
+then $n_{\pi} = 1$.
+\end{theorem}
+
+\begin{thm-remark}
+Arguably this follows from Theorem~\mml[Th57]{nat3}, or similar
+reasoning along the lines of the proof for that theorem.
+\end{thm-remark}
+
+<<Theorem: $\pi^{\prime}$-numbers have trivial $\pi$-parts>>=
+theorem Th34:
+  for n being non zero Nat
+  st (for p being Prime st p in Pi holds not p divides n)
+  holds Pi-part n = 1
+@ %def Th34
+
+\begin{registration}
+The $\pi$-part of a non-zero number is positive.
+\end{registration}
+
+\begin{remark}
+  The obligation we want to establish is
+  ``\lstinline{for k being Nat} \lstinline{st k = Pi-part n}
+  \lstinline{holds k is pos}''.
+\end{remark}
+
+<<Register: $n\neq0$ has $n_{\pi}\gt0$>>=
+registration
+  let n be non zero Nat;
+  cluster Pi-part n -> pos Nat;
+  coherence
+  <<Proof: coherence that $n\neq0$ has $n_{\pi}\gt0$>>
+end;
+@
+
+\begin{proof}[Proof sketch]
+Let $k\in\NN$ be such that $k = n_{\pi}$. We will show $k>0$.
+\end{proof}
+
+<<Proof: coherence that $n\neq0$ has $n_{\pi}\gt0$>>=
+proof
+  let k be Nat;
+  assume A1: k = Pi-part n;
+  thus k is pos;
+end;
+@ 
+
+\begin{theorem}
+For every nonzero $n\in\NN$ and set of primes $\pi$,
+we necessarily have $n_{\pi}\divides n$.
+\end{theorem}
+
+<<Theorem: $\pi$-part of a number is also a divisor>>=
+theorem Th35:
+  for n being non zero Nat
+  holds Pi-part n divides n
+@ %def Th35
+
+\begin{theorem}
+For every nonzero $n\in\NN$ and set of primes $\pi$, we have
+$n$ is the product of its $\pi$-part and $\pi'$-part
+$n = n_{\pi}\cdot n_{\pi'}$.
+%% their quotient $n/n_{\pi}$ is a natural number and moreover it is a
+%% $\pi'$-number. Its $\pi$-part is unity $(n/n_{\pi})_{\pi}=1$.
+\end{theorem}
+
+<<Theorem: $n=n_{\pi}\cdot n_{\pi^{\prime}}$>>=
+theorem Th36:
+  for n being non zero Nat
+  holds n = (Pi`-part n)*(Pi-part n)
+@ %def Th36
+
+\begin{corollary}
+The $\pi'$-part of a number is coprime to the $\pi$-part of the number.
+More explicitly, for any $n\in\NN$ and set of primes $\pi$, we have
+$n_{\pi}$ be coprime to $n_{\pi'}$.
+\end{corollary}
+
+<<Corollary: $n_{\pi}$, $n_{\pi^{\prime}}$ are coprime>>=
+theorem Th37:
+  for n being non zero Nat
+  holds (Pi`-part n), (Pi-part n) are_coprime
+@ %def Th37
+
+\begin{theorem}
+  For every $n\in\NN$ and set of primes $\pi_{1}$, $\pi_{2}$, we have
+  $(n_{\pi_{1}})_{\pi_{2}} = n_{\pi_{1}\cap\pi_{2}}$.
+\end{theorem}
+
 \begin{definition}
 Let $G$ be a finite group, $\pi$ a set of primes, and $H\subgroup G$
 some subgroup. We call $H$ a \define{Hall $\pi$-Subgroup} if its index
-$\Index{G}{H}$ is coprime to its order $|H|$:
+$\Index{G}{H}$ is coprime to every prime $p\in\pi$:
 \begin{equation}
-  \gcd(|H|, \Index{G}{H})=1.
+  \forall p\in\pi, \gcd(p, \Index{G}{H})=1.
 \end{equation}
 \end{definition}
 
@@ -79,7 +343,9 @@ definition
   pred IT is_Hall_pi-subgroup_of_primes Pi means
   :Def3:
   IT is Pi-group &
-  card IT, index IT are_coprime;
+  for p being prime Nat
+  st p in Pi
+  holds p, index IT are_coprime;
 end;
 @ %def is_Hall_pi-subgroup_of_primes
 
@@ -91,6 +357,20 @@ vocabulary.
 <<DICT/GROUP-23.VOC>>=
 Ris_Hall_pi-subgroup_of_primes
 @
+
+\begin{theorem}[{\cite[pg.71]{aschbacher2000finite}}]
+Let $\pi$ be a set of primes, $G$ a finite group.
+Then $H\subgroup G$ is a Hall $\pi$-subgroup if and only if the order of
+$H$ is $|G|_{\pi}$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G$ is Hall subgroup iff $|H|=|G|_{\pi}$>>=
+theorem
+  for G being finite Group
+  for H being Subgroup of G
+  holds H is_Hall_pi-subgroup_of_primes Pi iff
+  card H = Product ((prime_factorization card G)|Pi);
+@ 
 
 \begin{theorem}
 Let $\pi$ be a set of primes. Let $G$ be a finite group,
