@@ -1,4 +1,78 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2022-09-02
+
+I realize I need to define pi-separable groups before I can prove Hall's
+theorem (although I suppose I could have just used solvable groups).
+
+- [ ] $\pi$-part of a number
+- [ ] $\pi$-number
+- [ ] $\pi$-element of a group
+- [ ] $\pi$-group
+- [ ] $\pi$-separable group
+- [ ] $\pi$ Series 
+  - The literature has a confusion between upper and lower $\pi$-series,
+    it may be preferable to just refer to a $\pi$ series which starts as
+    $1\to O_{\pi}(G)\to\dots$.
+- [ ] $\pi$-core and $p$-core
+  - [ ] [Brauer core](https://groupprops.subwiki.org/wiki/Brauer_core) = $O_{\infty}(G)$ is the largest normal solvable subgroup
+- [ ] $\pi$-residual and $p$-residual
+
+Relevant references include:
+- Aschbacher, _Finite Group Theory_ §18
+- Gorenstein, _Finite Groups_, ch 6
+- Kurzweill and Stellmacher, _Theory of Finite Groups_, Ch. 6 §4
+- I. Martin Isaacs, _Finite Group Theory, Chapter 3 §C
+
+## Differential Geometry
+
+It dawns on me I will need to formalize differential geometry before I
+can formalize Lie groups (which I almost certainly need when formalizing
+finite groups of Lie type).
+
+There have been, I believe, three Mizar articles written about
+**topological** manifolds. None have been written about differential
+manifolds. The convention used in the topological manifolds follows the
+Bourbaki convention for defining a chart on $M$ as a pair $U\subset M$ and
+$\varphi\colon U\subset M\to\mathbb{R}^{n}$ injective.
+
+My first inclination is to define a chart, then an atlas, an finally a
+maximal atlas; we have a manifold be a structure consisting of a carrier
+and an atlas. But I don't think this is necessary, per se. There may be
+a "hack" around this, thanks to the way `the` encodes the global choice
+operator and the uniqueness of the maximal atlas; this would allow us to
+do this like write `the maximal atlas of [manifold]` _as if_ `maximal atlas`
+were a field in a structure. This requires a new mode `Atlas of M`, and
+a new attribute `maximal` for `Atlas of M`.
+
+The basic outline would be:
+- Define `Chart of M`
+- Define `are_compatible` for two charts of M
+  - Prove `are_compatible` is an equivalence relation (reflexive,
+    transitive, symmetric)
+- Define `Atlas of M`
+- Define `are_equivalent` for two atlases of M
+- Define `Subatlas of A` for an atlas A of M. (Perhaps not needed?)
+- Define an attribute `maximal` for an Atlas of M
+- Prove any two maximal atlases of M are equivalent
+
+OH WAIT! For some manifolds, there are multiple inequivalent maximal
+atlases. This approach **cannot work.**
+
+We **must** define a `ManifoldStr` as consisting of a carrier and a
+maximal atlas over the carrier. We can then define topological
+properties on a `ManifoldStr`, which permits us to define a `Manifold`
+as a second-countable paracompact Hausdorff non-empty `ManifoldStr`.
+
+### Differentiable Structure is not unique
+
+I must reiterate again, given some set of points which has at least one
+maximal atlas, there may be multiple maximal atlases.
+
+For example, the 7-sphere has multiple distinct smooth structures (this
+is the so-called [exotic sphere](https://en.wikipedia.org/wiki/Exotic_sphere)).
+Or $\mathbb{R}^{4}$ has uncountably many distinct smooth structures
+([exotic $\mathbb{R}^{4}$](https://en.wikipedia.org/wiki/Exotic_R4)).
+
 # 2022-05-16T18:17:22
 
 I have been slowly formalizing Hall subgroups. It seems like Hall's
