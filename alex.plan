@@ -1,4 +1,63 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2022-12-20T16:02:05
+I fixed the problem on my Windows machine. It turns out that mizar-mode
+uses `get-line`, and Emacs 28 completely rewrote the implementation of
+that function. For Windows machines, it returns a completely different
+value. 
+
+# 2022-12-19T06:05:41
+I realize that direct products of groups are under-developed, and have
+sought to redress this in my next Mizar article. Of course, character
+theory is the "North Star" guiding my efforts. But I need to prove some
+results with regard to the direct product of groups.
+
+Somehow, I borked the Emacs Mizar-mode on my Windows machine, and Mizar
+won't work on my Raspberry Pi, which is hindering my efforts at the
+moment. But proving most of the results found in Kurosh's _Theory of Groups_
+(vol. I) regarding product groups, as well as the universal property of
+products, will be my next milestone.
+
+# 2022-09-28
+I have been mulling it over, and the more it seems like the important
+thing to get to is character theory. Then I can start doing things like
+verifying the ATLAS of finite simple groups, as well as proving other
+stuff. Well, I should examine the contents of the ATLAS of finite simple
+groups. It seems I should tackle:
+
+- [ ] Schur multipliers (which is the second homology group
+      $H_{2}(G,\mathbb{Z})$ for the finite group $G$)
+- [ ] Character theory
+- [X] Outer automorphism group (this is mostly done in `autgroup.miz`,
+      all I really need to define is `OutAutGroup G = (AutGroup
+      G)./.(InnAutGroup G)` and we're done).
+
+# 2022-09-09
+
+Theorems `MOEBIUS1:17,19` state:
+
+```mizar
+theorem Th17:
+  for m, n being non zero Nat st (for p being Prime
+  holds p |-count m <= p |-count n) holds support ppf m c= support ppf n;
+
+theorem Th19:
+  for m, n being non zero Nat st (for p being Prime
+  holds p |-count m <= p |-count n) holds m divides n;
+```
+
+I want to prove a theorem of the form:
+
+```mizar
+for n being non zero Nat
+holds (for p being Prime st p divides n holds p in Pi)
+      iff n is Pi-number
+```
+
+We can take advantage of [`NAT_3:30`](http://mizar.org/version/current/html/nat_3.html#T30)
+and [`NAT_3:22`](http://mizar.org/version/current/html/nat_3.html#T22)
+to establish `p |-count p = 1` and this is less than or equal to 
+`p |- count n`, or something.
+
 # 2022-09-02
 
 I realize I need to define pi-separable groups before I can prove Hall's
