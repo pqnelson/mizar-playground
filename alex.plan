@@ -1,4 +1,47 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2022-12-21
+If we have a product group
+
+$$ G = \prod_{i\in I}\mathcal{F}_{i} $$
+
+then Mizar defines (in
+[group12](http://mizar.org/version/current/html/group_12.html)) the
+`ProjGroup (F, i)`
+as the subgroup of $G$ isomorphic to $\mathcal{F}_{i}$. It is proven to
+be a normal subgroup of $G$.
+
+...it dawns on me, the trivial group has not been proven to be terminal
+(nor initial, for that matter). The heavy lifting is done in 
+[group6:def 7](http://mizar.org/version/current/html/group_6.html#K7).
+The theorem being:
+
+```mizar
+:: existence and uniqueness of morphism from any group to trivial group
+theorem
+  for G being Group
+  for H being the trivial Group
+  ex h being Homomorphism of G,H 
+  st (for f being Homomorphism of G,H holds h=f);
+proof
+  let G be Group, H be the trivial Group;
+  take 1:(G,H);
+  thus thesis by GROUP_6:def 7;
+end;
+```
+
+I think the projection morphisms for the product group could be defined
+as
+
+```mizar
+:: existence theorem
+Theorem
+  for I being non empty set
+  for F being Group-Family of I
+  for G being Group st G = F.i
+  ex p being Homomorphism of (product F), G
+  st (for h being Element of product F, p.h = h.i);
+```
+
 # 2022-12-20T16:02:05
 I fixed the problem on my Windows machine. It turns out that mizar-mode
 uses `get-line`, and Emacs 28 completely rewrote the implementation of
