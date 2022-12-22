@@ -50,8 +50,130 @@ end;
 \end{mizar}
 
 We need to establish a ``\lstinline{multMagma-Family of I}'' is
-``\lstinline{Group-like associative non empty}''. There is no notion of a
-``\lstinline{Group-Family of I}'', though I think it might be worthwhile.
+``\lstinline{Group-like associative non empty}''. The is a notion of a
+``\lstinline{Group-Family of I}'' defined in~\mml{group19}:
+
+\begin{mizar}
+definition :: GROUP_19
+  let I be set ;
+  mode Group-Family of I is Group-like associative multMagma-Family of I;
+end;
+
+theorem Th1: :: GROUP_19:1
+  for I being set
+  for F being Group-Family of I
+  for i being object st i in I holds
+  F . i is Group
+proof end;
+
+definition
+  let I be non empty set ;
+  let F be Group-Family of I;
+  let i be Element of I;
+  :: original: .
+  redefine func F . i -> Group;
+  coherence by Th1;
+end; 
+\end{mizar}
+
+The claim that, if $G=\prod_{i\in I} F_{i}$ is a product group, then
+$F_{i_{1}}$ is isomorphic to a subgroup of $G$, namely, (assuming $I$ is ordered),
+\begin{equation}
+F_{i_{1}}\cong\left(\prod_{i<i_{1}}\trivialSubgroup\right)\times F_{i_{1}}\times\left(\prod_{i>i_{1}}\trivialSubgroup\right).
+\end{equation}
+This subgroup is defined in Definition~\mml[def2]{group12}:
+\begin{mizar}
+definition
+  let I be non empty set ;
+  let F be Group-like associative multMagma-Family of I;
+  let i be Element of I;
+  func ProjSet (F,i) -> Subset of (product F) means
+  :: GROUP_12:def 1
+  for x being set holds
+  (x in it iff
+   ex g being Element of (F.i) st x = (1_(product F)) +* (i,g));
+  existence proof end;
+  uniqueness proof end;
+end;
+definition
+  let I be non empty set ;
+  let F be Group-like associative multMagma-Family of I;
+  let i be Element of I;
+  func ProjGroup (F,i) -> strict Subgroup of product F means
+  :: GROUP_12:def 2
+  the carrier of it = ProjSet (F,i);
+  existence proof end;
+  uniqueness by GROUP_2:59;
+end;
+\end{mizar}
+The isomorphism is defined as ``\lstinline{1ProdHom (F,i)}'' in \mml[def3]{group12}.
+
+The proof that $F_{i_{1}}$ is, in fact, isomorphic to a \emph{normal}
+subgroup of $G$ is handled in a cluster registration in \mml{group12}.
+
+The notion of a ``product map'' is defined in \mml{group19} as:
+\begin{mizar}
+definition
+  let F, G be non-empty non empty Function;
+  let h be non empty Function;
+  assume A1: (dom F = dom G &
+              dom G = dom h &
+              (for i being object
+               st i in dom h
+               holds h.i is Function of (F.i),(G.i)));
+  func ProductMap (F,G,h) -> Function of (product F),(product G) means
+  :: GROUP_19:def 5
+  for x being Element of product F
+  for i being object st i in dom h holds
+  ex hi being Function of (F.i),(G.i) st
+  (hi = h.i & (it.x).i = hi.(x.i));
+  existence proof end;
+  uniqueness proof end;
+end;
+\end{mizar}
+In Definition~\mml[def6]{group19}, the notion of a product map is
+defined for product groups as a group morphism.
+
+The projection mapping is found in \mml{card3}:
+\begin{mizar}
+definition
+  let x be object;
+  let X be set;
+  defpred S2[object , object] means ex g being Function
+                                    st ($1 = g & $2 = g.x);
+  func pi (X,x) -> set means
+  :: CARD_3:def 6
+  for y being object
+  holds (y in it iff
+         ex f being Function st (f in X & y = f.x));
+existence proof end;
+uniqueness proof end;
+end;
+
+theorem :: CARD_3:12
+  for x being object
+  for f being Function
+  st x in dom f & product f <> {}
+  holds pi ((product f),x) = f.x
+proof end;
+\end{mizar}
+It has not been shown, so far as I can tell, that ``\lstinline{pi (product F, i)}''
+is a group.
+
+The result ``If $F^{(1)}_{i}$ is a subgroup of $F^{(2)}_{i}$ for each
+$i\in I$, then $\prod_{i\in I}F^{(1)}_{i}$ is a subgroup of $\prod_{i\in I}F^{(2)}_{i}$''
+may be found~\mml{group21}:
+
+\begin{mizar}
+theorem Th20: :: GROUP_21:23
+  for I being non empty set
+  for F1, F2 being Group-Family of I
+  st (for i being Element of I holds F1.i is Subgroup of F2.i)
+  holds product F1 is Subgroup of product F2
+proof end;
+\end{mizar}
+
+It also looks like a number of useful results has been proven in~\mml{group12}.
 
 \begin{ddanger}
 Product groups are under-developed in Mizar, in my opinion. The

@@ -1,0 +1,69 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+We will prove the finite cyclic group of prime order is simple. The goal
+is to prove any group of prime order is simple.
+
+The finite cyclic group is denoted [[INT.Group(n)]] and defined in
+[[GR_CY_1]].
+
+The [[simple]] attribute is defined in [[GROUP_9]].
+
+Thus we need to include [[GROUP_9, GR_CY_1]] to notations, constructors,
+notations, registrations, and theorems.
+
+
+<<Number vocabularies>>=
+NAT_1, INT_1, INT_2, ORDINAL2, XXREAL_0, GLIB_000, XCMPLX_0,
+@
+
+<<Number constructors>>=
+ORDINAL1, ORDINAL2, XCMPLX_0, NAT_1, INT_2,
+@
+
+<<Number registrations>>=
+INT_1, INT_2,
+@
+
+<<Requirements>>=
+requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
+@
+
+<<Theorem: Groups of order $p$ are simple>>=
+theorem
+  for p being prime Nat
+  for G being finite Group
+  st card G = p
+  holds G is simple;
+
+@
+
+<<Theorem: $\cyclicGroup{p}$ is simple>>=
+theorem
+  for p being prime Nat
+  holds INT.Group(p) is simple
+
+@
+
+Recall the definition of being simple:
+
+\begin{mizar}
+definition
+  let IT be Group;
+  attr IT is simple means
+  :: GROUP_9:def 12
+  IT is not trivial & not ex H being strict
+  normal Subgroup of IT st H <> (Omega).IT & H <> (1).IT;
+end;
+\end{mizar}
+
+We also have by Theorem [[GROUP_3:116]] every subgroup of an Abelian
+group is normal:
+
+\begin{mizar}
+theorem :: GROUP_3:116
+  for H being strict Subgroup of G holds G is commutative Group implies
+  H is normal
+by Th73;
+\end{mizar}
+
+Suffices to show that a finite Abelian group is simple if its only
+subgroups are trivial.

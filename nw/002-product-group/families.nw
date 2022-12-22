@@ -1,0 +1,165 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Indexed Families of Groups}
+
+<<Indexed families of Groups>>=
+<<Theorem: $\pi_{i}(U(\prod\mathcal{F}))=U(\mathcal{F}_{i})$>>
+
+<<Theorem: for many-sorted sets $\mathcal{F}$ and $i\in I$, $\pi(\prod\mathatcal{F},i) = \mathcal{F}_{i}$>>
+
+@ 
+
+
+\begin{theorem}
+Let $\mathcal{F}_{i}$ be an $I$-indexed family of groups. Then
+$\pi_{i}(\prod\mathcal{F})=\mathcal{F}_{i}$ is a group.
+\end{theorem}
+
+<<Theorem: $\pi_{i}(U(\prod\mathcal{F}))=U(\mathcal{F}_{i})$>>=
+theorem Th1:
+  for I being non empty set
+  for F being Group-Family of I
+  for i being Element of I
+  holds pi (the carrier of (product F), i) = the carrier of (F.i)
+proof
+  let I be non empty set;
+  let F be Group-Family of I;
+  let i be Element of I;
+  i in I by SUBSET_1:def 1;
+  then i in dom F by PARTFUN1:def 2;
+  then A1: i in dom (Carrier F) by GROUP_7:def 2, PRALG_1:def 14;
+  the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
+  the carrier of (product F) <> {};
+  then A2: product (Carrier F) <> {} by GROUP_7:def 2;
+  then pi (product (Carrier F), i) = (Carrier F).i
+  by A1, CARD_3:12;
+  then A3: pi (the carrier of (product F), i) = (Carrier F).i
+  by GROUP_7:def 2;
+  (Carrier F).i = the carrier of (F.i)
+  proof
+    i in I by SUBSET_1:def 1;
+    then consider R being 1-sorted such that
+    B1: R = F.i and
+    B2: (Carrier F).i = the carrier of R
+    by PRALG_1:def 15;
+    (Carrier F).i = the carrier of R by B2
+                 .= the carrier of (F.i) by B1;
+    hence thesis;
+  end;
+  hence pi (the carrier of (product F), i) = the carrier of (F.i)
+  by A3;
+end;
+@ 
+
+<<Theorem: if $\mathcal{F}$ is an $I$-indexed family and $i\in I$, $\pi(\prod\mathcal{F},i)=\mathcal{F}_{i}$>>=
+theorem Th3: :: CARD_3:12
+  for x being object
+  for f being Function st x in dom f & product f is non empty holds
+  pi ((product f), x) = f.x
+proof
+  let x be object;
+  let f be Function;
+  assume A1: x in dom f;
+  assume A2: product f is non empty;
+  then product f <> {} by XBOOLE_0:def 2;
+  hence pi ((product f), x) = f.x by A1, CARD_3:12;
+end;
+
+@
+
+<<Theorem: for many-sorted sets $\mathcal{F}$ and $i\in I$, $\pi(\prod\mathatcal{F},i) = \mathcal{F}_{i}$>>=
+theorem Th4:
+  for I being non empty set
+  for i being Element of I
+  for F being ManySortedSet of I
+  st product F is non empty
+  holds pi ((product F), i) = F.i
+proof
+  let I be non empty set;
+  let i be Element of I;
+  let F be ManySortedSet of I;
+  assume A1: product F is non empty;
+  then A2: product F <> {} by XBOOLE_0:def 2;
+  A3: F is Function;
+  i is Element of I;
+  then i in I by SUBSET_1:def 1;
+  then i in dom F by PARTFUN1:def 2;
+  hence pi ((product F), i) = F.i by A2, A3, CARD_3:12;
+end;
+@ 
+
+<<Theorem: if $\mathcal{F}$ is a Group-family of $I$, then $\pi(\prod\mathcal{F},i)=\mathcal{F}_{i}$>>=
+theorem
+  for I being non empty set
+  for F being Group-Family of I
+  for i being Element of I
+  holds pi (product F, i) is Group
+proof
+  let I be non empty set;
+  let F be Group-Family of I;
+  let i be Element of I;
+  thus pi (product F, i) is Group
+end;
+@ 
+
+
+%% theorem
+%%   for I being non empty set
+%%   for F being Group-Family of I
+%%   for i being Element of I
+%%   holds pi (product F, i) is Group
+%% proof
+%%   let I be non empty set;
+%%   let F be Group-Family of I;
+%%   let i be Element of I;
+%%   A1: i in I by SUBSET_1:def 1;
+%%   then A2: i in dom F by PARTFUN1:def 2;
+%%   A3: product F is non empty;
+%%   A4: F is Function;
+%%   then reconsider FF=F as Function;
+%%   i is object;
+%%   then reconsider x=i as object;
+%%   A5: x in dom FF by A2;
+%%   F = FF;
+%%   then for x being object st x in dom F holds F.x = FF.x by FUNCT_1:def 11;
+%%   A66: product F is set & product FF is set;
+%% ::>                                       *4
+%%   for g being object
+%%   holds g in product F iff g in product FF; :: using CARD_3:9
+%% ::>                                      *4,4
+%%   then product F = product FF by A66, TARSKI:2;
+%% ::>                            *4
+%%   then A6: product FF is non empty by A3;
+%% ::>                                 *4
+%%   x is object & FF is Function & x in dom F & product FF is non empty
+%%   by A5,A6;
+%%   then pi ((product FF), x) = FF.x by Th3;
+
+
+%%   then for y being object holds
+%%   y in pi (product F, i) iff
+%%   (ex f being Function st (f in (product F) & y = f.i)) by CARD_3:def 6;
+%% ::>                                                      *4,4
+
+%%   A2: the carrier of product F = {} implies contradiction
+%%   proof
+%%     ::assume B1: product F = {};
+%%     assume B1: the carrier of (product F) = {};
+%%     then the carrier of (product F) is empty;
+%%     then B2: product F is empty by STRUCT_0:def 1;
+%%     product F is non empty;
+%%     hence contradiction by B2;
+%%   end;
+
+%%   product F is non empty;
+%%   then not (product F is empty);
+%%   :: the carrier of (product F) <> {};
+%%   then product F <> {} by A2, XBOOLE_0:def 2;
+%% ::>                     *4
+%%   then A2: pi (product F, i) = F.i by CARD_3:12;
+%% ::>                                 *4
+%%   i in I by SUBSET_1:def 1;
+%%   then F.i is Group by GROUP_19:1;
+%%   hence pi (product F, i) is Group by A1;
+%% ::>                                 *4,4,4,4
+%% end;
