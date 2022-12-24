@@ -1,0 +1,344 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Universal Properties}
+
+<<Results Concerning Universal Properties>>=
+begin
+<<Theorem: uniqueness of morphisms to trivial group>>
+
+<<Theorem: Trivial Group is the Terminal Object>>
+
+<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>
+
+<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>
+
+<<Redefinition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>
+
+<<Definition: projection morphism>>
+
+<<Theorem: the projection morphism is surjective>>
+
+<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
+@
+
+\begin{theorem}
+For any group $G$, if $f_{1},f_{2}\colon G\to\trivialGroup$, then $f_{1}=f_{2}$.
+\end{theorem}
+
+<<Theorem: uniqueness of morphisms to trivial group>>=
+:: Uniqueness of morphisms to the trivial group
+theorem Th1:
+  for G being Group
+  for H being trivial Group
+  for f1,f2 being Homomorphism of G,H
+  holds f1=f2
+proof
+  let G be Group;
+  let H be trivial Group;
+  let f1,f2 be Homomorphism of G,H;
+  A1: the carrier of H = {1_H}
+  <<Proof: the carrier of the trivial group is a singleton>>;
+
+  for g being object st g in the carrier of G holds f1.g = f2.g
+  proof
+    let g be object;
+    assume B1: g in the carrier of G;
+    f1.g in H by B1,FUNCT_2:5;
+    then B2: f1.g = 1_H by A1, TARSKI:def 1;
+    f2.g in H by B1,FUNCT_2:5;
+    then f2.g = 1_H by A1, TARSKI:def 1;
+    hence f1.g = f2.g by B2;
+  end;
+  hence f1=f2;
+end;
+@ %def Th1
+
+<<Proof: the carrier of the trivial group is a singleton>>=
+proof
+  H is trivial;
+  then consider x being object such that
+  B1: the carrier of H = {x};
+  thus thesis by B1, TARSKI:def 1;
+end
+@
+
+\begin{theorem}
+For any group $G$, there is exactly one morphism $G\to\trivialGroup$.
+\end{theorem}
+
+<<Theorem: Trivial Group is the Terminal Object>>=
+theorem Th2:
+  for G being Group
+  for H being trivial Group
+  ex h being Homomorphism of G,H 
+  st (for f being Homomorphism of G,H holds h=f)
+proof
+  let G be Group;
+  let H be trivial Group;
+  take h = 1:(G,H);
+  thus thesis by Th1;
+end;
+@
+
+\begin{theorem}
+Explicitly, if $f\colon G\to\trivialGroup$ is a group morphism and $g\in G$,
+then $f(g)=1$ is the identity element.
+\end{theorem}
+
+<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>=
+theorem
+  for G being Group
+  for H being trivial Group
+  for f being Homomorphism of G,H
+  for g being Element of G
+  holds f.g = 1_H
+proof
+  let G be Group;
+  let H be trivial Group;
+  let f be Homomorphism of G,H;
+  let g be Element of G;
+  1:(G,H) is Homomorphism of G,H;
+  then f = 1:(G,H) by Th1;
+  hence f.g = 1_H by Th1,FUNCOP_1:7;
+end;
+@ 
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups.
+If $g\in\prod\mathcal{F}$, then $g_{i}$ is an element of $\mathcal{F}_{i}$.
+\end{theorem}
+
+<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>=
+theorem Th4:
+  for I being non empty set
+  for F being Group-Family of I
+  for i being Element of I
+  for g being Element of product F
+  holds g.i is Element of F.i
+proof
+  let I be non empty set;
+  let F be Group-Family of I;
+  let i be Element of I;
+  let g be Element of product F;
+  g is Function & g in product F;
+  then g.i in F.i by GROUP_19:5;
+  hence thesis;
+end;
+@ %def Th4
+
+\begin{definition*}
+We redefine the function application for elements of the product group,
+so if $g\in\prod\mathcal{F}$, then we treat $g_{i}$ as an Element of $\mathcal{F}_{i}$.
+\end{definition*}
+
+<<Redefinition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let g be Element of product F;
+  let i be Element of I;
+  redefine func g.i -> Element of F.i;
+  correctness by Th4;
+end;
+@ 
+
+\begin{definition}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
+We define the \define{Projection Morphism} $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
+by $\pi_{i}(g)=g_{i}$ for any $g\in\prod\mathcal{F}$.
+\end{definition}
+
+\begin{def-remark}
+We will follow the notation found in~\mml[def 16]{card3} and \mml[def 2]{pralg3}
+writing $\pi_{i}$ in Mizar as ``\lstinline{proj (F, i)}''. It is ideal
+to be consistent in our choice of notation with pre-existing notation.
+\end{def-remark}
+
+<<Definition: projection morphism>>=
+definition
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-Family of I;
+  func proj (F, i) -> Homomorphism of (product F), F.i means
+  :Def1:
+  for h being Element of product F holds it.h = h.i;
+  existence
+  <<Proof: existence of projection morphism>>;
+  uniqueness
+  <<Proof: uniqueness of projection morphism>>;
+end;
+@ %def proj
+
+<<Proof: existence of projection morphism>>=
+proof
+  deffunc F1() = product F;
+  deffunc F2() = F.i;
+  deffunc F3(Element of F1()) = $1.i;
+  consider p being Function of F1(), F2() such that
+  A1: for x being Element of F1() holds p.x = F3(x)
+  from FUNCT_2:sch 4;
+  reconsider p as Function of product F, F.i;
+  
+  for a, b being Element of product F
+  holds p.(a * b) = (p.a) * (p.b)
+  proof
+    let a, b be Element of product F;
+    (p.a) * (p.b) = (p.a) * (b.i) by A1
+                 .= (a.i) * (b.i) by A1
+                 .= (a * b).i by GROUP_7:1
+                 .= p.(a * b) by A1;
+    hence p.(a * b) = (p.a) * (p.b);
+  end;
+  then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
+  take p;
+  thus for h being Element of product F holds p.h = h.i by A1;
+end
+@ 
+
+<<Proof: uniqueness of projection morphism>>=
+proof
+  let p1,p2 be Homomorphism of (product F), F.i;
+  assume A1: for h being Element of product F holds p1.h = h.i;
+  assume A2: for h being Element of product F holds p2.h = h.i;
+  for x being object st x in the carrier of product F holds p1.x = p2.x
+  proof
+    let x be object;
+    assume x in the carrier of product F;
+    then reconsider xx=x as Element of product F;
+    p1.x = xx.i by A1
+        .= p2.x by A2;
+    hence p1.x = p2.x;
+  end;
+  hence p1 = p2;
+end
+@ 
+
+\begin{theorem}
+The projection morphism $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
+is surjective.
+\end{theorem}
+
+<<Theorem: the projection morphism is surjective>>=
+theorem Th5:
+  for I being non empty set
+  for i being Element of I
+  for F being Group-Family of I
+  holds proj (F, i) is onto
+proof
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-Family of I;
+  for y being object
+  holds y in the carrier of F.i
+        iff ex x being object
+            st x in dom (proj (F,i))
+               & y = (proj (F,i)).x
+  proof
+    let y be object;
+    thus y in the carrier of F.i
+         implies ex x being object
+                 st x in dom (proj (F,i))
+                    & y = (proj (F,i)).x
+    proof 
+      assume y in the carrier of F.i;
+      then reconsider yy=y as Element of F.i;
+      (1ProdHom (F, i)).yy in ProjGroup (F, i);
+      then (1ProdHom (F, i)).yy in ProjSet (F, i) by GROUP_12:def 2;
+      then consider x being Function, g being Element of F.i such that
+      A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
+          for j being Element of I st j <> i holds x.j = 1_(F.j)
+      by GROUP_12:2;
+
+      the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
+      then dom (1_(product F)) = I by PARTFUN1:def 2;
+      then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
+                .= x.i by A1,GROUP_12:def 3
+                .= g by A1;
+      A3: x in product F by A1,GROUP_2:41;
+      take x;
+      thus x in dom (proj (F,i)) by C3, FUNCT_2:def 1;
+      thus y = (proj (F,i)).x by Def1, A1, A2, A3;
+    end;
+    thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
+         implies y in the carrier of F.i
+    proof
+      given x being object such that 
+      x in dom (proj (F,i)) & y = (proj (F,i)).x;
+      hence y in the carrier of F.i by FUNCT_2:5;
+    end;
+  end;
+
+  then rng (proj (F,i)) = the carrier of F.i by FUNCT_1:def 3;
+  hence proj (F, i) is onto;
+end;
+@ %def Th5
+
+\subsection{Universal Property of Products}
+It seems we should generalize the notion of a
+``\lstinline{ManySortedFunction of I}'' (from~\mml{pboole}) to a family
+of group morphisms. Then we can use this to state the universal property
+of direct products of groups.
+
+\begin{definition}
+Let $G$ be a group, $\mathcal{F}$ be an $I$-indexed family of groups.
+We define a \define{Homomorphism Family} from $G$ to $\mathcal{F}$ as an
+indexed family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$.
+\end{definition}
+
+<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>=
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  mode Homomorphism-Family of G,F -> ManySortedFunction of I means
+  :Def2:
+  for i being Element of I holds
+  it.i is Homomorphism of G,F.i;
+  existence
+  <<Proof: existence of Homomorphism-Family>>;
+end;
+@ %def Homomorphism-Family
+
+\begin{voc}
+We need to add the mode ``\lstinline{Homomorphism-Family}'' to our
+vocabulary file.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+MHomomorphism-Family
+@
+
+\begin{proof}[Proof sketch]
+We begin by constructing a many-sorted set $f$ defined as mapping all of
+$G$ to the identity element of each component of $\mathcal{F}$. Then we
+show this is, in fact, a many-sorted function. And coincidentally, it
+consists entirely of group morphisms! Which finishes our proof.
+\end{proof}
+
+<<Proof: existence of Homomorphism-Family>>=
+proof
+  deffunc F1() = I;
+  deffunc F2(Element of I) = 1:(G,F.$1);
+  consider f being ManySortedSet of F1() such that
+  A1: for i being Element of F1() holds f.i = F2(i)
+  from PBOOLE:sch 5;
+  for x being object st x in dom f holds f.x is Function
+  proof
+    let x be object;
+    assume B1: x in dom f;
+    then x in I by A1,FUNCT_2:def 1;
+    then reconsider i=x as Element of I;
+    f.i = 1:(G,F.i) by A1;
+    hence f.x is Function;
+  end;
+  then f is Function-yielding by FUNCOP_1:def 6;
+  then reconsider f as ManySortedFunction of I;
+  take f;
+  thus for i being Element of I holds f.i is Homomorphism of G,F.i
+  proof
+    let i be Element of I;
+    f.i = 1:(G,F.i) by A1;
+    hence f.i is Homomorphism of G,F.i;
+  end;
+end
+@

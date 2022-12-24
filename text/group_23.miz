@@ -11,9 +11,10 @@
 
 environ
 
- vocabularies RLVECT_2, PARTFUN1, ZFMISC_1, RELAT_1, STRUCT_0, FUNCT_1,
-   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, CARD_3, BINOP_1, GROUP_1,
-   GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19;
+ vocabularies RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FUNCOP_1,
+   FUNCT_1, FUNCT_2, FUNCT_4, NUMBERS, CARD_3, BINOP_1,
+   GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
+   GROUP_19, GROUP_23, PBOOLE;
 
  notations TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, RELSET_1,
    PARTFUN1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
@@ -42,41 +43,43 @@ environ
  expansions TARSKI, FUNCT_7, FINSET_1, GROUP_1, GROUP_2, GROUP_6,
    STRUCT_0, BINOP_1, FUNCT_2, PRALG_1, GROUP_7;
 
- theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, GROUP_2,
-   GROUP_6, GROUP_7, GROUP_12, GROUP_19, PBOOLE, PARTFUN1;
+ theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, GROUP_2,
+   GROUP_6, GROUP_7, GROUP_12, GROUP_19, PARTFUN1;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
- schemes FUNCT_2;
+ schemes FUNCT_2, PBOOLE;
 
 begin
 
+:: Uniqueness of morphisms to the trivial group
 theorem Th1:
-  for I being set
-  for X,Y being ManySortedSet of I
-  holds (for i being Element of I holds X.i = Y.i) implies X = Y
+  for G being Group
+  for H being trivial Group
+  for f1,f2 being Homomorphism of G,H
+  holds f1=f2
 proof
-  let I be set;
-  let X,Y be ManySortedSet of I;
-  assume A1: for i being Element of I holds X.i = Y.i;
-  per cases;
-  suppose I is empty;
-    hence thesis;
+  let G be Group;
+  let H be trivial Group;
+  let f1,f2 be Homomorphism of G,H;
+  A1: the carrier of H = {1_H}
+  proof
+    H is trivial;
+    then consider x being object such that
+    B1: the carrier of H = {x};
+    thus thesis by B1, TARSKI:def 1;
   end;
-  suppose I is non empty;
-    for i being object st i in I holds X.i = Y.i by A1;
-    hence thesis by PBOOLE:3;
+  for g being object st g in the carrier of G holds f1.g = f2.g
+  proof
+    let g be object;
+    assume B1: g in the carrier of G;
+    f1.g in H by B1,FUNCT_2:5;
+    then B2: f1.g = 1_H by A1, TARSKI:def 1;
+    f2.g in H by B1,FUNCT_2:5;
+    then f2.g = 1_H by A1, TARSKI:def 1;
+    hence f1.g = f2.g by B2;
   end;
-end;
-
-definition
-  let I be set;
-  let X, Y be ManySortedSet of I;
-  redefine pred X = Y means
-  :Def1:
-  for i being Element of I
-  holds X.i = Y.i;
-  compatibility by Th1;
+  hence f1=f2;
 end;
 
 :: Universal property of terminal object for the trivial group
@@ -89,33 +92,27 @@ proof
   let G be Group;
   let H be trivial Group;
 
-  A1: the carrier of H = {1_H}
-  proof
-    H is trivial;
-    then consider x being object such that
-    A1: the carrier of H = {x};
-    thus thesis by A1, TARSKI:def 1;
-  end;
   take h = 1:(G,H);
-  for f being Homomorphism of G,H holds h=f
-  proof
-    let f be Homomorphism of G,H;
-    for g being object st g in the carrier of G holds f.g = h.g
-    proof
-      let g be object;
-      assume B1: g in the carrier of G;
-      f.g in H by B1,FUNCT_2:5;
-      then f.g = 1_H by A1, TARSKI:def 1
-              .= h.g by B1, FUNCOP_1:7;
-      hence f.g = h.g;
-    end;
-
-    hence h=f;
-  end;
-  hence thesis;
+  thus thesis by Th1;
 end;
 
-theorem Th3:
+theorem
+  for G being Group
+  for H being trivial Group
+  for f being Homomorphism of G,H
+  for g being Element of G
+  holds f.g = 1_H
+proof
+  let G be Group;
+  let H be trivial Group;
+  let f be Homomorphism of G,H;
+  let g be Element of G;
+  1:(G,H) is Homomorphism of G,H;
+  then f = 1:(G,H) by Th1;
+  hence f.g = 1_H by Th1,FUNCOP_1:7;
+end;
+
+theorem Th4:
   for I being non empty set
   for F being Group-Family of I
   for i being Element of I
@@ -137,151 +134,169 @@ definition
   let g be Element of product F;
   let i be Element of I;
   redefine func g.i -> Element of F.i;
-  correctness by Th3;
+  correctness by Th4;
 end;
 
-:: Existence and uniqueness of projection homomorphism
-theorem Th4:
-  for I being non empty set
-  for F being Group-Family of I
-  for i being Element of I
-  ex p being Homomorphism of (product F), F.i
-  st (for h being Element of product F holds p.h = h.i) &
-     (for p2 being Homomorphism of (product F), F.i
-      st (for h being Element of product F holds p2.h = h.i)
-      holds p = p2) &
-     p is onto
-proof
+:: CARD_3:def
+:: PRALG_3:def 2 
+definition
   let I be non empty set;
-  let F be Group-Family of I;
   let i be Element of I;
-  deffunc F1() = product F;
-  deffunc F2() = F.i;
-  deffunc F3(Element of F1()) = $1.i;
-  consider p being Function of F1(), F2() such that
-  A1: for x being Element of F1() holds p.x = F3(x)
-  from FUNCT_2:sch 4;
-  reconsider p as Function of product F, F.i;
-
-  for a, b being Element of product F
-  holds p.(a * b) = (p.a) * (p.b)
+  let F be Group-Family of I;
+  func proj (F, i) -> Homomorphism of (product F), F.i means
+  :Def1:
+  for h being Element of product F holds it.h = h.i;
+  existence
   proof
-    let a, b be Element of product F;
-    reconsider Fi=F.i as Group;
-    reconsider f = a, g = b, h = a*b as Function;
-    reconsider x = a.i, y = b.i as Element of Fi;
-    (p.a) * (p.b) = (p.a) * (b.i) by A1
-                 .= (a.i) * (b.i) by A1
-                 .= (a * b).i by GROUP_7:1
-                 .= p.(a * b) by A1;
-    hence p.(a * b) = (p.a) * (p.b);
+    deffunc F1() = product F;
+    deffunc F2() = F.i;
+    deffunc F3(Element of F1()) = $1.i;
+    consider p being Function of F1(), F2() such that
+    A1: for x being Element of F1() holds p.x = F3(x)
+    from FUNCT_2:sch 4;
+    reconsider p as Function of product F, F.i;
+    
+    for a, b being Element of product F
+    holds p.(a * b) = (p.a) * (p.b)
+    proof
+      let a, b be Element of product F;
+      (p.a) * (p.b) = (p.a) * (b.i) by A1
+                   .= (a.i) * (b.i) by A1
+                   .= (a * b).i by GROUP_7:1
+                   .= p.(a * b) by A1;
+      hence p.(a * b) = (p.a) * (p.b);
+    end;
+    then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
+    take p;
+    thus for h being Element of product F holds p.h = h.i by A1;
   end;
-  then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
-  take p;
-  thus for h being Element of product F holds p.h = h.i by A1;
-
-  thus for p2 being Homomorphism of (product F), F.i
-  st (for h being Element of product F holds p2.h = h.i)
-  holds p = p2
+  uniqueness
   proof
-    let p2 be Homomorphism of (product F), F.i;
-    assume B1: for h being Element of product F holds p2.h = h.i;
-    for x being object st x in the carrier of product F holds p.x = p2.x
+    let p1,p2 be Homomorphism of (product F), F.i;
+    assume A1: for h being Element of product F holds p1.h = h.i;
+    assume A2: for h being Element of product F holds p2.h = h.i;
+    for x being object st x in the carrier of product F holds p1.x = p2.x
     proof
       let x be object;
       assume x in the carrier of product F;
       then reconsider xx=x as Element of product F;
-      p.x = xx.i by A1
-         .= p2.x by B1;
-      hence p.x = p2.x;
+      p1.x = xx.i by A1
+          .= p2.x by A2;
+      hence p1.x = p2.x;
     end;
-    hence p = p2;
+    hence p1 = p2;
   end;
+end;
 
+theorem Th6:
+  for I being non empty set
+  for i being Element of I
+  for F being Group-Family of I
+  holds proj (F, i) is onto
+proof
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-Family of I;
   for y being object
-  holds y in the carrier of F.i iff ex x being object st x in dom p & y = p.x
+  holds y in the carrier of F.i iff
+  ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x
   proof
     let y be object;
-    thus y in the carrier of F.i implies ex x being object st x in dom p & y = p.x
+    thus y in the carrier of F.i
+         implies ex x being object
+                 st x in dom (proj (F,i))
+                    & y = (proj (F,i)).x
     proof 
       assume y in the carrier of F.i;
       then reconsider yy=y as Element of F.i;
       (1ProdHom (F, i)).yy in ProjGroup (F, i);
       then (1ProdHom (F, i)).yy in ProjSet (F, i) by GROUP_12:def 2;
       then consider x being Function, g being Element of F.i such that
-      C1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
+      A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
           for j being Element of I st j <> i holds x.j = 1_(F.j)
       by GROUP_12:2;
 
       the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
       then dom (1_(product F)) = I by PARTFUN1:def 2;
-      then C2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
-                .= x.i by C1,GROUP_12:def 3
-                .= g by C1;
-      C3: x in product F by C1,GROUP_2:41;
+      then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
+                .= x.i by A1, GROUP_12:def 3
+                .= g by A1;
+      A3: x in product F by A1,GROUP_2:41;
       take x;
-      thus x in dom p by C3, FUNCT_2:def 1;
-      thus y = p.x by A1, C1, C2, C3;
+      thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
+      thus y = (proj (F,i)).x by Def1, A1, A2, A3;
     end;
-    thus (ex x being object st x in dom p & y = p.x) implies y in the carrier of F.i
+    thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
+         implies y in the carrier of F.i
     proof
       given x being object such that 
-      C1: x in dom p & y = p.x;
-      thus y in the carrier of F.i by C1, FUNCT_2:5;
+      A1: x in dom (proj (F,i)) & y = (proj (F,i)).x;
+      thus y in the carrier of F.i by A1, FUNCT_2:5;
     end;
   end;
 
-  then rng p = the carrier of F.i by FUNCT_1:def 3;
-  hence p is onto;
+  then rng (proj (F,i)) = the carrier of F.i by FUNCT_1:def 3;
+  hence proj (F, i) is onto;
 end;
-
-theorem Th5:
-  for I being non empty set
-  for F1,F2 being Group-like associative multMagma-Family of I
-  st product F1 = product F2
-  for i being Element of I
-  holds F1.i = F2.i
-proof
-  let I be non empty set;
-  let F1,F2 be Group-like associative multMagma-Family of I;
-  assume product F1 = product F2;
-  let i be Element of I;
-  thus F1.i = F2.i;
-::>              *4
-end;
-
-theorem Th6:
-  for I being non empty set
-  for F1,F2 being Group-like associative multMagma-Family of I
-  st product F1 = product F2
-  holds F1 = F2 by Th5;
 
 definition
+  let G be Group;
   let I be non empty set;
-  let G be Group such that
-A1: ex F being Group-Family of I st G = product F;
-  let i be Element of I;
-  func pi (G, i) -> Group means
+  let F be Group-Family of I;
+  mode Homomorphism-Family of G,F -> ManySortedFunction of I means
   :Def2:
-  ex F being Group-Family of I st G = product F & it = F.i;
+  for i being Element of I holds
+  it.i is Homomorphism of G,F.i;
   existence
   proof
-    consider F being Group-Family of I such that
-    B1: G = product F
-    by A1;
-    take Gi = F.i;
-    take F;
-    thus thesis by B1;
+    deffunc F1() = I;
+    deffunc F2(Element of I) = 1:(G,F.$1);
+    consider f being ManySortedSet of F1() such that
+    A1: for i being Element of F1() holds f.i = F2(i)
+    from PBOOLE:sch 5;
+    for x being object st x in dom f holds f.x is Function
+    proof
+      let x be object;
+      assume B1: x in dom f;
+      then x in I by A1,FUNCT_2:def 1;
+      then reconsider i=x as Element of I;
+      f.i = 1:(G,F.i) by A1;
+      hence f.x is Function;
+    end;
+    then f is Function-yielding by FUNCOP_1:def 6;
+    then reconsider f as ManySortedFunction of I;
+    take f;
+    thus A2: for i being Element of I holds f.i is Homomorphism of G,F.i
+    proof
+      let i be Element of I;
+      f.i = 1:(G,F.i) by A1;
+      hence f.i is Homomorphism of G,F.i;
+    end;
   end;
-  uniqueness by Th6;
 end;
 
-theorem Th7:
+theorem
   for I being non empty set
   for F being Group-Family of I
-  for i being Element of I
-  holds pi (product F, i) = F.i by Def2;
+  for G being Group
+  for f being Homomorphism-Family of G, F
+  ex phi being Homomorphism of G, product F
+  st (for i being Element of I
+      for g being Element of G
+      holds f.i = (proj (F,i)) * phi)
+proof
+  let I be non empty set;
+  let F be Group-Family of I;
+  let G be Group;
+  let f be Homomorphism-Family of G, F;
+  consider phi being Homomorphism of G, product F;
+  take phi;
+  let i be Element of I;
+  let g be Element of G;
+  thus f.i = (proj (F,i)) * phi;
+end;
 
-
+::>                                 *4
+    
 
 ::> 4: This inference is not accepted

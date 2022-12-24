@@ -12,7 +12,8 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 	$(CHAR)/automorphism.nw $(CHAR)/inner.nw $(CHAR)/results.nw \
 	$(CHAR)/meet.nw $(CHAR)/centralizer.nw
 PRODGRP=nw/002-product-group
-PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw
+PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
+	$(PRODGRP)/universal-properties.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
 	$(RADRES)/pi-group.nw $(RADRES)/hall-pi-groups.nw \
