@@ -19,6 +19,10 @@ begin
 <<Theorem: the projection morphism is surjective>>
 
 <<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
+
+<<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>
+
+<<Theorem: universal property of group products>>
 @
 
 \begin{theorem}
@@ -342,3 +346,165 @@ proof
   end;
 end
 @
+
+\begin{lemma}
+The underlying set of a family of groups is the family of underlying sets.
+\end{lemma}
+
+<<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>=
+Lm2:
+  for i being object st i in I
+  holds (Carrier F).i = the carrier of F.i;
+@ 
+
+\begin{theorem}
+For any family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$,
+there is a morphism $f\colon G\to\prod\mathcal{F}$ such that $f(g)_{i}=f_{i}(g)$.
+\end{theorem}
+
+<<Theorem: universal property of group products>>=
+theorem Th12:
+  for f being Homomorphism-Family of G, F
+  ex phi being Homomorphism of G, product F
+  st for g being Element of G
+     holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
+proof
+  let f be Homomorphism-Family of G, F;
+  defpred P[object, object] means ex g0 being Element of product F
+  st $2 = g0 & (for j being Element of I holds (f.j).$1 = g0.j);
+  deffunc F1() = the carrier of G;
+
+  A1: for x being object st x in F1()
+  ex y being object st y in the carrier of product F &
+  P[x,y]
+  <<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>;
+
+  consider phi being Function of F1(), the carrier of (product F)
+  such that
+  A2: for x being object st x in F1() holds P[x, phi.x]
+  from FUNCT_2:sch 1(A1);
+  reconsider phi as Function of G, product F;
+
+  A3: for g being Element of G
+  for j being Element of I
+  holds (phi.g).j = (f.j).g
+  proof
+    let g be Element of G;
+    let j be Element of I;
+    P[g, phi.g] by A2;
+    hence (phi.g).j = (f.j).g;
+  end;
+
+  for a, b being Element of G holds phi.(a * b) = (phi.a) * (phi.b)
+  <<Proof: $\varphi$ is multiplicative>>;
+  then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
+  take phi;
+  let g be Element of G;
+
+  take phi;
+  let g be Element of G;
+  for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g)
+  proof
+    let j be Element of I;
+    B1: (f.j).g = (phi.g).j by A2,A3;
+    phi.g is Function & phi.g in product F;
+    then (phi.g).j = (proj (F,j)).(phi.g) by Th7;
+    hence  (f.j).g = (proj (F,j)).(phi.g) by B1;
+  end;
+  hence thesis;
+end;
+@
+
+
+<<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>=
+proof
+  let x be object;
+  assume x in F1();
+  then reconsider xx=x as Element of G;
+  defpred P1[object, object] means ex i being Element of I st
+  i = $1 & $2 = ((f.i).xx);
+  B1: for i, y1, y2 being object st i in I & P1[i,y1] & P1[i,y2] holds y1 = y2;
+  B2: for i being object st i in I holds ex y being object st P1[i,y]
+  proof
+    let i be object;
+    assume C1: i in I;
+    then reconsider ii=i as Element of I;
+    consider y being object such that
+    C2: y = ((f.ii).xx);
+    take y;
+    thus P1[i,y] by C1,C2;
+  end;
+  
+  consider y being Function such that
+  B3: dom y = I and
+  B4: for j being object st j in I holds P1[j, y.j]
+  from FUNCT_1:sch 2(B1, B2);
+    :: B2: for j being object st j in I holds y.j = (1ProdHom (F, j)).((f.j).xx);
+  take y;
+  dom F = I by PARTFUN1:def 2
+       .= dom y by B3;
+  :: then B5: dom F = dom y;
+  :: B5: for j being Element of I holds (f.j).xx = y.j
+  thus y in the carrier of product F
+  proof
+    dom (Carrier F) = I by PARTFUN1:def 2;
+    then C1: dom y = dom (Carrier F) by B3;
+    for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i
+    proof
+      let i be object;
+      assume D1: i in dom (Carrier F);
+      then D11: i in I by C1;
+      then P1[i, y.i] by C1,B4;
+      then consider ii being Element of I such that
+      D2: ii=i & y.i = ((f.i).xx);
+      reconsider Fi=(F.i) as Group by C1,D1,GROUP_19:1;
+      D4: (Carrier F).i = the carrier of F.i by D11,Lm2; 
+      f.i is Homomorphism of G,F.i by D11, Def2;
+      then reconsider gi=((f.i).xx) as Element of F.i by FUNCT_2:5;
+      F.i = Fi & F.i is Group by D1,C1,GROUP_19:1;
+      then gi is Element of Fi & Fi is non empty;
+      then gi in Fi by GROUP_2:41,GROUP_12:def 2;
+      then (y.i) in Fi by D2;
+      hence thesis by D4,PRALG_1:def 15;
+    end;
+    then y in product (Carrier F) by C1,CARD_3:9;
+    then y in product F by GROUP_7:def 2;
+    hence thesis by GROUP_7:def 2;
+  end;
+  then consider g0 being Element of product F such that
+  B5: g0 = y;
+  take g0;
+  thus y = g0 by B5;
+  let j be Element of I;
+  P1[j, g0.j] by B4,B5;
+  hence (f.j).x = g0.j by B4,B5;
+end
+@ 
+
+<<Proof: $\varphi$ is multiplicative>>=
+for a, b being Element of G holds phi.(a * b) = (phi.a) * (phi.b)
+proof
+  let a, b be Element of G;
+  (phi.(a * b)) is Element of product (Carrier F)
+  & (phi.a)*(phi.b) is Element of product (Carrier F)
+  by GROUP_7:def 2;
+  then B1: dom (phi.(a * b)) = I & dom ((phi.a)*(phi.b)) = I
+  by PARTFUN1:def 2,CARD_3:9;
+  then B2: dom (phi.(a*b)) = dom((phi.a)*(phi.b));
+  for j being Element of I holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j
+  proof
+    let j be Element of I;
+    reconsider fj = f.j as Homomorphism of G,F.j by Def2;
+    C1: (fj.a) = (phi.a)/.j by A3;
+    C2: (phi.(a * b)).j = (fj).(a * b) by A3
+    .= ((fj).a) * ((fj).b) by GROUP_6:def 6
+    .= ((phi.a)/.j) * ((fj).b) by C1,A3
+::>                  *103
+    .= ((phi.a).j) * ((phi.b).j) by A3
+    .= ((phi.a) * (phi.b)).j by GROUP_7:1;
+    hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
+  end;
+  then for j being object st j in I holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
+  hence phi.(a * b) = (phi.a) * (phi.b) by B1,B2,FUNCT_1:def 11;
+end  
+@ 
