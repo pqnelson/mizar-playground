@@ -70,7 +70,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let i be object such that A1: i in I;
-  func F/.i -> Group equals :Def1b: F.i;
+  func F/.i -> Group equals :Def1: F.i;
   correctness by A1,GROUP_19:1;
 end;
 
@@ -202,7 +202,7 @@ proof
   take G;
   thus G = FI/.i by Z4;
 
-  G = FI.i & dom FI = I by Z3,Def1b,Z4,PARTFUN1:def 2;
+  G = FI.i & dom FI = I by Z3,Def1,Z4,PARTFUN1:def 2;
   then A1: [i, G] in FI by Z3,FUNCT_1:def 2;
 
   ZZ0: i in J by Z1,Z3;
@@ -226,7 +226,7 @@ definition
   let F be Group-Family of I;
   let g be Element of product F;
   let i be Element of I;
-  func g/.i -> Element of F.i equals :Def1a: g.i;
+  func g/.i -> Element of F.i equals :Def2: g.i;
   correctness by Th4;    
 end;
 
@@ -237,7 +237,7 @@ definition
   let i be Element of I;
   let F be Group-Family of I;
   func proj (F, i) -> Homomorphism of (product F), F.i means
-  :Def1:
+  :Def3:
   for h being Element of product F holds it.h = h.i;
   existence
   proof
@@ -266,10 +266,10 @@ definition
     proof
       let h be Element of product F;
       p.h = h/.i by A1
-      .= h.i by Def1a;
+      .= h.i by Def2;
       hence thesis;
     end;
-    hence thesis by Def1a;
+    hence thesis by Def2;
  end;
   uniqueness
   proof
@@ -318,7 +318,7 @@ proof
       A3: x in product F by A1,GROUP_2:41;
       take x;
       thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
-      thus y = (proj (F,i)).x by Def1, A1, A2, A3;
+      thus y = (proj (F,i)).x by Def3, A1, A2, A3;
     end;
     thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
          implies y in the carrier of F.i by FUNCT_2:5;
@@ -329,7 +329,7 @@ end;
 theorem Th7:
   dom proj (F, i) = the carrier of product F &
   for y being Function st y in product F
-  holds (proj (F,i)).y = y.i by Def1, FUNCT_2:def 1;
+  holds (proj (F,i)).y = y.i by Def3, FUNCT_2:def 1;
 
 theorem Th8:
   proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
@@ -361,7 +361,7 @@ proof
   g in product F;
   then g in dom f by B1,GROUP_7:def 2;
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
-  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def1;
+  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
 end;
 
 theorem Th10:
@@ -437,7 +437,8 @@ end;
 definition
   let I be set;
   let F be Group-Family of I;
-  redefine func Carrier F -> ManySortedSet of I means :Def3:
+  redefine func Carrier F -> ManySortedSet of I means
+  :Def4:
   for i being object st i in I
   ex G being Group st
   G = F.i & it.i = the carrier of G;
@@ -510,7 +511,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func Carrier F -> ManySortedSet of I means
-  :Def4:
+  :Def5:
   for i being object st i in I
   ex G being Group st
   G = F/.i & it.i = the carrier of G;
@@ -521,7 +522,7 @@ definition
     set U = Carrier F;
     A1: for j being object st j in J
     ex G being Group st
-    G = FF.j & U.j = the carrier of G by Def3;
+    G = FF.j & U.j = the carrier of G by Def4;
     take U;
 
     A2: for i being object st i in I
@@ -547,7 +548,7 @@ definition
       then FF.i = F/.i by B1,A2;
       hence thesis by B2;
     end;
-    hence thesis by Def1b;
+    hence thesis by Def1;
   end;
   uniqueness
   proof
@@ -586,7 +587,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   mode Homomorphism-Family of G,F -> ManySortedFunction of I means
-  :Def2:
+  :Def6:
   :: for i being Element of I holds
   for i being object st i in I holds
   it.i is Homomorphism of G,F/.i;
@@ -619,17 +620,6 @@ definition
   end;
 end;
 
-:: definition
-::   let G be Group;
-::   let I be non empty set;
-::   let F be Group-Family of I;
-::   let f be Homomorphism-Family of G,F;
-::   let i be object such that A1: i in I;
-::   func f.i -> Homomorphism of G, F.i equals f.i;
-::   correctness;
-:: ::>         *4,4,4
-:: end;
-
 theorem
   for f being Homomorphism-Family of G,F
   for i being Element of I
@@ -637,10 +627,8 @@ theorem
 proof
   let f be Homomorphism-Family of G,F;
   let i be Element of I;
-  thus f.i is Homomorphism of G,F/.i by Def2;
+  thus f.i is Homomorphism of G,F/.i by Def6;
 end;
-
-
 
 :: Surjective functions have a right-inverse
 theorem Th11:
@@ -697,18 +685,15 @@ proof
   let F be Group-Family of I;
   let i be Element of I;
   i in I;
-  then ex G being Group st G = F/.i & (Carrier F).i = the carrier of G by Def4;
+  then ex G being Group st G = F/.i & (Carrier F).i = the carrier of G by Def5;
   hence (Carrier F).i = the carrier of F/.i;
 end;
-
-
 
 theorem Th12:
   for y being object
   st y in product (Carrier F)
   holds y in product F;
 ::>                  *4
-
 
 Lm4:
   for x,y being Element of product F
@@ -779,7 +764,7 @@ proof
         D2: ii=i & y.i = ((f.i).xx);
         reconsider Fi=(F/.i) as Group by C1,D1,GROUP_19:1;
         D4: (Carrier F).i = the carrier of F/.i by D11,Lm2; 
-        f.i is Homomorphism of G,F/.i by D11, Def2;
+        f.i is Homomorphism of G,F/.i by D11, Def6;
         then reconsider gi=((f.i).xx) as Element of F/.i by FUNCT_2:5;
         F/.i = Fi & F/.i is Group by D1,C1,GROUP_19:1;
         then gi is Element of Fi & Fi is non empty;
@@ -830,7 +815,7 @@ proof
     for j being Element of I holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j
     proof
       let j be Element of I;
-      reconsider fj = f.j as Homomorphism of G,F/.j by Def2;
+      reconsider fj = f.j as Homomorphism of G,F/.j by Def6;
       fj.a = (phi/.a)/.j & fj.b = (phi/.b)/.j by A3;
       then C1: (fj/.a) * (fj/.b) = (phi/.a)/.j * (phi/.b)/.j by Lm5;
 ::>                                                           *4
@@ -838,7 +823,7 @@ proof
       .= (fj/.a) * (fj/.b) by GROUP_6:def 6
       .= ((phi.a)/.j) * ((phi.b)/.j) by A3,C1
       .= ((phi.a) * (phi.b))/.j by Lm4;
-      hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j by Def1a;
+      hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j by Def2;
     end;
     then for j being object st j in I
          holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
