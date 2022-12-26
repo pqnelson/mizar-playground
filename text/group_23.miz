@@ -12,26 +12,26 @@
 environ
 
  vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FUNCT_1,
-   FUNCT_2, FUNCT_4, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3,
-   GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE,
-   GROUP_19, GROUP_23;
+   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1,
+   CARD_3, GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
+   PBOOLE, GROUP_19, GROUP_23;
 
- notations TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, RELSET_1,
-   FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
-   NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, MONOID_0,
-   GROUP_1, GROUP_2, GROUP_4, GROUP_6, PRALG_1, GROUP_7, GROUP_12,
-   PARTFUN1, GROUP_17, ALGSTR_0;
+ notations BINOP_1, TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1,
+   RELSET_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
+   NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, MONOID_0, GROUP_1,
+   GROUP_2, GROUP_4, GROUP_6, PRALG_1, GROUP_7, GROUP_12, PARTFUN1,
+   GROUP_17, ALGSTR_0;
 
  constructors BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2, GROUP_12,
    GROUP_4, GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3, PARTFUN1, GROUP_17,
    GRSOLV_1, ALGSTR_0;
 
- registrations XBOOLE_0, XREAL_0, STRUCT_0, GROUP_2, MONOID_0, NAT_1,
-   RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, FUNCOP_1, CARD_3, ORDINAL1,
-   FINSET_1, FINSEQ_1, NUMBERS, INT_1, INT_2, XCMPLX_0, CARD_1, NEWTON,
-   FINSEQ_2, BINOP_1, GROUP_1, GROUP_3, GROUP_6, GR_CY_1, FUNCT_7,
-   GROUP_7, GROUP_12, PBOOLE;
+ registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
+   MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+   FUNCOP_1, CARD_3, ORDINAL1, FINSET_1, FINSEQ_1, NUMBERS, INT_1,
+   INT_2, XCMPLX_0, CARD_1, NEWTON, FINSEQ_2, BINOP_1, GROUP_3, GROUP_6,
+   GR_CY_1, FUNCT_7, GROUP_7, GROUP_12, PRALG_1, PBOOLE;
 
  definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, FUNCOP_1,
    FINSEQ_1, PRALG_1, GROUP_1, GROUP_3, GROUP_4, GROUP_6, XXREAL_0,
@@ -44,9 +44,8 @@ environ
  expansions TARSKI, FUNCT_7, FINSET_1, ALGSTR_0, GROUP_1, GROUP_2,
    GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7;
 
- theorems TARSKI, STRUCT_0, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3,
-   GROUP_2, GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19,
-   ALGSTR_0, PENCIL_3, PBOOLE, XBOOLE_0;
+ theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_2,
+   GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
@@ -54,25 +53,201 @@ environ
 
 begin
 
+definition
+  let IT be Relation;
+  attr IT is Group-yielding means :Def1:
+  for y being object st y in rng IT holds
+  y is Group;
+end;
+
+registration
+  cluster Group-yielding -> 1-sorted-yielding for Function;
+  coherence;
+  cluster Group-yielding -> multMagma-yielding for Function;
+  coherence;
+end;
+
+Lm1:
+  for I being set
+  for F being associative Group-like multMagma-Family of I
+  holds F is Group-yielding
+proof
+  let I be set;
+  let F be associative Group-like multMagma-Family of I;
+  for y being object st y in rng F
+  holds y is Group
+  proof
+    let y be object;
+    assume y in rng F;
+    then ex x being object st x in dom F & y = F.x by FUNCT_1:def 3;
+    hence y is Group by GROUP_19:1;
+  end;
+  hence F is Group-yielding;
+end;
+
+registration
+  let I be set;
+  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
+  coherence by Lm1;
+end;
+
+registration
+  let I be set;
+  cluster Group-yielding for ManySortedSet of I;
+  existence
+  proof
+    set G = the trivial Group;
+    set f = I --> G;
+    take f;
+    let a be object;
+    assume a in rng f;
+    then ex x being object st x in dom f & a = f.x by FUNCT_1:def 3;
+    hence thesis by FUNCOP_1:7;
+  end;
+end;
+
+registration
+  cluster Group-yielding for Function;
+  existence
+  proof
+    set I = the set, f = the Group-yielding ManySortedSet of I;
+    take f;
+    thus thesis;
+  end;
+end;
+
+registration
+  let I be set;
+  cluster -> Group-yielding for Group-like associative multMagma-Family of I;
+  correctness;
+end;
+
+Lm2:
+  for I being set
+  for F being Group-like associative multMagma-Family of I 
+  holds F is Group-yielding ManySortedSet of I;
+
+Lm4:
+  for I being non empty set
+  for F being Group-yielding ManySortedSet of I
+  for i being Element of I
+  holds F.i is Group
+proof
+  let I be non empty set;
+  let F be Group-yielding ManySortedSet of I;
+  let i be Element of I;
+  i in I & dom F = I by PARTFUN1:def 2;
+  then F.i in rng F by FUNCT_1:3;
+  hence F.i is Group by Def1;
+end;
+
+registration
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-yielding ManySortedSet of I;
+  cluster (F . i) -> Group-like associative unital non empty for multMagma;
+  correctness by Lm4;
+end;
+
+LmHuh:
+  for I being non empty set
+  for F being Group-yielding ManySortedSet of I
+  for i being object st i in I
+  ex G being Group st [i, G] in F
+proof
+  let I be non empty set;
+  let F be Group-yielding ManySortedSet of I;
+  let i be object;
+  assume A1: i in I;
+  then A2: i in dom F by PARTFUN1:def 2;
+  reconsider ii=i as Element of I by A1;
+  F.ii is Group;
+  then consider G being Group such that
+  A3: G = F.i;
+  take G;
+  thus [i, G] in F by A2,A3,FUNCT_1:def 2;
+end;
 
 definition
   let I be set;
-  mode Group-Family of I is Group-like associative multMagma-Family of I;
+  mode Group-Family of I is Group-yielding ManySortedSet of I;
 end;
+
+:: Our notion of "Group-Family" *is* a Group-Family in the sense of GROUP_19
+registration
+  let I be non empty set;
+  cluster Group-yielding -> Group-like associative for multMagma-Family of I;
+  correctness;
+end;
+
+theorem LmTriv:
+  for M being strict multMagma
+  st (ex x being object st the carrier of M = {x})
+  ex G being strict trivial Group st M=G
+proof
+  let M be strict multMagma;
+  given x being object such that 
+  A1: the carrier of M = {x};
+  reconsider M as non empty multMagma by A1;
+  reconsider x as Element of M by A1,TARSKI:def 1;
+  A3: for y being Element of M holds y = x by A1,TARSKI:def 1;
+  then A4: x * x = x by A1,TARSKI:def 1;
+  for a,b,c being Element of M holds (a * b) * c = a * (b * c)
+  proof
+    let a,b,c be Element of M;
+    B1: a = x & b = x & c = x by A3;
+    B2: (a * b) * c = (x * b) * c by A3
+                   .= x * x by A3,A4
+                   .= x by A4;
+    a * (b * c) = a * (x * c) by A3
+               .= x * x by A3,A4
+               .= x by A4;
+    hence (a * b) * c = a * (b * c) by B2;
+  end;
+
+  then A5: M is associative;
+  ex e being Element of M st
+  for h being Element of M holds
+  (h * e = h & e * h = h & ex g being Element of M st (h * g = e & g * h = e))
+  proof
+    take e = x;
+    let h be Element of M;
+    B1: h = x by A3;
+    thus h * e = h by B1,A4;
+    thus e * h = h by B1,A4;
+    take g = x;
+    thus h * g = e by B1,A4;
+    thus g * h = e by B1,A4;
+  end;
+  then A6: M is Group-like;
+  reconsider G=M as strict trivial Group by A1,A5,A6;
+  take G;
+  thus thesis;
+end;
+
+theorem ThEmptyProduct:
+  for I being empty set
+  for F being multMagma-Family of I
+  holds product F is trivial Group
+proof
+  let I be empty set;
+  let F be multMagma-Family of I;
+  product (Carrier F) = {{}} by CARD_3:10;
+  then the carrier of (product F) = {{}} by GROUP_7:def 2;
+  then ex x being object st the carrier of (product F) = {x};
+  then ex G being strict trivial Group st (product F)=G by LmTriv;
+  hence thesis;
+end;
+
+theorem
+  for I being empty set
+  for F being Group-Family of I
+  holds product F is trivial Group by ThEmptyProduct;
 
 reserve I for non empty set;
 reserve i for Element of I;
 reserve F for Group-Family of I;
-:: reserve F for Group-like associative multMagma-Family of I;
 reserve G for Group;
-
-definition
-  let I be non empty set;
-  let F be Group-Family of I;
-  let i be object such that A1: i in I;
-  func F/.i -> Group equals :Def1: F.i;
-  correctness by A1,GROUP_19:1;
-end;
 
 :: Uniqueness of morphisms to the trivial group
 theorem Th1:
@@ -137,90 +312,6 @@ proof
   hence thesis;
 end;
 
-
-Lm2b:
-  for I being set st I <> {}
-  for FI being Group-Family of I
-  for J being set st J = I
-  for FJ being Group-Family of J st FJ = FI
-  for i being object st i in I
-  ex G being Group st
-  G = FI.i & G = FJ.i
-proof
-  let I be set;
-  assume Z1: I <> {};
-  let FI be Group-Family of I;
-  let J be set;
-  assume Z2: J = I;
-  let FJ be Group-Family of J;
-  assume Z3: FJ = FI;
-  let i be object;
-  assume Z4: i in I;
-  then ex Fi being non empty Group-like multMagma st Fi = FI . i by GROUP_7:def 3;
-  then consider G being Group such that
-  Z5: G = FI.i by Z4,Z1,GROUP_19:1;
-  take G;
-  thus G = FI.i by Z5;
-
-  FI.i = (FI qua Function).i by GROUP_19:1;
-  then G = FI.i & dom FI = I by Z5,PARTFUN1:def 2;
-  then Z6: [i, G] in FI by Z4,FUNCT_1:def 2;
-
-  i in J by Z2,Z4;
-  then FJ.i is Group by GROUP_19:1;
-  then reconsider Fj = FJ.i as Group;
-  Fj = FJ.i & dom FJ = J by PARTFUN1:def 2;
-  then [i, Fj] in FJ by Z2,Z4,FUNCT_1:def 2;
-  then [i, Fj] in FI by Z3;
-  then [i, Fj] in FI & dom FI = I & i in dom FI & FI is Function
-  by Z3,Z4,PARTFUN1:def 2;
-  then G = Fj by Z6,FUNCT_1:def 1;
-  hence thesis by Z4,FUNCT_1:def 2;
-end;
-
-
-Lm2a:
-  for I being non empty set
-  for FI being Group-Family of I
-  for J being set st J = I
-  for FJ being Group-Family of J st FJ = FI
-  for i being object st i in I
-  ex G being Group st
-  G = FI/.i & G = FJ.i
-proof
-  let I be non empty set;
-  let FI be Group-Family of I;
-  let J be set;
-  assume Z1: J = I;
-  let FJ be Group-Family of J;
-  assume Z2: FJ = FI;
-  let i be object;
-  assume Z3: i in I;
-  then ex GG being non empty Group-like multMagma st GG = FI/.i by GROUP_7:def 3;
-  then consider G being Group such that
-  Z4: G = FI/.i by Z3;
-  take G;
-  thus G = FI/.i by Z4;
-
-  G = FI.i & dom FI = I by Z3,Def1,Z4,PARTFUN1:def 2;
-  then A1: [i, G] in FI by Z3,FUNCT_1:def 2;
-
-  ZZ0: i in J by Z1,Z3;
-  then ex GG being non empty Group-like multMagma st GG = FJ.i by GROUP_7:def 3;
-  then consider Fj being Group such that
-  ZZ1: Fj = FJ.i by ZZ0,Z1,GROUP_7:def 3;
-  :: then reconsider Fj = FJ.i as Group;
-  Fj = FJ.i & dom FJ = J by ZZ1,PARTFUN1:def 2;
-  then Z5: [i, Fj] in FJ by Z1,Z3,FUNCT_1:def 2;
-  then [i, Fj] in FI by Z2;
-  then Z6: [i, Fj] in FI & dom FI = I & i in dom FI & FI is Function
-  by Z2,Z3,PARTFUN1:def 2;
-  then G = Fj by A1,FUNCT_1:def 1;
-  hence thesis by ZZ1,Z4,FUNCT_1:def 2;
-end;
-
-
-
 definition
   let I be non empty set;
   let F be Group-Family of I;
@@ -261,15 +352,14 @@ definition
     end;
     then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
     take p;
-    for h being Element of product F holds p.h = h/.i by A1;
     for h being Element of product F holds p.h = h.i
     proof
       let h be Element of product F;
       p.h = h/.i by A1
-      .= h.i by Def2;
+         .= h.i;
       hence thesis;
     end;
-    hence thesis by Def2;
+    hence thesis;
  end;
   uniqueness
   proof
@@ -383,218 +473,18 @@ proof
   hence thesis by A1,FUNCT_2:63;
 end;
 
-
-Lm0:
-  for I being non empty set
-  for F being multMagma-Family of I
-  for i being Element of I
-  st F.i is Group
-  ex G being Group
-  st G = F.i & (Carrier F).i = the carrier of G
-proof
-  let I be non empty set;
-  let F be multMagma-Family of I;
-  let i be Element of I;
-  assume A1: F.i is Group;
-  consider G being Group such that
-  A2: F.i = G by A1;
-  take G;
-  thus G = F.i by A2;
-  ex R being 1-sorted st
-  (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence (Carrier F).i = the carrier of G by A2;
-end;
-
-
-Lm1:
-  for I being non empty set
-  for F being associative multMagma-Family of I
-  for i being Element of I
-  holds (Carrier F).i = the carrier of (F.i)
-proof
-  let I be non empty set;
-  let F be associative multMagma-Family of I;
-  let i be Element of I;
-  ex R being 1-sorted st
-  (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence thesis;
-end;
-
-Lm1b:
-  for I being non empty set
-  for F being Group-like multMagma-Family of I
-  for i being Element of I
-  holds (Carrier F).i = the carrier of (F.i)
-proof
-  let I be non empty set;
-  let F be Group-like multMagma-Family of I;
-  let i be Element of I;
-  ex R being 1-sorted st
-  (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence thesis;
-end;
-
-definition
-  let I be set;
-  let F be Group-Family of I;
-  redefine func Carrier F -> ManySortedSet of I means
-  :Def4:
-  for i being object st i in I
-  ex G being Group st
-  G = F.i & it.i = the carrier of G;
-  compatibility
-  proof
-    per cases;
-    suppose I is empty;
-      then for b1 being ManySortedSet of I
-      holds (b1 = Carrier F iff for j being object st j in I holds
-      ex G being Group st (G = F.j & b1.j = the carrier of G));
-      hence thesis;
-    end;
-    suppose A1: I is non empty;
-      A2: for i being object st i in I holds F.i is Group by GROUP_19:1;
-      reconsider F as multMagma-Family of I;
-      for b1 being ManySortedSet of I
-      holds (b1 = Carrier F iff for j being object st j in I holds
-      ex G being Group st (G = F.j & b1.j = the carrier of G))
-      proof
-        let b1 be ManySortedSet of I;
-        thus b1 = Carrier F implies for j being object st j in I holds
-        ex G being Group st (G = F.j & b1.j = the carrier of G)
-        proof
-          assume B1: b1 = Carrier F;
-          let j be object;
-          assume B2: j in I;
-          then F.j is Group by A2;
-          then ex G being Group
-          st G = F.j & (Carrier F).j = the carrier of G by B2,Lm0;
-          hence thesis by B1;
-        end;
-
-        thus (for j being object st j in I ex G being Group st G =
-        F.j & b1.j = the carrier of G) implies b1 = Carrier F
-        proof
-          assume Z1: for j being object st j in I ex G being Group st G = F.j & b1.j = the carrier of G;
-          for i being object st i in I
-          holds b1.i = (Carrier F).i
-          proof
-            let i be object;
-            assume B1: i in I;
-            then B2: F.i is Group by A2;
-            then consider G being Group such that
-            B3: G = F.i and
-            B4: (Carrier F).i = the carrier of G
-            by B1,Lm0;
-            consider G2 being Group such that
-            B5: G2 = F.i and
-            B6: b1.i = the carrier of G2
-            by B1,Z1;
-            G2 = G by B3,B5;
-            hence b1.i = (Carrier F).i by B4,B6;
-          end;
-
-
-          hence b1 = Carrier F by PBOOLE:def 10;
-        end;
-
-      end;
-      hence thesis;
-    end;
-  end;
-  coherence
-  proof
-    thus Carrier F is ManySortedSet of I;
-  end;
-end;
-
-definition
-  let I be non empty set;
-  let F be Group-Family of I;
-  func Carrier F -> ManySortedSet of I means
-  :Def5:
-  for i being object st i in I
-  ex G being Group st
-  G = F/.i & it.i = the carrier of G;
-  existence
-  proof
-    reconsider J=I as set;
-    reconsider FF=F as Group-Family of J;
-    set U = Carrier F;
-    A1: for j being object st j in J
-    ex G being Group st
-    G = FF.j & U.j = the carrier of G by Def4;
-    take U;
-
-    A2: for i being object st i in I
-    holds FF.i = F/.i
-    proof
-      let i be object;
-      assume B1: i in I;
-      FF is Group-Family of J & F is Group-Family of I & J is set &
-      I is non empty set & I = J & FF=F & i in I by B1;
-      then ex GG being Group st GG = F/.i & GG = FF.i by Lm2a;
-      hence FF.i = F/.i;
-    end;
-    for i being object st i in I
-    ex G being Group st
-    G = F/.i & U.i = the carrier of G
-    proof
-      let i be object;
-      assume B1: i in I;
-      then consider G being Group such that
-      B2: G = FF.i & U.i = the carrier of G by B1,A1;
-      take G;
-      F/.i is Group & FF = F by B1,GROUP_19:1;
-      then FF.i = F/.i by B1,A2;
-      hence thesis by B2;
-    end;
-    hence thesis by Def1;
-  end;
-  uniqueness
-  proof
-    for U1,U2 being ManySortedSet of I
-    st (for i being object st i in I
-    ex G being Group st
-    G = F/.i & U1.i = the carrier of G)
-    & (for i being object st i in I
-    ex G being Group st
-    G = F/.i & U2.i = the carrier of G)
-    holds U1 = U2
-    proof
-      let U1,U2 be ManySortedSet of I;
-      assume Z1: for i being object st i in I ex G being Group st G = F/.i & U1.i = the carrier of G;
-      assume Z2: for i being object st i in I ex G being Group st G = F/.i & U2.i = the carrier of G;
-      for i being object st i in I holds U1.i = U2.i 
-      proof
-        let i be object;
-        assume Z3: i in I;
-        then consider G being Group such that
-        Z4: G = F/.i & U1.i = the carrier of G by Z1;
-        ex G being Group st G = F/.i & U2.i = the carrier of G by Z2,Z3;
-        then U2.i = the carrier of G by Z2,Z3,Z4;
-        hence U1.i = U2.i by Z4;
-      end;
-
-      hence U1 = U2 by PBOOLE:def 10;
-    end;
-
-    hence thesis;
-  end;
-end;
-
 definition
   let G be Group;
   let I be non empty set;
-  let F be Group-Family of I;
+  let F be Group-yielding ManySortedSet of I;
   mode Homomorphism-Family of G,F -> ManySortedFunction of I means
   :Def6:
-  :: for i being Element of I holds
-  for i being object st i in I holds
-  it.i is Homomorphism of G,F/.i;
+  for i being Element of I holds
+  it.i is Homomorphism of G,(F.i);
   existence
   proof
     deffunc F1() = I;
-    deffunc F2(Element of I) = 1:(G,F/.$1);
+    deffunc F2(Element of I) = 1:(G,F.$1);
     consider f being ManySortedSet of F1() such that
     A1: for i being Element of F1() holds f.i = F2(i)
     from PBOOLE:sch 5;
@@ -603,19 +493,16 @@ definition
       let x be object;
       assume x in dom f;
       then reconsider i=x as Element of I;
-      f.i = 1:(G,F/.i) by A1;
+      f.i = 1:(G,F.i) by A1;
       hence f.x is Function;
     end;
     then reconsider f as ManySortedFunction of I by FUNCOP_1:def 6;
     take f;
-    :: thus for i being Element of I holds f.i is Homomorphism of G,F.i
-    thus for i being object st i in I holds f.i is Homomorphism of G,F/.i
+    thus for i being Element of I holds f.i is Homomorphism of G,F.i
     proof
-      let i be object;
-      assume B1: i in I;
-      then reconsider ii=i as Element of I;
-      f.ii = 1:(G,F/.ii) by A1;
-      hence f.i is Homomorphism of G,F/.i;
+      let i be Element of I;
+      f.i = 1:(G,F.i) by A1;
+      hence f.i is Homomorphism of G,F.i;
     end;
   end;
 end;
@@ -623,12 +510,7 @@ end;
 theorem
   for f being Homomorphism-Family of G,F
   for i being Element of I
-  holds f.i is Homomorphism of G,F/.i
-proof
-  let f be Homomorphism-Family of G,F;
-  let i be Element of I;
-  thus f.i is Homomorphism of G,F/.i by Def6;
-end;
+  holds f.i is Homomorphism of G,F.i by Def6;
 
 :: Surjective functions have a right-inverse
 theorem Th11:
@@ -665,8 +547,7 @@ proof
   for y being Element of Y holds (f * g).y = y
   proof
     let y be Element of Y;
-    dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
-    then B1: y in dom (f * g);
+    B1: dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
     y = f.(g.y) by A3
      .= (f * g).y by B1, FUNCT_1:12;
     hence (f * g).y = y;
@@ -674,49 +555,25 @@ proof
   hence f * g = id Y;
 end;
 
-
-Lm2:
-  for I being non empty set
-  for F being Group-Family of I
-  for i being Element of I
-  holds (Carrier F).i = the carrier of F/.i
+Lm5:
+  for F being Group-yielding ManySortedSet of I
+  holds (Carrier F).i = the carrier of F.i
 proof
-  let I be non empty set;
-  let F be Group-Family of I;
-  let i be Element of I;
-  i in I;
-  then ex G being Group st G = F/.i & (Carrier F).i = the carrier of G by Def5;
-  hence (Carrier F).i = the carrier of F/.i;
+  let F be Group-yielding ManySortedSet of I;
+  ex R being 1-sorted
+  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
+  hence (Carrier F).i = the carrier of F.i;
 end;
 
-theorem Th12:
-  for y being object
-  st y in product (Carrier F)
-  holds y in product F;
-::>                  *4
-
-Lm4:
-  for x,y being Element of product F
-  holds (x/.i * y/.i) = (x * y)/.i;
-::>                              *4
-
-Lm5:
-  for G1,G2 being Group
-  for phi being Homomorphism of G1,G2
-  for f being Function of G1,G2
-  for a,b being Element of G1
-  st phi.a = f.a & phi.b = f.b
-  holds f.(a * b) = f.a * f.b;
-::>                         *4
+Lm6:
+  (Carrier F).i = the carrier of F.i by Lm5;
 
 theorem Th13:
-  for i being Element of I
   for f being Homomorphism-Family of G, F
   ex phi being Homomorphism of G, product F
   st for g being Element of G
      holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
 proof
-  let i be Element of I;
   let f be Homomorphism-Family of G, F;
   defpred P[object, object] means ex g0 being Element of product F
   st $2 = g0 & (for j being Element of I holds (f.j).$1 = g0.j);
@@ -724,23 +581,24 @@ proof
 
   A1: for x being object st x in F1()
   ex y being object st y in the carrier of product F &
-  P[x,y]
+  P[x, y]
   proof
     let x be object;
     assume x in F1();
     then reconsider xx=x as Element of G;
     defpred P1[object, object] means ex i being Element of I st
     i = $1 & $2 = ((f.i).xx);
-    B1: for i, y1, y2 being object st i in I & P1[i,y1] & P1[i,y2] holds y1 = y2;
-    B2: for i being object st i in I holds ex y being object st P1[i,y]
+    B1: for i, y1, y2 being object st i in I & P1[i, y1] & P1[i, y2]
+        holds y1 = y2;
+    B2: for i being object st i in I ex y being object st P1[i, y]
     proof
       let i be object;
-      assume C1: i in I;
+      assume i in I;
       then reconsider ii=i as Element of I;
       consider y being object such that
-      C2: y = ((f.ii).xx);
+      C1: y = ((f.ii).xx);
       take y;
-      thus P1[i,y] by C1,C2;
+      thus P1[i, y] by C1;
     end;
 
     consider y being Function such that
@@ -748,32 +606,26 @@ proof
     B4: for j being object st j in I holds P1[j, y.j]
     from FUNCT_1:sch 2(B1, B2);
     take y;
-    dom F = I by PARTFUN1:def 2
-         .= dom y by B3;
     thus y in the carrier of product F
     proof
-      dom (Carrier F) = I by PARTFUN1:def 2;
-      then C1: dom y = dom (Carrier F) by B3;
-      for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i
+      C1: dom y = dom (Carrier F) by B3,PARTFUN1:def 2;
+      for i being Element of I holds y.i in (Carrier F).i
       proof
-        let i be object;
-        assume D1: i in dom (Carrier F);
-        then D11: i in I by C1;
-        then P1[i, y.i] by C1,B4;
+        let i be Element of I;
+        dom (Carrier F) = I by PARTFUN1:def 2;
+        then D1: i in dom (Carrier F);
+        P1[i, y.i] by B4;
         then consider ii being Element of I such that
         D2: ii=i & y.i = ((f.i).xx);
-        reconsider Fi=(F/.i) as Group by C1,D1,GROUP_19:1;
-        D4: (Carrier F).i = the carrier of F/.i by D11,Lm2; 
-        f.i is Homomorphism of G,F/.i by D11, Def6;
-        then reconsider gi=((f.i).xx) as Element of F/.i by FUNCT_2:5;
-        F/.i = Fi & F/.i is Group by D1,C1,GROUP_19:1;
-        then gi is Element of Fi & Fi is non empty;
-        then gi in Fi by GROUP_2:41,GROUP_12:def 2;
-        then (y.i) in Fi by D2;
-        hence thesis by D4,PRALG_1:def 15;
+        reconsider Fi=(F.i) as Group;
+        D4: (Carrier F).i = the carrier of F.i by Lm5; 
+        f.i is Homomorphism of G,F.i by Def6;
+        then reconsider gi=((f.i).xx) as Element of F.i by FUNCT_2:5;
+        gi is Element of Fi & Fi is non empty;
+        hence thesis by D2,D4;
       end;
-      then y in product (Carrier F) by C1,CARD_3:9;
-      then y in product F by Th12;
+      then for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i;
+      then y in product (Carrier F) by C1, CARD_3:9;
       hence thesis by GROUP_7:def 2;
     end;
     then consider g0 being Element of product F such that
@@ -781,8 +633,8 @@ proof
     take g0;
     thus y = g0 by B5;
     let j be Element of I;
-    P1[j, g0.j] by B4,B5;
-    hence (f.j).x = g0.j by B4,B5;
+    P1[j, g0.j] by B4, B5;
+    hence (f.j).x = g0.j;
   end;
 
   consider phi being Function of F1(), the carrier of (product F)
@@ -807,39 +659,31 @@ proof
     (phi.(a * b)) is Element of product (Carrier F)
     & (phi.a)*(phi.b) is Element of product (Carrier F)
     by GROUP_7:def 2;
-::>  *4,4
     then B1: dom (phi.(a * b)) = I & dom ((phi.a)*(phi.b)) = I
-    by PARTFUN1:def 2,CARD_3:9;
-::>  *4,4
+    by PARTFUN1:def 2;
     then B2: dom (phi.(a*b)) = dom((phi.a)*(phi.b));
     for j being Element of I holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j
     proof
       let j be Element of I;
-      reconsider fj = f.j as Homomorphism of G,F/.j by Def6;
-      fj.a = (phi/.a)/.j & fj.b = (phi/.b)/.j by A3;
-      then C1: (fj/.a) * (fj/.b) = (phi/.a)/.j * (phi/.b)/.j by Lm5;
-::>                                                           *4
-      C2: (phi.(a * b))/.j = fj.(a * b) by A3
-      .= (fj/.a) * (fj/.b) by GROUP_6:def 6
-      .= ((phi.a)/.j) * ((phi.b)/.j) by A3,C1
-      .= ((phi.a) * (phi.b))/.j by Lm4;
-      hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j by Def2;
+      reconsider fj = f.j as Homomorphism of G, F.j by Def6;
+      C2: (phi.(a * b)).j = fj.(a * b) by A3
+      .= (fj.a) * (fj.b) by GROUP_6:def 6
+      .= ((phi.a)/.j) * (fj/.b) by A3
+      .= ((phi.a)/.j) * ((phi.b)/.j) by A3
+      .= ((phi.a) * (phi.b))/.j by GROUP_7:1;
+      hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
     end;
-    then for j being object st j in I
-         holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
-    hence phi.(a * b) = (phi.a) * (phi.b) by B1,B2,FUNCT_1:def 11;
+    hence phi.(a * b) = (phi.a) * (phi.b) by B1;
   end;
   then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
   
   take phi;
   let g be Element of G;
-  for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g)
+  for j being Element of I holds (f.j).g = (proj (F, j)) . (phi.g)
   proof
     let j be Element of I;
-    B1: (f.j).g = (phi.g).j by A2,A3;
-    phi.g is Function & phi.g in product F;
-    then (phi.g).j = (proj (F,j)).(phi.g) by Th7;
-    hence  (f.j).g = (proj (F,j)).(phi.g) by B1;
+    (f.j).g = (phi.g).j by A3;
+    hence (f.j).g = (proj (F, j)).(phi.g) by Def3, FUNCT_2:def 1;
   end;
   hence thesis;
 end;
@@ -861,4 +705,3 @@ end;
 
 
 
-::> 4: This inference is not accepted
