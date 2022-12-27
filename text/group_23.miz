@@ -11,10 +11,10 @@
 
 environ
 
- vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FUNCT_1,
-   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1,
-   CARD_3, GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
-   PBOOLE, GROUP_19, GROUP_23;
+ vocabularies MSSUBFAM, BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0,
+   FUNCT_1, FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0,
+   PARTFUN1, CARD_3, GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1,
+   XBOOLE_0, PBOOLE, GROUP_19, GROUP_23;
 
  notations BINOP_1, TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1,
    RELSET_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
@@ -239,11 +239,6 @@ proof
   hence thesis;
 end;
 
-theorem
-  for I being empty set
-  for F being Group-Family of I
-  holds product F is trivial Group by ThEmptyProduct;
-
 reserve I for non empty set;
 reserve i for Element of I;
 reserve F for Group-Family of I;
@@ -318,11 +313,10 @@ definition
   let g be Element of product F;
   let i be Element of I;
   func g/.i -> Element of F.i equals :Def2: g.i;
-  correctness by Th4;    
+  correctness by Th4;
 end;
 
-:: CARD_3:def
-:: PRALG_3:def 2 
+:: Compare to CARD_3:def and PRALG_3:def 2 
 definition
   let I be non empty set;
   let i be Element of I;
@@ -476,11 +470,11 @@ end;
 definition
   let G be Group;
   let I be non empty set;
-  let F be Group-yielding ManySortedSet of I;
-  mode Homomorphism-Family of G,F -> ManySortedFunction of I means
+  let F be Group-Family of I;
+  mode Homomorphism-Family of G, F -> ManySortedFunction of I means
   :Def6:
   for i being Element of I holds
-  it.i is Homomorphism of G,(F.i);
+  it.i is Homomorphism of G, (F.i);
   existence
   proof
     deffunc F1() = I;
@@ -507,10 +501,20 @@ definition
   end;
 end;
 
-theorem
-  for f being Homomorphism-Family of G,F
-  for i being Element of I
-  holds f.i is Homomorphism of G,F.i by Def6;
+:: I hate this, but have no better alternative
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  let f be Homomorphism-Family of G, F;
+  let i be Element of I;
+  redefine func f.i -> Homomorphism of G, F.i;
+  coherence
+  proof
+    f.i is Homomorphism of G, F.i by Def6;
+    hence thesis;
+  end;
+end;
 
 :: Surjective functions have a right-inverse
 theorem Th11:
@@ -556,18 +560,16 @@ proof
 end;
 
 Lm5:
-  for F being Group-yielding ManySortedSet of I
+  for F being Group-Family of I
   holds (Carrier F).i = the carrier of F.i
 proof
-  let F be Group-yielding ManySortedSet of I;
+  let F be Group-Family of I;
   ex R being 1-sorted
   st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
   hence (Carrier F).i = the carrier of F.i;
 end;
 
-Lm6:
-  (Carrier F).i = the carrier of F.i by Lm5;
-
+:: Universal property of group product, explicit version.
 theorem Th13:
   for f being Homomorphism-Family of G, F
   ex phi being Homomorphism of G, product F
@@ -619,7 +621,7 @@ proof
         D2: ii=i & y.i = ((f.i).xx);
         reconsider Fi=(F.i) as Group;
         D4: (Carrier F).i = the carrier of F.i by Lm5; 
-        f.i is Homomorphism of G,F.i by Def6;
+        f.i is Homomorphism of G, F.i;
         then reconsider gi=((f.i).xx) as Element of F.i by FUNCT_2:5;
         gi is Element of Fi & Fi is non empty;
         hence thesis by D2,D4;
@@ -661,12 +663,11 @@ proof
     by GROUP_7:def 2;
     then B1: dom (phi.(a * b)) = I & dom ((phi.a)*(phi.b)) = I
     by PARTFUN1:def 2;
-    then B2: dom (phi.(a*b)) = dom((phi.a)*(phi.b));
     for j being Element of I holds (phi.(a * b)).j = ((phi.a) * (phi.b)).j
     proof
       let j be Element of I;
-      reconsider fj = f.j as Homomorphism of G, F.j by Def6;
-      C2: (phi.(a * b)).j = fj.(a * b) by A3
+      reconsider fj = f.j as Homomorphism of G, F.j;
+      (phi.(a * b)).j = fj.(a * b) by A3
       .= (fj.a) * (fj.b) by GROUP_6:def 6
       .= ((phi.a)/.j) * (fj/.b) by A3
       .= ((phi.a)/.j) * ((phi.b)/.j) by A3
@@ -688,20 +689,71 @@ proof
   hence thesis;
 end;
 
+theorem Th14:
+  for G1, G2 being Group
+  for f1, f2 being Homomorphism of G1,G2
+  st (for g being Element of G1 holds f1.g = f2.g)
+  holds f1 = f2;
 
+:: Universal property of group product, as most people would recognize it.
+theorem Th15:
+  for f being Homomorphism-Family of G, F
+  for i being Element of I
+  ex phi being Homomorphism of G, product F
+  st f.i = (proj (F,i)) * phi
+proof
+  let f be Homomorphism-Family of G, F;
+  let i be Element of I;
+  consider phi being Homomorphism of G, product F such that
+  A1: for g being Element of G
+      holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
+  by Th13;
+  take phi;
+  A2: for g being Element of G holds ((proj (F,i)) * phi).g = (f.i).g
+  proof
+    let g be Element of G;
+    phi is Homomorphism of G, product F & product F is non empty
+    & proj (F, i) is Homomorphism of product F, F.i;
+    then ((proj (F,i)) * phi).g = (proj (F, i)) . (phi.g) by FUNCT_2:15
+                               .= (f.i).g by A1;
+    hence thesis;
+  end;
+  f.i is Homomorphism of G, F.i;
+  hence f.i = (proj (F,i)) * phi by A2, Th14;
+end;
 
-:: theorem
-::   for f being Homomorphism-Family of G, F
-::   ex phi being Homomorphism of G, product F
-::   st f.i = (proj (F,i)) * phi
-:: proof
-::   let f be Homomorphism-Family of G, F;
-::   consider phi being Homomorphism of G, product F;
-:: ::>                                              *403
-::   take phi;
-::   thus f.i = (proj (F,i)) * phi;
-:: ::>                           *4,4
-:: end;
-
+:: Uniqueness part of the universal property of group products
+theorem Th17:
+  for f being Homomorphism-Family of G, F
+  for phi1, phi2 being Homomorphism of G, product F
+  st (for i being Element of I holds f.i = (proj (F,i)) * phi1)
+     & (for i being Element of I holds f.i = (proj (F,i)) * phi2)
+  holds phi1 = phi2
+proof
+  let f be Homomorphism-Family of G, F;
+  let phi1, phi2 be Homomorphism of G, product F;
+  assume A1: for i being Element of I holds f.i = (proj (F,i)) * phi1;
+  assume A2: for i being Element of I holds f.i = (proj (F,i)) * phi2;
+  for g being Element of G holds phi1.g = phi2.g
+  proof
+    let g be Element of G;
+    phi1.g is Element of product (Carrier F) 
+    & phi2.g is Element of product (Carrier F) by GROUP_7:def 2;
+    then B1: dom (phi1.g) = I & dom (phi2.g) = I by PARTFUN1:def 2;
+    for j being Element of I holds (phi1.g).j = (phi2.g).j
+    proof
+      let j be Element of I;
+      C2: (f.j).g = ((proj (F, j)) * phi1).g by A1
+                 .= (proj (F, j)) . (phi1.g) by FUNCT_2:15
+                 .= (phi1.g).j by Def3;
+      (f.j).g = ((proj (F, j)) * phi2).g by A2
+             .= (proj (F, j)) . (phi2.g) by FUNCT_2:15
+             .= (phi2.g).j by Def3;
+      hence (phi1.g).j = (phi2.g).j by C2;
+    end;
+    hence phi1.g = phi2.g by B1, FUNCT_2:12;
+  end;
+  hence phi1 = phi2 by Th14;
+end;
 
 
