@@ -45,7 +45,7 @@ environ
    GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7;
 
  theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_2,
-   GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19;
+   GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19, RELAT_1;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
@@ -509,13 +509,11 @@ definition
   coherence by Def6;
 end;
 
+reserve f for Homomorphism-Family of G, F;
+
 theorem
-  for f being Homomorphism-Family of G, F
-  for i being Element of I
-  holds [i, f.i] in f
+  [i, f.i] in f
 proof
-  let f be Homomorphism-Family of G, F;
-  let i be Element of I;
   i in I & f is ManySortedSet of I;
   then i in dom f by PARTFUN1:def 2;
   hence [i, f.i] in f by FUNCT_1:def 2;
@@ -816,3 +814,85 @@ definition
     hence thesis;
   end;
 end;
+
+theorem Th17:
+  for g being Element of G
+  holds (for i being Element of I holds ((product f).g).i = 1_(F.i))
+  iff (product f).g = 1_(product F)
+proof
+  let g be Element of G;
+  thus (for i being Element of I holds ((product f).g).i = 1_(F.i))
+  implies (product f).g = 1_(product F)
+  proof
+    assume A1: for i being Element of I holds ((product f).g).i = 1_(F.i);
+    set s = (product f).g;
+    A2: for i being set
+    st i in I
+    holds (ex FG being non empty Group-like multMagma st FG = F.i & s.i = (1_FG))
+    proof
+      let i be set;
+      assume i in I;
+      then reconsider ii=i as Element of I;
+      take FG = F.ii;
+      thus FG = F.i;
+      ((product f).g).i = 1_(F.ii) by A1
+                       .= 1_FG;
+      hence thesis;
+    end;
+    s is ManySortedSet of I
+    proof
+      s is Element of product (Carrier F) by GROUP_7:def 2;
+      then B1: s is Function & dom s = I by PARTFUN1:def 2;
+      then s is I-defined by RELAT_1:def 18;
+      hence s is ManySortedSet of I by B1, PARTFUN1:def 2;
+    end;
+    hence thesis by A2, GROUP_7:5;
+  end;
+  thus (product f).g = 1_(product F) implies
+  (for i being Element of I holds ((product f).g).i = 1_(F.i))
+  proof
+    assume A1: (product f).g = 1_(product F);
+    let i be Element of I;
+    thus ((product f).g).i = 1_(F.i) by A1, GROUP_7:6;
+  end;
+end;
+
+
+theorem
+  for g being Element of G
+  holds g in Ker (product f)
+        iff (for i being Element of I holds g in Ker (f.i))
+proof
+  let g be Element of G;
+  thus g in Ker (product f)
+       implies (for i being Element of I holds g in Ker (f.i))
+  proof
+    assume A1: g in Ker (product f);
+    let i be Element of I;
+    (product f).g = 1_(product F) by A1,GROUP_6:41;
+    then 1_(F.i) = ((product f).g).i by Th17
+                .= (f.i).g by Def7;
+    hence g in Ker (f.i) by GROUP_6:41;
+  end;
+  thus (for i being Element of I holds g in Ker (f.i))
+       implies g in Ker (product f)
+  proof
+    assume A1: for i being Element of I holds g in Ker (f.i);
+    A2: for i being Element of I holds (f.i).g = 1_(F.i)
+    proof
+      let i be Element of I;
+      g in Ker (f.i) by A1;
+      hence (f.i).g = 1_(F.i) by GROUP_6:41;
+    end;
+    for i being Element of I holds ((product f).g).i = 1_(F.i)
+    proof
+      let i be Element of I;
+      ((product f).g).i = (f.i).g by Def7
+                       .= 1_(F.i) by A2;
+      hence thesis;
+    end;
+    then (product f).g = 1_(product F) by Th17;
+    hence g in Ker (product f) by GROUP_6:41;
+  end;
+end;
+
