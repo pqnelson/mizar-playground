@@ -1,0 +1,183 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Indexed Families of Groups}
+
+We have indexed families of groups, which are little more than indexed
+families of magmas which satisfy a few nice properties. We do not need
+to redefine anything, but we need to introduce a notion of a relation
+being [[Group-yielding]] (i.e., every element of its range is a group).
+Then we just need to register the fact that
+$\mathcal{F}_{i}$ is an associative group-like magma. This will be
+folded into the definition of a [[Group]] in Mizar. We can use this to
+define a [[Group-Family of I]] as just a [[Group-yielding ManySortedSet of I]].
+This \emph{should have been} the approach taken in \mml{group19}, but wasn't.
+
+<<Indexed Families of Groups>>=
+<<Definition: Group-yielding>>
+
+<<Register: Group-yielding implies magma-yielding and 1-sorted-yielding>>
+
+<<Theorem: associative Group-like magma-Families are Group-yielding>>
+
+<<Register: Group-yielding for Many-sorted set of $I$>>
+
+<<Register: Group-yielding for Function>>
+
+<<Theorem: $\mathcal{F}$ is group-yielding family indexed by $I$ and $i\in I$, then $\mathcal{F}_{i}$ is a group>>
+
+<<Register: F.i is a Group>>
+
+<<Register: ``associative Group-like'' implies ``Group-yielding'' for magma-families>>
+
+@ 
+
+\begin{definition}
+We call a relation \define{Group-yielding} if every object in its range
+is a group.
+\end{definition}
+
+<<Definition: Group-yielding>>=
+definition
+  let IT be Relation;
+  attr IT is Group-yielding means :Def1:
+  for y being object st y in rng IT holds
+  y is Group;
+end;
+@ %def Group-yielding
+
+\begin{voc}
+We add the attribute ``Group-yielding'' to our vocabulary list.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+VGroup-yielding
+@
+
+\begin{registration}
+If a function is Group-yielding, then it is magma-yielding and 1-sorted-yielding.
+\end{registration}
+
+<<Register: Group-yielding implies magma-yielding and 1-sorted-yielding>>=
+registration
+  cluster Group-yielding -> 1-sorted-yielding for Function;
+  coherence;
+  cluster Group-yielding -> multMagma-yielding for Function;
+  coherence;
+end;
+@
+
+\begin{theorem}
+For any set $I$, if $\mathcal{F}$ is an associative Group-like
+magma-family of $I$, then it is group-yielding.
+\end{theorem}
+
+<<Theorem: associative Group-like magma-Families are Group-yielding>>=
+Lm1:
+  for I being set
+  for F being associative Group-like multMagma-Family of I
+  holds F is Group-yielding
+proof
+  let I be set;
+  let F be associative Group-like multMagma-Family of I;
+  for y being object st y in rng F
+  holds y is Group
+  proof
+    let y be object;
+    assume y in rng F;
+    then ex x being object st x in dom F & y = F.x by FUNCT_1:def 3;
+    hence y is Group by GROUP_19:1;
+  end;
+  hence F is Group-yielding by Def1;
+end;
+@
+
+\begin{registration}
+Let $\mathcal{F}$ be a magma-family indexed by a set $I$.
+If $\mathcal{F}$ is assocativie group-like, then it is also group-yielding.
+\end{registration}
+
+<<Register: ``associative Group-like'' implies ``Group-yielding'' for magma-families>>=
+registration
+  let I be set;
+  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
+  coherence by Lm1;
+end;
+@
+
+\begin{registration}
+Let $I$ be any set. We can affix ``Group-yielding'' as an adjective for
+any ``Many sorted set of $I$''.
+\end{registration}
+
+<<Register: Group-yielding for Many-sorted set of $I$>>=
+registration
+  let I be set;
+  cluster Group-yielding for ManySortedSet of I;
+  existence
+  proof
+    set G = the trivial Group;
+    set f = I --> G;
+    take f;
+    let a be object;
+    assume a in rng f;
+    then ex x being object st x in dom f & a = f.x by FUNCT_1:def 3;
+    hence thesis by FUNCOP_1:7;
+  end;
+end;
+@ 
+
+\begin{registration}
+We can now register ``Group-yielding'' as an adjective for functions.
+\end{registration}
+
+<<Register: Group-yielding for Function>>=
+registration
+  cluster Group-yielding for Function;
+  existence
+  proof
+    set I = the set, f = the Group-yielding ManySortedSet of I;
+    take f;
+    thus thesis;
+  end;
+end;
+@
+
+\begin{theorem}
+If $I\neq\emptyset$ is a set, $\mathcal{F}$ is a Group-yielding
+many-sorted set indexed by $I$, and $i\in I$,
+then $\mathcal{F}_{i}$ is a group.
+\end{theorem}
+
+<<Theorem: $\mathcal{F}$ is group-yielding family indexed by $I$ and $i\in I$, then $\mathcal{F}_{i}$ is a group>>=
+Lm4:
+  for I being non empty set
+  for F being Group-yielding ManySortedSet of I
+  for i being Element of I
+  holds F.i is Group
+proof
+  let I be non empty set;
+  let F be Group-yielding ManySortedSet of I;
+  let i be Element of I;
+  i in I & dom F = I by PARTFUN1:def 2;
+  then F.i in rng F by FUNCT_1:3;
+  hence F.i is Group by Def1;
+end;
+@
+
+\begin{registration}
+If $I\neq\emptyset$ is a set, $i\in I$, and $\mathcal{F}$ is a
+group-yielding many-sorted set indexed by $I$, then we should register
+$\mathcal{F}_{i}$ having the adjectives Group-like associative non-empty
+(as a magma) --- i.e., $\mathcal{F}_{i}$ is a group.
+\end{registration}
+
+<<Register: F.i is a Group>>=
+registration
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-yielding ManySortedSet of I;
+  cluster (F . i) -> Group-like associative non empty for multMagma;
+  correctness by Lm4;
+end;
+@ 
+
