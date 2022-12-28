@@ -2,7 +2,6 @@
 
 \section{Environment}
 
-
 <<Environment for [[group_23.miz]]>>=
 environ
 <<[[group_23.miz]] vocabularies>>
@@ -13,65 +12,110 @@ environ
 <<[[group_23.miz]] equalities>>
 <<[[group_23.miz]] expansions>>
 <<[[group_23.miz]] theorems>>
+<<[[group_23.miz]] requirements>>
 <<[[group_23.miz]] schemas>>
 @
 
+\subsection{Vocabularies}
+We need to alert Mizar which words are tokens, and which works are
+identifiers. 
+
 <<[[group_23.miz]] vocabularies>>=
- vocabularies RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0,
-   FUNCT_1, FUNCT_2, FUNCT_4, NUMBERS, CARD_3, BINOP_1,
-   GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
-   GROUP_19;
+ vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FUNCT_1,
+   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1,
+   CARD_3, GROUP_1, GROUP_2, GROUP_5, GROUP_6, GROUP_7, GROUP_12,
+   SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
 @ 
+
+\subsection{Constructors}
+We need to bind the constructors to their tokens, so we alert Mizar
+which articles we're relying on.
 
 <<[[group_23.miz]] constructors>>=
- notations TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, RELSET_1,
-   PARTFUN1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
-   NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, ALGSTR_0, MONOID_0,
-   GROUP_1, GROUP_2, GROUP_4, GROUP_6, PRALG_1, GROUP_7, GROUP_12,
-   GROUP_17, GROUP_19;
+ constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
+   FUNCT_4, FUNCOP_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2, GROUP_12,
+   GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3,
+   PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19;
 @ 
+
+\subsection{Notation}
+The notation for the constructors are usually from the same articles as
+the constructors. Usually.
 
 <<[[group_23.miz]] notations>>=
- constructors PBOOLE, BINOP_1, REALSET1, FUNCT_4, FUNCOP_1, ALGSTR_0,
-   MONOID_0, PRALG_1, GROUP_1, GROUP_2, GROUP_12, GROUP_4, GROUP_6,
-   GROUP_7, FUNCT_7, RELSET_1, FUNCT_3, GROUP_17, GRSOLV_1, GROUP_19;
+ notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
+   FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
+   PBOOLE, CARD_3, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0,
+   MONOID_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6, PRALG_1,
+   GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
 @ 
+
+\subsection{Registrations} We need to specify which articles have
+relevant registrations of adjectives with modes. This also imports
+conditional registrations and functorial registrations.
 
 <<[[group_23.miz]] registrations>>=
- registrations XBOOLE_0, XREAL_0, STRUCT_0, GROUP_2, MONOID_0, NAT_1,
-   RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2, FUNCOP_1, CARD_3, ORDINAL1,
-   FINSET_1, FINSEQ_1, NUMBERS, INT_1, INT_2, XCMPLX_0, CARD_1, NEWTON,
-   FINSEQ_2, BINOP_1, GROUP_1, GROUP_3, GROUP_6, GR_CY_1, FUNCT_7,
-   GROUP_7, GROUP_12, PBOOLE;
+ registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
+   MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
+   FUNCOP_1, CARD_3, ORDINAL1, FINSET_1, FINSEQ_1, CARD_1, BINOP_1,
+   GROUP_3, GROUP_6, GR_CY_1, FUNCT_7, GROUP_7, GROUP_12, PRALG_1,
+   PBOOLE;
 @
 
+\subsection{Definitions}
+When using a ``definitional theorem'', Mizar can fill in quite a bit,
+provided we ask it to --- by citing the articles whose definitions we
+want to enjoy this.
+
 <<[[group_23.miz]] definitions>>=
- definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, FUNCOP_1, FINSEQ_1,
-   PRALG_1, GROUP_1, GROUP_3, GROUP_4, GROUP_6, XXREAL_0, GROUP_7,
-   FUNCT_7;
+ definitions TARSKI, SUBSET_1, RELAT_1, FUNCT_1, FUNCT_2, FUNCOP_1;
 @ 
+
+\subsection{Equalities}
+These will treat terms defined as [[equals]] (something) are treated as
+macros, i.e., abbreviations. Thus they will be replaced with their
+definitions for us (as opposed to us explicitly citing the definition).
 
 <<[[group_23.miz]] equalities>>=
- equalities PARTFUN1, FUNCT_7, FUNCOP_1, FINSET_1, BINOP_1, REALSET1,
-   STRUCT_0, GROUP_2, GROUP_3, GROUP_4, GROUP_6, GR_CY_1, ALGSTR_0,
-   PRALG_1, GROUP_7;
+ equalities PARTFUN1, FUNCT_1, FUNCT_7, FUNCOP_1, FINSET_1, BINOP_1,
+   STRUCT_0, GROUP_2, GROUP_3, GROUP_4, GROUP_6, GROUP_7;
 @ 
 
+\subsection{Expansions}
+The only article I could find which gives \emph{any} explanation to
+expansions is Korni{\l}owicz's ``Enhancements of properties in Mizar''~\cite{kornilowicz2020enhancement}, which summarizes
+it as:
+\begin{quote}
+\verb#expansions# --- imports expansions of predicates and adjectives.
+\end{quote}
+
 <<[[group_23.miz]] expansions>>=
- expansions TARSKI, FUNCT_7, FINSET_1, GROUP_1, GROUP_2, GROUP_6,
-   STRUCT_0, BINOP_1, FUNCT_2, PRALG_1, GROUP_7;
+ expansions TARSKI, FUNCT_7, FINSET_1, ALGSTR_0, GROUP_1, GROUP_2,
+   GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7;
 @ 
+
+\subsection{Theorems}
+We will use theorems and definitions from various articles.
+
+<<[[group_23.miz]] theorems>>=
+ theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_2,
+   GROUP_5, GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19,
+   SETFAM_1, XBOOLE_0, GROUP_21;
+@
+
+\subsection{Requirements}
+The [[BOOLE]] and [[SUBSET]] requirement are invaluable, saving us time
+when proving things like [[x in X]] implies [[x is Element of X]];
 
 <<[[group_23.miz]] requirements>>=
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
-@ 
-
-<<[[group_23.miz]] theorems>>=
- theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, GROUP_2,
-   GROUP_6, GROUP_7, GROUP_12, GROUP_19, PBOOLE, PARTFUN1;
 @
 
+\subsection{Schemas}
+Most of the Schemas we need are related to constructing functions, since
+an element of a product is a function of the indexing set.
+
 <<[[group_23.miz]] schemas>>=
- schemes FUNCT_2;
+ schemes FUNCT_1, FUNCT_2, PBOOLE;
 @
 
