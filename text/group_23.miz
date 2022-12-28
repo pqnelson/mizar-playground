@@ -11,21 +11,22 @@
 
 environ
 
- vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0,
-   FUNCT_1, FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0,
-   PARTFUN1, CARD_3, GROUP_1, GROUP_6, GROUP_7, GROUP_12, SUBSET_1,
-   XBOOLE_0, PBOOLE, GROUP_19, GROUP_23;
+ vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1,
+   STRUCT_0, FUNCT_1, FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1,
+   ALGSTR_0, PARTFUN1, CARD_3, GROUP_1, GROUP_2, GROUP_5, GROUP_6,
+   GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23,
+   SETFAM_1;
 
- notations BINOP_1, TARSKI, XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1,
-   RELSET_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE, CARD_3,
-   NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, MONOID_0, GROUP_1,
-   GROUP_2, GROUP_4, GROUP_6, PRALG_1, GROUP_7, GROUP_12, PARTFUN1,
-   GROUP_17, ALGSTR_0;
+ notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
+   FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
+   PBOOLE, CARD_3, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0,
+   MONOID_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6, PRALG_1,
+   GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1, GROUP_19;
 
- constructors BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
+ constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2, GROUP_12,
-   GROUP_4, GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3, PARTFUN1, GROUP_17,
-   GRSOLV_1, ALGSTR_0;
+   GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3,
+   PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19;
 
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
    MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -33,7 +34,7 @@ environ
    INT_2, XCMPLX_0, CARD_1, NEWTON, FINSEQ_2, BINOP_1, GROUP_3, GROUP_6,
    GR_CY_1, FUNCT_7, GROUP_7, GROUP_12, PRALG_1, PBOOLE;
 
- definitions TARSKI, SUBSET_1, FUNCT_1, FUNCT_2, FUNCOP_1,
+ definitions TARSKI, SUBSET_1, RELAT_1, FUNCT_1, FUNCT_2, FUNCOP_1,
    FINSEQ_1, PRALG_1, GROUP_1, GROUP_3, GROUP_4, GROUP_6, XXREAL_0,
    GROUP_7, FUNCT_7;
 
@@ -45,7 +46,8 @@ environ
    GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7;
 
  theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_2,
-   GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19, RELAT_1;
+   GROUP_5, GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19,
+   SETFAM_1, XBOOLE_0, GROUP_21;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
@@ -65,30 +67,6 @@ registration
   coherence;
   cluster Group-yielding -> multMagma-yielding for Function;
   coherence;
-end;
-
-Lm1:
-  for I being set
-  for F being associative Group-like multMagma-Family of I
-  holds F is Group-yielding
-proof
-  let I be set;
-  let F be associative Group-like multMagma-Family of I;
-  for y being object st y in rng F
-  holds y is Group
-  proof
-    let y be object;
-    assume y in rng F;
-    then ex x being object st x in dom F & y = F.x by FUNCT_1:def 3;
-    hence y is Group by GROUP_19:1;
-  end;
-  hence F is Group-yielding;
-end;
-
-registration
-  let I be set;
-  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
-  coherence by Lm1;
 end;
 
 registration
@@ -116,18 +94,7 @@ registration
   end;
 end;
 
-registration
-  let I be set;
-  cluster -> Group-yielding for Group-like associative multMagma-Family of I;
-  correctness;
-end;
-
-Lm2:
-  for I being set
-  for F being Group-like associative multMagma-Family of I 
-  holds F is Group-yielding ManySortedSet of I;
-
-Lm4:
+theorem Lm4:
   for I being non empty set
   for F being Group-yielding ManySortedSet of I
   for i being Element of I
@@ -149,7 +116,7 @@ registration
   correctness by Lm4;
 end;
 
-LmHuh:
+theorem
   for I being non empty set
   for F being Group-yielding ManySortedSet of I
   for i being object st i in I
@@ -160,18 +127,17 @@ proof
   let i be object;
   assume A1: i in I;
   then A2: i in dom F by PARTFUN1:def 2;
-  reconsider ii=i as Element of I by A1;
-  F.ii is Group;
+  F.i is Group by A1,Lm4;
   then consider G being Group such that
   A3: G = F.i;
   take G;
   thus [i, G] in F by A2,A3,FUNCT_1:def 2;
 end;
 
-definition
-  let I be set;
-  mode Group-Family of I is Group-yielding ManySortedSet of I;
-end;
+:: definition
+::   let I be set;
+::   mode Group-Family of I is Group-yielding ManySortedSet of I;
+:: end;
 
 :: Our notion of "Group-Family" *is* a Group-Family in the sense of GROUP_19
 registration
@@ -189,42 +155,33 @@ proof
   given x being object such that 
   A1: the carrier of M = {x};
   reconsider M as non empty multMagma by A1;
-  reconsider x as Element of M by A1,TARSKI:def 1;
-  A3: for y being Element of M holds y = x by A1,TARSKI:def 1;
-  then A4: x * x = x;
+  reconsider x as Element of M by A1, TARSKI:def 1;
   for a,b,c being Element of M holds (a * b) * c = a * (b * c)
   proof
     let a,b,c be Element of M;
-    B1: (a * b) * c = (x * b) * c by A3
-                   .= x * x by A3,A4
-                   .= x by A4;
-    a * (b * c) = a * (x * c) by A3
-               .= x * x by A3,A4
-               .= x by A4;
-    hence (a * b) * c = a * (b * c) by B1;
+    (a * b) * c = x & a * (b * c) = x by A1, TARSKI:def 1;
+    hence (a * b) * c = a * (b * c);
   end;
-
-  then A5: M is associative;
+  then A2: M is associative;
+  
   ex e being Element of M st
   for h being Element of M holds
   (h * e = h & e * h = h & ex g being Element of M st (h * g = e & g * h = e))
   proof
     take e = x;
     let h be Element of M;
-    B1: h = x by A3;
-    thus h * e = h by B1,A4;
-    thus e * h = h by B1,A4;
+    h = x by A1, TARSKI:def 1;
+    hence h * e = h & e * h = h by A1, TARSKI:def 1;
     take g = x;
-    thus h * g = e by B1,A4;
-    thus g * h = e by B1,A4;
+    thus thesis by A1, TARSKI:def 1;
   end;
-  then A6: M is Group-like;
-  reconsider G=M as strict trivial Group by A1,A5,A6;
+  then M is Group-like;
+  then reconsider G=M as strict trivial Group by A1, A2;
   take G;
   thus thesis;
 end;
 
-theorem ThEmptyProduct:
+theorem
   for I being empty set
   for F being multMagma-Family of I
   holds product F is trivial Group
@@ -269,7 +226,7 @@ proof
 end;
 
 :: Universal property of terminal object for the trivial group
-theorem Th2:
+theorem
   for H being trivial Group
   ex h being Homomorphism of G,H 
   st (for f being Homomorphism of G,H holds h=f)
@@ -346,8 +303,7 @@ definition
     for h being Element of product F holds p.h = h.i
     proof
       let h be Element of product F;
-      p.h = h/.i by A1
-         .= h.i;
+      p.h = h/.i by A1;
       hence thesis;
     end;
     hence thesis;
@@ -362,15 +318,14 @@ definition
       let x be object;
       assume x in the carrier of product F;
       then reconsider xx=x as Element of product F;
-      p1.x = xx.i by A1
-          .= p2.x by A2;
-      hence p1.x = p2.x;
+      p1.x = xx.i by A1;
+      hence p1.x = p2.x by A2;
     end;
     hence p1 = p2;
   end;
 end;
 
-theorem Th6:
+theorem
   proj (F, i) is onto
 proof
   for y being object
@@ -407,7 +362,7 @@ proof
   hence proj (F, i) is onto by FUNCT_1:def 3;
 end;
 
-theorem Th7:
+theorem
   dom proj (F, i) = the carrier of product F &
   for y being Function st y in product F
   holds (proj (F,i)).y = y.i by Def3, FUNCT_2:def 1;
@@ -445,7 +400,7 @@ proof
   hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
 end;
 
-theorem Th10:
+theorem
   proj (F, i) = proj (Carrier F, i)
 proof
   set X = product (Carrier F);
@@ -520,7 +475,7 @@ proof
 end;
 
 :: Surjective functions have a right-inverse
-theorem Th11:
+theorem
   for X,Y being non empty set
   for f being Function of X,Y
   st f is onto
@@ -684,14 +639,14 @@ proof
   hence thesis;
 end;
 
-theorem Th14:
+theorem
   for G1, G2 being Group
   for f1, f2 being Homomorphism of G1,G2
   st (for g being Element of G1 holds f1.g = f2.g)
   holds f1 = f2;
 
 :: Universal property of group product, as most people would recognize it.
-theorem Th15:
+theorem
   for f being Homomorphism-Family of G, F
   for i being Element of I
   ex phi being Homomorphism of G, product F
@@ -715,7 +670,7 @@ proof
 end;
 
 :: Uniqueness part of the universal property of group products
-theorem Th17:
+theorem
   for f being Homomorphism-Family of G, F
   for phi1, phi2 being Homomorphism of G, product F
   st (for i being Element of I holds f.i = (proj (F,i)) * phi1)
@@ -834,31 +789,21 @@ proof
       assume i in I;
       then reconsider ii=i as Element of I;
       take FG = F.ii;
-      thus FG = F.i;
-      ((product f).g).i = 1_(F.ii) by A1
-                       .= 1_FG;
-      hence thesis;
+      thus thesis by A1;
     end;
     s is ManySortedSet of I
     proof
       s is Element of product (Carrier F) by GROUP_7:def 2;
-      then B1: s is Function & dom s = I by PARTFUN1:def 2;
-      then s is I-defined by RELAT_1:def 18;
-      hence s is ManySortedSet of I by B1, PARTFUN1:def 2;
+      hence s is ManySortedSet of I;
     end;
     hence thesis by A2, GROUP_7:5;
   end;
   thus (product f).g = 1_(product F) implies
-  (for i being Element of I holds ((product f).g).i = 1_(F.i))
-  proof
-    assume A1: (product f).g = 1_(product F);
-    let i be Element of I;
-    thus ((product f).g).i = 1_(F.i) by A1, GROUP_7:6;
-  end;
+  (for i being Element of I holds ((product f).g).i = 1_(F.i)) by GROUP_7:6;
 end;
 
 
-theorem
+theorem Th18:
   for g being Element of G
   holds g in Ker (product f)
         iff (for i being Element of I holds g in Ker (f.i))
@@ -896,3 +841,194 @@ proof
   end;
 end;
 
+theorem
+  the carrier of Ker (product f) = meet { the carrier of Ker (f.i) where
+  i is Element of I : not contradiction }
+proof
+  set Fam = { the carrier of Ker (f.i) where i is Element of I : not contradiction };
+  A1: Fam <> {}
+  proof
+    set i = the Element of I;
+    the carrier of Ker (f.i) in Fam;
+    hence thesis;
+  end;
+  A3: for g being object
+  holds g in Ker (product f)
+        iff (for A being set st A in Fam holds g in A)
+  proof
+    let g be object;
+    hereby 
+      assume B1: g in Ker (product f);
+      let A be set;
+      assume A in Fam;
+      then consider i1 being Element of I such that
+      B2: A = the carrier of Ker(f.i1);
+      g in G & g in Ker (product f) by B1, GROUP_2:40;
+      then g in Ker (f.i1) by Th18;
+      hence g in A by B2;
+    end;
+    assume B1: for A being set st A in Fam holds g in A;
+    g in G & for i being Element of I holds g in Ker (f.i)
+    proof
+      ex x being object st x in Fam by A1, XBOOLE_0:def 1;
+      then consider A0 being set such that
+      B2: A0 in Fam; 
+      consider i0 being Element of I such that
+      B3: A0 = the carrier of Ker (f.i0) by B2;
+      g in Ker (f.i0) by B1, B2, B3;
+      hence g in G by GROUP_2:40;
+      
+      let i be Element of I;
+      the carrier of Ker (f.i) in Fam;
+      hence g in Ker (f.i) by B1;
+    end;
+
+    hence g in Ker (product f) by Th18;
+  end;
+  A4: for g being object
+  holds g in Ker (product f)
+        iff g in (meet Fam)
+  proof
+    let g be object;
+    g in Ker (product f) iff (for A being set st A in Fam holds g in A) by A3;
+    hence thesis by A1, SETFAM_1:def 1;
+  end;
+  for g being object
+  holds g in the carrier of Ker (product f) iff g in meet Fam
+  proof
+    let g be object;
+    g in the carrier of Ker (product f) iff g in Ker (product f);
+    hence thesis by A4;
+  end;
+  hence thesis by TARSKI:2;
+end;
+
+theorem Th20:
+  for F,SubFam being Group-Family of I
+  st (for i being Element of I holds (SubFam.i) is Subgroup of (F.i))
+  holds product SubFam is strict Subgroup of product F by GROUP_21:23;
+
+theorem
+  for Z being Group-Family of I
+  st (for i being Element of I holds Z.i = center (F.i))
+  holds center (product F) = product Z
+proof
+  let Z be Group-Family of I;
+  assume A1: for i being Element of I holds Z.i = center (F.i);
+  product F is strict Group;
+  A2: for a being Element of product F
+  holds a in product Z iff
+  for b being Element of product F holds a*b = b*a
+  proof
+    let a be Element of product F;
+    thus a in product Z implies (for b being Element of product F holds a*b = b*a)
+    proof
+      assume B1: a in product Z;
+      let b be Element of product F;
+      reconsider ab=a*b, ba=b * a as Element of product F;
+      B2: dom (Carrier F) = I by PARTFUN1:def 2;
+      product F is non empty;
+      then ab in product F & ba in product F;
+      then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
+      then B3: dom ab = I & dom ba = I by B2, CARD_3:9;
+      for i being Element of I holds (a * b).i = (b * a).i
+      proof
+        let i be Element of I;
+        a.i in Z.i by B1, GROUP_19:5;
+        then C1: a.i in center (F.i) by A1;
+        (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
+        .= (b/.i) * (a/.i) by C1, GROUP_5:77
+        .= (b * a).i by GROUP_7:1;
+        hence thesis;
+      end;
+      then for i being Element of I holds ab.i = ba.i;
+      hence a*b = b*a by B3, FUNCT_1:def 3;
+    end;
+    thus (for b being Element of product F holds a*b = b*a)
+         implies a in product Z
+    proof
+      assume B1: for b being Element of product F holds a*b = b*a;
+      then a in center (product F) by GROUP_5:77;
+      B3: dom (Carrier F) = I & dom (Carrier Z) = I by PARTFUN1:def 2;
+      B2: for i being Element of I
+      holds a.i in Z.i
+      proof
+        let i be Element of I;
+        C1: for b being Element of product F holds
+        (a/.i)*(b/.i) = (b/.i) * (a /.i)
+        proof
+          let b be Element of product F;
+          (a * b) = (b * a) by B1;
+          then C1: (a * b).i = (a /. i) * (b /. i) by GROUP_7:1;
+          (a * b) = (b * a) by B1;
+          then (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
+          hence thesis by C1,B1;
+        end;
+        for bi being Element of F.i
+        holds (a/.i)*bi = bi*(a/.i)
+        proof
+          let bi be Element of F.i;
+          i is Element of I & F is Group-like associative multMagma-Family of I;
+          then reconsider b= (1ProdHom (F, i)).bi as Element of product F
+          by GROUP_12:def 3, GROUP_2:42;
+          D1: dom (1_(product F)) = I by GROUP_19:3;
+          b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
+          then b/.i = bi by D1, B3, FUNCT_7:31;
+          then (a/.i)*bi = bi * (a /.i) by C1;
+          hence thesis by C1;
+        end;
+
+        then C1: a.i in center (F.i) by GROUP_5:77;
+        hence a.i in Z.i by A1;
+      end;
+      a in product F;
+      then a in product (Carrier F) by GROUP_7:def 2;
+      then B4: dom a = I by B3, CARD_3:9;
+      then B5: dom a = dom (Carrier Z) by B3;
+      for i being object st i in dom (Carrier Z) holds a.i in (Carrier Z).i
+      proof
+        let i be object;
+        assume Z1: i in dom (Carrier Z);
+        then reconsider ii=i as Element of I;
+        a.i in Z.ii by B2;
+        then Z2: a.i in the carrier of (Z.ii) by Z1,B2;
+        i in I by B3,Z1;
+        then ex R being 1-sorted st
+        (R = Z.i & (Carrier Z).i = the carrier of R) by PRALG_1:def 15;
+        hence a.i in (Carrier Z).i by B3, Z1, Z2, CARD_3:9;
+      end;
+      then a in product (Carrier Z) by B3, B5, CARD_3:9;
+      hence a in product Z by GROUP_7:def 2;
+    end;
+  end;
+
+  A3: for a being Element of product F
+  holds a in product Z iff a in center (product F)
+  proof
+    let a be Element of product F;
+    hereby 
+      assume a in product Z;
+      then for b being Element of product F holds a*b = b*a by A2;
+      hence a in center (product F) by GROUP_5:77;
+    end;
+    assume a in center (product F);
+    then for b being Element of product F holds a*b = b*a by GROUP_5:77;
+    hence a in product Z by A2;
+  end;
+  for i being Element of I holds Z.i is Subgroup of F.i
+  proof
+    let i be Element of I;
+    Z.i = center (F.i) by A1;
+    hence Z.i is Subgroup of F.i by GROUP_5:def 10;
+  end;
+  then product Z is Subgroup of product F by Th20;
+  hence thesis by A3, GROUP_2:60;
+end;
+
+theorem
+  for D being Group-Family of I
+  st (for i being Element of I holds D.i = (F.i)`)
+  holds (product F)` = product D;
+::>                            *4
+
+::> 4: This inference is not accepted
