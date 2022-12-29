@@ -11,10 +11,11 @@
 
 environ
 
- vocabularies BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FUNCT_1,
-   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1,
-   CARD_3, GROUP_1, GROUP_2, GROUP_5, GROUP_6, GROUP_7, GROUP_12,
-   SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
+ vocabularies RLSUB_1, TARSKI, NEWTON, XXREAL_1, BINOP_1, RLVECT_2,
+   ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1, FUNCT_2, FUNCT_4,
+   FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3, GROUP_1,
+   GROUP_2, GROUP_5, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
+   PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
 
  notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
    FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
@@ -23,9 +24,9 @@ environ
    GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
 
  constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
-   FUNCT_4, FUNCOP_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2, GROUP_12,
-   GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3,
-   PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19;
+   FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
+   GROUP_12, GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7, RELSET_1,
+   FUNCT_3, PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19;
 
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
    MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -155,16 +156,16 @@ registration
       proof
         let i be set;
         assume i in I;
-        then F.i is Group by A1,A2,Def1,FUNCT_1:3;
+        then F.i is Group by A1,A2,FUNCT_1:3;
         hence thesis;
       end;
-      then A3: F is Group-like by Def1, GROUP_7:def 3;
+      then A3: F is Group-like;
       for i being set st i in I
       ex Fi being non empty associative multMagma st Fi = F.i
       proof
         let i be set;
         assume i in I;
-        then F.i is Group by A1,A2,Def1,FUNCT_1:3;
+        then F.i is Group by A1,A2,FUNCT_1:3;
         hence thesis;
       end;
       hence F is Group-like associative by A3;
@@ -184,15 +185,11 @@ registration
       for y being object st y in rng F holds y is Group
       proof
         let y be object;
-        assume A1: y in rng F;
+        assume y in rng F;
         then consider i being object such that
-        A2: i in dom F and
-        A3: y = F.i
+        A1: i in dom F & y = F.i
         by FUNCT_1:def 3;
-        dom F = I by PARTFUN1:def 2;
-        A4: i in I by A2, PARTFUN1:def 2;
-        then F.i is Group by GROUP_19:1;
-        hence thesis by A3;
+        thus thesis by A1, GROUP_19:1;
       end;
       hence F is Group-yielding;
     end;
@@ -968,7 +965,6 @@ theorem
 proof
   let Z be Group-Family of I;
   assume A1: for i being Element of I holds Z.i = center (F.i);
-  product F is strict Group;
   A2: for a being Element of product F
   holds a in product Z iff
   for b being Element of product F holds a*b = b*a
@@ -979,11 +975,9 @@ proof
       assume B1: a in product Z;
       let b be Element of product F;
       reconsider ab=a*b, ba=b * a as Element of product F;
-      B2: dom (Carrier F) = I by PARTFUN1:def 2;
-      product F is non empty;
-      then ab in product F & ba in product F;
+      ab in product F & ba in product F;
       then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
-      then B3: dom ab = I & dom ba = I by B2, CARD_3:9;
+      then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
       for i being Element of I holds (a * b).i = (b * a).i
       proof
         let i be Element of I;
@@ -994,15 +988,12 @@ proof
         .= (b * a).i by GROUP_7:1;
         hence thesis;
       end;
-      then for i being Element of I holds ab.i = ba.i;
-      hence a*b = b*a by B3, FUNCT_1:def 3;
+      hence a*b = b*a by B3;
     end;
     thus (for b being Element of product F holds a*b = b*a)
          implies a in product Z
     proof
       assume B1: for b being Element of product F holds a*b = b*a;
-      then a in center (product F) by GROUP_5:77;
-      B3: dom (Carrier F) = I & dom (Carrier Z) = I by PARTFUN1:def 2;
       B2: for i being Element of I
       holds a.i in Z.i
       proof
@@ -1011,46 +1002,41 @@ proof
         (a/.i)*(b/.i) = (b/.i) * (a /.i)
         proof
           let b be Element of product F;
-          (a * b) = (b * a) by B1;
-          then C1: (a * b).i = (a /. i) * (b /. i) by GROUP_7:1;
-          (a * b) = (b * a) by B1;
-          then (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
+          C1: (a * b).i = (a /. i) * (b /. i) by GROUP_7:1;
+          (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
           hence thesis by C1,B1;
         end;
         for bi being Element of F.i
         holds (a/.i)*bi = bi*(a/.i)
         proof
           let bi be Element of F.i;
-          i is Element of I & F is Group-like associative multMagma-Family of I;
-          then reconsider b= (1ProdHom (F, i)).bi as Element of product F
-          by GROUP_12:def 3, GROUP_2:42;
+          reconsider b= (1ProdHom (F, i)).bi as Element of product F
+          by GROUP_2:42;
           D1: dom (1_(product F)) = I by GROUP_19:3;
           b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
-          then b/.i = bi by D1, B3, FUNCT_7:31;
-          then (a/.i)*bi = bi * (a /.i) by C1;
+          then b/.i = bi by D1, FUNCT_7:31;
           hence thesis by C1;
         end;
 
-        then C1: a.i in center (F.i) by GROUP_5:77;
+        then a.i in center (F.i) by GROUP_5:77;
         hence a.i in Z.i by A1;
       end;
       a in product F;
       then a in product (Carrier F) by GROUP_7:def 2;
-      then B4: dom a = I by B3, CARD_3:9;
-      then B5: dom a = dom (Carrier Z) by B3;
+      then dom a = I by PARTFUN1:def 2;
+      then B5: dom a = dom (Carrier Z) by PARTFUN1:def 2;
       for i being object st i in dom (Carrier Z) holds a.i in (Carrier Z).i
       proof
         let i be object;
         assume Z1: i in dom (Carrier Z);
         then reconsider ii=i as Element of I;
         a.i in Z.ii by B2;
-        then Z2: a.i in the carrier of (Z.ii) by Z1,B2;
-        i in I by B3,Z1;
-        then ex R being 1-sorted st
-        (R = Z.i & (Carrier Z).i = the carrier of R) by PRALG_1:def 15;
-        hence a.i in (Carrier Z).i by B3, Z1, Z2, CARD_3:9;
+        then Z2: a.i in the carrier of (Z.ii);
+        ex R being 1-sorted st (R = Z.i & (Carrier Z).i = the carrier of R)
+        by Z1, PRALG_1:def 15;
+        hence a.i in (Carrier Z).i by Z2;
       end;
-      then a in product (Carrier Z) by B3, B5, CARD_3:9;
+      then a in product (Carrier Z) by B5, CARD_3:9;
       hence a in product Z by GROUP_7:def 2;
     end;
   end;
@@ -1072,16 +1058,87 @@ proof
   proof
     let i be Element of I;
     Z.i = center (F.i) by A1;
-    hence Z.i is Subgroup of F.i by GROUP_5:def 10;
+    hence Z.i is Subgroup of F.i;
   end;
   then product Z is Subgroup of product F by GROUP_21:23;
   hence thesis by A3, GROUP_2:60;
 end;
 
+theorem Th21:
+  for F being Group-Family of I
+  for f being Function
+  st dom f = I & (for i being Element of I holds f.i in F.i)
+  holds f in product F by CARD_3:9;
+::>                     *4
+
 theorem
   for D being Group-Family of I
   st (for i being Element of I holds D.i = (F.i)`)
-  holds (product F)` = product D;
-::>                            *4
+  holds (product F)` = product D
+proof
+  let D be Group-Family of I;
+  assume A1: for i being Element of I holds D.i = (F.i)`;
+  for i being Element of I holds D.i is Subgroup of F.i
+  proof
+    let i be Element of I;
+    D.i = (F.i)` by A1;
+    hence thesis; 
+  end;
+  then A2: product D is strict Subgroup of (product F) by GROUP_21:23;
+  
+  A3: (product F)` is strict Subgroup of (product D)
+  proof
+    for a, b being Element of (product F) holds [. a,b .] in product D
+    proof
+      let a, b be Element of (product F);
+      set c = [. a, b .];
+      B1: dom c = I by GROUP_19:3;
+      for i being Element of I holds c.i in D.i
+      proof
+        let i be Element of I;
+        C1: a/.i in (Omega).(F.i) & b/.i in (Omega).(F.i);
+        c.i = ((((a") * (b")) * a) * b).i by GROUP_5:def 2
+           .= (((((a") * (b")) * a))/.i) * (b/.i) by GROUP_7:1
+           .= ((((a") * (b"))/.i * (a/.i))) * (b/.i) by GROUP_7:1
+           .= ((((a")/.i * (b")/.i) * (a/.i))) * (b/.i) by GROUP_7:1
+           .= (((((a/.i)") * ((b")/.i)) * (a/.i))) * (b/.i) by GROUP_7:8
+           .= (((((a/.i)") * ((b/.i)")) * (a/.i))) * (b/.i) by GROUP_7:8
+           .= [. (a/.i), (b/.i) .] by GROUP_5:def 2;
+        then c.i in [. (Omega).(F.i), (Omega).(F.i) .] by C1, GROUP_5:65;
+        then c.i in (F.i)` by GROUP_5:def 9;
+        hence c.i in D.i by A1;
+      end;
+      hence c in product D by B1,Th21;
+    end;
+    hence thesis by A2, GROUP_6:7;
+  end;
+  for g being Element of (product F) st g in (product D)
+  holds g in (product F)`
+  proof
+    let g be Element of (product F);
+    assume B1: g in (product D);
+    
+    for i being Element of I
+    ex gsi being FinSequence of the carrier of F.i st
+    ex I0i being FinSequence of INT
+    st (len gsi = len I0i & rng gsi c= commutators (F.i) & g.i = Product (gsi |^ I0i))
+    proof
+      let i be Element of I;
+      g.i in D.i by B1,GROUP_19:5;
+      then g.i in (F.i)` by A1;
+      hence thesis by GROUP_5:73;
+    end;
+
+    ex gs being FinSequence of the carrier of (product F) st
+    ex I0 being FinSequence of INT
+    st (len gs = len I0 & rng gs c= commutators (product F) & g = Product (gs |^ I0));
+::>                                                                                 *4
+    hence g in (product F)` by GROUP_5:73;
+  end;
+
+  then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
+  hence thesis by A3, GROUP_2:55;
+end;
+
 
 ::> 4: This inference is not accepted
