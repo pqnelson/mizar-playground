@@ -11,22 +11,23 @@
 
 environ
 
- vocabularies RLSUB_1, TARSKI, NEWTON, XXREAL_1, BINOP_1, RLVECT_2,
-   ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1, FUNCT_2, FUNCT_4,
-   FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3, GROUP_1,
-   GROUP_2, GROUP_5, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
-   PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
+ vocabularies QC_LANG1, RLSUB_1, TARSKI, NEWTON, XXREAL_1, BINOP_1,
+   RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1, FUNCT_2,
+   FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3,
+   GROUP_1, GROUP_2, PRE_TOPC, GROUP_3, GROUP_5, GROUP_6, GROUP_7,
+   GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
 
  notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
-   FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
-   PBOOLE, CARD_3, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0,
-   MONOID_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6, PRALG_1,
+   FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE,
+   CARD_3, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, MONOID_0,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1,
    GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
 
  constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
-   GROUP_12, GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7, RELSET_1,
-   FUNCT_3, PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19;
+   GROUP_3, GROUP_12, GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7,
+   RELSET_1, FUNCT_3, PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1,
+   GROUP_19;
 
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
    MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -42,9 +43,9 @@ environ
  expansions TARSKI, FUNCT_7, FINSET_1, ALGSTR_0, GROUP_1, GROUP_2,
    GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7;
 
- theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_2,
-   GROUP_5, GROUP_6, GROUP_7, GROUP_12, PARTFUN1, PRALG_1, GROUP_19,
-   SETFAM_1, XBOOLE_0, GROUP_21;
+ theorems TARSKI, FUNCT_1, FUNCT_2, FUNCT_7, FUNCOP_1, CARD_3, GROUP_1,
+   GROUP_2, GROUP_3, GROUP_5, GROUP_6, GROUP_7, GROUP_12, PARTFUN1,
+   PRALG_1, GROUP_19, SETFAM_1, XBOOLE_0, GROUP_21;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
@@ -1064,6 +1065,153 @@ proof
   hence thesis by A3, GROUP_2:60;
 end;
 
+theorem Th22:
+  for G being Group
+  for N being normal Subgroup of G
+  for a,b being Element of G
+  st a*N = b*N
+  ex n being Element of G st n in N & a*n=b
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let a,b be Element of G;
+  assume A1: a*N = b*N;
+  consider n being Element of G such that
+  A2: n = a" * b;
+  A3: n in N by A1,A2,GROUP_2:114;
+  take n;
+  thus n in N by A3;
+  a * n = a * (a" * b) by A2
+  .= (a * a") * b by GROUP_1:def 3
+  .= (1_G) * b by GROUP_1:def 5
+  .= b by GROUP_1:def 4;
+  hence thesis;
+end;
+
+
+:: Universal property of quotient group
+theorem Th23:
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Group
+  for phi being Homomorphism of G,H st N is Subgroup of Ker phi
+  ex f being Homomorphism of (G./.N), H
+  st phi = f * (nat_hom N)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Group;
+  let phi be Homomorphism of G,H;
+  assume A1: N is Subgroup of Ker phi;
+  defpred P[object, object] means
+  ex g being Element of G st $1 = g*N & $2 = (phi.g);
+  A2: for x being object st x in the carrier of G./.N
+  ex y being object st y in the carrier of H & P[x,y]
+  proof
+    let x be object;
+    assume B1: x in the carrier of G./.N;
+    then x in G./.N;
+    then consider g being Element of G such that
+    B2: x = g*N & x = N*g by GROUP_6:23;
+    take y = phi.g;
+    thus y in the carrier of H;
+    take g;
+    thus x = g*N by B2;
+    thus y = phi.g;
+  end;
+  consider f being Function of the carrier of (G./.N), the carrier of H
+  such that
+  A3: for x being object st x in the carrier of G./.N holds P[x, f.x]
+  from FUNCT_2:sch 1(A2);
+  reconsider f as Function of G./.N, H;
+
+  A4: for x being Element of G./.N
+  ex g being Element of G
+  st f.x = phi.g & x = g*N
+  proof
+    let x be Element of G./.N;
+    x in the carrier of G./.N;
+    then P[x, f.x] by A3;
+    hence thesis;
+  end;
+  A5: for x being Element of G./.N
+  for g being Element of G st x = g*N
+  holds f.(g * N) = phi.g
+  proof
+    let x be Element of G./.N;
+    let g be Element of G;
+    assume B1: x = g*N;
+    x in the carrier of G./.N;
+    then consider g0 being Element of G such that
+    B2: f.x = phi.g0 & x = g0*N by A4;
+    g0*N = g*N by B1,B2;
+    then consider n being Element of G such that
+    B3: n in N & g0*n = g
+    by Th22;
+    
+    B4: n in Ker phi by A1,B3,GROUP_2:40;
+    phi.g = phi.(g0 * n) by B3
+    .= (phi.g0) * (phi.n) by GROUP_6:def 6
+    .= (phi.g0) * (1_H) by B4, GROUP_6:41
+    .= phi.g0 by GROUP_1:def 4;
+    hence f.(g * N) = phi.g by B1,B2;
+  end;
+
+
+  for a, b being Element of G./.N
+  holds f.(a * b) = (f.a) * (f.b)
+  proof
+    let a, b be Element of G./.N;
+    consider ga being Element of G such that
+    B1: f.a = phi.ga and
+    B2: a = ga*N by A4;
+    consider gb being Element of G such that
+    B3: f.b = phi.gb and
+    B4: b = gb*N by A4;
+
+    B6: (ga * N) * (gb * N)
+    = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
+    .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
+    .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
+    .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
+    .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
+    .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
+    .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
+    .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
+    .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
+    .= ((ga * gb) * N) * N by GROUP_2:109
+    .= (ga * gb) * (N * N) by GROUP_2:29
+    .= (ga * gb) * N by GROUP_2:76;
+    then B7: (ga * gb) * N = (ga * N) * (gb * N)
+    .= (@ a) * (gb * N) by B2
+    .= (@ a) * (@ b) by B4
+    .= (a * b) by GROUP_6:19;
+    then B8: a * b = (ga * gb) * N by B2,B4;
+    (f.a) * (f.b) = (phi.ga) * (f.b) by B1
+    .= (phi.ga) * (phi.gb) by B3
+    .= phi.(ga * gb) by GROUP_6:def 6
+    .= f.(a * b) by B8, A5;
+    
+    hence f.(a * b) = (f.a) * (f.b);
+  end;
+  then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
+  take f;
+  A6: for g being Element of G
+  holds phi.g = (f * (nat_hom N)).g
+  proof
+    let g be Element of G;
+    reconsider x = (nat_hom N).g as Element of G./.N;
+    B1: x = g * N by GROUP_6:def 8;
+    (f * (nat_hom N)).g = f.((nat_hom N).g) by FUNCT_2:15
+    .= f.(g * N) by GROUP_6:def 8
+    .= f.x by B1
+    .= phi.g by B1,A5;
+    hence phi.g = (f * (nat_hom N)).g;
+  end;
+
+  thus phi = f * (nat_hom N) by A6,FUNCT_2:def 8;
+end;
+
 theorem Th21:
   for F being Group-Family of I
   for f being Function
@@ -1112,33 +1260,42 @@ proof
     end;
     hence thesis by A2, GROUP_6:7;
   end;
+
+
+  A4: for g being Element of (product F) st g in (product D)
+  holds g in Ker (nat_hom (product F)`)
+  proof
+    let g be Element of (product F);
+    assume B1: g in (product D);
+    set QG = (product F)./.((product F)`);
+    
+    for i being Element of I
+    for varphi being Homomorphism of (product F),D.i
+    st varphi = (nat_hom ((F.i)`)) * (proj (F, i))
+    ex fi being Homomorphism of QG,D.i st varphi = fi * (nat_hom ((product F)`))
+    & Image fi = (1).(D.i);
+::>                      *4
+
+    :: construct the Homomorphism-Family from the varphi
+    :: th
+
+    ((nat_hom ((product F)`))/.g) = 1_(QG);
+::>                                      *4
+    then (nat_hom ((product F)`)).g = 1_(QG);
+    hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
+  end;
   for g being Element of (product F) st g in (product D)
   holds g in (product F)`
   proof
     let g be Element of (product F);
-    assume B1: g in (product D);
-    
-    for i being Element of I
-    ex gsi being FinSequence of the carrier of F.i st
-    ex I0i being FinSequence of INT
-    st (len gsi = len I0i & rng gsi c= commutators (F.i) & g.i = Product (gsi |^ I0i))
-    proof
-      let i be Element of I;
-      g.i in D.i by B1,GROUP_19:5;
-      then g.i in (F.i)` by A1;
-      hence thesis by GROUP_5:73;
-    end;
-
-    ex gs being FinSequence of the carrier of (product F) st
-    ex I0 being FinSequence of INT
-    st (len gs = len I0 & rng gs c= commutators (product F) & g = Product (gs |^ I0));
-::>                                                                                 *4
-    hence g in (product F)` by GROUP_5:73;
+    assume Z1: g in (product D);
+    then g in Ker (nat_hom (product F)`) by A4;
+    hence g in (product F)` by GROUP_6:43;
   end;
-
   then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
   hence thesis by A3, GROUP_2:55;
 end;
 
 
 ::> 4: This inference is not accepted
+::> 143: No implicit qualification
