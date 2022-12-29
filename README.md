@@ -5,6 +5,9 @@ entries to more recent ones.
 To make a PDF of the literate proof, simply run `make doc` or `make`. To
 extract the Mizar code and vocabulary file, run `make extract_code`.
 
+If you want to learn more about Mizar, I've written a [number of notes](https://pqnelson.github.io/org-notes/comp-sci/theorem-provers/mizar/index.html)
+and linked to a number of excellent resources.
+
 # Mizar References
 
 - Wiedijk, [Writing a Mizar Article in 9 Easy Steps](http://www.mizar.org/project/mizman.pdf)
