@@ -1,1168 +1,189 @@
-
 environ
 
- vocabularies RING_3, MOD_4, TMP,
-   MSSUBFAM, RELAT_1, TARSKI, FUNCT_1, ZFMISC_1, NUMBERS, WELLORD1,
-   SUBSET_1, XBOOLE_0, FUNCT_2, CARD_1
-,
-   STRUCT_0, GROUP_1, GROUP_2, GROUP_4, GROUP_5, GROUP_6,
-   BINOP_1, BINOP_2, ALGSTR_0, REALSET1, GRSOLV_1, AUTGROUP
-,
-   NEWTON, PRE_TOPC, GROUP_3
+ vocabularies NUMBERS, NEWTON, ARYTM_3, RELAT_1, NAT_1, XXREAL_0,
+   ARYTM_1, SUBSET_1, CARD_1, TARSKI, FUNCT_1, PRE_POLY, XCMPLX_0,
+   NAT_3, SCRATCH;
 
-;
- constructors TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-              RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS
-,
-   BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
-   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
+ notations TARSKI, XBOOLE_0, SUBSET_1, ORDINAL1, CARD_1, NUMBERS,
+   XCMPLX_0, XXREAL_0, XREAL_0, REAL_1, NAT_D, INT_2, RELAT_1, FUNCT_1,
+   FUNCT_2, FINSEQ_1, FINSEQ_2, VALUED_0, PBOOLE, RVSUM_1, NEWTON,
+   TREES_4, FUNCOP_1, XXREAL_2, PRE_POLY, NAT_3;
 
-;
- notations TARSKI, XBOOLE_0, ZFMISC_1, SUBSET_1, RELAT_1, FUNCT_1,
-           RELSET_1, PARTFUN1, FUNCT_2, FUNCOP_1, CARD_1, NUMBERS
-,
-   BINOP_1, BINOP_2, STRUCT_0, ALGSTR_0, REALSET1, GROUP_1, GROUP_2,
-   GROUP_3, GROUP_4, GROUP_5, GROUP_6, GRSOLV_1, AUTGROUP
-
-;
- registrations XBOOLE_0, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2
-,
-   STRUCT_0, GROUP_1, GROUP_2, GROUP_3, GROUP_6
-
-;
- requirements BOOLE, SUBSET
-;
- definitions SUBSET_1, FUNCT_1, TARSKI, FUNCT_2
-,
-   GROUP_3, AUTGROUP
-
-;
- equalities BINOP_1, REALSET1, GROUP_2, GROUP_3, ALGSTR_0
-;
- expansions BINOP_1, FUNCT_2
-;
- theorems
-   TARSKI_0, TARSKI, SUBSET_1, RELSET_1, FUNCT_1, FUNCT_2, ZFMISC_1,
-   XBOOLE_0, RELAT_1, XBOOLE_1
-,
-   GROUP_1, GROUP_2, GROUP_3, GROUP_5, GROUP_6, REALSET1, STRUCT_0,
-   GRSOLV_1, AUTGROUP
-
-;
- schemes BINOP_1, FUNCT_2
-;
-
+ constructors BINOP_1, SETWISEO, NAT_D, FINSEQOP, FINSOP_1, NEWTON, WSIERP_1,
+   BINOP_2, XXREAL_2, RELSET_1, PRE_POLY, REAL_1, NAT_3;
+ registrations XBOOLE_0, RELAT_1, FUNCT_1, FINSET_1, NUMBERS, XCMPLX_0,
+   XXREAL_0, NAT_1, INT_1, BINOP_2, MEMBERED, NEWTON, VALUED_0, FINSEQ_1,
+   XXREAL_2, CARD_1, FUNCT_2, RELSET_1, ZFMISC_1, FINSEQ_2, PRE_POLY,
+   XREAL_0, RVSUM_1, NAT_3;
+ requirements NUMERALS, SUBSET, ARITHM, REAL, BOOLE;
+ definitions TARSKI, XBOOLE_0, INT_2, NAT_D, FINSEQ_1, VALUED_0,
+   PRE_POLY, NAT_3;
+ equalities FINSEQ_1, FINSEQ_2, PBOOLE, ORDINAL1, NAT_3;
+ expansions TARSKI, XBOOLE_0, INT_2, NAT_D, FINSEQ_1, VALUED_0, PBOOLE,
+   NAT_3;
+ theorems NEWTON, NAT_1, INT_2, XREAL_1, NAT_D, PRE_POLY, NAT_3,
+   MOEBIUS1, TARSKI, PREPOWER;
 
 begin :: preparatory work
-reserve X for set;
 
-LmOntoMapsEverything:
-for X,Y being non empty set
-for f being Function of X,Y
-st f is onto
-holds f .: X = Y
+Lm2:
+  for k,m being non zero Nat
+  st k*m <= m
+  holds k <= 1
 proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume f is onto;
-  then A0: rng f = Y;
-  A1: dom f = X by FUNCT_2:def 1;
-  A2: for y being object
-  holds y in rng f iff ex x being object st x in X & y = f.x
-  by A1, FUNCT_1:def 3;
-  A3: for y being object holds y in (f .: X) iff
-  ex x being object st x in X & x in X & y = f.x
-  by A1,FUNCT_1:def 6;
-
-  B1: for y being object holds y in (f .: X) implies y in rng f
+  let k,m be non zero Nat;
+  assume k*m <= m;
+  then k*m - m <= 0 by XREAL_1:47;
+  then A1: (k - 1)*m <= 0;
+  k > 1 implies contradiction
   proof
-    let y be object;
-    assume y in (f .: X);
-    then consider x being object such that
-    A10: x in X and x in X and A11: y = f.x
-    by A3;
-    thus y in rng f by A10,A11,A2;
+    assume k > 1;
+    then 0 < (k - 1) by XREAL_1:50;
+    hence contradiction by A1;
+  end;
+  hence k <= 1;
+end;
+
+
+theorem Lm3:
+  for a,b,c being Nat
+  st 1 < b & b |^ a <= b |^ c
+  holds b |-count (b |^ a) <= b |-count (b |^ c)
+proof
+  let a,b,c be Nat;
+  assume A1: 1 < b;
+  assume A2: b |^ a <= b |^ c;
+  A3: b |-count (b |^ a) = a & b |-count (b |^ c) = c by A1, NAT_3:25;
+  a > c implies contradiction
+  proof
+    assume A4: a > c;
+    then consider t being Nat such that
+    A5: a = c + t by NAT_1:10;
+    t = a - c by A5;
+    then t > 0 by A4,XREAL_1:50;
+    then A6: t >= 1 by NAT_1:25;
+    1 |^ t = 1;
+    then A7: b |^ t > 1 by A1, A6, PREPOWER:10;
+    b |^ a = (b |^ c) * (b |^ t) by A5, NEWTON:8;
+    hence contradiction by A1,A2,A7,PREPOWER:11, XREAL_1:155;
   end;
 
-
-  B2: for y being object holds y in rng f implies y in (f .: X)
-  proof
-    let y be object;
-    assume y in rng f;
-    then consider x being object such that
-    A20: x in X and A21: y = f.x
-    by A2;
-    thus y in (f .: X) by A20,A21,A3;
-  end;
-
-  for y being object holds y in rng f iff y in (f .: X) by B1,B2;
-  then rng f = f .: X by TARSKI:2;
-  hence f .: X = Y by A0;
-end;
-
-registration
-  let X;
-  cluster id X -> onto;
-  coherence;
-end;
-
-registration
-  let X;
-  cluster id X -> bijective;
-  coherence;
-end;
-
-LmSubgroupElt:
-for G being Group
-for H being Subgroup of G
-for h being Element of G st h in H holds h is Element of H
-proof
-  let G be Group,
-      H be Subgroup of G,
-      h be Element of G;
-  assume h in H;
-  then h is Element of the carrier of H by STRUCT_0:def 5;
-  then h is Element of H;
-  hence thesis;
-end;
-
-LmSubgroupEltTrans:
-  for G being Group
-  for H1,H2 being Subgroup of G
-  for g being Element of G
-  st g in H1 & H1 is Subgroup of H2
-  holds g in H2
-proof
-  let G be Group;
-  let H1,H2 be Subgroup of G;
-  let g be Element of G;
-  assume A1: g in H1 & H1 is Subgroup of H2;
-  then g is Element of H1 by LmSubgroupElt;
-  then g in H2 by A1, GROUP_2:40;
-  hence thesis;
-end;
-
-Lm3: for G1,G2 being Group
-for H being Subgroup of G1
-for f being Homomorphism of G1,G2
-for h being Element of G1
-st h in H
-holds (f|H).h = f.h
-proof
-  let G1,G2 be Group;
-  let H be Subgroup of G1;
-  let f be Homomorphism of G1,G2;
-  let h be Element of G1;
-  assume h in H;
-  then h is Element of H by LmSubgroupElt;
-  then (f|(the carrier of H)).h = f.h by FUNCT_1:49;
-  then (f|H).h = f.h by GRSOLV_1:def 2;
-  hence thesis;
-end;
-
-LmNormalSubgroup:
-for G being Group
-for H being Subgroup of G
-st (for a being Element of G holds H |^ a = H)
-holds H is normal Subgroup of G
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  assume A0: for a being Element of G holds H |^ a = H;
-  then for a being Element of G holds the carrier of H |^ a = the carrier of H;
-  then for a being Element of G holds the multMagma of H = H |^ a by GROUP_2:59;
-  hence H is normal Subgroup of G by GROUP_3:def 13;
-end;
-
-LmEpi:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  st Image(f) = G2
-  holds f is onto
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  assume A1: Image(f) = G2;
-  then rng f = the carrier of Image f by GROUP_6:44
-  .= the carrier of G2 by A1;
-  then f is onto by FUNCT_2:def 3;
-  hence thesis;
-end;
-
-LmRestrictCollapse:
-for G,G2 being Group
-for K being Subgroup of G
-for H being Subgroup of K
-for f being Homomorphism of G,G2
-holds (f|K)|H = f|H
-proof
-  let G,G2 be Group;
-  let K be Subgroup of G;
-  let H be Subgroup of K;
-  let f be Homomorphism of G,G2;
-  set UG = the carrier of G;
-  set UK = the carrier of K;
-  set UH = the carrier of H;
-  UH c= UK by GROUP_2:def 5;
-  then C1: (f|UK)|UH = f|UH by RELAT_1:73,74;
-  f|K is Homomorphism of K,G2;
-  (f|K)|H is Homomorphism of H,G2;
-  C2: (f|UK) = f|K &
-  f|UH = f|H by GRSOLV_1:def 2;
-  (f|K)|H = (f|K)|UH by GRSOLV_1:def 2
-  .= (f|UK)|UH by GRSOLV_1:def 2;
-  then (f|K)|H = f|H by C1,C2;
-  hence thesis;
+  hence b |-count (b |^ a) <= b |-count (b |^ c) by A3;
 end;
 
 
-Lm25:
-for Y,Z being non empty set
-for f being Function of Y,Z
-for X1,X2 being non empty set
-st X1 c= X2 & X2 c= Y
-holds (f|X2) .: X1 = f .: X1
-proof
-  let Y,Z be non empty set;
-  let f be Function of Y,Z;
-  let X1,X2 be non empty set;
-  assume Z72: X1 c= X2;
-  assume Z73: X2 c= Y;
-  Z78: dom f = Y by FUNCT_2:def 1;
-  Z79: X2 c= dom f by Z78, Z73,Z73,XBOOLE_1:1;
-  then Z80: X2 /\ dom f = X2 by XBOOLE_1:28;
-  Z81: X1 c= dom f by Z72,Z79,XBOOLE_1:1;
-  then Z82: X1 c= dom f /\ X2 by Z72,XBOOLE_1:19;
-  for y being object holds y in (f .: X1) iff y in ((f|X2) .: X1)
-  proof
-    let y be object;
-    thus y in f .: X1 implies y in ((f|X2) .: X1)
-    proof
-      assume Z76: y in f .: X1;
-      then Z77: ex x being object st x in dom f & x in X1 & y = f.x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom f and
-      C2: x0 in X1 and
-      C3: y = f.x0;
-      ex x being object st x in dom f /\ X2 & x in X1 & y = f.x by
-      Z82, Z77,FUNCT_1:def 6;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      then x0 in dom f /\ X2 & x0 in X1 & y = f.x0 by Z80,Z72,C1,C2,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      Z <> {} & x0 in X1 & y = f.x0 & y = (f|X2).x0 by BA1, C2,Z72,C3;
-      then y in ((f|X2) .: X1) by B1,C2,Z72,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus y in (f|X2) .: X1 implies y in (f .: X1)
-    proof
-      assume Z1: y in (f|X2) .: X1;
-      then Z2: ex x being object
-      st x in dom (f|X2) & x in X1 & y = (f|X2).x by FUNCT_1:def 6;
-      then consider x0 being object such that
-      C1: x0 in dom (f|X2) and
-      C2: x0 in X1 and
-      C3: y = (f|X2).x0;
-      ex x being object st x in dom (f|X2) & x in X1 & y = (f|X2).x
-      by Z82, Z2,FUNCT_1:def 6;
-      B11: f is Function of Y,Z;
-      X2 <> {} & Z <> {} & f is Function of Y,Z & X2 c= Y by Z73;
-      then B1: f|X2 is Function of X2,Z by FUNCT_2:32;
-      then for x being object st x in X2 /\ dom f holds (f|X2).x = f.x by FUNCT_1:48;
-      for x being object st x in X2 holds x in X2 /\ dom f by Z79, XBOOLE_1:28;
-      then BA1: for x being object st x in X2 holds (f|X2).x = f.x by Z79,Z73,FUNCT_1:48;
-      then B2: (f|X2).x0 = f.x0 by Z72,C1,C2,C3;
-      f is Function of Y,Z &
-      Z <> {} & X1 c= X2 & X2 c= Y & x0 in X1 & x0 in Y & y = f.x0 by B1,B2,C2,C1,Z72,Z73,C3;
-:: FUNCT_2:35
-:: for f being Function of X,Y st Y <> {} for y holds (ex x st x in X &
-::  x in P & y = f.x) implies y in f.:P
-      then y in (f .: X1) by B1,FUNCT_2:35;
-      hence thesis;
-    end;
-    thus thesis;
-  end;
-  then (f|X2) .: X1 = f .: X1 by TARSKI:2;
-  hence thesis;
-end;
-
-
-
-begin
-
-reserve G for Group;
-
-definition :: Def1
-  let G;
-  mode Endomorphism of G is Homomorphism of G,G;
-end;
-
-reserve f for Endomorphism of G;
-
-registration
-  let G;
-  cluster bijective for Endomorphism of G;
-  existence
-  proof
-    reconsider i = id the carrier of G as Homomorphism of G,G by GROUP_6:38;
-    i is bijective;
-    hence thesis;
-  end;
-end;
-
-definition :: Def2
-  let G;
-  mode Automorphism of G is bijective Endomorphism of G;
-end;
-
+:: converse to NAT_3:30
 theorem Th1:
-  Image (f|(1).G) = (1).G
+  for m,n being non zero Nat
+  st (for p being Prime holds (ppf m).p <= (ppf n).p)
+  holds m divides n
 proof
-  Image(f|(1).G) = f .: ((1).G) by GRSOLV_1:def 3
-  .= (1).G by GRSOLV_1:11;
-  hence thesis;
-end;
-
-:: In particular, the trivial proper subgroup (1).G of G is invariant
-:: under inner automorphisms, and thus is a characteristic subgroup.
-theorem Th2:
-  for phi being Automorphism of G
-  holds Image(phi|(1).G) is Subgroup of (1).G
-proof
-  let phi be Automorphism of G;
-  (1).G is Subgroup of (1).G by GROUP_2:54;
-  hence Image(phi|(1).G) is Subgroup of (1).G by Th1;
-end;
-
-theorem LmKerRestrictedIsSubgroupOfKer:
-  for G1,G2 being Group
-  for f being Homomorphism of G1,G2
-  for H being Subgroup of G1
-  holds Ker(f|H) is Subgroup of Ker(f)
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  let H be Subgroup of G1;
-  A0: Ker(f|H) is Subgroup of G1 by GROUP_2:56;
-  Ker(f) is Subgroup of G1;
-  for g being Element of G1
-  st g in Ker(f|H)
-  holds g in Ker(f)
+  let m,n be non zero Nat;
+  assume A1: for p being Prime holds (ppf m).p <= (ppf n).p;
+  for p being Prime holds p |-count m <= p |-count n
   proof
-    let g be Element of G1;
-    assume A1: g in Ker(f|H);
-    Ker(f|H) is Subgroup of H;
-    then A2: g in H by A1, LmSubgroupEltTrans;
-    then A3: (f|H).g = f.g by Lm3;
-    g is Element of H by A2, LmSubgroupElt;
-    then (f|H).g = 1_G2 by A1,GROUP_6:41;
-    then f.g = 1_G2 by A3;
-    then g in Ker(f) by GROUP_6:41;
-    hence thesis;
-  end;
-
-  then Ker(f|H) is Subgroup of Ker(f) by A0,GROUP_2:58;
-  hence thesis;
-end;
-
-Lm8: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
-proof
-  let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
-  hence thesis by GROUP_2:55;
-end;
-
-Lm9:
-for G being Group
-for H being Subgroup of G
-for phi being Automorphism of G
-holds (phi|H) is Homomorphism of H,Image(phi|H) & (phi|H) is one-to-one
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
-::  thus (phi|H) is one-to-one Homomorphism of H,Image(phi|H);
-  thus phi|H is Homomorphism of H,Image(phi|H) by GRSOLV_1:def 2, GRSOLV_1:def 3, GROUP_6:49;
-  AA0: phi is one-to-one;
-  then Ker(phi) = (1).G by GROUP_6:56;
-  then Ker(phi|H) is Subgroup of (1).G by LmKerRestrictedIsSubgroupOfKer;
-  then AA1: Ker(phi|H) = (1).G by Lm8;
-  (1).G = (1).H by GROUP_2:63;
-  then Ker(phi|H) = (1).H by AA1;
-  then (phi|H) is one-to-one by GROUP_6:56;
-  hence thesis;
-end;
-
-theorem Th14:
-  for G being Group
-  for H being Subgroup of G
-  for phi being Automorphism of G
-  holds H,phi .: H are_isomorphic
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let phi be Automorphism of G;
-  reconsider H2 = phi .: H as Subgroup of G;
-  Image(phi|H) = H2 by GRSOLV_1:def 3;
-  phi|H is one-to-one by Lm9;
-  then H,Image(phi|H) are_isomorphic by GROUP_6:68;
-  then H,phi .: H are_isomorphic by GRSOLV_1:def 3;
-  hence thesis;
-end;
-
-definition :: Def3
-  let G;
-  func Id_G -> Endomorphism of G means
-  :Def3:
-  for x being Element of G holds it.x=x;
-  existence
-  proof
-    reconsider i = id (the carrier of G) as Homomorphism of G,G by GROUP_6:38;
-    for x being Element of G holds i.x = x by FUNCT_1:17;
-    hence thesis;
-  end;
-
-  uniqueness
-  proof
-    let Id1, Id2 be Endomorphism of G such that
-    A1: for x being Element of G holds Id1.x=x and
-    A2: for x being Element of G holds Id2.x=x;
-    let x be Element of G;
-    thus Id1.x = x by A1
-              .= Id2.x by A2;
-    thus thesis;
-  end;
-
-end;
-
-theorem Th3:
-  Id_G = id (the carrier of G)
-proof
-  let x be Element of G;
-  thus A4: (Id_G).x = x by Def3
-                   .= (id (the carrier of G)).x;
-  thus thesis;
-end;
-
-Lm1: Id_G is one-to-one
-proof
-  id (the carrier of G) is one-to-one;
-  hence thesis by Th3;
-end;
-
-Lm2: Id_G is onto
-proof
-  id (the carrier of G) is onto;
-  hence thesis by Th3;
-end;
-
-
-registration let G;
-  cluster Id_G -> bijective;
-  coherence by Lm1,Lm2;
-end;
-
-LmMinor:
-for G being Group
-for H being Subgroup of G
-for f being Automorphism of G
-st Image(f|H) = H
-holds f|H is Automorphism of H
-proof
-  let G be Group;
-  let H be Subgroup of G;
-  let f be Automorphism of G;
-  assume A1: Image(f|H) = H;
-  then C1: f|H is Homomorphism of H,H by GROUP_6:49;
-  C2: f|H is one-to-one by A1, Lm9;
-
-  C3: f|H is onto Endomorphism of H
-  proof
-    set UH = the carrier of H;
-    AA1: f|H is Function of UH,UH by C1;
-    rng(f|H) = the carrier of H by GROUP_6:44, A1;
-    then AA3: f|H is onto Function of UH,UH by AA1,FUNCT_2:def 3;
-::by AA1,FUNCT_2:def 3;
-    then f|H is onto Homomorphism of H,H by C1;
-    hence thesis;
-  end;
-
-  then f|H is bijective Homomorphism of H,H by C2;
-  then f|H is Automorphism of H;
-  hence thesis;
-end;
-
-definition :: Def5
-  let G;
-  let IT be Automorphism of G;
-  attr IT is inner means
-  :Def5:
-  ex a being Element of G st
-  for x being Element of G holds IT.x = x |^ a;
-end;
-notation
-  let G be Group, f be Automorphism of G;
-  antonym f is outer for f is inner;
-end;
-
-
-theorem Th4:
-  for x being Element of G holds (Id_G).x = x |^ 1_G
-proof
-  let x be Element of G;
-  (Id_G).x = x by Def3
-          .= x |^ 1_G by GROUP_3:19;
-  hence thesis;
-end;
-
-registration
-  let G;
-  cluster inner for Automorphism of G;
-  existence
-  proof
-    take Id_G;
-    take 1_G;
-    thus thesis by Th4;
-  end;
-
-end;
-
-theorem Th5:
-  for G being strict Group, f being object
-  holds (f in Aut G) iff (f is Automorphism of G)
-proof
-  let G be strict Group;
-  let f be object;
-  thus f in Aut G implies f is Automorphism of G
-  proof
-    assume A0: f in Aut G;
-    then reconsider f as Endomorphism of G by AUTGROUP:def 1;
-    f is bijective by A0,AUTGROUP:def 1;
-    then f is Automorphism of G;
-    hence thesis;
-  end;
-
-  thus f is Automorphism of G implies f in Aut G
-  proof
-    assume f is Automorphism of G;
-    then reconsider f as Automorphism of G;
-    f is bijective;
-    then f in Aut G by AUTGROUP:def 1;
-    hence thesis;
-  end;
-
-  thus thesis;
-end;
-
-Lm4:
-  for G being strict Group
-  for f being Element of InnAut G
-  holds f is Automorphism of G
-proof
-  let G be strict Group;
-  let f be Element of InnAut G;
-  f is Element of Aut G by AUTGROUP:12;
-  then f in Aut G;
-  hence f is Automorphism of G by Th5;
-end;
-
-
-theorem Th6:
-  for G being strict Group
-  for f being object
-  holds (f in InnAut G) iff (f is inner Automorphism of G)
-proof
-  let G be strict Group;
-  let f be object;
-  thus (f in InnAut G) implies (f is inner Automorphism of G)
-  proof
-    assume Z0: f in InnAut G;
-    then f is Automorphism of G by Lm4;
-    then reconsider f as Automorphism of G;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then consider a being Element of G such that
-    A2: for x being Element of G holds f.x = x |^ a
-    by Z0,AUTGROUP:def 4;
-    f is inner Automorphism of G by Def5,A2;
-    hence thesis;
-  end;
-
-  thus (f is inner Automorphism of G) implies (f in InnAut G)
-  proof
-    assume Z1: f is inner Automorphism of G;
-    reconsider f as inner Automorphism of G by Z1;
-    f is Element of Aut G by Z1,Th5;
-    then consider a being Element of G such that
-    B1: for x being Element of G holds f.x = x |^ a
-    by Z1,Def5;
-    f is Element of Funcs (the carrier of G, the carrier of G) by FUNCT_2:9;
-    then f in InnAut G by B1,AUTGROUP:def 4;
-    hence thesis;
-  end;
-
-  thus thesis;
-end;
-
-theorem Th7:
-  for H being Subgroup of G
-  for a being Element of G
-  for f being Automorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds Image(f|H) = H |^ a
-proof
-  let H be Subgroup of G,
-      a be Element of G,
-      f be Automorphism of G;
-  assume
-A0: for x being Element of G holds f.x = x |^ a;
-C1: for h being Element of G st h in H holds (f|H).h = h |^ a
-  proof
-    let h be Element of G;
-    assume h in H;
-    then Z1: f.h = (f|H).h by Lm3;
-    f.h = h |^ a by A0;
-    hence (f|H).h = h |^ a by Z1;
-  end;
-
-C2: for y being Element of G st y in Image(f|H) holds y in H |^ a
-  proof
-    let y be Element of G;
-    assume y in Image(f|H);
-    then consider h being Element of H such that
-    AA1: (f|H).h = y by GROUP_6:45;
-    h is Element of G by GROUP_2:42;
-    then reconsider h as Element of G;
-    AA2: h in H by STRUCT_0:def 5;
-    then (f|H).h = h |^ a by C1;
-    then y = h |^ a by AA1;
-    then y = h |^ a & h in H by AA2;
-    then y in H |^ a by GROUP_3:58;
-    hence thesis;
-  end;
-
-C3: for y being Element of G st y in H |^ a holds y in Image(f|H)
-  proof
-    let y be Element of G;
-    assume y in H |^ a;
-    then ex g being Element of G st y = g |^ a & g in H by GROUP_3:58;
-    then consider g being Element of G such that
-    AB1:    y=g|^a and
-    AB2:    g in H;
-
-  AB3:  (f|H).g = f.g by Lm3,AB2
-        .= g |^ a by A0
-        .= y by AB1;
-    reconsider g as Element of H by AB2,LmSubgroupElt;
-    reconsider fH = (f|H) as Homomorphism of H,G;
-    fH.g = y by AB3;
-    hence y in Image(f|H) by GROUP_6:45;
-  end;
-
-  for y being Element of G holds y in (H |^ a) iff y in Image(f|H) by C2,C3;
-  then (H |^ a) = Image(f|H) by GROUP_2:def 6;
-  hence thesis;
-end;
-
-theorem Th8:
-  for G being Group
-  for a being Element of G
-  for f being Endomorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds Ker f = (1).G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-A1:  for x being Element of G holds x in Ker f implies x in (1).G
-  proof
-    let x be Element of G;
-    assume A11: x in Ker f;
-    then f.x = 1_G by GROUP_6:41;
-    then x |^ a = 1_G by A0;
-    then A12: x = 1_G by A0,GROUP_3:18,GROUP_6:41;
-    the carrier of (1).G = {1_G} by GROUP_2:def 7;
-    then 1_G in the carrier of (1).G by TARSKI:def 1;
-    then x in the carrier of (1).G by A12;
-    then x in (1).G by STRUCT_0:def 5;
-    hence thesis;
-  end;
-
-
-A2:  for x being Element of G holds x in (1).G implies x in Ker f
-  proof
-    let x be Element of G;
-    assume Z4: x in (1).G;
-    then x is Element of (1).G by LmSubgroupElt;
-    then x in the carrier of (1).G;
-    then x in {1_G} by GROUP_2:def 7;
-    then x = 1_G by TARSKI:def 1;
-    then f.x = 1_G by GROUP_6:31;
-    then x in Ker f by GROUP_6:41;
-    hence thesis;
-  end;
-
-  thus Ker f = (1).G by A1,A2,GROUP_2:60;
-end;
-
-theorem Th9:
-for G being Group
-for a being Element of G
-for f being Endomorphism of G
-st (for x being Element of G holds f.x = x |^ a)
-holds f is Automorphism of G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-  then Ker f = (1).G by Th8;
-  then
-C0: f is one-to-one by GROUP_6:56;
-C2:  ex fInv being Endomorphism of G st f*fInv = id (the carrier of G)
-  proof
-    deffunc F(Element of G) = ($1) |^ a";
-    consider fInv be Function of the carrier of G, the carrier of G such that
-  A1: for g being Element of G holds fInv.g = F(g) from FUNCT_2:sch 4;
-    fInv is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-  A2: for x1,x2 being Element of G holds fInv.(x1 * x2) = fInv.x1 * fInv.x2
+    let p be Prime;
+    (ppf m).p <= (ppf n).p by A1;
+    per cases;
+    suppose B1: p in support (ppf n) & p in support (ppf m);
+      then p in support (pfexp n) by NAT_3:def 9;
+      then (ppf n).p = p |^ (p |-count n) by NAT_3:def 9;
+      then A3: (ppf m).p <= p |^ (p |-count n) by A1;
+      p in support (pfexp m) by B1,NAT_3:def 9;
+      then A4: (p |^ (p |-count m)) <= (p |^ (p |-count n))
+      by A3, NAT_3:def 9;
+      not (p |-count m <= p |-count n) implies contradiction
       proof
-        let x1,x2 be Element of G;
-        A21: fInv.x1 = x1 |^ a" & fInv.x2 = x2 |^ a" by A1;
-        fInv.(x1 * x2) = (x1 * x2) |^ a" by A1
-        .= (x1 |^ a") * (x2 |^ a") by GROUP_3:23
-        .= fInv.x1 * fInv.x2 by A21;
-        hence thesis;
+        assume B2: not (p |-count m <= p |-count n);
+        then consider k being Nat such that
+        B3: (p |-count m) = (p |-count n) + k by NAT_1:10;
+        p |^ (p |-count m) = (p |^ (p |-count n)) * (p |^ k) by B3, NEWTON:8;
+        then p |^ k <= 1 by A4,Lm2;
+        then p |^ k <= p |^ 0 by NEWTON:4;
+        then B4: p |-count (p |^ k) <= p |-count (p |^ 0) by Lm3, INT_2:def 4;
+        p |-count (p |^ 0) = 0 & p |-count (p |^ k) = k
+        by INT_2:def 4, NAT_3:25;
+        then k = 0 by B4;
+        hence contradiction by B2,B3;
       end;
-      then fInv is multiplicative by GROUP_3:23, GROUP_6:def 6;
-      then fInv is Endomorphism of G;
-      then reconsider fInv as Endomorphism of G;
-
-    for x being Element of G holds (f*fInv).x = (id the carrier of G).x
-    proof
-      let x be Element of G;
-      (f * fInv).x = f.(fInv.x) by FUNCT_2:15
-      .= f.(x |^ a") by A1
-      .= (x |^ a") |^ a by A0
-      .= x |^ (a" * a) by GROUP_3:24
-      .= x |^ 1_G by GROUP_1:def 5
-      .= x by GROUP_3:19
-      .= (id the carrier of G).x;
       hence thesis;
     end;
-    then f*fInv = id the carrier of G by FUNCT_1:2;
-
-    hence thesis;
+    suppose p in support (ppf n) & not (p in support (ppf m));
+      then not (p in support (pfexp m)) by NAT_3:def 9;
+      then (pfexp m).p = 0 by PRE_POLY:def 7;
+      hence thesis by NAT_3:def 8;
+    end;
+    suppose not (p in support (ppf n));
+      then not (p in support (pfexp n)) by NAT_3:def 9;
+      then (pfexp n).p = 0 by PRE_POLY:def 7;
+      then p |-count n = 0 by NAT_3:def 8;
+      then (ppf n).p = 0 by NAT_3:55;
+      then (ppf m).p = 0 by A1;
+      then not (p in support (ppf m)) by PRE_POLY:def 7;
+      then not (p in support (pfexp m)) by NAT_3:def 9;
+      then (pfexp m).p = 0 by PRE_POLY:def 7;
+      hence thesis by NAT_3:def 8;
+    end;
   end;
-
-
-  then rng f = the carrier of G by FUNCT_2:18;
-  then f is onto by GROUP_6:58;
-  then f is bijective by C0;
-  then f is Automorphism of G;
-  hence thesis;
+  hence m divides n by MOEBIUS1:19;
 end;
-
-theorem Th10:
-  for G being Group
-  for a being Element of G
-  for f being Endomorphism of G
-  st (for x being Element of G holds f.x = x |^ a)
-  holds f is inner Automorphism of G
-proof
-  let G be Group;
-  let a be Element of G;
-  let f be Endomorphism of G;
-  assume A0: for x being Element of G holds f.x = x |^ a;
-  then f is Automorphism of G by Th9;
-  then f is inner Automorphism of G by A0,Def5;
-  hence thesis;
-end;
-
-theorem ThAlwaysFindInnerAuto:
-for G being Group
-for a being Element of G
-holds ex f being inner Automorphism of G st (for x being Element of G
-holds f.x = x |^ a)
-proof
-  let G be Group;
-  let a be Element of G;
-  deffunc F(Element of G) = ($1) |^ a;
-  consider f be Function of the carrier of G, the carrier of G such that
-A1: for g being Element of G holds f.g = F(g) from FUNCT_2:sch 4;
-  f is Element of Funcs(the carrier of G, the carrier of G) by FUNCT_2:8;
-  for x1,x2 being Element of G holds f.(x1 * x2) = f.x1 * f.x2
-  proof
-    let x1,x2 be Element of G;
-    A2: f.x1 = x1 |^ a & f.x2 = x2 |^ a by A1;
-    f.(x1 * x2) = (x1 * x2) |^ a by A1
-    .= (x1 |^ a) * (x2 |^ a) by GROUP_3:23
-    .= f.x1 * f.x2 by A2;
-    hence thesis;
-  end;
-  then f is multiplicative by GROUP_3:23, GROUP_6:def 6;
-  then f is Endomorphism of G;
-  then reconsider f as Endomorphism of G;
-C1: f is inner Automorphism of G by A1,Th10;
-  for x being Element of G holds f.x = x |^ a by A1;
-  hence thesis by C1;
-end;
-
-theorem Th16:
-  for G being Group
-  for H being strict Subgroup of G
-  holds (H is normal) iff (for f being inner Automorphism of G holds Image(f|H)=H)
-proof
-  let G be Group;
-  let H be strict Subgroup of G;
-  C1: (H is normal) implies (for f being inner Automorphism of G holds Image(f|H)=H)
-  proof
-    assume A0: H is normal;
-    let f be inner Automorphism of G;
-    consider a being Element of G such that
-    A1: for x being Element of G holds f.x = x |^ a
-    by Def5;
-    A2: Image(f|H) = H |^ a by A1,Th7;
-    H |^ a = the multMagma of H by A0,GROUP_3:def 13
-    .= H by GROUP_2:def 6;
-    then Image(f|H)=H by A2;
-    hence thesis;
-  end;
-
-  C2: not ((for f being inner Automorphism of G holds Image(f|H)=H) implies H is normal)
-      implies contradiction
-  proof
-    assume B1: for f being inner Automorphism of G holds Image(f|H)=H;
-    assume not H is normal;
-    then consider a being Element of G such that
-    B2: H |^ a <> the multMagma of H
-    by GROUP_3:def 13;
-    consider f being inner Automorphism of G such that
-    B3: (for x being Element of G holds f.x= x |^ a)
-    by ThAlwaysFindInnerAuto;
-    Image(f|H) = H |^ a by B3, Th7;
-    hence contradiction by B1,B2;
-  end;
-
-  thus thesis by C1,C2;
-end;
-
-
-
-definition :: Def9
-  let G;
-  let IT be Subgroup of G;
-  attr IT is characteristic means
-  :Def9:
-  for f being Automorphism of G
-  holds Image (f|IT) = IT;
-end;
-
-Lm5: for H being Subgroup of G st H is Subgroup of (1).G holds the
-multMagma of H = the multMagma of (1).G
-proof
-  let H be Subgroup of G;
-  assume
-A1:  H is Subgroup of (1).G;
-  reconsider H as Subgroup of (1).G by A1;
-A2: (1).G is Subgroup of H by GROUP_2:65;
-  H is Subgroup of (1).G & (1).G is Subgroup of H by A1,A2;
-  hence thesis by GROUP_2:55;
-end;
-
-
-Lm6: (1).G is characteristic
-proof
-A1:  for f being Automorphism of G
-     holds Image (f|(1).G) is Subgroup of (1).G by Th2;
-  for f being Automorphism of G holds Image(f|(1).G) = (1).G
-  proof
-    let f be Automorphism of G;
-    reconsider I = Image(f|(1).G) as Subgroup of (1).G by A1;
-    (1).G = I by Lm5;
-    then Image(f|(1).G) = (1).G by A1;
-    hence thesis;
-  end;
-  then (1).G is characteristic by Def9;
-  hence thesis;
-end;
-
-
-theorem Th11:
-  ex H being Subgroup of G st H is characteristic
-proof
-  take H = (1).G;
-  H is characteristic by Lm6;
-  hence thesis;
-end;
-
-registration
-  let G;
-  cluster characteristic for Subgroup of G;
-  existence by Th11;
-end;
-
-registration
-  let G be Group;
-  cluster strict characteristic for Subgroup of G;
-  existence
-  proof
-    take (1).G;
-    thus thesis by Lm6;
-  end;
-end;
-
-theorem Th12:
-  for G being Group
-  for K being characteristic Subgroup of G
-  holds K is normal Subgroup of G
-proof
-  let G be Group;
-  let K be characteristic Subgroup of G;
-A1:  for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider f being inner Automorphism of G such that
-  A2: for x being Element of G holds f.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-    A3: Image(f|K) = K by GROUP_6:57,Def9;
-    Image(f|K) = K |^ a by A2,Th7;
-    then K |^ a = K by A3,Def9;
-    hence thesis;
-  end;
-
-  for a being Element of G holds the carrier of K |^ a = the carrier of K by A1;
-  then for a being Element of G holds the multMagma of K = K |^ a by GROUP_2:59;
-  hence K is normal Subgroup of G by A1,GROUP_3:def 13;
-end;
-
-registration
-  let G be Group;
-  cluster characteristic -> normal for Subgroup of G;
-  coherence by Th12;
-end;
-
-theorem Th13:
-  for G being Group
-  for H being strict Subgroup of G
-  st (for K being strict Subgroup of G
-      st card K = card H
-      holds H = K)
-  holds H is characteristic
-proof
-  let G be Group;
-  let H be strict Subgroup of G;
-  assume A0: for K being strict Subgroup of G st card K = card H holds H = K;
-  H is characteristic
-  proof
-    let phi be Automorphism of G;
-    Image(phi|H) = phi .: H by GRSOLV_1:def 3;
-    then Image(phi|H),H are_isomorphic by Th14;
-    then card H = card Image(phi|H) by GROUP_6:73;
-    then Image(phi|H) = H by A0;
-    hence thesis;
-  end;
-  hence thesis;
-end;
-for G being Group
-for H being Subgroup of G
-for f being Automorphism of G
-st Image(f|H) = H
-holds f|H is Automorphism of H by LmMinor;
-
-Lm30:
-for G being Group
-for N being strict normal Subgroup of G
-for a being Element of G
-holds ex f being Automorphism of N st (for x being Element of G st x in N holds f.x = x |^ a)
-proof
-  let G be Group;
-  let N be strict normal Subgroup of G;
-  let a be Element of G;
-  consider g being inner Automorphism of G such that
-  A1: for x being Element of G holds g.x = x |^ a
-  by ThAlwaysFindInnerAuto;
-  N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
-  then g|N is Automorphism of N by LmMinor;
-  then reconsider f = g|N as Automorphism of N;
-  take f;
-  let x be Element of G;
-  assume A2: x in N;
-  then x is Element of N by LmSubgroupElt;
-  (g|N).x = g.x by Lm3,A2;
-  then f.x = x |^ a by A1;
-  hence thesis;
-end;
-
-
-LmTmp:
-for G,G2 being Group
-for H being Subgroup of G
-for f being Homomorphism of G,G2
-for x being object
-holds x in Image(f|H) iff (ex g being Element of H st x = (f|H).g)
-by GROUP_6:45;
-
-LmAuto:
-for G being strict Group holds
-for f being Automorphism of G holds Image(f) = G
-proof
-  let G be strict Group;
-  let f be Automorphism of G;
-  f is Homomorphism of G,G &
-  f is onto;
-  then Image(f) = G by GROUP_6:57;
-  hence thesis;
-end;
-
-LmAuto2:
-for G being Group
-for H being strict Subgroup of G
-for f being Automorphism of G
-st (f|H) is Automorphism of H
-holds Image(f|H) = H
-proof
-  let G be Group;
-  let H be strict Subgroup of G;
-  let f be Automorphism of G;
-  assume Z8: (f|H) is Automorphism of H;
-  then f|H is bijective Homomorphism of H,H;
-  then rng(f|H) = the carrier of H by GROUP_6:60;
-  then the carrier of Image(f|H) = the carrier of H by GROUP_6:44;
-  then the multMagma of Image(f|H) = the multMagma of H by GROUP_2:59;
-  thus Image(f|H) = H by GROUP_2:def 6;
-::>                    *4
-  hence thesis;
-end;
-
-for G1,G2 being Group
-for f being Homomorphism of G1,G2
-for K being strict Subgroup of G1
-for H being Subgroup of K
-holds Image(f|H) is strict Subgroup of Image(f|K)
-proof
-  let G1,G2 be Group;
-  let f be Homomorphism of G1,G2;
-  let K be strict Subgroup of G1;
-  let H be Subgroup of K;
-A1:  the carrier of H c= the carrier of K &
-  f .: (the carrier of K) = the carrier of Image(f|K) by GROUP_2:def 5,GROUP_6:def 10;
-::>                                                    *4
-  the carrier of Image(f|H)=rng(f|H) by GROUP_6:44
-  .= f.:(the carrier of H) by RELAT_1:115;
-::>                         *4
-  hence thesis by A1,GROUP_2:57,RELAT_1:123;
-end;
-
 
 theorem
-for G being Group
-for N being strict normal Subgroup of G
-for K being characteristic Subgroup of N
-holds K is normal Subgroup of G
-proof
-  let G be Group;
-  let N be strict normal Subgroup of G;
-  let K be characteristic Subgroup of N;
-  for a being Element of G holds K |^ a = K
-  proof
-    let a be Element of G;
-    consider g being inner Automorphism of G such that
-    A1: for x being Element of G holds g.x = x |^ a
-    by ThAlwaysFindInnerAuto;
-    N is Subgroup of G & g is Automorphism of G & Image(g|N) = N by Th16;
-    then A2: g|N is Automorphism of N by LmMinor;
-    reconsider f = g|N as Automorphism of N by A2;
-    K1: for x being Element of G st x in K holds g.x = (g|K).x
-    proof
-      let x be Element of G;
-      assume Z1: x in K;
-      then Z2: (g|K).x = g.x by Lm3;
-      hence thesis;
-    end;
-    A3: for x being Element of N holds (g|N).x = f.x;
-    K2: Image((g|N)|K) = Image(g|K) by LmRestrictCollapse;
-    A6: for x being Element of N st x in K holds x is Element of K by STRUCT_0:def 5;
-    A5: for x being Element of N st x in K holds (f|K).x = f.x by Lm3;
-    A7: ((g|N)|K) = (g|K) by LmRestrictCollapse;
-    A8: for x being Element of N st x in K holds ((g|N)|K).x = (g|N).x by Lm3;
-    then A4: for x being Element of N st x in K holds (g|K).x = (g|N).x by A7,Lm3;
-    C0: for y being Element of G holds y in Image(f|K) iff y in Image(g|K)
-    proof
-      let y be Element of G;
-      thus y in Image(f|K) implies y in Image(g|K)
-      proof
-        assume Z6: y in Image(f|K);
-        then ex k being Element of K st y = (f|K).k by GROUP_6:45;
-        then consider k being Element of K such that
-        Z61: y = (f|K).k;
-        B1: k in K & k is Element of N by STRUCT_0:def 5, GROUP_2:42;
-        then (f|K).k = f.k by A5
-        .= (g|N).k by A3
-        .= ((g|N)|K).k by A8,B1
-        .= (g|K).k by A4,B1,A7;
-        then (f|K).k = (g|K).k;
-        then y = (g|K).k by Z61;
-        hence y in Image(g|K) by GROUP_6:45;
-      end;
-      thus y in Image(g|K) implies y in Image(f|K)
-      proof
-        assume Z7: y in Image(g|K);
-        then ex k being Element of K st y = (g|K).k by GROUP_6:45;
-        then consider k being Element of K such that
-        Z71: y = (g|K).k;
-        B1: k in K & k is Element of N by STRUCT_0:def 5, GROUP_2:42;
-        then (g|K).k = (g|N).k by A7,A8
-        .= f.k by A3
-        .= (f|K).k by A5,B1;
-        then (f|K).k = (g|K).k;
-        then y = (f|K).k by Z71;
-        hence y in Image(f|K) by GROUP_6:45;
-      end;
-      thus thesis;
-    end;
-    Image(f|K) is strict Subgroup of N;
-    K is Subgroup of N;
-    set gN = g|N;
-    N is Subgroup of G & g is Automorphism of G & Image(gN) = N by Th16;
-    then
-    Image(gN|K) is strict Subgroup of N by K2,GRSOLV_1:9;
-::>                                      *4
-    Image((g|N)|K) is strict Subgroup of Image(g|N) by K2,A2,GRSOLV_1:9;
-::>                                                  *4
-    then the multMagma of Image(f|K) = the multMagma of Image(g|K) by GROUP_2:60;
-::>                                                                 *4
-    N is strict Group & g|N is Automorphism of N by A2;
-    then D1: Image(g|N) = N by A2,LmAuto2;
-    then Image((g|N)|K) is strict Subgroup of Image(g|N) by A2,GRSOLV_1:9;
-::>                                                       *4
-    Image(g|K) = K |^ a by A1,Th7;
-    Image((g|N)|K) = Image(g|K) by A7;
-    then Image((g|N)|K) is strict Subgroup of N by D1,A2,GRSOLV_1:9;
-::>                                              *4
-    Image(f|K) is strict Subgroup of N :: & Image(g|K) is strict Subgroup of N
-    by GRSOLV_1:def 3;
-    then C1: Image(f|K) = Image(g|K) by GRSOLV_1:def 3,GROUP_2:60,GROUP_2:def 6;
-::>                                   *4
+  for m,n being non zero Nat
+  st (for p being Prime holds (ppf m).p <= (ppf n).p)
+  holds m divides n by Th1;
 
-    then Image(f|K) = K |^ a by Th7,A3,A1;
-    then K |^ a = K by A2,Def9;
-  end;
-::> *70
-  then K is normal Subgroup of G by Th16;
-::>                               *4
+reserve Pi for Subset of SetPrimes;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be Nat;
+  attr IT is Pi-number means :Def1:
+  for p being Prime st p divides IT holds p in Pi;
 end;
-::>,70
-::> 4: This inference is not accepted
-::> 70: Something remains to be proved
+
+theorem
+  for n being non zero Nat
+  holds (for p being Prime st p divides n holds p in Pi)
+        iff n is Pi-number;
+
+theorem
+  for Pi1, Pi2 being Subset of SetPrimes
+  st Pi1 c= Pi2
+  for n being non zero Nat
+  st n is Pi1-number
+  holds n is Pi2-number;
+
+theorem
+  for n being non zero Nat
+  holds support (ppf n) c= Pi iff n is Pi-number
+proof
+  let n be non zero Nat;
+  hereby 
+    assume A1: support (ppf n) c= Pi;
+    for p being Prime st p divides n holds p in Pi
+    proof
+      let p be Prime;
+      assume A2: p divides n;
+      then p in support (pfexp n) by NAT_3:37;
+      then p in support (ppf n) by NAT_3:def 9;
+      hence p in Pi by A1;
+    end;
+    hence n is Pi-number;
+  end;
+  assume A3: n is Pi-number;
+  for p being Nat st p in support (ppf n) holds p in Pi
+  proof
+    let p be Nat;
+    assume p in support (ppf n);
+    then A4: p in support (pfexp n) by NAT_3:def 9;
+    then p is Prime by NAT_3:34;
+    hence p in Pi by A3, A4, NAT_3:36;
+  end;
+  hence support (ppf n) c= Pi;
+end;
+
+
+
+
+

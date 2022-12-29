@@ -1,4 +1,36 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2022-12-29
+
+I think the way to define the semidirect product of G1 with G2 along the
+morphism f would be:
+
+```mizar
+definition
+  let G1, G2 be Group;
+  let f be Homomorphism of G2, AutGroup(G1);
+  func G1 *_f G2 -> Group means
+  the carrier of it = [: the carrier of G1, the carrier of G2 :] &
+  for a1,a2 being Element of G1
+  for b1,b2 being Element of G2
+  holds the multF of it.((a1, b1), (a2, b2)) = [a1 * ((f.b2).a2), b1 * b2];
+  correctness;
+end;
+```
+
+It also appears we can define an elementary commutative p-group Group
+as:
+
+```mizar
+definition
+  let p be Prime;
+  let IT be commutative p-group Group;
+  attr elementary for IT means
+  ex k,n being Nat, F being Group-Family of Segm k
+  st F = Segm k --> INT.Group(n) 
+  & IT, product F are_isomorphic;
+end;
+```
+
 # 2022-12-27
 
 I have proven the universal property for the product group, and have
