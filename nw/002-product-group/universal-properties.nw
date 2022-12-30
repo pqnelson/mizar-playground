@@ -55,6 +55,8 @@ begin
 <<Theorem: center of direct product>>
 
 <<Theorem: if $aN=bN$, then $a^{-1}b\in N$>>
+
+<<Theorem: universal property of quotient groups>>
 @
 
 \begin{reserve}
@@ -1069,4 +1071,140 @@ proof
        .= b by GROUP_1:def 4;
   hence thesis;
 end;
+@ 
+
+\begin{theorem}[Universal property of quotient groups]
+If $N\normalSubgroup G$ and $\nu\colon G\onto G/N$ is the natural
+morphism sending $g$ to $\nu(g)=gN$, for any other group $H$ and
+morphism $\varphi\colon G\to H$ there exists a unique morphism
+$\varphi^{*}\colon G/N\to H$ such that $\varphi=\varphi^{*}\circ\nu$.
+\end{theorem}
+
+<<Theorem: universal property of quotient groups>>=
+theorem Th23:
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Group
+  for phi being Homomorphism of G,H st N is Subgroup of Ker phi
+  ex f being Homomorphism of (G./.N), H
+  st phi = f * (nat_hom N)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Group;
+  let phi be Homomorphism of G,H;
+  assume A1: N is Subgroup of Ker phi;
+  <<Proof step: construct a function of sets $f$>>
+
+  A4: for x being Element of G./.N
+  ex g being Element of G
+  st f.x = phi.g & x = g*N
+  proof
+    let x be Element of G./.N;
+    P[x, f.x] by A3;
+    hence thesis;
+  end;
+  A5: for x being Element of G./.N
+  for g being Element of G st x = g*N
+  holds f.(g * N) = phi.g
+  <<Proof step: $f(gN) = \varphi(g)$>>;
+
+  for a, b being Element of G./.N
+  holds f.(a * b) = (f.a) * (f.b)
+  <<Proof step: $f$ is multiplicative>>;
+  then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
+  take f;
+  
+  for g being Element of G
+  holds phi.g = (f * (nat_hom N)).g
+  proof
+    let g be Element of G;
+    reconsider x = (nat_hom N).g as Element of G./.N;
+    B1: x = g * N by GROUP_6:def 8;
+    (f * (nat_hom N)).g = f.((nat_hom N).g) by FUNCT_2:15
+                       .= phi.g by B1, A5;
+    hence phi.g = (f * (nat_hom N)).g;
+  end;
+  hence phi = f * (nat_hom N);
+end;
+@
+
+<<Proof step: construct a function of sets $f$>>=
+defpred P[object, object] means
+ex g being Element of G st $1 = g*N & $2 = (phi.g);
+A2: for x being object st x in the carrier of G./.N
+ex y being object st y in the carrier of H & P[x,y]
+proof
+  let x be object;
+  assume x in the carrier of G./.N;
+  then x in G./.N;
+  then consider g being Element of G such that
+  B1: x = g*N & x = N*g by GROUP_6:23;
+  take y = phi.g;
+  thus y in the carrier of H;
+  take g;
+  thus x = g*N by B1;
+  thus y = phi.g;
+end;
+consider f being Function of the carrier of (G./.N), the carrier of H
+such that
+A3: for x being object st x in the carrier of G./.N holds P[x, f.x]
+from FUNCT_2:sch 1(A2);
+reconsider f as Function of G./.N, H;
+@ 
+
+<<Proof step: $f(gN) = \varphi(g)$>>=
+proof
+  let x be Element of G./.N;
+  let g be Element of G;
+  assume B1: x = g*N;
+  consider g0 being Element of G such that
+  B2: f.x = phi.g0 & x = g0*N by A4;
+  consider n being Element of G such that
+  B3: n in N & g0*n = g
+  by B1, B2, Th22;
+  
+  phi.g = (phi.g0) * (phi.n) by B3, GROUP_6:def 6
+  .= (phi.g0) * (1_H) by A1, B3, GROUP_2:40, GROUP_6:41
+  .= phi.g0 by GROUP_1:def 4;
+  hence f.(g * N) = phi.g by B1, B2;
+end
+@
+
+\begin{proof}[Proof step ($f$ is multiplicative)]
+This is the longest winding part of the proof which can probably be
+simplified considerably. It amounts to showing $(aN)(bN)=(ab)N$, so
+$f((aN)(bN))=f((ab)N)$, then the result follows.
+\end{proof}
+
+<<Proof step: $f$ is multiplicative>>=
+proof
+  let a, b be Element of G./.N;
+  consider ga being Element of G such that
+  B1: f.a = phi.ga and
+  B2: a = ga*N by A4;
+  consider gb being Element of G such that
+  B3: f.b = phi.gb and
+  B4: b = gb*N by A4;
+  
+  (ga * N) * (gb * N)
+  = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
+  .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
+  .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
+  .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
+  .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
+  .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
+  .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
+  .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
+  .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
+  .= ((ga * gb) * N) * N by GROUP_2:109
+  .= (ga * gb) * (N * N) by GROUP_2:29
+  .= (ga * gb) * N by GROUP_2:76;
+  then B7: (ga * gb) * N = (@ a) * (@ b) by B2,B4
+  .= (a * b) by GROUP_6:19;
+  (f.a) * (f.b) = phi.(ga * gb) by B1, B3, GROUP_6:def 6
+  .= f.(a * b) by B7, A5;
+  
+  hence f.(a * b) = (f.a) * (f.b);
+end
 @ 
