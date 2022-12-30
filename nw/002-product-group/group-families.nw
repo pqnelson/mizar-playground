@@ -29,6 +29,13 @@ This \emph{should have been} the approach taken in \mml{group19}, but wasn't.
 
 <<Register: ``associative Group-like'' implies ``Group-yielding'' for magma-families>>
 
+<<Theorem: Sanity check that $[i,\mathcal{F}_{i}]\in\mathcal{F}$>>
+
+<<Register: Group-yielding implies Group-like associative for Magma Family>>
+
+<<Register: Group-Family is Group-yielding>>
+
+<<Definition: Group-Family>>
 @ 
 
 \begin{definition}
@@ -124,6 +131,13 @@ registration
     hence thesis by FUNCOP_1:7;
   end;
 end;
+registration
+  let I be set;
+  cluster Group-yielding -> 1-sorted-yielding for ManySortedSet of I;
+  coherence;
+  cluster Group-yielding -> multMagma-yielding for ManySortedSet of I;
+  coherence;
+end;
 @ 
 
 \begin{registration}
@@ -149,7 +163,7 @@ then $\mathcal{F}_{i}$ is a group.
 \end{theorem}
 
 <<Theorem: $\mathcal{F}$ is group-yielding family indexed by $I$ and $i\in I$, then $\mathcal{F}_{i}$ is a group>>=
-Lm4:
+theorem Lm4:
   for I being non empty set
   for F being Group-yielding ManySortedSet of I
   for i being Element of I
@@ -179,5 +193,111 @@ registration
   cluster (F . i) -> Group-like associative non empty for multMagma;
   correctness by Lm4;
 end;
+@
+
+\begin{theorem}
+If $I\neq\emptyset$ and $\mathcal{F}$ is a family of groups indexed by
+$I$, then for any $i\in I$ we expect $[i,\mathcal{F}_{i}]\in\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: Sanity check that $[i,\mathcal{F}_{i}]\in\mathcal{F}$>>=
+theorem
+  for I being non empty set
+  for F being Group-yielding ManySortedSet of I
+  for i being object st i in I
+  ex G being Group st [i, G] in F
+proof
+  let I be non empty set;
+  let F be Group-yielding ManySortedSet of I;
+  let i be object;
+  assume A1: i in I;
+  then A2: i in dom F by PARTFUN1:def 2;
+  F.i is Group by A1,Lm4;
+  then consider G being Group such that
+  A3: G = F.i;
+  take G;
+  thus [i, G] in F by A2,A3,FUNCT_1:def 2;
+end;
 @ 
 
+\begin{registration}
+A [[multMagma-Family]] which is ``Group-yielding'' should register as
+``Group-like associative'' automatically.
+\end{registration}
+
+<<Register: Group-yielding implies Group-like associative for Magma Family>>=
+registration
+  let I be set;
+  cluster Group-yielding -> Group-like associative for multMagma-Family of I;
+  correctness
+  proof
+    thus for F being multMagma-Family of I st F is Group-yielding
+    holds F is Group-like associative
+    proof
+      let F be multMagma-Family of I;
+      assume A1: F is Group-yielding;
+      A2: dom F = I by PARTFUN1:def 2;
+      for i being set st i in I
+      ex Fi being non empty Group-like multMagma st Fi = F.i
+      proof
+        let i be set;
+        assume i in I;
+        then F.i is Group by A1,A2,FUNCT_1:3;
+        hence thesis;
+      end;
+      then A3: F is Group-like;
+      for i being set st i in I
+      ex Fi being non empty associative multMagma st Fi = F.i
+      proof
+        let i be set;
+        assume i in I;
+        then F.i is Group by A1,A2,FUNCT_1:3;
+        hence thesis;
+      end;
+      hence F is Group-like associative by A3;
+    end;
+  end;
+end;
+@ 
+
+\begin{registration}
+Group-families (in the sense of \mml{group19}) are group-yielding.
+\end{registration}
+
+<<Register: Group-Family is Group-yielding>>=
+registration
+  let I be set;
+  cluster -> Group-yielding for Group-like associative multMagma-Family of I;
+  coherence
+  proof
+    thus for F being Group-like associative multMagma-Family of I
+    holds F is Group-yielding
+    proof
+      let F be Group-like associative multMagma-Family of I;
+      for y being object st y in rng F holds y is Group
+      proof
+        let y be object;
+        assume y in rng F;
+        then consider i being object such that
+        A1: i in dom F & y = F.i
+        by FUNCT_1:def 3;
+        thus thesis by A1, GROUP_19:1;
+      end;
+      hence F is Group-yielding;
+    end;
+  end;
+end;
+@ 
+
+\begin{definition}
+Let $I$ be a set. Then we define a \define{Group-Family} of $I$ to be a
+Group-yielding family $\mathcal{F}$ over $I$, i.e., for each $i\in I$ we
+have $\mathcal{F}_{i}$ be a group.
+\end{definition}
+
+<<Definition: Group-Family>>=
+definition
+  let I be set;
+  mode Group-Family of I is Group-yielding ManySortedSet of I;
+end;
+@ 
