@@ -11,11 +11,12 @@
 
 environ
 
- vocabularies QC_LANG1, RLSUB_1, TARSKI, NEWTON, XXREAL_1, BINOP_1,
-   RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1, FUNCT_2,
-   FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3,
-   GROUP_1, GROUP_2, PRE_TOPC, GROUP_3, GROUP_5, GROUP_6, GROUP_7,
-   GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23, SETFAM_1;
+ vocabularies NAT_1, QC_LANG1, RLSUB_1, TARSKI, NEWTON, XXREAL_1,
+   BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1,
+   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1,
+   CARD_3, GROUP_1, GROUP_2, PRE_TOPC, GROUP_3, GROUP_5, GROUP_6,
+   GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23,
+   SETFAM_1;
 
  constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
@@ -25,9 +26,9 @@ environ
 
  notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
    FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE,
-   CARD_3, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0, MONOID_0,
-   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1,
-   GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
+   CARD_3, ORDINAL1, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0,
+   MONOID_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6,
+   PRALG_1, GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
 
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
    MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -197,9 +198,49 @@ registration
   end;
 end;
 
+registration
+  let G be Group;
+  cluster {} --> G -> Group-yielding;
+  coherence;
+end;
+
 definition
   let I be set;
   mode Group-Family of I is Group-yielding ManySortedSet of I;
+end;
+
+reserve I for non empty set;
+reserve i for Element of I;
+reserve F for Group-Family of I;
+reserve G for Group;
+
+theorem ThTmp:
+  for n being Nat
+  holds Seg n --> G is Group-Family of Seg n
+proof
+  let n be Nat;
+  per cases;
+  suppose Seg n is empty;
+    hence thesis;
+  end;
+  suppose A1: not (Seg n is empty);
+    for y being object st y in rng (Seg n --> G) holds y is Group
+    proof
+      let y be object;
+      assume y in rng (Seg n --> G);
+      then y in {G} by A1, FUNCOP_1:8;
+      hence y is Group by TARSKI:def 1;
+    end;
+    then Seg n --> G is Group-yielding;
+    hence Seg n --> G is Group-Family of Seg n;
+  end;
+end;
+
+registration
+  let G be Group;
+  let n be Nat;
+  cluster (Seg n --> G) -> Group-yielding;
+  correctness by ThTmp;
 end;
 
 theorem LmTriv:
@@ -248,11 +289,6 @@ proof
   then ex G being strict trivial Group st (product F)=G by LmTriv, GROUP_7:def 2;
   hence thesis;
 end;
-
-reserve I for non empty set;
-reserve i for Element of I;
-reserve F for Group-Family of I;
-reserve G for Group;
 
 :: Uniqueness of morphisms to the trivial group
 theorem Th1:

@@ -1,30 +1,9 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-\section{Universal Properties}
+\section{Universal Property of Product Group}
 
-<<Results Concerning Universal Properties>>=
-begin
+<<Results Concerning Product Groups>>=
 <<Reservations of group families>>
-
-<<Theorem: uniqueness of morphisms to trivial group>>
-
-<<Theorem: Trivial Group is the Terminal Object>>
-
-<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>
-
-<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>
-
-<<Redefinition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>
-
-<<Definition: projection morphism>>
-
-<<Theorem: the projection morphism is surjective>>
-
-<<Theorem: underlying set theoretic aspects of projection>>
-
-<<Theorem: projection acts on product group by means of its underlying function>>
-
-<<Theorem: $\pi_{i} = U(\pi_{i})$>>
 
 <<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
 
@@ -38,7 +17,7 @@ begin
 
 <<Theorem: Surjective functions have a right-inverse>>
 
-<<Theorem: universal property of group products>>
+<<Theorem: Universal Property of Group Products (Explicit Version)>>
 
 <<Theorem: Universal Property of Group Products (Implicit Version)>>
 
@@ -54,9 +33,6 @@ begin
 
 <<Theorem: center of direct product>>
 
-<<Theorem: if $aN=bN$, then $a^{-1}b\in N$>>
-
-<<Theorem: universal property of quotient groups>>
 @
 
 \begin{reserve}
@@ -69,304 +45,6 @@ reserve I for non empty set;
 reserve i for Element of I;
 reserve F for Group-Family of I;
 reserve G for Group;
-@ 
-
-\begin{theorem}
-For any group $G$, if $f_{1},f_{2}\colon G\to\trivialGroup$, then $f_{1}=f_{2}$.
-\end{theorem}
-
-<<Theorem: uniqueness of morphisms to trivial group>>=
-:: Uniqueness of morphisms to the trivial group
-theorem Th1:
-  for H being trivial Group
-  for f1,f2 being Homomorphism of G,H
-  holds f1=f2
-proof
-  let H be trivial Group;
-  let f1,f2 be Homomorphism of G,H;
-  A1: the carrier of H = {1_H}
-  <<Proof: the carrier of the trivial group is a singleton>>;
-
-  for g being object st g in the carrier of G holds f1.g = f2.g
-  proof
-    let g be object;
-    assume B1: g in the carrier of G;
-    f1.g in H by B1,FUNCT_2:5;
-    then B2: f1.g = 1_H by A1, TARSKI:def 1;
-    f2.g in H by B1,FUNCT_2:5;
-    then f2.g = 1_H by A1, TARSKI:def 1;
-    hence f1.g = f2.g by B2;
-  end;
-  hence f1=f2;
-end;
-@ %def Th1
-
-<<Proof: the carrier of the trivial group is a singleton>>=
-proof
-  H is trivial;
-  then consider x being object such that
-  B1: the carrier of H = {x};
-  thus thesis by B1, TARSKI:def 1;
-end
-@
-
-\begin{theorem}
-For any group $G$, there is exactly one morphism $G\to\trivialGroup$.
-\end{theorem}
-
-<<Theorem: Trivial Group is the Terminal Object>>=
-theorem
-  for H being trivial Group
-  ex h being Homomorphism of G,H 
-  st (for f being Homomorphism of G,H holds h=f)
-proof
-  let H be trivial Group;
-  take h = 1:(G,H);
-  thus thesis by Th1;
-end;
-@
-
-\begin{theorem}
-Explicitly, if $f\colon G\to\trivialGroup$ is a group morphism and $g\in G$,
-then $f(g)=1$ is the identity element.
-\end{theorem}
-
-<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>=
-theorem
-  for H being trivial Group
-  for f being Homomorphism of G,H
-  for g being Element of G
-  holds f.g = 1_H
-proof
-  let H be trivial Group;
-  let f be Homomorphism of G,H;
-  let g be Element of G;
-  f = 1:(G,H) by Th1;
-  hence f.g = 1_H by Th1,FUNCOP_1:7;
-end;
-@ 
-
-\begin{theorem}
-Let $\mathcal{F}$ be a family of groups.
-If $g\in\prod\mathcal{F}$, then $g_{i}$ is an element of $\mathcal{F}_{i}$.
-\end{theorem}
-
-<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>=
-theorem Th4:
-  for g being Element of product F
-  holds g.i is Element of F.i
-proof
-  let g be Element of product F;
-  g is Function & g in product F;
-  then g.i in F.i by GROUP_19:5;
-  hence thesis;
-end;
-@ %def Th4
-
-\begin{definition*}
-We redefine the function application for elements of the product group,
-so if $g\in\prod\mathcal{F}$, then we treat $g_{i}$ as an Element of $\mathcal{F}_{i}$.
-\end{definition*}
-
-<<Redefinition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>=
-definition
-  let I be non empty set;
-  let F be Group-Family of I;
-  let g be Element of product F;
-  let i be Element of I;
-  func g/.i -> Element of F.i equals :Def2: g.i;
-  correctness by Th4;
-end;
-@ 
-
-\begin{definition}
-Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
-We define the \define{Projection Morphism} $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
-by $\pi_{i}(g)=g_{i}$ for any $g\in\prod\mathcal{F}$.
-\end{definition}
-
-\begin{def-remark}
-We will follow the notation found in~\mml[def 16]{card3} and \mml[def 2]{pralg3}
-writing $\pi_{i}$ in Mizar as ``\lstinline{proj (F, i)}''. It is ideal
-to be consistent in our choice of notation with pre-existing notation.
-\end{def-remark}
-
-<<Definition: projection morphism>>=
-definition
-  let I be non empty set;
-  let i be Element of I;
-  let F be Group-Family of I;
-  func proj (F, i) -> Homomorphism of (product F), F.i means
-  :Def3:
-  for h being Element of product F holds it.h = h.i;
-  existence
-  <<Proof: existence of projection morphism>>;
-  uniqueness
-  <<Proof: uniqueness of projection morphism>>;
-end;
-@ %def proj Def3
-
-<<Proof: existence of projection morphism>>=
-proof
-  deffunc F1() = product F;
-  deffunc F2() = F.i;
-  deffunc F3(Element of F1()) = $1.i;
-  consider p being Function of F1(), F2() such that
-  A1: for x being Element of F1() holds p.x = F3(x)
-  from FUNCT_2:sch 4;
-  reconsider p as Function of product F, F.i;
-  
-  for a, b being Element of product F
-  holds p.(a * b) = (p.a) * (p.b)
-  proof
-    let a, b be Element of product F;
-    (p.a) * (p.b) = (p.a) * (b/.i) by A1
-                 .= (a/.i) * (b/.i) by A1
-                 .= (a * b)/.i by GROUP_7:1
-                 .= p.(a * b) by A1;
-    hence p.(a * b) = (p.a) * (p.b);
-  end;
-  then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
-  take p;
-  for h being Element of product F holds p.h = h.i
-  proof
-    let h be Element of product F;
-    p.h = h/.i by A1;
-    hence thesis;
-  end;
-  hence thesis;
-end
-@ 
-
-<<Proof: uniqueness of projection morphism>>=
-proof
-  let p1,p2 be Homomorphism of (product F), F.i;
-  assume A1: for h being Element of product F holds p1.h = h.i;
-  assume A2: for h being Element of product F holds p2.h = h.i;
-  for x being object st x in the carrier of product F holds p1.x = p2.x
-  proof
-    let x be object;
-    assume x in the carrier of product F;
-    then reconsider xx=x as Element of product F;
-    p1.x = xx.i by A1;
-    hence p1.x = p2.x by A2;
-  end;
-  hence p1 = p2;
-end
-@ 
-
-\begin{theorem}
-The projection morphism $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
-is surjective.
-\end{theorem}
-
-<<Theorem: the projection morphism is surjective>>=
-theorem
-  proj (F, i) is onto
-proof
-  for y being object
-  holds y in the carrier of F.i
-        iff ex x being object
-            st x in dom (proj (F,i))
-               & y = (proj (F,i)).x
-  <<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>;
-  hence proj (F, i) is onto by FUNCT_1:def 3;
-end;
-@
-
-<<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>=
-proof 
-  assume y in the carrier of F.i;
-  then reconsider yy=y as Element of F.i;
-  (1ProdHom (F, i)).yy in ProjGroup (F, i);
-  then (1ProdHom (F, i)).yy in ProjSet (F, i) by GROUP_12:def 2;
-  then consider x being Function, g being Element of F.i such that
-  A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
-      for j being Element of I st j <> i holds x.j = 1_(F.j)
-  by GROUP_12:2;
-
-  the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
-  then dom (1_(product F)) = I by PARTFUN1:def 2;
-  then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
-            .= g by A1, GROUP_12:def 3;
-  A3: x in product F by A1,GROUP_2:41;
-  take x;
-  thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
-  thus y = (proj (F,i)).x by Def3, A1, A2, A3;
-end;
-@
-
-\begin{theorem}
-The projection function of the underlying set [Cartesian product]
-is a function from the product of underlying sets
-$U(\pi_{i})\colon\prod U(\mathcal{F})\to U(\mathcal{F}_{i})$.
-\end{theorem}
-
-<<Theorem: underlying set theoretic aspects of projection>>=
-theorem Th8:
-  proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
-proof
-  set X = product (Carrier F);
-  set Y = the carrier of F.i;
-  set f = proj (Carrier F, i);
-  A1: dom f = X by CARD_3:def 16;
-  for x being object st x in X holds f.x in Y
-  proof
-    let x be object;
-    assume A2: x in X;
-    then reconsider y=x as Element of product F by GROUP_7:def 2;
-    f.y = y/.i by A1, A2, CARD_3:def 16;
-    hence f.x in Y;
-  end;
-  
-  hence f is Function of X,Y by A1, FUNCT_2:3;
-end;
-@ %def Th8
-
-\begin{theorem}
-The projection morphism acts on $g\in\prod\mathcal{F}$ by means of its
-underlying function.
-\end{theorem}
-
-<<Theorem: projection acts on product group by means of its underlying function>>=
-theorem Th9:
-  for g being Element of product F
-  holds proj (F, i) . g = proj (Carrier F, i) . g 
-proof
-  let g be Element of product F;
-  set X = product (Carrier F);
-  set f = proj (Carrier F, i);
-  A1: dom f = X by CARD_3:def 16;
-  g in product F;
-  then g in dom f by A1, GROUP_7:def 2;
-  then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
-  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
-end;
-@ %def Th9
-
-\begin{theorem}
-We have $\pi_{i} = U(\pi_{i})$.
-\end{theorem}
-
-<<Theorem: $\pi_{i} = U(\pi_{i})$>>=
-theorem
-  proj (F, i) = proj (Carrier F, i)
-proof
-  set X = product (Carrier F);
-  set Y = the carrier of F.i;
-  product (Carrier F) = the carrier of (product F) by GROUP_7:def 2;
-  then A1: proj (Carrier F, i) is Function of X,Y
-           & proj (F, i) is Function of X,Y
-  by Th8;
-  for x being Element of X
-  holds (proj (F, i)) . x = (proj (Carrier F, i)) . x
-  proof
-    let x be Element of X;
-    x is Element of product F by GROUP_7:def 2;
-    hence thesis by Th9;
-  end;
-  hence thesis by A1, FUNCT_2:63;
-end;
 @ 
 
 \subsection{Universal Property of Products}
@@ -473,7 +151,7 @@ The underlying set of a family of groups is the family of underlying sets.
 Lm2:
   for i being object st i in I
   holds (Carrier F).i = the carrier of F.i;
-@
+@ %def Lm2
 
 \begin{theorem}
 A homomorphism-family has the expected structure of a function in set
@@ -554,7 +232,8 @@ For any family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$,
 there is a morphism $f\colon G\to\prod\mathcal{F}$ such that $f(g)_{i}=f_{i}(g)$.
 \end{theorem}
 
-<<Theorem: universal property of group products>>=
+<<Theorem: Universal Property of Group Products (Explicit Version)>>=
+:: Universal property of group product, explicit version.
 theorem Th12:
   for f being Homomorphism-Family of G, F
   ex phi being Homomorphism of G, product F
@@ -562,20 +241,7 @@ theorem Th12:
      holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
 proof
   let f be Homomorphism-Family of G, F;
-  defpred P[object, object] means ex g0 being Element of product F
-  st $2 = g0 & (for j being Element of I holds (f.j).$1 = g0.j);
-  deffunc F1() = the carrier of G;
-
-  A1: for x being object st x in F1()
-  ex y being object st y in the carrier of product F &
-  P[x,y]
-  <<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>;
-
-  consider phi being Function of F1(), the carrier of (product F)
-  such that
-  A2: for x being object st x in F1() holds P[x, phi.x]
-  from FUNCT_2:sch 1(A1);
-  reconsider phi as Function of G, product F;
+  <<Proof step: construct the underlying function for the product morphism>>
 
   A3: for g being Element of G
   for j being Element of I
@@ -603,7 +269,24 @@ proof
   end;
   hence thesis;
 end;
-@
+@ %def Th12
+
+<<Proof step: construct the underlying function for the product morphism>>=
+defpred P[object, object] means ex g0 being Element of product F
+st $2 = g0 & (for j being Element of I holds (f.j).$1 = g0.j);
+deffunc F1() = the carrier of G;
+
+A1: for x being object st x in F1()
+ex y being object st y in the carrier of product F &
+P[x,y]
+<<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>;
+
+consider phi being Function of F1(), the carrier of (product F)
+such that
+A2: for x being object st x in F1() holds P[x, phi.x]
+from FUNCT_2:sch 1(A1);
+reconsider phi as Function of G, product F;
+@ 
 
 <<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>=
 proof
@@ -698,7 +381,7 @@ proof
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-  by Th13;
+  by Th12;
   take phi;
   for g being Element of G holds ((proj (F,i)) * phi).g = (f.i).g
   proof
@@ -775,7 +458,7 @@ proof
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-  by Th13;
+  by Th12;
   take phi;
   for g being Element of G
   for j being Element of I holds (f.j).g = (phi.g).j
@@ -943,11 +626,12 @@ proof
 end;
 @ %def Th21
 
-\begin{theorem}
+\begin{theorem}[Kurosh I, result 6]
 The center of a direct product is the direct product of centers (of its factors).
 \end{theorem}
 
 <<Theorem: center of direct product>>=
+:: Kurosh, Theory of Groups, volume I, result VI about Direct Products
 theorem
   for Z being Group-Family of I
   st (for i being Element of I holds Z.i = center (F.i))
@@ -1042,169 +726,5 @@ proof
   assume a in center (product F);
   then for b being Element of product F holds a*b = b*a by GROUP_5:77;
   hence a in product Z by A2;
-end
-@ 
-
-\begin{theorem}
-If $N\normalSubgroup G$ and $a,b\in G$ are such that $aN=bN$, then there
-is an $n\in N$ such that $an=b$.
-\end{theorem}
-
-<<Theorem: if $aN=bN$, then $a^{-1}b\in N$>>=
-theorem Th22:
-  for G being Group
-  for N being normal Subgroup of G
-  for a,b being Element of G
-  st a*N = b*N
-  ex n being Element of G st n in N & a*n=b
-proof
-  let G be Group;
-  let N be normal Subgroup of G;
-  let a,b be Element of G;
-  assume A1: a*N = b*N;
-  consider n being Element of G such that
-  A2: n = a" * b;
-  take n;
-  thus n in N by A1, A2, GROUP_2:114;
-  a * n = (a * a") * b by A2, GROUP_1:def 3
-       .= (1_G) * b by GROUP_1:def 5
-       .= b by GROUP_1:def 4;
-  hence thesis;
-end;
-@ 
-
-\begin{theorem}[Universal property of quotient groups]
-If $N\normalSubgroup G$ and $\nu\colon G\onto G/N$ is the natural
-morphism sending $g$ to $\nu(g)=gN$, for any other group $H$ and
-morphism $\varphi\colon G\to H$ there exists a unique morphism
-$\varphi^{*}\colon G/N\to H$ such that $\varphi=\varphi^{*}\circ\nu$.
-\end{theorem}
-
-<<Theorem: universal property of quotient groups>>=
-theorem Th23:
-  for G being Group
-  for N being normal Subgroup of G
-  for H being Group
-  for phi being Homomorphism of G,H st N is Subgroup of Ker phi
-  ex f being Homomorphism of (G./.N), H
-  st phi = f * (nat_hom N)
-proof
-  let G be Group;
-  let N be normal Subgroup of G;
-  let H be Group;
-  let phi be Homomorphism of G,H;
-  assume A1: N is Subgroup of Ker phi;
-  <<Proof step: construct a function of sets $f$>>
-
-  A4: for x being Element of G./.N
-  ex g being Element of G
-  st f.x = phi.g & x = g*N
-  proof
-    let x be Element of G./.N;
-    P[x, f.x] by A3;
-    hence thesis;
-  end;
-  A5: for x being Element of G./.N
-  for g being Element of G st x = g*N
-  holds f.(g * N) = phi.g
-  <<Proof step: $f(gN) = \varphi(g)$>>;
-
-  for a, b being Element of G./.N
-  holds f.(a * b) = (f.a) * (f.b)
-  <<Proof step: $f$ is multiplicative>>;
-  then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
-  take f;
-  
-  for g being Element of G
-  holds phi.g = (f * (nat_hom N)).g
-  proof
-    let g be Element of G;
-    reconsider x = (nat_hom N).g as Element of G./.N;
-    B1: x = g * N by GROUP_6:def 8;
-    (f * (nat_hom N)).g = f.((nat_hom N).g) by FUNCT_2:15
-                       .= phi.g by B1, A5;
-    hence phi.g = (f * (nat_hom N)).g;
-  end;
-  hence phi = f * (nat_hom N);
-end;
-@
-
-<<Proof step: construct a function of sets $f$>>=
-defpred P[object, object] means
-ex g being Element of G st $1 = g*N & $2 = (phi.g);
-A2: for x being object st x in the carrier of G./.N
-ex y being object st y in the carrier of H & P[x,y]
-proof
-  let x be object;
-  assume x in the carrier of G./.N;
-  then x in G./.N;
-  then consider g being Element of G such that
-  B1: x = g*N & x = N*g by GROUP_6:23;
-  take y = phi.g;
-  thus y in the carrier of H;
-  take g;
-  thus x = g*N by B1;
-  thus y = phi.g;
-end;
-consider f being Function of the carrier of (G./.N), the carrier of H
-such that
-A3: for x being object st x in the carrier of G./.N holds P[x, f.x]
-from FUNCT_2:sch 1(A2);
-reconsider f as Function of G./.N, H;
-@ 
-
-<<Proof step: $f(gN) = \varphi(g)$>>=
-proof
-  let x be Element of G./.N;
-  let g be Element of G;
-  assume B1: x = g*N;
-  consider g0 being Element of G such that
-  B2: f.x = phi.g0 & x = g0*N by A4;
-  consider n being Element of G such that
-  B3: n in N & g0*n = g
-  by B1, B2, Th22;
-  
-  phi.g = (phi.g0) * (phi.n) by B3, GROUP_6:def 6
-  .= (phi.g0) * (1_H) by A1, B3, GROUP_2:40, GROUP_6:41
-  .= phi.g0 by GROUP_1:def 4;
-  hence f.(g * N) = phi.g by B1, B2;
-end
-@
-
-\begin{proof}[Proof step ($f$ is multiplicative)]
-This is the longest winding part of the proof which can probably be
-simplified considerably. It amounts to showing $(aN)(bN)=(ab)N$, so
-$f((aN)(bN))=f((ab)N)$, then the result follows.
-\end{proof}
-
-<<Proof step: $f$ is multiplicative>>=
-proof
-  let a, b be Element of G./.N;
-  consider ga being Element of G such that
-  B1: f.a = phi.ga and
-  B2: a = ga*N by A4;
-  consider gb being Element of G such that
-  B3: f.b = phi.gb and
-  B4: b = gb*N by A4;
-  
-  (ga * N) * (gb * N)
-  = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
-  .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
-  .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
-  .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
-  .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
-  .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
-  .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
-  .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
-  .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
-  .= ((ga * gb) * N) * N by GROUP_2:109
-  .= (ga * gb) * (N * N) by GROUP_2:29
-  .= (ga * gb) * N by GROUP_2:76;
-  then B7: (ga * gb) * N = (@ a) * (@ b) by B2,B4
-  .= (a * b) by GROUP_6:19;
-  (f.a) * (f.b) = phi.(ga * gb) by B1, B3, GROUP_6:def 6
-  .= f.(a * b) by B7, A5;
-  
-  hence f.(a * b) = (f.a) * (f.b);
 end
 @ 

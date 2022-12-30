@@ -1,0 +1,249 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Projection Morphism}
+
+The projection morphism is defined on the product group
+$\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$ for any $i\in I$.
+
+<<Definition and Results about Projection Morphism>>=
+begin
+<<Reservations of group families>>
+
+<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>
+
+<<Definition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>
+
+<<Definition: projection morphism>>
+
+<<Theorem: the projection morphism is surjective>>
+
+<<Theorem: underlying set theoretic aspects of projection>>
+
+<<Theorem: projection acts on product group by means of its underlying function>>
+
+<<Theorem: $\pi_{i} = U(\pi_{i})$>>
+
+@
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups.
+If $g\in\prod\mathcal{F}$, then $g_{i}$ is an element of $\mathcal{F}_{i}$.
+\end{theorem}
+
+<<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>=
+theorem Th13:
+  for g being Element of product F
+  holds g.i is Element of F.i
+proof
+  let g be Element of product F;
+  g is Function & g in product F;
+  then g.i in F.i by GROUP_19:5;
+  hence thesis;
+end;
+@ %def Th13
+
+\begin{definition}
+We redefine the function application for elements of the product group,
+so if $g\in\prod\mathcal{F}$, then we treat $g_{i}$ as an Element of $\mathcal{F}_{i}$.
+\end{definition}
+
+<<Definition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let g be Element of product F;
+  let i be Element of I;
+  func g/.i -> Element of F.i equals :Def2: g.i;
+  correctness by Th13;
+end;
+@ %def Def2
+
+\begin{definition}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
+We define the \define{Projection Morphism} $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
+by $\pi_{i}(g)=g_{i}$ for any $g\in\prod\mathcal{F}$.
+\end{definition}
+
+\begin{def-remark}
+We will follow the notation found in~\mml[def 16]{card3} and \mml[def 2]{pralg3}
+writing $\pi_{i}$ in Mizar as ``\lstinline{proj (F, i)}''. It is ideal
+to be consistent in our choice of notation with pre-existing notation.
+\end{def-remark}
+
+<<Definition: projection morphism>>=
+definition
+  let I be non empty set;
+  let i be Element of I;
+  let F be Group-Family of I;
+  func proj (F, i) -> Homomorphism of (product F), F.i means
+  :Def3:
+  for h being Element of product F holds it.h = h.i;
+  existence
+  <<Proof: existence of projection morphism>>;
+  uniqueness
+  <<Proof: uniqueness of projection morphism>>;
+end;
+@ %def proj Def3
+
+<<Proof: existence of projection morphism>>=
+proof
+  deffunc F1() = product F;
+  deffunc F2() = F.i;
+  deffunc F3(Element of F1()) = $1.i;
+  consider p being Function of F1(), F2() such that
+  A1: for x being Element of F1() holds p.x = F3(x)
+  from FUNCT_2:sch 4;
+  reconsider p as Function of product F, F.i;
+  
+  for a, b being Element of product F
+  holds p.(a * b) = (p.a) * (p.b)
+  proof
+    let a, b be Element of product F;
+    (p.a) * (p.b) = (p.a) * (b/.i) by A1
+                 .= (a/.i) * (b/.i) by A1
+                 .= (a * b)/.i by GROUP_7:1
+                 .= p.(a * b) by A1;
+    hence p.(a * b) = (p.a) * (p.b);
+  end;
+  then reconsider p as Homomorphism of product F,F.i by GROUP_6:def 6;
+  take p;
+  for h being Element of product F holds p.h = h.i
+  proof
+    let h be Element of product F;
+    p.h = h/.i by A1;
+    hence thesis;
+  end;
+  hence thesis;
+end
+@ 
+
+<<Proof: uniqueness of projection morphism>>=
+proof
+  let p1,p2 be Homomorphism of (product F), F.i;
+  assume A1: for h being Element of product F holds p1.h = h.i;
+  assume A2: for h being Element of product F holds p2.h = h.i;
+  for x being object st x in the carrier of product F holds p1.x = p2.x
+  proof
+    let x be object;
+    assume x in the carrier of product F;
+    then reconsider xx=x as Element of product F;
+    p1.x = xx.i by A1;
+    hence p1.x = p2.x by A2;
+  end;
+  hence p1 = p2;
+end
+@ 
+
+\begin{theorem}
+The projection morphism $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$
+is surjective.
+\end{theorem}
+
+<<Theorem: the projection morphism is surjective>>=
+theorem
+  proj (F, i) is onto
+proof
+  for y being object
+  holds y in the carrier of F.i
+        iff ex x being object
+            st x in dom (proj (F,i))
+               & y = (proj (F,i)).x
+  <<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>;
+  hence proj (F, i) is onto by FUNCT_1:def 3;
+end;
+@
+
+<<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>=
+proof 
+  assume y in the carrier of F.i;
+  then reconsider yy=y as Element of F.i;
+  (1ProdHom (F, i)).yy in ProjGroup (F, i);
+  then (1ProdHom (F, i)).yy in ProjSet (F, i) by GROUP_12:def 2;
+  then consider x being Function, g being Element of F.i such that
+  A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
+      for j being Element of I st j <> i holds x.j = 1_(F.j)
+  by GROUP_12:2;
+
+  the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
+  then dom (1_(product F)) = I by PARTFUN1:def 2;
+  then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
+            .= g by A1, GROUP_12:def 3;
+  A3: x in product F by A1,GROUP_2:41;
+  take x;
+  thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
+  thus y = (proj (F,i)).x by Def3, A1, A2, A3;
+end;
+@
+
+\begin{theorem}
+The projection function of the underlying set [Cartesian product]
+is a function from the product of underlying sets
+$U(\pi_{i})\colon\prod U(\mathcal{F})\to U(\mathcal{F}_{i})$.
+\end{theorem}
+
+<<Theorem: underlying set theoretic aspects of projection>>=
+theorem Th8:
+  proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
+proof
+  set X = product (Carrier F);
+  set Y = the carrier of F.i;
+  set f = proj (Carrier F, i);
+  A1: dom f = X by CARD_3:def 16;
+  for x being object st x in X holds f.x in Y
+  proof
+    let x be object;
+    assume A2: x in X;
+    then reconsider y=x as Element of product F by GROUP_7:def 2;
+    f.y = y/.i by A1, A2, CARD_3:def 16;
+    hence f.x in Y;
+  end;
+  
+  hence f is Function of X,Y by A1, FUNCT_2:3;
+end;
+@ %def Th8
+
+\begin{theorem}
+The projection morphism acts on $g\in\prod\mathcal{F}$ by means of its
+underlying function.
+\end{theorem}
+
+<<Theorem: projection acts on product group by means of its underlying function>>=
+theorem Th9:
+  for g being Element of product F
+  holds proj (F, i) . g = proj (Carrier F, i) . g 
+proof
+  let g be Element of product F;
+  set X = product (Carrier F);
+  set f = proj (Carrier F, i);
+  A1: dom f = X by CARD_3:def 16;
+  g in product F;
+  then g in dom f by A1, GROUP_7:def 2;
+  then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
+  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
+end;
+@ %def Th9
+
+\begin{theorem}
+We have $\pi_{i} = U(\pi_{i})$.
+\end{theorem}
+
+<<Theorem: $\pi_{i} = U(\pi_{i})$>>=
+theorem
+  proj (F, i) = proj (Carrier F, i)
+proof
+  set X = product (Carrier F);
+  set Y = the carrier of F.i;
+  product (Carrier F) = the carrier of (product F) by GROUP_7:def 2;
+  then A1: proj (Carrier F, i) is Function of X,Y
+           & proj (F, i) is Function of X,Y
+  by Th8;
+  for x being Element of X
+  holds (proj (F, i)) . x = (proj (Carrier F, i)) . x
+  proof
+    let x be Element of X;
+    x is Element of product F by GROUP_7:def 2;
+    hence thesis by Th9;
+  end;
+  hence thesis by A1, FUNCT_2:63;
+end;
+@ 

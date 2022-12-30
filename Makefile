@@ -14,6 +14,7 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 PRODGRP=nw/002-product-group
 PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/group-families.nw $(PRODGRP)/trivial-product.nw \
+	$(PRODGRP)/easy-properties.nw $(PRODGRP)/projection-morphism.nw \
 	$(PRODGRP)/universal-properties.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
@@ -39,7 +40,7 @@ rm_defs:
 	touch 001.defs
 	touch 002.defs
 defs: rm_defs
-	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
+#	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
 	nodefs $(PRODUCT_GROUP) > 002.defs
 #	nodefs $(RADICALS) > 002.defs
 #	nodefs $(PERMUTATION_GROUP) > 003.defs
@@ -55,7 +56,7 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 # noweb many-file extraction voodoo ends here
 
 dumb_extract_text: defs
-	noweave -indexfrom 001.defs $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
+#	noweave -indexfrom 001.defs $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
 	noweave -indexfrom 002.defs $(NOWEBOPTS) $(PRODUCT_GROUP) > tex/product-group.tex
 #	noweave $(NOWEBOPTS) -indexfrom 002.defs $(RADICALS) > tex/radicals.tex
 #	noweave $(NOWEBOPTS) -indexfrom 003.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex

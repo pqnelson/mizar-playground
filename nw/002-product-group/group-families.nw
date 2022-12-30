@@ -13,6 +13,7 @@ define a [[Group-Family of I]] as just a [[Group-yielding ManySortedSet of I]].
 This \emph{should have been} the approach taken in \mml{group19}, but wasn't.
 
 <<Indexed Families of Groups>>=
+begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Sets
 <<Definition: Group-yielding>>
 
 <<Register: Group-yielding implies magma-yielding and 1-sorted-yielding>>
@@ -36,6 +37,12 @@ This \emph{should have been} the approach taken in \mml{group19}, but wasn't.
 <<Register: Group-Family is Group-yielding>>
 
 <<Definition: Group-Family>>
+
+<<Theorem: empty family of groups>>
+
+<<Theorem: $\mathcal{F}_{i}=G$ is a group-family>>
+
+<<Register: constant group-family is a group-family>>
 @ 
 
 \begin{definition}
@@ -50,7 +57,7 @@ definition
   for y being object st y in rng IT holds
   y is Group;
 end;
-@ %def Group-yielding
+@ %def Group-yielding Def1
 
 \begin{voc}
 We add the attribute ``Group-yielding'' to our vocabulary list.
@@ -96,7 +103,7 @@ proof
   end;
   hence F is Group-yielding by Def1;
 end;
-@
+@ %def Lm1
 
 \begin{registration}
 Let $\mathcal{F}$ be a magma-family indexed by a set $I$.
@@ -176,8 +183,7 @@ proof
   then F.i in rng F by FUNCT_1:3;
   hence F.i is Group by Def1;
 end;
-@
-
+@ %def Lm4
 \begin{registration}
 If $I\neq\emptyset$ is a set, $i\in I$, and $\mathcal{F}$ is a
 group-yielding many-sorted set indexed by $I$, then we should register
@@ -299,5 +305,89 @@ have $\mathcal{F}_{i}$ be a group.
 definition
   let I be set;
   mode Group-Family of I is Group-yielding ManySortedSet of I;
+end;
+@ %def Group-Family
+
+\begin{theorem}
+Let $\mathcal{F}$ be the constant function $\emptyset\to\{G\}$ for any
+group $G$. The $\mathcal{F}$ is a group-family indexed by $\emptyset$.
+\end{theorem}
+
+<<Theorem: empty family of groups>>=
+theorem LmEmptyGroupFamilyExplicit:
+  {} --> G is Group-Family of {}
+proof
+  {} --> G is ManySortedSet of {} & {} --> G is Group-yielding;
+  hence {} --> G is Group-Family of {};
+end;
+@ %def LmEmptyGroupFamilyExplicit
+
+\begin{theorem}
+Let $G$ be a group, $n\in\NN_{0}$ be a non-negative integer.
+Then $\mathcal{F}_{i}=G$ for $i=1,\dots,n$ is a Group-family.
+\end{theorem}
+
+\begin{thm-remark}
+When we write things like $G^{n}$ as the direct product of $n$ copies of
+a group $G$, we really mean ``\lstinline{product (Seg n --> G)}''.
+\end{thm-remark}
+
+\begin{proof}
+The proof boils down to two cases: when $n=0$, then we have the empty
+group family. When $n > 0$, we have to prove $\mathcal{F}$ is
+group-yielding, which follows quite easily from the fact that
+$\mathcal{F}_{i}=G$ for every $i$.
+\end{proof}
+
+<<Theorem: $\mathcal{F}_{i}=G$ is a group-family>>=
+theorem Th4:
+  for n being Nat
+  holds Seg n --> G is Group-Family of Seg n
+proof
+  let n be Nat;
+  per cases;
+  suppose Seg n is empty;
+    hence thesis by LmEmptyGroupFamilyExplicit;
+  end;
+  suppose A1: not (Seg n is empty);
+    for y being object st y in rng (Seg n --> G) holds y is Group
+    proof
+      let y be object;
+      assume y in rng (Seg n --> G);
+      then y in {G} by A1, FUNCOP_1:8;
+      hence y is Group by TARSKI:def 1;
+    end;
+    then Seg n --> G is Group-yielding;
+    hence Seg n --> G is Group-Family of Seg n;
+  end;
+end;
+@ %def Th4
+
+\begin{registration}
+We can now register this fact, since we will want to write things like
+``\lstinline{product (Seg n --> G)}'' and treat it like a group without
+breaking our stride. Without this, we would need to do things like
+writing
+``\lstinline{ex F being} \lstinline{Group-Family of Seg n st F = Seg n --> G & ...}''
+which is horrible.
+\end{registration}
+
+\begin{remark}
+We won't have to worry about registering ``\lstinline{Seg n --> G}''
+as a Many-sorted set, because this is done in \mml{funcop1}; more
+precisely, ``\lstinline{I --> A}'' is registered as
+``\lstinline{I-defined}'' and separately
+``\lstinline{I-defined total for I-defined Function}''.
+Through numerous redefinitions, ``\lstinline{I --> A}'' is eventually
+awarded the type of a function. So long as we include the \mml{funcop1}
+registrations, everything will work out.
+\end{remark}
+
+<<Register: constant group-family is a group-family>>=
+registration
+  let G be Group;
+  let n be Nat;
+  cluster (Seg n --> G) -> Group-yielding;
+  correctness by Th4;
 end;
 @ 
