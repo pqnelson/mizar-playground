@@ -1,4 +1,67 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2022-12-30
+
+I am still mulling things over. In the meantime, I believe I have the
+following which work:
+
+```mizar
+registration
+  let p be non zero Nat;
+  let G be Group;
+  cluster p-group commutative strict for Subgroup of G;
+  existence
+  proof
+    take (1).G;
+    ex r being Nat st card (1).G = p |^ r
+    proof
+      take 0;
+      thus card (1).G = 1 by GROUP_2:69
+      .= p |^ 0 by NEWTON:4;
+    end;
+    then (1).G is p-group by GROUP_10:def 17;
+    hence thesis;
+  end;
+end;
+
+definition
+  let p be prime Nat;
+  let IT be commutative p-group Group;
+  attr IT is elementary means :Def10:
+  for g being Element of IT
+  holds g |^ p = 1_IT;
+end;
+
+:: Now, we can refer to "elementary commutative p-group Group" without a
+:: care in the world.
+registration
+  let p be prime Nat;
+  cluster elementary for commutative p-group Group;
+  existence
+  proof
+    take G = INT.Group(p);
+    card G = p by GROUP_10:16;
+    then for g being Element of G
+    holds g |^ p = 1_G by GR_CY_1:9;
+    hence thesis;
+  end;
+end;
+
+:: Kurzweil and Stellmacher's "Theory of Finite Groups", section 2.1,
+:: exercise 1 uses this definition
+definition
+  let G be finite Group;
+  func expon G -> non zero Nat means
+  :Def11:
+  for g being Element of G
+  holds g |^ it = 1_G
+  & (for n being non zero Nat st g |^ n = 1 holds it <= n);
+  existence;
+::>       *4
+  uniqueness;
+::>        *4
+end;
+```
+
 # 2022-12-29
 
 I think the way to define the semidirect product of G1 with G2 along the
