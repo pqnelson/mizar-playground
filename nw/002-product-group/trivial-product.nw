@@ -28,27 +28,18 @@ proof
   let M be strict multMagma;
   given x being object such that 
   A1: the carrier of M = {x};
-  the carrier of M is non empty by A1;
-  then reconsider M as non empty multMagma;
-  x in the carrier of M by A1,TARSKI:def 1;
-  then A2: x in M;
-  then reconsider x as Element of M;
-  A3: for y being Element of M holds y = x by A1,TARSKI:def 1;
-  x * x in M by A2,FUNCT_1:def 2;
-  then A4: x * x = x by A3;
+  reconsider M as non empty multMagma by A1;
+  reconsider x as Element of M by A1, TARSKI:def 1;
   for a,b,c being Element of M holds (a * b) * c = a * (b * c)
   <<Proof: singleton magma is associative>>;
-  then A5: M is associative by GROUP_1:def 3;
+  then A2: M is associative by GROUP_1:def 3;
   
   ex e being Element of M st
   for h being Element of M holds
   (h * e = h & e * h = h & ex g being Element of M st (h * g = e & g * h = e))
   <<Proof: singleton magma is group-like>>;
-  then A6: M is Group-like by GROUP_1:def 2;
-  then reconsider G=M as strict Group by A5;
-  
-  G is trivial by A1,GROUP_6:def 2;
-  then reconsider G as strict trivial Group;
+  then M is Group-like;
+  then reconsider G=M as strict trivial Group by A1, A2;
   take G;
   thus thesis;
 end;
@@ -57,19 +48,8 @@ end;
 <<Proof: singleton magma is associative>>=
 proof
   let a,b,c be Element of M;
-  a in M;
-  B1: a = x & b = x & c = x by A3;
-  B2: (a * b) * c = (x * b) * c by A3
-                 .= (x * x) * c by A3
-                 .= x * c by A4
-                 .= x * x by A3
-                 .= x by A4;
-  a * (b * c) = a * (x * c) by A3
-             .= a * (x * x) by A3
-             .= a * x by A4
-             .= x * x by A3
-             .= x by A4;
-  hence (a * b) * c = a * (b * c) by B2;
+  (a * b) * c = x & a * (b * c) = x by A1, TARSKI:def 1;
+  hence (a * b) * c = a * (b * c);
 end
 @ 
 
@@ -77,12 +57,10 @@ end
 proof
   take e = x;
   let h be Element of M;
-  B1: h = x by A3;
-  thus h * e = h by B1,A4;
-  thus e * h = h by B1,A4;
+  h = x by A1, TARSKI:def 1;
+  hence h * e = h & e * h = h by A1, TARSKI:def 1;
   take g = x;
-  thus h * g = e by B1,A4;
-  thus g * h = e by B1,A4;
+  thus thesis by A1, TARSKI:def 1;
 end
 @
 

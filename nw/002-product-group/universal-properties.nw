@@ -3,8 +3,6 @@
 \section{Universal Property of Product Group}
 
 <<Results Concerning Product Groups>>=
-<<Reservations of group families>>
-
 <<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
 
 <<Redefine: $f.i$ for Homomorphism-Family>>
@@ -28,6 +26,8 @@
 <<Theorem: product morphism maps unit element componentwise to the unit element>>
 
 <<Theorem: $\forall g\in G,g\in\ker(\prod f)\iff\forall i\in I,g\in\ker(f_{i})$>>
+
+<<Theorem: $\ker(\prod\varphi)=\bigcap\ker(\varphi)$>>
 
 <<Theorem: $\forall i\in I, f_{i}\in\mathcal{F}_{i}\implies f\in\prod\mathcal{F}$>>
 
@@ -149,8 +149,12 @@ The underlying set of a family of groups is the family of underlying sets.
 
 <<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>=
 Lm2:
-  for i being object st i in I
-  holds (Carrier F).i = the carrier of F.i;
+  (Carrier F).i = the carrier of F.i
+proof
+  ex R being 1-sorted
+  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
+  hence (Carrier F).i = the carrier of F.i;
+end;
 @ %def Lm2
 
 \begin{theorem}
@@ -258,9 +262,6 @@ proof
   then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
   take phi;
   let g be Element of G;
-
-  take phi;
-  let g be Element of G;
   for j being Element of I holds (f.j).g = (proj (F, j)) . (phi.g)
   proof
     let j be Element of I;
@@ -321,7 +322,7 @@ proof
       P1[i, y.i] by B4;
       then consider ii being Element of I such that
       D1: ii=i & y.i = ((f.i).xx);
-      (Carrier F).i = the carrier of F.i by Lm5; 
+      (Carrier F).i = the carrier of F.i by Lm2; 
       hence thesis by D1;
     end;
     then for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i;
@@ -339,7 +340,6 @@ end
 @ 
 
 <<Proof: $\varphi$ is multiplicative>>=
-for a, b being Element of G holds phi.(a * b) = (phi.a) * (phi.b)
 proof
   let a, b be Element of G;
   (phi.(a * b)) is Element of product (Carrier F)
@@ -596,6 +596,77 @@ end;
 @ %def Th18
 
 \begin{theorem}
+Let $\varphi_{i}\colon G\to\mathcal{F}_{i}$ be a family of group
+morphisms.
+Then $\ker(\prod\varphi)=\bigcap\ker(\varphi_{i})$ the kernel of the
+product morphism is the intersection of kernels of its components.
+\end{theorem}
+
+<<Theorem: $\ker(\prod\varphi)=\bigcap\ker(\varphi)$>>=
+theorem
+  the carrier of Ker (product f) = meet { the carrier of Ker (f.i) where
+  i is Element of I : not contradiction }
+proof
+  set Fam = { the carrier of Ker (f.i) where i is Element of I : not contradiction };
+  A1: Fam <> {}
+  proof
+    set i = the Element of I;
+    the carrier of Ker (f.i) in Fam;
+    hence thesis;
+  end;
+  A3: for g being object
+  holds g in Ker (product f)
+        iff (for A being set st A in Fam holds g in A)
+  proof
+    let g be object;
+    hereby 
+      assume B1: g in Ker (product f);
+      let A be set;
+      assume A in Fam;
+      then consider i1 being Element of I such that
+      B2: A = the carrier of Ker(f.i1);
+      g in G & g in Ker (product f) by B1, GROUP_2:40;
+      then g in Ker (f.i1) by Th18;
+      hence g in A by B2;
+    end;
+    assume B1: for A being set st A in Fam holds g in A;
+    g in G & for i being Element of I holds g in Ker (f.i)
+    proof
+      ex x being object st x in Fam by A1, XBOOLE_0:def 1;
+      then consider A0 being set such that
+      B2: A0 in Fam; 
+      consider i0 being Element of I such that
+      B3: A0 = the carrier of Ker (f.i0) by B2;
+      g in Ker (f.i0) by B1, B2, B3;
+      hence g in G by GROUP_2:40;
+      
+      let i be Element of I;
+      the carrier of Ker (f.i) in Fam;
+      hence g in Ker (f.i) by B1;
+    end;
+
+    hence g in Ker (product f) by Th18;
+  end;
+  A4: for g being object
+  holds g in Ker (product f)
+        iff g in (meet Fam)
+  proof
+    let g be object;
+    g in Ker (product f) iff (for A being set st A in Fam holds g in A) by A3;
+    hence thesis by A1, SETFAM_1:def 1;
+  end;
+  for g being object
+  holds g in the carrier of Ker (product f) iff g in meet Fam
+  proof
+    let g be object;
+    g in the carrier of Ker (product f) iff g in Ker (product f);
+    hence thesis by A4;
+  end;
+  hence thesis by TARSKI:2;
+end;
+@ 
+
+\begin{theorem}
 For any function $f$ such that $\dom(f)=I$ if, for each $i\in I$, we
 have $f_{i}\in\mathcal{F}_{i}$, then $f\in\prod\mathcal{F}$.
 \end{theorem}
@@ -659,58 +730,59 @@ end;
 
 <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>=
 proof
-  assume B1: a in product Z;
-  let b be Element of product F;
-  reconsider ab=a*b, ba=b * a as Element of product F;
-  ab in product F & ba in product F;
-  then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
-  then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
-  for i being Element of I holds (a * b).i = (b * a).i
+  let a be Element of product F;
+  thus a in product Z implies (for b being Element of product F holds a*b = b*a)
   proof
-    let i be Element of I;
-    a.i in Z.i by B1, GROUP_19:5;
-    then C1: a.i in center (F.i) by A1;
-    (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
-    .= (b/.i) * (a/.i) by C1, GROUP_5:77
-    .= (b * a).i by GROUP_7:1;
-    hence thesis;
+    assume B1: a in product Z;
+    let b be Element of product F;
+    reconsider ab=a*b, ba=b * a as Element of product F;
+    ab in product F & ba in product F;
+    then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
+    then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
+    for i being Element of I holds (a * b).i = (b * a).i
+    proof
+      let i be Element of I;
+      a.i in Z.i by B1, GROUP_19:5;
+      then C1: a.i in center (F.i) by A1;
+      (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
+               .= (b/.i) * (a/.i) by C1, GROUP_5:77
+               .= (b * a).i by GROUP_7:1;
+      hence thesis;
+    end;
+    hence a*b = b*a by B3;
   end;
-  hence a*b = b*a by B3;
-end;
-thus (for b being Element of product F holds a*b = b*a)
-implies a in product Z
-proof
-  assume B1: for b being Element of product F holds a*b = b*a;
-  B2: for i being Element of I
-  holds a.i in Z.i
+  thus (for b being Element of product F holds a*b = b*a)
+       implies a in product Z
   proof
-    let i be Element of I;
-    C1: for b being Element of product F
-    holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
+    assume B1: for b being Element of product F holds a*b = b*a;
+    B2: for i being Element of I holds a.i in Z.i
     proof
-      let b be Element of product F;
-      (a * b).i = (a /. i) * (b /. i)
-      & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
-      hence thesis by B1;
+      let i be Element of I;
+      C1: for b being Element of product F
+      holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
+      proof
+        let b be Element of product F;
+        (a * b).i = (a /. i) * (b /. i)
+        & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
+        hence thesis by B1;
+      end;
+      for bi being Element of F.i holds (a/.i)*bi = bi*(a/.i)
+      proof
+        let bi be Element of F.i;
+        reconsider b = (1ProdHom (F, i)).bi as Element of product F
+        by GROUP_2:42;
+        D1: dom (1_(product F)) = I by GROUP_19:3;
+        b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
+        then b/.i = bi by D1, FUNCT_7:31;
+        hence thesis by C1;
+      end;
+      then a.i in center (F.i) by GROUP_5:77;
+      hence a.i in Z.i by A1;
     end;
-    for bi being Element of F.i
-    holds (a/.i)*bi = bi*(a/.i)
-    proof
-      let bi be Element of F.i;
-      reconsider b = (1ProdHom (F, i)).bi as Element of product F
-      by GROUP_2:42;
-      D1: dom (1_(product F)) = I by GROUP_19:3;
-      b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
-      then b/.i = bi by D1, FUNCT_7:31;
-      hence thesis by C1;
-    end;
-    then a.i in center (F.i) by GROUP_5:77;
-    hence a.i in Z.i by A1;
-  end;
-  a in product F;
-  then a in product (Carrier F) by GROUP_7:def 2;
-  then dom a = I by PARTFUN1:def 2;
-  hence a in product Z by B2, Th21;
+    a in product F;
+    then a in product (Carrier F) by GROUP_7:def 2;
+    then dom a = I by PARTFUN1:def 2;
+    hence a in product Z by B2, Th21;
   end;
 end
 @ 

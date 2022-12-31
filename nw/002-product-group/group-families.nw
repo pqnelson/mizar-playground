@@ -38,6 +38,8 @@ begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Se
 
 <<Definition: Group-Family>>
 
+<<Reservations of group families>>
+
 <<Theorem: empty family of groups>>
 
 <<Theorem: $\mathcal{F}_{i}=G$ is a group-family>>
@@ -196,7 +198,7 @@ registration
   let I be non empty set;
   let i be Element of I;
   let F be Group-yielding ManySortedSet of I;
-  cluster (F . i) -> Group-like associative non empty for multMagma;
+  cluster (F . i) -> Group-like associative unital non empty for multMagma;
   correctness by Lm4;
 end;
 @
@@ -218,11 +220,11 @@ proof
   let i be object;
   assume A1: i in I;
   then A2: i in dom F by PARTFUN1:def 2;
-  F.i is Group by A1,Lm4;
+  F.i is Group by A1, Lm4;
   then consider G being Group such that
   A3: G = F.i;
   take G;
-  thus [i, G] in F by A2,A3,FUNCT_1:def 2;
+  thus [i, G] in F by A2, A3, FUNCT_1:def 2;
 end;
 @ 
 
@@ -248,7 +250,7 @@ registration
       proof
         let i be set;
         assume i in I;
-        then F.i is Group by A1,A2,FUNCT_1:3;
+        then F.i is Group by A1, A2, FUNCT_1:3;
         hence thesis;
       end;
       then A3: F is Group-like;
@@ -257,7 +259,7 @@ registration
       proof
         let i be set;
         assume i in I;
-        then F.i is Group by A1,A2,FUNCT_1:3;
+        then F.i is Group by A1, A2, FUNCT_1:3;
         hence thesis;
       end;
       hence F is Group-like associative by A3;

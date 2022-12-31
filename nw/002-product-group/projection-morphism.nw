@@ -7,8 +7,6 @@ $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$ for any $i\in I$.
 
 <<Definition and Results about Projection Morphism>>=
 begin
-<<Reservations of group families>>
-
 <<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>
 
 <<Definition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>
@@ -89,7 +87,7 @@ end;
 proof
   deffunc F1() = product F;
   deffunc F2() = F.i;
-  deffunc F3(Element of F1()) = $1.i;
+  deffunc F3(Element of F1()) = $1/.i;
   consider p being Function of F1(), F2() such that
   A1: for x being Element of F1() holds p.x = F3(x)
   from FUNCT_2:sch 4;
@@ -144,11 +142,18 @@ theorem
   proj (F, i) is onto
 proof
   for y being object
-  holds y in the carrier of F.i
-        iff ex x being object
-            st x in dom (proj (F,i))
-               & y = (proj (F,i)).x
-  <<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>;
+  holds y in the carrier of F.i iff
+  ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x
+  proof
+    let y be object;
+    thus y in the carrier of F.i
+         implies ex x being object
+                 st x in dom (proj (F,i))
+                    & y = (proj (F,i)).x
+    <<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>;
+    thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
+         implies y in the carrier of F.i by FUNCT_2:5;
+  end;
   hence proj (F, i) is onto by FUNCT_1:def 3;
 end;
 @
@@ -163,7 +168,7 @@ proof
   A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
       for j being Element of I st j <> i holds x.j = 1_(F.j)
   by GROUP_12:2;
-
+  
   the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
   then dom (1_(product F)) = I by PARTFUN1:def 2;
   then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
@@ -172,7 +177,7 @@ proof
   take x;
   thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
   thus y = (proj (F,i)).x by Def3, A1, A2, A3;
-end;
+end
 @
 
 \begin{theorem}
