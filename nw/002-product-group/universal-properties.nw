@@ -33,6 +33,7 @@
 
 <<Theorem: center of direct product>>
 
+<<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>
 @
 
 \begin{reserve}
@@ -798,5 +799,116 @@ proof
   assume a in center (product F);
   then for b being Element of product F holds a*b = b*a by GROUP_5:77;
   hence a in product Z by A2;
+end
+@ 
+
+\begin{theorem}
+For any family of groups $\mathcal{F}$, if we introduce the family of
+subgroups $\mathcal{D}_{i}=[\mathcal{F}_{i}, \mathcal{F}_{i}]$, then we
+have
+\begin{equation}
+\prod\mathcal{D} = [\prod\mathcal{F}, \prod\mathcal{F}].
+\end{equation}
+\end{theorem}
+
+<<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>=
+theorem
+  for D being Group-Family of I
+  st (for i being Element of I holds D.i = (F.i)`)
+  holds (product F)` = product D
+proof
+  let D be Group-Family of I;
+  assume A1: for i being Element of I holds D.i = (F.i)`;
+  for i being Element of I holds D.i is Subgroup of F.i
+  proof
+    let i be Element of I;
+    D.i = (F.i)` by A1;
+    hence thesis; 
+  end;
+  then A2: product D is strict Subgroup of (product F) by GROUP_21:23;
+  
+  A3: (product F)` is strict Subgroup of (product D)
+  <<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>;
+
+  A4: for g being Element of (product F) st g in (product D)
+  holds g in Ker (nat_hom (product F)`)
+  <<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>;
+
+  for g being Element of (product F) st g in (product D)
+  holds g in (product F)`
+  proof
+    let g be Element of (product F);
+    assume Z1: g in (product D);
+    then g in Ker (nat_hom (product F)`) by A4;
+    hence g in (product F)` by GROUP_6:43;
+  end;
+  then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
+  hence thesis by A3, GROUP_2:55;
+end;
+
+@ 
+
+<<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>=
+proof
+  for a, b being Element of (product F) holds [. a,b .] in product D
+  proof
+    let a, b be Element of (product F);
+    set c = [. a, b .];
+    B1: dom c = I by GROUP_19:3;
+    for i being Element of I holds c.i in D.i
+    proof
+      let i be Element of I;
+      C1: a/.i in (Omega).(F.i) & b/.i in (Omega).(F.i);
+      c.i = ((((a") * (b")) * a) * b).i by GROUP_5:def 2
+         .= (((((a") * (b")) * a))/.i) * (b/.i) by GROUP_7:1
+         .= ((((a") * (b"))/.i * (a/.i))) * (b/.i) by GROUP_7:1
+         .= ((((a")/.i * (b")/.i) * (a/.i))) * (b/.i) by GROUP_7:1
+         .= (((((a/.i)") * ((b")/.i)) * (a/.i))) * (b/.i) by GROUP_7:8
+         .= (((((a/.i)") * ((b/.i)")) * (a/.i))) * (b/.i) by GROUP_7:8
+         .= [. (a/.i), (b/.i) .] by GROUP_5:def 2;
+      then c.i in [. (Omega).(F.i), (Omega).(F.i) .] by C1, GROUP_5:65;
+      then c.i in (F.i)` by GROUP_5:def 9;
+      hence c.i in D.i by A1;
+    end;
+    hence c in product D by B1,Th21;
+  end;
+  hence thesis by A2, GROUP_6:7;
+end
+@ 
+
+<<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>=
+proof
+  let g be Element of (product F);
+  assume B1: g in (product D);
+  set QG = (product F)./.((product F)`);
+  
+  deffunc PHI(Element of I) = (nat_hom ((F.$1)`)) * (proj (F, $1));
+  deffunc PHI(Element of I) = nat_hom ((F.$1)`);
+  consider phi being ManySortedSet of I such that
+  B2: for i being Element of I holds phi.i = PHI(i)
+  from PBOOLE:sch 5;
+  for i being Element of I holds phi.i is Homomorphism of F.i, (F.i)./.((F.i)`)
+  proof
+    let i be Element of I;
+    phi.i = PHI(i) by B2;
+    hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
+  end;
+  then reconsider phi as Homomorphism-Family of (product F), D;
+::>                                                            *4
+    
+  for i being Element of I
+  for varphi being Homomorphism of (product F),D.i
+  st varphi = (nat_hom ((F.i)`)) * (proj (F, i))
+  ex fi being Homomorphism of QG,D.i st varphi = fi * (nat_hom ((product F)`))
+  & Image fi = (1).(D.i);
+::>                      *4
+
+    :: construct the Homomorphism-Family from the varphi
+    :: th
+
+  ((nat_hom ((product F)`))/.g) = 1_(QG);
+::>                                      *4
+    :: then (nat_hom ((product F)`)).g = 1_(QG);
+  hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
 end
 @ 
