@@ -1,6 +1,6 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-\section{Projection Morphism}
+\section{Definition and Results about Projection Morphism}
 
 The projection morphism is defined on the product group
 $\pi_{i}\colon\prod\mathcal{F}\to\mathcal{F}_{i}$ for any $i\in I$.
@@ -21,6 +21,10 @@ begin
 
 <<Theorem: $\pi_{i} = U(\pi_{i})$>>
 
+<<Theorem: if $g\in\prod\mathcal{F}$ and $h\in\mathcal{F}_{i}$, then [[g +* (i, h)]]$\in\prod\mathcal{F}$>>
+
+<<Theorem: elements of kernel of projection>>
+
 @
 
 \begin{theorem}
@@ -29,7 +33,7 @@ If $g\in\prod\mathcal{F}$, then $g_{i}$ is an element of $\mathcal{F}_{i}$.
 \end{theorem}
 
 <<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>=
-theorem Th13:
+theorem Th24:
   for g being Element of product F
   holds g.i is Element of F.i
 proof
@@ -38,7 +42,7 @@ proof
   then g.i in F.i by GROUP_19:5;
   hence thesis;
 end;
-@ %def Th13
+@ %def Th24
 
 \begin{definition}
 We redefine the function application for elements of the product group,
@@ -52,7 +56,7 @@ definition
   let g be Element of product F;
   let i be Element of I;
   func g/.i -> Element of F.i equals :Def2: g.i;
-  correctness by Th13;
+  correctness by Th24;
 end;
 @ %def Def2
 
@@ -151,7 +155,8 @@ proof
                  st x in dom (proj (F,i))
                     & y = (proj (F,i)).x
     <<Proof: $y\in\mathcal{F}_{i}\implies\exists x\in\dom\pi_{F_{i}},y=\pi_{F_{i}}(x)$>>;
-    thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
+    thus (ex x being object
+          st x in dom (proj (F,i)) & y = (proj (F,i)).x)
          implies y in the carrier of F.i by FUNCT_2:5;
   end;
   hence proj (F, i) is onto by FUNCT_1:def 3;
@@ -187,7 +192,7 @@ $U(\pi_{i})\colon\prod U(\mathcal{F})\to U(\mathcal{F}_{i})$.
 \end{theorem}
 
 <<Theorem: underlying set theoretic aspects of projection>>=
-theorem Th8:
+theorem Th26:
   proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
 proof
   set X = product (Carrier F);
@@ -205,7 +210,7 @@ proof
   
   hence f is Function of X,Y by A1, FUNCT_2:3;
 end;
-@ %def Th8
+@ %def Th26
 
 \begin{theorem}
 The projection morphism acts on $g\in\prod\mathcal{F}$ by means of its
@@ -213,7 +218,7 @@ underlying function.
 \end{theorem}
 
 <<Theorem: projection acts on product group by means of its underlying function>>=
-theorem Th9:
+theorem Th27:
   for g being Element of product F
   holds proj (F, i) . g = proj (Carrier F, i) . g 
 proof
@@ -226,7 +231,7 @@ proof
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
   hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
 end;
-@ %def Th9
+@ %def Th27
 
 \begin{theorem}
 We have $\pi_{i} = U(\pi_{i})$.
@@ -241,14 +246,90 @@ proof
   product (Carrier F) = the carrier of (product F) by GROUP_7:def 2;
   then A1: proj (Carrier F, i) is Function of X,Y
            & proj (F, i) is Function of X,Y
-  by Th8;
+  by Th26;
   for x being Element of X
   holds (proj (F, i)) . x = (proj (Carrier F, i)) . x
   proof
     let x be Element of X;
     x is Element of product F by GROUP_7:def 2;
-    hence thesis by Th9;
+    hence thesis by Th27;
   end;
   hence thesis by A1, FUNCT_2:63;
 end;
 @ 
+
+\begin{theorem}
+If $g\in\prod\mathcal{F}$ and $h\in\mathcal{F}_{i}$, then
+$(g_{1},\dots,g_{i-1},h,g_{i+1},\dots)\in\prod\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: if $g\in\prod\mathcal{F}$ and $h\in\mathcal{F}_{i}$, then [[g +* (i, h)]]$\in\prod\mathcal{F}$>>=
+theorem Th29:
+  for g being Element of product F
+  for h being Element of F.i
+  holds g +* (i, h) in product F
+proof
+  let g be Element of product F;
+  let h be Element of F.i;
+  A1: dom g = I by GROUP_19:3;
+  then dom (g +* (i, h)) = I by FUNCT_7:30;
+  then A2: dom (g +* (i, h)) = dom (Carrier F) by PARTFUN1:def 2;
+  A3: i in I;
+  for j being object st j in dom (Carrier F)
+  holds (g +* (i, h)).j in (Carrier F).j
+  proof
+    let j be object;
+    assume j in dom (Carrier F);
+    then j in dom g by A1;
+    then reconsider ii=j as Element of I by A1;
+    ii in dom g by A1;
+    then ex R being 1-sorted
+         st (R = F.ii & (Carrier F).ii = the carrier of R)
+    by A1, PRALG_1:def 15;
+    then B2: (Carrier F).j = the carrier of (F.ii);
+    per cases;
+    suppose B3: i = j;
+      then B4: (g +* (i, h)).i = (g +* (j, h)).j
+      .= (g +* (ii, h)).ii
+      .= h by A1, A3, FUNCT_7:31;
+      then h in F.ii by B2, B3;
+      then h in the carrier of (F.ii);
+      hence thesis by B2,B3,B4;
+    end;
+    suppose i <> j;
+      then B6: (g +* (i, h)).j = g.j by FUNCT_7:32;
+      g in product F;
+      then g.ii in F.ii by GROUP_19:5;
+      then g.j in (Carrier F).j by B2;
+      hence thesis by B6;
+    end;
+  end;
+
+  then (g +* (i, h)) in product (Carrier F) by A2, CARD_3:def 5;
+  hence (g +* (i, h)) in product F by GROUP_7:def 2;
+end;
+@ %def Th29
+
+\begin{theorem}
+The kernel of the projection morphism $\ker(\pi_{i})$ consists of
+$g\in\prod\mathcal{F}$ such that $\pi_{i}(g)=1$.
+\end{theorem}
+
+<<Theorem: elements of kernel of projection>>=
+theorem
+  for i being Element of I
+  for g being Element of product F
+  holds (g +* (i, 1_(F.i))) in Ker (proj (F, i)) 
+proof
+  let i be Element of I;
+  let g be Element of product F;
+  dom g = I by GROUP_19:3;
+  then A1: i in dom g;
+  (g +* (i, 1_(F.i))) in product F by Th29;
+  then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
+  (proj (F, i)).h = h.i by Def3
+                 .= 1_(F.i) by A1, FUNCT_7:31;
+  hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by Th29, GROUP_6:41;
+end;
+@ 
+

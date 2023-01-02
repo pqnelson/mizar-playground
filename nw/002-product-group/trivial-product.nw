@@ -1,6 +1,6 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-\section{Products of Trivial Families}
+\section{Products of Empty Families}
 
 We need to establish that the null product object in the category of
 groups is the terminal object; i.e., if [[I]] is the empty set and [[F]]
@@ -8,7 +8,7 @@ is a [[multMagma-Family of I]], then [[product F]] is the trivial group.
 Most of our work has been handled in other articles, the hardest bit of
 work left is just connecting the dots.
 
-<<On trivial groups and products of empty families>>=
+<<Products of empty families>>=
 <<Theorem: singleton magma is also a trivial group>>
 
 <<Theorem: the product magma of the empty family is the trivial group>>
@@ -32,7 +32,7 @@ proof
   reconsider x as Element of M by A1, TARSKI:def 1;
   for a,b,c being Element of M holds (a * b) * c = a * (b * c)
   <<Proof: singleton magma is associative>>;
-  then A2: M is associative by GROUP_1:def 3;
+  then A2: M is associative;
   
   ex e being Element of M st
   for h being Element of M holds
@@ -77,12 +77,8 @@ theorem
 proof
   let I be empty set;
   let F be multMagma-Family of I;
-  I = {};
-  then F = {};
-  then product (Carrier F) = {{}} by CARD_3:10;
-  then the carrier of (product F) = {{}} by GROUP_7:def 2;
-  then ex x being object st the carrier of (product F) = {x};
-  then ex G being strict trivial Group st (product F)=G by LmTriv;
+  product (Carrier F) = {{}} by CARD_3:10;
+  then ex G being strict trivial Group st (product F)=G by LmTriv, GROUP_7:def 2;
   hence thesis;
 end;
 @ 

@@ -1,0 +1,331 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Null Object for Group}
+
+<<Null object for groups>>=
+begin :: Universal Property of Null Group
+<<Theorem: uniqueness of morphisms to trivial group>>
+
+<<Theorem: Trivial Group is the Terminal Object>>
+
+<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>
+
+<<Theorem: if $H\subgroup G$, then $\id_{H}$ is an embedding morphism>>
+
+<<Theorem: $H\subgroup G\implies\exists\varphi\colon H\to G,\forall h\in{H},\varphi(h)=h$>>
+
+<<Theorem: existence of monomorphic $\varphi\colon H\into G$ such that $\varphi(H)=H$>>
+
+<<Theorem: Trivial group is initial object>>
+
+<<Theorem: Trivial group is isomorphic to trivial subgroup>>
+
+<<Theorem: uniqueness of morphisms from trivial groups>>
+
+<<Theorem: extend codomain for group morphisms>>
+@ 
+
+\begin{theorem}
+For any group $G$, if $f_{1},f_{2}\colon G\to\trivialGroup$, then $f_{1}=f_{2}$.
+\end{theorem}
+
+<<Theorem: uniqueness of morphisms to trivial group>>=
+:: Uniqueness of morphisms to the trivial group
+theorem Th8:
+  for H being trivial Group
+  for f1,f2 being Homomorphism of G,H
+  holds f1=f2
+proof
+  let H be trivial Group;
+  let f1,f2 be Homomorphism of G,H;
+  A1: the carrier of H = {1_H}
+  <<Proof: the carrier of the trivial group is a singleton>>;
+
+  for g being object st g in the carrier of G holds f1.g = f2.g
+  proof
+    let g be object;
+    assume B1: g in the carrier of G;
+    f1.g in H by B1, FUNCT_2:5;
+    then B2: f1.g = 1_H by A1, TARSKI:def 1;
+    f2.g in H by B1, FUNCT_2:5;
+    hence f1.g = f2.g by A1, B2, TARSKI:def 1;
+  end;
+  hence f1=f2;
+end;
+@ %def Th8
+
+<<Proof: the carrier of the trivial group is a singleton>>=
+proof
+  H is trivial;
+  then consider x being object such that
+  B1: the carrier of H = {x};
+  thus thesis by B1, TARSKI:def 1;
+end
+@
+
+\begin{theorem}
+For any group $G$, there is exactly one morphism $G\to\trivialGroup$.
+\end{theorem}
+
+<<Theorem: Trivial Group is the Terminal Object>>=
+:: Universal property of terminal object for the trivial group
+theorem
+  for H being trivial Group
+  ex h being Homomorphism of G,H 
+  st (for f being Homomorphism of G,H holds h=f)
+proof
+  let H be trivial Group;
+  take h = 1:(G,H);
+  thus thesis by Th8;
+end;
+@
+
+\begin{theorem}
+Explicitly, if $f\colon G\to\trivialGroup$ is a group morphism and $g\in G$,
+then $f(g)=1$ is the identity element.
+\end{theorem}
+
+<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>=
+theorem
+  for H being trivial Group
+  for f being Homomorphism of G,H
+  for g being Element of G
+  holds f.g = 1_H
+proof
+  let H be trivial Group;
+  let f be Homomorphism of G,H;
+  let g be Element of G;
+  f = 1:(G,H) by Th8;
+  hence f.g = 1_H;
+end;
+@ 
+
+\subsection{Results about Embedding Subgroups}
+If we have $H\subgroup G$, then there is an obvious inclusion $H\into G$
+defined by sending $h\mapsto h$.
+
+
+\begin{theorem}
+If $H\subgroup G$, then $\id_{H}$ extends naturally to an embedding morphism
+$H\into G$.
+\end{theorem}
+
+<<Theorem: if $H\subgroup G$, then $\id_{H}$ is an embedding morphism>>=
+theorem Th11:
+  for H being Subgroup of G
+  ex f being Homomorphism of H,G
+  st f = id (the carrier of H)
+proof
+  let H be Subgroup of G;
+  set f = id (the carrier of H);
+  A1: for h being Element of H holds f.h = h;
+  f is Function of the carrier of H, the carrier of G
+  proof
+    B1: dom f = the carrier of H;
+    rng f = the carrier of H;
+    then rng f c= the carrier of G by GROUP_2:def 5;
+    hence f is Function of the carrier of H, the carrier of G
+    by B1, FUNCT_2:2;
+  end;
+  then reconsider f as Function of H, G;
+  for g,h being Element of H
+  holds f.(g * h) = (f.g) * (f.h)
+  proof
+    let g,h be Element of H;
+    f.g = g & f.h = h by A1;
+    then (f.g) * (f.h) = g*h by GROUP_2:43
+                      .= f.(g * h) by A1;
+    hence f.(g * h) = (f.g) * (f.h);
+  end;
+
+  then reconsider f as Homomorphism of H, G by GROUP_6:def 6;
+  take f;
+  thus f = id (the carrier of H);
+end;
+@ %def Th11
+
+\begin{theorem}
+If $H\subgroup G$, then there is a morphism $\varphi\colon H\to G$ such that
+for any $h\in H$ we have $\varphi(h)=h$.
+\end{theorem}
+
+<<Theorem: $H\subgroup G\implies\exists\varphi\colon H\to G,\forall h\in{H},\varphi(h)=h$>>=
+theorem
+  for H being Subgroup of G
+  ex f being Homomorphism of H,G
+  st (for h being Element of H holds f.h = h)
+proof
+  let H be Subgroup of G;
+  consider f being Homomorphism of H,G such that
+  A1: f = id (the carrier of H)
+  by Th11;
+  take f;
+  let h be Element of H;
+  thus f.h = h by A1;
+end;
+@ 
+
+\begin{theorem}
+For any $H\subgroup G$, there is a monomorphism $\varphi\colon H\into G$
+such that $\varphi(H)=H$.
+\end{theorem}
+
+<<Theorem: existence of monomorphic $\varphi\colon H\into G$ such that $\varphi(H)=H$>>=
+theorem
+  for H being Subgroup of G
+  ex f being Homomorphism of H,G
+  st f is one-to-one & Image f = the multMagma of H
+proof
+  let H be Subgroup of G;
+  consider f being Homomorphism of H,G such that
+  A1: f = id (the carrier of H)
+  by Th11;
+  take f;
+  the carrier of H = rng f by A1
+                  .= the carrier of (Image f) by GROUP_6:44;
+  then A2: Image f = the multMagma of H by GROUP_2:59;
+  
+  Ker f = (1).H
+  <<Proof: $\ker\varphi=\trivialSubgroup_{H}$>>;
+  hence f is one-to-one by GROUP_6:56;
+  thus Image f = the multMagma of H by A2;
+end;
+@
+
+\begin{proof}
+We see for any $h\in H$ that $h\in\ker(\varphi)$ iff $h\in\trivialSubgroup_{H}$
+iff $h=1_{H}$, thanks to $\varphi(h)=h$.
+\end{proof}
+
+<<Proof: $\ker\varphi=\trivialSubgroup_{H}$>>=
+proof
+  for h being Element of H holds h in Ker f iff h in (1).H
+  proof
+    let h be Element of H;
+    hereby 
+      assume B1: h in Ker f;
+      then f.h = 1_G by GROUP_6:41
+              .= 1_H by GROUP_2:44;
+      then h = 1_H by A1;
+      then h in {1_H} by TARSKI:def 1;
+      hence h in (1).H by GROUP_2:def 7;
+    end;
+    assume B2: h in (1).H;
+    then h in {1_H} by GROUP_2:def 7;
+    then h = 1_H by TARSKI:def 1;
+    then f.h = 1_G by GROUP_6:31;
+    hence h in Ker f by GROUP_6:41;
+  end;
+  hence thesis by GROUP_2:60;
+end
+@
+
+\begin{theorem}
+The trivial group is the initial object for groups.
+\end{theorem}
+
+<<Theorem: Trivial group is initial object>>=
+theorem ThInitialObject:
+  for H being trivial Group
+  ex f being Homomorphism of H, G
+  st Image f = (1).G & f is one-to-one
+proof
+  let H be trivial Group;
+  take f=(1:(H,G));
+  thus Image f = (1).G by GROUP_6:47;
+  the multMagma of H = (1).H by GROUP_22:6;
+  then A1: the carrier of H = the carrier of (1).H by GROUP_2:def 7;
+  the carrier of (Ker f) c= the carrier of H by GROUP_2:def 5;
+  then the carrier of (Ker f) c= the carrier of (1).H by A1;
+  then Ker f is Subgroup of (1).H by GROUP_2:57;
+  then Ker f is trivial Subgroup of H by GROUP_22:9;
+  then Ker f = (1).H by GROUP_22:8;
+  hence f is one-to-one by GROUP_6:56;
+end;
+@ 
+
+\begin{theorem}
+If $H$ is a trivial group, the for any group $G$ we have $H\iso\trivialSubgroup_{G}$.
+\end{theorem}
+
+<<Theorem: Trivial group is isomorphic to trivial subgroup>>=
+theorem
+  for G being Group
+  for H being trivial Group
+  holds H, (1).G are_isomorphic
+proof
+  let G be Group;
+  let H be trivial Group;
+  consider f being Homomorphism of H, G such that
+  A1: Image f = (1).G & f is one-to-one
+  by ThInitialObject;
+  thus thesis by A1, GROUP_6:68;
+end;
+@ 
+
+\begin{theorem}
+The trivial group is universally initial, i.e., there is exactly one
+homomorphism from a trivial group to any other group.
+\end{theorem}
+
+<<Theorem: uniqueness of morphisms from trivial groups>>=
+theorem
+  for H being trivial Group
+  for f1, f2 being Homomorphism of H, G
+  holds f1 = f2
+proof
+  let H be trivial Group;
+  let f1, f2 be Homomorphism of H, G;
+  for h being Element of H holds f1.h = f2.h
+  proof
+    let h be Element of H;
+    the multMagma of H = (1).H by GROUP_22:6;
+    then the carrier of H = {1_H} by GROUP_2:def 5, GROUP_2:def 7;
+    then B1: h = 1_H by TARSKI:def 1;
+    hence f1.h = 1_G by GROUP_6:31
+              .= f2.h by B1, GROUP_6:31;
+  end;
+  hence f1 = f2;
+end;
+@ 
+
+\begin{theorem}
+Let $H\subgroup G_{2}$ and $\varphi\colon G_{1}\to H$ be a group
+morphism. Then $\varphi$ is also a group morphism $G_{1}\to G_{2}$.
+\end{theorem}
+
+<<Theorem: extend codomain for group morphisms>>=
+theorem
+  for G1,G2 being Group
+  for H being Subgroup of G2
+  for f being Homomorphism of G1, H
+  holds f is Homomorphism of G1, G2
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G2;
+  let f be Homomorphism of G1, H;
+  A1: for g1,g2 being Element of G1 holds f.(g1*g2) = (f.g1) * (f.g2)
+  by GROUP_6:def 6;
+  A2: dom f = the carrier of G1 by FUNCT_2:def 1;
+  rng f c= the carrier of H
+         & the carrier of H c= the carrier of G2
+  by FUNCT_5:11, GROUP_2:def 5;
+  then rng f c= the carrier of G2 by XBOOLE_1:1;
+  then A3: f is Function of G1, G2 by A2, FUNCT_2:2;
+  f is multiplicative Function of G1, G2
+  proof
+    reconsider ff=f as Function of G1,G2 by A3;
+    for g1,g2 being Element of G1
+    holds ff.(g1*g2) = (ff.g1) * (ff.g2)
+    proof
+      let g1,g2 be Element of G1;
+      thus (ff.g1)*(ff.g2) = (f.g1) * (f.g2) by GROUP_2:43
+                          .= f.(g1 * g2) by A1
+                          .= ff.(g1 * g2);
+    end;
+    then ff is Homomorphism of G1,G2 by GROUP_6:def 6;
+    hence thesis;
+  end;
+  hence f is Homomorphism of G1, G2 by A1, GROUP_6:def 6;
+end;
+@ 

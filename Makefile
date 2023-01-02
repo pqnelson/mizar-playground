@@ -14,7 +14,8 @@ CHARACTERISTIC_SUBGROUP=$(CHAR).nw $(CHAR)/environ.nw $(CHAR)/preparatory.nw \
 PRODGRP=nw/002-product-group
 PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/group-families.nw $(PRODGRP)/trivial-product.nw \
-	$(PRODGRP)/easy-properties.nw $(PRODGRP)/projection-morphism.nw \
+	$(PRODGRP)/null-object.nw $(PRODGRP)/quotient-groups.nw \
+	$(PRODGRP)/homomorphism-family.nw $(PRODGRP)/projection-morphism.nw \
 	$(PRODGRP)/universal-properties.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
@@ -61,8 +62,8 @@ dumb_extract_text: defs
 #	noweave $(NOWEBOPTS) -indexfrom 002.defs $(RADICALS) > tex/radicals.tex
 #	noweave $(NOWEBOPTS) -indexfrom 003.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
 code:
-	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
-	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
+#	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
+#	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
 	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) > text/group_23.miz
 	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) > dict/group_23.voc
 without_bib:

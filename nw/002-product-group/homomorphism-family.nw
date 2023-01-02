@@ -1,0 +1,361 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Homomorphism Families}
+
+<<Homomorphism-Family Results>>=
+<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
+
+<<Redefine: $f.i$ for Homomorphism-Family>>
+
+<<Reserve: $f$ for Homomorphism-Family>>
+
+<<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>
+
+<<Theorem: if $i\in I$, then $(i, f_{i})\in f$>>
+
+<<Theorem: Surjective functions have a right-inverse>>
+
+<<Redefine: [[f.i]] is a [[Function of A.i,B.i]]>>
+
+<<Define: [[ManySortedFunction]] of 1-sorted-yielding families>>
+
+<<Define: [[f.i]] to be a Function of Underlying Sets>>
+
+<<Theorem: conditions for many-sorted sets to be many-sorted functions>>
+
+<<Define: Homomorphism-Family of $\mathcal{F}_{1},\mathcal{F}_{2}$>>
+
+<<Register: Homomorphism-Families yield homomorphisms>>
+@
+
+\begin{definition}
+Let $G$ be a group, $\mathcal{F}$ be an $I$-indexed family of groups.
+We define a \define{Homomorphism Family} from $G$ to $\mathcal{F}$ as an
+indexed family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$.
+\end{definition}
+
+<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>=
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  mode Homomorphism-Family of G, F -> ManySortedFunction of I means
+  :Def6:
+  for i being Element of I holds
+  it.i is Homomorphism of G, F.i;
+  existence
+  <<Proof: existence of Homomorphism-Family>>;
+end;
+@ %def Homomorphism-Family Def6
+
+\begin{voc}
+We need to add the mode ``\lstinline{Homomorphism-Family}'' to our
+vocabulary file.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+MHomomorphism-Family
+@
+
+\begin{proof}[Proof sketch]
+We begin by constructing a many-sorted set $f$ defined as mapping all of
+$G$ to the identity element of each component of $\mathcal{F}$. Then we
+show this is, in fact, a many-sorted function. And coincidentally, it
+consists entirely of group morphisms! Which finishes our proof.
+\end{proof}
+
+<<Proof: existence of Homomorphism-Family>>=
+proof
+  deffunc F1() = I;
+  deffunc F2(Element of I) = 1:(G, F.$1);
+  consider f being ManySortedSet of F1() such that
+  A1: for i being Element of F1() holds f.i = F2(i)
+  from PBOOLE:sch 5;
+  for x being object st x in dom f holds f.x is Function
+  proof
+    let x be object;
+    assume B1: x in dom f;
+    then x in I by A1,FUNCT_2:def 1;
+    then reconsider i=x as Element of I;
+    f.i = 1:(G,F.i) by A1;
+    hence f.x is Function;
+  end;
+  then f is Function-yielding by FUNCOP_1:def 6;
+  then reconsider f as ManySortedFunction of I;
+  take f;
+  thus for i being Element of I holds f.i is Homomorphism of G, F.i
+  proof
+    let i be Element of I;
+    f.i = 1:(G, F.i) by A1;
+    hence f.i is Homomorphism of G, F.i;
+  end;
+end
+@
+
+\begin{definition*}
+We will treat functional notation for a Homomorphism-Family as yielding
+a homomorphism.
+\end{definition*}
+
+<<Redefine: $f.i$ for Homomorphism-Family>>=
+:: I hate this, but have no better alternative
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  let f be Homomorphism-Family of G, F;
+  let i be Element of I;
+  redefine func f.i -> Homomorphism of G, F.i;
+  coherence by Def6;
+end;
+@
+
+\begin{reserve}
+We will use $f$ to refer to a generic Homomorphism-family of $G\to\mathcal{F}$.
+\end{reserve}
+
+<<Reserve: $f$ for Homomorphism-Family>>=
+reserve f for Homomorphism-Family of G, F;
+@ 
+
+\begin{theorem}
+The underlying set of a family of groups is the family of underlying sets.
+\end{theorem}
+
+<<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>=
+theorem Th20:
+  (Carrier F).i = the carrier of F.i
+proof
+  ex R being 1-sorted
+  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
+  hence (Carrier F).i = the carrier of F.i;
+end;
+@ %def Th20
+
+\begin{theorem}
+A homomorphism-family has the expected structure of a function in set
+theory, i.e., if $i\in I$, then $(i, f_{i})\in f$.
+\end{theorem}
+
+<<Theorem: if $i\in I$, then $(i, f_{i})\in f$>>=
+theorem
+  [i, f.i] in f
+proof
+  i in I & f is ManySortedSet of I;
+  then i in dom f by PARTFUN1:def 2;
+  hence [i, f.i] in f by FUNCT_1:def 2;
+end;
+@
+
+\begin{theorem}
+Let $f\colon X\onto Y$ be a surjective function of sets. Then there
+exists a function $g\colon Y\to X$ such that $f\circ g=\id_{Y}$.
+\end{theorem}
+
+<<Theorem: Surjective functions have a right-inverse>>=
+theorem
+  for X,Y being non empty set
+  for f being Function of X,Y
+  st f is onto
+  ex g being Function of Y,X
+  st f * g = id Y
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is onto;
+  <<Proof step: construct the function $g$>>;
+  take g;
+  for y being Element of Y holds (f * g).y = y
+  <<Proof: $\forall y, (f\circ g)(y)=y$>>;
+  hence f * g = id Y;
+end;
+@
+
+<<Proof step: construct the function $g$>>=
+defpred P[object, object] means $1 = f.$2;
+A2: for y being object st y in Y
+ex x being object st x in X & P[y, x]
+<<Proof: $\forall y\in Y,\exists x\in X, P[x, y]$>>;
+
+consider g being Function of Y,X such that
+A3: for y being object st y in Y holds P[y, g.y]
+from FUNCT_2:sch 1(A2)
+@ 
+
+<<Proof: $\forall y\in Y,\exists x\in X, P[x, y]$>>=
+proof
+  let y be object;
+  assume y in Y;
+  then reconsider yy=y as Element of Y;
+  consider x being Element of X such that
+  B1: f.x = yy
+  by A1, GROUP_6:58;
+  take x;
+  thus x in X;
+  thus P[y, x] by B1;
+end
+@ 
+
+<<Proof: $\forall y, (f\circ g)(y)=y$>>=
+proof
+  let y be Element of Y;
+  B1: dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
+  y = f.(g.y) by A3
+   .= (f * g).y by B1, FUNCT_1:12;
+  hence (f * g).y = y;
+end
+@ 
+
+\begin{definition*}
+  If $\mathcal{A}$, $\mathcal{B}$ are many-sorted sets indexed by $I$,
+  if $f\colon\mathcal{A}\to\mathcal{B}$ is a many-sorted function,
+  then $f_{i}\colon\mathcal{A}_{i}\to\mathcal{B}_{i}$ is a function.
+\end{definition*}
+
+<<Redefine: [[f.i]] is a [[Function of A.i,B.i]]>>=
+:: This probably belongs in PBOOLE
+definition
+  let I be non empty set;
+  let A, B be ManySortedSet of I;
+  let f be ManySortedFunction of A,B;
+  let i be Element of I;
+  redefine func f.i -> Function of A.i, B.i;
+  coherence by PBOOLE:def 15;
+end;
+@ 
+
+\begin{definition*}
+We define a many-sorted function of 1-sorted yielding indexed families
+as functions on the underlying sets.
+\end{definition*}
+
+<<Define: [[ManySortedFunction]] of 1-sorted-yielding families>>=
+:: This probably belongs in PRALG_1
+definition
+  let I be non empty set;
+  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
+  mode ManySortedFunction of F1,F2
+  is ManySortedFunction of (Carrier F1),(Carrier F2);
+end;
+@
+
+\begin{definition*}
+We define the components of many-sorted functions of 1-sorted yielding
+many-sorted sets to be functions of the underlying sets of the components.
+\end{definition*}
+
+<<Define: [[f.i]] to be a Function of Underlying Sets>>=
+:: This probably belongs in PRALG_1
+definition
+  let I be non empty set;
+  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
+  let phi be ManySortedFunction of F1,F2;
+  let i be Element of I;
+  redefine func phi.i -> Function of the carrier of F1.i, the carrier of F2.i;
+  correctness
+  proof
+    i in I;
+    then ex R being 1-sorted
+    st (R = F1.i & (Carrier F1).i = the carrier of R) by PRALG_1:def 15;
+    then A1: the carrier of F1.i = (Carrier F1).i;
+    ex R being 1-sorted
+    st (R = F2.i & (Carrier F2).i = the carrier of R) by PRALG_1:def 15;
+    then A2: the carrier of F2.i = (Carrier F2).i;
+    phi.i is Function of (Carrier F1).i, (Carrier F2).i by PBOOLE:def 15;
+    hence thesis by A1,A2;
+  end;
+end;
+@
+
+\begin{theorem}
+Let $f$ be a many sorted set indexed by $I$.
+Then $f$ is a many-sorted function from $\mathcal{A}$ to $\mathcal{B}$
+iff for each $i\in I$, $f_{i}\colon\mathcal{A}_{i}\to\mathcal{B}_{i}$.
+\end{theorem}
+
+<<Theorem: conditions for many-sorted sets to be many-sorted functions>>=
+theorem Th23:
+  for I being non empty set
+  for A, B being ManySortedSet of I
+  for f being ManySortedSet of I
+  holds f is ManySortedFunction of A,B
+  iff (for i being Element of I holds f.i is Function of A.i, B.i)
+proof
+  let I be non empty set;
+  let A, B be ManySortedSet of I;
+  let f be ManySortedSet of I;
+  thus f is ManySortedFunction of A,B
+  implies (for i being Element of I holds f.i is Function of A.i, B.i)
+  proof
+    assume Z1: f is ManySortedFunction of A,B;
+    let i be Element of I;
+    i in I;
+    thus thesis by Z1,PBOOLE:def 15;
+  end;
+  assume Z2: for i being Element of I holds f.i is Function of A.i, B.i;
+  for i being object st i in I holds
+  f.i is Function of (A.i), (B.i) by Z2;
+  hence f is ManySortedFunction of A,B by PBOOLE:def 15;
+end;
+@ %def Th23
+
+\begin{definition}
+Let $\mathcal{A}$, $\mathcal{B}$ be Group-families indexed by $I$.
+We define a \define{Homomorphism Family} from $\mathcal{A}$ to
+$\mathcal{B}$ to be an $I$-indexed family of functions
+$\varphi\colon\mathcal{A}\to\mathcal{B}$ such that each component is a
+homomorphism. 
+\end{definition}
+
+<<Define: Homomorphism-Family of $\mathcal{F}_{1},\mathcal{F}_{2}$>>=
+definition
+  let I be non empty set;
+  let F1,F2 be Group-Family of I;
+  mode Homomorphism-Family of F1,F2 -> ManySortedFunction of F1,F2 means
+  :Def8:
+  for i being Element of I
+  holds it.i is Homomorphism of F1.i,F2.i;
+  existence
+  proof
+    deffunc Fun(Element of I) = 1:(F1.$1, F2.$1);
+    consider phi being ManySortedSet of I such that
+    A1: for i being Element of I holds phi.i = Fun(i)
+    from PBOOLE:sch 5;
+    A2: for i being Element of I holds phi.i is Homomorphism of F1.i,F2.i
+    proof
+      let i be Element of I;
+      phi.i = 1:(F1.i, F2.i) by A1;
+      hence phi.i is Homomorphism of F1.i,F2.i;
+    end;
+    for i being Element of I
+    holds phi.i is Function of (Carrier F1).i, (Carrier F2).i
+    proof
+      let i be Element of I;
+      the carrier of F1.i = (Carrier F1).i
+      & the carrier of F2.i = (Carrier F2).i by Th20;
+      hence phi.i is Function of (Carrier F1).i, (Carrier F2).i by A2;
+    end;
+    then phi is ManySortedFunction of F1,F2 by Th23;
+    then reconsider phi as ManySortedFunction of F1,F2;
+    take phi;
+    
+    thus thesis by A2;
+  end;
+end;
+@ 
+
+\begin{registration}
+If $\varphi$ is a homomorphism-family between two $I$-indexed families
+of groups, then $\varphi_{i}$ is a homomorphism.
+\end{registration}
+
+<<Register: Homomorphism-Families yield homomorphisms>>=
+registration
+  let I be non empty set;
+  let F1,F2 be Group-Family of I;
+  let i be Element of I;
+  let phi be Homomorphism-Family of F1,F2;
+  cluster (phi . i) -> multiplicative for Function of F1.i, F2.i;
+  correctness by Def8;
+end;
+@ 

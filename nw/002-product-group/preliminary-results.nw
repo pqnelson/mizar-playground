@@ -1,0 +1,41 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+<<Preliminary Results>>=
+<<Theorem: $g\in\ker(\varphi_{2}\circ\varphi_{1}$ iff $\varphi_{1}(g)\in\ker(\varphi_{2})$>>
+
+@
+
+\begin{theorem}
+If $\varphi_{1}\colon G_{1}\to G_{2}$ and $\varphi_{2}\colon G_{2}\to G_{1}$
+are group morphisms, then $g\in\ker(\varphi_{2}\circ\varphi_{1}$ iff
+$\varphi_{1}(g)\in\ker(\varphi_{2})$.
+\end{theorem}
+
+<<Theorem: $g\in\ker(\varphi_{2}\circ\varphi_{1}$ iff $\varphi_{1}(g)\in\ker(\varphi_{2})$>>=
+theorem Th25:
+  for G1,G2,G3 being Group
+  for f1 being Homomorphism of G1,G2
+  for f2 being Homomorphism of G2,G3
+  for g being Element of G1
+  holds g in Ker (f2 * f1) iff f1.g in Ker(f2)
+proof
+  let G1,G2,G3 be Group;
+  let f1 be Homomorphism of G1,G2;
+  let f2 be Homomorphism of G2,G3;
+  let g be Element of G1;
+  thus g in Ker (f2 * f1) implies f1.g in Ker(f2)
+  proof
+    assume B1: g in Ker (f2 * f1);
+    then 1_(G3) = (f2 * f1).g by GROUP_6:41
+               .= f2.(f1.g) by FUNCT_2:15;
+    hence f1.g in Ker(f2) by GROUP_6:41;
+  end;
+  thus f1.g in Ker(f2) implies g in Ker (f2 * f1)
+  proof
+    assume B1: f1.g in Ker(f2);
+    then 1_G3 = f2.(f1.g) by GROUP_6:41
+             .= (f2 * f1).g by FUNCT_2:15;
+    hence g in Ker (f2 * f1) by GROUP_6:41;
+  end;
+end;
+@ 

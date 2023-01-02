@@ -1,98 +1,9 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-
-\section{Terminal Object}
-
-<<Terminal object for groups>>=
-begin :: Universal Property of Terminal Group
-<<Theorem: uniqueness of morphisms to trivial group>>
-
-<<Theorem: Trivial Group is the Terminal Object>>
-
-<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>
-@ 
-
-\begin{theorem}
-For any group $G$, if $f_{1},f_{2}\colon G\to\trivialGroup$, then $f_{1}=f_{2}$.
-\end{theorem}
-
-<<Theorem: uniqueness of morphisms to trivial group>>=
-:: Uniqueness of morphisms to the trivial group
-theorem Th1:
-  for H being trivial Group
-  for f1,f2 being Homomorphism of G,H
-  holds f1=f2
-proof
-  let H be trivial Group;
-  let f1,f2 be Homomorphism of G,H;
-  A1: the carrier of H = {1_H}
-  <<Proof: the carrier of the trivial group is a singleton>>;
-
-  for g being object st g in the carrier of G holds f1.g = f2.g
-  proof
-    let g be object;
-    assume B1: g in the carrier of G;
-    f1.g in H by B1,FUNCT_2:5;
-    then B2: f1.g = 1_H by A1, TARSKI:def 1;
-    f2.g in H by B1,FUNCT_2:5;
-    then f2.g = 1_H by A1, TARSKI:def 1;
-    hence f1.g = f2.g by B2;
-  end;
-  hence f1=f2;
-end;
-@ %def Th1
-
-<<Proof: the carrier of the trivial group is a singleton>>=
-proof
-  H is trivial;
-  then consider x being object such that
-  B1: the carrier of H = {x};
-  thus thesis by B1, TARSKI:def 1;
-end
-@
-
-\begin{theorem}
-For any group $G$, there is exactly one morphism $G\to\trivialGroup$.
-\end{theorem}
-
-<<Theorem: Trivial Group is the Terminal Object>>=
-theorem
-  for H being trivial Group
-  ex h being Homomorphism of G,H 
-  st (for f being Homomorphism of G,H holds h=f)
-proof
-  let H be trivial Group;
-  take h = 1:(G,H);
-  thus thesis by Th1;
-end;
-@
-
-\begin{theorem}
-Explicitly, if $f\colon G\to\trivialGroup$ is a group morphism and $g\in G$,
-then $f(g)=1$ is the identity element.
-\end{theorem}
-
-<<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>=
-theorem
-  for H being trivial Group
-  for f being Homomorphism of G,H
-  for g being Element of G
-  holds f.g = 1_H
-proof
-  let H be trivial Group;
-  let f be Homomorphism of G,H;
-  let g be Element of G;
-  f = 1:(G,H) by Th1;
-  hence f.g = 1_H by Th1,FUNCOP_1:7;
-end;
-@ 
-
-\section{Universal Property of Quotients}
+\section{Universal Property of Quotient Groups}
 
 <<Universal Property of Quotient Groups>>=
 begin :: Universal Property of Quotient Group
-<<Reservations of group families>>
-
 <<Theorem: if $aN=bN$, then $a^{-1}b\in N$>>
 
 <<Theorem: universal property of quotient groups>>
@@ -142,7 +53,7 @@ unique. We get this for free, and will not prove a uniqueness theorem
 \end{thm-remark}
 
 <<Theorem: universal property of quotient groups>>=
-theorem Th23:
+theorem
   for G being Group
   for N being normal Subgroup of G
   for H being Group
@@ -188,7 +99,7 @@ proof
   end;
   hence phi = f * (nat_hom N);
 end;
-@ %def Th23
+@
 
 <<Proof step: construct a function of sets $f$>>=
 defpred P[object, object] means

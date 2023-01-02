@@ -1,14 +1,8 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 
-\section{Universal Property of Product Group}
+\section{Results Concerning Product Group}
 
 <<Results Concerning Product Groups>>=
-<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>
-
-<<Redefine: $f.i$ for Homomorphism-Family>>
-
-<<Reserve: $f$ for Homomorphism-Family>>
-
 <<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>
 
 <<Theorem: if $i\in I$, then $(i, f_{i})\in f$>>
@@ -27,210 +21,32 @@
 
 <<Theorem: $\forall g\in G,g\in\ker(\prod f)\iff\forall i\in I,g\in\ker(f_{i})$>>
 
+<<Theorem: $g\in\ker(\varphi_{2}\circ\varphi_{1})\iff\varphi_{1}(g)\in\ker(\varphi_{2})$>>
+
+<<Theorem: $U(\ker(\varphi_{2}\circ\varphi_{1}))=\varphi_{1}^{-1}[\ker(\varphi_{2})]$>>
+
 <<Theorem: $\ker(\prod\varphi)=\bigcap\ker(\varphi)$>>
 
 <<Theorem: $\forall i\in I, f_{i}\in\mathcal{F}_{i}\implies f\in\prod\mathcal{F}$>>
 
+<<Theorem: Product Group is a Subgroup iff it is componentwise>>
+
+<<Theorem: Existence of Family of Quotient Groups>>
+
+<<Theorem: existence of family of natural homomorphisms for quotient group>>
+
 <<Theorem: center of direct product>>
+
+<<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
 
 <<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>
 @
-
-\begin{reserve}
-Let $I$ be a non-empty set, $i\in I$, $\mathcal{F}$ be a group family
-indexed by $I$, and $G$ be an arbitrary group.
-\end{reserve}
-
-<<Reservations of group families>>=
-reserve I for non empty set;
-reserve i for Element of I;
-reserve F for Group-Family of I;
-reserve G for Group;
-@ 
 
 \subsection{Universal Property of Products}
 It seems we should generalize the notion of a
 ``\lstinline{ManySortedFunction of I}'' (from~\mml{pboole}) to a family
 of group morphisms. Then we can use this to state the universal property
 of direct products of groups.
-
-\begin{definition}
-Let $G$ be a group, $\mathcal{F}$ be an $I$-indexed family of groups.
-We define a \define{Homomorphism Family} from $G$ to $\mathcal{F}$ as an
-indexed family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$.
-\end{definition}
-
-<<Definition: Homomorphism-Family of $G$, $\mathcal{F}$>>=
-definition
-  let G be Group;
-  let I be non empty set;
-  let F be Group-Family of I;
-  mode Homomorphism-Family of G, F -> ManySortedFunction of I means
-  :Def6:
-  for i being Element of I holds
-  it.i is Homomorphism of G, F.i;
-  existence
-  <<Proof: existence of Homomorphism-Family>>;
-end;
-@ %def Homomorphism-Family Def6
-
-\begin{voc}
-We need to add the mode ``\lstinline{Homomorphism-Family}'' to our
-vocabulary file.
-\end{voc}
-
-<<DICT/GROUP-23.VOC>>=
-MHomomorphism-Family
-@
-
-\begin{proof}[Proof sketch]
-We begin by constructing a many-sorted set $f$ defined as mapping all of
-$G$ to the identity element of each component of $\mathcal{F}$. Then we
-show this is, in fact, a many-sorted function. And coincidentally, it
-consists entirely of group morphisms! Which finishes our proof.
-\end{proof}
-
-<<Proof: existence of Homomorphism-Family>>=
-proof
-  deffunc F1() = I;
-  deffunc F2(Element of I) = 1:(G, F.$1);
-  consider f being ManySortedSet of F1() such that
-  A1: for i being Element of F1() holds f.i = F2(i)
-  from PBOOLE:sch 5;
-  for x being object st x in dom f holds f.x is Function
-  proof
-    let x be object;
-    assume B1: x in dom f;
-    then x in I by A1,FUNCT_2:def 1;
-    then reconsider i=x as Element of I;
-    f.i = 1:(G,F.i) by A1;
-    hence f.x is Function;
-  end;
-  then f is Function-yielding by FUNCOP_1:def 6;
-  then reconsider f as ManySortedFunction of I;
-  take f;
-  thus for i being Element of I holds f.i is Homomorphism of G, F.i
-  proof
-    let i be Element of I;
-    f.i = 1:(G, F.i) by A1;
-    hence f.i is Homomorphism of G, F.i;
-  end;
-end
-@
-
-\begin{definition*}
-We will treat functional notation for a Homomorphism-Family as yielding
-a homomorphism.
-\end{definition*}
-
-<<Redefine: $f.i$ for Homomorphism-Family>>=
-:: I hate this, but have no better alternative
-definition
-  let G be Group;
-  let I be non empty set;
-  let F be Group-Family of I;
-  let f be Homomorphism-Family of G, F;
-  let i be Element of I;
-  redefine func f.i -> Homomorphism of G, F.i;
-  coherence by Def6;
-end;
-@
-
-\begin{reserve}
-We will use $f$ to refer to a generic Homomorphism-family of $G\to\mathcal{F}$.
-\end{reserve}
-
-<<Reserve: $f$ for Homomorphism-Family>>=
-reserve f for Homomorphism-Family of G, F;
-@ 
-
-\begin{lemma}
-The underlying set of a family of groups is the family of underlying sets.
-\end{lemma}
-
-<<Lemma: $U(\mathcal{F}_{i})=(U(\mathcal{F}))_{i}$>>=
-Lm2:
-  (Carrier F).i = the carrier of F.i
-proof
-  ex R being 1-sorted
-  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence (Carrier F).i = the carrier of F.i;
-end;
-@ %def Lm2
-
-\begin{theorem}
-A homomorphism-family has the expected structure of a function in set
-theory, i.e., if $i\in I$, then $(i, f_{i})\in f$.
-\end{theorem}
-
-<<Theorem: if $i\in I$, then $(i, f_{i})\in f$>>=
-theorem
-  [i, f.i] in f
-proof
-  i in I & f is ManySortedSet of I;
-  then i in dom f by PARTFUN1:def 2;
-  hence [i, f.i] in f by FUNCT_1:def 2;
-end;
-@
-
-\begin{theorem}
-Let $f\colon X\onto Y$ be a surjective function of sets. Then there
-exists a function $g\colon Y\to X$ such that $f\circ g=\id_{Y}$.
-\end{theorem}
-
-<<Theorem: Surjective functions have a right-inverse>>=
-theorem
-  for X,Y being non empty set
-  for f being Function of X,Y
-  st f is onto
-  ex g being Function of Y,X
-  st f * g = id Y
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is onto;
-  <<Proof step: construct the function $g$>>;
-  take g;
-  for y being Element of Y holds (f * g).y = y
-  <<Proof: $\forall y, (f\circ g)(y)=y$>>;
-  hence f * g = id Y;
-end;
-@
-
-<<Proof step: construct the function $g$>>=
-defpred P[object, object] means $1 = f.$2;
-A2: for y being object st y in Y
-ex x being object st x in X & P[y, x]
-<<Proof: $\forall y\in Y,\exists x\in X, P[x, y]$>>;
-
-consider g being Function of Y,X such that
-A3: for y being object st y in Y holds P[y, g.y]
-from FUNCT_2:sch 1(A2)
-@ 
-
-<<Proof: $\forall y\in Y,\exists x\in X, P[x, y]$>>=
-proof
-  let y be object;
-  assume y in Y;
-  then reconsider yy=y as Element of Y;
-  consider x being Element of X such that
-  B1: f.x = yy
-  by A1, GROUP_6:58;
-  take x;
-  thus x in X;
-  thus P[y, x] by B1;
-end
-@ 
-
-<<Proof: $\forall y, (f\circ g)(y)=y$>>=
-proof
-  let y be Element of Y;
-  B1: dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
-  y = f.(g.y) by A3
-   .= (f * g).y by B1, FUNCT_1:12;
-  hence (f * g).y = y;
-end
-@ 
 
 \begin{theorem}
 For any family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$,
@@ -239,7 +55,7 @@ there is a morphism $f\colon G\to\prod\mathcal{F}$ such that $f(g)_{i}=f_{i}(g)$
 
 <<Theorem: Universal Property of Group Products (Explicit Version)>>=
 :: Universal property of group product, explicit version.
-theorem Th12:
+theorem Th31a:
   for f being Homomorphism-Family of G, F
   ex phi being Homomorphism of G, product F
   st for g being Element of G
@@ -271,7 +87,7 @@ proof
   end;
   hence thesis;
 end;
-@ %def Th12
+@ %def Th31a
 
 <<Proof step: construct the underlying function for the product morphism>>=
 defpred P[object, object] means ex g0 being Element of product F
@@ -323,7 +139,7 @@ proof
       P1[i, y.i] by B4;
       then consider ii being Element of I such that
       D1: ii=i & y.i = ((f.i).xx);
-      (Carrier F).i = the carrier of F.i by Lm2; 
+      (Carrier F).i = the carrier of F.i by Th20; 
       hence thesis by D1;
     end;
     then for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i;
@@ -382,7 +198,7 @@ proof
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-  by Th12;
+  by Th31a;
   take phi;
   for g being Element of G holds ((proj (F,i)) * phi).g = (f.i).g
   proof
@@ -459,7 +275,7 @@ proof
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-  by Th12;
+  by Th31a;
   take phi;
   for g being Element of G
   for j being Element of I holds (f.j).g = (phi.g).j
@@ -518,7 +334,7 @@ The product morphism maps unit elements to products of unit elements.
 \end{theorem}
 
 <<Theorem: product morphism maps unit element componentwise to the unit element>>=
-theorem Th17:
+theorem Th33:
   for g being Element of G
   holds (for i being Element of I holds ((product f).g).i = 1_(F.i))
   iff (product f).g = 1_(product F)
@@ -549,7 +365,7 @@ proof
   thus (product f).g = 1_(product F) implies
   (for i being Element of I holds ((product f).g).i = 1_(F.i)) by GROUP_7:6;
 end;
-@ %def Th17
+@ %def Th33
 
 \begin{theorem}
   For any $g\in G$, we have $g\in\ker(\prod f)$ if and only if
@@ -557,7 +373,7 @@ end;
 \end{theorem}
 
 <<Theorem: $\forall g\in G,g\in\ker(\prod f)\iff\forall i\in I,g\in\ker(f_{i})$>>=
-theorem Th18:
+theorem Th34:
   for g being Element of G
   holds g in Ker (product f)
         iff (for i being Element of I holds g in Ker (f.i))
@@ -569,7 +385,7 @@ proof
     assume A1: g in Ker (product f);
     let i be Element of I;
     (product f).g = 1_(product F) by A1, GROUP_6:41;
-    then 1_(F.i) = ((product f).g).i by Th17
+    then 1_(F.i) = ((product f).g).i by Th33
                 .= (f.i).g by Def7;
     hence g in Ker (f.i) by GROUP_6:41;
   end;
@@ -590,11 +406,94 @@ proof
                        .= 1_(F.i) by A2;
       hence thesis;
     end;
-    then (product f).g = 1_(product F) by Th17;
+    then (product f).g = 1_(product F) by Th33;
     hence g in Ker (product f) by GROUP_6:41;
   end;
 end;
-@ %def Th18
+@ %def Th34
+
+\begin{theorem}
+Let $\varphi_{1}\colon G_{1}\to G_{2}$ and $\varphi_{2}\colon G_{2}\to G_{3}$
+be group morphisms. Then $g\in\ker(\varphi_{2}\circ\varphi_{1})$ if and
+only if $\varphi_{1}(g)\in\ker(\varphi_{2})$.
+\end{theorem}
+
+<<Theorem: $g\in\ker(\varphi_{2}\circ\varphi_{1})\iff\varphi_{1}(g)\in\ker(\varphi_{2})$>>=
+theorem Th35:
+  for G1,G2,G3 being Group
+  for f1 being Homomorphism of G1,G2
+  for f2 being Homomorphism of G2,G3
+  for g being Element of G1
+  holds g in Ker (f2 * f1) iff f1.g in Ker(f2)
+proof
+  let G1,G2,G3 be Group;
+  let f1 be Homomorphism of G1,G2;
+  let f2 be Homomorphism of G2,G3;
+  let g be Element of G1;
+  thus g in Ker (f2 * f1) implies f1.g in Ker(f2)
+  proof
+    assume B1: g in Ker (f2 * f1);
+    then 1_(G3) = (f2 * f1).g by GROUP_6:41
+               .= f2.(f1.g) by FUNCT_2:15;
+    hence f1.g in Ker(f2) by GROUP_6:41;
+  end;
+  thus f1.g in Ker(f2) implies g in Ker (f2 * f1)
+  proof
+    assume B1: f1.g in Ker(f2);
+    then 1_G3 = f2.(f1.g) by GROUP_6:41
+             .= (f2 * f1).g by FUNCT_2:15;
+    hence g in Ker (f2 * f1) by GROUP_6:41;
+  end;
+end;
+@ %def Th35
+
+\begin{theorem}
+Let $\varphi_{1}\colon G_{1}\to G_{2}$ and $\varphi_{2}\colon G_{2}\to G_{3}$
+be group morphisms. Then the underlying set
+$U(\ker(\varphi_{2}\circ\varphi_{1}))=\varphi_{1}^{-1}[\ker(\varphi_{2})]$. 
+\end{theorem}
+
+<<Theorem: $U(\ker(\varphi_{2}\circ\varphi_{1}))=\varphi_{1}^{-1}[\ker(\varphi_{2})]$>>=
+theorem
+  for G1,G2,G3 being Group
+  for f1 being Homomorphism of G1,G2
+  for f2 being Homomorphism of G2,G3
+  holds the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
+proof
+  let G1,G2,G3 be Group;
+  let f1 be Homomorphism of G1,G2;
+  let f2 be Homomorphism of G2,G3;
+  A1: f1 "(the carrier of Ker f2) is Subset of G1
+      & the carrier of Ker (f2 * f1) is Subset of G1
+  by GROUP_2:def 5, GROUP_6:def 9, FUNCT_2:39;
+  for g being Element of G1
+  st g in the carrier of Ker (f2 * f1)
+  holds g in f1 " (the carrier of (Ker f2))
+  proof
+    let g be Element of G1;
+    assume g in the carrier of Ker (f2 * f1);
+    then g in Ker (f2 * f1);
+    then f1.g in Ker f2 by Th35;
+    hence g in f1 " (the carrier of (Ker f2)) by FUNCT_2:38;
+  end;
+  then
+  A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2) by A1, SUBSET_1:2;
+  for g being Element of G1
+  st g in f1 " (the carrier of (Ker f2))
+  holds g in the carrier of Ker (f2 * f1)
+  proof
+    let g be Element of G1;
+    assume B1: g in f1 " (the carrier of (Ker f2));
+    then f1.g in Ker f2 by FUNCT_2:38;
+    then g in Ker (f2 * f1) by Th35;
+    hence g in the carrier of Ker (f2 * f1);
+  end;
+  then
+  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1, SUBSET_1:2;
+  thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
+  by A2,A3,XBOOLE_0:def 10;
+end;
+@ 
 
 \begin{theorem}
 Let $\varphi_{i}\colon G\to\mathcal{F}_{i}$ be a family of group
@@ -627,7 +526,7 @@ proof
       then consider i1 being Element of I such that
       B2: A = the carrier of Ker(f.i1);
       g in G & g in Ker (product f) by B1, GROUP_2:40;
-      then g in Ker (f.i1) by Th18;
+      then g in Ker (f.i1) by Th34;
       hence g in A by B2;
     end;
     assume B1: for A being set st A in Fam holds g in A;
@@ -646,7 +545,7 @@ proof
       hence g in Ker (f.i) by B1;
     end;
 
-    hence g in Ker (product f) by Th18;
+    hence g in Ker (product f) by Th34;
   end;
   A4: for g being object
   holds g in Ker (product f)
@@ -673,7 +572,7 @@ have $f_{i}\in\mathcal{F}_{i}$, then $f\in\prod\mathcal{F}$.
 \end{theorem}
 
 <<Theorem: $\forall i\in I, f_{i}\in\mathcal{F}_{i}\implies f\in\prod\mathcal{F}$>>=
-theorem Th21:
+theorem Th38:
   for f being Function
   st dom f = I & (for i being Element of I holds f.i in F.i)
   holds f in product F
@@ -696,7 +595,140 @@ proof
   then f in product (Carrier F) by A1, A3, CARD_3:9;
   hence f in product F by GROUP_7:def 2;
 end;
-@ %def Th21
+@ %def Th38
+
+\begin{theorem}
+Let $\mathcal{S}$ and $\mathcal{F}$ are group-families indexed by $I$,
+let $g\in\prod\mathcal{F}$.
+Then $g\in\prod\mathcal{S}$ if and only if
+for each $i\in I$ we have $\pi_{i}(g)\in\mathcal{S}_{i}$.
+\end{theorem}
+
+<<Theorem: Product Group is a Subgroup iff it is componentwise>>=
+theorem
+  for S being Group-Family of I
+  for g being Element of product F
+  holds g in product S iff (for i being Element of I holds (proj (F,i)).g in S.i)
+proof
+  let S be Group-Family of I;
+  let g be Element of product F;
+  hereby 
+    assume A1: g in product S;
+    let i be Element of I;
+    g.i in S.i by A1, GROUP_19:5;
+    hence (proj (F,i)).g in S.i by Def3;
+  end;
+  assume Z2: for i being Element of I holds (proj (F,i)).g in S.i;
+  Z3: dom g = I by GROUP_19:3;
+  for i being Element of I holds g.i in S.i
+  proof
+    let i be Element of I;
+    (proj (F, i)).g in S.i by Z2;
+    hence g.i in S.i by Def3;
+  end;
+  hence g in product S by Z3, Th38;
+end;
+@
+
+\begin{theorem}
+Existence of quotient group family: given $\mathcal{F}$ a family of
+groups indexed by $I$, and a family of normal subgroups
+$\mathcal{N}_{i}\normalSubgroup\mathcal{F}_{i}$ for each $i\in I$, then
+there exists a family of groups $\mathcal{Q}_{i}=\mathcal{F}_{i}/\mathcal{N}_{i}$.
+\end{theorem}
+
+<<Theorem: Existence of Family of Quotient Groups>>=
+theorem
+  for N being Group-Family of I
+  st (for i being Element of I holds N.i is normal Subgroup of F.i)
+  ex QG being Group-Family of I
+  st (for i being Element of I
+      ex Ni being normal Subgroup of F.i
+      st Ni = N.i & QG.i = (F.i) ./. Ni)
+proof
+  let N be Group-Family of I;
+  assume A1: for i being Element of I holds N.i is normal Subgroup of F.i;
+  defpred PQ[Element of I, object] means ex Ni being normal Subgroup of
+  F.$1 st Ni = N.$1 & $2 = (F.$1)./.Ni;
+  B1: for i being Element of I ex j being object st PQ[i, j]
+  proof
+    let i be Element of I;
+    reconsider Ni=N.i as normal Subgroup of F.i by A1;
+    take j = (F.i)./.Ni;
+    thus PQ[i, j];
+  end;
+  consider QG being ManySortedSet of I such that
+  A3: for i being Element of I holds PQ[i, QG.i]
+  from PBOOLE:sch 6(B1);
+  for y being object st y in rng QG holds y is Group
+  proof
+    let y be object;
+    assume y in rng QG;
+    then consider x being object such that
+    B1: x in dom QG & y = QG.x by FUNCT_1:def 3;
+    reconsider i=x as Element of I by B1;
+    PQ[i, y] by A3, B1;
+    hence y is Group;
+  end;
+  then QG is Group-yielding by Def1;
+  then reconsider QG as Group-Family of I;
+  take QG;
+  thus thesis by A3;
+end;
+@
+
+\begin{theorem}
+Given a family of normal subgroups $\mathcal{N}_{i}\normalSubgroup\mathcal{F}_{i}$,
+and a family of quotient groups $\mathcal{Q}_{i}=\mathcal{F}_{i}/\mathcal{N}_{i}$,
+there exists a family of morphisms $\varphi_{i}\colon\prod\mathcal{F}\to\mathcal{Q}_{i}$
+such that $\varphi_{i}$ is the composition of the projection morphism
+$\pi_{i}$ followed by the natural homomorphism onto the quotient $\mathcal{Q}_{i}$.
+\end{theorem}
+
+<<Theorem: existence of family of natural homomorphisms for quotient group>>=
+theorem
+  for QG being Group-Family of I
+  st (for i being Element of I ex Ni being normal Subgroup of F.i st QG.i=(F.i)./.Ni)
+  ex phi being Homomorphism-Family of (product F), QG
+  st (for i being Element of I
+      ex Ni being normal Subgroup of F.i
+      st QG.i = (F.i)./.Ni & phi.i = (nat_hom Ni) * (proj (F, i)))
+proof
+  let QG be Group-Family of I;
+  assume A1: for i being Element of I
+             ex Ni being normal Subgroup of F.i
+             st QG.i=(F.i)./.Ni;
+  defpred P[Element of I, object] means ex Ni being normal Subgroup of
+  F.$1 st QG.$1 = (F.$1)./.Ni & $2 = (nat_hom Ni) * (proj (F, $1));
+
+  A2: for i being Element of I ex j being object st P[i, j]
+  proof
+    let i be Element of I;
+    consider Ni being normal Subgroup of F.i such that
+    B1: QG.i = (F.i)./.Ni by A1;
+    take j = (nat_hom Ni) * (proj (F, i));
+    thus P[i, j] by A1,B1;
+  end;
+
+  consider f being ManySortedSet of I such that
+  A3: for i being Element of I holds P[i, f.i]
+  from PBOOLE:sch 6(A2);
+  
+  A4: for i being Element of I holds f.i is Homomorphism of (product F), QG.i
+  proof
+    let i be Element of I;
+    P[i, f.i] by A3;
+    then consider Ni being normal Subgroup of F.i such that
+    B1: QG.i = (F.i)./.Ni & f.i = (nat_hom Ni) * (proj (F, i));
+    thus f.i is Homomorphism of (product F), QG.i by B1;
+  end;
+  then for i being object st i in dom f holds f.i is Function;
+  then f is Function-yielding by FUNCOP_1:def 6;
+  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def6;
+  take f;
+  thus thesis by A3;
+end;
+@ 
 
 \begin{theorem}[Kurosh I, result 6]
 The center of a direct product is the direct product of centers (of its factors).
@@ -783,7 +815,7 @@ proof
     a in product F;
     then a in product (Carrier F) by GROUP_7:def 2;
     then dom a = I by PARTFUN1:def 2;
-    hence a in product Z by B2, Th21;
+    hence a in product Z by B2, Th38;
   end;
 end
 @ 
@@ -800,6 +832,35 @@ proof
   then for b being Element of product F holds a*b = b*a by GROUP_5:77;
   hence a in product Z by A2;
 end
+@ 
+
+\begin{theorem}
+Let $g\in\prod\mathcal{F}$, $\nu_{i}\colon\mathcal{F}_{i}\onto\mathcal{F}_{i}/[\mathcal{F}_{i},\mathcal{F}_{i}]$
+be the natural homomorphism of the component $i\in I$.
+Then $g\in\ker(\nu_{i}\circ\pi_{i})$ if and only if $\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$.
+\end{theorem}
+
+<<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>=
+theorem
+  for g being Element of product F
+  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (F.i)`
+proof
+  let g be Element of product F;
+  set H=(F.i)./.((F.i)`);
+  hereby
+    assume A1: g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)));
+    (nat_hom ((F.i)`)).((proj (F,i)).g)
+     = ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15
+    .= 1_H by A1, GROUP_6:41;
+    then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:41;
+    hence (proj (F,i)).g in (F.i)` by GROUP_6:43;
+  end;
+  assume (proj (F,i)).g in (F.i)`;
+  then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:43;
+  then 1_H = (nat_hom ((F.i)`)).((proj (F,i)).g) by GROUP_6:41
+          .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
+  hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
+end;
 @ 
 
 \begin{theorem}
@@ -870,7 +931,7 @@ proof
       then c.i in (F.i)` by GROUP_5:def 9;
       hence c.i in D.i by A1;
     end;
-    hence c in product D by B1,Th21;
+    hence c in product D by B1, Th38;
   end;
   hence thesis by A2, GROUP_6:7;
 end
