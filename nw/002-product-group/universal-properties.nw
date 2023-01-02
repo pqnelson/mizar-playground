@@ -75,7 +75,7 @@ proof
   end;
 
   for a, b being Element of G holds phi.(a * b) = (phi.a) * (phi.b)
-  <<Proof: $\varphi$ is multiplicative>>;
+  <<Proof: $\varphi$ is multiplicative>>
   then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
   take phi;
   let g be Element of G;
@@ -97,7 +97,7 @@ deffunc F1() = the carrier of G;
 A1: for x being object st x in F1()
 ex y being object st y in the carrier of product F &
 P[x,y]
-<<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>;
+<<Proof: $\forall x\in G\exists y\in\prod\mathcal{F},P[x,y]$>>
 
 consider phi being Function of F1(), the carrier of (product F)
 such that
@@ -113,7 +113,8 @@ proof
   then reconsider xx=x as Element of G;
   defpred P1[object, object] means ex i being Element of I st
   i = $1 & $2 = ((f.i).xx);
-  B1: for i, y1, y2 being object st i in I & P1[i,y1] & P1[i,y2] holds y1 = y2;
+  B1: for i, y1, y2 being object st i in I & P1[i,y1] & P1[i,y2]
+      holds y1 = y2;
   B2: for i being object st i in I holds ex y being object st P1[i,y]
   proof
     let i be object;
@@ -142,7 +143,8 @@ proof
       (Carrier F).i = the carrier of F.i by Th20; 
       hence thesis by D1;
     end;
-    then for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i;
+    then for i being object st i in dom (Carrier F)
+         holds y.i in (Carrier F).i;
     then y in product (Carrier F) by C1, CARD_3:9;
     hence thesis by GROUP_7:def 2;
   end;
@@ -153,7 +155,7 @@ proof
   let j be Element of I;
   P1[j, g0.j] by B4, B5;
   hence (f.j).x = g0.j;
-end
+end;
 @ 
 
 <<Proof: $\varphi$ is multiplicative>>=
@@ -176,7 +178,7 @@ proof
     hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
   end;
   hence phi.(a * b) = (phi.a) * (phi.b) by B1;
-end  
+end;
 @ 
 
 \begin{theorem}
@@ -264,9 +266,9 @@ definition
   for i being Element of I
   holds (f.i).g = (it.g).i;
   existence
-  <<Proof: existence of products for homomorphism-families>>;
+  <<Proof: existence of products for homomorphism-families>>
   uniqueness
-  <<Proof: uniqueness of products for homomorphism-families>>;
+  <<Proof: uniqueness of products for homomorphism-families>>
 end;
 @ %def Def7
 
@@ -287,7 +289,7 @@ proof
     hence thesis;
   end;
   hence thesis;
-end
+end;
 @ 
 
 <<Proof: uniqueness of products for homomorphism-families>>=
@@ -326,7 +328,7 @@ proof
     hence phi1 = phi2;
   end;
   hence thesis;
-end
+end;
 @ 
 
 \begin{theorem}
@@ -347,7 +349,8 @@ proof
     set s = (product f).g;
     A2: for i being set
         st i in I
-        holds (ex FG being non empty Group-like multMagma st FG = F.i & s.i = (1_FG))
+        holds (ex FG being non empty Group-like multMagma
+               st FG = F.i & s.i = (1_FG))
     proof
       let i be set;
       assume i in I;
@@ -508,7 +511,8 @@ theorem
   the carrier of Ker (product f) = meet { the carrier of Ker (f.i) where
   i is Element of I : not contradiction }
 proof
-  set Fam = { the carrier of Ker (f.i) where i is Element of I : not contradiction };
+  set Fam = { the carrier of Ker (f.i) where i is Element of I
+              : not contradiction };
   A1: Fam <> {}
   proof
     set i = the Element of I;
@@ -609,7 +613,8 @@ for each $i\in I$ we have $\pi_{i}(g)\in\mathcal{S}_{i}$.
 theorem
   for S being Group-Family of I
   for g being Element of product F
-  holds g in product S iff (for i being Element of I holds (proj (F,i)).g in S.i)
+  holds g in product S iff (for i being Element of I
+                            holds (proj (F,i)).g in S.i)
 proof
   let S be Group-Family of I;
   let g be Element of product F;
@@ -689,7 +694,8 @@ $\pi_{i}$ followed by the natural homomorphism onto the quotient $\mathcal{Q}_{i
 <<Theorem: existence of family of natural homomorphisms for quotient group>>=
 theorem
   for QG being Group-Family of I
-  st (for i being Element of I ex Ni being normal Subgroup of F.i st QG.i=(F.i)./.Ni)
+  st (for i being Element of I ex Ni being normal Subgroup of F.i
+      st QG.i=(F.i)./.Ni)
   ex phi being Homomorphism-Family of (product F), QG
   st (for i being Element of I
       ex Ni being normal Subgroup of F.i
@@ -746,11 +752,11 @@ proof
   assume A1: for i being Element of I holds Z.i = center (F.i);
   A2: for a being Element of product F
   holds a in product Z iff (for b being Element of product F holds a*b = b*a)
-  <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>;
+  <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>
 
   A3: for a being Element of product F
   holds a in product Z iff a in center (product F)
-  <<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>;
+  <<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>
   for i being Element of I holds Z.i is Subgroup of F.i
   proof
     let i be Element of I;
@@ -765,13 +771,15 @@ end;
 <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>=
 proof
   let a be Element of product F;
-  thus a in product Z implies (for b being Element of product F holds a*b = b*a)
+  thus a in product Z implies (for b being Element of product F
+                               holds a*b = b*a)
   proof
     assume B1: a in product Z;
     let b be Element of product F;
     reconsider ab=a*b, ba=b * a as Element of product F;
     ab in product F & ba in product F;
-    then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
+    then ab in product (Carrier F) & ba in product (Carrier F)
+    by GROUP_7:def 2;
     then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
     for i being Element of I holds (a * b).i = (b * a).i
     proof
@@ -818,7 +826,7 @@ proof
     then dom a = I by PARTFUN1:def 2;
     hence a in product Z by B2, Th38;
   end;
-end
+end;
 @ 
 
 <<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>=
@@ -832,7 +840,7 @@ proof
   assume a in center (product F);
   then for b being Element of product F holds a*b = b*a by GROUP_5:77;
   hence a in product Z by A2;
-end
+end;
 @ 
 
 \begin{theorem}
@@ -844,7 +852,8 @@ Then $g\in\ker(\nu_{i}\circ\pi_{i})$ if and only if $\pi_{i}(g)\in[\mathcal{F}_{
 <<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>=
 theorem
   for g being Element of product F
-  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (F.i)`
+  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)))
+        iff (proj (F,i)).g in (F.i)`
 proof
   let g be Element of product F;
   set H=(F.i)./.((F.i)`);
@@ -890,11 +899,11 @@ proof
   then A2: product D is strict Subgroup of (product F) by GROUP_21:23;
   
   A3: (product F)` is strict Subgroup of (product D)
-  <<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>;
+  <<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>
 
   A4: for g being Element of (product F) st g in (product D)
   holds g in Ker (nat_hom (product F)`)
-  <<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>;
+  <<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>
 
   for g being Element of (product F) st g in (product D)
   holds g in (product F)`
@@ -907,7 +916,6 @@ proof
   then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
   hence thesis by A3, GROUP_2:55;
 end;
-
 @ 
 
 <<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>=
@@ -935,7 +943,7 @@ proof
     hence c in product D by B1, Th38;
   end;
   hence thesis by A2, GROUP_6:7;
-end
+end;
 @ 
 
 <<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>=
@@ -949,28 +957,27 @@ proof
   consider phi being ManySortedSet of I such that
   B2: for i being Element of I holds phi.i = PHI(i)
   from PBOOLE:sch 5;
-  for i being Element of I holds phi.i is Homomorphism of F.i, (F.i)./.((F.i)`)
+  for i being Element of I
+  holds phi.i is Homomorphism of F.i, (F.i)./.((F.i)`)
   proof
     let i be Element of I;
     phi.i = PHI(i) by B2;
     hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
   end;
   then reconsider phi as Homomorphism-Family of (product F), D;
-::>                                                            *4
     
   for i being Element of I
   for varphi being Homomorphism of (product F),D.i
   st varphi = (nat_hom ((F.i)`)) * (proj (F, i))
-  ex fi being Homomorphism of QG,D.i st varphi = fi * (nat_hom ((product F)`))
-  & Image fi = (1).(D.i);
-::>                      *4
+  ex fi being Homomorphism of QG,D.i
+  st varphi = fi * (nat_hom ((product F)`))
+   & Image fi = (1).(D.i);
 
     :: construct the Homomorphism-Family from the varphi
     :: th
 
   ((nat_hom ((product F)`))/.g) = 1_(QG);
-::>                                      *4
     :: then (nat_hom ((product F)`)).g = 1_(QG);
   hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
-end
+end;
 @ 
