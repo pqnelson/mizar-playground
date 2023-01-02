@@ -65,8 +65,8 @@ dumb_extract_text: defs
 code:
 #	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 #	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
-	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) > text/group_23.miz
-	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) > dict/group_23.voc
+	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) | tr -d '\r' > text/group_23.miz
+	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) | tr -d '\r' > dict/group_23.voc
 without_bib:
 	$(TEX) $(BOOK)
 	noindex $(BOOK)

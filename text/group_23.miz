@@ -63,14 +63,12 @@ definition
   y is Group;
 end;
 
-
 registration
   cluster Group-yielding -> 1-sorted-yielding for Function;
   coherence;
   cluster Group-yielding -> multMagma-yielding for Function;
   coherence;
 end;
-
 
 Lm1:
   for I being set
@@ -89,7 +87,6 @@ proof
   end;
   hence F is Group-yielding;
 end;
-
 
 registration
   let I be set;
@@ -113,7 +110,6 @@ registration
   coherence;
 end;
 
-
 registration
   cluster Group-yielding for Function;
   existence
@@ -123,7 +119,6 @@ registration
     thus thesis;
   end;
 end;
-
 
 theorem Lm4:
   for I being non empty set
@@ -139,7 +134,6 @@ proof
   hence F.i is Group by Def1;
 end;
 
-
 registration
   let I be non empty set;
   let i be Element of I;
@@ -148,13 +142,11 @@ registration
   correctness by Lm4;
 end;
 
-
 registration
   let I be set;
   cluster associative Group-like -> Group-yielding for multMagma-Family of I;
   coherence by Lm1;
 end;
-
 
 theorem
   for I being non empty set
@@ -173,7 +165,6 @@ proof
   take G;
   thus [i, G] in F by A2, A3, FUNCT_1:def 2;
 end;
-
 
 registration
   let I be set;
@@ -208,25 +199,21 @@ registration
   end;
 end;
 
-
 registration
   let I be set;
   cluster -> Group-yielding for Group-like associative multMagma-Family of I;
   coherence;
 end;
 
-
 definition
   let I be set;
   mode Group-Family of I is Group-yielding ManySortedSet of I;
 end;
 
-
 reserve I for non empty set;
 reserve i for Element of I;
 reserve F for Group-Family of I;
 reserve G for Group;
-
 
 theorem LmEmptyGroupFamilyExplicit:
   {} --> G is Group-Family of {}
@@ -234,7 +221,6 @@ proof
   {} --> G is ManySortedSet of {} & {} --> G is Group-yielding;
   hence {} --> G is Group-Family of {};
 end;
-
 
 theorem Th4:
   for n being Nat
@@ -258,14 +244,12 @@ proof
   end;
 end;
 
-
 registration
   let G be Group;
   let n be Nat;
   cluster (Seg n --> G) -> Group-yielding;
   correctness by Th4;
 end;
-
 
 theorem LmTriv:
   for M being strict multMagma
@@ -283,7 +267,6 @@ proof
     (a * b) * c = x & a * (b * c) = x by A1, TARSKI:def 1;
     hence (a * b) * c = a * (b * c);
   end;
-
   then A2: M is associative;
   
   ex e being Element of M st
@@ -297,13 +280,11 @@ proof
     take g = x;
     thus thesis by A1, TARSKI:def 1;
   end;
-
   then M is Group-like;
   then reconsider G=M as strict trivial Group by A1, A2;
   take G;
   thus thesis;
 end;
-
 
 theorem
   for I being empty set
@@ -317,7 +298,6 @@ proof
   by LmTriv, GROUP_7:def 2;
   hence thesis;
 end;
-
 
 begin :: Inclusion Morphism
 definition
@@ -342,13 +322,11 @@ definition
   end;
 end;
 
-
 definition
   let G be Group, H be Subgroup of G;
   func incl H -> Homomorphism of H,G equals incl (H, G);
   coherence;
 end;
-
 
 theorem Th8:
   for H being Group
@@ -362,7 +340,6 @@ proof
   hence (incl (H, G)).h = (id the carrier of H).h by DefIncl
                        .= h;
 end;
-
 
 theorem Th9:
   for H being Subgroup of G
@@ -396,18 +373,15 @@ proof
     end;
     hence thesis;
   end;
-
   hence f is one-to-one by GROUP_6:56;
   thus Image f = the multMagma of H by A2;
 end;
-
 
 registration
   let G be Group, H be Subgroup of G;
   cluster incl (H, G) -> one-to-one;
   correctness by Th9;
 end;
-
 
 theorem
   for H,K being Group st H is Subgroup of G
@@ -437,7 +411,6 @@ proof
   hence phi|(the carrier of H) = phi * (incl (H, G))
   by A2, FUNCT_2:def 1;
 end;
-
 
 begin :: Universal Property of Null Group
 :: Uniqueness of morphisms to the trivial group
@@ -592,7 +565,6 @@ proof
   hence thesis;
 end;
 
-
 theorem
   for G being Group
   for N being normal Subgroup of G
@@ -628,7 +600,6 @@ proof
   from FUNCT_2:sch 1(A2);
   reconsider f as Function of G./.N, H;
 
-
   A4: for x being Element of G./.N
   ex g being Element of G
   st f.x = phi.g & x = g*N
@@ -655,7 +626,6 @@ proof
     .= phi.g0 by GROUP_1:def 4;
     hence f.(g * N) = phi.g by B1, B2;
   end;
-
 
   for a, b being Element of G./.N
   holds f.(a * b) = (f.a) * (f.b)
@@ -688,7 +658,6 @@ proof
     
     hence f.(a * b) = (f.a) * (f.b);
   end;
-
   then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
   take f;
   
@@ -704,7 +673,6 @@ proof
   end;
   hence phi = f * (nat_hom N);
 end;
-
 
 definition
   let G be Group;
@@ -738,9 +706,7 @@ definition
       hence f.i is Homomorphism of G, F.i;
     end;
   end;
-
 end;
-
 
 :: I hate this, but have no better alternative
 definition
@@ -753,9 +719,7 @@ definition
   coherence by Def6;
 end;
 
-
 reserve f for Homomorphism-Family of G, F;
-
 
 theorem Th20:
   (Carrier F).i = the carrier of F.i
@@ -765,7 +729,6 @@ proof
   hence (Carrier F).i = the carrier of F.i;
 end;
 
-
 theorem
   [i, f.i] in f
 proof
@@ -773,7 +736,6 @@ proof
   then i in dom f by PARTFUN1:def 2;
   hence [i, f.i] in f by FUNCT_1:def 2;
 end;
-
 
 theorem
   for X,Y being non empty set
@@ -799,12 +761,10 @@ proof
     thus x in X;
     thus P[y, x] by B1;
   end;
-
   
   consider g being Function of Y,X such that
   A3: for y being object st y in Y holds P[y, g.y]
   from FUNCT_2:sch 1(A2);
-
   take g;
   for y being Element of Y holds (f * g).y = y
   proof
@@ -814,10 +774,8 @@ proof
      .= (f * g).y by B1, FUNCT_1:12;
     hence (f * g).y = y;
   end;
-
   hence f * g = id Y;
 end;
-
 
 :: This probably belongs in PBOOLE
 definition
@@ -829,7 +787,6 @@ definition
   coherence by PBOOLE:def 15;
 end;
 
-
 :: This probably belongs in PRALG_1
 definition
   let I be non empty set;
@@ -837,7 +794,6 @@ definition
   mode ManySortedFunction of F1,F2
   is ManySortedFunction of (Carrier F1),(Carrier F2);
 end;
-
 
 :: This probably belongs in PRALG_1
 definition
@@ -857,7 +813,6 @@ definition
   end;
 end;
 
-
 theorem Th23:
   for I being non empty set
   for A, B being ManySortedSet of I
@@ -876,7 +831,6 @@ proof
   f.i is Function of (A.i), (B.i);
   hence f is ManySortedFunction of A,B by PBOOLE:def 15;
 end;
-
 
 definition
   let I be non empty set;
@@ -912,7 +866,6 @@ definition
   end;
 end;
 
-
 registration
   let I be non empty set;
   let F1,F2 be Group-Family of I;
@@ -921,7 +874,6 @@ registration
   cluster (phi . i) -> multiplicative for Function of F1.i, F2.i;
   correctness by Def8;
 end;
-
 
 begin
 theorem Th24:
@@ -1148,7 +1100,6 @@ proof
   hence (Carrier F).i = the carrier of F.i;
 end;
 
-
 theorem
   [i, f.i] in f
 proof
@@ -1156,7 +1107,6 @@ proof
   then i in dom f by PARTFUN1:def 2;
   hence [i, f.i] in f by FUNCT_1:def 2;
 end;
-
 
 theorem
   for X,Y being non empty set
@@ -1182,12 +1132,10 @@ proof
     thus x in X;
     thus P[y, x] by B1;
   end;
-
   
   consider g being Function of Y,X such that
   A3: for y being object st y in Y holds P[y, g.y]
   from FUNCT_2:sch 1(A2);
-
   take g;
   for y being Element of Y holds (f * g).y = y
   proof
@@ -1197,10 +1145,8 @@ proof
      .= (f * g).y by B1, FUNCT_1:12;
     hence (f * g).y = y;
   end;
-
   hence f * g = id Y;
 end;
-
 
 :: Universal property of group product, explicit version.
 theorem Th31a:
@@ -1266,14 +1212,12 @@ proof
     P1[j, g0.j] by B4, B5;
     hence (f.j).x = g0.j;
   end;
-
   
   consider phi being Function of F1(), the carrier of (product F)
   such that
   A2: for x being object st x in F1() holds P[x, phi.x]
   from FUNCT_2:sch 1(A1);
   reconsider phi as Function of G, product F;
-
 
   A3: for g being Element of G
   for j being Element of I
@@ -1306,7 +1250,6 @@ proof
     end;
     hence phi.(a * b) = (phi.a) * (phi.b) by B1;
   end;
-
   then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
   take phi;
   let g be Element of G;
@@ -1318,7 +1261,6 @@ proof
   end;
   hence thesis;
 end;
-
 
 :: Universal property of group product, as most people would recognize it.
 theorem
@@ -1343,7 +1285,6 @@ proof
   end;
   hence f.i = (proj (F,i)) * phi;
 end;
-
 
 theorem
   for f being Homomorphism-Family of G, F
@@ -1378,7 +1319,6 @@ proof
   hence phi1 = phi2;
 end;
 
-
 definition
   let G be Group;
   let I be non empty set;
@@ -1407,7 +1347,6 @@ definition
     end;
     hence thesis;
   end;
-
   uniqueness
   proof
     for phi1, phi2 being Homomorphism of G,product F
@@ -1445,9 +1384,7 @@ definition
     end;
     hence thesis;
   end;
-
 end;
-
 
 theorem Th33:
   for g being Element of G
@@ -1481,7 +1418,6 @@ proof
   thus (product f).g = 1_(product F) implies
   (for i being Element of I holds ((product f).g).i = 1_(F.i)) by GROUP_7:6;
 end;
-
 
 theorem Th34:
   for g being Element of G
@@ -1521,7 +1457,6 @@ proof
   end;
 end;
 
-
 theorem Th35:
   for G1, G2, G3 being Group
   for f1 being Homomorphism of G1, G2
@@ -1548,7 +1483,6 @@ proof
     hence g in Ker (f2 * f1) by GROUP_6:41;
   end;
 end;
-
 
 theorem
   for G1, G2, G3 being Group
@@ -1590,7 +1524,6 @@ proof
   thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
   by A2,A3,XBOOLE_0:def 10;
 end;
-
 
 theorem
   the carrier of Ker (product f) = meet { the carrier of Ker (f.i) where
@@ -1655,7 +1588,6 @@ proof
   hence thesis by TARSKI:2;
 end;
 
-
 theorem Th38:
   for f being Function
   st dom f = I & (for i being Element of I holds f.i in F.i)
@@ -1679,7 +1611,6 @@ proof
   then f in product (Carrier F) by A1, A3, CARD_3:9;
   hence f in product F by GROUP_7:def 2;
 end;
-
 
 theorem
   for S being Group-Family of I
@@ -1705,7 +1636,6 @@ proof
   end;
   hence g in product S by Z3, Th38;
 end;
-
 
 theorem
   for N being Group-Family of I
@@ -1744,7 +1674,6 @@ proof
   take QG;
   thus thesis by A3;
 end;
-
 
 theorem
   for QG being Group-Family of I
@@ -1789,7 +1718,6 @@ proof
   take f;
   thus thesis by A3;
 end;
-
 
 :: Kurosh, Theory of Groups, volume I, result VI about Direct Products
 theorem
@@ -1860,7 +1788,6 @@ proof
     end;
   end;
 
-
   A3: for a being Element of product F
   holds a in product Z iff a in center (product F)
   proof
@@ -1874,7 +1801,6 @@ proof
     then for b being Element of product F holds a*b = b*a by GROUP_5:77;
     hence a in product Z by A2;
   end;
-
   for i being Element of I holds Z.i is Subgroup of F.i
   proof
     let i be Element of I;
@@ -1884,7 +1810,6 @@ proof
   then product Z is Subgroup of product F by GROUP_21:23;
   hence thesis by A3, GROUP_2:60;
 end;
-
 
 theorem
   for g being Element of product F
@@ -1907,7 +1832,6 @@ proof
           .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
   hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
 end;
-
 
 theorem
   for D being Group-Family of I
@@ -1951,7 +1875,6 @@ proof
     hence thesis by A2, GROUP_6:7;
   end;
 
-
   A4: for g being Element of (product F) st g in (product D)
   holds g in Ker (nat_hom (product F)`)
   proof
@@ -1972,7 +1895,6 @@ proof
       hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
     end;
     then reconsider phi as Homomorphism-Family of (product F), D;
-::>                                                            *4
       
     for i being Element of I
     for varphi being Homomorphism of (product F),D.i
@@ -1980,17 +1902,14 @@ proof
     ex fi being Homomorphism of QG,D.i
     st varphi = fi * (nat_hom ((product F)`))
      & Image fi = (1).(D.i);
-::>                       *4
   
       :: construct the Homomorphism-Family from the varphi
       :: th
   
     ((nat_hom ((product F)`))/.g) = 1_(QG);
-::>                                      *4
       :: then (nat_hom ((product F)`)).g = 1_(QG);
     hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
   end;
-
 
   for g being Element of (product F) st g in (product D)
   holds g in (product F)`
@@ -2003,6 +1922,3 @@ proof
   then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
   hence thesis by A3, GROUP_2:55;
 end;
-
-::>
-::> 4: This inference is not accepted
