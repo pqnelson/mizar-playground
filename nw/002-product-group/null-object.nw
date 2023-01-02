@@ -10,12 +10,6 @@ begin :: Universal Property of Null Group
 
 <<Theorem: if $f\colon G\to\trivialGroup$ and $g\in G$, then $f(g)=1$>>
 
-<<Theorem: if $H\subgroup G$, then $\id_{H}$ is an embedding morphism>>
-
-<<Theorem: $H\subgroup G\implies\exists\varphi\colon H\to G,\forall h\in{H},\varphi(h)=h$>>
-
-<<Theorem: existence of monomorphic $\varphi\colon H\into G$ such that $\varphi(H)=H$>>
-
 <<Theorem: Trivial group is initial object>>
 
 <<Theorem: Trivial group is isomorphic to trivial subgroup>>
@@ -103,111 +97,6 @@ end;
 \subsection{Results about Embedding Subgroups}
 If we have $H\subgroup G$, then there is an obvious inclusion $H\into G$
 defined by sending $h\mapsto h$.
-
-
-\begin{theorem}
-If $H\subgroup G$, then $\id_{H}$ extends naturally to an embedding morphism
-$H\into G$.
-\end{theorem}
-
-<<Theorem: if $H\subgroup G$, then $\id_{H}$ is an embedding morphism>>=
-theorem Th11:
-  for H being Subgroup of G
-  ex f being Homomorphism of H,G
-  st f = id (the carrier of H)
-proof
-  let H be Subgroup of G;
-  set f = id (the carrier of H);
-  f is Function of the carrier of H, the carrier of G
-  proof
-    B1: dom f = the carrier of H;
-    rng f c= the carrier of G by GROUP_2:def 5;
-    hence f is Function of the carrier of H, the carrier of G
-    by B1, FUNCT_2:2;
-  end;
-  then reconsider f as Function of H, G;
-  for g,h being Element of H
-  holds f.(g * h) = (f.g) * (f.h) by GROUP_2:43;
-  then reconsider f as Homomorphism of H, G by GROUP_6:def 6;
-  take f;
-  thus f = id (the carrier of H);
-end;
-@ %def Th11
-
-\begin{theorem}
-If $H\subgroup G$, then there is a morphism $\varphi\colon H\to G$ such that
-for any $h\in H$ we have $\varphi(h)=h$.
-\end{theorem}
-
-<<Theorem: $H\subgroup G\implies\exists\varphi\colon H\to G,\forall h\in{H},\varphi(h)=h$>>=
-theorem
-  for H being Subgroup of G
-  ex f being Homomorphism of H,G
-  st (for h being Element of H holds f.h = h)
-proof
-  let H be Subgroup of G;
-  consider f being Homomorphism of H,G such that
-  A1: f = id (the carrier of H)
-  by Th11;
-  take f;
-  let h be Element of H;
-  thus f.h = h by A1;
-end;
-@ 
-
-\begin{theorem}
-For any $H\subgroup G$, there is a monomorphism $\varphi\colon H\into G$
-such that $\varphi(H)=H$.
-\end{theorem}
-
-<<Theorem: existence of monomorphic $\varphi\colon H\into G$ such that $\varphi(H)=H$>>=
-theorem
-  for H being Subgroup of G
-  ex f being Homomorphism of H,G
-  st f is one-to-one & Image f = the multMagma of H
-proof
-  let H be Subgroup of G;
-  consider f being Homomorphism of H,G such that
-  A1: f = id (the carrier of H)
-  by Th11;
-  take f;
-  the carrier of H = rng f by A1
-                  .= the carrier of (Image f) by GROUP_6:44;
-  then A2: Image f = the multMagma of H by GROUP_2:59;
-  
-  Ker f = (1).H
-  <<Proof: $\ker\varphi=\trivialSubgroup_{H}$>>;
-  hence f is one-to-one by GROUP_6:56;
-  thus Image f = the multMagma of H by A2;
-end;
-@
-
-\begin{proof}
-We see for any $h\in H$ that $h\in\ker(\varphi)$ iff $h\in\trivialSubgroup_{H}$
-iff $h=1_{H}$, thanks to $\varphi(h)=h$.
-\end{proof}
-
-<<Proof: $\ker\varphi=\trivialSubgroup_{H}$>>=
-proof
-  for h being Element of H holds h in Ker f iff h in (1).H
-  proof
-    let h be Element of H;
-    hereby 
-      assume h in Ker f;
-      then f.h = 1_G by GROUP_6:41
-              .= 1_H by GROUP_2:44;
-      then h in {1_H} by A1, TARSKI:def 1;
-      hence h in (1).H by GROUP_2:def 7;
-    end;
-    assume h in (1).H;
-    then h in {1_H} by GROUP_2:def 7;
-    then h = 1_H by TARSKI:def 1;
-    then f.h = 1_G by GROUP_6:31;
-    hence h in Ker f by GROUP_6:41;
-  end;
-  hence thesis;
-end
-@
 
 \begin{theorem}
 The trivial group is the initial object for groups.

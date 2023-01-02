@@ -14,10 +14,10 @@ environ
 
  vocabularies WELLORD1, MSSUBFAM, TARSKI, NAT_1, QC_LANG1, RLSUB_1,
    XXREAL_1, BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1,
-   FUNCT_1, FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0,
-   PARTFUN1, CARD_3, GROUP_1, GROUP_2, PRE_TOPC, GROUP_5, GROUP_6,
-   GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19, GROUP_23,
-   SETFAM_1;
+   FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1,
+   ALGSTR_0, PARTFUN1, CARD_3, GROUP_1, GROUP_2, PRE_TOPC, GROUP_5,
+   GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19,
+   GROUP_23, SETFAM_1;
 
  constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
@@ -391,30 +391,55 @@ proof
   thus f = id (the carrier of H);
 end;
 
-theorem
-  for H being Subgroup of G
-  ex f being Homomorphism of H,G
-  st (for h being Element of H holds f.h = h)
-proof
-  let H be Subgroup of G;
-  consider f being Homomorphism of H,G such that
-  A1: f = id (the carrier of H)
-  by Th11;
-  take f;
-  let h be Element of H;
-  thus f.h = h by A1;
+definition
+  let G, H be Group;
+  assume A1: H is Subgroup of G;
+  func incl (H, G) -> Homomorphism of H, G
+  equals :DefIncl: id (the carrier of H);
+  coherence
+  proof
+    set f = id (the carrier of H);
+    f is Function of the carrier of H, the carrier of G
+    proof
+      B1: dom f = the carrier of H;
+      rng f c= the carrier of G by A1, GROUP_2:def 5;
+      hence f is Function of the carrier of H, the carrier of G
+      by B1, FUNCT_2:2;
+    end;
+    then reconsider f as Function of H, G;
+    for g,h being Element of H
+    holds f.(g * h) = (f.g) * (f.h) by A1, GROUP_2:43;
+    hence id (the carrier of H) is Homomorphism of H, G by GROUP_6:def 6;
+  end;
+end;
+
+definition
+  let G be Group, H be Subgroup of G;
+  func incl H -> Homomorphism of H,G equals incl (H, G);
+  coherence;
 end;
 
 theorem
+  for H being Group
+  for h being Element of H
+  st H is Subgroup of G
+  holds (incl (H, G)).h = h
+proof
+  let H be Group;
+  let h be Element of H;
+  assume H is Subgroup of G;
+  hence (incl (H, G)).h = (id the carrier of H).h by DefIncl
+                       .= h;
+end;
+
+theorem Th13:
   for H being Subgroup of G
-  ex f being Homomorphism of H,G
-  st f is one-to-one & Image f = the multMagma of H
+  holds incl (H, G) is one-to-one
+  & Image (incl (H, G)) = the multMagma of H
 proof
   let H be Subgroup of G;
-  consider f being Homomorphism of H,G such that
-  A1: f = id (the carrier of H)
-  by Th11;
-  take f;
+  set f = incl (H, G);
+  A1: f = id (the carrier of H) by DefIncl;
   the carrier of H = rng f by A1
                   .= the carrier of (Image f) by GROUP_6:44;
   then A2: Image f = the multMagma of H by GROUP_2:59;
@@ -441,6 +466,12 @@ proof
   end;
   hence f is one-to-one by GROUP_6:56;
   thus Image f = the multMagma of H by A2;
+end;
+
+registration
+  let G be Group, H be Subgroup of G;
+  cluster incl (H, G) -> one-to-one;
+  correctness by Th13;
 end;
 
 theorem ThInitialObject:
