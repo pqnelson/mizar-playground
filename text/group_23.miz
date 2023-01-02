@@ -465,36 +465,21 @@ proof
   hence f.g = 1_H;
 end;
 
-theorem ThInitialObject:
+theorem
   for H being trivial Group
-  ex f being Homomorphism of H, G
-  st Image f = (1).G & f is one-to-one
+  holds Image (1:(H,G)) = (1).G & (1:(H,G)) is one-to-one
 proof
   let H be trivial Group;
-  take f=(1:(H,G));
-  thus Image f = (1).G by GROUP_6:47;
+  thus Image (1:(H,G)) = (1).G by GROUP_6:47;
   the multMagma of H = (1).H by GROUP_22:6;
-  then Ker f is Subgroup of (1).H
+  then Ker (1:(H,G)) is Subgroup of (1).H
   by GROUP_2:57, GROUP_2:def 5;
-  then Ker f is trivial Subgroup of H by GROUP_22:9;
-  then Ker f = (1).H by GROUP_22:8;
-  hence f is one-to-one by GROUP_6:56;
+  then Ker (1:(H,G)) is trivial Subgroup of H by GROUP_22:9;
+  then Ker (1:(H,G)) = (1).H by GROUP_22:8;
+  hence (1:(H,G)) is one-to-one by GROUP_6:56;
 end;
 
-theorem
-  for G being Group
-  for H being trivial Group
-  holds H, (1).G are_isomorphic
-proof
-  let G be Group;
-  let H be trivial Group;
-  consider f being Homomorphism of H, G such that
-  A1: Image f = (1).G & f is one-to-one
-  by ThInitialObject;
-  thus thesis by A1, GROUP_6:68;
-end;
-
-theorem
+theorem Th15:
   for H being trivial Group
   for f1, f2 being Homomorphism of H, G
   holds f1 = f2
@@ -511,6 +496,17 @@ proof
               .= f2.h by B1, GROUP_6:31;
   end;
   hence f1 = f2;
+end;
+
+:: Universal property of initial object for the trivial group
+theorem
+  for H being trivial Group
+  ex h being Homomorphism of H, G
+  st (for f being Homomorphism of H, G holds h=f)
+proof
+  let H be trivial Group;
+  take h = 1:(H,G);
+  thus thesis by Th15;
 end;
 
 theorem
@@ -674,6 +670,7 @@ proof
   hence phi = f * (nat_hom N);
 end;
 
+begin :: Families of Homomorphisms
 definition
   let G be Group;
   let I be non empty set;
@@ -875,7 +872,7 @@ registration
   correctness by Def8;
 end;
 
-begin
+begin :: Projection Morphisms from Product Group to Direct Factors
 theorem Th24:
   for g being Element of product F
   holds g.i is Element of F.i
@@ -1092,62 +1089,7 @@ proof
 end;
 
 
-theorem Th20:
-  (Carrier F).i = the carrier of F.i
-proof
-  ex R being 1-sorted
-  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence (Carrier F).i = the carrier of F.i;
-end;
-
-theorem
-  [i, f.i] in f
-proof
-  i in I & f is ManySortedSet of I;
-  then i in dom f by PARTFUN1:def 2;
-  hence [i, f.i] in f by FUNCT_1:def 2;
-end;
-
-theorem
-  for X,Y being non empty set
-  for f being Function of X,Y
-  st f is onto
-  ex g being Function of Y,X
-  st f * g = id Y
-proof
-  let X,Y be non empty set;
-  let f be Function of X,Y;
-  assume A1: f is onto;
-  defpred P[object, object] means $1 = f.$2;
-  A2: for y being object st y in Y
-  ex x being object st x in X & P[y, x]
-  proof
-    let y be object;
-    assume y in Y;
-    then reconsider yy=y as Element of Y;
-    consider x being Element of X such that
-    B1: f.x = yy
-    by A1, GROUP_6:58;
-    take x;
-    thus x in X;
-    thus P[y, x] by B1;
-  end;
-  
-  consider g being Function of Y,X such that
-  A3: for y being object st y in Y holds P[y, g.y]
-  from FUNCT_2:sch 1(A2);
-  take g;
-  for y being Element of Y holds (f * g).y = y
-  proof
-    let y be Element of Y;
-    B1: dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
-    y = f.(g.y) by A3
-     .= (f * g).y by B1, FUNCT_1:12;
-    hence (f * g).y = y;
-  end;
-  hence f * g = id Y;
-end;
-
+begin :: Universal Property of Direct Products of Groups
 :: Universal property of group product, explicit version.
 theorem Th31a:
   for f being Homomorphism-Family of G, F
