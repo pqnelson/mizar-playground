@@ -420,26 +420,26 @@ only if $\varphi_{1}(g)\in\ker(\varphi_{2})$.
 
 <<Theorem: $g\in\ker(\varphi_{2}\circ\varphi_{1})\iff\varphi_{1}(g)\in\ker(\varphi_{2})$>>=
 theorem Th35:
-  for G1,G2,G3 being Group
-  for f1 being Homomorphism of G1,G2
-  for f2 being Homomorphism of G2,G3
+  for G1, G2, G3 being Group
+  for f1 being Homomorphism of G1, G2
+  for f2 being Homomorphism of G2, G3
   for g being Element of G1
   holds g in Ker (f2 * f1) iff f1.g in Ker(f2)
 proof
-  let G1,G2,G3 be Group;
-  let f1 be Homomorphism of G1,G2;
-  let f2 be Homomorphism of G2,G3;
+  let G1, G2, G3 be Group;
+  let f1 be Homomorphism of G1, G2;
+  let f2 be Homomorphism of G2, G3;
   let g be Element of G1;
   thus g in Ker (f2 * f1) implies f1.g in Ker(f2)
   proof
-    assume B1: g in Ker (f2 * f1);
+    assume g in Ker (f2 * f1);
     then 1_(G3) = (f2 * f1).g by GROUP_6:41
                .= f2.(f1.g) by FUNCT_2:15;
     hence f1.g in Ker(f2) by GROUP_6:41;
   end;
   thus f1.g in Ker(f2) implies g in Ker (f2 * f1)
   proof
-    assume B1: f1.g in Ker(f2);
+    assume f1.g in Ker(f2);
     then 1_G3 = f2.(f1.g) by GROUP_6:41
              .= (f2 * f1).g by FUNCT_2:15;
     hence g in Ker (f2 * f1) by GROUP_6:41;
@@ -455,17 +455,17 @@ $U(\ker(\varphi_{2}\circ\varphi_{1}))=\varphi_{1}^{-1}[\ker(\varphi_{2})]$.
 
 <<Theorem: $U(\ker(\varphi_{2}\circ\varphi_{1}))=\varphi_{1}^{-1}[\ker(\varphi_{2})]$>>=
 theorem
-  for G1,G2,G3 being Group
-  for f1 being Homomorphism of G1,G2
-  for f2 being Homomorphism of G2,G3
+  for G1, G2, G3 being Group
+  for f1 being Homomorphism of G1, G2
+  for f2 being Homomorphism of G2, G3
   holds the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
 proof
-  let G1,G2,G3 be Group;
-  let f1 be Homomorphism of G1,G2;
-  let f2 be Homomorphism of G2,G3;
+  let G1, G2, G3 be Group;
+  let f1 be Homomorphism of G1, G2;
+  let f2 be Homomorphism of G2, G3;
   A1: f1 "(the carrier of Ker f2) is Subset of G1
       & the carrier of Ker (f2 * f1) is Subset of G1
-  by GROUP_2:def 5, GROUP_6:def 9, FUNCT_2:39;
+  by GROUP_2:def 5, FUNCT_2:39;
   for g being Element of G1
   st g in the carrier of Ker (f2 * f1)
   holds g in f1 " (the carrier of (Ker f2))
@@ -477,19 +477,20 @@ proof
     hence g in f1 " (the carrier of (Ker f2)) by FUNCT_2:38;
   end;
   then
-  A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2) by A1, SUBSET_1:2;
+  A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2)
+  by A1;
   for g being Element of G1
   st g in f1 " (the carrier of (Ker f2))
   holds g in the carrier of Ker (f2 * f1)
   proof
     let g be Element of G1;
-    assume B1: g in f1 " (the carrier of (Ker f2));
+    assume g in f1 " (the carrier of (Ker f2));
     then f1.g in Ker f2 by FUNCT_2:38;
     then g in Ker (f2 * f1) by Th35;
     hence g in the carrier of Ker (f2 * f1);
   end;
   then
-  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1, SUBSET_1:2;
+  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1;
   thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
   by A2,A3,XBOOLE_0:def 10;
 end;

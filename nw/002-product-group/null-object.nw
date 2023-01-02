@@ -118,26 +118,16 @@ theorem Th11:
 proof
   let H be Subgroup of G;
   set f = id (the carrier of H);
-  A1: for h being Element of H holds f.h = h;
   f is Function of the carrier of H, the carrier of G
   proof
     B1: dom f = the carrier of H;
-    rng f = the carrier of H;
-    then rng f c= the carrier of G by GROUP_2:def 5;
+    rng f c= the carrier of G by GROUP_2:def 5;
     hence f is Function of the carrier of H, the carrier of G
     by B1, FUNCT_2:2;
   end;
   then reconsider f as Function of H, G;
   for g,h being Element of H
-  holds f.(g * h) = (f.g) * (f.h)
-  proof
-    let g,h be Element of H;
-    f.g = g & f.h = h by A1;
-    then (f.g) * (f.h) = g*h by GROUP_2:43
-                      .= f.(g * h) by A1;
-    hence f.(g * h) = (f.g) * (f.h);
-  end;
-
+  holds f.(g * h) = (f.g) * (f.h) by GROUP_2:43;
   then reconsider f as Homomorphism of H, G by GROUP_6:def 6;
   take f;
   thus f = id (the carrier of H);
@@ -203,20 +193,19 @@ proof
   proof
     let h be Element of H;
     hereby 
-      assume B1: h in Ker f;
+      assume h in Ker f;
       then f.h = 1_G by GROUP_6:41
               .= 1_H by GROUP_2:44;
-      then h = 1_H by A1;
-      then h in {1_H} by TARSKI:def 1;
+      then h in {1_H} by A1, TARSKI:def 1;
       hence h in (1).H by GROUP_2:def 7;
     end;
-    assume B2: h in (1).H;
+    assume h in (1).H;
     then h in {1_H} by GROUP_2:def 7;
     then h = 1_H by TARSKI:def 1;
     then f.h = 1_G by GROUP_6:31;
     hence h in Ker f by GROUP_6:41;
   end;
-  hence thesis by GROUP_2:60;
+  hence thesis;
 end
 @
 
@@ -234,10 +223,8 @@ proof
   take f=(1:(H,G));
   thus Image f = (1).G by GROUP_6:47;
   the multMagma of H = (1).H by GROUP_22:6;
-  then A1: the carrier of H = the carrier of (1).H by GROUP_2:def 7;
-  the carrier of (Ker f) c= the carrier of H by GROUP_2:def 5;
-  then the carrier of (Ker f) c= the carrier of (1).H by A1;
-  then Ker f is Subgroup of (1).H by GROUP_2:57;
+  then Ker f is Subgroup of (1).H
+  by GROUP_2:57, GROUP_2:def 5;
   then Ker f is trivial Subgroup of H by GROUP_22:9;
   then Ker f = (1).H by GROUP_22:8;
   hence f is one-to-one by GROUP_6:56;
@@ -280,7 +267,7 @@ proof
   proof
     let h be Element of H;
     the multMagma of H = (1).H by GROUP_22:6;
-    then the carrier of H = {1_H} by GROUP_2:def 5, GROUP_2:def 7;
+    then the carrier of H = {1_H} by GROUP_2:def 7;
     then B1: h = 1_H by TARSKI:def 1;
     hence f1.h = 1_G by GROUP_6:31
               .= f2.h by B1, GROUP_6:31;
@@ -296,36 +283,32 @@ morphism. Then $\varphi$ is also a group morphism $G_{1}\to G_{2}$.
 
 <<Theorem: extend codomain for group morphisms>>=
 theorem
-  for G1,G2 being Group
+  for G1, G2 being Group
   for H being Subgroup of G2
   for f being Homomorphism of G1, H
   holds f is Homomorphism of G1, G2
 proof
-  let G1,G2 be Group;
+  let G1, G2 be Group;
   let H be Subgroup of G2;
   let f be Homomorphism of G1, H;
-  A1: for g1,g2 being Element of G1 holds f.(g1*g2) = (f.g1) * (f.g2)
-  by GROUP_6:def 6;
-  A2: dom f = the carrier of G1 by FUNCT_2:def 1;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
   rng f c= the carrier of H
          & the carrier of H c= the carrier of G2
   by FUNCT_5:11, GROUP_2:def 5;
-  then rng f c= the carrier of G2 by XBOOLE_1:1;
-  then A3: f is Function of G1, G2 by A2, FUNCT_2:2;
+  then A2: f is Function of G1, G2 by A1, FUNCT_2:2, XBOOLE_1:1;
   f is multiplicative Function of G1, G2
   proof
-    reconsider ff=f as Function of G1,G2 by A3;
+    reconsider ff=f as Function of G1,G2 by A2;
     for g1,g2 being Element of G1
     holds ff.(g1*g2) = (ff.g1) * (ff.g2)
     proof
       let g1,g2 be Element of G1;
       thus (ff.g1)*(ff.g2) = (f.g1) * (f.g2) by GROUP_2:43
-                          .= f.(g1 * g2) by A1
+                          .= f.(g1 * g2) by GROUP_6:def 6
                           .= ff.(g1 * g2);
     end;
-    then ff is Homomorphism of G1,G2 by GROUP_6:def 6;
-    hence thesis;
+    hence thesis by GROUP_6:def 6;
   end;
-  hence f is Homomorphism of G1, G2 by A1, GROUP_6:def 6;
+  hence f is Homomorphism of G1, G2;
 end;
 @ 

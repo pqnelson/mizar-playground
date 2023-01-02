@@ -9,6 +9,7 @@
 :: licenses, or see http://www.gnu.org/licenses/gpl.html and
 :: http://creativecommons.org/licenses/by-sa/3.0/.
 
+
 environ
 
  vocabularies WELLORD1, MSSUBFAM, TARSKI, NAT_1, QC_LANG1, RLSUB_1,
@@ -54,8 +55,7 @@ environ
 
  schemes FUNCT_1, FUNCT_2, PBOOLE;
 
-begin
-
+begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Sets
 definition
   let IT be Relation;
   attr IT is Group-yielding means :Def1:
@@ -63,12 +63,33 @@ definition
   y is Group;
 end;
 
+
 registration
   cluster Group-yielding -> 1-sorted-yielding for Function;
   coherence;
   cluster Group-yielding -> multMagma-yielding for Function;
   coherence;
 end;
+
+
+Lm1:
+  for I being set
+  for F being associative Group-like multMagma-Family of I
+  holds F is Group-yielding
+proof
+  let I be set;
+  let F be associative Group-like multMagma-Family of I;
+  for y being object st y in rng F
+  holds y is Group
+  proof
+    let y be object;
+    assume y in rng F;
+    then ex x being object st x in dom F & y = F.x by FUNCT_1:def 3;
+    hence y is Group by GROUP_19:1;
+  end;
+  hence F is Group-yielding;
+end;
+
 
 registration
   let I be set;
@@ -84,7 +105,6 @@ registration
     hence thesis by FUNCOP_1:7;
   end;
 end;
-
 registration
   let I be set;
   cluster Group-yielding -> 1-sorted-yielding for ManySortedSet of I;
@@ -92,6 +112,7 @@ registration
   cluster Group-yielding -> multMagma-yielding for ManySortedSet of I;
   coherence;
 end;
+
 
 registration
   cluster Group-yielding for Function;
@@ -102,6 +123,7 @@ registration
     thus thesis;
   end;
 end;
+
 
 theorem Lm4:
   for I being non empty set
@@ -117,6 +139,7 @@ proof
   hence F.i is Group by Def1;
 end;
 
+
 registration
   let I be non empty set;
   let i be Element of I;
@@ -124,6 +147,14 @@ registration
   cluster (F . i) -> Group-like associative unital non empty for multMagma;
   correctness by Lm4;
 end;
+
+
+registration
+  let I be set;
+  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
+  coherence by Lm1;
+end;
+
 
 theorem
   for I being non empty set
@@ -136,14 +167,14 @@ proof
   let i be object;
   assume A1: i in I;
   then A2: i in dom F by PARTFUN1:def 2;
-  F.i is Group by A1,Lm4;
+  F.i is Group by A1, Lm4;
   then consider G being Group such that
   A3: G = F.i;
   take G;
   thus [i, G] in F by A2, A3, FUNCT_1:def 2;
 end;
 
-:: Our notion of "Group-Family" *is* a Group-Family in the sense of GROUP_19
+
 registration
   let I be set;
   cluster Group-yielding -> Group-like associative for multMagma-Family of I;
@@ -177,53 +208,42 @@ registration
   end;
 end;
 
+
 registration
   let I be set;
   cluster -> Group-yielding for Group-like associative multMagma-Family of I;
-  coherence
-  proof
-    thus for F being Group-like associative multMagma-Family of I
-    holds F is Group-yielding
-    proof
-      let F be Group-like associative multMagma-Family of I;
-      for y being object st y in rng F holds y is Group
-      proof
-        let y be object;
-        assume y in rng F;
-        then consider i being object such that
-        A1: i in dom F & y = F.i
-        by FUNCT_1:def 3;
-        thus thesis by A1, GROUP_19:1;
-      end;
-      hence F is Group-yielding;
-    end;
-  end;
-end;
-
-registration
-  let G be Group;
-  cluster {} --> G -> Group-yielding;
   coherence;
 end;
+
 
 definition
   let I be set;
   mode Group-Family of I is Group-yielding ManySortedSet of I;
 end;
 
+
 reserve I for non empty set;
 reserve i for Element of I;
 reserve F for Group-Family of I;
 reserve G for Group;
 
-theorem ThTmp:
+
+theorem LmEmptyGroupFamilyExplicit:
+  {} --> G is Group-Family of {}
+proof
+  {} --> G is ManySortedSet of {} & {} --> G is Group-yielding;
+  hence {} --> G is Group-Family of {};
+end;
+
+
+theorem Th4:
   for n being Nat
   holds Seg n --> G is Group-Family of Seg n
 proof
   let n be Nat;
   per cases;
   suppose Seg n is empty;
-    hence thesis;
+    hence thesis by LmEmptyGroupFamilyExplicit;
   end;
   suppose A1: not (Seg n is empty);
     for y being object st y in rng (Seg n --> G) holds y is Group
@@ -238,12 +258,14 @@ proof
   end;
 end;
 
+
 registration
   let G be Group;
   let n be Nat;
   cluster (Seg n --> G) -> Group-yielding;
-  correctness by ThTmp;
+  correctness by Th4;
 end;
+
 
 theorem LmTriv:
   for M being strict multMagma
@@ -280,6 +302,7 @@ proof
   thus thesis;
 end;
 
+
 theorem
   for I being empty set
   for F being multMagma-Family of I
@@ -292,8 +315,10 @@ proof
   hence thesis;
 end;
 
+
+begin :: Universal Property of Null Group
 :: Uniqueness of morphisms to the trivial group
-theorem Th1:
+theorem Th8:
   for H being trivial Group
   for f1,f2 being Homomorphism of G,H
   holds f1=f2
@@ -307,6 +332,7 @@ proof
     B1: the carrier of H = {x};
     thus thesis by B1, TARSKI:def 1;
   end;
+
   for g being object st g in the carrier of G holds f1.g = f2.g
   proof
     let g be object;
@@ -327,7 +353,7 @@ theorem
 proof
   let H be trivial Group;
   take h = 1:(G,H);
-  thus thesis by Th1;
+  thus thesis by Th8;
 end;
 
 theorem
@@ -339,38 +365,27 @@ proof
   let H be trivial Group;
   let f be Homomorphism of G,H;
   let g be Element of G;
-  f = 1:(G,H) by Th1;
+  f = 1:(G,H) by Th8;
   hence f.g = 1_H;
 end;
 
-:: I probably should recycle the "incl" function...
-theorem ThIdAsInclusion:
+theorem Th11:
   for H being Subgroup of G
   ex f being Homomorphism of H,G
   st f = id (the carrier of H)
 proof
   let H be Subgroup of G;
   set f = id (the carrier of H);
-  A1: for h being Element of H holds f.h = h;
   f is Function of the carrier of H, the carrier of G
   proof
     B1: dom f = the carrier of H;
-    rng f = the carrier of H;
-    then rng f c= the carrier of G by GROUP_2:def 5;
+    rng f c= the carrier of G by GROUP_2:def 5;
     hence f is Function of the carrier of H, the carrier of G
     by B1, FUNCT_2:2;
   end;
   then reconsider f as Function of H, G;
   for g,h being Element of H
-  holds f.(g * h) = (f.g) * (f.h)
-  proof
-    let g,h be Element of H;
-    f.g = g & f.h = h by A1;
-    then (f.g) * (f.h) = g*h by GROUP_2:43
-                      .= f.(g * h) by A1;
-    hence f.(g * h) = (f.g) * (f.h);
-  end;
-
+  holds f.(g * h) = (f.g) * (f.h) by GROUP_2:43;
   then reconsider f as Homomorphism of H, G by GROUP_6:def 6;
   take f;
   thus f = id (the carrier of H);
@@ -384,7 +399,7 @@ proof
   let H be Subgroup of G;
   consider f being Homomorphism of H,G such that
   A1: f = id (the carrier of H)
-  by ThIdAsInclusion;
+  by Th11;
   take f;
   let h be Element of H;
   thus f.h = h by A1;
@@ -398,7 +413,7 @@ proof
   let H be Subgroup of G;
   consider f being Homomorphism of H,G such that
   A1: f = id (the carrier of H)
-  by ThIdAsInclusion;
+  by Th11;
   take f;
   the carrier of H = rng f by A1
                   .= the carrier of (Image f) by GROUP_6:44;
@@ -410,25 +425,23 @@ proof
     proof
       let h be Element of H;
       hereby 
-        assume B1: h in Ker f;
+        assume h in Ker f;
         then f.h = 1_G by GROUP_6:41
                 .= 1_H by GROUP_2:44;
-        then h = 1_H by A1;
-        then h in {1_H} by TARSKI:def 1;
+        then h in {1_H} by A1, TARSKI:def 1;
         hence h in (1).H by GROUP_2:def 7;
       end;
-      assume B2: h in (1).H;
+      assume h in (1).H;
       then h in {1_H} by GROUP_2:def 7;
       then h = 1_H by TARSKI:def 1;
       then f.h = 1_G by GROUP_6:31;
       hence h in Ker f by GROUP_6:41;
     end;
-    hence thesis by GROUP_2:60;
+    hence thesis;
   end;
   hence f is one-to-one by GROUP_6:56;
   thus Image f = the multMagma of H by A2;
 end;
-
 
 theorem ThInitialObject:
   for H being trivial Group
@@ -439,10 +452,8 @@ proof
   take f=(1:(H,G));
   thus Image f = (1).G by GROUP_6:47;
   the multMagma of H = (1).H by GROUP_22:6;
-  then A1: the carrier of H = the carrier of (1).H by GROUP_2:def 7;
-  the carrier of (Ker f) c= the carrier of H by GROUP_2:def 5;
-  then the carrier of (Ker f) c= the carrier of (1).H by A1;
-  then Ker f is Subgroup of (1).H by GROUP_2:57;
+  then Ker f is Subgroup of (1).H
+  by GROUP_2:57, GROUP_2:def 5;
   then Ker f is trivial Subgroup of H by GROUP_22:9;
   then Ker f = (1).H by GROUP_22:8;
   hence f is one-to-one by GROUP_6:56;
@@ -472,7 +483,7 @@ proof
   proof
     let h be Element of H;
     the multMagma of H = (1).H by GROUP_22:6;
-    then the carrier of H = {1_H} by GROUP_2:def 5, GROUP_2:def 7;
+    then the carrier of H = {1_H} by GROUP_2:def 7;
     then B1: h = 1_H by TARSKI:def 1;
     hence f1.h = 1_G by GROUP_6:31
               .= f2.h by B1, GROUP_6:31;
@@ -481,42 +492,384 @@ proof
 end;
 
 theorem
-  for G1,G2 being Group
+  for G1, G2 being Group
   for H being Subgroup of G2
   for f being Homomorphism of G1, H
   holds f is Homomorphism of G1, G2
 proof
-  let G1,G2 be Group;
+  let G1, G2 be Group;
   let H be Subgroup of G2;
   let f be Homomorphism of G1, H;
-  A1: for g1,g2 being Element of G1 holds f.(g1*g2) = (f.g1) * (f.g2)
-  by GROUP_6:def 6;
-  A2: dom f = the carrier of G1 by FUNCT_2:def 1;
+  A1: dom f = the carrier of G1 by FUNCT_2:def 1;
   rng f c= the carrier of H
          & the carrier of H c= the carrier of G2
   by FUNCT_5:11, GROUP_2:def 5;
-  then rng f c= the carrier of G2 by XBOOLE_1:1;
-  then A3: f is Function of G1, G2 by A2, FUNCT_2:2;
+  then A2: f is Function of G1, G2 by A1, FUNCT_2:2, XBOOLE_1:1;
   f is multiplicative Function of G1, G2
   proof
-    reconsider ff=f as Function of G1,G2 by A3;
+    reconsider ff=f as Function of G1,G2 by A2;
     for g1,g2 being Element of G1
     holds ff.(g1*g2) = (ff.g1) * (ff.g2)
     proof
       let g1,g2 be Element of G1;
       thus (ff.g1)*(ff.g2) = (f.g1) * (f.g2) by GROUP_2:43
-                          .= f.(g1 * g2) by A1
+                          .= f.(g1 * g2) by GROUP_6:def 6
                           .= ff.(g1 * g2);
     end;
-    then ff is Homomorphism of G1,G2 by GROUP_6:def 6;
+    hence thesis by GROUP_6:def 6;
+  end;
+  hence f is Homomorphism of G1, G2;
+end;
+
+begin :: Universal Property of Quotient Group
+theorem Th22:
+  for G being Group
+  for N being normal Subgroup of G
+  for a,b being Element of G
+  st a*N = b*N
+  ex n being Element of G st n in N & a*n=b
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let a,b be Element of G;
+  assume A1: a*N = b*N;
+  consider n being Element of G such that
+  A2: n = a" * b;
+  take n;
+  thus n in N by A1, A2, GROUP_2:114;
+  a * n = (a * a") * b by A2, GROUP_1:def 3
+       .= (1_G) * b by GROUP_1:def 5
+       .= b by GROUP_1:def 4;
+  hence thesis;
+end;
+
+
+theorem
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Group
+  for phi being Homomorphism of G,H st N is Subgroup of Ker phi
+  ex f being Homomorphism of (G./.N), H
+  st phi = f * (nat_hom N)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Group;
+  let phi be Homomorphism of G,H;
+  assume A1: N is Subgroup of Ker phi;
+  defpred P[object, object] means
+  ex g being Element of G st $1 = g*N & $2 = (phi.g);
+  A2: for x being object st x in the carrier of G./.N
+  ex y being object st y in the carrier of H & P[x,y]
+  proof
+    let x be object;
+    assume x in the carrier of G./.N;
+    then x in G./.N;
+    then consider g being Element of G such that
+    B1: x = g*N & x = N*g by GROUP_6:23;
+    take y = phi.g;
+    thus y in the carrier of H;
+    take g;
+    thus x = g*N by B1;
+    thus y = phi.g;
+  end;
+  consider f being Function of the carrier of (G./.N), the carrier of H
+  such that
+  A3: for x being object st x in the carrier of G./.N holds P[x, f.x]
+  from FUNCT_2:sch 1(A2);
+  reconsider f as Function of G./.N, H;
+
+
+  A4: for x being Element of G./.N
+  ex g being Element of G
+  st f.x = phi.g & x = g*N
+  proof
+    let x be Element of G./.N;
+    P[x, f.x] by A3;
     hence thesis;
   end;
-  hence f is Homomorphism of G1, G2 by A1, GROUP_6:def 6;
-end;
-proof end;
-::> *396
+  A5: for x being Element of G./.N
+  for g being Element of G st x = g*N
+  holds f.(g * N) = phi.g
+  proof
+    let x be Element of G./.N;
+    let g be Element of G;
+    assume B1: x = g*N;
+    consider g0 being Element of G such that
+    B2: f.x = phi.g0 & x = g0*N by A4;
+    consider n being Element of G such that
+    B3: n in N & g0*n = g
+    by B1, B2, Th22;
+    
+    phi.g = (phi.g0) * (phi.n) by B3, GROUP_6:def 6
+    .= (phi.g0) * (1_H) by A1, B3, GROUP_2:40, GROUP_6:41
+    .= phi.g0 by GROUP_1:def 4;
+    hence f.(g * N) = phi.g by B1, B2;
+  end;
 
-theorem Th4:
+  for a, b being Element of G./.N
+  holds f.(a * b) = (f.a) * (f.b)
+  proof
+    let a, b be Element of G./.N;
+    consider ga being Element of G such that
+    B1: f.a = phi.ga and
+    B2: a = ga*N by A4;
+    consider gb being Element of G such that
+    B3: f.b = phi.gb and
+    B4: b = gb*N by A4;
+    
+    (ga * N) * (gb * N)
+    = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
+    .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
+    .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
+    .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
+    .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
+    .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
+    .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
+    .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
+    .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
+    .= ((ga * gb) * N) * N by GROUP_2:109
+    .= (ga * gb) * (N * N) by GROUP_2:29
+    .= (ga * gb) * N by GROUP_2:76;
+    then B7: (ga * gb) * N = (@ a) * (@ b) by B2,B4
+    .= (a * b) by GROUP_6:19;
+    (f.a) * (f.b) = phi.(ga * gb) by B1, B3, GROUP_6:def 6
+    .= f.(a * b) by B7, A5;
+    
+    hence f.(a * b) = (f.a) * (f.b);
+  end;
+  then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
+  take f;
+  
+  for g being Element of G
+  holds phi.g = (f * (nat_hom N)).g
+  proof
+    let g be Element of G;
+    reconsider x = (nat_hom N).g as Element of G./.N;
+    B1: x = g * N by GROUP_6:def 8;
+    (f * (nat_hom N)).g = f.((nat_hom N).g) by FUNCT_2:15
+                       .= phi.g by B1, A5;
+    hence phi.g = (f * (nat_hom N)).g;
+  end;
+  hence phi = f * (nat_hom N);
+end;
+
+
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  mode Homomorphism-Family of G, F -> ManySortedFunction of I means
+  :Def6:
+  for i being Element of I holds
+  it.i is Homomorphism of G, F.i;
+  existence
+  proof
+    deffunc F1() = I;
+    deffunc F2(Element of I) = 1:(G, F.$1);
+    consider f being ManySortedSet of F1() such that
+    A1: for i being Element of F1() holds f.i = F2(i)
+    from PBOOLE:sch 5;
+    for x being object st x in dom f holds f.x is Function
+    proof
+      let x be object;
+      assume x in dom f;
+      then reconsider i=x as Element of I;
+      f.i = 1:(G,F.i) by A1;
+      hence f.x is Function;
+    end;
+    then reconsider f as ManySortedFunction of I by FUNCOP_1:def 6;
+    take f;
+    thus for i being Element of I holds f.i is Homomorphism of G, F.i
+    proof
+      let i be Element of I;
+      f.i = 1:(G, F.i) by A1;
+      hence f.i is Homomorphism of G, F.i;
+    end;
+  end;
+end;
+
+
+:: I hate this, but have no better alternative
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  let f be Homomorphism-Family of G, F;
+  let i be Element of I;
+  redefine func f.i -> Homomorphism of G, F.i;
+  coherence by Def6;
+end;
+
+
+reserve f for Homomorphism-Family of G, F;
+
+
+theorem Th20:
+  (Carrier F).i = the carrier of F.i
+proof
+  ex R being 1-sorted
+  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
+  hence (Carrier F).i = the carrier of F.i;
+end;
+
+
+theorem
+  [i, f.i] in f
+proof
+  i in I & f is ManySortedSet of I;
+  then i in dom f by PARTFUN1:def 2;
+  hence [i, f.i] in f by FUNCT_1:def 2;
+end;
+
+
+theorem
+  for X,Y being non empty set
+  for f being Function of X,Y
+  st f is onto
+  ex g being Function of Y,X
+  st f * g = id Y
+proof
+  let X,Y be non empty set;
+  let f be Function of X,Y;
+  assume A1: f is onto;
+  defpred P[object, object] means $1 = f.$2;
+  A2: for y being object st y in Y
+  ex x being object st x in X & P[y, x]
+  proof
+    let y be object;
+    assume y in Y;
+    then reconsider yy=y as Element of Y;
+    consider x being Element of X such that
+    B1: f.x = yy
+    by A1, GROUP_6:58;
+    take x;
+    thus x in X;
+    thus P[y, x] by B1;
+  end;
+  
+  consider g being Function of Y,X such that
+  A3: for y being object st y in Y holds P[y, g.y]
+  from FUNCT_2:sch 1(A2);
+  take g;
+  for y being Element of Y holds (f * g).y = y
+  proof
+    let y be Element of Y;
+    B1: dom g = Y & dom (f * g) = dom g by FUNCT_2:123, FUNCT_2:def 1;
+    y = f.(g.y) by A3
+     .= (f * g).y by B1, FUNCT_1:12;
+    hence (f * g).y = y;
+  end;
+  hence f * g = id Y;
+end;
+
+
+:: This probably belongs in PBOOLE
+definition
+  let I be non empty set;
+  let A, B be ManySortedSet of I;
+  let f be ManySortedFunction of A,B;
+  let i be Element of I;
+  redefine func f.i -> Function of A.i, B.i;
+  coherence by PBOOLE:def 15;
+end;
+
+
+:: This probably belongs in PRALG_1
+definition
+  let I be non empty set;
+  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
+  mode ManySortedFunction of F1,F2
+  is ManySortedFunction of (Carrier F1),(Carrier F2);
+end;
+
+
+:: This probably belongs in PRALG_1
+definition
+  let I be non empty set;
+  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
+  let phi be ManySortedFunction of F1,F2;
+  let i be Element of I;
+  redefine func phi.i -> Function of the carrier of F1.i, the carrier of F2.i;
+  correctness
+  proof
+    A1: ex R being 1-sorted
+    st (R = F1.i & (Carrier F1).i = the carrier of R) by PRALG_1:def 15;
+    ex R2 being 1-sorted
+    st (R2 = F2.i & (Carrier F2).i = the carrier of R2)
+    by PRALG_1:def 15;
+    hence thesis by A1, PBOOLE:def 15;
+  end;
+end;
+
+
+theorem Th23:
+  for I being non empty set
+  for A, B being ManySortedSet of I
+  for f being ManySortedSet of I
+  holds f is ManySortedFunction of A,B
+  iff (for i being Element of I holds f.i is Function of A.i, B.i)
+proof
+  let I be non empty set;
+  let A, B be ManySortedSet of I;
+  let f be ManySortedSet of I;
+  thus f is ManySortedFunction of A,B
+  implies (for i being Element of I holds f.i is Function of A.i, B.i)
+  by PBOOLE:def 15;
+  assume for i being Element of I holds f.i is Function of A.i, B.i;
+  then for i being object st i in I holds
+  f.i is Function of (A.i), (B.i);
+  hence f is ManySortedFunction of A,B by PBOOLE:def 15;
+end;
+
+
+definition
+  let I be non empty set;
+  let F1,F2 be Group-Family of I;
+  mode Homomorphism-Family of F1,F2 -> ManySortedFunction of F1,F2 means
+  :Def8:
+  for i being Element of I
+  holds it.i is Homomorphism of F1.i,F2.i;
+  existence
+  proof
+    deffunc Fun(Element of I) = 1:(F1.$1, F2.$1);
+    consider phi being ManySortedSet of I such that
+    A1: for i being Element of I holds phi.i = Fun(i)
+    from PBOOLE:sch 5;
+    A2: for i being Element of I holds phi.i is Homomorphism of F1.i,F2.i
+    proof
+      let i be Element of I;
+      phi.i = 1:(F1.i, F2.i) by A1;
+      hence phi.i is Homomorphism of F1.i,F2.i;
+    end;
+    for i being Element of I
+    holds phi.i is Function of (Carrier F1).i, (Carrier F2).i
+    proof
+      let i be Element of I;
+      the carrier of F1.i = (Carrier F1).i
+      & the carrier of F2.i = (Carrier F2).i by Th20;
+      hence phi.i is Function of (Carrier F1).i, (Carrier F2).i by A2;
+    end;
+    then reconsider phi as ManySortedFunction of F1,F2 by Th23;
+    take phi;
+    
+    thus thesis by A2;
+  end;
+end;
+
+
+registration
+  let I be non empty set;
+  let F1,F2 be Group-Family of I;
+  let i be Element of I;
+  let phi be Homomorphism-Family of F1,F2;
+  cluster (phi . i) -> multiplicative for Function of F1.i, F2.i;
+  correctness by Def8;
+end;
+
+
+begin
+theorem Th24:
   for g being Element of product F
   holds g.i is Element of F.i
 proof
@@ -532,10 +885,9 @@ definition
   let g be Element of product F;
   let i be Element of I;
   func g/.i -> Element of F.i equals :Def2: g.i;
-  correctness by Th4;
+  correctness by Th24;
 end;
 
-:: Compare to CARD_3:def 16 and PRALG_3:def 2 
 definition
   let I be non empty set;
   let i be Element of I;
@@ -572,7 +924,7 @@ definition
       hence thesis;
     end;
     hence thesis;
- end;
+  end;
   uniqueness
   proof
     let p1,p2 be Homomorphism of (product F), F.i;
@@ -590,7 +942,7 @@ definition
   end;
 end;
 
-theorem ThProjOnto:
+theorem
   proj (F, i) is onto
 proof
   for y being object
@@ -611,7 +963,7 @@ proof
       A1: x = (1ProdHom (F, i)).yy & dom x = I & x.i = g &
           for j being Element of I st j <> i holds x.j = 1_(F.j)
       by GROUP_12:2;
-
+      
       the carrier of (product F) = product (Carrier F) by GROUP_7:def 2;
       then dom (1_(product F)) = I by PARTFUN1:def 2;
       then A2: y = ((1_(product F)) +* (i, y)).i by FUNCT_7:31
@@ -621,46 +973,42 @@ proof
       thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
       thus y = (proj (F,i)).x by Def3, A1, A2, A3;
     end;
-    thus (ex x being object st x in dom (proj (F,i)) & y = (proj (F,i)).x)
+    thus (ex x being object
+          st x in dom (proj (F,i)) & y = (proj (F,i)).x)
          implies y in the carrier of F.i by FUNCT_2:5;
   end;
   hence proj (F, i) is onto by FUNCT_1:def 3;
 end;
 
-theorem
-  dom proj (F, i) = the carrier of product F &
-  for y being Function st y in product F
-  holds (proj (F,i)).y = y.i by Def3, FUNCT_2:def 1;
-
-theorem Th8:
+theorem Th26:
   proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
 proof
   set X = product (Carrier F);
   set Y = the carrier of F.i;
   set f = proj (Carrier F, i);
-  B1: dom f = X by CARD_3:def 16;
+  A1: dom f = X by CARD_3:def 16;
   for x being object st x in X holds f.x in Y
   proof
     let x be object;
-    assume C1: x in X;
+    assume A2: x in X;
     then reconsider y=x as Element of product F by GROUP_7:def 2;
-    f.y = y/.i by B1, C1, CARD_3:def 16;
+    f.y = y/.i by A1, A2, CARD_3:def 16;
     hence f.x in Y;
   end;
   
-  hence f is Function of X,Y by B1, FUNCT_2:3;
+  hence f is Function of X,Y by A1, FUNCT_2:3;
 end;
 
-theorem Th9:
+theorem Th27:
   for g being Element of product F
   holds proj (F, i) . g = proj (Carrier F, i) . g 
 proof
   let g be Element of product F;
   set X = product (Carrier F);
   set f = proj (Carrier F, i);
-  B1: dom f = X by CARD_3:def 16;
+  A1: dom f = X by CARD_3:def 16;
   g in product F;
-  then g in dom f by B1, GROUP_7:def 2;
+  then g in dom f by A1, GROUP_7:def 2;
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
   hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
 end;
@@ -673,103 +1021,78 @@ proof
   product (Carrier F) = the carrier of (product F) by GROUP_7:def 2;
   then A1: proj (Carrier F, i) is Function of X,Y
            & proj (F, i) is Function of X,Y
-  by Th8;
+  by Th26;
   for x being Element of X
   holds (proj (F, i)) . x = (proj (Carrier F, i)) . x
   proof
     let x be Element of X;
     x is Element of product F by GROUP_7:def 2;
-    hence thesis by Th9;
+    hence thesis by Th27;
   end;
   hence thesis by A1, FUNCT_2:63;
 end;
 
-definition
-  let G be Group;
-  let I be non empty set;
-  let F be Group-Family of I;
-  mode Homomorphism-Family of G, F -> ManySortedSet of I means
-  :Def6:
-  for i being Element of I holds
-  it.i is Homomorphism of G, (F.i);
-  existence
+theorem Th29:
+  for g being Element of product F
+  for h being Element of F.i
+  holds g +* (i, h) in product F
+proof
+  let g be Element of product F;
+  let h be Element of F.i;
+  A1: dom g = I by GROUP_19:3;
+  then dom (g +* (i, h)) = I by FUNCT_7:30;
+  then A2: dom (g +* (i, h)) = dom (Carrier F) by PARTFUN1:def 2;
+  for j being object st j in dom (Carrier F)
+  holds (g +* (i, h)).j in (Carrier F).j
   proof
-    deffunc F1() = I;
-    deffunc F2(Element of I) = 1:(G, F.$1);
-    consider f being ManySortedSet of F1() such that
-    A1: for i being Element of F1() holds f.i = F2(i)
-    from PBOOLE:sch 5;
-    for x being object st x in dom f holds f.x is Function
-    proof
-      let x be object;
-      assume x in dom f;
-      then reconsider i=x as Element of I;
-      f.i = 1:(G,F.i) by A1;
-      hence f.x is Function;
+    let j be object;
+    assume j in dom (Carrier F);
+    then reconsider ii=j as Element of I;
+    B1: ex R being 1-sorted
+    st (R = F.ii & (Carrier F).ii = the carrier of R)
+    by PRALG_1:def 15;
+    per cases;
+    suppose B2: i = j;
+      then (g +* (i, h)).i = (g +* (j, h)).j
+      .= (g +* (ii, h)).ii
+      .= h by A1, FUNCT_7:31;
+      hence thesis by B1, B2;
     end;
-    then reconsider f as ManySortedFunction of I by FUNCOP_1:def 6;
-    take f;
-    thus for i being Element of I holds f.i is Homomorphism of G, F.i
-    proof
-      let i be Element of I;
-      f.i = 1:(G,F.i) by A1;
-      hence f.i is Homomorphism of G,F.i;
+    suppose B3: i <> j;
+      g in product F;
+      then g.ii in F.ii by GROUP_19:5;
+      hence thesis by B1, B3, FUNCT_7:32;
     end;
   end;
+
+  then (g +* (i, h)) in product (Carrier F) by A2, CARD_3:def 5;
+  hence (g +* (i, h)) in product F by GROUP_7:def 2;
 end;
 
-
-:: This probably belongs in PBOOLE
-definition
-  let I be non empty set;
-  let A, B be ManySortedSet of I;
-  let f be ManySortedFunction of A,B;
+theorem
+  for i being Element of I
+  for g being Element of product F
+  holds (g +* (i, 1_(F.i))) in Ker (proj (F, i)) 
+proof
   let i be Element of I;
-  redefine func f.i -> Function of A.i, B.i;
-  coherence by PBOOLE:def 15;
+  let g be Element of product F;
+  A1: dom g = I by GROUP_19:3;
+  (g +* (i, 1_(F.i))) in product F by Th29;
+  then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
+  (proj (F, i)).h = h.i by Def3
+                 .= 1_(F.i) by A1, FUNCT_7:31;
+  hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by GROUP_6:41;
 end;
 
-:: This probably belongs in PRALG_1
-definition
-  let I be non empty set;
-  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
-  mode ManySortedFunction of F1,F2
-  is ManySortedFunction of (Carrier F1),(Carrier F2);
+
+theorem Th20:
+  (Carrier F).i = the carrier of F.i
+proof
+  ex R being 1-sorted
+  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
+  hence (Carrier F).i = the carrier of F.i;
 end;
 
-:: This probably belongs in PRALG_1
-definition
-  let I be non empty set;
-  let F1,F2 be 1-sorted-yielding ManySortedSet of I;
-  let phi be ManySortedFunction of F1,F2;
-  let i be Element of I;
-  redefine func phi.i -> Function of the carrier of F1.i, the carrier of F2.i;
-  correctness
-  proof
-    i in I;
-    then ex R being 1-sorted
-    st (R = F1.i & (Carrier F1).i = the carrier of R) by PRALG_1:def 15;
-    then A1: the carrier of F1.i = (Carrier F1).i;
-    ex R being 1-sorted
-    st (R = F2.i & (Carrier F2).i = the carrier of R) by PRALG_1:def 15;
-    then A2: the carrier of F2.i = (Carrier F2).i;
-    phi.i is Function of (Carrier F1).i, (Carrier F2).i by PBOOLE:def 15;
-    hence thesis by A1,A2;
-  end;
-end;
-
-:: I hate this, but have no better alternative
-definition
-  let G be Group;
-  let I be non empty set;
-  let F be Group-Family of I;
-  let f be Homomorphism-Family of G, F;
-  let i be Element of I;
-  redefine func f.i -> Homomorphism of G, F.i;
-  coherence by Def6;
-end;
-
-reserve f for Homomorphism-Family of G, F;
 
 theorem
   [i, f.i] in f
@@ -779,7 +1102,7 @@ proof
   hence [i, f.i] in f by FUNCT_1:def 2;
 end;
 
-:: Surjective functions have a right-inverse
+
 theorem
   for X,Y being non empty set
   for f being Function of X,Y
@@ -791,7 +1114,6 @@ proof
   let f be Function of X,Y;
   assume A1: f is onto;
   defpred P[object, object] means $1 = f.$2;
-  
   A2: for y being object st y in Y
   ex x being object st x in X & P[y, x]
   proof
@@ -805,11 +1127,10 @@ proof
     thus x in X;
     thus P[y, x] by B1;
   end;
-
+  
   consider g being Function of Y,X such that
   A3: for y being object st y in Y holds P[y, g.y]
   from FUNCT_2:sch 1(A2);
-  
   take g;
   for y being Element of Y holds (f * g).y = y
   proof
@@ -822,16 +1143,9 @@ proof
   hence f * g = id Y;
 end;
 
-theorem Lm5:
-  (Carrier F).i = the carrier of F.i
-proof
-  ex R being 1-sorted
-  st (R = (F.i) & (Carrier F).i = the carrier of R) by PRALG_1:def 15;
-  hence (Carrier F).i = the carrier of F.i;
-end;
 
 :: Universal property of group product, explicit version.
-theorem Th13:
+theorem Th31a:
   for f being Homomorphism-Family of G, F
   ex phi being Homomorphism of G, product F
   st for g being Element of G
@@ -841,19 +1155,18 @@ proof
   defpred P[object, object] means ex g0 being Element of product F
   st $2 = g0 & (for j being Element of I holds (f.j).$1 = g0.j);
   deffunc F1() = the carrier of G;
-
+  
   A1: for x being object st x in F1()
   ex y being object st y in the carrier of product F &
-  P[x, y]
+  P[x,y]
   proof
     let x be object;
     assume x in F1();
     then reconsider xx=x as Element of G;
     defpred P1[object, object] means ex i being Element of I st
     i = $1 & $2 = ((f.i).xx);
-    B1: for i, y1, y2 being object st i in I & P1[i, y1] & P1[i, y2]
-        holds y1 = y2;
-    B2: for i being object st i in I ex y being object st P1[i, y]
+    B1: for i, y1, y2 being object st i in I & P1[i,y1] & P1[i,y2] holds y1 = y2;
+    B2: for i being object st i in I holds ex y being object st P1[i,y]
     proof
       let i be object;
       assume i in I;
@@ -861,9 +1174,9 @@ proof
       consider y being object such that
       C1: y = ((f.ii).xx);
       take y;
-      thus P1[i, y] by C1;
+      thus P1[i,y] by C1;
     end;
-
+    
     consider y being Function such that
     B3: dom y = I and
     B4: for j being object st j in I holds P1[j, y.j]
@@ -878,7 +1191,7 @@ proof
         P1[i, y.i] by B4;
         then consider ii being Element of I such that
         D1: ii=i & y.i = ((f.i).xx);
-        (Carrier F).i = the carrier of F.i by Lm5; 
+        (Carrier F).i = the carrier of F.i by Th20; 
         hence thesis by D1;
       end;
       then for i being object st i in dom (Carrier F) holds y.i in (Carrier F).i;
@@ -893,12 +1206,13 @@ proof
     P1[j, g0.j] by B4, B5;
     hence (f.j).x = g0.j;
   end;
-
+  
   consider phi being Function of F1(), the carrier of (product F)
   such that
   A2: for x being object st x in F1() holds P[x, phi.x]
   from FUNCT_2:sch 1(A1);
   reconsider phi as Function of G, product F;
+
 
   A3: for g being Element of G
   for j being Element of I
@@ -930,9 +1244,8 @@ proof
       hence (phi.(a * b)).j = ((phi.a) * (phi.b)).j;
     end;
     hence phi.(a * b) = (phi.a) * (phi.b) by B1;
-  end;
+  end  ;
   then reconsider phi as Homomorphism of G, product F by GROUP_6:def 6;
-  
   take phi;
   let g be Element of G;
   for j being Element of I holds (f.j).g = (proj (F, j)) . (phi.g)
@@ -944,14 +1257,9 @@ proof
   hence thesis;
 end;
 
-theorem
-  for G1, G2 being Group
-  for f1, f2 being Homomorphism of G1,G2
-  st (for g being Element of G1 holds f1.g = f2.g)
-  holds f1 = f2;
 
 :: Universal property of group product, as most people would recognize it.
-theorem ThUnivProduct:
+theorem
   for f being Homomorphism-Family of G, F
   for i being Element of I
   ex phi being Homomorphism of G, product F
@@ -962,7 +1270,7 @@ proof
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-  by Th13;
+  by Th31a;
   take phi;
   for g being Element of G holds ((proj (F,i)) * phi).g = (f.i).g
   proof
@@ -974,7 +1282,7 @@ proof
   hence f.i = (proj (F,i)) * phi;
 end;
 
-:: Uniqueness part of the universal property of group products
+
 theorem
   for f being Homomorphism-Family of G, F
   for phi1, phi2 being Homomorphism of G, product F
@@ -1008,6 +1316,7 @@ proof
   hence phi1 = phi2;
 end;
 
+
 definition
   let G be Group;
   let I be non empty set;
@@ -1023,7 +1332,7 @@ definition
     consider phi being Homomorphism of G, product F such that
     A1: for g being Element of G
         holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
-    by Th13;
+    by Th31a;
     take phi;
     for g being Element of G
     for j being Element of I holds (f.j).g = (phi.g).j
@@ -1042,9 +1351,9 @@ definition
     st (for g being Element of G
         for i being Element of I
         holds (f.i).g = (phi1.g).i)
-     & (for g being Element of G
-        for i being Element of I
-        holds (f.i).g = (phi2.g).i)
+    & (for g being Element of G
+       for i being Element of I
+       holds (f.i).g = (phi2.g).i)
     holds phi1 = phi2
     proof
       let phi1,phi2 be Homomorphism of G,product F;
@@ -1075,7 +1384,8 @@ definition
   end;
 end;
 
-theorem Th17:
+
+theorem Th33:
   for g being Element of G
   holds (for i being Element of I holds ((product f).g).i = 1_(F.i))
   iff (product f).g = 1_(product F)
@@ -1087,8 +1397,8 @@ proof
     assume A1: for i being Element of I holds ((product f).g).i = 1_(F.i);
     set s = (product f).g;
     A2: for i being set
-    st i in I
-    holds (ex FG being non empty Group-like multMagma st FG = F.i & s.i = (1_FG))
+        st i in I
+        holds (ex FG being non empty Group-like multMagma st FG = F.i & s.i = (1_FG))
     proof
       let i be set;
       assume i in I;
@@ -1108,7 +1418,7 @@ proof
 end;
 
 
-theorem Th18:
+theorem Th34:
   for g being Element of G
   holds g in Ker (product f)
         iff (for i being Element of I holds g in Ker (f.i))
@@ -1120,7 +1430,7 @@ proof
     assume A1: g in Ker (product f);
     let i be Element of I;
     (product f).g = 1_(product F) by A1, GROUP_6:41;
-    then 1_(F.i) = ((product f).g).i by Th17
+    then 1_(F.i) = ((product f).g).i by Th33
                 .= (f.i).g by Def7;
     hence g in Ker (f.i) by GROUP_6:41;
   end;
@@ -1141,10 +1451,81 @@ proof
                        .= 1_(F.i) by A2;
       hence thesis;
     end;
-    then (product f).g = 1_(product F) by Th17;
+    then (product f).g = 1_(product F) by Th33;
     hence g in Ker (product f) by GROUP_6:41;
   end;
 end;
+
+
+theorem Th35:
+  for G1, G2, G3 being Group
+  for f1 being Homomorphism of G1, G2
+  for f2 being Homomorphism of G2, G3
+  for g being Element of G1
+  holds g in Ker (f2 * f1) iff f1.g in Ker(f2)
+proof
+  let G1, G2, G3 be Group;
+  let f1 be Homomorphism of G1, G2;
+  let f2 be Homomorphism of G2, G3;
+  let g be Element of G1;
+  thus g in Ker (f2 * f1) implies f1.g in Ker(f2)
+  proof
+    assume g in Ker (f2 * f1);
+    then 1_(G3) = (f2 * f1).g by GROUP_6:41
+               .= f2.(f1.g) by FUNCT_2:15;
+    hence f1.g in Ker(f2) by GROUP_6:41;
+  end;
+  thus f1.g in Ker(f2) implies g in Ker (f2 * f1)
+  proof
+    assume f1.g in Ker(f2);
+    then 1_G3 = f2.(f1.g) by GROUP_6:41
+             .= (f2 * f1).g by FUNCT_2:15;
+    hence g in Ker (f2 * f1) by GROUP_6:41;
+  end;
+end;
+
+
+theorem
+  for G1, G2, G3 being Group
+  for f1 being Homomorphism of G1, G2
+  for f2 being Homomorphism of G2, G3
+  holds the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
+proof
+  let G1, G2, G3 be Group;
+  let f1 be Homomorphism of G1, G2;
+  let f2 be Homomorphism of G2, G3;
+  A1: f1 "(the carrier of Ker f2) is Subset of G1
+      & the carrier of Ker (f2 * f1) is Subset of G1
+  by GROUP_2:def 5, FUNCT_2:39;
+  for g being Element of G1
+  st g in the carrier of Ker (f2 * f1)
+  holds g in f1 " (the carrier of (Ker f2))
+  proof
+    let g be Element of G1;
+    assume g in the carrier of Ker (f2 * f1);
+    then g in Ker (f2 * f1);
+    then f1.g in Ker f2 by Th35;
+    hence g in f1 " (the carrier of (Ker f2)) by FUNCT_2:38;
+  end;
+  then
+  A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2)
+  by A1;
+  for g being Element of G1
+  st g in f1 " (the carrier of (Ker f2))
+  holds g in the carrier of Ker (f2 * f1)
+  proof
+    let g be Element of G1;
+    assume g in f1 " (the carrier of (Ker f2));
+    then f1.g in Ker f2 by FUNCT_2:38;
+    then g in Ker (f2 * f1) by Th35;
+    hence g in the carrier of Ker (f2 * f1);
+  end;
+  then
+  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1;
+  thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
+  by A2,A3,XBOOLE_0:def 10;
+end;
+
 
 theorem
   the carrier of Ker (product f) = meet { the carrier of Ker (f.i) where
@@ -1169,7 +1550,7 @@ proof
       then consider i1 being Element of I such that
       B2: A = the carrier of Ker(f.i1);
       g in G & g in Ker (product f) by B1, GROUP_2:40;
-      then g in Ker (f.i1) by Th18;
+      then g in Ker (f.i1) by Th34;
       hence g in A by B2;
     end;
     assume B1: for A being set st A in Fam holds g in A;
@@ -1188,7 +1569,7 @@ proof
       hence g in Ker (f.i) by B1;
     end;
 
-    hence g in Ker (product f) by Th18;
+    hence g in Ker (product f) by Th34;
   end;
   A4: for g being object
   holds g in Ker (product f)
@@ -1208,7 +1589,8 @@ proof
   hence thesis by TARSKI:2;
 end;
 
-theorem Th21:
+
+theorem Th38:
   for f being Function
   st dom f = I & (for i being Element of I holds f.i in F.i)
   holds f in product F
@@ -1232,257 +1614,8 @@ proof
   hence f in product F by GROUP_7:def 2;
 end;
 
-theorem
-  for Z being Group-Family of I
-  st (for i being Element of I holds Z.i = center (F.i))
-  holds center (product F) = product Z
-proof
-  let Z be Group-Family of I;
-  assume A1: for i being Element of I holds Z.i = center (F.i);
-  A2: for a being Element of product F
-  holds a in product Z iff (for b being Element of product F holds a*b = b*a)
-  proof
-    let a be Element of product F;
-    thus a in product Z implies (for b being Element of product F holds a*b = b*a)
-    proof
-      assume B1: a in product Z;
-      let b be Element of product F;
-      reconsider ab=a*b, ba=b * a as Element of product F;
-      ab in product F & ba in product F;
-      then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
-      then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
-      for i being Element of I holds (a * b).i = (b * a).i
-      proof
-        let i be Element of I;
-        a.i in Z.i by B1, GROUP_19:5;
-        then C1: a.i in center (F.i) by A1;
-        (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
-        .= (b/.i) * (a/.i) by C1, GROUP_5:77
-        .= (b * a).i by GROUP_7:1;
-        hence thesis;
-      end;
-      hence a*b = b*a by B3;
-    end;
-    thus (for b being Element of product F holds a*b = b*a)
-         implies a in product Z
-    proof
-      assume B1: for b being Element of product F holds a*b = b*a;
-      B2: for i being Element of I
-      holds a.i in Z.i
-      proof
-        let i be Element of I;
-        C1: for b being Element of product F
-        holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
-        proof
-          let b be Element of product F;
-          (a * b).i = (a /. i) * (b /. i)
-          & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
-          hence thesis by B1;
-        end;
-        for bi being Element of F.i
-        holds (a/.i)*bi = bi*(a/.i)
-        proof
-          let bi be Element of F.i;
-          reconsider b = (1ProdHom (F, i)).bi as Element of product F
-          by GROUP_2:42;
-          D1: dom (1_(product F)) = I by GROUP_19:3;
-          b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
-          then b/.i = bi by D1, FUNCT_7:31;
-          hence thesis by C1;
-        end;
-        then a.i in center (F.i) by GROUP_5:77;
-        hence a.i in Z.i by A1;
-      end;
-      a in product F;
-      then a in product (Carrier F) by GROUP_7:def 2;
-      then dom a = I by PARTFUN1:def 2;
-      hence a in product Z by B2, Th21;
-    end;
-  end;
-
-  A3: for a being Element of product F
-  holds a in product Z iff a in center (product F)
-  proof
-    let a be Element of product F;
-    hereby 
-      assume a in product Z;
-      then for b being Element of product F holds a*b = b*a by A2;
-      hence a in center (product F) by GROUP_5:77;
-    end;
-    assume a in center (product F);
-    then for b being Element of product F holds a*b = b*a by GROUP_5:77;
-    hence a in product Z by A2;
-  end;
-  for i being Element of I holds Z.i is Subgroup of F.i
-  proof
-    let i be Element of I;
-    Z.i = center (F.i) by A1;
-    hence Z.i is Subgroup of F.i;
-  end;
-  then product Z is Subgroup of product F by GROUP_21:23;
-  hence thesis by A3, GROUP_2:60;
-end;
-
-theorem Th22:
-  for G being Group
-  for N being normal Subgroup of G
-  for a,b being Element of G
-  st a*N = b*N
-  ex n being Element of G st n in N & a*n=b
-proof
-  let G be Group;
-  let N be normal Subgroup of G;
-  let a,b be Element of G;
-  assume A1: a*N = b*N;
-  consider n being Element of G such that
-  A2: n = a" * b;
-  take n;
-  thus n in N by A1, A2, GROUP_2:114;
-  a * n = (a * a") * b by A2, GROUP_1:def 3
-       .= (1_G) * b by GROUP_1:def 5
-       .= b by GROUP_1:def 4;
-  hence thesis;
-end;
-
-
-:: Universal property of quotient group
-theorem Th23:
-  for G being Group
-  for N being normal Subgroup of G
-  for H being Group
-  for phi being Homomorphism of G,H st N is Subgroup of Ker phi
-  ex f being Homomorphism of (G./.N), H
-  st phi = f * (nat_hom N)
-proof
-  let G be Group;
-  let N be normal Subgroup of G;
-  let H be Group;
-  let phi be Homomorphism of G,H;
-  assume A1: N is Subgroup of Ker phi;
-  defpred P[object, object] means
-  ex g being Element of G st $1 = g*N & $2 = (phi.g);
-  A2: for x being object st x in the carrier of G./.N
-  ex y being object st y in the carrier of H & P[x,y]
-  proof
-    let x be object;
-    assume x in the carrier of G./.N;
-    then x in G./.N;
-    then consider g being Element of G such that
-    B1: x = g*N & x = N*g by GROUP_6:23;
-    take y = phi.g;
-    thus y in the carrier of H;
-    take g;
-    thus x = g*N by B1;
-    thus y = phi.g;
-  end;
-  consider f being Function of the carrier of (G./.N), the carrier of H
-  such that
-  A3: for x being object st x in the carrier of G./.N holds P[x, f.x]
-  from FUNCT_2:sch 1(A2);
-  reconsider f as Function of G./.N, H;
-
-  A4: for x being Element of G./.N
-  ex g being Element of G
-  st f.x = phi.g & x = g*N
-  proof
-    let x be Element of G./.N;
-    P[x, f.x] by A3;
-    hence thesis;
-  end;
-  A5: for x being Element of G./.N
-  for g being Element of G st x = g*N
-  holds f.(g * N) = phi.g
-  proof
-    let x be Element of G./.N;
-    let g be Element of G;
-    assume B1: x = g*N;
-    consider g0 being Element of G such that
-    B2: f.x = phi.g0 & x = g0*N by A4;
-    consider n being Element of G such that
-    B3: n in N & g0*n = g
-    by B1, B2, Th22;
-    
-    phi.g = (phi.g0) * (phi.n) by B3, GROUP_6:def 6
-    .= (phi.g0) * (1_H) by A1, B3, GROUP_2:40, GROUP_6:41
-    .= phi.g0 by GROUP_1:def 4;
-    hence f.(g * N) = phi.g by B1, B2;
-  end;
-
-
-  for a, b being Element of G./.N
-  holds f.(a * b) = (f.a) * (f.b)
-  proof
-    let a, b be Element of G./.N;
-    consider ga being Element of G such that
-    B1: f.a = phi.ga and
-    B2: a = ga*N by A4;
-    consider gb being Element of G such that
-    B3: f.b = phi.gb and
-    B4: b = gb*N by A4;
-
-    (ga * N) * (gb * N)
-    = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
-    .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
-    .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
-    .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
-    .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
-    .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
-    .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
-    .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
-    .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
-    .= ((ga * gb) * N) * N by GROUP_2:109
-    .= (ga * gb) * (N * N) by GROUP_2:29
-    .= (ga * gb) * N by GROUP_2:76;
-    then B7: (ga * gb) * N = (@ a) * (@ b) by B2,B4
-    .= (a * b) by GROUP_6:19;
-    (f.a) * (f.b) = phi.(ga * gb) by B1, B3, GROUP_6:def 6
-    .= f.(a * b) by B7, A5;
-    
-    hence f.(a * b) = (f.a) * (f.b);
-  end;
-  then reconsider f as Homomorphism of G./.N, H by GROUP_6:def 6;
-  take f;
-  A6: for g being Element of G
-  holds phi.g = (f * (nat_hom N)).g
-  proof
-    let g be Element of G;
-    reconsider x = (nat_hom N).g as Element of G./.N;
-    B1: x = g * N by GROUP_6:def 8;
-    (f * (nat_hom N)).g = f.((nat_hom N).g) by FUNCT_2:15
-                       .= phi.g by B1, A5;
-    hence phi.g = (f * (nat_hom N)).g;
-  end;
-
-  thus phi = f * (nat_hom N) by A6;
-end;
-
 
 theorem
-  (nat_hom ((F.i)`)) * (proj (F, i)) is Homomorphism of product F, (F.i)./.((F.i)`);
-
-
-theorem Th30:
-  for g being Element of product F
-  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (F.i)`
-proof
-  let g be Element of product F;
-  set H=(F.i)./.((F.i)`);
-  hereby
-    assume A1: g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)));
-    (nat_hom ((F.i)`)).((proj (F,i)).g)
-     = ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15
-    .= 1_H by A1, GROUP_6:41;
-    then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:41;
-    hence (proj (F,i)).g in (F.i)` by GROUP_6:43;
-  end;
-  assume (proj (F,i)).g in (F.i)`;
-  then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:43;
-  then 1_H = (nat_hom ((F.i)`)).((proj (F,i)).g) by GROUP_6:41
-          .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
-  hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
-end;
-
-theorem Th31:
   for S being Group-Family of I
   for g being Element of product F
   holds g in product S iff (for i being Element of I holds (proj (F,i)).g in S.i)
@@ -1503,146 +1636,11 @@ proof
     (proj (F, i)).g in S.i by Z2;
     hence g.i in S.i by Def3;
   end;
-  hence g in product S by Z3, Th21;
+  hence g in product S by Z3, Th38;
 end;
 
-
-theorem Th22:
-  for g being Element of product F
-  for h being Element of F.i
-  holds g +* (i, h) in product F
-proof
-  let g be Element of product F;
-  let h be Element of F.i;
-  A1: dom g = I by GROUP_19:3;
-  then dom (g +* (i, h)) = I by FUNCT_7:30;
-  then A2: dom (g +* (i, h)) = dom (Carrier F) by PARTFUN1:def 2;
-  A3: i in I;
-  for j being object st j in dom (Carrier F) holds (g +* (i, h)).j in (Carrier F).j
-  proof
-    let j be object;
-    assume j in dom (Carrier F);
-    then j in dom g by A1;
-    then reconsider ii=j as Element of I by A1;
-    ii in dom g by A1;
-    then ex R being 1-sorted st (R = F.ii & (Carrier F).ii = the carrier of R) by A1, PRALG_1:def 15;
-    then B2: (Carrier F).j = the carrier of (F.ii);
-    per cases;
-    suppose B3: i = j;
-      then B4: (g +* (i, h)).i = (g +* (j, h)).j
-      .= (g +* (ii, h)).ii
-      .= h by A1, A3, FUNCT_7:31;
-      then h in F.ii by B2, B3;
-      then h in the carrier of (F.ii);
-      hence thesis by B2,B3,B4;
-    end;
-    suppose i <> j;
-      then B6: (g +* (i, h)).j = g.j by FUNCT_7:32;
-      g in product F;
-      then g.ii in F.ii by GROUP_19:5;
-      then g.j in (Carrier F).j by B2;
-      hence thesis by B6;
-    end;
-  end;
-
-  then (g +* (i, h)) in product (Carrier F) by A2, CARD_3:def 5;
-  hence (g +* (i, h)) in product F by GROUP_7:def 2;
-end;
 
 theorem
-  for i being Element of I
-  for g being Element of product F
-  holds (g +* (i, 1_(F.i))) in Ker (proj (F, i)) 
-proof
-  let i be Element of I;
-  let g be Element of product F;
-  dom g = I by GROUP_19:3;
-  then A1: i in dom g;
-  (g +* (i, 1_(F.i))) in product F by Th22;
-  then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
-  (proj (F, i)).h = h.i by Def3
-                 .= 1_(F.i) by A1, FUNCT_7:31;
-  hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by Th22, GROUP_6:41;
-end;
-
-theorem Th25:
-  for G1,G2,G3 being Group
-  for f1 being Homomorphism of G1,G2
-  for f2 being Homomorphism of G2,G3
-  for g being Element of G1
-  holds g in Ker (f2 * f1) iff f1.g in Ker(f2)
-proof
-  let G1,G2,G3 be Group;
-  let f1 be Homomorphism of G1,G2;
-  let f2 be Homomorphism of G2,G3;
-  let g be Element of G1;
-  thus g in Ker (f2 * f1) implies f1.g in Ker(f2)
-  proof
-    assume B1: g in Ker (f2 * f1);
-    then 1_(G3) = (f2 * f1).g by GROUP_6:41
-               .= f2.(f1.g) by FUNCT_2:15;
-    hence f1.g in Ker(f2) by GROUP_6:41;
-  end;
-  thus f1.g in Ker(f2) implies g in Ker (f2 * f1)
-  proof
-    assume B1: f1.g in Ker(f2);
-    then 1_G3 = f2.(f1.g) by GROUP_6:41
-             .= (f2 * f1).g by FUNCT_2:15;
-    hence g in Ker (f2 * f1) by GROUP_6:41;
-  end;
-end;
-
-theorem
-  for G1,G2 being Group
-  for H2 being Subgroup of G2
-  for f being Homomorphism of G1,G2
-  ex H1 being Subgroup of G1
-  st f .: the carrier of H1 = the carrier of (H2 /\ Image f);
-::>                                                        *4
-
-theorem Th26:
-  for G1,G2,G3 being Group
-  for f1 being Homomorphism of G1,G2
-  for f2 being Homomorphism of G2,G3
-  holds the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
-proof
-  let G1,G2,G3 be Group;
-  let f1 be Homomorphism of G1,G2;
-  let f2 be Homomorphism of G2,G3;
-  A1: f1 "(the carrier of Ker f2) is Subset of G1
-      & the carrier of Ker (f2 * f1) is Subset of G1
-  by GROUP_2:def 5, GROUP_6:def 9, FUNCT_2:39;
-  for g being Element of G1
-  st g in the carrier of Ker (f2 * f1)
-  holds g in f1 " (the carrier of (Ker f2))
-  proof
-    let g be Element of G1;
-    assume g in the carrier of Ker (f2 * f1);
-    then g in Ker (f2 * f1);
-    then f1.g in Ker f2 by Th25;
-    hence g in f1 " (the carrier of (Ker f2)) by FUNCT_2:38;
-  end;
-  then
-  A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2) by A1, SUBSET_1:2;
-  for g being Element of G1
-  st g in f1 " (the carrier of (Ker f2))
-  holds g in the carrier of Ker (f2 * f1)
-  proof
-    let g be Element of G1;
-    assume B1: g in f1 " (the carrier of (Ker f2));
-    then f1.g in Ker f2 by FUNCT_2:38;
-    then g in Ker (f2 * f1) by Th25;
-    hence g in the carrier of Ker (f2 * f1);
-  end;
-  then
-  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1, SUBSET_1:2;
-  thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
-  by A2,A3,XBOOLE_0:def 10;
-end;
-
-
-
-theorem Th30:
   for N being Group-Family of I
   st (for i being Element of I holds N.i is normal Subgroup of F.i)
   ex QG being Group-Family of I
@@ -1680,10 +1678,10 @@ proof
   thus thesis by A3;
 end;
 
-theorem Th33:
+
+theorem
   for QG being Group-Family of I
-  st (for i being Element of I
-      ex Ni being normal Subgroup of F.i st QG.i=(F.i)./.Ni)
+  st (for i being Element of I ex Ni being normal Subgroup of F.i st QG.i=(F.i)./.Ni)
   ex phi being Homomorphism-Family of (product F), QG
   st (for i being Element of I
       ex Ni being normal Subgroup of F.i
@@ -1709,8 +1707,7 @@ proof
   A3: for i being Element of I holds P[i, f.i]
   from PBOOLE:sch 6(A2);
   
-  A4: for i being Element of I
-  holds f.i is Homomorphism of (product F), QG.i
+  A4: for i being Element of I holds f.i is Homomorphism of (product F), QG.i
   proof
     let i be Element of I;
     P[i, f.i] by A3;
@@ -1726,146 +1723,118 @@ proof
 end;
 
 
-
-theorem Th17:
-  for I being non empty set
-  for A, B being ManySortedSet of I
-  for f being ManySortedSet of I
-  holds f is ManySortedFunction of A,B
-  iff (for i being Element of I holds f.i is Function of A.i, B.i)
+:: Kurosh, Theory of Groups, volume I, result VI about Direct Products
+theorem
+  for Z being Group-Family of I
+  st (for i being Element of I holds Z.i = center (F.i))
+  holds center (product F) = product Z
 proof
-  let I be non empty set;
-  let A, B be ManySortedSet of I;
-  let f be ManySortedSet of I;
-  thus f is ManySortedFunction of A,B
-  implies (for i being Element of I holds f.i is Function of A.i, B.i)
+  let Z be Group-Family of I;
+  assume A1: for i being Element of I holds Z.i = center (F.i);
+  A2: for a being Element of product F
+  holds a in product Z iff (for b being Element of product F holds a*b = b*a)
   proof
-    assume Z1: f is ManySortedFunction of A,B;
+    let a be Element of product F;
+    thus a in product Z implies (for b being Element of product F holds a*b = b*a)
+    proof
+      assume B1: a in product Z;
+      let b be Element of product F;
+      reconsider ab=a*b, ba=b * a as Element of product F;
+      ab in product F & ba in product F;
+      then ab in product (Carrier F) & ba in product (Carrier F) by GROUP_7:def 2;
+      then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
+      for i being Element of I holds (a * b).i = (b * a).i
+      proof
+        let i be Element of I;
+        a.i in Z.i by B1, GROUP_19:5;
+        then C1: a.i in center (F.i) by A1;
+        (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
+                 .= (b/.i) * (a/.i) by C1, GROUP_5:77
+                 .= (b * a).i by GROUP_7:1;
+        hence thesis;
+      end;
+      hence a*b = b*a by B3;
+    end;
+    thus (for b being Element of product F holds a*b = b*a)
+         implies a in product Z
+    proof
+      assume B1: for b being Element of product F holds a*b = b*a;
+      B2: for i being Element of I holds a.i in Z.i
+      proof
+        let i be Element of I;
+        C1: for b being Element of product F
+        holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
+        proof
+          let b be Element of product F;
+          (a * b).i = (a /. i) * (b /. i)
+          & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
+          hence thesis by B1;
+        end;
+        for bi being Element of F.i holds (a/.i)*bi = bi*(a/.i)
+        proof
+          let bi be Element of F.i;
+          reconsider b = (1ProdHom (F, i)).bi as Element of product F
+          by GROUP_2:42;
+          D1: dom (1_(product F)) = I by GROUP_19:3;
+          b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
+          then b/.i = bi by D1, FUNCT_7:31;
+          hence thesis by C1;
+        end;
+        then a.i in center (F.i) by GROUP_5:77;
+        hence a.i in Z.i by A1;
+      end;
+      a in product F;
+      then a in product (Carrier F) by GROUP_7:def 2;
+      then dom a = I by PARTFUN1:def 2;
+      hence a in product Z by B2, Th38;
+    end;
+  end;
+
+  A3: for a being Element of product F
+  holds a in product Z iff a in center (product F)
+  proof
+    let a be Element of product F;
+    hereby 
+      assume a in product Z;
+      then for b being Element of product F holds a*b = b*a by A2;
+      hence a in center (product F) by GROUP_5:77;
+    end;
+    assume a in center (product F);
+    then for b being Element of product F holds a*b = b*a by GROUP_5:77;
+    hence a in product Z by A2;
+  end;
+  for i being Element of I holds Z.i is Subgroup of F.i
+  proof
     let i be Element of I;
-    i in I;
-    thus thesis by Z1,PBOOLE:def 15;
+    Z.i = center (F.i) by A1;
+    hence Z.i is Subgroup of F.i;
   end;
-  assume Z2: for i being Element of I holds f.i is Function of A.i, B.i;
-  for i being object st i in I holds
-  f.i is Function of (A.i), (B.i) by Z2;
-  hence f is ManySortedFunction of A,B by PBOOLE:def 15;
+  then product Z is Subgroup of product F by GROUP_21:23;
+  hence thesis by A3, GROUP_2:60;
 end;
 
-
-definition
-  let I be non empty set;
-  let F1,F2 be Group-Family of I;
-  mode Homomorphism-Family of F1,F2 -> ManySortedFunction of F1,F2 means
-  :Def8:
-  for i being Element of I
-  holds it.i is Homomorphism of F1.i,F2.i;
-  existence
-  proof
-    deffunc Fun(Element of I) = 1:(F1.$1, F2.$1);
-    consider phi being ManySortedSet of I such that
-    A1: for i being Element of I holds phi.i = Fun(i)
-    from PBOOLE:sch 5;
-    A2: for i being Element of I holds phi.i is Homomorphism of F1.i,F2.i
-    proof
-      let i be Element of I;
-      phi.i = 1:(F1.i, F2.i) by A1;
-      hence phi.i is Homomorphism of F1.i,F2.i;
-    end;
-    for i being Element of I
-    holds phi.i is Function of (Carrier F1).i, (Carrier F2).i
-    proof
-      let i be Element of I;
-      the carrier of F1.i = (Carrier F1).i
-      & the carrier of F2.i = (Carrier F2).i by Lm5;
-      hence phi.i is Function of (Carrier F1).i, (Carrier F2).i by A2;
-    end;
-    then phi is ManySortedFunction of F1,F2 by Th17;
-    then reconsider phi as ManySortedFunction of F1,F2;
-    take phi;
-    
-    thus thesis by A2;
-  end;
-end;
-
-registration
-  let I be non empty set;
-  let F1,F2 be Group-Family of I;
-  let i be Element of I;
-  let phi be Homomorphism-Family of F1,F2;
-  cluster (phi . i) -> multiplicative for Function of F1.i, F2.i;
-  correctness by Def8;
-end;
-
-LmCheckRegWorked:
-  for F1,F2 being Group-Family of I
-  for psi being Homomorphism-Family of F1,F2
-  for i being Element of I
-  holds psi.i is Homomorphism of F1.i, F2.i;
 
 theorem
-  for F1,F2 being Group-Family of I
-  for psi being Homomorphism-Family of F1,F2
-  ex phi being Homomorphism of (product F1),(product F2)
-  st for i being Element of I holds (proj (F2, i)) * phi = psi.i * (proj (F1, i))
+  for g being Element of product F
+  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (F.i)`
 proof
-  let F1,F2 be Group-Family of I;
-  let psi be Homomorphism-Family of F1, F2;
-  deffunc Fun(Element of I) = psi.$1 * (proj (F1, $1));
-  consider foo being ManySortedSet of I such that
-  A1: for i being Element of I holds foo.i = Fun(i)
-  from PBOOLE:sch 5;
-  for i being Element of I holds foo.i is Homomorphism of (product F1), (F2.i)
-  proof
-    let i be Element of I;
-    foo.i = psi.i * (proj (F1, i)) by A1;
-    hence foo.i is Homomorphism of (product F1), (F2.i);
+  let g be Element of product F;
+  set H=(F.i)./.((F.i)`);
+  hereby
+    assume A1: g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)));
+    (nat_hom ((F.i)`)).((proj (F,i)).g)
+     = ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15
+    .= 1_H by A1, GROUP_6:41;
+    then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:41;
+    hence (proj (F,i)).g in (F.i)` by GROUP_6:43;
   end;
-  then reconsider foo as Homomorphism-Family of (product F1), F2 by Def6;
-  take phi = product foo;
-  let i be Element of I;
-  for g being Element of product F1
-  holds ((proj (F2, i)) * phi).g = (psi.i * (proj (F1, i))).g
-  proof
-    let g be Element of product F1;
-    (psi.i * (proj (F1, i))).g = (foo.i).g by A1
-    .= (phi.g).i by Def7
-    .= (proj (F2,i)).(phi.g) by Def3
-    .= ((proj (F2, i)) * phi).g by FUNCT_2:15;
-    hence ((proj (F2, i)) * phi).g = (psi.i * (proj (F1, i))).g;
-  end;
-  hence (proj (F2, i)) * phi = psi.i * (proj (F1, i));
+  assume (proj (F,i)).g in (F.i)`;
+  then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:43;
+  then 1_H = (nat_hom ((F.i)`)).((proj (F,i)).g) by GROUP_6:41
+          .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
+  hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
 end;
 
-theorem Th32:
-  for N being Group-Family of I
-  st (for i being Element of I holds N.i is normal Subgroup of F.i)
-  holds product N is normal Subgroup of product F
-proof
-  let N be Group-Family of I;
-  assume A1: for i being Element of I holds N.i is normal Subgroup of F.i;
-  consider QG being Group-Family of I such that
-  A2: for i being Element of I
-      ex Ni being normal Subgroup of F.i
-      st Ni = N.i & QG.i = (F.i) ./. Ni
-  by A1, Th30;
-
-  for i being Element of I
-  ex Ni being normal Subgroup of F.i
-  st QG.i=(F.i)./.Ni
-  proof
-    let i be Element of I;
-    ex Ni being normal Subgroup of F.i
-    st Ni = N.i & QG.i = (F.i) ./. Ni by A2;
-    hence thesis;
-  end;
-  then consider f being Homomorphism-Family of (product F), QG such that
-  A3: for i being Element of I
-      ex Ni being normal Subgroup of F.i
-      st QG.i = (F.i)./.Ni & f.i = (nat_hom Ni) * (proj (F, i))
-  by Th33;
-  thus product N is normal Subgroup of product F;
-::>                                            *4,4
-end;
 
 theorem
   for D being Group-Family of I
@@ -1904,76 +1873,10 @@ proof
         then c.i in (F.i)` by GROUP_5:def 9;
         hence c.i in D.i by A1;
       end;
-      hence c in product D by B1,Th21;
+      hence c in product D by B1, Th38;
     end;
     hence thesis by A2, GROUP_6:7;
   end;
-  A4: product D is strict normal Subgroup of product F
-  proof
-    for i being Element of I holds D.i is normal Subgroup of F.i 
-    proof
-      let i be Element of I;
-      D.i = (F.i)` by A1;
-      hence thesis;
-    end;
-    hence thesis by Th32;
-  end;
-  then reconsider DG=product D as strict normal Subgroup of product F;
-  A5: DG = product D;
-  A6: Ker (nat_hom DG) = DG by GROUP_6:43
-  .= product D by A5;
-  (product F)` is strict Subgroup of DG by A3;
-  then (product F)` is Subgroup of Ker (nat_hom DG) by A3, A4, GROUP_6:43;
-  then consider f being Homomorphism of (product F)./.((product F)`),(product F)./.DG
-  such that
-  A7: nat_hom DG = f * (nat_hom (product F)`) by Th23;
-:: theorem Th23:
-::   for G being Group
-::   for N being normal Subgroup of G
-::   for H being Group
-::   for phi being Homomorphism of G,H st N is Subgroup of Ker phi
-::   ex f being Homomorphism of (G./.N), H
-::   st phi = f * (nat_hom N)
-  for i being Element of I holds D.i is Subgroup of F.i by A1;
-::>                                                      *4
-
-  A5: for g being Element of product F
-  for i being Element of I
-  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (D.i)
-  proof
-    let g be Element of product F;
-    let i be Element of I;
-    g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) iff (proj (F,i)).g in (F.i)` by Th30;
-::>                                                                             *4,4
-    hence thesis by A1;
-  end;
-
-  for g being Element of product F
-  holds (for i being Element of I holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))))
-  iff g in product D
-  proof
-    let g be Element of product F;
-    hereby 
-      assume B1: for i being Element of I holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)));
-      for i being Element of I holds (proj (F,i)).g in D.i
-      proof
-        let i be Element of I;
-        g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by B1;
-        hence (proj (F,i)).g in (D.i) by A5;
-      end;
-      hence g in product D by Th31;
-    end;
-    assume B2: g in product D;
-    let i be Element of I;
-    (proj (F,i)).g in D.i by B2,Th31;
-    then (proj (F,i)).g in (F.i)` by A1;
-    hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by Th30;
-::>                                                      *4
-  end;
-  A4: 
-  for g being Element of product F st g in product D
-  holds g in Ker (nat_hom (product F)`);
-::>                                   *4
 
   A4: for g being Element of (product F) st g in (product D)
   holds g in Ker (nat_hom (product F)`)
@@ -1981,45 +1884,37 @@ proof
     let g be Element of (product F);
     assume B1: g in (product D);
     set QG = (product F)./.((product F)`);
-
-    hereby
-::>      *51
-      let i be Element of I;
-
-      thus ((nat_hom (product F)`).g) = 1_((product F)`);
-::>                                                    *4
-    end;
-
+    
     deffunc PHI(Element of I) = (nat_hom ((F.$1)`)) * (proj (F, $1));
-    :: deffunc PHI(Element of I) = nat_hom ((F.$1)`);
+    deffunc PHI(Element of I) = nat_hom ((F.$1)`);
     consider phi being ManySortedSet of I such that
     B2: for i being Element of I holds phi.i = PHI(i)
     from PBOOLE:sch 5;
-    for i being Element of I
-    holds phi.i is Homomorphism of (product F), (F.i)./.((F.i)`)
+    for i being Element of I holds phi.i is Homomorphism of F.i, (F.i)./.((F.i)`)
     proof
       let i be Element of I;
       phi.i = PHI(i) by B2;
-      hence phi.i is Homomorphism of (product F), (F.i)./.((F.i)`);
+      hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
     end;
     then reconsider phi as Homomorphism-Family of (product F), D;
 ::>                                                            *4
-    
+      
     for i being Element of I
     for varphi being Homomorphism of (product F),D.i
     st varphi = (nat_hom ((F.i)`)) * (proj (F, i))
     ex fi being Homomorphism of QG,D.i st varphi = fi * (nat_hom ((product F)`))
     & Image fi = (1).(D.i);
 ::>                      *4
-
-    :: construct the Homomorphism-Family from the varphi
-    :: th
-
+  
+      :: construct the Homomorphism-Family from the varphi
+      :: th
+  
     ((nat_hom ((product F)`))/.g) = 1_(QG);
 ::>                                      *4
-    :: then (nat_hom ((product F)`)).g = 1_(QG);
+      :: then (nat_hom ((product F)`)).g = 1_(QG);
     hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
   end;
+
   for g being Element of (product F) st g in (product D)
   holds g in (product F)`
   proof
@@ -2034,5 +1929,3 @@ end;
 
 
 ::> 4: This inference is not accepted
-::> 51: Invalid conclusion
-::> 396: Formula expected

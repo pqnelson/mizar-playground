@@ -74,14 +74,12 @@ proof
   for x being object st x in dom f holds f.x is Function
   proof
     let x be object;
-    assume B1: x in dom f;
-    then x in I by A1,FUNCT_2:def 1;
+    assume x in dom f;
     then reconsider i=x as Element of I;
     f.i = 1:(G,F.i) by A1;
     hence f.x is Function;
   end;
-  then f is Function-yielding by FUNCOP_1:def 6;
-  then reconsider f as ManySortedFunction of I;
+  then reconsider f as ManySortedFunction of I by FUNCOP_1:def 6;
   take f;
   thus for i being Element of I holds f.i is Homomorphism of G, F.i
   proof
@@ -254,15 +252,12 @@ definition
   redefine func phi.i -> Function of the carrier of F1.i, the carrier of F2.i;
   correctness
   proof
-    i in I;
-    then ex R being 1-sorted
+    A1: ex R being 1-sorted
     st (R = F1.i & (Carrier F1).i = the carrier of R) by PRALG_1:def 15;
-    then A1: the carrier of F1.i = (Carrier F1).i;
-    ex R being 1-sorted
-    st (R = F2.i & (Carrier F2).i = the carrier of R) by PRALG_1:def 15;
-    then A2: the carrier of F2.i = (Carrier F2).i;
-    phi.i is Function of (Carrier F1).i, (Carrier F2).i by PBOOLE:def 15;
-    hence thesis by A1,A2;
+    ex R2 being 1-sorted
+    st (R2 = F2.i & (Carrier F2).i = the carrier of R2)
+    by PRALG_1:def 15;
+    hence thesis by A1, PBOOLE:def 15;
   end;
 end;
 @
@@ -286,15 +281,10 @@ proof
   let f be ManySortedSet of I;
   thus f is ManySortedFunction of A,B
   implies (for i being Element of I holds f.i is Function of A.i, B.i)
-  proof
-    assume Z1: f is ManySortedFunction of A,B;
-    let i be Element of I;
-    i in I;
-    thus thesis by Z1,PBOOLE:def 15;
-  end;
-  assume Z2: for i being Element of I holds f.i is Function of A.i, B.i;
-  for i being object st i in I holds
-  f.i is Function of (A.i), (B.i) by Z2;
+  by PBOOLE:def 15;
+  assume for i being Element of I holds f.i is Function of A.i, B.i;
+  then for i being object st i in I holds
+  f.i is Function of (A.i), (B.i);
   hence f is ManySortedFunction of A,B by PBOOLE:def 15;
 end;
 @ %def Th23
@@ -335,8 +325,7 @@ definition
       & the carrier of F2.i = (Carrier F2).i by Th20;
       hence phi.i is Function of (Carrier F1).i, (Carrier F2).i by A2;
     end;
-    then phi is ManySortedFunction of F1,F2 by Th23;
-    then reconsider phi as ManySortedFunction of F1,F2;
+    then reconsider phi as ManySortedFunction of F1,F2 by Th23;
     take phi;
     
     thus thesis by A2;

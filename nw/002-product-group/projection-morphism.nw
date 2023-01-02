@@ -274,34 +274,26 @@ proof
   A1: dom g = I by GROUP_19:3;
   then dom (g +* (i, h)) = I by FUNCT_7:30;
   then A2: dom (g +* (i, h)) = dom (Carrier F) by PARTFUN1:def 2;
-  A3: i in I;
   for j being object st j in dom (Carrier F)
   holds (g +* (i, h)).j in (Carrier F).j
   proof
     let j be object;
     assume j in dom (Carrier F);
-    then j in dom g by A1;
-    then reconsider ii=j as Element of I by A1;
-    ii in dom g by A1;
-    then ex R being 1-sorted
-         st (R = F.ii & (Carrier F).ii = the carrier of R)
-    by A1, PRALG_1:def 15;
-    then B2: (Carrier F).j = the carrier of (F.ii);
+    then reconsider ii=j as Element of I;
+    B1: ex R being 1-sorted
+    st (R = F.ii & (Carrier F).ii = the carrier of R)
+    by PRALG_1:def 15;
     per cases;
-    suppose B3: i = j;
-      then B4: (g +* (i, h)).i = (g +* (j, h)).j
+    suppose B2: i = j;
+      then (g +* (i, h)).i = (g +* (j, h)).j
       .= (g +* (ii, h)).ii
-      .= h by A1, A3, FUNCT_7:31;
-      then h in F.ii by B2, B3;
-      then h in the carrier of (F.ii);
-      hence thesis by B2,B3,B4;
+      .= h by A1, FUNCT_7:31;
+      hence thesis by B1, B2;
     end;
-    suppose i <> j;
-      then B6: (g +* (i, h)).j = g.j by FUNCT_7:32;
+    suppose B3: i <> j;
       g in product F;
       then g.ii in F.ii by GROUP_19:5;
-      then g.j in (Carrier F).j by B2;
-      hence thesis by B6;
+      hence thesis by B1, B3, FUNCT_7:32;
     end;
   end;
 
@@ -323,13 +315,12 @@ theorem
 proof
   let i be Element of I;
   let g be Element of product F;
-  dom g = I by GROUP_19:3;
-  then A1: i in dom g;
+  A1: dom g = I by GROUP_19:3;
   (g +* (i, 1_(F.i))) in product F by Th29;
   then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
   (proj (F, i)).h = h.i by Def3
                  .= 1_(F.i) by A1, FUNCT_7:31;
-  hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by Th29, GROUP_6:41;
+  hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by GROUP_6:41;
 end;
 @ 
 
