@@ -1,0 +1,749 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Indexed Families of Subgroups}
+
+<<Indexed Families of Subgroups>>=
+begin :: Subgroup-Family of a Family of Groups
+<<Define: F-Subgroup-yielding>>
+
+<<Theorem: criteria for $I\neq\emptyset$ indexed families>>
+
+<<Theorem: ``$\mathcal{F}$-subgroup yielding'' is reflexive>>
+
+<<Register: F-Subgroup-yielding for Group-Family>>
+
+<<Define: Subgroup Family of F>>
+
+<<Redefine: [[S.i]] for Subgroup-Family>>
+
+<<Reserve: [[S]] for Subgroup-family>>
+
+<<Scheme: Construct Group-Family from Functor>>
+
+<<Scheme: Construct a Subgroup-Family of F using a Functor>>
+
+<<Define: Componentwise-strict (for Group-Families)>>
+
+<<Register: Componentwise-strict Group-Families>>
+
+<<Define: Componentwise-strict (for Subgroup-Families)>>
+
+<<Register: Componentwise-strict Subgroup-Family>>
+
+<<Register: [[S.i]] as strict subgroup>>
+
+<<Theorem: compatibility of notions of ``componentwise-strict''>>
+
+<<Scheme: Strict Subgroup Family Construction>>
+
+<<Theorem: equality of strict subgroup families>>
+
+<<Definition: the trivial proper subgroup family>>
+
+<<Definition: Trivial improper subgroup family>>
+
+<<Define: Normal (for Subgroup-family)>>
+
+<<Register: componentwise-strict normal for Subgroup-family>>
+
+<<Register: normal Subgroup-family>>
+
+<<Register: strict normal subgroup for members of a strict normal subgroup family>>
+
+<<Definition: family of quotient groups>>
+
+<<Theorem: Existence of Commutator Subgroup Family>>
+@
+
+\begin{definition}
+Let $I$ be a set, let $\mathcal{F}$ be a $I$-indexed family of
+groups. We call a family of groups $\mathcal{G}$ indexed by $I$
+\define{$\mathcal{F}$-Subgroup yielding} if for each $i\in I$ we have
+$\mathcal{G}_{i}\subgroup\mathcal{F}_{i}$. 
+\end{definition}
+
+<<Define: F-Subgroup-yielding>>=
+definition
+  let I be set;
+  let F, IT be Group-Family of I;
+  attr IT is F-Subgroup-yielding means :Def14:
+  for i being Element of I
+  for G being Group st G = F.i
+  holds IT.i is Subgroup of G;
+end;
+@ %def Def14 -Subgroup-yielding
+
+\begin{voc}
+We add the attribute ``-Subgroup-yielding'' to our vocabulary list.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+V-Subgroup-yielding
+@
+
+\begin{theorem}
+When $I\neq\emptyset$, the criteria for a subgroup-family of
+$\mathcal{F}$ matches intuition.
+\end{theorem}
+
+<<Theorem: criteria for $I\neq\emptyset$ indexed families>>=
+theorem
+  for S being Group-Family of I
+  holds S is F-Subgroup-yielding iff (for i being Element of I holds S.i
+  is Subgroup of F.i);
+@ 
+
+\begin{theorem}
+Any family of groups $\mathcal{F}$ is a $\mathcal{F}$-subgroup yielding
+family. 
+\end{theorem}
+
+<<Theorem: ``$\mathcal{F}$-subgroup yielding'' is reflexive>>=
+theorem ThSubYieldRefl:
+  F is F-Subgroup-yielding
+proof
+  for i being Element of I holds F.i is Subgroup of F.i by GROUP_2:54;
+  hence thesis by Def14;
+end;
+@ %def ThSubYieldRefl
+
+\begin{registration}
+We can now meaningfully speak about a ``$\mathcal{F}$-subgroup yielding
+family of groups indexed by $I$''.
+\end{registration}
+
+<<Register: F-Subgroup-yielding for Group-Family>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster F-Subgroup-yielding for Group-Family of I;
+  existence
+  proof
+    take F;
+    thus thesis by ThSubYieldRefl;
+  end;
+end;
+@ 
+
+\begin{definition}
+Let $\mathcal{F}$ be a family of groups indexed by a non-empty set
+$I\neq\emptyset$. Then we define a \define{Subgroup Family of $\mathcal{F}$}
+to be a group-family consisting of subsets with matching indices.
+\end{definition}
+
+<<Define: Subgroup Family of F>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  mode Subgroup-Family of F is F-Subgroup-yielding Group-Family of I;
+end;
+@ %def Subgroup-Family
+
+\begin{definition*}
+We now think of $\mathcal{S}_{i}$ as a subgroup of $\mathcal{F}_{i}$,
+rather than as a group.
+\end{definition*}
+
+<<Redefine: [[S.i]] for Subgroup-Family>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be Subgroup-Family of F;
+  let i be Element of I;
+  redefine func S.i -> Subgroup of F.i;
+  correctness by Def14;
+end;
+@
+
+\begin{reserve}
+We will also use $\mathcal{S}$ to refer to a generic subgroup family of
+$\mathcal{F}$.
+\end{reserve}
+
+<<Reserve: [[S]] for Subgroup-family>>=
+reserve S for Subgroup-Family of F;
+@ 
+
+\begin{scheme}
+If we have some non-empty set $I_{1}\neq\emptyset$
+and some method $F(i)$ to construct groups from elements $i\in I_{1}$,
+then there exists a family of groups $\mathcal{F}$ indexed by $I_{1}$
+such that for each $i\in I_{1}$ we have $\mathcal{F}_{i}=F(i)$.
+\end{scheme}
+
+<<Scheme: Construct Group-Family from Functor>>=
+scheme
+GrFamSch { I1() -> non empty set,
+           Fun(Element of I1()) -> Group } :
+  ex Fam being Group-Family of I1()
+  st for i being Element of I1() holds Fam.i = Fun(i)
+proof
+  consider F being ManySortedSet of I1() such that
+  A1: for i being Element of I1() holds F.i = Fun(i)
+  from PBOOLE:sch 5;
+  for y being object st y in rng F holds y is Group
+  proof
+    let y be object;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F & y = F.x
+    by FUNCT_1:def 3;
+    dom F = I1() by PARTFUN1:def 2;
+    then reconsider i=x as Element of I1() by B2;
+    y = F.i by B2
+     .= Fun(i) by A1;
+    hence y is Group;
+  end;
+  then F is Group-yielding;
+  then reconsider F as Group-Family of I1();
+  take F;
+  thus thesis by A1;
+end;
+@ %def GrFamSch
+
+\begin{scheme}
+Suppose we were given  a family of groups $\mathcal{F}$ indexed by a
+non-empty set $I_{1}\neq\emptyset$. Suppose we had a way to form, for
+each group $G$, a subgroup $S(G)\subgroup G$. Then we can form a
+subgroup family of $\mathcal{F}$ by applying $S$ to each member of
+$\mathcal{F}$, i.e., for each $i\in I_{1}$, we have $\mathcal{S}_{i}=S(\mathcal{F}_{i})$.
+\end{scheme}
+
+<<Scheme: Construct a Subgroup-Family of F using a Functor>>=
+scheme
+SubFamSch { I1() -> non empty set,
+            Fam() -> Group-Family of I1(),
+            Sub(Group) -> Group } :
+  ex S being Subgroup-Family of Fam()
+  st for i being Element of I1() holds S.i = Sub(Fam().i)
+provided
+A1: for G being Group holds Sub(G) is Subgroup of G
+proof
+  deffunc F2(Element of I1()) = Sub(Fam().$1);
+  consider S being ManySortedSet of I1() such that
+  A2: for i being Element of I1() holds S.i = F2(i)
+  from PBOOLE:sch 5;
+  for y being object st y in rng S holds y is Group
+  proof
+    let y be object;
+    assume B1: y in rng S;
+    then consider x being object such that
+    B2: x in dom S & y = S.x
+    by FUNCT_1:def 3;
+    dom S = I1() by PARTFUN1:def 2;
+    then reconsider i=x as Element of I1() by B2;
+    y = S.i by B2
+     .= F2(i) by A2;
+    hence y is Group;
+  end;
+
+  then S is Group-yielding;
+  then reconsider S as Group-Family of I1();
+  for i being Element of I1() holds S.i is Subgroup of Fam().i
+  proof
+    let i be Element of I1();
+    S.i = Sub(Fam().i) by A2;
+    hence S.i is Subgroup of Fam().i by A1;
+  end;
+  then S is Fam()-Subgroup-yielding;
+  then reconsider S as Subgroup-Family of Fam();
+  take S;
+  thus thesis by A2;
+end;
+@ %def SubFamSch
+
+\begin{definition}
+Let $I\neq\emptyset$, let $\mathcal{F}$ be an $I$-indexed family of
+groups. We call $\mathcal{F}$ \define{Componentwise Strict} if for each
+$i\in I$, $\mathcal{F}_{i}$ is itself a strict group.
+\end{definition}
+
+<<Define: Componentwise-strict (for Group-Families)>>=
+:: Re-defining "strict" for Subgroup-Family seemed like a risky move,
+:: so I opted to introduce an adjective which captured what was needed.
+definition
+  let I be non empty set;
+  let IT be Group-Family of I;
+  attr IT is componentwise_strict means :Def12a:
+  for i being Element of I holds IT.i is strict Group;
+end;
+@ %def componentwise_strict Def12a
+
+\begin{voc}
+We add the attribute ``componentwise strict'' to our vocabulary list.
+\end{voc}
+
+<<DICT/GROUP-23.VOC>>=
+Vcomponentwise_strict
+@
+
+\begin{registration}
+We can use the notion of ``Componentwise-strict'' as an adjective for a
+group family.
+\end{registration}
+
+<<Register: Componentwise-strict Group-Families>>=
+registration
+  let I be non empty set;
+  cluster componentwise_strict for Group-Family of I;
+  existence
+  proof
+    reconsider G = multMagma (# REAL, addreal #) as strict Group
+    by GROUP_1:46;
+    deffunc Fun(Element of I) = G;
+    consider F being Group-Family of I such that
+    A1: for i being Element of I holds F.i = Fun(i)
+    from GrFamSch;
+    take F;
+    for i being Element of I holds F.i is strict Group by A1;
+    hence thesis;
+  end;
+end;
+@ 
+
+\begin{definition}
+Let $\mathcal{F}$ be an $I$-indexed family of sets, $I\neq\emptyset$,
+and $\mathcal{S}$ is a Subgroup family of $\mathcal{F}$.
+We define the notion of $\mathcal{S}$ being \define{Component-wise strict}
+meaning for each $i\in I$, $\mathcal{S}_{i}$ is a strict Subgroup of
+$\mathcal{F}_{i}$. 
+\end{definition}
+
+<<Define: Componentwise-strict (for Subgroup-Families)>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let IT be Subgroup-Family of F;
+  attr IT is componentwise_strict means :Def12:
+  for i being Element of I holds IT.i is strict Subgroup of F.i;
+end;
+@ %def Def12
+
+\begin{registration}
+There is at least one componentwise-strict subgroup family for any
+group-family of $I$, namely the family of trivial subgroups.
+\end{registration}
+
+<<Register: Componentwise-strict Subgroup-Family>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster componentwise_strict for Subgroup-Family of F;
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is Subgroup of G by GROUP_2:def 7;
+    consider S being Subgroup-Family of F such that
+    A2: for i being Element of I holds S.i = Sub(F.i)
+    from SubFamSch(A1);
+    take S;
+    for i being Element of I holds S.i is strict Subgroup of F.i
+    proof
+      let i be Element of I;
+      S.i = Sub(F.i) by A2
+         .= (1).(F.i);
+      hence thesis by GROUP_2:def 7;
+    end;
+    hence thesis;
+  end;
+end;
+@ 
+
+\begin{registration}
+If $\mathcal{S}$ is a componentwise strict subgroup-family of $\mathcal{F}$,
+then for any $i\in I$ we should treat $\mathcal{S}_{i}$ as a strict
+subgroup of $\mathcal{F}_{i}$.
+\end{registration}
+
+<<Register: [[S.i]] as strict subgroup>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be componentwise_strict Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> strict for Subgroup of F.i;
+  correctness by Def12;
+end;
+@ 
+
+\begin{theorem}
+Any componentwise-strict subgroup family $\mathcal{S}$ of $\mathcal{F}$
+turns out to also be a componentwise-strict family of groups.
+\end{theorem}
+
+<<Theorem: compatibility of notions of ``componentwise-strict''>>=
+theorem
+  for S being componentwise_strict Subgroup-Family of F
+  holds S is componentwise_strict Group-Family of I
+proof
+  let S be componentwise_strict Subgroup-Family of F;
+  for i being Element of I
+  holds S.i is strict Group;
+  hence S is componentwise_strict Group-Family of I by Def12a;
+end;
+@ 
+
+\begin{scheme}
+If we have $I_{1}\neq\emptyset$ and a family $\mathcal{F}$ of groups
+indexed by $I_{1}$, and if we also have a method for constructing for
+any group $G$ a strict subgroup $S(G)\subgroup G$, then we can form a
+componentwise-strict subgroup family of $\mathcal{F}$.
+\end{scheme}
+
+<<Scheme: Strict Subgroup Family Construction>>=
+scheme
+StrSubFamSch { I1() -> non empty set,
+               Fam() -> Group-Family of I1(),
+               Sub(Group) -> Group } :
+  ex S being componentwise_strict Subgroup-Family of Fam()
+  st for i being Element of I1() holds S.i = Sub(Fam().i)
+provided
+A1: for G being Group holds Sub(G) is strict Subgroup of G
+proof
+  A2: for G being Group holds Sub(G) is Subgroup of G by A1;
+  consider S being Subgroup-Family of Fam() such that
+  A3: for i being Element of I1() holds S.i = Sub(Fam().i)
+  from SubFamSch(A2);
+  for i being Element of I1()
+  holds S.i is strict Subgroup of Fam().i
+  proof
+    let i be Element of I1();
+    S.i = Sub(Fam().i) by A3;
+    hence S.i is strict Subgroup of Fam().i by A1;
+  end;
+  then S is componentwise_strict;
+  then reconsider S as componentwise_strict Subgroup-Family of Fam();
+  take S;
+  thus thesis by A3;
+end;
+@ %def StrSubFamSch
+
+\begin{theorem}
+For any componentwise-strict subgroup families $\mathcal{A}$ and
+$\mathcal{B}$ of some family of groups $\mathcal{F}$, if for each $i\in I$
+we have $\mathcal{A}_{i}=\mathcal{B}_{i}$, then we have an equality of families
+$\mathcal{A}=\mathcal{B}$.
+\end{theorem}
+
+<<Theorem: equality of strict subgroup families>>=
+theorem ThStrSubEq:
+  for A,B being componentwise_strict Subgroup-Family of F
+  st (for i being Element of I holds A.i = B.i)
+  holds A = B
+proof
+  let A,B be componentwise_strict Subgroup-Family of F;
+  assume A1: for i being Element of I holds A.i = B.i;
+  for i being object st i in I holds A.i = B.i
+  proof
+    let i be object;
+    assume A2: i in I;
+    then reconsider j=i as Element of I;
+    A.j = B.j by A1;
+    hence thesis;
+  end;
+
+  hence A = B by PBOOLE:3;
+end;
+@ %def ThStrSubEq
+
+\begin{definition}
+For any family of groups $\mathcal{F}$ we have the subgroup family
+$\trivialSubgroup_{\mathcal{F}}$ consisting of the trivial subgroups for
+each family member.
+\end{definition}
+
+<<Definition: the trivial proper subgroup family>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  func (1).F -> componentwise_strict Subgroup-Family of F means
+  :Def15:
+  for i being Element of I
+  holds it.i = (1).(F.i);
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 7;
+    thus ex S being componentwise_strict Subgroup-Family of F
+    st for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+  end;
+  uniqueness
+  proof
+    thus for A,B being componentwise_strict Subgroup-Family of F
+    st (for i being Element of I holds A.i = (1).(F.i))
+    & (for i being Element of I holds B.i = (1).(F.i))
+    holds A = B
+    proof
+      let A,B be componentwise_strict Subgroup-Family of F;
+      assume A1: for i being Element of I holds A.i = (1).(F.i);
+      assume A2: for i being Element of I holds B.i = (1).(F.i);
+      for i being Element of I holds A.i = B.i
+      proof
+        let i be Element of I;
+        thus A.i = (1).(F.i) by A1
+                .= B.i by A2;
+      end;
+      hence thesis by ThStrSubEq;
+    end;
+  end;
+end;
+@ %def Def15
+
+\begin{definition}
+Conversely, we can take the improper trivial subgroup for each member of
+a group family to obtain the other trivial subgroup-family.
+\end{definition}
+
+<<Definition: Trivial improper subgroup family>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  func (Omega).F -> componentwise_strict Subgroup-Family of F means
+  :Def16:
+  for i being Element of I
+  holds it.i = (Omega).(F.i);
+  existence
+  proof
+    deffunc Sub(Group) = (Omega).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 8;
+    thus ex S being componentwise_strict Subgroup-Family of F
+    st for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+  end;
+  uniqueness
+  proof
+    thus for A,B being componentwise_strict Subgroup-Family of F
+    st (for i being Element of I holds A.i = (Omega).(F.i))
+    & (for i being Element of I holds B.i = (Omega).(F.i))
+    holds A = B
+    proof
+      let A,B be componentwise_strict Subgroup-Family of F;
+      assume A1: for i being Element of I holds A.i = (Omega).(F.i);
+      assume A2: for i being Element of I holds B.i = (Omega).(F.i);
+      for i being Element of I holds A.i = B.i
+      proof
+        let i be Element of I;
+        thus A.i = (Omega).(F.i) by A1
+                .= B.i by A2;
+      end;
+      hence thesis by ThStrSubEq;
+    end;
+  end;
+end;
+@ %def Def16
+
+\begin{definition}
+If $\mathcal{S}$ is a subgroup family for $\mathcal{F}$,
+then it makes sense to call $\mathcal{S}$ \define{Normal} whenever it
+consists of normal subgroups.
+\end{definition}
+
+<<Define: Normal (for Subgroup-family)>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let IT be Subgroup-Family of F;
+  attr IT is normal means :Def17:
+  for i being Element of I holds IT.i is normal Subgroup of F.i;
+end;
+@ 
+
+\begin{registration}
+We can meaningfully talk about ``componentwise-strict normal
+subgroup-families''. 
+\end{registration}
+
+<<Register: componentwise-strict normal for Subgroup-family>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster componentwise_strict normal for Subgroup-Family of F;
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 7;
+    consider S being componentwise_strict Subgroup-Family of F such that
+    A2: for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+    take S;
+    for i being Element of I holds S.i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      S.i = Sub(F.i) by A2
+         .= (1).(F.i);
+      hence thesis;
+    end;
+    hence thesis;
+  end;
+end;
+@ 
+
+\begin{registration}
+We can also meaningfully discuss ``normal Subgroup families'', without
+the demand for componentwise-strictness.
+\end{registration}
+
+<<Register: normal Subgroup-family>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be normal Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> normal for Subgroup of F.i;
+  correctness by Def17;
+end;
+@ 
+
+\begin{registration}
+The members of a componentwise-strict normal subgroup family are, oddly
+enough, strict normal subgroups.
+\end{registration}
+
+<<Register: strict normal subgroup for members of a strict normal subgroup family>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be componentwise_strict normal Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> strict normal for Subgroup of F.i;
+  correctness by Def16, Def17;
+end;
+@ 
+
+\begin{registration}
+The trivial subgroup-families are normal.
+\end{registration}
+
+<<Register: trivial subgroup families are normal>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster (1).F -> normal;
+  correctness
+  proof
+    for i being Element of I holds ((1).F).i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      B1: ((1).F).i = (1).(F.i) by Def15;
+      hence thesis by GROUP_2:def 7;
+    end;
+    hence (1).F is normal by Def17;
+  end;
+  cluster (Omega).F -> normal;
+  correctness
+  proof
+    for i being Element of I holds ((Omega).F).i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      B1: ((Omega).F).i = (Omega).(F.i) by Def16;
+      hence thesis by GROUP_2:def 8;
+    end;
+    hence (Omega).F is normal by Def17;
+  end;
+end;
+@ 
+
+\begin{definition}
+Whenever we have a family of groups $\mathcal{F}$ and a normal subgroup
+family $\mathcal{N}$, we can form the family of quotients $\mathcal{Q}$
+consisting of members $\mathcal{Q}_{i}=\mathcal{F}_{i}/\mathcal{N}_{i}$
+for each $i\in I$.
+\end{definition}
+
+<<Definition: family of quotient groups>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let N be normal Subgroup-Family of F;
+  func F ./. N -> Group-Family of I means :Def18:
+  for i being Element of I
+  holds it.i = (F.i) ./. (N.i);
+  existence
+  proof
+    deffunc Fun(Element of I) = (F.$1) ./. (N.$1);
+    thus ex Fam being Group-Family of I
+    st for i being Element of I holds Fam.i = Fun(i)
+    from GrFamSch;
+  end;
+  uniqueness
+  proof
+    thus for A, B being Group-Family of I
+    st (for i being Element of I holds A.i = (F.i) ./. (N.i))
+    & (for i being Element of I holds B.i = (F.i) ./. (N.i))
+    holds A = B
+    proof
+      let A, B be Group-Family of I;
+      assume A1: for i being Element of I holds A.i = (F.i) ./. (N.i);
+      assume A2: for i being Element of I holds B.i = (F.i) ./. (N.i);
+      for i being object st i in I
+      holds A.i = B.i
+      proof
+        let i be object;
+        assume B1: i in I;
+        then reconsider j=i as Element of I;
+        A.j = (F.j) ./. (N.j) by A1
+           .= B.j by A2;
+        hence thesis;
+      end;
+      hence A = B by PBOOLE:3;
+    end;
+  end;
+end;
+@ %def Def18
+
+\begin{registration}
+The family of quotient groups is componentwise-strict.
+\end{registration}
+
+<<Register: family of quotient groups is componentwise-strict>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let N be normal Subgroup-Family of F;
+  cluster F ./. N -> componentwise_strict;
+  correctness
+  proof
+    for i being Element of I
+    holds (F ./. N).i is strict Group
+    proof
+      let i be Element of I;
+      A1: (F ./. N).i = (F.i) ./. (N.i) by Def18;
+      (F.i) ./. (N.i) is strict by GROUP_6:def 4;
+      hence thesis by A1;
+    end;
+    hence thesis by Def12a;
+  end;
+end;
+@ 
+
+\begin{theorem}
+For any family of groups $\mathcal{F}$, we can form a subgroup family
+consisting of the commutator subgroups of its members.
+\end{theorem}
+
+<<Theorem: Existence of Commutator Subgroup Family>>=
+theorem
+  ex S being componentwise_strict normal Subgroup-Family of F
+  st for i being Element of I holds S.i = (F.i)`
+proof
+  deffunc Fun(Group) = ($1)`;
+  A1: for G being Group holds Fun(G) is strict Subgroup of G;
+  consider S being componentwise_strict Subgroup-Family of F such that
+  A2: for i being Element of I holds S.i = Fun(F.i)
+  from StrSubFamSch(A1);
+  for i being Element of I holds S.i is normal Subgroup of F.i
+  proof
+    let i be Element of I;
+    S.i = (F.i)` by A2;
+    hence S.i is normal Subgroup of F.i;
+  end;
+  then reconsider S as componentwise_strict normal Subgroup-Family of F
+  by Def17;
+  take S;
+  thus thesis by A2;
+end;
+@ 

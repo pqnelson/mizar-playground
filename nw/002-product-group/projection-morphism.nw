@@ -11,6 +11,8 @@ begin :: Projection Morphisms from Product Group to Direct Factors
 
 <<Definition: when $g\in\prod\mathcal{F}$, treat $g_{i}$ as Element of $\mathcal{F}_{i}$>>
 
+<<Register: identify [[g/.i]] with [[g.i]] automatically>>
+
 <<Definition: projection morphism>>
 
 <<Theorem: the projection morphism is surjective>>
@@ -59,6 +61,22 @@ definition
   correctness by Th24;
 end;
 @ %def Def2
+
+\begin{registration}
+We identify [[g/.i]] with [[g.i]] automatically, without appealing to
+the definition explicitly.
+\end{registration}
+
+<<Register: identify [[g/.i]] with [[g.i]] automatically>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let g be Element of product F;
+  let i be Element of I;
+  identify g/.i with g.i;
+  correctness by Def2;
+end;
+@ 
 
 \begin{definition}
 Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
