@@ -27,6 +27,7 @@ begin :: Projection Morphisms from Product Group to Direct Factors
 
 <<Theorem: elements of kernel of projection>>
 
+<<Theorem: inclusion by any other name>>
 @
 
 \begin{theorem}
@@ -35,7 +36,7 @@ If $g\in\prod\mathcal{F}$, then $g_{i}$ is an element of $\mathcal{F}_{i}$.
 \end{theorem}
 
 <<Theorem: if $g\in\prod\mathcal{F}$, then $g_{i}\in\mathcal{F}_{i}$>>=
-theorem Th24:
+theorem Th35:
   for g being Element of product F
   holds g.i is Element of F.i
 proof
@@ -44,7 +45,7 @@ proof
   then g.i in F.i by GROUP_19:5;
   hence thesis;
 end;
-@ %def Th24
+@ %def Th35
 
 \begin{definition}
 We redefine the function application for elements of the product group,
@@ -58,7 +59,7 @@ definition
   let g be Element of product F;
   let i be Element of I;
   func g/.i -> Element of F.i equals :Def15: g.i;
-  correctness by Th24;
+  correctness by Th35;
 end;
 @ %def Def15
 
@@ -210,7 +211,7 @@ $U(\pi_{i})\colon\prod U(\mathcal{F})\to U(\mathcal{F}_{i})$.
 \end{theorem}
 
 <<Theorem: underlying set theoretic aspects of projection>>=
-theorem Th26:
+theorem Th37:
   proj (Carrier F, i) is Function of product (Carrier F), the carrier of F.i
 proof
   set X = product (Carrier F);
@@ -228,7 +229,7 @@ proof
   
   hence f is Function of X,Y by A1, FUNCT_2:3;
 end;
-@ %def Th26
+@ %def Th37
 
 \begin{theorem}
 The projection morphism acts on $g\in\prod\mathcal{F}$ by means of its
@@ -236,7 +237,7 @@ underlying function.
 \end{theorem}
 
 <<Theorem: projection acts on product group by means of its underlying function>>=
-theorem Th27:
+theorem Th38:
   for g being Element of product F
   holds proj (F, i) . g = proj (Carrier F, i) . g 
 proof
@@ -249,7 +250,7 @@ proof
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
   hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def16;
 end;
-@ %def Th27
+@ %def Th38
 
 \begin{theorem}
 We have $\pi_{i} = U(\pi_{i})$.
@@ -264,13 +265,13 @@ proof
   product (Carrier F) = the carrier of (product F) by GROUP_7:def 2;
   then A1: proj (Carrier F, i) is Function of X,Y
            & proj (F, i) is Function of X,Y
-  by Th26;
+  by Th37;
   for x being Element of X
   holds (proj (F, i)) . x = (proj (Carrier F, i)) . x
   proof
     let x be Element of X;
     x is Element of product F by GROUP_7:def 2;
-    hence thesis by Th27;
+    hence thesis by Th38;
   end;
   hence thesis by A1, FUNCT_2:63;
 end;
@@ -282,7 +283,7 @@ $(g_{1},\dots,g_{i-1},h,g_{i+1},\dots)\in\prod\mathcal{F}$.
 \end{theorem}
 
 <<Theorem: if $g\in\prod\mathcal{F}$ and $h\in\mathcal{F}_{i}$, then [[g +* (i, h)]]$\in\prod\mathcal{F}$>>=
-theorem Th29:
+theorem Th40:
   for g being Element of product F
   for h being Element of F.i
   holds g +* (i, h) in product F
@@ -318,7 +319,7 @@ proof
   then (g +* (i, h)) in product (Carrier F) by A2, CARD_3:def 5;
   hence (g +* (i, h)) in product F by GROUP_7:def 2;
 end;
-@ %def Th29
+@ %def Th40
 
 \begin{theorem}
 The kernel of the projection morphism $\ker(\pi_{i})$ consists of
@@ -334,7 +335,7 @@ proof
   let i be Element of I;
   let g be Element of product F;
   A1: dom g = I by GROUP_19:3;
-  (g +* (i, 1_(F.i))) in product F by Th29;
+  (g +* (i, 1_(F.i))) in product F by Th40;
   then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
   (proj (F, i)).h = h.i by Def16
                  .= 1_(F.i) by A1, FUNCT_7:31;
@@ -342,3 +343,214 @@ proof
 end;
 @ 
 
+\begin{theorem}
+Let $G_{1}$, $G_{2}$ be groups and $\varphi\colon G_{1}\to G_{2}$
+be such that $\varphi(g)=g$ for every $g\in G_{1}$.
+Then $G_{1}\subgroup G_{2}$.
+\end{theorem}
+
+<<Theorem: inclusion by any other name>>=
+<<Lemmas for inclusion theorem>>
+
+theorem InclByAnyOtherName:
+  for G1,G2 being Group
+  for f being Homomorphism of G1, G2
+  st (for g being Element of G1 holds f.g = g)
+  holds G1 is Subgroup of G2
+proof
+  let G1,G2 be Group;
+  let f be Homomorphism of G1, G2;
+  assume A1: for g being Element of G1 holds f.g = g;
+
+  A2: the carrier of G1 c= the carrier of G2
+  proof
+    for g being Element of the carrier of G1
+    holds g in the carrier of G2
+    proof
+      let g be Element of the carrier of G1;
+      (f.g) in the carrier of G2;
+      hence g in the carrier of G2 by A1;
+    end;
+    hence thesis;
+  end;
+  then reconsider U=the carrier of G1 as Subset of the carrier of G2;
+  set U1 = the carrier of G1;
+  set U2 = the carrier of G2;
+  A2a: U1 <> {};
+  A2b: U2 <> {};
+  A3: [: U1, U1 :] c= [: U2, U2 :] by A2, ZFMISC_1:96;
+  A4: dom (the multF of G2) = [: U2, U2 :]
+  by FUNCT_2:def 1;
+  then A5: dom ((the multF of G2)|[: U1, U1 :]) = [: U1, U1 :] by A3, RELAT_1:62;
+  A5a: dom ((the multF of G2)||U1)
+   = dom ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2
+  .= [: U1, U1 :] by A5;
+  A5b: ((the multF of G2)||U1)
+  = ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2;
+  A6: for a being Element of U1
+  for b being Element of U1
+  holds (the multF of G1).(a, b) = ((the multF of G2)||U1).(a, b)
+  proof
+    let a be Element of U1;
+    let b be Element of U1;
+    a in U1 & b in U1;
+    then [a, b] in [: U1, U1 :] by ZFMISC_1:87;
+    then [a, b] in dom ((the multF of G2)||U1) by A5a;
+    then B1: [a, b] in dom ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2;
+    then B2:
+    (the multF of G2).([a, b])
+     = ((the multF of G2)|[: U1, U1 :]).([a, b]) by B1, A5a, FUNCT_1:47
+    .= ((the multF of G2)||U1).(a, b) by  REALSET1:def 2;
+    set c = a * b;
+    B3: c = (the multF of G1).(a, b) by ALGSTR_0:def 18;
+    B4: (the multF of G2).(f.a, f.b)
+      = (the multF of G2).(f.a, b) by A1
+     .= (the multF of G2).(a, b) by A1;
+    c = f.c by A1
+     .= (f.a) * (f.b) by GROUP_6:def 6
+     .= (the multF of G2).(f.a, f.b) by ALGSTR_0:def 18
+     .= (the multF of G2).(a, b) by B4;
+    hence (the multF of G1).(a, b) = ((the multF of G2)||U1).(a, b)
+    by B2, B3;
+  end;
+  ((the multF of G2)||U1) is BinOp of U1
+  proof
+    B0: (the multF of G1) is Function of [: U1, U1 :], U1;
+    then B1: rng (the multF of G1) c= U1 by LmRangeContainedInCod;
+    :: (the multF of G2)||U1 = (the multF of G2)|[:U1,U1:];
+    U1 c= U2 & U2 = {} implies U1 = {} by A2;
+    then B2a: ((the multF of G2)||U1) is Function of [:U1,U1:], U2
+    by A3, A5b, FUNCT_2:32;
+    
+    ((the multF of G2)||U1) is Function of dom ((the multF of
+    G2)||U1), rng ((the multF of G2)||U1) by FUNCT_2:1;
+    then B2: ((the multF of G2)||U1) is Function of [: U1, U1 :],
+    rng ((the multF of G2)||U1) by A5a;
+    then
+    rng ((the multF of G2)||U1) = rng (the multF of G1)
+    by A2a, A2b, A6, B0, B2a, LmEqRng;
+    then B3: rng ((the multF of G2)||U1) c= U1 by B1;
+
+    ([: U1, U1 :] <> {} implies (rng ((the multF of G2)||U1)) <> {})
+    proof
+      assume C1: [: U1, U1 :] <> {};
+      then [: U1, U1 :] is non empty;
+      then consider x being object such that
+      C2: x in [: U1, U1 :]
+      by XBOOLE_0:def 1;
+      x in dom ((the multF of G2)||U1) by C2, A5a;
+      then ((the multF of G2)||U1).x in rng (((the multF of G2)||U1))
+      by FUNCT_1:3;
+      hence (rng ((the multF of G2)||U1)) <> {};
+    end;
+    then ((rng ((the multF of G2)||U1)) = {} implies [: U1, U1 :] = {});
+    then ((the multF of G2)||U1) is Function of [: U1, U1 :], U1
+    by B2, B3, FUNCT_2:6;
+    hence thesis by FUNCT_2:6;
+  end;
+  then the multF of G1 = (the multF of G2)||U1 by A6, BINOP_1:2;
+  hence G1 is Subgroup of G2 by A2, GROUP_2:def 5;
+end;
+@ %def InclByAnyOtherName
+
+<<Lemmas for inclusion theorem>>=
+LmProdhom:
+  1ProdHom (F, i) is Homomorphism of F.i, product F
+proof
+  (ProjGroup (F,i)) is Subgroup of product F &
+  1ProdHom (F, i) is Homomorphism of F.i, ProjGroup (F, i);
+  hence thesis by Th25;
+end;
+
+LmRangeContainedInCod:
+  for X,Y being set st Y <> {}
+  for f being Function of X,Y
+  holds rng f c= Y
+proof
+  let X,Y be set;
+  assume A1: Y <> {};
+  let f be Function of X,Y;
+  for y being object st y in rng f holds y in Y
+  proof
+    let y be object;
+    assume B1: y in rng f;
+    then consider x being object such that
+    B2: x in dom f and
+    B3: y = f.x
+    by FUNCT_1:def 3;
+    x in X by A1, B2, FUNCT_2:def 1;
+    hence y in Y by A1,B2,B3,FUNCT_2:5;
+  end;
+  hence rng f c= Y;
+end;
+
+LmEqRng:
+  for X,Y,Z,W being set st Z <> {} & W <> {}
+  for f being Function of [:X,Y:],Z
+  for g being Function of [:X,Y:],W
+  st (for a being Element of X, b being Element of Y holds f.(a,b) = g.(a,b))
+  holds rng f = rng g
+proof
+  let X,Y,Z,W be set;
+  assume A0: Z <> {} & W <> {};
+  let f be Function of [:X,Y:],Z;
+  let g be Function of [:X,Y:],W;
+  assume A1: for a being Element of X, b being Element of Y holds f.(a,b) = g.(a,b);
+  A2: dom f = [:X,Y:] by A0, FUNCT_2:def 1;
+  A3: dom g = [:X,Y:] by A0, FUNCT_2:def 1;
+  A4: dom f = dom g by A2,A3;
+  for z being object holds z in rng f iff z in rng g
+  proof
+    let z be object;
+    thus z in rng f implies z in rng g
+    proof
+      assume B1: z in rng f;
+      then consider x being object such that
+      B2: x in dom f and
+      B3: z = f.x
+      by FUNCT_1:def 3;
+      consider a,b being object such that
+      B4: a in X and
+      B5: b in Y and
+      B6: [a, b] = x
+      by A2, B2, ZFMISC_1:def 2;
+      B7: g.([a,b]) = g.x by B6,BINOP_1:def 1;
+      B8: x in dom g by A4, B2;
+      reconsider a as Element of X by B4;
+      reconsider b as Element of Y by B5;
+      f.x = f.([a, b]) by B6
+      .= f.(a, b)
+      .= g.(a, b) by A1
+      .= g.x by B7;
+      hence z in rng g by B3,B8,FUNCT_1:3;
+    end;
+    thus z in rng g implies z in rng f
+    proof
+      assume B1: z in rng g;
+      then consider x being object such that
+      B2: x in dom g and
+      B3: z = g.x
+      by FUNCT_1:def 3;
+      consider a,b being object such that
+      B4: a in X and
+      B5: b in Y and
+      B6: [a, b] = x
+      by A3, B2, ZFMISC_1:def 2;
+      B7: f.([a,b]) = f.x by B6,BINOP_1:def 1;
+      B8: x in dom f by A4, B2;
+      then B9: f.x in rng f by FUNCT_1:3;
+      reconsider a as Element of X by B4;
+      reconsider b as Element of Y by B5;
+      B8: x in [:X,Y:] by B2,A3;
+      g.x = g.([a, b]) by B6
+      .= g.(a, b)
+      .= f.(a, b) by A1
+      .= f.x by B7;
+      then f.x = z by B3;
+      hence z in rng f by B9;
+    end;
+  end;
+
+  hence rng f = rng g by TARSKI:2;
+end;
+@ 

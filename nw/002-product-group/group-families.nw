@@ -45,6 +45,8 @@ begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Se
 <<Theorem: $\mathcal{F}_{i}=G$ is a group-family>>
 
 <<Register: constant group-family is a group-family>>
+
+<<Theorem: the carrier of a group-family>>
 @ 
 
 \begin{definition}
@@ -388,3 +390,17 @@ registration
   correctness by Th4;
 end;
 @ 
+
+\begin{theorem}
+The underlying set of a group family is a family of sets.
+\end{theorem}
+
+<<Theorem: the carrier of a group-family>>=
+theorem ThCarr:
+  (Carrier F).i = the carrier of F.i
+proof
+  ex R being 1-sorted st (R = F.i & (Carrier F).i = the carrier of R)
+  by PRALG_1:def 15;
+  hence thesis;
+end;
+@ %def ThCarr

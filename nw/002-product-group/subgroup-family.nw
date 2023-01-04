@@ -18,6 +18,8 @@ begin :: Subgroup-Family of a Family of Groups
 
 <<Reserve: [[S]] for Subgroup-family>>
 
+<<Theorem: criteria for subgroup-family>>
+
 <<Scheme: Construct Group-Family from Functor>>
 
 <<Scheme: Construct a Subgroup-Family of F using a Functor>>
@@ -154,6 +156,37 @@ $\mathcal{F}$.
 
 <<Reserve: [[S]] for Subgroup-family>>=
 reserve S for Subgroup-Family of F;
+@ 
+
+\begin{theorem}
+Let $I\neq\emptyset$, let $\mathcal{S}$ and $\mathcal{F}$ be $I$-indexed
+families of groups. Then $\mathcal{S}$ is a subgroup family of
+$\mathcal{F}$ if and only if for each $i\in I$, $\mathcal{S}_{i}\subgroup\mathcal{F}_{i}$.
+\end{theorem}
+
+<<Theorem: criteria for subgroup-family>>=
+theorem
+  for S being Group-Family of I
+  holds S is Subgroup-Family of F iff (for i being Element of I
+  holds S.i is Subgroup of F.i)
+proof
+  let S be Group-Family of I;
+  thus (S is Subgroup-Family of F) implies (for i being Element of I
+  holds S.i is Subgroup of F.i)
+  proof
+    assume A1: S is Subgroup-Family of F;
+    let i be Element of I;
+    reconsider SS=S as Subgroup-Family of F by A1;
+    S.i = SS.i;
+    hence thesis;
+  end;
+  assume Z2: for i being Element of I holds S.i is Subgroup of F.i;
+  then for i being Element of I
+  for G being Group st G = F.i
+  holds S.i is Subgroup of G;
+  then S is F-Subgroup-yielding by Def3;
+  hence S is Subgroup-Family of F;
+end;
 @ 
 
 \begin{scheme}

@@ -27,6 +27,16 @@ begin :: Families of Homomorphisms
 <<Define: Homomorphism-Family of $\mathcal{F}_{1},\mathcal{F}_{2}$>>
 
 <<Register: Homomorphism-Families yield homomorphisms>>
+
+<<Theorem: criteria for many-sorted set to be a homomorphism-family>>
+
+<<Scheme: constructing a homomorphism-family>>
+
+<<Theorem: criteria for many-sorted set to be a family of morphisms>>
+
+<<Scheme: construct a family of morphisms over a group>>
+
+<<Theorem: criteria for family of morphisms between families of groups>>
 @
 
 \begin{definition}
@@ -349,3 +359,216 @@ registration
   correctness by Def14;
 end;
 @ 
+
+\begin{theorem}
+Let $\mathcal{A}$, $\mathcal{B}$ be group-families indexed by a
+non-empty set $I\neq\emptyset$. Let $\varphi$ be a indexed family of
+sets, indexed by $I$.
+Then $\varphi$ is a family of homomorphisms between $\mathcal{A}$ and
+$\mathcal{B}$ if and only if for each $i\in I$,
+$\varphi_{i}\colon\mathcal{A}_{i}\to\mathcal{B}_{i}$ is a group morphism.
+\end{theorem}
+
+<<Theorem: criteria for many-sorted set to be a homomorphism-family>>=
+theorem ThHom:
+  for I being non empty set
+  for A, B being Group-Family of I
+  for f being ManySortedSet of I
+  holds f is Homomorphism-Family of A,B
+  iff (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+proof
+  let I be non empty set;
+  let A, B be Group-Family of I;
+  let f be ManySortedSet of I;
+  thus f is Homomorphism-Family of A,B
+  implies (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+  proof
+    assume A1: f is Homomorphism-Family of A,B;
+    let i be Element of I;
+    reconsider ff=f as Homomorphism-Family of A,B by A1;
+    ff.i = f.i & ff.i is Homomorphism of A.i, B.i by A1;
+    hence thesis;
+  end;
+  thus (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+  implies f is Homomorphism-Family of A, B
+  proof
+    assume A1: for i being Element of I holds f.i is Homomorphism of A.i, B.i;
+    for i being object st i in I holds f.i is Function of (Carrier A).i,
+    (Carrier B).i
+    proof
+      let i be object;
+      assume B1: i in I;
+      then reconsider ii=i as Element of I;
+      f.ii is Homomorphism of A.ii, B.ii by A1;
+      then B2: f.i is Homomorphism of A.ii, B.ii;
+      (Carrier A).i = the carrier of A.ii &
+      (Carrier B).i = the carrier of B.ii by ThCarr;
+      hence f.i is Function of (Carrier A).i, (Carrier B).i by B2;
+    end;
+    then f is ManySortedFunction of (Carrier A), (Carrier B) by PBOOLE:def 15;
+    hence thesis by A1, Def14;
+  end;
+end;
+@ %def ThHom
+
+\begin{scheme}
+We can always construct a homomorphism family.
+\end{scheme}
+
+<<Scheme: constructing a homomorphism-family>>=
+scheme
+HomFamSch { I1() -> non empty set,
+            Dom() -> Group-Family of I1(),
+            Cod() -> Group-Family of I1(),
+            Fun(Element of I1()) -> Function } :
+  ex H being Homomorphism-Family of Dom(), Cod()
+  st for i being Element of I1() holds H.i = Fun(i)
+provided
+A1: for i being Element of I1()
+    holds Fun(i) is Homomorphism of Dom().i, Cod().i
+proof
+  consider H being ManySortedSet of I1() such that
+  A2: for i being Element of I1() holds H.i = Fun(i)
+  from PBOOLE:sch 5;
+  for i being Element of I1()
+  holds H.i is Homomorphism of Dom().i, Cod().i
+  proof
+    let i be Element of I1();
+    H.i = Fun(i) by A2;
+    hence H.i is Homomorphism of Dom().i, Cod().i by A1;
+  end;
+  then A3: H is Homomorphism-Family of Dom(), Cod() by ThHom;
+  then reconsider H as Homomorphism-Family of Dom(), Cod();
+  take H;
+  thus thesis by A2;
+end;
+@ %def HomFamSch
+
+\begin{theorem}
+For any group $G$ and family of groups $\mathcal{F}$ indexed by
+$I\neq\emptyset$ and any family of sets $\varphi$ indexed by $I$,
+we have $\varphi$ be a family of homomorphisms from $G$ to $\mathcal{F}$
+if and only if for each $i\in I$ we have $\varphi_{i}\colon G\to\mathcal{F}_{i}$
+be a group morphism.
+\end{theorem}
+
+<<Theorem: criteria for many-sorted set to be a family of morphisms>>=
+theorem ThRHom:
+  for G being Group
+  for I being non empty set
+  for F being Group-Family of I
+  for f being ManySortedSet of I
+  holds f is Homomorphism-Family of G,F
+  iff (for i being Element of I holds f.i is Homomorphism of G, F.i)
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be Group-Family of I;
+  let f be ManySortedSet of I;
+
+  thus f is Homomorphism-Family of G,F
+  implies (for i being Element of I holds f.i is Homomorphism of G, F.i)
+  proof
+    assume A1: f is Homomorphism-Family of G,F;
+    let i be Element of I;
+    thus f.i is Homomorphism of G, F.i by A1, Def13;
+  end;
+  assume A2: for i being Element of I
+  holds f.i is Homomorphism of G, F.i;
+  for i being object st i in dom f holds f.i is Function
+  proof
+    let i be object;
+    assume B1: i in dom f;
+    then reconsider ii=i as Element of I;
+    f.ii is Homomorphism of G, F.ii by A2;
+    hence thesis;
+  end;
+  then f is Function-yielding by FUNCOP_1:def 6;
+  then f is ManySortedFunction of I;
+  hence f is Homomorphism-Family of G,F by A2, Def13;
+end;
+@ %def ThRHom
+
+\begin{theorem}
+For any two families of groups $\mathcal{F}$ and $\mathcal{G}$ both
+indexed by a nonempty set $I\neq\emptyset$, a family of sets $\varphi$
+is a family of morphisms from $\mathcal{F}$ to $\mathcal{G}$ if and only
+if for each $i\in I$ we have
+$\varphi_{i}\colon\mathcal{F}_{i}\to\mathcal{G}_{i}$ is a group morphism.
+\end{theorem}
+
+<<Theorem: criteria for family of morphisms between families of groups>>=
+theorem ThHom:
+  for I being non empty set
+  for A, B being Group-Family of I
+  for f being ManySortedSet of I
+  holds f is Homomorphism-Family of A,B
+  iff (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+proof
+  let I be non empty set;
+  let A, B be Group-Family of I;
+  let f be ManySortedSet of I;
+  thus f is Homomorphism-Family of A,B
+  implies (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+  proof
+    assume A1: f is Homomorphism-Family of A,B;
+    let i be Element of I;
+    reconsider ff=f as Homomorphism-Family of A,B by A1;
+    ff.i = f.i & ff.i is Homomorphism of A.i, B.i by A1;
+    hence thesis;
+  end;
+  thus (for i being Element of I holds f.i is Homomorphism of A.i, B.i)
+  implies f is Homomorphism-Family of A, B
+  proof
+    assume A1: for i being Element of I holds f.i is Homomorphism of A.i, B.i;
+    for i being object st i in I holds f.i is Function of (Carrier A).i,
+    (Carrier B).i
+    proof
+      let i be object;
+      assume B1: i in I;
+      then reconsider ii=i as Element of I;
+      f.ii is Homomorphism of A.ii, B.ii by A1;
+      then B2: f.i is Homomorphism of A.ii, B.ii;
+      (Carrier A).i = the carrier of A.ii &
+      (Carrier B).i = the carrier of B.ii by ThCarr;
+      hence f.i is Function of (Carrier A).i, (Carrier B).i by B2;
+    end;
+    then f is ManySortedFunction of (Carrier A), (Carrier B) by PBOOLE:def 15;
+    hence thesis by A1, Def14;
+  end;
+end;
+@ %def ThHom
+
+\begin{scheme}
+If we have some method to construct a group morphism for each member of
+a family, then we've got a family of morphisms.
+\end{scheme}
+
+<<Scheme: construct a family of morphisms over a group>>=
+scheme
+RHomFamSch { I1() -> non empty set,
+             Dom() -> Group,
+             Cod() -> Group-Family of I1(),
+             Fun(Element of I1()) -> Function } :
+  ex H being Homomorphism-Family of Dom(), Cod()
+  st for i being Element of I1() holds H.i = Fun(i)
+provided
+A1: for i being Element of I1()
+    holds Fun(i) is Homomorphism of Dom(), Cod().i
+proof
+  consider H being ManySortedSet of I1() such that
+  A2: for i being Element of I1() holds H.i = Fun(i)
+  from PBOOLE:sch 5;
+  for i being Element of I1()
+  holds H.i is Homomorphism of Dom(), Cod().i
+  proof
+    let i be Element of I1();
+    H.i = Fun(i) by A2;
+    hence H.i is Homomorphism of Dom(), Cod().i by A1;
+  end;
+  then A3: H is Homomorphism-Family of Dom(), Cod() by ThRHom;
+  then reconsider H as Homomorphism-Family of Dom(), Cod();
+  take H;
+  thus thesis by A2;
+end;
+@ %def RHomFamSch
