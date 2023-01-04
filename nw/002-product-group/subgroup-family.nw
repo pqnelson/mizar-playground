@@ -100,11 +100,7 @@ family.
 
 <<Theorem: ``$\mathcal{F}$-subgroup yielding'' is reflexive>>=
 theorem ThSubYieldRefl:
-  F is F-Subgroup-yielding
-proof
-  for i being Element of I holds F.i is Subgroup of F.i by GROUP_2:54;
-  hence thesis by Def3;
-end;
+  F is F-Subgroup-yielding by GROUP_2:54;
 @ %def ThSubYieldRefl
 
 \begin{registration}
@@ -117,11 +113,7 @@ registration
   let I be non empty set;
   let F be Group-Family of I;
   cluster F-Subgroup-yielding for Group-Family of I;
-  existence
-  proof
-    take F;
-    thus thesis by ThSubYieldRefl;
-  end;
+  existence by ThSubYieldRefl;
 end;
 @ 
 
@@ -188,8 +180,7 @@ proof
     then consider x being object such that
     B2: x in dom F & y = F.x
     by FUNCT_1:def 3;
-    dom F = I1() by PARTFUN1:def 2;
-    then reconsider i=x as Element of I1() by B2;
+    reconsider i=x as Element of I1() by B2;
     y = F.i by B2
      .= Fun(i) by A1;
     hence y is Group;
@@ -230,8 +221,7 @@ proof
     then consider x being object such that
     B2: x in dom S & y = S.x
     by FUNCT_1:def 3;
-    dom S = I1() by PARTFUN1:def 2;
-    then reconsider i=x as Element of I1() by B2;
+    reconsider i=x as Element of I1() by B2;
     y = S.i by B2
      .= F2(i) by A2;
     hence y is Group;
@@ -332,7 +322,7 @@ registration
   existence
   proof
     deffunc Sub(Group) = (1).$1;
-    A1: for G being Group holds Sub(G) is Subgroup of G by GROUP_2:def 7;
+    A1: for G being Group holds Sub(G) is Subgroup of G;
     consider S being Subgroup-Family of F such that
     A2: for i being Element of I holds S.i = Sub(F.i)
     from SubFamSch(A1);
@@ -342,7 +332,7 @@ registration
       let i be Element of I;
       S.i = Sub(F.i) by A2
          .= (1).(F.i);
-      hence thesis by GROUP_2:def 7;
+      hence thesis;
     end;
     hence thesis;
   end;
@@ -432,16 +422,8 @@ theorem ThStrSubEq:
   holds A = B
 proof
   let A,B be componentwise_strict Subgroup-Family of F;
-  assume A1: for i being Element of I holds A.i = B.i;
-  for i being object st i in I holds A.i = B.i
-  proof
-    let i be object;
-    assume A2: i in I;
-    then reconsider j=i as Element of I;
-    A.j = B.j by A1;
-    hence thesis;
-  end;
-
+  assume for i being Element of I holds A.i = B.i;
+  then for i being object st i in I holds A.i = B.i;
   hence A = B by PBOOLE:3;
 end;
 @ %def ThStrSubEq
@@ -463,8 +445,7 @@ definition
   existence
   proof
     deffunc Sub(Group) = (1).$1;
-    A1: for G being Group holds Sub(G) is strict Subgroup of G
-    by GROUP_2:def 7;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G;
     thus ex S being componentwise_strict Subgroup-Family of F
     st for i being Element of I holds S.i = Sub(F.i)
     from StrSubFamSch(A1);
@@ -507,8 +488,7 @@ definition
   existence
   proof
     deffunc Sub(Group) = (Omega).$1;
-    A1: for G being Group holds Sub(G) is strict Subgroup of G
-    by GROUP_2:def 8;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G;
     thus ex S being componentwise_strict Subgroup-Family of F
     st for i being Element of I holds S.i = Sub(F.i)
     from StrSubFamSch(A1);
@@ -564,8 +544,7 @@ registration
   existence
   proof
     deffunc Sub(Group) = (1).$1;
-    A1: for G being Group holds Sub(G) is strict Subgroup of G
-    by GROUP_2:def 7;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G;
     consider S being componentwise_strict Subgroup-Family of F such that
     A2: for i being Element of I holds S.i = Sub(F.i)
     from StrSubFamSch(A1);
@@ -573,8 +552,7 @@ registration
     for i being Element of I holds S.i is normal Subgroup of F.i
     proof
       let i be Element of I;
-      S.i = Sub(F.i) by A2
-         .= (1).(F.i);
+      S.i = (1).(F.i) by A2;
       hence thesis;
     end;
     hence thesis;
@@ -610,7 +588,7 @@ registration
   let S be componentwise_strict normal Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> strict normal for Subgroup of F.i;
-  correctness by Def7, Def8;
+  correctness;
 end;
 @ 
 
