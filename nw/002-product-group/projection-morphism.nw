@@ -57,10 +57,10 @@ definition
   let F be Group-Family of I;
   let g be Element of product F;
   let i be Element of I;
-  func g/.i -> Element of F.i equals :Def2: g.i;
+  func g/.i -> Element of F.i equals :Def15: g.i;
   correctness by Th24;
 end;
-@ %def Def2
+@ %def Def15
 
 \begin{registration}
 We identify [[g/.i]] with [[g.i]] automatically, without appealing to
@@ -74,7 +74,7 @@ registration
   let g be Element of product F;
   let i be Element of I;
   identify g/.i with g.i;
-  correctness by Def2;
+  correctness by Def15;
 end;
 @ 
 
@@ -96,14 +96,14 @@ definition
   let i be Element of I;
   let F be Group-Family of I;
   func proj (F, i) -> Homomorphism of (product F), F.i means
-  :Def3:
+  :Def16:
   for h being Element of product F holds it.h = h.i;
   existence
   <<Proof: existence of projection morphism>>
   uniqueness
   <<Proof: uniqueness of projection morphism>>
 end;
-@ %def proj Def3
+@ %def proj Def16
 
 <<Proof: existence of projection morphism>>=
 proof
@@ -199,7 +199,7 @@ proof
   A3: x in product F by A1,GROUP_2:41;
   take x;
   thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
-  thus y = (proj (F,i)).x by Def3, A1, A2, A3;
+  thus y = (proj (F,i)).x by Def16, A1, A2, A3;
 end;
 @
 
@@ -247,7 +247,7 @@ proof
   g in product F;
   then g in dom f by A1, GROUP_7:def 2;
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
-  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
+  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def16;
 end;
 @ %def Th27
 
@@ -336,7 +336,7 @@ proof
   A1: dom g = I by GROUP_19:3;
   (g +* (i, 1_(F.i))) in product F by Th29;
   then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
-  (proj (F, i)).h = h.i by Def3
+  (proj (F, i)).h = h.i by Def16
                  .= 1_(F.i) by A1, FUNCT_7:31;
   hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by GROUP_6:41;
 end;

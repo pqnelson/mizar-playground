@@ -66,12 +66,12 @@ $\mathcal{G}_{i}\subgroup\mathcal{F}_{i}$.
 definition
   let I be set;
   let F, IT be Group-Family of I;
-  attr IT is F-Subgroup-yielding means :Def14:
+  attr IT is F-Subgroup-yielding means :Def3:
   for i being Element of I
   for G being Group st G = F.i
   holds IT.i is Subgroup of G;
 end;
-@ %def Def14 -Subgroup-yielding
+@ %def Def3 -Subgroup-yielding
 
 \begin{voc}
 We add the attribute ``-Subgroup-yielding'' to our vocabulary list.
@@ -103,7 +103,7 @@ theorem ThSubYieldRefl:
   F is F-Subgroup-yielding
 proof
   for i being Element of I holds F.i is Subgroup of F.i by GROUP_2:54;
-  hence thesis by Def14;
+  hence thesis by Def3;
 end;
 @ %def ThSubYieldRefl
 
@@ -125,11 +125,11 @@ registration
 end;
 @ 
 
-\begin{definition}
+\begin{definition*}
 Let $\mathcal{F}$ be a family of groups indexed by a non-empty set
 $I\neq\emptyset$. Then we define a \define{Subgroup Family of $\mathcal{F}$}
 to be a group-family consisting of subsets with matching indices.
-\end{definition}
+\end{definition*}
 
 <<Define: Subgroup Family of F>>=
 definition
@@ -151,7 +151,7 @@ definition
   let S be Subgroup-Family of F;
   let i be Element of I;
   redefine func S.i -> Subgroup of F.i;
-  correctness by Def14;
+  correctness by Def3;
 end;
 @
 
@@ -264,10 +264,10 @@ $i\in I$, $\mathcal{F}_{i}$ is itself a strict group.
 definition
   let I be non empty set;
   let IT be Group-Family of I;
-  attr IT is componentwise_strict means :Def12a:
+  attr IT is componentwise_strict means :Def4:
   for i being Element of I holds IT.i is strict Group;
 end;
-@ %def componentwise_strict Def12a
+@ %def componentwise_strict Def4
 
 \begin{voc}
 We add the attribute ``componentwise strict'' to our vocabulary list.
@@ -314,10 +314,10 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let IT be Subgroup-Family of F;
-  attr IT is componentwise_strict means :Def12:
+  attr IT is componentwise_strict means :Def5:
   for i being Element of I holds IT.i is strict Subgroup of F.i;
 end;
-@ %def Def12
+@ %def Def5
 
 \begin{registration}
 There is at least one componentwise-strict subgroup family for any
@@ -362,7 +362,7 @@ registration
   let S be componentwise_strict Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> strict for Subgroup of F.i;
-  correctness by Def12;
+  correctness by Def5;
 end;
 @ 
 
@@ -379,7 +379,7 @@ proof
   let S be componentwise_strict Subgroup-Family of F;
   for i being Element of I
   holds S.i is strict Group;
-  hence S is componentwise_strict Group-Family of I by Def12a;
+  hence S is componentwise_strict Group-Family of I by Def4;
 end;
 @ 
 
@@ -457,7 +457,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (1).F -> componentwise_strict Subgroup-Family of F means
-  :Def15:
+  :Def6:
   for i being Element of I
   holds it.i = (1).(F.i);
   existence
@@ -489,7 +489,7 @@ definition
     end;
   end;
 end;
-@ %def Def15
+@ %def Def6
 
 \begin{definition}
 Conversely, we can take the improper trivial subgroup for each member of
@@ -501,7 +501,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (Omega).F -> componentwise_strict Subgroup-Family of F means
-  :Def16:
+  :Def7:
   for i being Element of I
   holds it.i = (Omega).(F.i);
   existence
@@ -533,7 +533,7 @@ definition
     end;
   end;
 end;
-@ %def Def16
+@ %def Def7
 
 \begin{definition}
 If $\mathcal{S}$ is a subgroup family for $\mathcal{F}$,
@@ -546,7 +546,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let IT be Subgroup-Family of F;
-  attr IT is normal means :Def17:
+  attr IT is normal means :Def8:
   for i being Element of I holds IT.i is normal Subgroup of F.i;
 end;
 @ 
@@ -594,7 +594,7 @@ registration
   let S be normal Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> normal for Subgroup of F.i;
-  correctness by Def17;
+  correctness by Def8;
 end;
 @ 
 
@@ -610,7 +610,7 @@ registration
   let S be componentwise_strict normal Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> strict normal for Subgroup of F.i;
-  correctness by Def16, Def17;
+  correctness by Def7, Def8;
 end;
 @ 
 
@@ -628,10 +628,10 @@ registration
     for i being Element of I holds ((1).F).i is normal Subgroup of F.i
     proof
       let i be Element of I;
-      B1: ((1).F).i = (1).(F.i) by Def15;
+      B1: ((1).F).i = (1).(F.i) by Def6;
       hence thesis by GROUP_2:def 7;
     end;
-    hence (1).F is normal by Def17;
+    hence (1).F is normal by Def8;
   end;
   cluster (Omega).F -> normal;
   correctness
@@ -639,10 +639,10 @@ registration
     for i being Element of I holds ((Omega).F).i is normal Subgroup of F.i
     proof
       let i be Element of I;
-      B1: ((Omega).F).i = (Omega).(F.i) by Def16;
+      B1: ((Omega).F).i = (Omega).(F.i) by Def7;
       hence thesis by GROUP_2:def 8;
     end;
-    hence (Omega).F is normal by Def17;
+    hence (Omega).F is normal by Def8;
   end;
 end;
 @ 
@@ -659,7 +659,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let N be normal Subgroup-Family of F;
-  func F ./. N -> Group-Family of I means :Def18:
+  func F ./. N -> Group-Family of I means :Def9:
   for i being Element of I
   holds it.i = (F.i) ./. (N.i);
   existence
@@ -693,7 +693,7 @@ definition
     end;
   end;
 end;
-@ %def Def18
+@ %def Def9
 
 \begin{registration}
 The family of quotient groups is componentwise-strict.
@@ -711,11 +711,11 @@ registration
     holds (F ./. N).i is strict Group
     proof
       let i be Element of I;
-      A1: (F ./. N).i = (F.i) ./. (N.i) by Def18;
+      A1: (F ./. N).i = (F.i) ./. (N.i) by Def9;
       (F.i) ./. (N.i) is strict by GROUP_6:def 4;
       hence thesis by A1;
     end;
-    hence thesis by Def12a;
+    hence thesis by Def4;
   end;
 end;
 @ 
@@ -742,7 +742,7 @@ proof
     hence S.i is normal Subgroup of F.i;
   end;
   then reconsider S as componentwise_strict normal Subgroup-Family of F
-  by Def17;
+  by Def8;
   take S;
   thus thesis by A2;
 end;

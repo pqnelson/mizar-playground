@@ -78,7 +78,7 @@ proof
   proof
     let j be Element of I;
     (f.j).g = (phi.g).j by A3;
-    hence (f.j).g = (proj (F, j)).(phi.g) by Def3;
+    hence (f.j).g = (proj (F, j)).(phi.g) by Def16;
   end;
   hence thesis;
 end;
@@ -231,10 +231,10 @@ proof
       let j be Element of I;
       C2: (f.j).g = ((proj (F, j)) * phi1).g by A1
                  .= (proj (F, j)) . (phi1.g) by FUNCT_2:15
-                 .= (phi1.g).j by Def3;
+                 .= (phi1.g).j by Def16;
       (f.j).g = ((proj (F, j)) * phi2).g by A2
              .= (proj (F, j)) . (phi2.g) by FUNCT_2:15
-             .= (phi2.g).j by Def3;
+             .= (phi2.g).j by Def16;
       hence (phi1.g).j = (phi2.g).j by C2;
     end;
     hence phi1.g = phi2.g by B1;
@@ -256,7 +256,7 @@ definition
   let F be Group-Family of I;
   let f be Homomorphism-Family of G, F;
   func product f -> Homomorphism of G, product F means
-  :Def7:
+  :Def17:
   for g being Element of G
   for i being Element of I
   holds (f.i).g = (it.g).i;
@@ -265,7 +265,7 @@ definition
   uniqueness
   <<Proof: uniqueness of products for homomorphism-families>>
 end;
-@ %def Def7
+@ %def Def17
 
 <<Proof: existence of products for homomorphism-families>>=
 proof
@@ -280,7 +280,7 @@ proof
     let g be Element of G;
     let j be Element of I;
     (f.j).g = (proj (F,j)) . (phi.g) by A1
-           .= (phi.g).j by Def3;
+           .= (phi.g).j by Def16;
     hence thesis;
   end;
   hence thesis;
@@ -384,7 +384,7 @@ proof
     let i be Element of I;
     (product f).g = 1_(product F) by A1, GROUP_6:41;
     then 1_(F.i) = ((product f).g).i by Th33
-                .= (f.i).g by Def7;
+                .= (f.i).g by Def17;
     hence g in Ker (f.i) by GROUP_6:41;
   end;
   thus (for i being Element of I holds g in Ker (f.i))
@@ -400,7 +400,7 @@ proof
     for i being Element of I holds ((product f).g).i = 1_(F.i)
     proof
       let i be Element of I;
-      ((product f).g).i = (f.i).g by Def7
+      ((product f).g).i = (f.i).g by Def17
                        .= 1_(F.i) by A2;
       hence thesis;
     end;
@@ -617,7 +617,7 @@ proof
     assume A1: g in product S;
     let i be Element of I;
     g.i in S.i by A1, GROUP_19:5;
-    hence (proj (F,i)).g in S.i by Def3;
+    hence (proj (F,i)).g in S.i by Def16;
   end;
   assume Z2: for i being Element of I holds (proj (F,i)).g in S.i;
   Z3: dom g = I by GROUP_19:3;
@@ -625,7 +625,7 @@ proof
   proof
     let i be Element of I;
     (proj (F, i)).g in S.i by Z2;
-    hence g.i in S.i by Def3;
+    hence g.i in S.i by Def16;
   end;
   hence g in product S by Z3, Th38;
 end;
@@ -726,7 +726,7 @@ proof
   end;
   then for i being object st i in dom f holds f.i is Function;
   then f is Function-yielding by FUNCOP_1:def 6;
-  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def6;
+  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def13;
   take f;
   thus thesis by A3;
 end;

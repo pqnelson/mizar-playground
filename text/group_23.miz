@@ -13,11 +13,11 @@
 environ
 
  vocabularies WELLORD1, MSSUBFAM, TARSKI, NAT_1, QC_LANG1, RLSUB_1,
-   XXREAL_1, BINOP_1, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0, FINSEQ_1,
-   FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4, FUNCOP_1, NUMBERS, PRALG_1,
-   ALGSTR_0, PARTFUN1, CARD_3, GROUP_1, GROUP_2, PRE_TOPC, GROUP_5,
-   GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE, GROUP_19,
-   GROUP_23, SETFAM_1;
+   XXREAL_1, BINOP_1, BINOP_2, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0,
+   FINSEQ_1, FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4, FUNCOP_1, NUMBERS,
+   PRALG_1, ALGSTR_0, PARTFUN1, CARD_3, GROUP_1, GROUP_2, PRE_TOPC,
+   GROUP_5, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE,
+   GROUP_19, GROUP_20, GROUP_23, SETFAM_1;
 
  constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
    FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
@@ -26,10 +26,11 @@ environ
    GROUP_19;
 
  notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
-   FUNCT_1, BINOP_1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1, PBOOLE,
-   CARD_3, ORDINAL1, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2, STRUCT_0,
-   MONOID_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6,
-   PRALG_1, GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1;
+   FUNCT_1, BINOP_1, BINOP_2, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
+   PBOOLE, CARD_3, ORDINAL1, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2,
+   STRUCT_0, MONOID_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
+   GROUP_6, PRALG_1, GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0,
+   SETFAM_1;
 
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
    MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, RELSET_1, FUNCT_2,
@@ -249,6 +250,430 @@ registration
   let n be Nat;
   cluster (Seg n --> G) -> Group-yielding;
   correctness by Th4;
+end;
+
+begin :: Subgroup-Family of a Family of Groups
+definition
+  let I be set;
+  let F, IT be Group-Family of I;
+  attr IT is F-Subgroup-yielding means :Def3:
+  for i being Element of I
+  for G being Group st G = F.i
+  holds IT.i is Subgroup of G;
+end;
+
+theorem
+  for S being Group-Family of I
+  holds S is F-Subgroup-yielding iff (for i being Element of I holds S.i
+  is Subgroup of F.i);
+
+theorem ThSubYieldRefl:
+  F is F-Subgroup-yielding
+proof
+  for i being Element of I holds F.i is Subgroup of F.i by GROUP_2:54;
+  hence thesis by Def3;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster F-Subgroup-yielding for Group-Family of I;
+  existence
+  proof
+    take F;
+    thus thesis by ThSubYieldRefl;
+  end;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  mode Subgroup-Family of F is F-Subgroup-yielding Group-Family of I;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be Subgroup-Family of F;
+  let i be Element of I;
+  redefine func S.i -> Subgroup of F.i;
+  correctness by Def3;
+end;
+
+reserve S for Subgroup-Family of F;
+
+scheme
+GrFamSch { I1() -> non empty set,
+           Fun(Element of I1()) -> Group } :
+  ex Fam being Group-Family of I1()
+  st for i being Element of I1() holds Fam.i = Fun(i)
+proof
+  consider F being ManySortedSet of I1() such that
+  A1: for i being Element of I1() holds F.i = Fun(i)
+  from PBOOLE:sch 5;
+  for y being object st y in rng F holds y is Group
+  proof
+    let y be object;
+    assume B1: y in rng F;
+    then consider x being object such that
+    B2: x in dom F & y = F.x
+    by FUNCT_1:def 3;
+    dom F = I1() by PARTFUN1:def 2;
+    then reconsider i=x as Element of I1() by B2;
+    y = F.i by B2
+     .= Fun(i) by A1;
+    hence y is Group;
+  end;
+  then F is Group-yielding;
+  then reconsider F as Group-Family of I1();
+  take F;
+  thus thesis by A1;
+end;
+
+scheme
+SubFamSch { I1() -> non empty set,
+            Fam() -> Group-Family of I1(),
+            Sub(Group) -> Group } :
+  ex S being Subgroup-Family of Fam()
+  st for i being Element of I1() holds S.i = Sub(Fam().i)
+provided
+A1: for G being Group holds Sub(G) is Subgroup of G
+proof
+  deffunc F2(Element of I1()) = Sub(Fam().$1);
+  consider S being ManySortedSet of I1() such that
+  A2: for i being Element of I1() holds S.i = F2(i)
+  from PBOOLE:sch 5;
+  for y being object st y in rng S holds y is Group
+  proof
+    let y be object;
+    assume B1: y in rng S;
+    then consider x being object such that
+    B2: x in dom S & y = S.x
+    by FUNCT_1:def 3;
+    dom S = I1() by PARTFUN1:def 2;
+    then reconsider i=x as Element of I1() by B2;
+    y = S.i by B2
+     .= F2(i) by A2;
+    hence y is Group;
+  end;
+
+  then S is Group-yielding;
+  then reconsider S as Group-Family of I1();
+  for i being Element of I1() holds S.i is Subgroup of Fam().i
+  proof
+    let i be Element of I1();
+    S.i = Sub(Fam().i) by A2;
+    hence S.i is Subgroup of Fam().i by A1;
+  end;
+  then S is Fam()-Subgroup-yielding;
+  then reconsider S as Subgroup-Family of Fam();
+  take S;
+  thus thesis by A2;
+end;
+
+:: Re-defining "strict" for Subgroup-Family seemed like a risky move,
+:: so I opted to introduce an adjective which captured what was needed.
+definition
+  let I be non empty set;
+  let IT be Group-Family of I;
+  attr IT is componentwise_strict means :Def4:
+  for i being Element of I holds IT.i is strict Group;
+end;
+
+registration
+  let I be non empty set;
+  cluster componentwise_strict for Group-Family of I;
+  existence
+  proof
+    reconsider G = multMagma (# REAL, addreal #) as strict Group
+    by GROUP_1:46;
+    deffunc Fun(Element of I) = G;
+    consider F being Group-Family of I such that
+    A1: for i being Element of I holds F.i = Fun(i)
+    from GrFamSch;
+    take F;
+    for i being Element of I holds F.i is strict Group by A1;
+    hence thesis;
+  end;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let IT be Subgroup-Family of F;
+  attr IT is componentwise_strict means :Def5:
+  for i being Element of I holds IT.i is strict Subgroup of F.i;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster componentwise_strict for Subgroup-Family of F;
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is Subgroup of G by GROUP_2:def 7;
+    consider S being Subgroup-Family of F such that
+    A2: for i being Element of I holds S.i = Sub(F.i)
+    from SubFamSch(A1);
+    take S;
+    for i being Element of I holds S.i is strict Subgroup of F.i
+    proof
+      let i be Element of I;
+      S.i = Sub(F.i) by A2
+         .= (1).(F.i);
+      hence thesis by GROUP_2:def 7;
+    end;
+    hence thesis;
+  end;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be componentwise_strict Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> strict for Subgroup of F.i;
+  correctness by Def5;
+end;
+
+theorem
+  for S being componentwise_strict Subgroup-Family of F
+  holds S is componentwise_strict Group-Family of I
+proof
+  let S be componentwise_strict Subgroup-Family of F;
+  for i being Element of I
+  holds S.i is strict Group;
+  hence S is componentwise_strict Group-Family of I by Def4;
+end;
+
+scheme
+StrSubFamSch { I1() -> non empty set,
+               Fam() -> Group-Family of I1(),
+               Sub(Group) -> Group } :
+  ex S being componentwise_strict Subgroup-Family of Fam()
+  st for i being Element of I1() holds S.i = Sub(Fam().i)
+provided
+A1: for G being Group holds Sub(G) is strict Subgroup of G
+proof
+  A2: for G being Group holds Sub(G) is Subgroup of G by A1;
+  consider S being Subgroup-Family of Fam() such that
+  A3: for i being Element of I1() holds S.i = Sub(Fam().i)
+  from SubFamSch(A2);
+  for i being Element of I1()
+  holds S.i is strict Subgroup of Fam().i
+  proof
+    let i be Element of I1();
+    S.i = Sub(Fam().i) by A3;
+    hence S.i is strict Subgroup of Fam().i by A1;
+  end;
+  then S is componentwise_strict;
+  then reconsider S as componentwise_strict Subgroup-Family of Fam();
+  take S;
+  thus thesis by A3;
+end;
+
+theorem ThStrSubEq:
+  for A,B being componentwise_strict Subgroup-Family of F
+  st (for i being Element of I holds A.i = B.i)
+  holds A = B
+proof
+  let A,B be componentwise_strict Subgroup-Family of F;
+  assume A1: for i being Element of I holds A.i = B.i;
+  for i being object st i in I holds A.i = B.i
+  proof
+    let i be object;
+    assume A2: i in I;
+    then reconsider j=i as Element of I;
+    A.j = B.j by A1;
+    hence thesis;
+  end;
+
+  hence A = B by PBOOLE:3;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  func (1).F -> componentwise_strict Subgroup-Family of F means
+  :Def6:
+  for i being Element of I
+  holds it.i = (1).(F.i);
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 7;
+    thus ex S being componentwise_strict Subgroup-Family of F
+    st for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+  end;
+  uniqueness
+  proof
+    thus for A,B being componentwise_strict Subgroup-Family of F
+    st (for i being Element of I holds A.i = (1).(F.i))
+    & (for i being Element of I holds B.i = (1).(F.i))
+    holds A = B
+    proof
+      let A,B be componentwise_strict Subgroup-Family of F;
+      assume A1: for i being Element of I holds A.i = (1).(F.i);
+      assume A2: for i being Element of I holds B.i = (1).(F.i);
+      for i being Element of I holds A.i = B.i
+      proof
+        let i be Element of I;
+        thus A.i = (1).(F.i) by A1
+                .= B.i by A2;
+      end;
+      hence thesis by ThStrSubEq;
+    end;
+  end;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  func (Omega).F -> componentwise_strict Subgroup-Family of F means
+  :Def7:
+  for i being Element of I
+  holds it.i = (Omega).(F.i);
+  existence
+  proof
+    deffunc Sub(Group) = (Omega).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 8;
+    thus ex S being componentwise_strict Subgroup-Family of F
+    st for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+  end;
+  uniqueness
+  proof
+    thus for A,B being componentwise_strict Subgroup-Family of F
+    st (for i being Element of I holds A.i = (Omega).(F.i))
+    & (for i being Element of I holds B.i = (Omega).(F.i))
+    holds A = B
+    proof
+      let A,B be componentwise_strict Subgroup-Family of F;
+      assume A1: for i being Element of I holds A.i = (Omega).(F.i);
+      assume A2: for i being Element of I holds B.i = (Omega).(F.i);
+      for i being Element of I holds A.i = B.i
+      proof
+        let i be Element of I;
+        thus A.i = (Omega).(F.i) by A1
+                .= B.i by A2;
+      end;
+      hence thesis by ThStrSubEq;
+    end;
+  end;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let IT be Subgroup-Family of F;
+  attr IT is normal means :Def8:
+  for i being Element of I holds IT.i is normal Subgroup of F.i;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster componentwise_strict normal for Subgroup-Family of F;
+  existence
+  proof
+    deffunc Sub(Group) = (1).$1;
+    A1: for G being Group holds Sub(G) is strict Subgroup of G
+    by GROUP_2:def 7;
+    consider S being componentwise_strict Subgroup-Family of F such that
+    A2: for i being Element of I holds S.i = Sub(F.i)
+    from StrSubFamSch(A1);
+    take S;
+    for i being Element of I holds S.i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      S.i = Sub(F.i) by A2
+         .= (1).(F.i);
+      hence thesis;
+    end;
+    hence thesis;
+  end;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be normal Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> normal for Subgroup of F.i;
+  correctness by Def8;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be componentwise_strict normal Subgroup-Family of F;
+  let i be Element of I;
+  cluster (S . i) -> strict normal for Subgroup of F.i;
+  correctness by Def7, Def8;
+end;
+
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let N be normal Subgroup-Family of F;
+  func F ./. N -> Group-Family of I means :Def9:
+  for i being Element of I
+  holds it.i = (F.i) ./. (N.i);
+  existence
+  proof
+    deffunc Fun(Element of I) = (F.$1) ./. (N.$1);
+    thus ex Fam being Group-Family of I
+    st for i being Element of I holds Fam.i = Fun(i)
+    from GrFamSch;
+  end;
+  uniqueness
+  proof
+    thus for A, B being Group-Family of I
+    st (for i being Element of I holds A.i = (F.i) ./. (N.i))
+    & (for i being Element of I holds B.i = (F.i) ./. (N.i))
+    holds A = B
+    proof
+      let A, B be Group-Family of I;
+      assume A1: for i being Element of I holds A.i = (F.i) ./. (N.i);
+      assume A2: for i being Element of I holds B.i = (F.i) ./. (N.i);
+      for i being object st i in I
+      holds A.i = B.i
+      proof
+        let i be object;
+        assume B1: i in I;
+        then reconsider j=i as Element of I;
+        A.j = (F.j) ./. (N.j) by A1
+           .= B.j by A2;
+        hence thesis;
+      end;
+      hence A = B by PBOOLE:3;
+    end;
+  end;
+end;
+
+theorem
+  ex S being componentwise_strict normal Subgroup-Family of F
+  st for i being Element of I holds S.i = (F.i)`
+proof
+  deffunc Fun(Group) = ($1)`;
+  A1: for G being Group holds Fun(G) is strict Subgroup of G;
+  consider S being componentwise_strict Subgroup-Family of F such that
+  A2: for i being Element of I holds S.i = Fun(F.i)
+  from StrSubFamSch(A1);
+  for i being Element of I holds S.i is normal Subgroup of F.i
+  proof
+    let i be Element of I;
+    S.i = (F.i)` by A2;
+    hence S.i is normal Subgroup of F.i;
+  end;
+  then reconsider S as componentwise_strict normal Subgroup-Family of F
+  by Def8;
+  take S;
+  thus thesis by A2;
 end;
 
 theorem LmTriv:
@@ -676,7 +1101,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   mode Homomorphism-Family of G, F -> ManySortedFunction of I means
-  :Def6:
+  :Def13:
   for i being Element of I holds
   it.i is Homomorphism of G, F.i;
   existence
@@ -713,7 +1138,7 @@ definition
   let f be Homomorphism-Family of G, F;
   let i be Element of I;
   redefine func f.i -> Homomorphism of G, F.i;
-  coherence by Def6;
+  coherence by Def13;
 end;
 
 reserve f for Homomorphism-Family of G, F;
@@ -833,7 +1258,7 @@ definition
   let I be non empty set;
   let F1,F2 be Group-Family of I;
   mode Homomorphism-Family of F1,F2 -> ManySortedFunction of F1,F2 means
-  :Def8:
+  :Def14:
   for i being Element of I
   holds it.i is Homomorphism of F1.i,F2.i;
   existence
@@ -869,7 +1294,7 @@ registration
   let i be Element of I;
   let phi be Homomorphism-Family of F1,F2;
   cluster (phi . i) -> multiplicative for Function of F1.i, F2.i;
-  correctness by Def8;
+  correctness by Def14;
 end;
 
 begin :: Projection Morphisms from Product Group to Direct Factors
@@ -888,8 +1313,17 @@ definition
   let F be Group-Family of I;
   let g be Element of product F;
   let i be Element of I;
-  func g/.i -> Element of F.i equals :Def2: g.i;
+  func g/.i -> Element of F.i equals :Def15: g.i;
   correctness by Th24;
+end;
+
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let g be Element of product F;
+  let i be Element of I;
+  identify g/.i with g.i;
+  correctness by Def15;
 end;
 
 definition
@@ -897,7 +1331,7 @@ definition
   let i be Element of I;
   let F be Group-Family of I;
   func proj (F, i) -> Homomorphism of (product F), F.i means
-  :Def3:
+  :Def16:
   for h being Element of product F holds it.h = h.i;
   existence
   proof
@@ -975,7 +1409,7 @@ proof
       A3: x in product F by A1,GROUP_2:41;
       take x;
       thus x in dom (proj (F,i)) by A3, FUNCT_2:def 1;
-      thus y = (proj (F,i)).x by Def3, A1, A2, A3;
+      thus y = (proj (F,i)).x by Def16, A1, A2, A3;
     end;
     thus (ex x being object
           st x in dom (proj (F,i)) & y = (proj (F,i)).x)
@@ -1014,7 +1448,7 @@ proof
   g in product F;
   then g in dom f by A1, GROUP_7:def 2;
   then (proj (Carrier F, i)) . g = g.i by CARD_3:def 16;
-  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def3;
+  hence (proj (F, i)) . g = (proj (Carrier F, i)) . g by Def16;
 end;
 
 theorem
@@ -1083,7 +1517,7 @@ proof
   A1: dom g = I by GROUP_19:3;
   (g +* (i, 1_(F.i))) in product F by Th29;
   then reconsider h=(g +* (i, 1_(F.i))) as Element of product F;
-  (proj (F, i)).h = h.i by Def3
+  (proj (F, i)).h = h.i by Def16
                  .= 1_(F.i) by A1, FUNCT_7:31;
   hence (g +* (i, 1_(F.i))) in Ker (proj (F, i)) by GROUP_6:41;
 end;
@@ -1199,7 +1633,7 @@ proof
   proof
     let j be Element of I;
     (f.j).g = (phi.g).j by A3;
-    hence (f.j).g = (proj (F, j)).(phi.g) by Def3;
+    hence (f.j).g = (proj (F, j)).(phi.g) by Def16;
   end;
   hence thesis;
 end;
@@ -1250,10 +1684,10 @@ proof
       let j be Element of I;
       C2: (f.j).g = ((proj (F, j)) * phi1).g by A1
                  .= (proj (F, j)) . (phi1.g) by FUNCT_2:15
-                 .= (phi1.g).j by Def3;
+                 .= (phi1.g).j by Def16;
       (f.j).g = ((proj (F, j)) * phi2).g by A2
              .= (proj (F, j)) . (phi2.g) by FUNCT_2:15
-             .= (phi2.g).j by Def3;
+             .= (phi2.g).j by Def16;
       hence (phi1.g).j = (phi2.g).j by C2;
     end;
     hence phi1.g = phi2.g by B1;
@@ -1267,7 +1701,7 @@ definition
   let F be Group-Family of I;
   let f be Homomorphism-Family of G, F;
   func product f -> Homomorphism of G, product F means
-  :Def7:
+  :Def17:
   for g being Element of G
   for i being Element of I
   holds (f.i).g = (it.g).i;
@@ -1284,7 +1718,7 @@ definition
       let g be Element of G;
       let j be Element of I;
       (f.j).g = (proj (F,j)) . (phi.g) by A1
-             .= (phi.g).j by Def3;
+             .= (phi.g).j by Def16;
       hence thesis;
     end;
     hence thesis;
@@ -1374,7 +1808,7 @@ proof
     let i be Element of I;
     (product f).g = 1_(product F) by A1, GROUP_6:41;
     then 1_(F.i) = ((product f).g).i by Th33
-                .= (f.i).g by Def7;
+                .= (f.i).g by Def17;
     hence g in Ker (f.i) by GROUP_6:41;
   end;
   thus (for i being Element of I holds g in Ker (f.i))
@@ -1390,7 +1824,7 @@ proof
     for i being Element of I holds ((product f).g).i = 1_(F.i)
     proof
       let i be Element of I;
-      ((product f).g).i = (f.i).g by Def7
+      ((product f).g).i = (f.i).g by Def17
                        .= 1_(F.i) by A2;
       hence thesis;
     end;
@@ -1566,7 +2000,7 @@ proof
     assume A1: g in product S;
     let i be Element of I;
     g.i in S.i by A1, GROUP_19:5;
-    hence (proj (F,i)).g in S.i by Def3;
+    hence (proj (F,i)).g in S.i by Def16;
   end;
   assume Z2: for i being Element of I holds (proj (F,i)).g in S.i;
   Z3: dom g = I by GROUP_19:3;
@@ -1574,7 +2008,7 @@ proof
   proof
     let i be Element of I;
     (proj (F, i)).g in S.i by Z2;
-    hence g.i in S.i by Def3;
+    hence g.i in S.i by Def16;
   end;
   hence g in product S by Z3, Th38;
 end;
@@ -1656,7 +2090,7 @@ proof
   end;
   then for i being object st i in dom f holds f.i is Function;
   then f is Function-yielding by FUNCOP_1:def 6;
-  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def6;
+  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def13;
   take f;
   thus thesis by A3;
 end;
@@ -1837,6 +2271,7 @@ proof
       hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
     end;
     then reconsider phi as Homomorphism-Family of (product F), D;
+::>                                                            *4
       
     for i being Element of I
     for varphi being Homomorphism of (product F),D.i
@@ -1844,11 +2279,13 @@ proof
     ex fi being Homomorphism of QG,D.i
     st varphi = fi * (nat_hom ((product F)`))
      & Image fi = (1).(D.i);
+::>                       *4
   
       :: construct the Homomorphism-Family from the varphi
       :: th
   
     ((nat_hom ((product F)`))/.g) = 1_(QG);
+::>                                      *4
       :: then (nat_hom ((product F)`)).g = 1_(QG);
     hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
   end;
@@ -1864,3 +2301,5 @@ proof
   then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
   hence thesis by A3, GROUP_2:55;
 end;
+::>
+::> 4: This inference is not accepted
