@@ -350,7 +350,11 @@ Then $G_{1}\subgroup G_{2}$.
 \end{theorem}
 
 <<Theorem: inclusion by any other name>>=
-<<Lemmas for inclusion theorem>>
+<<Lemma: [[1ProdHom]] is a morphism to the product group>>
+
+<<Lemma: Range is contained in Codomain>>
+
+<<Lemma: Pointwise-equal binary operators have identical images>>
 
 theorem InclByAnyOtherName:
   for G1,G2 being Group
@@ -381,7 +385,8 @@ proof
   A3: [: U1, U1 :] c= [: U2, U2 :] by A2, ZFMISC_1:96;
   A4: dom (the multF of G2) = [: U2, U2 :]
   by FUNCT_2:def 1;
-  then A5: dom ((the multF of G2)|[: U1, U1 :]) = [: U1, U1 :] by A3, RELAT_1:62;
+  then A5: dom ((the multF of G2)|[: U1, U1 :]) = [: U1, U1 :]
+  by A3, RELAT_1:62;
   A5a: dom ((the multF of G2)||U1)
    = dom ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2
   .= [: U1, U1 :] by A5;
@@ -453,7 +458,13 @@ proof
 end;
 @ %def InclByAnyOtherName
 
-<<Lemmas for inclusion theorem>>=
+
+\begin{lemma}
+The isomorphism $\varphi$ of a direct factor $\mathcal{F}_{i}$ with its
+subgroup in the product $\prod\mathcal{F}$ is a homomorphism to the product.
+\end{lemma}
+
+<<Lemma: [[1ProdHom]] is a morphism to the product group>>=
 LmProdhom:
   1ProdHom (F, i) is Homomorphism of F.i, product F
 proof
@@ -461,8 +472,55 @@ proof
   1ProdHom (F, i) is Homomorphism of F.i, ProjGroup (F, i);
   hence thesis by Th25;
 end;
+@ %def LmProdhom
 
+\begin{lemma}
+If $f\colon X\to Y$ is a function of sets and $Y\neq\emptyset$, then
+$f(X)\subset Y$.
+\end{lemma}
+
+<<Lemma: Range is contained in Codomain>>=
 LmRangeContainedInCod:
+  for X,Y being set
+  for f being Function of X,Y
+  holds rng f c= Y
+proof
+  let X,Y be set;
+  let f be Function of X,Y;
+  per cases;
+  suppose A1: Y <> {};
+    for y being object st y in rng f holds y in Y
+    proof
+      let y be object;
+      assume B1: y in rng f;
+      then consider x being object such that
+      B2: x in dom f and
+      B3: y = f.x
+      by FUNCT_1:def 3;
+      x in X by A1, B2, FUNCT_2:def 1;
+      hence y in Y by A1,B2,B3,FUNCT_2:5;
+    end;
+    hence rng f c= Y;
+  end;
+  suppose A2: Y = {};
+    for y being object st y in rng f holds y in Y
+    proof
+      let y be object;
+      assume B1: y in rng f;
+      dom f = {} by A2, FUNCT_2:def 1;
+      then not (ex x being object st x in dom f & y = f.x);
+      then not (y in rng f) by FUNCT_1:def 3;
+      then contradiction by B1;
+      hence y in Y;
+    end;
+    hence rng f c= Y;
+  end;
+end;
+@ %def LmRangeContainedInCod
+
+
+<<Old Lemma (range contained in codomain)>>=
+:: LmRangeContainedInCod:
   for X,Y being set st Y <> {}
   for f being Function of X,Y
   holds rng f c= Y
@@ -483,7 +541,15 @@ proof
   end;
   hence rng f c= Y;
 end;
+@ 
 
+\begin{lemma}
+If we have two binary operators $f\colon X\times Y\to Z$ and
+$g\colon X\times Y\to W$ such that for each $x\in X$ and $y\in Y$
+that $f(x,y)=g(x,y)$, then their images are equal $f(X\times Y)=g(X\times Y)$.
+\end{lemma}
+
+<<Lemma: Pointwise-equal binary operators have identical images>>=
 LmEqRng:
   for X,Y,Z,W being set st Z <> {} & W <> {}
   for f being Function of [:X,Y:],Z
@@ -495,7 +561,8 @@ proof
   assume A0: Z <> {} & W <> {};
   let f be Function of [:X,Y:],Z;
   let g be Function of [:X,Y:],W;
-  assume A1: for a being Element of X, b being Element of Y holds f.(a,b) = g.(a,b);
+  assume A1: for a being Element of X, b being Element of Y
+  holds f.(a,b) = g.(a,b);
   A2: dom f = [:X,Y:] by A0, FUNCT_2:def 1;
   A3: dom g = [:X,Y:] by A0, FUNCT_2:def 1;
   A4: dom f = dom g by A2,A3;
@@ -553,4 +620,5 @@ proof
 
   hence rng f = rng g by TARSKI:2;
 end;
-@ 
+@ %def LmEqRng
+

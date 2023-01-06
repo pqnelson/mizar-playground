@@ -31,12 +31,12 @@ We need to alert Mizar which words are tokens, and which works are
 identifiers. 
 
 <<[[group_23.miz]] vocabularies>>=
- vocabularies WELLORD1, MSSUBFAM, TARSKI, NAT_1, QC_LANG1, RLSUB_1,
-   XXREAL_1, BINOP_1, BINOP_2, RLVECT_2, ZFMISC_1, RELAT_1, STRUCT_0,
-   FINSEQ_1, FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4, FUNCOP_1, NUMBERS,
-   PRALG_1, ALGSTR_0, PARTFUN1, CARD_3, GROUP_1, GROUP_2, PRE_TOPC,
-   GROUP_5, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE,
-   GROUP_19, GROUP_20, GROUP_23, SETFAM_1, REALSET1;
+ vocabularies NEWTON, MSSUBFAM, TARSKI, NAT_1, QC_LANG1, RLSUB_1,
+   XXREAL_0, ORDINAL4, XXREAL_1, BINOP_1, BINOP_2, RLVECT_2, ZFMISC_1,
+   RELAT_1, STRUCT_0, FINSEQ_1, FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4,
+   FUNCOP_1, NUMBERS, PRALG_1, ALGSTR_0, PARTFUN1, CARD_3, GROUP_1,
+   GROUP_2, PRE_TOPC, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0,
+   PBOOLE, GROUP_19, GROUP_20, GROUP_23, SETFAM_1, REALSET1, GROUP_5;
 @ 
 
 \subsection{Constructors}
@@ -44,11 +44,11 @@ We need to bind the constructors to their tokens, so we alert Mizar
 which articles we're relying on.
 
 <<[[group_23.miz]] constructors>>=
- constructors ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1, FUNCT_2,
-   FUNCT_4, FUNCOP_1, FINSEQ_1, MONOID_0, PRALG_1, GROUP_1, GROUP_2,
-   GROUP_3, GROUP_12, GROUP_4, GROUP_5, GROUP_6, GROUP_7, FUNCT_7,
-   RELSET_1, FUNCT_3, PARTFUN1, GROUP_17, GRSOLV_1, ALGSTR_0, SETFAM_1,
-   GROUP_19;
+ constructors NAT_1, ZFMISC_1, BINOP_2, PBOOLE, BINOP_1, REALSET1,
+   FUNCT_2, FUNCT_4, FUNCOP_1, NUMBERS, MONOID_0, PRALG_1, GROUP_12,
+   GROUP_6, GROUP_7, FUNCT_7, RELSET_1, FUNCT_3, PARTFUN1, GROUP_17,
+   GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19, FINSEQ_1, FINSOP_1, FINSEQOP,
+   GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5;
 @ 
 
 \subsection{Notation}
@@ -57,11 +57,11 @@ the constructors. Usually.
 
 <<[[group_23.miz]] notations>>=
  notations ZFMISC_1, TARSKI, XBOOLE_0, RELAT_1, SUBSET_1, RELSET_1,
-   FUNCT_1, BINOP_1, BINOP_2, REALSET1, FUNCT_2, FUNCT_4, FUNCT_7, FUNCOP_1,
-   PBOOLE, CARD_3, ORDINAL1, NUMBERS, XXREAL_0, FINSEQ_1, FINSEQ_2,
-   STRUCT_0, MONOID_0, GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5,
-   GROUP_6, PRALG_1, GROUP_7, GROUP_12, PARTFUN1, GROUP_17, ALGSTR_0,
-   SETFAM_1;
+   FUNCT_1, BINOP_1, BINOP_2, REALSET1, FUNCT_2, FUNCT_4, FUNCT_7,
+   FUNCOP_1, PBOOLE, NAT_1, CARD_3, ORDINAL1, NUMBERS, XXREAL_0, INT_1,
+   DOMAIN_1, STRUCT_0, MONOID_0, PARTFUN1, GROUP_17, ALGSTR_0, SETFAM_1,
+   PRALG_1, GROUP_12, GROUP_7, FINSOP_1, FINSEQ_1, FINSEQOP, FINSEQ_2,
+   GROUP_6, GROUP_4, GRSOLV_1, GROUP_1, GROUP_2, GROUP_3, GROUP_5;
 @ 
 
 \subsection{Registrations} We need to specify which articles have
@@ -70,10 +70,10 @@ conditional registrations and functorial registrations.
 
 <<[[group_23.miz]] registrations>>=
  registrations XBOOLE_0, XREAL_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2,
-   MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, REALSET1, RELSET_1, FUNCT_2,
-   FUNCOP_1, CARD_3, ORDINAL1, FINSET_1, FINSEQ_1, CARD_1, BINOP_1,
-   GROUP_3, GROUP_6, GR_CY_1, FUNCT_7, GROUP_7, GROUP_12, PRALG_1,
-   PBOOLE, GROUP_22;
+   MONOID_0, NAT_1, RELAT_1, FUNCT_1, PARTFUN1, REALSET1, RELSET_1,
+   FUNCT_2, FUNCOP_1, CARD_3, ORDINAL1, FINSET_1, FINSEQ_1, CARD_1,
+   BINOP_1, GROUP_3, GROUP_6, GR_CY_1, FUNCT_7, GROUP_7, GROUP_12,
+   PRALG_1, PBOOLE, GROUP_22;
 @
 
 \subsection{Definitions}
@@ -83,7 +83,7 @@ want to enjoy this.
 
 <<[[group_23.miz]] definitions>>=
  definitions STRUCT_0, TARSKI, SUBSET_1, RELAT_1, FUNCT_1, FUNCT_2,
-   FUNCOP_1, GROUP_7;
+   FUNCOP_1;
 @ 
 
 \subsection{Equalities}
@@ -92,8 +92,9 @@ macros, i.e., abbreviations. Thus they will be replaced with their
 definitions for us (as opposed to us explicitly citing the definition).
 
 <<[[group_23.miz]] equalities>>=
- equalities PARTFUN1, FUNCT_1, FUNCT_7, FUNCOP_1, FINSET_1, BINOP_1,
-   STRUCT_0, GROUP_2, GROUP_3, GROUP_4, GROUP_6, GROUP_7;
+ expansions TARSKI, FUNCT_7, FINSET_1, ALGSTR_0, GROUP_1, GROUP_2,
+   GROUP_6, STRUCT_0, BINOP_1, FUNCT_1, FUNCT_2, PRALG_1, GROUP_7,
+   GROUP_4;
 @ 
 
 \subsection{Expansions}
@@ -117,7 +118,8 @@ We will use theorems and definitions from various articles.
    GROUP_2, GROUP_3, GROUP_5, GROUP_6, GROUP_7, GROUP_12, PARTFUN1,
    PRALG_1, GROUP_19, SETFAM_1, XBOOLE_0, GROUP_21, SUBSET_1, PBOOLE,
    GRSOLV_1, RELAT_1, STRUCT_0, GROUP_22, XBOOLE_1, FUNCT_5, BINOP_1,
-   ZFMISC_1, REALSET1, ALGSTR_0;
+   ZFMISC_1, REALSET1, ALGSTR_0, FINSEQ_1, FINSOP_1, NAT_1, FINSEQOP,
+   GROUP_4, FINSEQ_2;
 @
 
 \subsection{Requirements}
@@ -133,6 +135,6 @@ Most of the Schemas we need are related to constructing functions, since
 an element of a product is a function of the indexing set.
 
 <<[[group_23.miz]] schemas>>=
- schemes FUNCT_1, FUNCT_2, PBOOLE;
+ schemes FUNCT_1, FUNCT_2, PBOOLE, FINSEQ_1, FINSEQ_2;
 @
 

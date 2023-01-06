@@ -36,14 +36,12 @@ begin :: Universal Property of Direct Products of Groups
 
 <<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
 
+<<Theorem: Homomorphisms preserve Frobenius product>>
+
+<<Theorem: if $\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$, then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$>>
+
 <<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>
 @
-
-\subsection{Universal Property of Products}
-It seems we should generalize the notion of a
-``\lstinline{ManySortedFunction of I}'' (from~\mml{pboole}) to a family
-of group morphisms. Then we can use this to state the universal property
-of direct products of groups.
 
 \begin{theorem}
 For any family of morphisms $f_{i}\colon G\to\mathcal{F}_{i}$,
@@ -987,71 +985,359 @@ then $\prod\mathcal{F}\subgroup\prod\mathcal{G}$.
 \end{theorem}
 
 <<Theorem: Product of a Subgroup-Family is a Subgroup of the Parent's Product>>=
-theorem
+theorem Th56:
   for F1,F2 being Group-Family of I
   st (for i being Element of I holds F1.i is Subgroup of F2.i)
   holds product F1 is Subgroup of product F2
 proof
   let F1,F2 be Group-Family of I;
   assume A1: for i being Element of I holds F1.i is Subgroup of F2.i;
-  
-  deffunc Fun(Element of I) = (incl (F1.$1, F2.$1)) * (proj (F1, $1));
-  A2: for i being Element of I
-  holds Fun(i) is Homomorphism of product F1, F2.i
-  proof
-    let i be Element of I;
-    B1: (proj (F1, i)) is Homomorphism of product F1, F1.i by Def16;
-    incl (F1.i, F2.i) is Homomorphism of F1.i, F2.i;
-    thus (incl (F1.i, F2.i)) * (proj (F1, i)) is Homomorphism of product F1, F2.i by B1,GROUP_6:39;
-  end;
-  consider f being Homomorphism-Family of product F1, F2 such that
-  A3: for i being Element of I holds f.i = Fun(i)
-  from RHomFamSch(A2);
-
+  <<Proof step: construct endomorphism family $f_{i}=\pi_{i}\circ\iota$>>
   A4: for g being Element of product F1
   for i being Element of I
   holds (f.i).g = g.i
-  proof
-    let g be Element of product F1;
-    let i be Element of I;
-    B1: F1.i is Subgroup of F2.i by A1;
-    ((proj (F1, i)).g) in F1.i by Def16;
-    then (g.i) is Element of F1.i by Def16;
-    then B2: (incl (F1.i, F2.i)).(g.i) = g.i by B1, Th8;
-    (f.i).g = ((incl (F1.i, F2.i)) * (proj (F1, i))).g by A3
-    .= (incl (F1.i, F2.i)).((proj (F1, i)).g) by FUNCT_2:15
-    .= (incl (F1.i, F2.i)).(g.i) by Def16
-    .= (g.i) by B2;
-    hence (f.i).g = g.i;
-  end;
-
-
+  <<Proof step: $f_{i}(g)=g_{i}$>>
   consider phi being Homomorphism of product F1, product F2 such
   that
   A5: for g being Element of product F1
   holds (for i being Element of I holds (f.i).g = (proj (F2,i)) . (phi.g))
   by Th42;
-  
-
   for g being Element of product F1
   holds phi.g = g
-  proof
-    let g be Element of product F1;
-    B1: for i being object st i in I holds (phi.g).i = g.i
-    proof
-      let i be object;
-      assume C1: i in I;
-      then reconsider j=i as Element of I;
-      g.j = (f.j).g by A4
-         .= (proj (F2,j)) . (phi.g) by A5
-         .= (phi.g).j by Def16;
-      hence thesis;
-    end;
-    B2: dom g = I by GROUP_19:3;
-    dom (phi.g) = I by GROUP_19:3;
-    then dom g = dom (phi.g) by B2;
-    hence g = phi.g by B1, B2, FUNCT_1:2;
-  end;
+  <<Proof step: $\varphi$ is the inclusion morphism>>
   hence product F1 is Subgroup of product F2 by InclByAnyOtherName;
 end;
+@ %def Th56
+
+\begin{proof}[Proof step]
+We construct a homomorphism $f=\pi_{i}\circ\iota\colon\mathcal{F}_{i}\to\mathcal{F}_{i}$.
+\end{proof}
+
+<<Proof step: construct endomorphism family $f_{i}=\pi_{i}\circ\iota$>>=
+deffunc Fun(Element of I) = (incl (F1.$1, F2.$1)) * (proj (F1, $1));
+A2: for i being Element of I
+holds Fun(i) is Homomorphism of product F1, F2.i
+proof
+  let i be Element of I;
+  B1: (proj (F1, i)) is Homomorphism of product F1, F1.i by Def16;
+  incl (F1.i, F2.i) is Homomorphism of F1.i, F2.i;
+  thus thesis by B1,GROUP_6:39;
+end;
+consider f being Homomorphism-Family of product F1, F2 such that
+A3: for i being Element of I holds f.i = Fun(i)
+from RHomFamSch(A2);
+@
+
+\begin{proof}[Proof step]
+We establish that $f_{i}(g)=g_{i}$ for any $g\in\prod\mathcal{F}^{(1)}$.
+\end{proof}
+
+<<Proof step: $f_{i}(g)=g_{i}$>>=
+proof
+  let g be Element of product F1;
+  let i be Element of I;
+  B1: F1.i is Subgroup of F2.i by A1;
+  ((proj (F1, i)).g) in F1.i by Def16;
+  then (g.i) is Element of F1.i by Def16;
+  then B2: (incl (F1.i, F2.i)).(g.i) = g.i by B1, Th8;
+  (f.i).g = ((incl (F1.i, F2.i)) * (proj (F1, i))).g by A3
+         .= (incl (F1.i, F2.i)).((proj (F1, i)).g) by FUNCT_2:15
+         .= (incl (F1.i, F2.i)).(g.i) by Def16
+         .= (g.i) by B2;
+  hence (f.i).g = g.i;
+end;
+@
+
+\begin{proof}[Proof step]
+We lastly establish $\varphi=\prod_{i}f_{i}$ is the identity morphism,
+which makes it an inclusion.
+\end{proof}
+
+<<Proof step: $\varphi$ is the inclusion morphism>>=
+proof
+  let g be Element of product F1;
+  B1: for i being object st i in I holds (phi.g).i = g.i
+  proof
+    let i be object;
+    assume C1: i in I;
+    then reconsider j=i as Element of I;
+    g.j = (f.j).g by A4
+       .= (proj (F2,j)) . (phi.g) by A5
+       .= (phi.g).j by Def16;
+    hence thesis;
+  end;
+  B2: dom g = I by GROUP_19:3;
+  dom (phi.g) = I by GROUP_19:3;
+  then dom g = dom (phi.g) by B2;
+  hence g = phi.g by B1, B2, FUNCT_1:2;
+end;
+@
+
+\begin{theorem}
+Let $G_{1}$ and $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be
+a group morphism. For any finite sequence $\mathcal{F}_{1}$ of elements
+in $G_{1}$, there is a corresponding finite sequence $\mathcal{F}_{2}$
+of elements of $G_{2}$ obtained by applying $\varphi$ componentwise.
+\end{theorem}
+
+\begin{thm-remark}
+I have not seen a standard name for the product of elements in a finite
+sequence for a group $\prod_{g\in\mathcal{F}}g$, but I have seen it
+called the Frobenius product. I guess I will keep that terminology, at
+least for the moment.
+\end{thm-remark}
+
+<<Theorem: Homomorphisms preserve Frobenius product>>=
+theorem ThMappingFrobProd:
+  for G1, G2 being Group
+  for phi being Homomorphism of G1, G2
+  for F1 being FinSequence of the carrier of G1
+  ex F2 being FinSequence of the carrier of G2
+  st len F1 = len F2
+   & F2 = phi * F1
+   & Product F2 = phi.(Product F1)
+proof
+  let G1, G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let F1 be FinSequence of the carrier of G1;
+  set n1 = len F1;
+  <<Proof step: construct $p\sim\mathcal{F}_{2}$>>
+  take F2 = p;
+
+  thus len F1 = len F2 by A4;
+  thus F2 = phi * F1 by A5;
+
+  <<Proof by induction that $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$>>
+  hence Product F2 = phi.(Product F1) by A6;
+end;
+@ %def ThMappingFrobProd
+
+\begin{proof}[Proof step (construct $p = \varphi\circ\mathcal{F}_{1}$)]
+We begin by constructing our desired ``target'': the sequence of
+elements in $G_{2}$ obtained by applying $\varphi$ component-wise to
+$\mathcal{F}_{1}$. 
+\end{proof}
+
+<<Proof step: construct $p\sim\mathcal{F}_{2}$>>=
+defpred P[object, object] means ex k being Nat st k = $1 &
+$2 = phi.(F1.k);
+A1: for k being Nat st k in Seg n1 holds ex x being object st P[k, x]
+proof
+  let k be Nat;
+  assume B1: k in Seg n1;
+  then B2: k in dom F1 by FINSEQ_1:def 3;
+  consider x being object such that
+  B3: x = phi.(F1.k);
+  take x;
+  thus P[k, x] by B3;
+end;
+
+consider p being FinSequence such that
+A2: dom p = Seg n1 and
+A3: for k being Nat st k in Seg n1 holds P[k, p.k]
+from FINSEQ_1:sch 1(A1);
+A4: len F1 = len p by A2, FINSEQ_1:def 3;
+A5: p = phi * F1
+<<Proof step: $p = \varphi\circ\mathcal{F}_{1}$>>
+then rng p c= the carrier of G2 by FINSEQ_1:def 4;
+then reconsider p as FinSequence of the carrier of G2 by FINSEQ_1:def 4;
 @ 
+
+\begin{proof}[Proof step ($p = \varphi\circ\mathcal{F}_{1}$)]
+This amounts to an arduous proof by inspection, seeing that, yep, each
+component of the sequence really works this way.
+\end{proof}
+
+<<Proof step: $p = \varphi\circ\mathcal{F}_{1}$>>=
+proof
+  B1: len p = len (phi * F1) by A4, FINSEQ_2:33;
+  B2: for k being Nat st 1 <= k & k <= len p holds p.k = (phi * F1).k
+  proof
+    let k be Nat;
+    assume B3: 1 <= k;
+    assume B4: k <= len p;
+    then B5: k in Seg n1 by A4,B3,FINSEQ_1:1;
+    then B6: k in dom F1 by FINSEQ_1:def 3;
+    P[k, p.k] by A3, B5;
+    then ex k0 being Nat st k0 = k & p.k = phi.(F1.k0);
+    then B7: p.k = phi.(F1.k);
+    (phi * F1).k = phi.(F1.k) by B6, FUNCT_1:13
+                .= p.k by B7;
+    hence p.k = (phi * F1).k;
+  end;
+  hence thesis by B1, FINSEQ_1:def 17;
+end;
+@
+
+\begin{proof}[Proof step (induction argument $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$)]
+We can prove by induction on the length of the sequence that the product
+obeys the expected property (namely, it is preserved under the
+homomorphism supplied).
+\end{proof}
+
+<<Proof by induction that $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$>>=
+defpred P1[FinSequence of the carrier of G1] means
+phi.(Product $1) = Product (phi * $1);
+B1: P1[ <*>(the carrier of G1) ]
+<<Proof step: base case for homomorphisms preserving Frobenius product>>
+B2: for p0 being FinSequence of the carrier of G1
+for x being Element of the carrier of G1 st P1[p0]
+holds P1[(p0 ^ <* x *>)]
+<<Proof step: inductive case that $P[p_{0}+\langle x\rangle]$>>
+A6: for p0 being FinSequence of the carrier of G1 holds P1[p0]
+from FINSEQ_2:sch 2(B1, B2);
+F2 = phi * F1
+<<Proof step: $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$>>
+@ 
+
+\begin{proof}[Proof step (base case)]
+We can establish the empty sequence satisfies the mapping condition,
+since it basically amounts to translating the identity element.
+\end{proof}
+
+<<Proof step: base case for homomorphisms preserving Frobenius product>>=
+proof
+  phi.(Product <*>(the carrier of G1))
+   = phi.(1_G1) by GROUP_4:8
+  .= 1_(G2) by GROUP_6:31
+  .= Product (<*>(the carrier of G2)) by GROUP_4:8;
+  hence thesis;
+end;
+@ 
+
+\begin{proof}[Proof step (inductive case)]
+We can now prove that $\varphi(p_{0}+\langle x\rangle)=\varphi(p_{0})+\langle\varphi(x)\rangle$.
+\end{proof}
+
+<<Proof step: inductive case that $P[p_{0}+\langle x\rangle]$>>=
+proof
+  let p0 be FinSequence of the carrier of G1;
+  let x be Element of the carrier of G1;
+  assume C1: P1[p0];
+  Product (p0 ^ <* x *>) = (Product p0) * x by GROUP_4:6;
+  then phi.(Product (p0 ^ <* x *>))
+   = (phi.(Product p0)) * (phi.x) by GROUP_6:def 6
+  .= (Product (phi * p0)) * (phi.x) by C1
+  .= Product ((phi * p0) ^ <* phi.x *>) by GROUP_4:6;
+  hence P1[(p0 ^ <* x *>)] by FINSEQOP:8;
+end;
+@ 
+
+\begin{proof}[Proof step]
+We can establish now that $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$.
+\end{proof}
+
+<<Proof step: $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$>>=
+proof
+  B1: len F2 = len (phi * F1) by A4, FINSEQ_2:33;
+  B2: for k being Nat st 1 <= k & k <= len F2 holds F2.k = (phi * F1).k
+  proof
+    let k be Nat;
+    assume B3: 1 <= k & k <= len F2;
+    then k in Seg n1 by A4, FINSEQ_1:1;
+    then B4: k in dom F1 by FINSEQ_1:def 3;
+    P[k, F2.k] by A3, A4, B3, FINSEQ_1:1;
+    hence F2.k = phi.(F1.k)
+              .= (phi * F1).k by B4, FUNCT_1:13;
+  end;
+  hence thesis by B1, FINSEQ_1:def 17;
+end;
+@
+
+\begin{theorem}
+We have an explicit component-wise version of the previous theorem.
+\end{theorem}
+
+<<Theorem>>=
+theorem
+  for G1, G2 being Group
+  for phi being Homomorphism of G1, G2
+  for F1 being FinSequence of the carrier of G1
+  ex F2 being FinSequence of the carrier of G2
+  st len F1 = len F2
+   & (for i being Nat st i in Seg (len F1) holds F2.i = phi.(F1.i))
+   & Product F2 = phi.(Product F1)
+proof
+  let G1, G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let F1 be FinSequence of the carrier of G1;
+  consider F2 being FinSequence of the carrier of G2 such that
+  A1: len F1 = len F2 and
+  A2: F2 = phi * F1 and
+  A3: Product F2 = phi.(Product F1)
+  by ThMappingFrobProd;
+  take F2;
+  thus len F1 = len F2 by A1;
+  thus for i being Nat st i in Seg (len F1) holds F2.i = phi.(F1.i)
+  proof
+    let i be Nat;
+    assume i in Seg (len F1);
+    then i in dom F1 by FINSEQ_1:def 3;
+    hence phi.(F1.i) = (phi * F1).i by FUNCT_1:13
+                    .= F2.i by A2;
+  end;
+  thus Product F2 = phi.(Product F1) by A3;
+end;
+@
+
+\begin{theorem}
+The image of the projection morphism is the direct factor (as a strict group).
+\end{theorem}
+
+<<Theorem: image of projection morphism>>=
+theorem Th59:
+  Image (proj (F, i)) = the multMagma of F.i
+proof
+  for x being Element of F.i st x in the carrier of F.i
+  holds x in the carrier of Image (proj (F, i))
+  proof
+    let x be Element of F.i;
+    assume A1: x in the carrier of F.i;
+    ex g being Element of product F st x = (proj (F, i)).g
+    proof
+      dom (1_(product F)) = I by GROUP_19:3;
+      then B1: ((1_(product F)) +* (i,x)).i = x by FUNCT_7:31;
+      (1_(product F)) +* (i,x) in ProjSet (F, i) by A1, GROUP_12:def 1;
+      then reconsider g = ((1_(product F)) +* (i,x)) as Element of product F;
+      take g;
+      (proj (F, i)).((1_(product F)) +* (i,x))
+       = (proj (F, i)).g
+      .= ((1_(product F)) +* (i,x)).i by Def16
+      .= x by B1;
+      hence thesis;
+    end;
+    then x in Image (proj (F, i)) by GROUP_6:45;
+    hence x in the carrier of Image (proj (F, i)) by GROUP_6:def 10;
+  end;
+  then the carrier of F.i c= the carrier of Image (proj (F, i)) by SUBSET_1:2;
+  hence thesis by GROUP_2:61;
+end;
+@ %def Th59
+
+\begin{theorem}
+If we have two families of subgroups $\mathcal{F}^{(1)}$ and
+$\mathcal{F}^{(2)}$ such that
+$\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$,
+then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$.
+\end{theorem}
+
+<<Theorem: if $\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$, then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$>>=
+theorem Th60:
+  for F1,F2 being componentwise_strict Subgroup-Family of F
+  st (for i being Element of I
+      holds Image (proj (F1, i)) is Subgroup of Image (proj (F2, i)))
+  holds (product F1) is strict Subgroup of (product F2)
+proof
+  let F1,F2 be componentwise_strict Subgroup-Family of F;
+  assume A1: for i being Element of I
+  holds Image (proj (F1, i)) is Subgroup of Image (proj (F2, i));
+  for i being Element of I holds F1.i is Subgroup of F2.i
+  proof
+    let i be Element of I;
+    Image (proj (F1, i)) is Subgroup of Image (proj (F2, i)) by A1;
+    then F1.i is Subgroup of Image (proj (F2, i)) by Th59;
+    hence F1.i is Subgroup of F2.i by Th59;
+  end;
+  hence thesis by Th56;
+end;
+@ %def Th60
