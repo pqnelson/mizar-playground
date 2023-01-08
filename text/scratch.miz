@@ -1,29 +1,34 @@
 environ
 
- vocabularies NUMBERS, NEWTON, ARYTM_3, RELAT_1, NAT_1, XXREAL_0,
-   ARYTM_1, SUBSET_1, CARD_1, TARSKI, FUNCT_1, PRE_POLY, XCMPLX_0,
-   NAT_3, SCRATCH;
+ vocabularies FINSET_1, XBOOLE_0, NUMBERS, NEWTON, ARYTM_3, RELAT_1,
+   NAT_1, XXREAL_0, ARYTM_1, SUBSET_1, CARD_1, CARD_3, TARSKI, FUNCOP_1,
+   FUNCT_1, FUNCT_4, PRE_POLY, XCMPLX_0, NAT_3, PBOOLE, SCRATCH,
+   VALUED_0, INT_7;
 
- notations TARSKI, XBOOLE_0, SUBSET_1, ORDINAL1, CARD_1, NUMBERS,
-   XCMPLX_0, XXREAL_0, XREAL_0, REAL_1, NAT_D, INT_2, RELAT_1, FUNCT_1,
-   FUNCT_2, FINSEQ_1, FINSEQ_2, VALUED_0, PBOOLE, RVSUM_1, NEWTON,
-   TREES_4, FUNCOP_1, XXREAL_2, PRE_POLY, NAT_3;
+ notations FINSET_1, TARSKI, XBOOLE_0, SUBSET_1, ORDINAL1, CARD_1,
+   NUMBERS, XCMPLX_0, XXREAL_0, XREAL_0, REAL_1, NAT_D, INT_2, RELAT_1,
+   PARTFUN1, FUNCT_1, FUNCT_2, FUNCT_4, FINSEQ_1, FINSEQ_2, VALUED_0,
+   PBOOLE, RVSUM_1, NEWTON, TREES_4, FUNCOP_1, XXREAL_2, PRE_POLY,
+   NAT_3, INT_7;
 
- constructors BINOP_1, SETWISEO, NAT_D, FINSEQOP, FINSOP_1, NEWTON, WSIERP_1,
-   BINOP_2, XXREAL_2, RELSET_1, PRE_POLY, REAL_1, NAT_3;
- registrations XBOOLE_0, RELAT_1, FUNCT_1, FINSET_1, NUMBERS, XCMPLX_0,
-   XXREAL_0, NAT_1, INT_1, BINOP_2, MEMBERED, NEWTON, VALUED_0, FINSEQ_1,
-   XXREAL_2, CARD_1, FUNCT_2, RELSET_1, ZFMISC_1, FINSEQ_2, PRE_POLY,
-   XREAL_0, RVSUM_1, NAT_3;
+ constructors RECDEF_1, FINSET_1, BINOP_1, SETWISEO, NAT_D, PARTFUN1,
+   FUNCT_4, FINSEQOP, FINSOP_1, NEWTON, WSIERP_1, BINOP_2, XXREAL_2,
+   XBOOLE_0, RELSET_1, PRE_POLY, REAL_1, VALUED_0, NAT_3, INT_7;
+
+ registrations XBOOLE_0, RELAT_1, PARTFUN1, FUNCT_1, FINSET_1, NUMBERS,
+   XCMPLX_0, XXREAL_0, NAT_1, INT_1, BINOP_2, MEMBERED, NEWTON,
+   VALUED_0, FINSEQ_1, XXREAL_2, CARD_1, FUNCT_2, FUNCT_4, RELSET_1,
+   ZFMISC_1, FINSEQ_2, PRE_POLY, XREAL_0, RVSUM_1, NAT_3, INT_7;
+
  requirements NUMERALS, SUBSET, ARITHM, REAL, BOOLE;
  definitions TARSKI, XBOOLE_0, INT_2, NAT_D, FINSEQ_1, VALUED_0,
-   PRE_POLY, NAT_3;
+   PRE_POLY, NAT_3, SUBSET_1;
  equalities FINSEQ_1, FINSEQ_2, PBOOLE, ORDINAL1, NAT_3;
  expansions TARSKI, XBOOLE_0, INT_2, NAT_D, FINSEQ_1, VALUED_0, PBOOLE,
    NAT_3;
- theorems NEWTON, NAT_1, INT_2, XREAL_1, NAT_D, PRE_POLY, NAT_3,
-   MOEBIUS1, TARSKI, PREPOWER;
-
+ theorems NEWTON, NAT_1, INT_2, XREAL_1, PRE_POLY, NAT_3, MOEBIUS1,
+   TARSKI, PREPOWER, FUNCOP_1, FUNCT_1, FUNCT_2, FUNCT_4, SUBSET_1,
+   XBOOLE_0, XBOOLE_1, PARTFUN1, RELAT_1, VALUED_0, INT_7, NAT_D;
 begin :: preparatory work
 
 Lm2:
@@ -45,7 +50,7 @@ proof
 end;
 
 
-theorem Lm3:
+theorem Th1:
   for a,b,c being Nat
   st 1 < b & b |^ a <= b |^ c
   holds b |-count (b |^ a) <= b |-count (b |^ c)
@@ -60,12 +65,12 @@ proof
     then consider t being Nat such that
     A5: a = c + t by NAT_1:10;
     t = a - c by A5;
-    then t > 0 by A4,XREAL_1:50;
+    then t > 0 by A4, XREAL_1:50;
     then A6: t >= 1 by NAT_1:25;
     1 |^ t = 1;
     then A7: b |^ t > 1 by A1, A6, PREPOWER:10;
     b |^ a = (b |^ c) * (b |^ t) by A5, NEWTON:8;
-    hence contradiction by A1,A2,A7,PREPOWER:11, XREAL_1:155;
+    hence contradiction by A1, A2, A7, XREAL_1:155;
   end;
 
   hence b |-count (b |^ a) <= b |-count (b |^ c) by A3;
@@ -73,7 +78,7 @@ end;
 
 
 :: converse to NAT_3:30
-theorem Th1:
+theorem Th2:
   for m,n being non zero Nat
   st (for p being Prime holds (ppf m).p <= (ppf n).p)
   holds m divides n
@@ -83,7 +88,6 @@ proof
   for p being Prime holds p |-count m <= p |-count n
   proof
     let p be Prime;
-    (ppf m).p <= (ppf n).p by A1;
     per cases;
     suppose B1: p in support (ppf n) & p in support (ppf m);
       then p in support (pfexp n) by NAT_3:def 9;
@@ -100,7 +104,7 @@ proof
         p |^ (p |-count m) = (p |^ (p |-count n)) * (p |^ k) by B3, NEWTON:8;
         then p |^ k <= 1 by A4,Lm2;
         then p |^ k <= p |^ 0 by NEWTON:4;
-        then B4: p |-count (p |^ k) <= p |-count (p |^ 0) by Lm3, INT_2:def 4;
+        then B4: p |-count (p |^ k) <= p |-count (p |^ 0) by Th1, INT_2:def 4;
         p |-count (p |^ 0) = 0 & p |-count (p |^ k) = k
         by INT_2:def 4, NAT_3:25;
         then k = 0 by B4;
@@ -128,10 +132,46 @@ proof
   hence m divides n by MOEBIUS1:19;
 end;
 
-theorem
+theorem Th3:
   for m,n being non zero Nat
-  st (for p being Prime holds (ppf m).p <= (ppf n).p)
-  holds m divides n by Th1;
+  st m divides n
+  holds (for p being Prime holds (ppf m).p <= (ppf n).p)
+proof
+  let m,n be non zero Nat;
+  assume A1: m divides n;
+  let p be Prime;
+  A2: p > 1 by INT_2:def 4;
+  per cases;
+  suppose B1: p divides m;
+    then p |-count m <> 0 by A2, NAT_3:27;
+    then C1: p |-count m > 0;
+    then C2: p |^ (p |-count m) = (ppf m).p by C1, NAT_3:56;
+    C3: p |-count m <= p |-count n by A1, NAT_3:30;
+    then C3b: p |-count n > 0 by C1;
+    then C4: p |^ (p |-count n) = (ppf n).p by NAT_3:56;
+    C5: p |^ (p |-count m) divides p |^ (p |-count n) by C3, NEWTON:89;
+    C6: 0 < (ppf m).p by C1,C2;
+    reconsider i=(ppf m).p, j = (ppf n).p as Nat;
+    (ppf m).p is Nat & (ppf n).p is Nat &
+    0 < (ppf m).p & (ppf m).p divides (ppf n).p by C2,C4,C5,C6;
+    0 < j by C3b, C4;
+    then 0 < j & i divides j by C2,C4,C5,C6;
+    then i <= j by NAT_D:7;
+    hence (ppf m).p <= (ppf n).p by NAT_D:7;
+  end;
+  suppose B2: not (p divides m) & p divides n;
+    then p |-count m = 0 by A2,NAT_3:27;
+    then (ppf m).p = 0 by NAT_3:55;
+    hence (ppf m).p <= (ppf n).p;
+  end;
+  suppose B3: not (p divides m) & not (p divides n);
+    then p |-count m = 0 & p |-count n = 0 by A2,NAT_3:27;
+    then (ppf m).p = 0 & (ppf n).p = 0 by NAT_3:55;
+    hence (ppf m).p <= (ppf n).p;
+  end;
+end;
+    
+
 
 reserve Pi for Subset of SetPrimes;
 
@@ -142,19 +182,19 @@ definition
   for p being Prime st p divides IT holds p in Pi;
 end;
 
-theorem
+theorem Th4:
   for n being non zero Nat
   holds (for p being Prime st p divides n holds p in Pi)
         iff n is Pi-number;
 
-theorem
+theorem Th5:
   for Pi1, Pi2 being Subset of SetPrimes
   st Pi1 c= Pi2
   for n being non zero Nat
   st n is Pi1-number
   holds n is Pi2-number;
 
-theorem
+theorem Th6:
   for n being non zero Nat
   holds support (ppf n) c= Pi iff n is Pi-number
 proof
@@ -164,7 +204,7 @@ proof
     for p being Prime st p divides n holds p in Pi
     proof
       let p be Prime;
-      assume A2: p divides n;
+      assume p divides n;
       then p in support (pfexp n) by NAT_3:37;
       then p in support (ppf n) by NAT_3:def 9;
       hence p in Pi by A1;
@@ -183,7 +223,471 @@ proof
   hence support (ppf n) c= Pi;
 end;
 
+theorem ThPiPartExists:
+  for n being non zero Nat
+  ex ppt being ManySortedSet of SetPrimes st
+  (support ppt = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds ppt.p = (ppf n).p)
+proof
+  let n be non zero Nat;
+  set ppt = (ppf n) +* (Pi` --> 0);
+  A1: for p being Element of SetPrimes st p in Pi` holds ppt.p = 0
+  proof
+    let p be Element of SetPrimes;
+    assume B1: p in Pi`;
+    then p in dom (Pi` --> 0) by FUNCT_2:def 1;
+    hence ppt.p = (Pi` --> 0).p by FUNCT_4:13
+               .= 0 by B1, FUNCOP_1:7;
+  end;
+  A2: for p being Element of SetPrimes st p in Pi holds ppt.p = (ppf n).p
+  proof
+    let p be Element of SetPrimes;
+    assume B1: p in Pi;
+    not (p in Pi`)
+    proof
+      not (p in SetPrimes \ Pi) by B1, XBOOLE_0:def 5;
+      hence thesis by SUBSET_1:def 4;
+    end;
+    then not (p in dom (Pi` --> 0)) by FUNCT_2:def 1;
+    hence ppt.p = (ppf n).p by FUNCT_4:11;
+  end;
+  A3: SetPrimes \/ Pi` = SetPrimes
+  proof
+    for x being Element of SetPrimes holds x in SetPrimes \/ Pi` by XBOOLE_0:def 3;
+    then B1: SetPrimes c= SetPrimes \/ Pi`;
+    for x being Element of SetPrimes \/ Pi` holds x in SetPrimes
+    proof
+      let x be Element of SetPrimes \/ Pi`;
+      x in SetPrimes or x in Pi` by XBOOLE_0:def 3;
+      hence x in SetPrimes;
+    end;
+    then SetPrimes \/ Pi` c= SetPrimes;
+    hence thesis by B1;
+  end;
+  A4: dom ppt = dom (ppf n) \/ dom (Pi` --> 0) by FUNCT_4:def 1
+             .= dom (ppf n) \/ Pi` by FUNCOP_1:13
+             .= SetPrimes \/ Pi` by PARTFUN1:def 2
+             .= SetPrimes by A3;
+  then reconsider ppt as ManySortedSet of SetPrimes by RELAT_1:def 18, PARTFUN1:def 2;
+  take ppt;
+  for p being object
+  holds ppt.p <> 0 iff p in Pi /\ support (pfexp n)
+  proof
+    let p be object;
+    hereby
+      assume B1: ppt.p <> 0;
+      then p in support ppt by PRE_POLY:def 7;
+      then p in dom ppt by PRE_POLY:37, TARSKI:def 3;
+      then B2: p in SetPrimes by A4;
+      p in Pi` implies ppt.p = 0 by A1;
+      then not (p in Pi`) by B1;
+      then B3: p in Pi by B2, SUBSET_1:29;
+      then ppt.p = (ppf n).p by A2;
+      then p in support (ppf n) by B1, PRE_POLY:def 7;
+      then p in support (pfexp n) by NAT_3:def 9;
+      hence p in Pi /\ support (pfexp n) by B3, XBOOLE_0:def 4;
+    end;
+    thus p in Pi /\ support (pfexp n) implies ppt.p <> 0
+    proof
+      assume B1: p in Pi /\ support (pfexp n);
+      then p in Pi by XBOOLE_0:def 4;
+      then B2: ppt.p = (ppf n).p by A2;
+      p in support (pfexp n) by B1, XBOOLE_0:def 4;
+      then p in support (ppf n) by NAT_3:def 9;
+      hence ppt.p <> 0 by B2, PRE_POLY:def 7;
+    end;
+  end;
+  hence support ppt = Pi /\ support (pfexp n) by PRE_POLY:def 7;
+  let p be Nat;
+  assume p in Pi /\ support (pfexp n);
+  then p in Pi by XBOOLE_0:def 4;
+  hence ppt.p = (ppf n).p by A2;
+end;
+
+theorem ThPiPartUnique:
+  for n being non zero Nat
+  for ppt1, ppt2 being ManySortedSet of SetPrimes st
+  (support ppt1 = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds ppt1.p = (ppf n).p) &
+  (support ppt2 = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds ppt2.p = (ppf n).p)
+  holds ppt1 = ppt2
+proof
+  let n be non zero Nat;
+  let ppt1, ppt2 be ManySortedSet of SetPrimes;
+  assume A1: support ppt1 = Pi /\ support (pfexp n);
+  assume A2: for p being Nat st p in Pi /\ support (pfexp n) holds ppt1.p = (ppf n).p;
+  assume A3: support ppt2 = Pi /\ support (pfexp n);
+  assume A4: for p being Nat st p in Pi /\ support (pfexp n) holds ppt2.p = (ppf n).p;
+  for p being Element of SetPrimes holds ppt1.p = ppt2.p
+  proof
+    let p be Element of SetPrimes;
+    per cases;
+    suppose not (p in Pi /\ support (pfexp n));
+      then not (p in support ppt1) & not (p in support ppt2) by A1,A3;
+      then ppt1.p = 0 & ppt2.p = 0 by PRE_POLY:def 7;
+      hence thesis;
+    end;
+    suppose B1: p in Pi /\ support (pfexp n);
+      then ppt1.p = (ppf n).p by A2
+                 .= ppt2.p by B1,A4;
+      hence ppt1.p = ppt2.p;
+    end;
+  end;
+  hence ppt1 = ppt2;
+end;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  func Pi-part_ppf n -> ManySortedSet of SetPrimes means :Def2:
+  support it = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds it.p = (ppf n).p;
+  existence by ThPiPartExists;
+  uniqueness by ThPiPartUnique;
+end;
+
+theorem Th7:
+  for n being non zero Nat
+  holds dom (Pi-part_ppf n) = SetPrimes by PARTFUN1:def 2;
+
+LmZeroInRngPpf:
+  for n being non zero Nat
+  holds 0 in rng (ppf n)
+proof
+  let n be non zero Nat;
+  A1: for p being Prime st p > n holds (ppf n).p = 0
+  proof
+    let p be Prime;
+    assume B1: p > n;
+    p > 1 by INT_2:def 4;
+    then p |-count n = 0 by B1, NAT_3:23;
+    hence (ppf n).p = 0 by NAT_3:55;
+  end;
+  A2: dom (ppf n) = SetPrimes by PARTFUN1:def 2;
+  consider p being Prime such that
+  A3: p > n by NEWTON:72;
+  p in dom (ppf n) & (ppf n).p = 0 by A1, A2, A3, NEWTON:def 6;
+  hence 0 in rng (ppf n) by FUNCT_1:3;
+end;
+
+theorem ThRngPiPartPpf:
+  for n being non zero Nat
+  holds rng (Pi-part_ppf n) c= rng (ppf n)
+proof
+  let n be non zero Nat;
+  for y being object st y in rng (Pi-part_ppf n)
+  holds y in rng (ppf n)
+  proof
+    let y be object;
+    assume y in rng (Pi-part_ppf n);
+    then consider p being object such that
+    A2: p in dom (Pi-part_ppf n) and
+    A3: (Pi-part_ppf n).p = y
+    by FUNCT_1:def 3;
+    A4: dom (ppf n) = SetPrimes by PARTFUN1:def 2;
+    A5: p in SetPrimes by A2, PARTFUN1:def 2;
+    per cases;
+    suppose p in support (Pi-part_ppf n);
+      then p in Pi /\ support (pfexp n) by Def2;
+      then (ppf n).p = (Pi-part_ppf n).p by Def2 
+                    .= y by A3;
+      hence y in rng (ppf n) by A5, A4, FUNCT_1:def 3;
+    end;
+    suppose not (p in support (Pi-part_ppf n));
+      then (Pi-part_ppf n).p = 0 by PRE_POLY:def 7;
+      hence y in rng (ppf n) by A3, LmZeroInRngPpf;
+    end;
+  end;
+  hence rng (Pi-part_ppf n) c= rng (ppf n);
+end;
+
+theorem ThSuppPiPartPpf:
+  for n being non zero Nat
+  holds support (Pi-part_ppf n) c= support (ppf n)
+proof
+  let n be non zero Nat;
+  support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2;
+  then support (Pi-part_ppf n) c= support (pfexp n) by XBOOLE_1:17;
+  hence support (Pi-part_ppf n) c= support (ppf n) by NAT_3:def 9;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster Pi-part_ppf n -> natural-valued finite-support;
+  correctness
+  proof
+    rng (Pi-part_ppf n) c= rng (ppf n) & rng (ppf n) c= NAT
+    by ThRngPiPartPpf, VALUED_0:def 6;
+    then rng (Pi-part_ppf n) c= NAT;
+    hence (Pi-part_ppf n) is natural-valued;
+    support (Pi-part_ppf n) c= support (ppf n) by ThSuppPiPartPpf;
+    hence support (Pi-part_ppf n) is finite;
+  end;
+end;
+
+theorem Th8:
+  for n being non zero Nat
+  st support (Pi-part_ppf n) = {}
+  holds Product (Pi-part_ppf n) = 1
+proof
+  let n be non zero Nat;
+  assume A1: support (Pi-part_ppf n) = {};
+  then for p being object st p in dom (Pi-part_ppf n)
+  holds (Pi-part_ppf n).p = 0 by PRE_POLY:def 7;
+  then (Pi-part_ppf n) = (dom (Pi-part_ppf n)) --> 0 by FUNCOP_1:11;
+  then (Pi-part_ppf n) = (SetPrimes --> 0) by Th7
+                      .= (SetPrimes --> {});
+  then (Pi-part_ppf n) = (EmptyBag SetPrimes);
+  hence Product (Pi-part_ppf n) = 1 by NAT_3:20;
+end;
+
+theorem LmPpfOfZero:
+  for p being Prime holds (ppf 1).p = 0
+proof
+  let p be Prime;
+  p <> 1 by INT_2:def 4;
+  then p |-count 1 = 0 by NAT_3:21;
+  hence (ppf 1).p = 0 by NAT_3:55;
+end;
+
+theorem LmHuh:
+  for n being non zero Nat
+  holds (ppf n)|Pi = (Pi-part_ppf n)|Pi
+proof
+  let n be non zero Nat;
+  A1: dom (ppf n) = SetPrimes & dom (Pi-part_ppf n) = SetPrimes
+  by PARTFUN1:def 2;
+  for x being set st x in Pi holds (ppf n).x = (Pi-part_ppf n).x
+  proof
+    let x be set;
+    assume B1: x in Pi;
+    per cases;
+    suppose x in support (ppf n);
+      then x in support (pfexp n) by NAT_3:def 9;
+      then x in Pi /\ support (pfexp n) by B1, XBOOLE_0:def 4;
+      then (ppf n).x = (Pi-part_ppf n).x by Def2;
+      hence thesis;
+    end;
+    suppose B3: not (x in support (ppf n));
+      then not (x in support (pfexp n)) by NAT_3:def 9;
+      then not (x in Pi /\ support (pfexp n)) by XBOOLE_0:def 4;
+      then not (x in support (Pi-part_ppf n)) by Def2;
+      then (Pi-part_ppf n).x = 0 by PRE_POLY:def 7
+      .= (ppf n).x by B3, PRE_POLY:def 7;
+      hence thesis;
+    end;
+  end;
+  hence (ppf n)|Pi = (Pi-part_ppf n)|Pi by A1, FUNCT_1:96;
+end;
+
+theorem LmHuh2:
+  for n being non zero Nat
+  holds (ppf n)|(support (Pi-part_ppf n)) = (Pi-part_ppf n)|(support (Pi-part_ppf n))
+proof
+  let n be non zero Nat;
+  A1: dom (ppf n) = SetPrimes & dom (Pi-part_ppf n) = SetPrimes
+  by PARTFUN1:def 2;
+  A2: support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2
+                             .= Pi /\ support (ppf n) by NAT_3:def 9;
+  for x being set st x in support (Pi-part_ppf n)
+  holds (ppf n).x = (Pi-part_ppf n).x
+  proof
+    let x be set;
+    assume x in support (Pi-part_ppf n);
+    then x in Pi /\ support (pfexp n) by A2, NAT_3:def 9;
+    then (ppf n).x = (Pi-part_ppf n).x by Def2;
+    hence thesis;
+  end;
+  hence thesis by A1, FUNCT_1:96;
+end;
+
+theorem LmDiv:
+  for n being non zero Nat
+  holds Product (Pi-part_ppf n) divides Product (ppf n)
+proof
+  let n be non zero Nat;
+  A1: (support (Pi-part_ppf n)) c= support (ppf n)
+  proof
+    support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2
+                           .= Pi /\ support (ppf n) by NAT_3:def 9;
+    hence thesis by XBOOLE_1:17;
+  end;
+  (ppf n)|(support (Pi-part_ppf n)) = (Pi-part_ppf n)|(support (Pi-part_ppf n))
+  by LmHuh2;
+  hence Product (Pi-part_ppf n) divides Product (ppf n) by A1, INT_7:7;
+end;
+
+theorem ThDiv:
+  for n being non zero Nat
+  holds Product (Pi-part_ppf n) divides n
+proof
+  let n be non zero Nat;
+  Product (ppf n) = n by NAT_3:61;
+  hence thesis by LmDiv;
+end;
+
+theorem Th9:
+  for n being non zero Nat
+  holds Product (Pi-part_ppf n) is non zero
+proof
+  let n be non zero Nat;
+  Product (ppf n) = n by NAT_3:61;
+  then Product (Pi-part_ppf n) divides n by LmDiv;
+  hence thesis;
+end;
+
+definition
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  func Pi-part n -> non zero Nat equals Product (Pi-part_ppf n);
+  coherence by Th9;
+end;
+
+theorem Th10:
+  for n being non zero Nat
+  holds (Pi-part_ppf n) is prime-factorization-like
+proof
+  let n be non zero Nat;
+  for x being Prime st x in support (Pi-part_ppf n)
+  ex k being Nat st (0 < k & (Pi-part_ppf n).x = x |^ k)
+  proof
+    let x be Prime;
+    assume B1: x in support (Pi-part_ppf n);
+    then x in Pi /\ support (pfexp n) by Def2;
+    then B2: x in support (pfexp n) by XBOOLE_0:def 4;
+    (pfexp n).x <> 0 by B2, PRE_POLY:def 7;
+    then (x |-count n) <> 0 by NAT_3:def 8;
+    then B4: (x |-count n) > 0;
+    consider k being Nat such that
+    B5: k = x |-count n;
+    take k;
+    thus 0 < k by B4, B5;
+    x in Pi /\ support (pfexp n) by B1, Def2;
+    then (Pi-part_ppf n).x = (ppf n).x by Def2
+                          .= x |^ (x |-count n) by B2, NAT_3:def 9;
+    hence (Pi-part_ppf n).x = x |^ k by B5;
+  end;
+
+  hence (Pi-part_ppf n) is prime-factorization-like by INT_7:def 1;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster (Pi-part_ppf n) -> prime-factorization-like;
+  correctness by Th10;
+end;
+
+theorem Th11:
+  for n being non zero Nat
+  for p being Prime st p divides (Pi-part n) holds p in Pi
+proof
+  let n be non zero Nat;
+  let p be Prime;
+  assume p divides (Pi-part n);
+  then p in support (Pi-part_ppf n) by INT_7:8;
+  then p in Pi /\ support (pfexp n) by Def2;
+  hence p in Pi by XBOOLE_0:def 4;
+end;
+
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster Pi-part n -> Pi-number;
+  correctness by Th11;
+end;
+
+theorem Th14:
+  for n being non zero Nat
+  holds ppf (Pi-part n) = Pi-part_ppf n
+proof
+  let n be non zero Nat;
+  Pi-part n = Product (Pi-part_ppf n);
+  hence ppf (Pi-part n) = Pi-part_ppf n by INT_7:16;
+end;
 
 
+theorem Th7a:
+  for n being non zero Nat
+  holds support (Pi-part_ppf n) = Pi /\ support (ppf n)
+proof
+  let n be non zero Nat;
+  thus support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2
+                              .= Pi /\ support (ppf n) by NAT_3:def 9;
+end;
 
+Lm13Contrapositive:
+  for n being non zero Nat st not (support (ppf n) c= Pi)
+  holds not (n is Pi-number)
+proof
+  let n be non zero Nat;
+  assume A1: not support (ppf n) c= Pi;
+  then consider p being object such that
+  A2: p in support (ppf n) & not (p in Pi) by TARSKI:def 3;
+  dom (ppf n) = SetPrimes & p in dom (ppf n)
+  by A2, PRE_POLY:37, PARTFUN1:def 2, TARSKI:def 3;
+  then reconsider pp=p as Prime by NEWTON:def 6;
+  pp in support (ppf n) by A2;
+  then pp divides Product (ppf n) by INT_7:8;
+  then A3: pp divides n by NAT_3:61;
+  not (pp in Pi) by A2;
+  hence not (n is Pi-number) by A3, Def1;
+end;
 
+theorem Th13:
+  for n being non zero Nat st n is Pi-number
+  holds support (ppf n) c= Pi by Lm13Contrapositive;
+
+theorem Th12:
+  for n being non zero Nat
+  for p being Prime st p in Pi
+  holds (ppf n).p = (ppf (Pi-part n)).p
+proof
+  let n be non zero Nat;
+  let p be Prime;
+  assume A1: p in Pi;
+  (Pi-part n) is Pi-number;
+  then A2: support (ppf (Pi-part n)) c= Pi by Th13;
+  A3: dom (ppf n) = SetPrimes & dom (ppf (Pi-part n)) = SetPrimes by PARTFUN1:def 2;
+  (ppf n)|Pi = (Pi-part_ppf n)|Pi by LmHuh
+            .= (ppf (Pi-part n))|Pi by Th14;
+  then A4: (ppf n)|Pi = (ppf (Pi-part n))|Pi;
+  p in Pi & Pi c= dom (ppf n) & Pi c= dom (ppf (Pi-part n)) by A1, A3;
+  hence (ppf n).p = (ppf (Pi-part n)).p by A3,A4,FUNCT_1:95;
+end;
+
+:: Pi-part is "maximal", in the sense that if any other Pi-number
+:: divides n, then that other Pi-number divides the Pi-part of n.
+:: Look at the contrapositive: any Pi-number which does not divide
+:: the Pi-part of n must therefore not divide n.
+theorem 
+  for n being non zero Nat
+  for q being non zero Nat st q is Pi-number & q divides n
+  holds q divides Pi-part n
+proof
+  let n be non zero Nat;
+  let q be non zero Nat;
+  assume A1: q is Pi-number;
+  assume A2: q divides n;
+  then for p being Prime holds (ppf q).p <= (ppf n).p by Th3;
+  for p being Prime holds (ppf q).p <= (ppf (Pi-part n)).p
+  proof
+    let p be Prime;
+    B1: (ppf q).p <= (ppf n).p by A2, Th3;
+    B2: p > 1 by INT_2:def 4;
+    per cases;
+    suppose p divides q;
+      then p in Pi by A1, Def1;
+      then (ppf n).p = (ppf (Pi-part n)).p by Th12;
+      hence thesis by B1;
+    end;
+    suppose B3: not (p divides q);
+      then p |-count q = 0 by B2,NAT_3:27;
+      then (ppf q).p = 0 by NAT_3:55;
+      hence (ppf q).p <= (ppf (Pi-part n)).p by B1;
+    end;
+  end;
+  hence thesis by Th2;
+end;
