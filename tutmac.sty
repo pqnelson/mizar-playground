@@ -1,6 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{tutmac}[2021/12/11 Mizar Tutorial Macros Package]
 
+\newif\ifamsart\amsartfalse
 \newif\ifamscls
 \amsclsfalse
 \@ifclassloaded{amsproc}{
@@ -9,7 +10,12 @@
 \@ifclassloaded{amsbook}{
   \amsclstrue
 }{}
+\@ifclassloaded{amsart}{
+  \amsclstrue
+  \amsarttrue
+}{}
 
+\RequirePackage{epigraph}
 \RequirePackage{manfnt}
 \RequirePackage{proof}
 \RequirePackage{ssqquote}
@@ -25,7 +31,9 @@
 %\RequirePackage[inner=6pc,outer=6pc,bottom=6pc,top=6pc,headheight=13.6pt]{geometry}
 %\RequirePackage[inner=6pc,bottom=6pc,top=6pc,headheight=13.6pt]{geometry}
 \ifamscls
+  \ifamsart\newcommand\indexchap{\relax}\fi
   \RequirePackage{amsmidx}
+  %\fi
 \else
   \RequirePackage{makeidx}
   \RequirePackage{titlesec}
@@ -54,11 +62,11 @@
   \makeindex{driver}
   \makeindex{mizar}
   \makeindex{mizar}
-  \global\let\ams@index\index
-  \gdef\mizindex#1{\ams@index{mizar}{#1}}
-  \gdef\index#1{\ams@index{driver}{#1}}
-  \gdef\printindices{\Printindex{driver}{Index}
-    \Printindex{mizar}{Mizar Index}}
+    \global\let\ams@index\index
+    \gdef\mizindex#1{\ams@index{mizar}{#1}}
+    \gdef\index#1{\ams@index{driver}{#1}}
+    \gdef\printindices{\Printindex{driver}{Index}
+      \Printindex{mizar}{Mizar Index}}
 \else
   \gdef\mizindex#1{\index{#1}}
   \makeindex
@@ -120,8 +128,14 @@
 % theorems
 %\swapnumbers
 
-\numberwithin{section}{chapter}
-\numberwithin{equation}{chapter}
+
+\ifamsart
+  \numberwithin{equation}{section}
+\else
+  \numberwithin{section}{chapter}
+  \numberwithin{equation}{chapter}
+\fi
+
 \def\th@remarkstyle{%
   \thm@headfont{\scshape}%
   \textrm % body font
@@ -131,8 +145,10 @@
 \usemizarnumberstrue
 
 \newtheorem{todo}{To-Do Item}
-
 \ifusemizarnumbers
+  \ifamsart
+    \newcounter{chapter}\refstepcounter{chapter}
+  \fi
   % Mizar's numbering system
   \newtheorem{theorem}{Theorem}[chapter]               % counter 1
   \newtheorem{corollary}[theorem]{Corollary}           % counter 1
@@ -215,8 +231,6 @@
   \gdef\thepage{\csname @#1\endcsname
    \c@page}}
 
-\numberwithin{equation}{chapter}
-
 \newcommand\define[1]{\textbf{``#1''}}
 \newcommand{\Caret}{\char`\^}
 
@@ -257,5 +271,7 @@
   \egroup}
 
 
-
+\ifamsart
+\newcommand\chapter[2][]{}
+\fi
 \endinput
