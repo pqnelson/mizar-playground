@@ -20,6 +20,10 @@ begin :: Inclusion Morphism
 <<Register: inclusion morphism is injective>>
 
 <<Theorem: Restriction of group morphism is pre-composition by inclusion morphism>>
+
+<<Theorem: restriction of morphism to explicit subgroup is pre-composition with inclusion>>
+
+<<Theorem: image of inclusion morphism>>
 @ 
 
 \begin{definition}
@@ -188,6 +192,59 @@ proof
 end;
 @ 
 
+\begin{theorem}
+Let $G$, $K$ be groups, let $H\subgroup G$ be a subgroup, and
+$\varphi\colon G\to K$ be a group morphism.
+Then the restriction of $\varphi$ to $H$ is equal to the pre-composition
+with the inclusion morphism $\varphi|_{H}=\varphi\circ\iota_{H}$.
+\end{theorem}
 
+<<Theorem: restriction of morphism to explicit subgroup is pre-composition with inclusion>>=
+theorem Th17b:
+  for K being Group
+  for H being Subgroup of G
+  for phi being Homomorphism of G,K
+  holds phi|H = phi * (incl H)
+proof
+  let K be Group;
+  let H be Subgroup of G;
+  let phi be Homomorphism of G,K;
+  for h being Element of H holds
+  (phi|H).h = (phi * (incl H)).h
+  proof
+    let h be Element of H;
+    (incl H).h = (id (the carrier of H)).h 
+    & dom (incl H) = the carrier of H by DefIncl, FUNCT_2:def 1;
+    then A1: (phi * (incl H)).h = phi.h by FUNCT_1:13;
+    h in G by GROUP_2:41;
+    then h in dom phi by FUNCT_2:def 1; 
+    then h in (dom phi) /\ (the carrier of H) by XBOOLE_0:def 4;
+    then (phi|the carrier of H).h = phi.h by FUNCT_1:48;
+    hence (phi|H).h = (phi * (incl H)).h by A1, GRSOLV_1:def 2;
+  end;
+  hence phi|H = phi * (incl H);
+end;
+@ 
 
+\begin{theorem}
+The inclusion morphism is injective, and its image is its domain.
+\end{theorem}
+
+<<Theorem: image of inclusion morphism>>=
+theorem Th64e:
+  for G being Group
+  for H being strict Subgroup of G
+  holds Image(incl H) = H
+proof
+  let G be Group;
+  let H be strict Subgroup of G;
+  (the carrier of H) c= (the carrier of H);
+  then (the carrier of H) is Subset of (the carrier of H);
+  then the carrier of H
+   = (id the carrier of H) .: (the carrier of H) by FUNCT_1:92
+  .= (incl H) .: (the carrier of H) by DefIncl
+  .= the carrier of Image (incl H) by GROUP_6:def 10;
+  hence Image(incl H) = H by GROUP_2:59;
+end;
+@ 
 

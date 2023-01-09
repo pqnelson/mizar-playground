@@ -28,6 +28,8 @@ begin :: Projection Morphisms from Product Group to Direct Factors
 <<Theorem: elements of kernel of projection>>
 
 <<Theorem: inclusion by any other name>>
+
+<<Theorem: [[proj]] is left-inverse for [[1ProdHom]]>>
 @
 
 \begin{theorem}
@@ -622,3 +624,37 @@ proof
 end;
 @ %def LmEqRng
 
+\begin{theorem}
+The projection morphism is the left-inverse for the [[1ProdHom]]
+morphism.
+\end{theorem}
+
+<<Theorem: [[proj]] is left-inverse for [[1ProdHom]]>>=
+theorem Th65:
+  (proj (F,i)) * (1ProdHom (F, i)) = id (the carrier of F.i)
+proof
+  set U = the carrier of F.i;
+  (1ProdHom (F, i)) is Homomorphism of F.i, product F by Th25;
+  then A1: ((proj (F,i)) * (1ProdHom (F, i))) is Function of U, U;
+
+  for x being Element of U
+  holds ((proj (F,i)) * (1ProdHom (F, i))).x = x
+  proof
+    let x be Element of U;
+    B1: dom (1_(product F)) = I by GROUP_19:3;
+    B2: (1ProdHom (F, i)).x = (1_(product F)) +* (i, x) by GROUP_12:def 3;
+    (1ProdHom (F, i)).x in (ProjGroup (F,i));
+    then (1ProdHom (F, i)).x in product F by GROUP_2:40;
+    then B3: (proj (F, i)).((1_(product F)) +* (i, x))
+    = ((1_(product F)) +* (i, x)).i by B2, Def16;
+    dom (1ProdHom (F, i)) = U by FUNCT_2:def 1;
+    then ((proj (F,i)) * (1ProdHom (F, i))).x
+     = (proj (F, i)).((1ProdHom (F, i)).x) by FUNCT_1:13
+    .= (proj (F, i)).((1_(product F)) +* (i, x)) by GROUP_12:def 3
+    .= x by B1, B3, FUNCT_7:31;
+    hence thesis;
+  end;
+
+  hence thesis by A1, FUNCT_2:124;
+end;
+@ 

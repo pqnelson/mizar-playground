@@ -32,6 +32,8 @@ begin :: Universal Property of Direct Products of Groups
 
 <<Theorem: Product of a Subgroup-Family is a Subgroup of the Parent's Product>>
 
+<<Definition: product of subgroup-family>>
+
 <<Theorem: center of direct product>>
 
 <<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
@@ -186,27 +188,31 @@ such that $f_{i} = \pi_{i}\circ\varphi$.
 :: Universal property of group product, as most people would recognize it.
 theorem
   for f being Homomorphism-Family of G, F
-  for i being Element of I
   ex phi being Homomorphism of G, product F
-  st f.i = (proj (F,i)) * phi
+  st (for i being Element of I holds f.i = (proj (F,i)) * phi)
 proof
   let f be Homomorphism-Family of G, F;
-  let i be Element of I;
   consider phi being Homomorphism of G, product F such that
   A1: for g being Element of G
       holds (for j being Element of I holds (f.j).g = (proj (F,j)) . (phi.g))
   by Th42;
   take phi;
+  let i be Element of I;
   for g being Element of G holds ((proj (F,i)) * phi).g = (f.i).g
   proof
     let g be Element of G;
-    ((proj (F,i)) * phi).g = (proj (F, i)) . (phi.g) by FUNCT_2:15
-                          .= (f.i).g by A1;
-    hence thesis;
+    (f.i).g = (proj (F,i)) . (phi.g) by A1
+           .= ((proj (F,i)) * phi).g by FUNCT_2:15;
+    hence (f.i).g = ((proj (F,i)) * phi).g;
   end;
   hence f.i = (proj (F,i)) * phi;
 end;
 @ 
+
+\begin{theorem}
+The morphism formed by the universal property of the group product is
+unique.
+\end{theorem}
 
 <<Theorem: Uniqueness of group products>>=
 theorem
@@ -1073,6 +1079,25 @@ proof
 end;
 @
 
+\begin{definition}
+If $\mathcal{S}$ is a subgroup family of $\mathcal{F}$,
+then $\prod\mathcal{S}$ is a subgroup of $\mathcal{F}$.
+\end{definition}
+
+<<Definition: product of subgroup-family>>=
+definition
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be Subgroup-Family of F;
+  func product S -> strict Subgroup of product F equals product S;
+  coherence
+  proof
+    for i being Element of I holds S.i is Subgroup of F.i;
+    hence product S is strict Subgroup of product F by Th56;
+  end;
+end;
+@
+
 \begin{theorem}
 Let $G_{1}$ and $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be
 a group morphism. For any finite sequence $\mathcal{F}_{1}$ of elements
@@ -1341,3 +1366,165 @@ proof
   hence thesis by Th56;
 end;
 @ %def Th60
+
+\begin{theorem}
+Let $G\subgroup\prod\mathcal{F}$ be a subgroup,
+let $\mathcal{S}$ be a subgroup-family of $\mathcal{F}$ defined by
+$\mathcal{S}_{i} = (\pi_{i}\circ\iota)(G)$, and let
+$\varphi_{i}\colon G\to\mathcal{S}_{i}$ be a homomorphism family
+defined by $\varphi_{i} = \pi_{i}\circ\iota$.
+Then we have $\prod\varphi=\id_{G}$.
+\end{theorem}
+
+<<Theorem: if $G\subgroup\prod\mathcal{F}$, then $\prod(\pi_{i}\circ\iota_{G})=\id_{G}$>>=
+theorem Th64c:
+  for G being strict Subgroup of product F
+  for S st (for i being Element of I holds S.i = Image ((proj (F,i)) * (incl G)))
+  for f being Homomorphism-Family of G, S
+  st (for i being Element of I holds f.i = ((proj (F,i)) * (incl G)))
+  holds product f = id the carrier of G
+proof
+  let G be strict Subgroup of product F;
+  let S;
+  assume A1: for i being Element of I
+  holds S.i = Image ((proj (F,i)) * (incl G));
+  let f be Homomorphism-Family of G, S;
+  assume A2: for i being Element of I holds f.i = ((proj (F,i)) * (incl G));
+  A3: for g being Element of G
+  for i being Element of I
+  holds ((proj (F,i)) * (incl G)).g = ((proj (F, i)) * (product f)).g
+  proof
+    let g be Element of G;
+    let i be Element of I;
+    for j being Element of I holds S.j is Subgroup of F.j; 
+    then B1: (product S) is Subgroup of (product F) by Th56;
+    ((product f).g) in (product S);
+    then B2: ((product f).g) in (product F) by B1, GROUP_2:40;
+    B3: ((product f).g).i = (proj (F, i)).((product f).g) by B2, Def16
+                         .= ((proj (F, i)) * (product f)).g by FUNCT_2:15;
+    ((proj (F,i)) * (incl G)).g = (f.i).g by A2
+                               .= ((product f).g).i by Def17;
+    hence ((proj (F,i)) * (incl G)).g = ((proj (F, i)) * (product f)).g by B3;
+  end;
+  A4: for g being Element of product F st g in G
+  holds (product f).g = g
+  proof
+    let g be Element of product F;
+    assume B1: g in G;
+    ((product f).g) in (product F)
+    proof
+      for j being Element of I holds S.j is Subgroup of F.j;
+      then C1: (product S) is Subgroup of (product F) by Th56;
+      ((product f).g) in (product S) by B1, FUNCT_2:def 1, FUNCT_2:5;
+      hence ((product f).g) in (product F) by C1, GROUP_2:40;
+    end;
+    then reconsider foo=(product f).g as Element of product F;
+    B2: for i being Element of I
+    holds ((proj (F, i)) * (incl G)).g = g.i
+    proof
+      let i be Element of I;
+      ((proj (F,i)) * (incl G)).g
+       = (proj (F, i)). ((incl G).g) by B1, FUNCT_2:15
+      .= (proj (F, i)).((id the carrier of G).g) by DefIncl
+      .= (proj (F, i)).g by B1, FUNCT_1:18
+      .= g.i by Def16;
+      hence thesis;
+    end;
+    B3: dom g = I & dom foo = I by GROUP_19:3;
+    for i being Element of I holds foo.i = g.i
+    proof
+      let i be Element of I;
+      (proj (F, i)).foo = ((proj (F,i)) * (product f)).g by B1, FUNCT_2:15
+                       .= ((proj (F, i)) * (incl G)).g by B1, A3
+                       .= g.i by B2;
+      hence thesis by Def16;
+    end;
+    then foo = g by B3;
+    hence (product f).g = g;
+  end;
+  for x being object st x in the carrier of G holds (product f).x = x
+  proof
+    let x be object;
+    assume x in the carrier of G;
+    then B1: x in G;
+    then x in product F by GROUP_2:40;
+    hence (product f).x = x by B1, A4;
+  end;
+  hence product f = id the carrier of G;
+end;
+@ 
+
+\begin{theorem}
+If $H\subgroup G_{2}$ is a subgroup, if $\psi\colon G_{1}\to G_{2}$ and $\varphi\colon G_{1}\to H$
+are group morphisms such that $\psi=\varphi$,
+then $\Im(\psi)=\Im(\varphi)$.
+\end{theorem}
+
+<<Theorem: images of equal morphisms are equal (as subgroups)>>=
+theorem Th64d:
+  for G1,G2 being Group
+  for H being Subgroup of G2
+  for f1 being Homomorphism of G1,G2
+  for f2 being Homomorphism of G1,H
+  st f1 = f2
+  holds Image f1 = Image f2
+proof
+  let G1,G2 be Group;
+  let H be Subgroup of G2;
+  let f1 be Homomorphism of G1,G2;
+  let f2 be Homomorphism of G1,H;
+  assume A1: f1 = f2;
+  A2: Image f2 is strict Subgroup of G2 by GROUP_2:56;
+  for g being Element of G2
+  holds g in Image f1 iff g in Image f2
+  proof
+    let g be Element of G2;
+    hereby 
+      assume g in Image f1;
+      then consider a being Element of G1 such that
+      B1: g = f1.a
+      by GROUP_6:45;
+      thus g in Image f2 by A1, B1, GROUP_6:45;
+    end;
+    assume g in Image f2;
+    then consider a being Element of G1 such that
+    B2: g = f2.a
+    by GROUP_6:45;
+    thus g in Image f1 by A1, B2, GROUP_6:45;
+  end;
+  hence Image f1 = Image f2 by A2, GROUP_2:def 6;
+end;
+@ 
+
+\begin{theorem}
+Let $\varphi\colon G\to H$ be a group morphism.
+If for each $y\in H$ there is an $x\in G$ such that $y=\varphi(x)$,
+then $\varphi$ is surjective.
+\end{theorem}
+
+<<Theorem: criteria for group morphism being surjective>>=
+theorem Th64e:
+  for G1,G2 being Group
+  for phi being Homomorphism of G1,G2
+  st (for y being Element of G2 ex x being Element of G1 st phi.x=y)
+  holds phi is onto
+proof
+  let G1,G2 be Group;
+  let phi be Homomorphism of G1,G2;
+  assume Z1: for y being Element of G2 ex x being Element of G1 st phi.x=y;
+  for y being object st y in the carrier of G2
+  ex x being object st (x in the carrier of G1 & y = phi.x)
+  proof
+    let y be object;
+    assume B1: y in the carrier of G2;
+    then reconsider yy=y as Element of G2;
+    consider x being Element of G1 such that
+    B2: phi.x = yy by Z1;
+    take x;
+    thus x in the carrier of G1;
+    thus y = phi.x by B2;
+  end;
+  then rng phi = the carrier of G2 by FUNCT_2:10;
+  hence thesis;
+end;
+@ 
