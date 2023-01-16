@@ -1,0 +1,282 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Morphisms of Finite Products}
+
+Group morphisms are defined as preserving the group's binary operator,
+and then as a consequence it is shown that commutators are mapped to
+commutators, inverses are preserved, etc. However, one notable result
+missing from \mml{group6} is that $\varphi(\prod g_{i})=\prod\varphi(g_{i})$.
+
+<<Morphisms of Finite Products>>=
+begin :: Sequences of group elements under homomorphisms
+
+<<Theorem: finite product belongs to the subgroup if its multiplicands belong to the subgroup>>
+
+<<Theorem: homomorphisms preserve arbitrary finite products>>
+
+<<Theorem: existence of finite product under homomorphism>>
+
+<<Theorem: existence of finite sequence with powers under morphisms>>
+@
+
+\begin{theorem}
+Let $H\subgroup G$, let $g_{i}\in G$ be a finite sequence of group
+elements and $k_{i}\in\ZZ$ be a finite sequence of equal length.
+If for each $i$ we have $g_{i}\in H$, then $\prod g_{i}^{k_{i}}\in H$.
+\end{theorem}
+
+<<Theorem: finite product belongs to the subgroup if its multiplicands belong to the subgroup>>=
+theorem FrobProdSubgroup:
+  for G being Group
+  for H being Subgroup of G
+  for hs being FinSequence of the carrier of H
+  for gs being FinSequence of the carrier of G st gs = hs
+  for ks being FinSequence of INT st len ks = len gs
+  holds Product (gs |^ ks) = Product (hs |^ ks)
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let hs be FinSequence of the carrier of H;
+  let gs be FinSequence of the carrier of G;
+  assume A1: gs = hs;
+  let ks be FinSequence of INT;
+  assume len ks = len gs;
+  A3: len (gs |^ ks) = len (hs |^ ks)
+  proof
+    thus len (hs |^ ks) = len hs by GROUP_4:def 3
+                       .= len gs by A1
+                       .= len (gs |^ ks) by GROUP_4:def 3;
+  end;
+  A4: dom gs = dom hs by A1;
+  for i being Nat st 1 <= i & i <= len (hs |^ ks)
+  holds (hs |^ ks).i = (gs |^ ks).i
+  <<Proof step: $\forall i\in\NN, 1\leq i\leq|g|\implies g_{i}^{k_{i}}\in H$>>
+  
+  then hs |^ ks = gs |^ ks by A3, FINSEQ_1:def 17;
+  hence thesis by GROUP_19:45;
+end;
+@ %def FrobProdSubgroup
+
+<<Proof step: $\forall i\in\NN, 1\leq i\leq|g|\implies g_{i}^{k_{i}}\in H$>>=
+proof
+  let i be Nat;
+  assume B1: 1 <= i;
+  assume i <= len (hs |^ ks);
+  then i <= len hs by GROUP_4:def 3;
+  then i in Seg (len hs) by B1, FINSEQ_1:1;
+  then B2: i in dom hs by FINSEQ_1:def 3;
+  B3: hs /. i = gs /. i
+  proof
+    reconsider hsi = hs/.i as Element of G by GROUP_2:42;
+    C1: i in dom gs & dom gs = dom hs by B2, A4;
+    then C2: gs.i = gs/.i by PARTFUN1:def 6;
+    hs.i = gs.i by A1;
+    then gs/.i = hsi by C1, C2, PARTFUN1:def 6;
+    hence thesis;
+  end;
+  (hs |^ ks).i = (hs /. i) |^ (@ (ks /. i)) by B2, GROUP_4:def 3
+              .= (gs /. i) |^ (@ (ks /. i)) by B3, GROUP_4:2
+              .= (gs |^ ks).i by A4, B2, GROUP_4:def 3;
+  hence (hs |^ ks).i = (gs |^ ks).i;
+end;
+@ 
+
+\begin{theorem}
+Let $G_{1}$, $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be a
+group morphism, and let $g_{i}$ be a finite sequence of elements of $G_{1}$.
+For any sequence $h_{i}$ of $G_{2}$ such that it is of the same length
+as $g_{i}$ and defined by $h_{i}=\varphi(g_{i})$, then $\prod h_{i}=\varphi\left(\prod g_{i}\right)$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+We prove this by induction on the length of the finite sequence. The
+base case ($A_{3}$) is trivial: the empty sequence gives the identity
+element.
+The inductive case ($A_{4}$) is again straightforward, since we can
+decompose the product into the inductive hypothesis multiplied by the
+product of a single element. The result follows.
+\end{proof}
+
+<<Theorem: homomorphisms preserve arbitrary finite products>>=
+theorem ThMappingFrobProdProperty:
+  for G1, G2 being Group
+  for phi being Homomorphism of G1, G2
+  for F1 being FinSequence of the carrier of G1
+  for F2 being FinSequence of the carrier of G2
+  st len F1 = len F2 & F2 = phi * F1
+  holds Product F2 = phi.(Product F1)
+proof
+  let G1, G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let F1 be FinSequence of the carrier of G1;
+  let F2 be FinSequence of the carrier of G2;
+  assume len F1 = len F2;
+  assume A2: F2 = phi * F1;
+  set n1 = len F1;
+  defpred P1[FinSequence of the carrier of G1] means
+  phi.(Product $1) = Product (phi * $1);
+  A3: P1[ <*>(the carrier of G1) ]
+  proof
+    phi.(Product <*>(the carrier of G1))
+     = phi.(1_G1) by GROUP_4:8
+    .= 1_(G2) by GROUP_6:31
+    .= Product (<*>(the carrier of G2)) by GROUP_4:8;
+    hence thesis;
+  end;
+  A4: for p0 being FinSequence of the carrier of G1
+  for x being Element of the carrier of G1 st P1[p0]
+  holds P1[(p0 ^ <* x *>)]
+  proof
+    let p0 be FinSequence of the carrier of G1;
+    let x be Element of the carrier of G1;
+    assume B1: P1[p0];
+    Product (p0 ^ <* x *>) = (Product p0) * x by GROUP_4:6;
+    then phi.(Product (p0 ^ <* x *>))
+     = (phi.(Product p0)) * (phi.x) by GROUP_6:def 6
+    .= (Product (phi * p0)) * (phi.x) by B1
+    .= Product ((phi * p0) ^ <* phi.x *>) by GROUP_4:6;
+    hence P1[(p0 ^ <* x *>)] by FINSEQOP:8;
+  end;
+  A5: for p0 being FinSequence of the carrier of G1 holds P1[p0]
+  from FINSEQ_2:sch 2(A3, A4);
+  F2 = phi * F1 by A2;
+  hence Product F2 = phi.(Product F1) by A5;
+end;
+@ %def ThMappingFrobProdProperty
+
+\begin{theorem}
+When $\varphi\colon G_{1}\to G_{2}$ is a group morphism and $g_{i}$ is a
+finite sequence of elements of $G_{1}$, there exists a finite sequence $h_{i}$
+of elements of $G_{2}$ defined by $h_{i}=\varphi(g_{i})$ for each $i$.
+\end{theorem}
+
+<<Theorem: existence of finite product under homomorphism>>=
+theorem ThMappingFrobProd:
+  for G1, G2 being Group
+  for phi being Homomorphism of G1, G2
+  for F1 being FinSequence of the carrier of G1
+  ex F2 being FinSequence of the carrier of G2
+  st len F1 = len F2
+   & F2 = phi * F1
+   & Product F2 = phi.(Product F1)
+proof
+  let G1, G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let F1 be FinSequence of the carrier of G1;
+  set n1 = len F1;
+  defpred P[object, object] means ex k being Nat st k = $1 &
+  $2 = phi.(F1.k);
+  A1: for k being Nat st k in Seg n1 holds ex x being object st P[k, x]
+  proof
+    let k be Nat;
+    assume k in Seg n1;
+    consider x being object such that
+    B1: x = phi.(F1.k);
+    take x;
+    thus P[k, x] by B1;
+  end;
+
+  consider p being FinSequence such that
+  A2: dom p = Seg n1 and
+  A3: for k being Nat st k in Seg n1 holds P[k, p.k]
+  from FINSEQ_1:sch 1(A1);
+  A4: len F1 = len p by A2, FINSEQ_1:def 3;
+  A5: p = phi * F1
+  proof
+    B1: len p = len (phi * F1) by A4, FINSEQ_2:33;
+    for k being Nat st 1 <= k & k <= len p holds p.k = (phi * F1).k
+    proof
+      let k be Nat;
+      assume B2: 1 <= k;
+      assume k <= len p;
+      then B3: k in Seg n1 by A4, B2, FINSEQ_1:1;
+      then B4: k in dom F1 by FINSEQ_1:def 3;
+      P[k, p.k] by A3, B3;
+      then ex k0 being Nat st k0 = k & p.k = phi.(F1.k0);
+      then B5: p.k = phi.(F1.k);
+      (phi * F1).k = phi.(F1.k) by B4, FUNCT_1:13
+                  .= p.k by B5;
+      hence p.k = (phi * F1).k;
+    end;
+    hence thesis by B1, FINSEQ_1:def 17;
+  end;
+  then rng p c= the carrier of G2 by FINSEQ_1:def 4;
+  then reconsider p as FinSequence of the carrier of G2 by FINSEQ_1:def 4;
+  take F2 = p;
+
+  thus len F1 = len F2 by A4;
+  thus F2 = phi * F1 by A5;
+  thus thesis by A4,A5,ThMappingFrobProdProperty;
+end;
+@ %def ThMappingFrobProd
+
+\begin{theorem}
+For any group morphism $\varphi\colon G_{1}\to G_{2}$ and any sequence
+$g_{i}$ of elements of $G_{1}$ and any sequence of integers $k_{i}$ (of
+equal length as the sequence $g_{i}$), there exists a sequence $h_{i}$
+of $G_{2}$ such that $h_{i}=\varphi(g_{i})$ and $\prod h_{i}^{k_{i}}=\varphi\left(\prod g_{i}^{k_{i}}\right)$.
+\end{theorem}
+
+<<Theorem: existence of finite sequence with powers under morphisms>>=
+theorem ThMappingFrobProd2:
+  for G1, G2 being Group
+  for phi being Homomorphism of G1, G2
+  for F1 being FinSequence of the carrier of G1
+  for ks being FinSequence of INT st len F1 = len ks
+  ex F2 being FinSequence of the carrier of G2
+  st len F1 = len F2
+   & F2 = phi * F1
+   & Product (F2 |^ ks) = phi.(Product (F1 |^ ks))
+proof
+  let G1, G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let F1 be FinSequence of the carrier of G1;
+  let ks be FinSequence of INT;
+  assume len F1 = len ks;
+  consider F2 being FinSequence of the carrier of G2 such that
+  A2: len F1 = len F2 & F2 = phi * F1 & Product F2 = phi.(Product F1)
+  by ThMappingFrobProd;
+  take F2;
+  thus len F1 = len F2 & F2 = phi * F1 by A2;
+  A3: len (F1 |^ ks) = len (F1) by GROUP_4:def 3
+                    .= len F2 by A2
+                    .= len (F2 |^ ks) by GROUP_4:def 3;
+  A4: len (phi * (F1 |^ ks)) = len (F1 |^ ks) by FINSEQ_2:33;
+  for k being Nat st k in dom (F2 |^ ks)
+  holds (phi * (F1 |^ ks)).k = (F2 |^ ks).k
+  <<Proof step: $\varphi(g_{i}^{k_{i}})=h_{i}^{k_{i}}$>>
+  then phi * (F1 |^ ks) = F2 |^ ks by A3, A4, FINSEQ_2:9;
+  hence thesis by A3, ThMappingFrobProdProperty;
+end;
+@ %def ThMappingFrobProd2
+
+\begin{proof}[Proof step]
+Most of our work is spent showing that the index $i$ is ``in the
+domain'' of the term in the sequences. Once we have that,
+\end{proof}
+
+<<Proof step: $\varphi(g_{i}^{k_{i}})=h_{i}^{k_{i}}$>>=
+proof
+  let k be Nat;
+  assume k in dom (F2 |^ ks);
+  then k in Seg (len (F2 |^ ks)) by FINSEQ_1:def 3;
+  then k in Seg (len (F1 |^ ks)) by A3;
+  then B1: k in dom (F1 |^ ks) by FINSEQ_1:def 3;
+  then k in Seg (len (F1 |^ ks)) by FINSEQ_1:def 3;
+  then k in Seg (len (F1)) by GROUP_4:def 3;
+  then B2: k in dom F1 by FINSEQ_1:def 3;
+  then k in Seg (len (F1)) by FINSEQ_1:def 3;
+  then k in Seg (len (F2)) by A2;
+  then B3: k in dom F2 by FINSEQ_1:def 3;
+  F1 /. k in G1 & dom phi = the carrier of G1 by FUNCT_2:def 1;
+  then B4: F1 /. k in dom phi;
+  set g = (F1 /. k);
+  set n = (@ (ks /. k));
+  (phi * (F1 |^ ks)).k = phi.((F1 |^ ks).k) by B1, FUNCT_1:13
+                      .= phi.(g |^ n) by B2,GROUP_4:def 3
+                      .= (phi /. g) |^ n by GROUP_6:37
+                      .= ((phi * F1)/.k) |^ n by B2,B4,PARTFUN2:4
+                      .= (F2 /. k) |^ n by A2
+                      .= (F2 |^ ks).k by B3, GROUP_4:def 3;
+  hence (phi * (F1 |^ ks)).k = (F2 |^ ks).k;
+end;
+@ 

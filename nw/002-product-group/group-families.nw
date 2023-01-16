@@ -36,8 +36,6 @@ begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Se
 
 <<Register: Group-Family is Group-yielding>>
 
-<<Definition: Group-Family>>
-
 <<Reservations of group families>>
 
 <<Theorem: empty family of groups>>
@@ -78,7 +76,13 @@ If a function is Group-yielding, then it is magma-yielding and 1-sorted-yielding
 <<Register: Group-yielding implies magma-yielding and 1-sorted-yielding>>=
 registration
   cluster Group-yielding -> 1-sorted-yielding for Function;
-  coherence;
+  coherence
+  proof
+    let IT be Function;
+    assume IT is Group-yielding;
+    then for x being object st x in rng IT holds x is 1-sorted;
+    hence thesis by PRALG_1:def 11;
+  end;
   cluster Group-yielding -> multMagma-yielding for Function;
   coherence;
 end;
@@ -90,7 +94,7 @@ magma-family of $I$, then it is group-yielding.
 \end{theorem}
 
 <<Theorem: associative Group-like magma-Families are Group-yielding>>=
-Lm1:
+theorem Th5:
   for I being set
   for F being associative Group-like multMagma-Family of I
   holds F is Group-yielding
@@ -107,7 +111,7 @@ proof
   end;
   hence F is Group-yielding;
 end;
-@ %def Lm1
+@ %def Th5
 
 \begin{registration}
 Let $\mathcal{F}$ be a magma-family indexed by a set $I$.
@@ -118,7 +122,7 @@ If $\mathcal{F}$ is assocative group-like, then it is also group-yielding.
 registration
   let I be set;
   cluster associative Group-like -> Group-yielding for multMagma-Family of I;
-  coherence by Lm1;
+  coherence by Th5;
 end;
 @
 
@@ -174,7 +178,7 @@ then $\mathcal{F}_{i}$ is a group.
 \end{theorem}
 
 <<Theorem: $\mathcal{F}$ is group-yielding family indexed by $I$ and $i\in I$, then $\mathcal{F}_{i}$ is a group>>=
-theorem Lm4:
+theorem Th6:
   for I being non empty set
   for F being Group-yielding ManySortedSet of I
   for i being Element of I
@@ -187,7 +191,8 @@ proof
   then F.i in rng F by FUNCT_1:3;
   hence F.i is Group by Def1;
 end;
-@ %def Lm4
+@ %def Th6
+
 \begin{registration}
 If $I\neq\emptyset$ is a set, $i\in I$, and $\mathcal{F}$ is a
 group-yielding many-sorted set indexed by $I$, then we should register
@@ -201,7 +206,7 @@ registration
   let i be Element of I;
   let F be Group-yielding ManySortedSet of I;
   cluster (F . i) -> Group-like associative unital non empty for multMagma;
-  correctness by Lm4;
+  correctness by Th6;
 end;
 @
 
@@ -282,19 +287,6 @@ registration
 end;
 @ 
 
-\begin{definition}
-Let $I$ be a set. Then we define a \define{Group-Family} of $I$ to be a
-Group-yielding family $\mathcal{F}$ over $I$, i.e., for each $i\in I$ we
-have $\mathcal{F}_{i}$ be a group.
-\end{definition}
-
-<<Definition: Group-Family>>=
-definition
-  let I be set;
-  mode Group-Family of I is Group-yielding ManySortedSet of I;
-end;
-@ %def Group-Family
-
 \begin{reserve}
 Let $I$ be a non-empty set, $i\in I$, $\mathcal{F}$ be a group family
 indexed by $I$, and $G$ be an arbitrary group.
@@ -339,7 +331,7 @@ $\mathcal{F}_{i}=G$ for every $i$.
 \end{proof}
 
 <<Theorem: $\mathcal{F}_{i}=G$ is a group-family>>=
-theorem Th4:
+theorem Th9:
   for n being Nat
   holds Seg n --> G is Group-Family of Seg n
 proof
@@ -360,7 +352,7 @@ proof
     hence Seg n --> G is Group-Family of Seg n;
   end;
 end;
-@ %def Th4
+@ %def Th9
 
 \begin{registration}
 We can now register this fact, since we will want to write things like
@@ -387,7 +379,7 @@ registration
   let G be Group;
   let n be Nat;
   cluster (Seg n --> G) -> Group-yielding;
-  correctness by Th4;
+  correctness by Th9;
 end;
 @ 
 

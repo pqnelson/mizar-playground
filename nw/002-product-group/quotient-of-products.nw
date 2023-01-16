@@ -1,0 +1,441 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Quotients of Product Groups}
+
+Given a family of groups $\mathcal{F}$ and a family of normal subgroups
+$\mathcal{N}$, we have
+$\prod(\mathcal{F}/\mathcal{N})\iso(\prod\mathcal{F})/(\prod\mathcal{N})$.
+The proof of this fun fact requires introducing a notion of a family of
+morphisms $\varphi_{i}\colon\mathcal{F}_{i}\to\mathcal{F}_{i}/\mathcal{N}_{i}$,
+which requires defining a notion of a family of morphisms.
+
+<<Quotients of Product Groups>>=
+begin :: Quotients of Product Groups
+
+<<Definition: Family of morphisms between families of groups>>
+
+<<Definition: Kernel of a morphism of group families>>
+
+<<Definition: Image of a morphism of group families>>
+
+<<Theorem: Kernel of product morphism is product of kernels>>
+
+<<Theorem: Image of product morphism is product of images>>
+@
+
+\begin{definition}
+Let $I\neq\emptyset$ be a non-empty set, let $\mathcal{F}$ and
+$\mathcal{G}$ be two families of groups indexed by $I$, let
+$\varphi_{i}\colon\mathcal{F}_{i}\to\mathcal{G}_{i}$ be a family of
+group morphisms. We define the \define{Product Morphism}
+$\prod\varphi\colon\prod\mathcal{F}\to\prod\mathcal{G}$ to be defined by
+\begin{equation}
+\pi^{(\mathcal{G})}_{i}\circ\left(\prod\varphi\right) = \varphi_{i}\circ\pi^{(\mathcal{F})}_{i}
+\end{equation}
+for each $i\in I$, and $\pi_{i}$ be the projection morphism (with family
+indicated by parenthetic superscript).
+\end{definition}
+
+<<Definition: Family of morphisms between families of groups>>=
+definition
+  let I be non empty set;
+  let F1, F2 be Group-Family of I;
+  let f be Homomorphism-Family of F1, F2;
+  func product f -> Homomorphism of product F1, product F2 means :Def19:
+  for i being Element of I
+  holds (proj (F2, i)) * it = (f.i) * (proj (F1, i));
+  existence
+  proof
+    deffunc Fun(Element of I) = (f.$1) * (proj (F1, $1));
+    A1: for i being Element of I
+    holds Fun(i) is Homomorphism of product F1, F2.i;
+    consider phi being Homomorphism-Family of product F1, F2 such that
+    A2: for i being Element of I holds phi.i = Fun(i)
+    from RHomFamSch(A1);
+    take psi = product phi;
+    thus for i being Element of I
+    holds (proj (F2, i)) * psi = (f.i) * (proj (F1, i))
+    proof
+      let i be Element of I;
+      for g being Element of product F1
+      holds ((proj (F2, i)) * psi).g = ((f.i) * (proj (F1, i))).g
+      proof
+        let g be Element of product F1;
+        dom psi = the carrier of product F1 by FUNCT_2:def 1;
+        then B1: g in dom psi;
+        Fun(i).g = (phi.i).g by A2
+                .= (psi.g).i by Def17
+                .= (proj (F2, i)).(psi.g) by Def16
+                .= ((proj (F2, i)) * psi).g by B1, FUNCT_1:13;
+        hence ((proj (F2, i)) * psi).g = ((f.i) * (proj (F1, i))).g;
+      end;
+      hence (proj (F2, i)) * psi = (f.i) * (proj (F1, i));
+    end;
+
+  end;
+  uniqueness
+  proof
+    for phi1,phi2 being Homomorphism of product F1, product F2
+    st (for i being Element of I
+        holds (proj (F2, i)) * phi1 = (f.i) * (proj (F1, i)))
+    &  (for i being Element of I
+        holds (proj (F2, i)) * phi2 = (f.i) * (proj (F1, i)))
+    holds phi1 = phi2
+    proof
+      let phi1,phi2 be Homomorphism of product F1, product F2;
+      assume A1: for i being Element of I
+      holds (proj (F2, i)) * phi1 = (f.i) * (proj (F1, i));
+      assume A2: for i being Element of I
+      holds (proj (F2, i)) * phi2 = (f.i) * (proj (F1, i));
+
+      A3: dom phi1 = the carrier of product F1
+        & dom phi2 = the carrier of product F1 by FUNCT_2:def 1;
+      for g being Element of product F1 holds phi1.g = phi2.g
+      proof
+        let g be Element of product F1;
+        A4: dom (phi1.g) = I & dom (phi2.g) = I by GROUP_19:3;
+        for i being Element of I holds (phi1.g).i = (phi2.g).i
+        proof
+          let i be Element of I;
+          thus (phi1.g).i = (proj (F2,i)).(phi1.g) by Def16
+                         .= ((proj (F2, i)) * phi1).g by A3, FUNCT_1:13
+                         .= ((f.i) * (proj (F1, i))).g by A1
+                         .= ((proj (F2, i)) * phi2).g by A2
+                         .= (proj (F2, i)).(phi2.g) by A3,FUNCT_1:13
+                         .= (phi2.g).i by Def16;
+        end;
+        hence phi1.g = phi2.g by A4;
+      end;
+      hence phi1 = phi2;
+    end;
+    hence thesis;
+  end;
+end;
+@ %def Def19
+
+\begin{definition}
+Let $\varphi_{i}\colon\mathcal{F}_{i}\to\mathcal{G}_{i}$ be a family of
+group morphisms. We define its \define{Kernel} to be a family of strict
+normal subgroups $\mathcal{N}_{i}\normalSubgroup\mathcal{F}_{i}$ where
+$\mathcal{N}_{i}=\ker(\varphi_{i})$.
+\end{definition}
+
+<<Definition: Kernel of a morphism of group families>>=
+definition
+  let I be non empty set;
+  let F1, F2 be Group-Family of I;
+  let f be Homomorphism-Family of F1, F2;
+  func Ker f -> componentwise_strict normal Subgroup-Family of F1 means
+  :Def20:
+  for i being Element of I holds it.i = Ker (f.i qua Homomorphism of F1.i,F2.i);
+  existence
+  proof
+    defpred P[Element of I, Group]
+    means $2 = Ker (f.$1 qua Homomorphism of F1.$1,F2.$1);
+    A1: for i being Element of I ex H being Subgroup of F1.i st P[i, H];
+    consider IT being Subgroup-Family of F1 such that
+    A2: for i being Element of I holds P[i, IT.i]
+    from SubFamEx(A1);
+    for i being Element of I holds IT.i is strict Subgroup of F1.i
+    & IT.i is normal Subgroup of F1.i
+    proof
+      let i be Element of I;
+      Ker (f.i qua Homomorphism of F1.i,F2.i) is strict normal Subgroup of F1.i;
+      hence thesis by A2;
+    end;
+    then reconsider IT as componentwise_strict normal Subgroup-Family of F1
+    by Def5, Def8; ::Def7
+    take IT;
+    thus thesis by A2;
+  end;
+  uniqueness
+  proof
+    thus for N1,N2 being componentwise_strict normal Subgroup-Family of F1
+    st (for i being Element of I
+        holds N1.i = Ker (f.i qua Homomorphism of F1.i,F2.i))
+    & (for i being Element of I
+       holds N2.i = Ker (f.i qua Homomorphism of F1.i,F2.i))
+    holds N1 = N2
+    proof
+      let N1,N2 be componentwise_strict normal Subgroup-Family of F1;
+      assume A1: for i being Element of I
+      holds N1.i = Ker (f.i qua Homomorphism of F1.i,F2.i);
+      assume A2: for i being Element of I
+      holds N2.i = Ker (f.i qua Homomorphism of F1.i,F2.i);
+      A3: dom N1 = I & dom N2 = I by PARTFUN1:def 2;
+      for i being Element of I holds N1.i = N2.i
+      proof
+        let i be Element of I;
+        thus N1.i = Ker (f.i qua Homomorphism of F1.i,F2.i) by A1
+                 .= N2.i by A2;
+      end;
+
+      hence N1 = N2 by A3;
+    end;
+  end;
+end;
+@ %def Def20
+
+\begin{definition}
+We similarly define the \define{Image} for a family of group morphisms
+$\varphi_{i}\colon\mathcal{F}_{i}\to\mathcal{G}_{i}$ to be a strict
+subgroup family of its codomain
+$\mathcal{I}_{i}\subgroup\mathcal{G}_{i}$ such that for each $i\in I$
+we have $\Im(\varphi_{i})=\mathcal{I}_{i}$.
+\end{definition}
+
+<<Definition: Image of a morphism of group families>>=
+definition
+  let I be non empty set;
+  let F1, F2 be Group-Family of I;
+  let f be Homomorphism-Family of F1, F2;
+  func Image f -> componentwise_strict Subgroup-Family of F2 means
+  :Def21:
+  for i being Element of I
+  holds it.i = Image (f.i qua Homomorphism of F1.i,F2.i);
+  existence
+  proof
+    defpred P[Element of I, Group]
+    means $2 = Image (f.$1 qua Homomorphism of F1.$1,F2.$1);
+    A1: for i being Element of I ex H being Subgroup of F2.i st P[i, H];
+    consider IT being Subgroup-Family of F2 such that
+    A2: for i being Element of I holds P[i, IT.i]
+    from SubFamEx(A1);
+    for i being Element of I holds IT.i is strict Subgroup of F2.i
+    proof
+      let i be Element of I;
+      Image (f.i qua Homomorphism of F1.i,F2.i) is strict Subgroup of F2.i;
+      hence thesis by A2;
+    end;
+    then reconsider IT as componentwise_strict Subgroup-Family of F2
+    by Def5;
+    take IT;
+    thus thesis by A2;
+  end;
+  uniqueness
+  proof
+    thus for N1,N2 being componentwise_strict Subgroup-Family of F2
+    st (for i being Element of I holds N1.i = Image (f.i qua Homomorphism of F1.i,F2.i))
+    & (for i being Element of I holds N2.i = Image (f.i qua Homomorphism of F1.i,F2.i))
+    holds N1 = N2
+    proof
+      let N1,N2 be componentwise_strict Subgroup-Family of F2;
+      assume A1: for i being Element of I
+      holds N1.i = Image (f.i qua Homomorphism of F1.i,F2.i);
+      assume A2: for i being Element of I
+      holds N2.i = Image (f.i qua Homomorphism of F1.i,F2.i);
+      A3: dom N1 = I & dom N2 = I by PARTFUN1:def 2;
+      for i being Element of I holds N1.i = N2.i
+      proof
+        let i be Element of I;
+        thus N1.i = Image (f.i qua Homomorphism of F1.i,F2.i) by A1
+                 .= N2.i by A2;
+      end;
+      hence N1 = N2 by A3;
+    end;
+  end;
+end;
+@ %def Def21
+
+\begin{theorem}
+Let $\varphi\colon\mathcal{F}\to\mathcal{G}$ be a morphism between two
+families of groups. Then $\ker(\prod\varphi)=\prod\ker(\varphi)$.
+\end{theorem}
+
+<<Theorem: Kernel of product morphism is product of kernels>>=
+theorem Th81:
+  for F1,F2 being Group-Family of I
+  for f being Homomorphism-Family of F1,F2
+  holds Ker (product f) = product (Ker f)
+proof
+  let F1,F2 be Group-Family of I;
+  let f be Homomorphism-Family of F1,F2;
+  for g being Element of product F1
+  holds g in Ker (product f) iff g in product (Ker f)
+  proof
+    let g be Element of product F1;
+    hereby 
+      assume A1: g in Ker (product f);
+      A2: dom g = I by GROUP_19:3;
+      for i being Element of I holds g.i in (Ker f).i
+      proof
+        let i be Element of I;
+        B1: dom (product f) = the carrier of product F1 & dom (proj
+        (F1,i)) = the carrier of product F1 by FUNCT_2:def 1;
+        B2: (proj (F2, i) * (product f)).g = ((f.i) * (proj (F1, i))).g by Def19
+        .= (f.i).((proj (F1, i)).g) by B1, FUNCT_1:13
+        .= (f.i).(g.i) by Def16;
+        (proj (F2, i) * (product f)).g = (proj (F2, i)).((product f).g) by B1, FUNCT_1:13
+        .= (proj  (F2, i)).(1_(product F2)) by A1, GROUP_6:41
+        .= (1_(product F2)).i by Def16
+        .= 1_(F2.i) by GROUP_7:6;
+        then (f.i).(g.i) = 1_(F2.i) by B2;
+        then (g/.i) in Ker ((f.i) qua Homomorphism of F1.i,F2.i) by GROUP_6:41;
+        hence g.i in (Ker f).i by Def20;
+      end;
+      hence g in product (Ker f) by A2, Th49;
+    end;
+    assume A1: g in product (Ker f);
+    A2: dom (1_(product F2)) = I & dom ((product f).g) = I & dom g = I by GROUP_19:3;
+    for i being Element of I holds ((product f).g).i = (1_(product F2)).i
+    proof
+      let i be Element of I;
+      B1: dom (proj (F1, i)) = the carrier of product F1
+      & dom (product f) = the carrier of product F1 by FUNCT_2:def 1;
+      g.i in (Ker f).i by A1, GROUP_19:5;
+      then B2: g.i in Ker (f.i qua Homomorphism of F1.i,F2.i) by Def20;
+      B3: (proj (F2, i) * (product f)).g = ((f.i) * (proj (F1, i))).g by Def19
+                                        .= (f.i).((proj (F1, i)).g) by B1, FUNCT_1:13
+                                        .= (f.i).(g.i) by Def16;
+      (proj (F2, i) * (product f)).g = (proj (F2, i)).((product f).g) by B1,FUNCT_1:13
+                                    .= ((product f).g).i by Def16;
+      then ((product f).g).i = (f.i).(g/.i) by B3
+                            .= 1_(F2.i) by B2, GROUP_6:41;
+      hence thesis by GROUP_7:6;
+    end;
+    then ((product f).g) = 1_(product F2) by A2;
+    hence g in Ker (product f) by GROUP_6:41;
+  end;
+  hence Ker (product f) = product (Ker f);
+end;
+@ %def Th81
+
+
+\begin{theorem}
+Let $\varphi\colon\mathcal{F}\to\mathcal{G}$ be a morphism between two
+families of groups. Then $\Im(\prod\varphi)=\prod\Im(\varphi)$.
+\end{theorem}
+
+<<Theorem: Image of product morphism is product of images>>=
+:: Hungerford, Algebra, Chapter I, Section 8, Theorem 8.10
+theorem Th82:
+  for F1,F2 being Group-Family of I
+  for f being Homomorphism-Family of F1,F2
+  holds Image (product f) = product (Image f)
+proof
+  let F1,F2 be Group-Family of I;
+  let f be Homomorphism-Family of F1,F2;
+  for g being Element of product F2
+  holds g in Image (product f) iff g in product (Image f)
+  proof
+    let g be Element of product F2;
+    hereby 
+      assume g in Image (product f);
+      then consider a being Element of product F1 such that
+      A2: g = (product f).a
+      by GROUP_6:45;
+      A3: dom g = I & dom ((product f).a) = I by GROUP_19:3;
+      for i being Element of I holds g.i in (Image f).i
+      proof
+        let i be Element of I;
+        B1: dom (product f) = the carrier of product F1
+        & dom (proj (F1,i)) = the carrier of product F1 by FUNCT_2:def 1;
+        B2: g.i = (proj (F2, i)).((product f).a) by A2,Def16
+               .= ((proj (F2, i)) * (product f)).a by B1,FUNCT_1:13;
+        ((f.i) * (proj (F1, i))).a = (f.i).((proj (F1, i)).a) by B1,FUNCT_1:13
+                                  .= (f.i).(a.i) by Def16;
+        then g.i = (f.i).(a/.i) by B2, Def19;
+        then g.i in Image (f.i qua Homomorphism of F1.i,F2.i) by GROUP_6:45;
+        hence g.i in (Image f).i by Def21;
+      end;
+      hence g in product (Image f) by A3, Th49;
+    end;
+    defpred P[Element of I, object] means $2 is Element of F1.$1 & g.$1 = (f.$1).$2;
+    assume A1: g in product (Image f);
+    A2: for i being Element of I ex ai being object st P[i, ai]
+    proof
+      let i be Element of I;
+      g.i in (Image f).i by A1, GROUP_19:5;
+      then g.i in Image (f.i qua Homomorphism of F1.i,F2.i) by Def21;
+      then ex ai being Element of F1.i st g.i = (f.i) . ai by GROUP_6:45;
+      hence thesis;
+    end;
+    consider a being ManySortedSet of I such that
+    A3: for i being Element of I holds P[i, a.i]
+    from PBOOLE:sch 6(A2);
+    A4: dom a = I by PARTFUN1:def 2;
+    for i being Element of I holds a.i in F1.i
+    proof
+      let i be Element of I;
+      P[i, a.i] by A3;
+      then a.i is Element of F1.i;
+      hence a.i in F1.i;
+    end;
+    then a in product F1 by A4, Th49;
+    then reconsider a as Element of product F1;
+    A5: dom g = I & dom ((product f).a) = I by GROUP_19:3;
+    for i being Element of I holds g.i = ((product f).a).i
+    proof
+      let i be Element of I;
+      B1: dom (product f) = the carrier of product F1
+      & dom (proj (F1,i)) = the carrier of product F1 by FUNCT_2:def 1;
+      ((product f).a).i = (proj (F2,i)).((product f).a) by Def16
+                       .= ((proj (F2,i)) * (product f)).a by B1, FUNCT_1:13
+                       .= ((f.i) * (proj (F1, i))).a by Def19
+                       .= (f.i).((proj (F1, i)).a) by B1, FUNCT_1:13
+                       .= (f.i).(a.i) by Def16
+                       .= g.i by A3;
+      hence g.i = ((product f).a).i;
+    end;
+    then g = (product f).a by A5;
+    hence g in Image (product f) by GROUP_6:45;
+  end;
+  hence Image (product f) = product (Image f);
+end;
+@ %def Th82
+
+\begin{theorem}
+Let $\mathcal{S}$ be a componentwise-strict normal subgroup-family of $\mathcal{F}$.
+Then $(\prod\mathcal{F})/(\prod\mathcal{S})\iso\prod(\mathcal{S}/\mathcal{F})$.
+\end{theorem}
+
+<<Theorem: Quotient of products is isomorphic to the product of quotients>>=
+theorem Th93:
+  for S being componentwise_strict normal Subgroup-Family of F
+  holds (product F)./.(product S), product (F./.S) are_isomorphic
+proof
+  let S be componentwise_strict normal Subgroup-Family of F;
+  deffunc Fun(Element of I) = nat_hom (S.$1);
+  A1: for i being Element of I holds Fun(i) is Homomorphism of F.i, (F./.S).i
+  proof
+    let i be Element of I;
+    (F./.S).i = (F.i)./.(S.i) by Def9;
+    hence Fun(i) is Homomorphism of F.i, (F./.S).i;
+  end;
+  consider f being Homomorphism-Family of F, (F./.S) such that
+  A2: for i being Element of I holds f.i = Fun(i)
+  from HomFamSch(A1);
+  Ker f = S :: strictness needed for this particular claim
+  proof
+    B1: dom (Ker f) = I & dom S = I by PARTFUN1:def 2;
+    for i being Element of I holds (Ker f).i = S.i
+    proof
+      let i be Element of I;
+      C1: f.i = nat_hom (S.i) by A2;
+      S.i = Ker (nat_hom (S.i qua normal Subgroup of F.i)) by GROUP_6:43
+         .= Ker (f.i qua Homomorphism of F.i,(F./.S).i) by C1,Def9
+         .= (Ker f).i by Def20;
+      hence (Ker f).i = S.i;
+    end;
+    hence thesis by B1;
+  end;
+  then A3: Ker (product f) = product S by Th81;
+  A5: (Image f) = (F./.S)
+  proof
+    B1: dom (Image f) = I & dom (F./.S) = I by PARTFUN1:def 2;
+    for i being Element of I holds (Image f).i = (F./.S).i
+    proof
+      let i be Element of I;
+      C1: f.i = nat_hom (S.i) by A2;
+      thus (Image f).i = Image (f.i qua Homomorphism of F.i,(F./.S).i) by Def21
+                      .= Image (nat_hom (S.i)) by C1,Def9
+                      .= (F.i)./.(S.i) by GROUP_6:48
+                      .= (F./.S).i by Def9;
+    end;
+    hence thesis by B1;
+  end;
+  Image (product f) = product (Image f) by Th82
+                   .= product (F./.S) by A5;
+  hence (product F)./.(product S), product (F./.S) are_isomorphic
+  by A3, GROUP_6:78;
+end;
+@ %def Th93

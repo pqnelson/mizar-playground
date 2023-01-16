@@ -1,0 +1,461 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Commutator Subgroup and Center of Product Groups}
+
+We now will prove the center of a product is the product of centers (of
+factors), and similarly the commutator subgroup for a finite product is
+the product of commutator subgroups.
+
+<<Commutator Subgroup and Center of Product Groups>>=
+begin :: Commutator Subgroup and Center of Product Groups
+
+<<Theorem: center of direct product>>
+
+<<Theorem: Derived Subgroup of Product is Subgroup of Product of Commutator Subgroups>>
+
+<<Theorem: Direct Sum of Commutator Subgroups is Subgroup of Derived Subgroup of Product>>
+
+<<Theorem: the commutator subgroup of a finite product is the product of commutator subgroups>>
+@ 
+
+\begin{theorem}[Kurosh I, result 6]
+The center of a direct product is the direct product of centers (of its factors).
+\end{theorem}
+
+<<Theorem: center of direct product>>=
+:: Kurosh, Theory of Groups, volume I, result VI about Direct Products
+theorem
+  for Z being Group-Family of I
+  st (for i being Element of I holds Z.i = center (F.i))
+  holds center (product F) = product Z
+proof
+  let Z be Group-Family of I;
+  assume A1: for i being Element of I holds Z.i = center (F.i);
+  A2: for a being Element of product F
+  holds a in product Z iff (for b being Element of product F holds a*b = b*a)
+  <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>
+
+  A3: for a being Element of product F
+  holds a in product Z iff a in center (product F)
+  <<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>
+  for i being Element of I holds Z.i is Subgroup of F.i
+  proof
+    let i be Element of I;
+    Z.i = center (F.i) by A1;
+    hence Z.i is Subgroup of F.i;
+  end;
+  then product Z is Subgroup of product F by GROUP_21:23;
+  hence thesis by A3, GROUP_2:60;
+end;
+@
+
+<<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>=
+proof
+  let a be Element of product F;
+  thus a in product Z implies (for b being Element of product F
+                               holds a*b = b*a)
+  proof
+    assume B1: a in product Z;
+    let b be Element of product F;
+    reconsider ab=a*b, ba=b * a as Element of product F;
+    ab in product F & ba in product F;
+    then ab in product (Carrier F) & ba in product (Carrier F)
+    by GROUP_7:def 2;
+    then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
+    for i being Element of I holds (a * b).i = (b * a).i
+    proof
+      let i be Element of I;
+      a.i in Z.i by B1, GROUP_19:5;
+      then C1: a.i in center (F.i) by A1;
+      (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
+               .= (b/.i) * (a/.i) by C1, GROUP_5:77
+               .= (b * a).i by GROUP_7:1;
+      hence thesis;
+    end;
+    hence a*b = b*a by B3;
+  end;
+  thus (for b being Element of product F holds a*b = b*a)
+       implies a in product Z
+  proof
+    assume B1: for b being Element of product F holds a*b = b*a;
+    B2: for i being Element of I holds a.i in Z.i
+    proof
+      let i be Element of I;
+      C1: for b being Element of product F
+      holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
+      proof
+        let b be Element of product F;
+        (a * b).i = (a /. i) * (b /. i)
+        & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
+        hence thesis by B1;
+      end;
+      for bi being Element of F.i holds (a/.i)*bi = bi*(a/.i)
+      proof
+        let bi be Element of F.i;
+        reconsider b = (1ProdHom (F, i)).bi as Element of product F
+        by GROUP_2:42;
+        D1: dom (1_(product F)) = I by GROUP_19:3;
+        b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
+        then b/.i = bi by D1, FUNCT_7:31;
+        hence thesis by C1;
+      end;
+      then a.i in center (F.i) by GROUP_5:77;
+      hence a.i in Z.i by A1;
+    end;
+    a in product F;
+    then a in product (Carrier F) by GROUP_7:def 2;
+    then dom a = I by PARTFUN1:def 2;
+    hence a in product Z by B2, Th49;
+  end;
+end;
+@ 
+
+<<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>=
+proof
+  let a be Element of product F;
+  hereby 
+    assume a in product Z;
+    then for b being Element of product F holds a*b = b*a by A2;
+    hence a in center (product F) by GROUP_5:77;
+  end;
+  assume a in center (product F);
+  then for b being Element of product F holds a*b = b*a by GROUP_5:77;
+  hence a in product Z by A2;
+end;
+@ 
+
+\begin{lemma}
+If $x\in G$, then $x\in\Omega_{G}$.
+\end{lemma}
+
+<<Lemma: If $x\in G$, then $x\in\Omega_{G}$.>>=
+LmOmega:
+  for x being object st x in G
+  holds x in (Omega).G
+proof
+  let x be object;
+  assume A1: x in G;
+  the carrier of (Omega).G
+   = the carrier of multMagma(# the carrier of G, the multF of G #) by GROUP_2:def 8
+  .= the carrier of G;
+  then x in the carrier of (Omega).G by A1;
+  hence x in (Omega).G;
+end;
+@ %def LmOmega
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups, let $\mathcal{D}$ be a family
+of subgroups defined by $\mathcal{D}_{i}=[\mathcal{F}_{i}, \mathcal{F}_{i}]$
+for each $i\in I$. Then $(\prod\mathcal{F})'\subgroup\prod\mathcal{D}$.
+\end{theorem}
+
+<<Theorem: Derived Subgroup of Product is Subgroup of Product of Commutator Subgroups>>=
+<<Lemma: If $x\in G$, then $x\in\Omega_{G}$.>>
+
+theorem Th99a:
+  for D being Subgroup-Family of F
+  st (for i being Element of I holds D.i = (F.i)`)
+  holds (product F)` is strict Subgroup of product D
+proof
+  let D be Subgroup-Family of F;
+  assume A1: for i being Element of I holds D.i = (F.i)`;
+  for a,b being Element of product F holds [. a, b .] in product D
+  proof
+    let a,b be Element of product F;
+    B1: dom ([. a, b .]) = I by GROUP_19:3;
+    for i being Element of I holds ([. a, b .]).i in D.i
+    proof
+      let i be Element of I;
+      a/.i in F.i & b/.i in F.i;
+      then a/.i in (Omega).(F.i) & b/.i in (Omega).(F.i) by LmOmega;
+      then [. a/.i, b/.i .] in [. (Omega).(F.i),(Omega).(F.i) .] by GROUP_5:65;
+      then [. a/.i, b/.i .] in (F.i)` by GROUP_5:def 9;
+      then ([. a, b .]).i in (F.i)` by Th77a;
+      hence ([. a, b .]).i in D.i by A1;
+    end;
+    hence [. a, b .] in product D by B1,Th49;
+  end;
+  hence (product F)` is strict Subgroup of product D by GROUP_6:7;
+end;
+@ %def Th99a
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups, let $\mathcal{D}$ be a family
+of subgroups defined by $\mathcal{D}_{i}=[\mathcal{F}_{i}, \mathcal{F}_{i}]$
+for each $i\in I$. Then $\sum\mathcal{D}\subgroup(\prod\mathcal{F})'$.
+\end{theorem}
+
+<<Theorem: Direct Sum of Commutator Subgroups is Subgroup of Derived Subgroup of Product>>=
+theorem Th99b:
+  for D being Subgroup-Family of F
+  st (for i being Element of I holds D.i = (F.i)`)
+  holds sum D is strict Subgroup of (product F)`
+proof
+  let D be Subgroup-Family of F;
+  assume A1: for i being Element of I holds D.i = (F.i)`;
+  sum D is Subgroup of product D & product D is Subgroup of product F;
+  then A2: sum D is Subgroup of product F;
+  for g being Element of product F st g in sum D holds g in (product F)`
+  proof
+    let g be Element of product F;
+    assume B1: g in sum D;
+    1_(product D) = 1_(product F) by GROUP_2:44;
+    then consider J being finite Subset of I, b being ManySortedSet of J
+    such that
+    B2: J = support (g,D) and
+    B3: g = ((1_(product F)) +* b) and
+    (for j being object for G being Group st j in I \ J & G = D.j holds g.j = 1_G) and
+    B5: for j being object st j in J holds g.j = b.j
+    by B1, GROUP_19:7;
+    deffunc F1() = support (g, D);
+    B6: g = ((1_(product F)) +* (b|F1())) by B2,B3;
+    defpred P[set]
+    means ex FS being FinSequence of the carrier of product F st
+    ex ks being FinSequence of INT
+    st (len FS = len ks & rng FS c= commutators (product F)
+        & ((1_(product F)) +* (b|$1)) = Product (FS |^ ks));
+    C1: F1() is finite by B1;
+    C2: P[ {} ]
+    proof
+      1_((product F)`) in (product F)`;
+      then 1_(product F) in (product F)` by GROUP_2:44;
+      hence thesis by GROUP_5:73;
+    end;
+    C3: for x,B being set st x in F1() & B c= F1() & P[B]
+    holds P[B \/ {x}]
+    <<Proof: inductive case $\mathcal{P}[B\cup\{x\}]$>>
+    P[F1()] from FINSET_1:sch 2(C1, C2, C3);
+    hence g in (product F)` by B6,GROUP_5:73;
+  end;
+  hence sum D is strict Subgroup of (product F)` by A2, GROUP_2:58;
+end;
+@ %def Th99b
+
+\begin{proof}[Proof sketch]
+There are two possible subcases in the inductive step: $x\in B$ and
+$x\notin B$. The first possibility is trivial. The second possible
+requires most of our attention.
+\end{proof}
+
+<<Proof: inductive case $\mathcal{P}[B\cup\{x\}]$>>=
+proof
+  let x,B be set;
+  assume D1: x in F1();
+  assume D2: B c= F1();
+  assume D3: P[B];
+  per cases;
+  suppose x in B;
+    then {x} c= B by TARSKI:def 1;
+    then B \/ {x} = B by XBOOLE_1:12;
+    hence thesis by D3;
+  end;
+  suppose D4: not (x in B);
+    consider FSB being FinSequence of the carrier of product F,
+    ksB being FinSequence of INT such that
+    D5: (len FSB = len ksB & rng FSB c= commutators (product F)
+    & ((1_(product F)) +* (b|B)) = Product (FSB |^ ksB)) by D3;
+    reconsider ii=x as Element of I by D1;
+    g in product D by B1, GROUP_2:40;
+    then g.x = g.ii & g.ii in D.ii & D.ii = (F.ii)` by A1, GROUP_19:5; 
+    then consider FSg being FinSequence of the carrier of (F.ii),
+    ksg being FinSequence of INT such that
+    D7: len FSg = len ksg & rng FSg c= commutators (F.ii)
+    & g.x = Product (FSg |^ ksg) by GROUP_5:73;
+    (1ProdHom (F,ii)) is Homomorphism of F.ii, product F by GROUP_19:6;
+    then consider F2 being FinSequence of the carrier of product F such that
+    D8: len F2 = len FSg & F2 = (1ProdHom (F,ii)) * FSg & Product (F2 |^ ksg) = (1ProdHom (F,ii)).(Product (FSg |^ ksg))
+    by D7,ThMappingFrobProd2;
+    for y being object st y in rng F2 holds y in commutators (product F)
+    proof
+      let y be object;
+      assume y in rng F2;
+      then consider xx being object such that
+      Z2: xx in dom F2 & y = F2.xx
+      by FUNCT_1:def 3;
+      xx in dom FSg by Z2,D8,FUNCT_1:11;
+      then Z3: FSg.xx in commutators (F.ii) by D7,FUNCT_1:3;
+      Z5: y = (1ProdHom (F,ii)).(FSg.xx) by D8, Z2, FUNCT_1:12;
+      (1ProdHom (F,ii)) is Homomorphism of F.ii, product F by GROUP_19:6;
+      hence y in commutators (product F)
+      by Z3,Z5,ThMorphismOfCommutators;
+    end;
+    then D9: rng F2 c= commutators (product F);
+    set FS=FSB ^ F2;
+    set ks=ksB ^ ksg;
+    len ks = len ksB + len ksg & len FS = len FSB + len F2 by FINSEQ_1:22;
+    then E1: len ks = len FS by D5,D7,D8;
+    E2: rng FS c= commutators (product F)
+    proof
+      rng FSB \/ rng F2 c= rng FSB \/ commutators (product F)
+      & rng FSB \/ commutators (product F) c= commutators (product F) \/ commutators (product F)
+      by D5, D9, XBOOLE_1:9;
+      then rng FSB \/ rng F2 c= commutators (product F);
+      hence thesis by FINSEQ_1:31;
+    end;
+    
+    D10: dom (Product (FS |^ ks)) = I
+    & dom ((1_(product F)) +* (b|(B \/ {x}))) = I
+    proof
+      thus dom (Product (FS |^ ks)) = I by GROUP_19:3;
+      {x} c= J by D1,B2,TARSKI:def 1; 
+      then E0: (B \/ {x}) c= J by B2,D2,XBOOLE_1:8;
+      J c= I;
+      then E1: (B \/ {x}) c= I by E0;
+      E2: dom b = J by PARTFUN1:def 2;
+      dom ((1_(product F)) +* (b|(B \/ {x})))
+      = dom (1_(product F)) \/ dom (b|(B \/ {x})) by FUNCT_4:def 1
+      .= I \/ dom (b|(B \/ {x})) by GROUP_19:3
+      .= I \/ (B \/ {x}) by E2,E0,RELAT_1:62
+      .= I by E1, XBOOLE_1:12;
+      hence thesis;
+    end;
+    for j being Element of I
+    holds ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
+    proof
+      let j be Element of I;
+      {x} c= J by D1,B2,TARSKI:def 1;
+      then E0: (B \/ {x}) c= J by B2,D2,XBOOLE_1:8;
+      (FS |^ ks) = (FSB |^ ksB) ^ (F2 |^ ksg) by D5,D7,D8,GROUP_4:19;
+      then E1: Product (FS |^ ks) = Product (FSB |^ ksB) * Product(F2 |^ ksg)
+      by GROUP_4:5;
+      dom b = J by PARTFUN1:def 2;
+      then E2b: dom (b|(B \/ {x})) = (B \/ {x}) by E0,RELAT_1:62;
+      
+      E3: not (j in B) implies (Product (FSB |^ ksB)).j = 1_(F.j)
+      proof
+        assume not (j in B);
+        then E2: not (j in dom (b|B));
+        (1_(product F)).j = (Product (FSB |^ ksB)).j by D5,E2,FUNCT_4:11;
+        hence thesis by GROUP_7:6;
+      end;
+      E4: not (j in {x}) implies (Product(F2 |^ ksg)).j = 1_(F.j)
+      proof
+        assume not (j in {x});
+        then AA1: j <> x by TARSKI:def 1; 
+        dom (1ProdHom (F, ii)) = the carrier of F.ii by FUNCT_2:def 1;
+        then AA2: (Product (FSg |^ ksg)) in dom (1ProdHom (F, ii));
+        (proj (F,j)).Product(F2 |^ ksg)
+        = ((proj (F,j)) * (1ProdHom (F, ii))).(Product (FSg |^ ksg)) by AA2,D8,FUNCT_1:13
+        .= (1:(F.ii, F.j)).(Product (FSg |^ ksg)) by AA1, Th65b
+        .= (F.ii --> (1_(F.j))).(Product (FSg |^ ksg))
+        .= 1_(F.j);
+        hence thesis by Def16;
+      end;
+      
+      j in B or j in {x} or not (j in (B \/ {x})) by XBOOLE_0:def 3;
+      then per cases;
+      suppose D11: j in B;
+        D11b: dom b = J by PARTFUN1:def 2;
+        B c= J by D2, B2;
+        then E2b: dom (b|B) = B by D11b,RELAT_1:62;
+        D12: j in dom (b|B) by D11,E2b;
+        dom (b|(B \/ {x})) = B \/ {x} by D11b,E0,RELAT_1:62;
+        then D14: j in dom (b|(B \/ {x})) by D11, XBOOLE_0:def 3;
+        j in B & not (ii in B) by D4,D11;
+        then j <> ii;
+        then not (j in {x}) by TARSKI:def 1;
+        then E3: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
+        E4: (proj (F,j)).(Product (FS |^ ks))
+        = ((proj (F,j)).(Product (FSB |^ ksB))) * (proj (F,j)).(Product(F2 |^ ksg)) by E1,GROUP_6:def 6
+        .= ((proj (F,j)).(Product (FSB |^ ksB))) * (1_(F.j)) by E3,Def16
+        .= (proj (F,j)).(Product (FSB |^ ksB)) by GROUP_1:def 4
+        .= (Product (FSB |^ ksB)).j by Def16
+        .= (b|B).j by D5,D12,FUNCT_4:13 
+        .= b.j by D11, FUNCT_1:49;
+        ((1_(product F)) +* (b|(B \/ {x}))).j
+        = (b|(B \/ {x})).j by D14,FUNCT_4:13
+        .= b.j by D14, FUNCT_1:49;
+        hence ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
+        by Def16,E4;
+      end;
+      suppose D12: j in {x};
+        then D12b: j = x by TARSKI:def 1;
+        not (j in B) by D4,D12b;
+        then D14: (Product (FSB |^ ksB)).j = (1_(F.j)) by E3;
+        dom (1ProdHom (F,ii)) = the carrier of F.ii by FUNCT_2:def 1;
+        then D15b: (Product (FSg |^ ksg)) in dom (1ProdHom (F,ii));
+        j = ii by D12, TARSKI:def 1;
+        then D15: (Product(F2 |^ ksg)).j
+        = (proj (F, ii)).(Product(F2 |^ ksg)) by Def16
+        .= ((proj (F,ii)) * (1ProdHom (F,ii))).(Product (FSg |^ ksg)) by D8,D15b,FUNCT_1:13
+        .= (id (the carrier of F.ii)).(Product (FSg |^ ksg)) by Th65
+        .= g.j by D7,D12b;
+        D16: (Product (FS |^ ks)).j = b.j
+        proof
+          j in J by B2,D1,D12b;
+          then AA1: g.j = b.j by B5;
+          AA2: ((proj (F,j)).(Product(F2 |^ ksg))) = g.j by Def16,D15;
+          AA3: ((proj (F,j)).(Product (FSB |^ ksB))) = 1_(F.j) by Def16,D14;
+          (Product (FS |^ ks)).j
+          = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg)) by E1,Def16
+          .= (1_(F.j)) * (g/.j) by AA2, AA3,GROUP_6:def 6
+          .= g/.j by GROUP_1:def 4;
+          hence thesis by AA1;
+        end;
+        D17: ((1_(product F)) +* (b|(B \/ {x}))).j = b.j
+        proof
+          j in {x} by D12;
+          then j in (B \/ {x}) by XBOOLE_0:def 3;
+          then j in dom (b|(B \/ {x})) by E2b;
+          then ((1_(product F)) +* (b|(B \/ {x}))).j = (b|(B \/ {x})).j
+          & (b|(B \/ {x})).j = b.j by FUNCT_1:49,FUNCT_4:13;
+          hence thesis;
+        end;
+        thus ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
+        by D16,D17;
+      end;
+      suppose D13: not (j in B \/ {x});
+        not (j in B) by D13, XBOOLE_0:def 3;
+        then D14: (Product (FSB |^ ksB)).j = 1_(F.j) by E3;
+        not (j in {x}) by D13, XBOOLE_0:def 3;
+        then D15: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
+        not (j in dom (b|(B \/ {x}))) by D13;
+        then D16: ((1_(product F)) +* (b|(B \/ {x}))).j
+        = (1_(product F)).j by FUNCT_4:11
+        .= 1_(F.j) by GROUP_7:6;
+        (Product (FS |^ ks)).j = 1_(F.j)
+        proof
+          (Product (FS |^ ks)).j
+          = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg)) by E1,Def16
+          .= ((proj (F,j)).(Product (FSB |^ ksB)))*((proj (F,j)).(Product(F2 |^ ksg)))
+          by GROUP_6:def 6
+          .= ((proj (F,j)).(Product (FSB |^ ksB)))*((Product(F2 |^ ksg))/.j) by Def16
+          .= ((Product (FSB |^ ksB))/.j)*((Product(F2 |^ ksg))/.j) by Def16
+          .= 1_(F.j) by D14, D15, GROUP_1:def 4;
+          hence thesis;
+        end;
+        hence ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
+        by D16;
+      end;
+    end;
+    then E3: ((1_(product F)) +* (b|(B \/ {x}))) = Product (FS |^ ks) by D10;
+    thus P[B \/ {x}] by E1,E2,E3;
+  end;
+end;
+@ 
+
+\begin{theorem}
+Let $I$ be a finite non-empty set. (If $I=\emptyset$, the theorem will
+trivially hold.)
+Let $\mathcal{F}$ be a family of groups, let $\mathcal{D}$ be a family
+of subgroups defined by $\mathcal{D}_{i}=[\mathcal{F}_{i}, \mathcal{F}_{i}]$
+for each $i\in I$. Then $\prod\mathcal{D}=(\prod\mathcal{F})'$.
+\end{theorem}
+
+<<Theorem: the commutator subgroup of a finite product is the product of commutator subgroups>>=
+theorem
+  for I being finite non empty set
+  for F being Group-Family of I
+  for D being Subgroup-Family of F
+  st (for i being Element of I holds D.i = (F.i)`)
+  holds (product F)` = product D
+proof
+  let I be finite non empty set;
+  let F be Group-Family of I;
+  let D be Subgroup-Family of F;
+  assume A1: for i being Element of I holds D.i = (F.i)`;
+  sum D = product D by GROUP_7:9;
+  then A2: product D is strict Subgroup of (product F)` by A1, Th99b;
+  (product F)` is strict Subgroup of product D by A1, Th99a;
+  hence thesis by A2, GROUP_2:55;
+end;
+@ 

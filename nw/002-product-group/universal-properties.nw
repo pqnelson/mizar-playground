@@ -34,8 +34,6 @@ begin :: Universal Property of Direct Products of Groups
 
 <<Definition: product of subgroup-family>>
 
-<<Theorem: center of direct product>>
-
 <<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
 
 <<Theorem: Homomorphisms preserve Frobenius product>>
@@ -738,111 +736,6 @@ proof
 end;
 @ 
 
-\begin{theorem}[Kurosh I, result 6]
-The center of a direct product is the direct product of centers (of its factors).
-\end{theorem}
-
-<<Theorem: center of direct product>>=
-:: Kurosh, Theory of Groups, volume I, result VI about Direct Products
-theorem
-  for Z being Group-Family of I
-  st (for i being Element of I holds Z.i = center (F.i))
-  holds center (product F) = product Z
-proof
-  let Z be Group-Family of I;
-  assume A1: for i being Element of I holds Z.i = center (F.i);
-  A2: for a being Element of product F
-  holds a in product Z iff (for b being Element of product F holds a*b = b*a)
-  <<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>
-
-  A3: for a being Element of product F
-  holds a in product Z iff a in center (product F)
-  <<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>
-  for i being Element of I holds Z.i is Subgroup of F.i
-  proof
-    let i be Element of I;
-    Z.i = center (F.i) by A1;
-    hence Z.i is Subgroup of F.i;
-  end;
-  then product Z is Subgroup of product F by GROUP_21:23;
-  hence thesis by A3, GROUP_2:60;
-end;
-@
-
-<<Proof: $a\in\prod\mathcal{Z}\iff\forall b\in\prod\mathcal{F},ba=ab$>>=
-proof
-  let a be Element of product F;
-  thus a in product Z implies (for b being Element of product F
-                               holds a*b = b*a)
-  proof
-    assume B1: a in product Z;
-    let b be Element of product F;
-    reconsider ab=a*b, ba=b * a as Element of product F;
-    ab in product F & ba in product F;
-    then ab in product (Carrier F) & ba in product (Carrier F)
-    by GROUP_7:def 2;
-    then B3: dom ab = I & dom ba = I by PARTFUN1:def 2;
-    for i being Element of I holds (a * b).i = (b * a).i
-    proof
-      let i be Element of I;
-      a.i in Z.i by B1, GROUP_19:5;
-      then C1: a.i in center (F.i) by A1;
-      (a * b).i = (a/.i) * (b/.i) by GROUP_7:1
-               .= (b/.i) * (a/.i) by C1, GROUP_5:77
-               .= (b * a).i by GROUP_7:1;
-      hence thesis;
-    end;
-    hence a*b = b*a by B3;
-  end;
-  thus (for b being Element of product F holds a*b = b*a)
-       implies a in product Z
-  proof
-    assume B1: for b being Element of product F holds a*b = b*a;
-    B2: for i being Element of I holds a.i in Z.i
-    proof
-      let i be Element of I;
-      C1: for b being Element of product F
-      holds (a/.i)*(b/.i) = (b/.i) * (a /.i)
-      proof
-        let b be Element of product F;
-        (a * b).i = (a /. i) * (b /. i)
-        & (b * a).i = (b /. i) * (a /. i) by GROUP_7:1;
-        hence thesis by B1;
-      end;
-      for bi being Element of F.i holds (a/.i)*bi = bi*(a/.i)
-      proof
-        let bi be Element of F.i;
-        reconsider b = (1ProdHom (F, i)).bi as Element of product F
-        by GROUP_2:42;
-        D1: dom (1_(product F)) = I by GROUP_19:3;
-        b = (1_(product F)) +* (i, bi) by GROUP_12:def 3;
-        then b/.i = bi by D1, FUNCT_7:31;
-        hence thesis by C1;
-      end;
-      then a.i in center (F.i) by GROUP_5:77;
-      hence a.i in Z.i by A1;
-    end;
-    a in product F;
-    then a in product (Carrier F) by GROUP_7:def 2;
-    then dom a = I by PARTFUN1:def 2;
-    hence a in product Z by B2, Th49;
-  end;
-end;
-@ 
-
-<<Proof: $\forall a\in\prod\mathcal{F}, a\in\prod\mathcal{Z}\iff a\in\prod Z(\mathcal{F})$>>=
-proof
-  let a be Element of product F;
-  hereby 
-    assume a in product Z;
-    then for b being Element of product F holds a*b = b*a by A2;
-    hence a in center (product F) by GROUP_5:77;
-  end;
-  assume a in center (product F);
-  then for b being Element of product F holds a*b = b*a by GROUP_5:77;
-  hence a in product Z by A2;
-end;
-@ 
 
 \begin{theorem}
 Let $g\in\prod\mathcal{F}$, $\nu_{i}\colon\mathcal{F}_{i}\onto\mathcal{F}_{i}/[\mathcal{F}_{i},\mathcal{F}_{i}]$

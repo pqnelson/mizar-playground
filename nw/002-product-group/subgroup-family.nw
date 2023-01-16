@@ -68,12 +68,12 @@ $\mathcal{G}_{i}\subgroup\mathcal{F}_{i}$.
 definition
   let I be set;
   let F, IT be Group-Family of I;
-  attr IT is F-Subgroup-yielding means :Def3:
+  attr IT is F-Subgroup-yielding means :Def2:
   for i being Element of I
   for G being Group st G = F.i
   holds IT.i is Subgroup of G;
 end;
-@ %def Def3 -Subgroup-yielding
+@ %def Def2 -Subgroup-yielding
 
 \begin{voc}
 We add the attribute ``-Subgroup-yielding'' to our vocabulary list.
@@ -145,7 +145,7 @@ definition
   let S be Subgroup-Family of F;
   let i be Element of I;
   redefine func S.i -> Subgroup of F.i;
-  correctness by Def3;
+  correctness by Def2;
 end;
 @
 
@@ -180,11 +180,11 @@ proof
     S.i = SS.i;
     hence thesis;
   end;
-  assume Z2: for i being Element of I holds S.i is Subgroup of F.i;
+  assume for i being Element of I holds S.i is Subgroup of F.i;
   then for i being Element of I
   for G being Group st G = F.i
   holds S.i is Subgroup of G;
-  then S is F-Subgroup-yielding by Def3;
+  then S is F-Subgroup-yielding by Def2;
   hence S is Subgroup-Family of F;
 end;
 @ 
@@ -449,7 +449,7 @@ $\mathcal{A}=\mathcal{B}$.
 \end{theorem}
 
 <<Theorem: equality of strict subgroup families>>=
-theorem ThStrSubEq:
+theorem Th15:
   for A,B being componentwise_strict Subgroup-Family of F
   st (for i being Element of I holds A.i = B.i)
   holds A = B
@@ -459,7 +459,7 @@ proof
   then for i being object st i in I holds A.i = B.i;
   hence A = B by PBOOLE:3;
 end;
-@ %def ThStrSubEq
+@ %def Th15
 
 \begin{definition}
 For any family of groups $\mathcal{F}$ we have the subgroup family
@@ -472,7 +472,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (1).F -> componentwise_strict Subgroup-Family of F means
-  :Def6:
+  :Def5:
   for i being Element of I
   holds it.i = (1).(F.i);
   existence
@@ -499,11 +499,11 @@ definition
         thus A.i = (1).(F.i) by A1
                 .= B.i by A2;
       end;
-      hence thesis by ThStrSubEq;
+      hence thesis by Th15;
     end;
   end;
 end;
-@ %def Def6
+@ %def Def5
 
 \begin{definition}
 Conversely, we can take the improper trivial subgroup for each member of
@@ -515,7 +515,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (Omega).F -> componentwise_strict Subgroup-Family of F means
-  :Def7:
+  :Def6:
   for i being Element of I
   holds it.i = (Omega).(F.i);
   existence
@@ -542,11 +542,11 @@ definition
         thus A.i = (Omega).(F.i) by A1
                 .= B.i by A2;
       end;
-      hence thesis by ThStrSubEq;
+      hence thesis by Th15;
     end;
   end;
 end;
-@ %def Def7
+@ %def Def6
 
 \begin{definition}
 If $\mathcal{S}$ is a subgroup family for $\mathcal{F}$,
@@ -559,10 +559,10 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let IT be Subgroup-Family of F;
-  attr IT is normal means :Def8:
+  attr IT is normal means :Def7:
   for i being Element of I holds IT.i is normal Subgroup of F.i;
 end;
-@ %def Def8
+@ %def Def7
 
 \begin{registration}
 We can meaningfully talk about ``componentwise-strict normal
@@ -605,7 +605,7 @@ registration
   let S be normal Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> normal for Subgroup of F.i;
-  correctness by Def8;
+  correctness by Def7;
 end;
 @ 
 
@@ -642,7 +642,7 @@ registration
       B1: ((1).F).i = (1).(F.i) by Def6;
       hence thesis by GROUP_2:def 7;
     end;
-    hence (1).F is normal by Def8;
+    hence (1).F is normal by Def7;
   end;
   cluster (Omega).F -> normal;
   correctness
@@ -650,10 +650,10 @@ registration
     for i being Element of I holds ((Omega).F).i is normal Subgroup of F.i
     proof
       let i be Element of I;
-      B1: ((Omega).F).i = (Omega).(F.i) by Def7;
+      B1: ((Omega).F).i = (Omega).(F.i) by Def6;
       hence thesis by GROUP_2:def 8;
     end;
-    hence (Omega).F is normal by Def8;
+    hence (Omega).F is normal by Def7;
   end;
 end;
 @ 
@@ -753,7 +753,7 @@ proof
     hence S.i is normal Subgroup of F.i;
   end;
   then reconsider S as componentwise_strict normal Subgroup-Family of F
-  by Def8;
+  by Def7;
   take S;
   thus thesis by A2;
 end;
