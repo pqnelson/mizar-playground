@@ -1,0 +1,982 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{$\pi$-Numbers}
+
+We define ``$\pi$ analogues'' to ``$p$ concepts'', where $\pi$ is now a
+subset of the set of prime numbers.
+
+<<$\pi$-Numbers>>=
+begin :: Results concerning Pi-numbers
+
+<<Preliminary work about prime factorization>>
+
+<<Reserve: $\pi$ for subset of primes>>
+
+<<Pi-number results>>
+
+<<Pi-part prime factorization>>
+
+<<Pi-part of a number>>
+@
+
+\subsection{Prime factorization}
+We need to prove a few useful results concerning prime
+factorization. For example, if $a,b\in\NN$ have the same prime factors,
+and the exponents for each prime factor of $a$ is not greater than the
+exponents for the same prime factor for $b$, then $a$ divides $b$.
+
+<<Preliminary work about prime factorization>>=
+<<Theorem: $b^{a}\leq b^{c}$ implies [[b |-count (b |^ a) <= b |-count (b |^ c)]]>>
+
+<<Theorem: if for each prime $p$ we have $m_{p}\leq n_{p}$, then $m\divides n$>>
+
+<<Theorem: $m\divides n$ implies $m_{p}\leq n_{p}$>>
+@ 
+
+\begin{theorem}
+Let $a,b,c\in\NN_{0}$. If $1<b$ and $b^{a}\leq b^{c}$, then
+$\log_{b}(b^{a})\leq\log_{b}(b^{c})$. 
+\end{theorem}
+
+<<Theorem: $b^{a}\leq b^{c}$ implies [[b |-count (b |^ a) <= b |-count (b |^ c)]]>>=
+theorem Th1:
+  for a,b,c being Nat
+  st 1 < b & b |^ a <= b |^ c
+  holds b |-count (b |^ a) <= b |-count (b |^ c)
+proof
+  let a,b,c be Nat;
+  assume A1: 1 < b;
+  assume A2: b |^ a <= b |^ c;
+  A3: b |-count (b |^ a) = a & b |-count (b |^ c) = c by A1, NAT_3:25;
+  a > c implies contradiction
+  <<Proof: $a > c$ implies contradiction>>
+  hence b |-count (b |^ a) <= b |-count (b |^ c) by A3;
+end;
+@ %def Th1
+
+\begin{proof}[Proof sketch ($a > c\implies\bot$)]
+If $a>c$, then we would have a $t\in\NN_{0}$ such that $a=c+t$.
+In particular, $t = a - c > 0$. Then $b^{a}=b^{c}b^{t}$. But this
+contradicts our hypothesis that $b^{a} < b^{c}$.
+\end{proof}
+
+<<Proof: $a > c$ implies contradiction>>=
+proof
+  assume B1: a > c;
+  then consider t being Nat such that
+  B2: a = c + t by NAT_1:10;
+  t = a - c by B2;
+  then t > 0 by B1, XREAL_1:50;
+  then B3: t >= 1 by NAT_1:25;
+  1 |^ t = 1;
+  then B4: b |^ t > 1 by A1, B3, PREPOWER:10;
+  b |^ a = (b |^ c) * (b |^ t) by B2, NEWTON:8;
+  hence contradiction by A1, A2, B4, XREAL_1:155;
+end;
+@
+
+\begin{definition*}[Notational choice]
+We will introduce the convention that any natural number $n\in\NN$
+($n\neq0$) has prime factorization:
+\begin{equation}
+n = 2^{n_{1}}3^{n_{2}}5^{n_{3}}\cdots = \prod^{\infty}_{j=1}p_{j}^{n_{j}}.
+\end{equation}
+So $n_{j}$ refers to these exponents. If we have a particular prime $p$
+we want to refer to, we will write $n_{p}$ for the exponent of $p$ in
+the prime factorization for $n$.
+\end{definition*}
+
+\begin{theorem}
+Let $m,n\in\NN$.
+If for any prime $p$ we have $m_{p}\leq n_{p}$,
+then $m\divides n$.
+\end{theorem}
+
+<<Theorem: if for each prime $p$ we have $m_{p}\leq n_{p}$, then $m\divides n$>>=
+<<Lemma: $km\leq m$ implies $k\leq1$>>
+
+:: converse to NAT_3:30
+theorem Th2:
+  for m,n being non zero Nat
+  st (for p being Prime holds (ppf m).p <= (ppf n).p)
+  holds m divides n
+proof
+  let m,n be non zero Nat;
+  assume A1: for p being Prime holds (ppf m).p <= (ppf n).p;
+  for p being Prime holds p |-count m <= p |-count n
+  <<Proof step: for any prime $p$, $m_{p}\leq n_{p}$>>
+  hence m divides n by MOEBIUS1:19;
+end;
+@ %def Th2
+
+\begin{proof}[Proof step]
+  Let $p$ be any prime. We have three possible cases:
+  \begin{enumerate}
+  \item $n_{p}\neq0$ and $m_{p}\neq 0$, which will be the longest subproof.
+  \item $n_{p}\neq0$ and $m_{p}=0$, which boils down to $0\leq n_{p}$
+    (which was stipulated).
+  \item $n_{p}=0$, which forces $m_{p}=0$, and thus proves the case.
+  \end{enumerate}
+  Thus concludes this proof step.
+\end{proof}
+
+<<Proof step: for any prime $p$, $m_{p}\leq n_{p}$>>=
+proof
+  let p be Prime;
+  per cases;
+  suppose B1: p in support (ppf n) & p in support (ppf m);
+    <<Case: $n_{p}\neq0$ and $m_{p}\neq0$>>
+  end;
+  suppose p in support (ppf n) & not (p in support (ppf m));
+    then not (p in support (pfexp m)) by NAT_3:def 9;
+    then (pfexp m).p = 0 by PRE_POLY:def 7;
+    hence thesis by NAT_3:def 8;
+  end;
+  suppose not (p in support (ppf n));
+    then not (p in support (pfexp n)) by NAT_3:def 9;
+    then (pfexp n).p = 0 by PRE_POLY:def 7;
+    then p |-count n = 0 by NAT_3:def 8;
+    then (ppf n).p = 0 by NAT_3:55;
+    then (ppf m).p = 0 by A1;
+    then not (p in support (ppf m)) by PRE_POLY:def 7;
+    then not (p in support (pfexp m)) by NAT_3:def 9;
+    then (pfexp m).p = 0 by PRE_POLY:def 7;
+    hence thesis by NAT_3:def 8;
+  end;
+end;
+@ 
+
+<<Case: $n_{p}\neq0$ and $m_{p}\neq0$>>=
+then p in support (pfexp n) by NAT_3:def 9;
+then (ppf n).p = p |^ (p |-count n) by NAT_3:def 9;
+then A3: (ppf m).p <= p |^ (p |-count n) by A1;
+p in support (pfexp m) by B1, NAT_3:def 9;
+then A4: (p |^ (p |-count m)) <= (p |^ (p |-count n))
+by A3, NAT_3:def 9;
+not (p |-count m <= p |-count n) implies contradiction
+proof
+  assume B2: not (p |-count m <= p |-count n);
+  then consider k being Nat such that
+  B3: (p |-count m) = (p |-count n) + k by NAT_1:10;
+  p |^ (p |-count m) = (p |^ (p |-count n)) * (p |^ k) by B3, NEWTON:8;
+  then p |^ k <= 1 by A4, Lm1;
+  then p |^ k <= p |^ 0 by NEWTON:4;
+  then B4: p |-count (p |^ k) <= p |-count (p |^ 0) by Th1, INT_2:def 4;
+  p |-count (p |^ 0) = 0 & p |-count (p |^ k) = k
+  by INT_2:def 4, NAT_3:25;
+  then k = 0 by B4;
+  hence contradiction by B2,B3;
+end;
+hence thesis;
+@
+
+\begin{lemma}
+Let $k,m\in\NN$. If $km\leq m$, then $k\leq 1$.
+\end{lemma}
+
+<<Lemma: $km\leq m$ implies $k\leq1$>>=
+Lm1:
+  for k,m being non zero Nat
+  st k*m <= m
+  holds k <= 1
+proof
+  let k,m be non zero Nat;
+  assume k*m <= m;
+  then k*m - m <= 0 by XREAL_1:47;
+  then A1: (k - 1)*m <= 0;
+  k > 1 implies contradiction
+  proof
+    assume k > 1;
+    then 0 < (k - 1) by XREAL_1:50;
+    hence contradiction by A1;
+  end;
+  hence k <= 1;
+end;
+@ %def Lm1
+
+\begin{theorem}
+Let $m,n\in\NN$.
+If $m\divides n$, then for any prime $p$ we have $m_{p}\leq n_{p}$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+There are two situations:
+\begin{enumerate}
+\item  $p\divides m$, which implies $p\divides n$ and in particular
+  $m_{p}\leq n_{p}$; and
+\item $p\ndivides m$, which implies $m_{p}=0$ and is therefore less than
+  or equal to \emph{any} natural number.
+\end{enumerate}
+In either situation, we have our result.
+\end{proof}
+
+<<Theorem: $m\divides n$ implies $m_{p}\leq n_{p}$>>=
+theorem Th3:
+  for m,n being non zero Nat
+  st m divides n
+  holds (for p being Prime holds (ppf m).p <= (ppf n).p)
+proof
+  let m,n be non zero Nat;
+  assume A1: m divides n;
+  let p be Prime;
+  A2: p > 1 by INT_2:def 4;
+  per cases;
+  suppose B1: p divides m;
+    then p |-count m <> 0 by A2, NAT_3:27;
+    then C1: p |-count m > 0;
+    p |-count m <= p |-count n by A1, NAT_3:30;
+    then C2: p |^ (p |-count n) = (ppf n).p 
+             & p |^ (p |-count m) divides p |^ (p |-count n)
+    by C1, NAT_3:56, NEWTON:89;
+    reconsider i=(ppf m).p, j = (ppf n).p as Nat;
+    0 < j & i divides j by C1, C2, NAT_3:56;
+    hence (ppf m).p <= (ppf n).p by NAT_D:7;
+  end;
+  suppose not (p divides m);
+    then p |-count m = 0 by A2, NAT_3:27;
+    hence (ppf m).p <= (ppf n).p by NAT_3:55;
+  end;
+end;
+@ %def Th3
+
+\begin{reserve}
+We will use $\pi$ to refer to an arbitrary subset of prime numbers.
+\end{reserve}
+
+<<Reserve: $\pi$ for subset of primes>>=
+reserve Pi for Subset of SetPrimes;
+@
+
+\subsection{$\pi$-numbers}
+We have a few results worth mentioning about $\pi$ numbers. For example,
+if $n$ is a $\pi_{1}$-number and $\pi_{1}\subset\pi_{2}$, then $n$ is a
+$\pi_{2}$ number.
+
+<<Pi-number results>>=
+<<Definition: $\pi$-number>>
+
+<<Theorem: criteria for a nonzero number to be a $\pi$-number>>
+
+<<Theorem: widening $\pi$ number>>
+
+<<Theorem: support [[ppf n]] is a subset of $\pi$ iff $n$ is a $\pi$-number>>
+
+<<Theorem: 1 is a Pi-number>>
+@ 
+
+\begin{definition}
+We call a natural number a \define{$\pi$-number} if every prime divisor
+belongs to the set $\pi$.
+\end{definition}
+
+\begin{def-remark}
+Care must be taken concerning whether $0$ is a $\pi$-number or not.
+We know from Theorem~\mml[Th6]{natd} that every natural number divides 0.
+Therefore $0$ would also be a $\pi$-number, as we have defined the notion.
+
+We want to use the notion of a $\pi$-number to call a group element
+$g\in G$ a $\pi$-element if its order $|g|$ is a $\pi$-number. Do we
+want $1\in\ZZ$ to be a $\pi$-element for \emph{every} $\pi$? This will
+only affect infinite groups, where it won't really matter.
+\end{def-remark}
+
+<<Definition: $\pi$-number>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let IT be Nat;
+  attr IT is Pi-number means :Def1:
+  for p being Prime st p divides IT holds p in Pi;
+end;
+@ %def -number Def1
+
+\begin{theorem}
+Let $n\in\NN$ be a nonzero number.
+Then $n$ is a $\pi$-number if and only if for each $p$ prime such that
+$p\divides n$ we have $p\in\pi$. 
+\end{theorem}
+
+\begin{thm-remark}
+This may seem silly, but I would rather reference this theorem than
+fiddle around with the edge-case considerations of including or excluding
+zero as a $\pi$-number.
+\end{thm-remark}
+
+<<Theorem: criteria for a nonzero number to be a $\pi$-number>>=
+theorem Th4:
+  for n being non zero Nat
+  holds (for p being Prime st p divides n holds p in Pi)
+        iff n is Pi-number;
+@ %def Th4
+
+\begin{theorem}
+Let $\pi_{1}\subset\pi_{2}$.
+Then any $\pi_{1}$-number is also a $\pi_{2}$-number.
+\end{theorem}
+
+<<Theorem: widening $\pi$ number>>=
+theorem Th5:
+  for Pi1, Pi2 being Subset of SetPrimes
+  st Pi1 c= Pi2
+  for n being non zero Nat
+  st n is Pi1-number
+  holds n is Pi2-number;
+@ %def Th5
+
+\begin{theorem}
+Let $n\in\NN$ be nonzero.
+Then $\{p~\mbox{prime}\mid n_{p}\neq0\}\subset\pi$ if and only if $n$ is
+a $\pi$-number.
+\end{theorem}
+
+<<Theorem: support [[ppf n]] is a subset of $\pi$ iff $n$ is a $\pi$-number>>=
+theorem Th6:
+  for n being non zero Nat
+  holds support (ppf n) c= Pi iff n is Pi-number
+proof
+  let n be non zero Nat;
+  <<Proof: support [[ppf n]] is a subset of $\pi$ implies $n$ is a $\pi$-number>>
+  assume A2: n is Pi-number;
+  for p being Nat st p in support (ppf n) holds p in Pi
+  proof
+    let p be Nat;
+    assume p in support (ppf n);
+    then A3: p in support (pfexp n) by NAT_3:def 9;
+    then p is Prime by NAT_3:34;
+    hence p in Pi by A2, A3, NAT_3:36;
+  end;
+  hence support (ppf n) c= Pi;
+end;
+@ %def Th6
+
+\begin{proof}
+If $\{p~\mbox{prime}\mid n_{p}\neq0\}\subset\pi$, then
+any prime $p$ which divides $n$ will belong to $\pi$. This is precisely
+the definition of a $\pi$-number.
+\end{proof}
+
+<<Proof: support [[ppf n]] is a subset of $\pi$ implies $n$ is a $\pi$-number>>=
+hereby
+  assume A1: support (ppf n) c= Pi;
+  for p being Prime st p divides n holds p in Pi
+  proof
+    let p be Prime;
+    assume p divides n;
+    then p in support (pfexp n) by NAT_3:37;
+    then p in support (ppf n) by NAT_3:def 9;
+    hence p in Pi by A1;
+  end;
+  hence n is Pi-number;
+end;
+@
+
+\begin{theorem}
+The number $1$ is a $\pi$-number, for any $\pi\subset\mathbb{P}$.
+\end{theorem}
+
+<<Theorem: 1 is a Pi-number>>=
+theorem
+  1 is Pi-number
+proof
+  for p being Prime st p divides 1 holds p in Pi
+  proof
+    let p be Prime;
+    assume p divides 1;
+    then p <= 1 & p > 1 by NAT_D:7, INT_2:def 4;
+    then contradiction;
+    hence thesis;
+  end;
+  hence thesis;
+end;
+@ 
+
+\subsection{$\pi$-part Prime Factorization}
+We will construct a function $f\colon\NN\times\mathbb{P}\to\NN_{0}$ defined
+by $f(n, p)=p^{n_{p}}$ if $p\in\pi$, otherwise $f(n, p)=1$. This is a
+crutch necessary to build the notion of the $\pi$-part of $n$, denoted
+$n_{\pi}$, as just the product
+\begin{equation}
+n_{\pi}=\prod_{p\in\mathbb{P}}f(n,p)=\prod_{p\in\pi}p^{n_{p}}.
+\end{equation}
+
+<<Pi-part prime factorization>>=
+<<Definition: Pi-part prime factorization>>
+
+<<Theorem: range of $f_{\pi}$ is contained in range of $f$>>
+
+<<Theorem: $\supp(f_{\pi}(n,-))\subset\supp(f(n,-))$>>
+
+<<Register: Pi-part prime factorization is natural-valued and has finite-support>>
+
+<<Theorem: $\pi$-part prime factorization is prime-factorization-like>>
+
+<<Register: $\pi$-part prime factorization is prime-factorization-like>>
+
+<<Theorem: $\prod_{p\in\pi}f_{\pi}(n, p)$ divides $n$>>
+@
+
+\begin{definition}
+Let $\pi$ be any subset of prime numbers, let $n\in\NN$ be nonzero.
+We define the \define{$\pi$-part Prime Factorization} of $n$ to be the
+function $f_{\pi}\colon\NN\times\mathbb{P}\to\NN_{0}$ such that for each
+$p\in\pi$ we have $f_{\pi}(n, p)=p^{n_{p}}$ and for all other primes
+$q\notin\pi$ we have $f_{\pi}(n, q)=1$.
+\end{definition}
+
+\begin{def-remark}
+We will write $f(n,p)=f_{\mathbb{P}}(n,p)=p^{n_{p}}$ suppressing the set
+of primes when referring to the maximal $p$-factor of $n$.
+\end{def-remark}
+
+<<Definition: Pi-part prime factorization>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  func Pi-part_ppf n -> ManySortedSet of SetPrimes means :Def2:
+  support it = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds it.p = (ppf n).p;
+  existence
+  <<Proof: existence of pi-part prime factorization>>
+  uniqueness
+  <<Proof: uniqueness of pi-part prime factorization>>
+end;
+@ %def -part_ppf Def2
+
+<<Proof: existence of pi-part prime factorization>>=
+proof
+set ppt = (ppf n) +* (Pi` --> 0);
+  A1: for p being Element of SetPrimes st p in Pi` holds ppt.p = 0
+  proof
+    let p be Element of SetPrimes;
+    assume B1: p in Pi`;
+    then p in dom (Pi` --> 0) by FUNCT_2:def 1;
+    hence ppt.p = (Pi` --> 0).p by FUNCT_4:13
+               .= 0 by B1, FUNCOP_1:7;
+  end;
+  A2: for p being Element of SetPrimes st p in Pi holds ppt.p = (ppf n).p
+  proof
+    let p be Element of SetPrimes;
+    assume B1: p in Pi;
+    not (p in Pi`)
+    proof
+      not (p in SetPrimes \ Pi) by B1, XBOOLE_0:def 5;
+      hence thesis by SUBSET_1:def 4;
+    end;
+    then not (p in dom (Pi` --> 0)) by FUNCT_2:def 1;
+    hence ppt.p = (ppf n).p by FUNCT_4:11;
+  end;
+  A3: dom ppt = dom (ppf n) \/ dom (Pi` --> 0) by FUNCT_4:def 1
+             .= dom (ppf n) \/ Pi` by FUNCOP_1:13
+             .= SetPrimes \/ Pi` by PARTFUN1:def 2
+             .= SetPrimes by XBOOLE_1:12;
+  then reconsider ppt as ManySortedSet of SetPrimes
+  by RELAT_1:def 18, PARTFUN1:def 2;
+  take ppt;
+  for p being object
+  holds ppt.p <> 0 iff p in Pi /\ support (pfexp n)
+  <<Subproof: $f_{\pi}(n,p)\neq0$ if and only if $p\in\pi\land\supp(\exp(n))$>>
+  hence support ppt = Pi /\ support (pfexp n) by PRE_POLY:def 7;
+  let p be Nat;
+  assume p in Pi /\ support (pfexp n);
+  then p in Pi by XBOOLE_0:def 4;
+  hence ppt.p = (ppf n).p by A2;
+end;
+@
+
+<<Subproof: $f_{\pi}(n,p)\neq0$ if and only if $p\in\pi\land\supp(\exp(n))$>>=
+proof
+  let p be object;
+  hereby
+    assume B1: ppt.p <> 0;
+    then p in support ppt by PRE_POLY:def 7;
+    then B2: p in SetPrimes by A3, PRE_POLY:37, TARSKI:def 3;
+    not (p in Pi`) by A1, B1;
+    then B3: p in Pi by B2, SUBSET_1:29;
+    then ppt.p = (ppf n).p by A2;
+    then p in support (ppf n) by B1, PRE_POLY:def 7;
+    then p in support (pfexp n) by NAT_3:def 9;
+    hence p in Pi /\ support (pfexp n) by B3, XBOOLE_0:def 4;
+  end;
+  thus p in Pi /\ support (pfexp n) implies ppt.p <> 0
+  proof
+    assume B1: p in Pi /\ support (pfexp n);
+    then p in Pi by XBOOLE_0:def 4;
+    then B2: ppt.p = (ppf n).p by A2;
+    p in support (pfexp n) by B1, XBOOLE_0:def 4;
+    then p in support (ppf n) by NAT_3:def 9;
+    hence ppt.p <> 0 by B2, PRE_POLY:def 7;
+  end;
+end;  
+@ 
+
+\begin{proof}[Proof sketch (uniqueness)]
+We just need to consider any two such functions $f_{1}$ and $f_{2}$,
+then show they are equal. This boils down to checking for each prime $p$
+that $f_{1}(n, p)=f_{2}(n, p)$. We do this by cases:
+\begin{enumerate}
+\item If $p\notin\pi$ or $p\ndivides n$, then $f_{1}(n,p)=1=f_{2}(n,p)$.
+\item If $p\in\pi$ and $p\divides n$, then $f_{1}(n,p)=p^{n_{p}}=f_{2}(n,p)$.
+\end{enumerate}
+In either case, $f_{1}(n,p)=f_{2}(n,p)$.
+\end{proof}
+
+<<Proof: uniqueness of pi-part prime factorization>>=
+proof
+  thus for ppt1, ppt2 being ManySortedSet of SetPrimes st
+  (support ppt1 = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds ppt1.p = (ppf n).p) &
+  (support ppt2 = Pi /\ support (pfexp n)
+  & for p being Nat st p in Pi /\ support (pfexp n) holds ppt2.p = (ppf n).p)
+  holds ppt1 = ppt2
+  proof
+    let ppt1, ppt2 be ManySortedSet of SetPrimes;
+    assume A1: support ppt1 = Pi /\ support (pfexp n);
+    assume A2: for p being Nat st p in Pi /\ support (pfexp n) holds ppt1.p = (ppf n).p;
+    assume A3: support ppt2 = Pi /\ support (pfexp n);
+    assume A4: for p being Nat st p in Pi /\ support (pfexp n) holds ppt2.p = (ppf n).p;
+    for p being Element of SetPrimes holds ppt1.p = ppt2.p
+    proof
+      let p be Element of SetPrimes;
+      per cases;
+      suppose not (p in Pi /\ support (pfexp n));
+        then ppt1.p = 0 & ppt2.p = 0 by A1, A3, PRE_POLY:def 7;
+        hence thesis;
+      end;
+      suppose B1: p in Pi /\ support (pfexp n);
+        then ppt1.p = (ppf n).p by A2
+                   .= ppt2.p by B1, A4;
+        hence ppt1.p = ppt2.p;
+      end;
+    end;
+    hence ppt1 = ppt2;
+  end;
+end;
+@
+
+\begin{theorem}
+For any nonzero $n\in\NN$, we have $f_{\pi}(\mathbb{P},n)\subset f(\mathbb{P},n)$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+  For any prime $p$, there are two cases:
+  \begin{enumerate}
+  \item $f_{\pi}(n,p)\neq 0$, in which case it is defined equal to
+    $f(n,p)$ and therefore belongs to the range of $f(n,-)$
+  \item $f_{\pi}(n,p)=0$, in which case it belongs to the range of
+    $f(n,-)$ because by a lemma (yet to be proven) $0$ belongs to the range.
+  \end{enumerate}
+  Thus the result follows.
+\end{proof}
+
+<<Theorem: range of $f_{\pi}$ is contained in range of $f$>>=
+<<Lemma: $0$ belongs to the range of $f$>>
+
+theorem ThRngPiPartPpf:
+  for n being non zero Nat
+  holds rng (Pi-part_ppf n) c= rng (ppf n)
+proof
+  let n be non zero Nat;
+  for y being object st y in rng (Pi-part_ppf n)
+  holds y in rng (ppf n)
+  proof
+    let y be object;
+    assume y in rng (Pi-part_ppf n);
+    then consider p being object such that
+    A2: p in dom (Pi-part_ppf n) and
+    A3: (Pi-part_ppf n).p = y
+    by FUNCT_1:def 3;
+    A4: dom (ppf n) = SetPrimes by PARTFUN1:def 2;
+    A5: p in SetPrimes by A2, PARTFUN1:def 2;
+    per cases;
+    suppose p in support (Pi-part_ppf n);
+      then p in Pi /\ support (pfexp n) by Def2;
+      then (ppf n).p = y by A3, Def2;
+      hence y in rng (ppf n) by A5, A4, FUNCT_1:def 3;
+    end;
+    suppose not (p in support (Pi-part_ppf n));
+      then (Pi-part_ppf n).p = 0 by PRE_POLY:def 7;
+      hence y in rng (ppf n) by A3, Lm2;
+    end;
+  end;
+  hence rng (Pi-part_ppf n) c= rng (ppf n);
+end;
+@
+
+\begin{lemma}
+For any $n\in\NN$ nonzero, $0\in f(\mathbb{P},n)$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+Pick some prime $p>n$. Then $f(p,n)=0$. The result follows.
+\end{proof}
+
+<<Lemma: $0$ belongs to the range of $f$>>=
+Lm2:
+  for n being non zero Nat
+  holds 0 in rng (ppf n)
+proof
+  let n be non zero Nat;
+  A1: for p being Prime st p > n holds (ppf n).p = 0
+  proof
+    let p be Prime;
+    assume B1: p > n;
+    p > 1 by INT_2:def 4;
+    then p |-count n = 0 by B1, NAT_3:23;
+    hence (ppf n).p = 0 by NAT_3:55;
+  end;
+  A2: dom (ppf n) = SetPrimes by PARTFUN1:def 2;
+  consider p being Prime such that
+  A3: p > n by NEWTON:72;
+  p in dom (ppf n) & (ppf n).p = 0 by A1, A2, A3, NEWTON:def 6;
+  hence 0 in rng (ppf n) by FUNCT_1:3;
+end;
+@ %def Lm2
+
+% LmZeroInRngPpf
+
+\begin{theorem}
+The support of $f_{\pi}(n,-)$ is a subset of the support for $f(n,-)$.
+\end{theorem}
+
+<<Theorem: $\supp(f_{\pi}(n,-))\subset\supp(f(n,-))$>>=
+theorem ThSuppPiPartPpf:
+  for n being non zero Nat
+  holds support (Pi-part_ppf n) c= support (ppf n)
+proof
+  let n be non zero Nat;
+  support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2;
+  then support (Pi-part_ppf n) c= support (pfexp n) by XBOOLE_1:17;
+  hence support (Pi-part_ppf n) c= support (ppf n) by NAT_3:def 9;
+end;
+@ %def ThSuppPiPartPpf
+
+\begin{registration}
+The $\pi$-part prime factorization of $n$ is a natural-valued
+finite-supported function.
+\end{registration}
+
+<<Register: Pi-part prime factorization is natural-valued and has finite-support>>=
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster Pi-part_ppf n -> natural-valued finite-support;
+  correctness
+  proof
+    rng (Pi-part_ppf n) c= rng (ppf n) & rng (ppf n) c= NAT
+    by ThRngPiPartPpf, VALUED_0:def 6;
+    then rng (Pi-part_ppf n) c= NAT;
+    hence (Pi-part_ppf n) is natural-valued;
+    support (Pi-part_ppf n) c= support (ppf n) by ThSuppPiPartPpf;
+    hence support (Pi-part_ppf n) is finite;
+  end;
+end;
+@
+
+\begin{theorem}
+The $\pi$-part prime factorization of $n$ is prime-factorization-like.
+\end{theorem}
+
+<<Theorem: $\pi$-part prime factorization is prime-factorization-like>>=
+theorem Th10:
+  for n being non zero Nat
+  holds (Pi-part_ppf n) is prime-factorization-like
+proof
+  let n be non zero Nat;
+  for x being Prime st x in support (Pi-part_ppf n)
+  ex k being Nat st (0 < k & (Pi-part_ppf n).x = x |^ k)
+  proof
+    let x be Prime;
+    assume B1: x in support (Pi-part_ppf n);
+    then x in Pi /\ support (pfexp n) by Def2;
+    then B2: x in support (pfexp n) by XBOOLE_0:def 4;
+    reconsider k = x |-count n as Nat;
+    take k;
+    (pfexp n).x <> 0 by B2, PRE_POLY:def 7;
+    hence 0 < k by NAT_3:def 8;
+    x in Pi /\ support (pfexp n) by B1, Def2;
+    then (Pi-part_ppf n).x = (ppf n).x by Def2
+                          .= x |^ (x |-count n) by B2, NAT_3:def 9;
+    hence (Pi-part_ppf n).x = x |^ k;
+  end;
+
+  hence (Pi-part_ppf n) is prime-factorization-like by INT_7:def 1;
+end;
+@ %def Th10
+
+\begin{registration}
+We register this fact, that $\pi$-part prime factorization is prime-factorization-like.
+\end{registration}
+
+<<Register: $\pi$-part prime factorization is prime-factorization-like>>=
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster (Pi-part_ppf n) -> prime-factorization-like;
+  correctness by Th10;
+end;
+@
+
+\begin{theorem}
+The product $\prod_{p\in\pi}f_{\pi}(n, p)$ divides $n$.
+\end{theorem}
+
+<<Theorem: $\prod_{p\in\pi}f_{\pi}(n, p)$ divides $n$>>=
+theorem ThDiv:
+  for n being non zero Nat
+  holds Product (Pi-part_ppf n) divides n
+proof
+  let n be non zero Nat;
+  A1: (support (Pi-part_ppf n)) c= support (ppf n)
+  proof
+    support (Pi-part_ppf n) = Pi /\ support (pfexp n) by Def2
+                           .= Pi /\ support (ppf n) by NAT_3:def 9;
+    hence thesis by XBOOLE_1:17;
+  end;
+  (ppf n)|(support (Pi-part_ppf n)) = (Pi-part_ppf n)|(support (Pi-part_ppf n))
+  by LmHuh2;
+  then Product (Pi-part_ppf n) divides Product (ppf n) by A1, INT_7:7;
+  hence thesis by NAT_3:61;
+end;
+@ %def ThDiv
+
+\subsection{The $\pi$-part of a number}
+We arrive at our scheduled destination: the $\pi$-part of a number is
+precisely the product of $f_{\pi}(n,p)$ over all prime $p$. It's a
+nonzero number, very nice, etc.
+
+<<Pi-part of a number>>=
+<<Definition: Pi-part of number>>
+
+<<Theorem: prime divisors of $n_{\pi}$ belong to $\pi$>>
+
+<<Register: Pi-part of a number is a Pi-number>>
+
+<<Theorem: Pi-number divisors divide the Pi-part of the number>>
+
+<<Theorem: Prime factorization of Pi-part equals the Pi-part prime factorization>>
+
+<<Theorem: Prime factorization for a $\pi$ number ranges over $\pi$>>
+
+<<Theorem: Pi-part coprime with Pi'-part>>
+
+<<Theorem: prime factorization decomposes into factorization of Pi-part and Pi'-part>>
+
+<<Theorem: any number is the product of its $\pi$-part and $\pi^{\prime}$-part>>
+@ 
+
+\begin{definition}
+Let $n\in\NN$ be nonzero, $\pi$ a set of a primes.
+We define the \define{$\pi$-part} of $n$ to be the number $n_{\pi}=\prod_{p\in\pi}p^{n_{p}}$.
+\end{definition}
+
+<<Definition: Pi-part of number>>=
+definition
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  func Pi-part n -> non zero Nat equals Product (Pi-part_ppf n);
+  coherence
+  proof
+    Product (Pi-part_ppf n) divides n by ThDiv;
+    hence thesis;
+  end;
+end;
+@ %def -part
+
+\begin{theorem}
+Every prime $p$ which divides $n_{\pi}$ belongs to $\pi$.
+\end{theorem}
+
+<<Theorem: prime divisors of $n_{\pi}$ belong to $\pi$>>=
+theorem Th11:
+  for n being non zero Nat
+  for p being Prime st p divides (Pi-part n) holds p in Pi
+proof
+  let n be non zero Nat;
+  let p be Prime;
+  assume p divides (Pi-part n);
+  then p in support (Pi-part_ppf n) by INT_7:8;
+  then p in Pi /\ support (pfexp n) by Def2;
+  hence p in Pi by XBOOLE_0:def 4;
+end;
+@ %def Th11
+
+\begin{registration}
+In other words, the $\pi$-part of a number is itself a $\pi$-number.
+\end{registration}
+
+<<Register: Pi-part of a number is a Pi-number>>=
+registration
+  let Pi be Subset of SetPrimes;
+  let n be non zero Nat;
+  cluster Pi-part n -> Pi-number;
+  correctness by Th11;
+end;
+@ 
+
+\begin{theorem}
+Let $n,q\in\NN$ be nonzero numbers.
+If $q$ is a $\pi$-number and $q\divides n$,
+then $q\divides n_{\pi}$.
+\end{theorem}
+
+<<Theorem: Pi-number divisors divide the Pi-part of the number>>=
+theorem 
+  for n being non zero Nat
+  for q being non zero Nat st q is Pi-number & q divides n
+  holds q divides Pi-part n
+proof
+  let n be non zero Nat;
+  let q be non zero Nat;
+  assume A1: q is Pi-number;
+  assume A2: q divides n;
+  for p being Prime holds (ppf q).p <= (ppf (Pi-part n)).p
+  proof
+    let p be Prime;
+    B1: (ppf q).p <= (ppf n).p by A2, Th3;
+    B2: p > 1 by INT_2:def 4;
+    per cases;
+    suppose p divides q;
+      hence thesis by A1, B1, Th12;
+    end;
+    suppose not (p divides q);
+      then p |-count q = 0 by B2, NAT_3:27;
+      hence (ppf q).p <= (ppf (Pi-part n)).p by NAT_3:55;
+    end;
+  end;
+  hence thesis by Th2;
+end;
+@
+
+\begin{theorem}
+The prime-factorization of the $\pi$-part of the any nonzero number is
+the $\pi$-part prime factorization of that number.
+\end{theorem}
+
+<<Theorem: Prime factorization of Pi-part equals the Pi-part prime factorization>>=
+theorem Th14:
+  for n being non zero Nat
+  holds ppf (Pi-part n) = Pi-part_ppf n by INT_7:16;
+@ %def Th14
+
+\begin{theorem}
+Let $n$ be a $\pi$-number.
+Then its prime factorization is a product of elements belonging to $\pi$.
+\end{theorem}
+
+<<Theorem: Prime factorization for a $\pi$ number ranges over $\pi$>>=
+theorem Th13:
+  for n being non zero Nat st n is Pi-number
+  holds support (ppf n) c= Pi
+proof
+  for n being non zero Nat st not (support (ppf n) c= Pi)
+  holds not (n is Pi-number)
+  proof
+    let n be non zero Nat;
+    assume not support (ppf n) c= Pi;
+    then consider p being object such that
+    A1: p in support (ppf n) & not (p in Pi);
+    dom (ppf n) = SetPrimes & p in dom (ppf n)
+    by A1, PRE_POLY:37, PARTFUN1:def 2, TARSKI:def 3;
+    then reconsider pp=p as Prime by NEWTON:def 6;
+    pp divides Product (ppf n) by A1, INT_7:8;
+    then pp divides n by NAT_3:61;
+    hence not (n is Pi-number) by A1;
+  end;
+  hence thesis;
+end;
+@
+
+\begin{theorem}
+The $\pi$-part of a number $n_{\pi}$ is coprime with its $\pi'$-part
+$n_{\pi'}$, where $\pi'=\mathbb{P}\setminus\pi$ is the set of all primes
+not belonging to $\pi$.
+\end{theorem}
+
+<<Theorem: Pi-part coprime with Pi'-part>>=
+<<Lemma: support of Pi-part prime factorization is contained in Pi>>
+
+theorem Th21:
+  for n being non zero Nat
+  holds Pi-part n, (Pi`)-part n are_coprime
+proof
+  let n be non zero Nat;
+  A1: Pi misses Pi` by SUBSET_1:24;
+  support (Pi-part_ppf n) c= Pi & support ((Pi`)-part_ppf n) c= Pi` by Lm3;
+  hence thesis by A1, XBOOLE_1:64, INT_7:12;
+end;
+@ 
+
+\begin{lemma}
+The support of the $\pi$-part prime factorization of $n$ is contained in $\pi$.
+\end{lemma}
+
+<<Lemma: support of Pi-part prime factorization is contained in Pi>>=
+Lm3:
+  for n being non zero Nat
+  holds support (Pi-part_ppf n) c= Pi
+proof
+  let n be non zero Nat;
+  Pi-part_ppf n = ppf (Pi-part n) by Th14;
+  hence support (Pi-part_ppf n) c= Pi by Th13;
+end;
+@ %def Lm3
+
+\begin{theorem}
+The prime factorization of $n$ may be decomposed into the prime
+factorization of $n_{\pi}$ and the prime factorization of $n_{\pi'}$.
+\end{theorem}
+
+<<Theorem: prime factorization decomposes into factorization of Pi-part and Pi'-part>>=
+theorem Th22:
+  for n being non zero Nat
+  holds ppf (Pi-part n) + ppf ((Pi`)-part n) = ppf n
+proof
+  let n be non zero Nat;
+  set ps = (Pi-part_ppf n); 
+  set qs = ((Pi`)-part_ppf n);
+  A1: ps = ppf (Pi-part n) & qs = ppf ((Pi`)-part n) by Th14;
+
+  C1: support ps /\ support qs = {}
+  proof
+    B1: Pi misses Pi` by SUBSET_1:24;
+    support (Pi-part_ppf n) c= Pi & support ((Pi`)-part_ppf n) c= Pi` by Lm3;
+    hence thesis by B1, XBOOLE_1:64, XBOOLE_0:def 7;
+  end;
+  C2: support ps \/ support qs = support (ppf n)
+  proof
+    B1: support ps = Pi /\ support (ppf n) by Th7a;
+    B2: support qs = Pi` /\ support (ppf n) by Th7a;
+    B3: Pi \/ (Pi`) = [#] SetPrimes by SUBSET_1:10
+                   .= SetPrimes by SUBSET_1:def 3;
+    support ps \/ support qs = (Pi \/ Pi`) /\ support (ppf n) by B1,B2,XBOOLE_1:23
+                            .= SetPrimes /\ support (ppf n) by B3
+                            .= support (ppf n) by XBOOLE_1:28;
+    hence thesis;
+  end;
+  C3: ps | (support ps) = (ppf n) | (support ps) by LmHuh2;
+  C4: qs | (support qs) = (ppf n) | (support qs) by LmHuh2;
+  thus ppf (Pi-part n) + ppf ((Pi`)-part n) = ppf n by A1,C1,C2,C3,C4,INT_7:2;
+end;
+@ %def Th22
+
+\begin{theorem}
+For any $n\in\NN$, we have $n=n_{\pi}n_{\pi'}$ (it is the product of its
+$\pi$-part with its $\pi'$-part).
+\end{theorem}
+
+<<Theorem: any number is the product of its $\pi$-part and $\pi^{\prime}$-part>>=
+theorem
+  for n being non zero Nat
+  holds n = (Pi-part n)*((Pi`)-part n)
+proof
+  let n be non zero Nat;
+  
+  A1: Product (ppf (Pi-part n) + ppf ((Pi`)-part n))
+   = Product (ppf ((Pi-part n)*((Pi`)-part n))) by Th21, NAT_3:58
+  .= (Pi-part n)*((Pi`)-part n) by NAT_3:61;
+
+  Product (ppf (Pi-part n) + ppf ((Pi`)-part n))
+   = Product (ppf n) by Th22
+  .= n by NAT_3:61;
+  hence thesis by A1;
+end;
+@ 

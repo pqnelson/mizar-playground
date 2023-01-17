@@ -22,6 +22,7 @@ PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/null-object.nw $(PRODGRP)/quotient-groups.nw 
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
+	$(RADRES)/pi-numbers.nw \
 	$(RADRES)/pi-group.nw $(RADRES)/hall-pi-groups.nw \
 	$(RADRES)/p-cores.nw $(RADRES)/products.nw
 PERMUGROUP=nw/004-permutation-group
@@ -46,11 +47,11 @@ rm_defs:
 defs: rm_defs
 #	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
 	nodefs $(PRODUCT_GROUP) > 002.defs
-#	nodefs $(RADICALS) > 002.defs
-#	nodefs $(PERMUTATION_GROUP) > 003.defs
+	nodefs $(RADICALS) > 003.defs
+#	nodefs $(PERMUTATION_GROUP) > 004.defs
 	sort -u 001.defs | cpif 001.defs
 	sort -u 002.defs | cpif 002.defs
-#	sort -u 003.defs | cpif 003.defs
+	sort -u 003.defs | cpif 003.defs
 
 extract_text/nw/%.nw:
 	noweave -n -indexfrom all.defs nw/$*.nw > tex/$*.tex
@@ -62,8 +63,8 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 dumb_extract_text: defs
 #	noweave -indexfrom 001.defs $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
 	noweave -indexfrom 002.defs $(NOWEBOPTS) $(PRODUCT_GROUP) > tex/product-group.tex
-#	noweave $(NOWEBOPTS) -indexfrom 002.defs $(RADICALS) > tex/radicals.tex
-#	noweave $(NOWEBOPTS) -indexfrom 003.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
+	noweave $(NOWEBOPTS) -indexfrom 003.defs $(RADICALS) > tex/radicals.tex
+#	noweave $(NOWEBOPTS) -indexfrom 004.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
 code:
 #	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 #	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
