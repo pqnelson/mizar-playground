@@ -52,7 +52,11 @@ begin :: Subgroup-Family of a Family of Groups
 
 <<Register: strict normal subgroup for members of a strict normal subgroup family>>
 
+<<Register: trivial subgroup families are normal>>
+
 <<Definition: family of quotient groups>>
+
+<<Register: family of quotient groups is componentwise-strict>>
 
 <<Theorem: Existence of Commutator Subgroup Family>>
 @
@@ -184,7 +188,7 @@ proof
   then for i being Element of I
   for G being Group st G = F.i
   holds S.i is Subgroup of G;
-  then S is F-Subgroup-yielding by Def2;
+  then S is F-Subgroup-yielding;
   hence S is Subgroup-Family of F;
 end;
 @ 
@@ -209,12 +213,12 @@ proof
   for y being object st y in rng F holds y is Group
   proof
     let y be object;
-    assume B1: y in rng F;
+    assume y in rng F;
     then consider x being object such that
-    B2: x in dom F & y = F.x
+    B1: x in dom F & y = F.x
     by FUNCT_1:def 3;
-    reconsider i=x as Element of I1() by B2;
-    y = F.i by B2
+    reconsider i=x as Element of I1() by B1;
+    y = F.i by B1
      .= Fun(i) by A1;
     hence y is Group;
   end;
@@ -250,12 +254,12 @@ proof
   for y being object st y in rng S holds y is Group
   proof
     let y be object;
-    assume B1: y in rng S;
+    assume y in rng S;
     then consider x being object such that
-    B2: x in dom S & y = S.x
+    B1: x in dom S & y = S.x
     by FUNCT_1:def 3;
-    reconsider i=x as Element of I1() by B2;
-    y = S.i by B2
+    reconsider i=x as Element of I1() by B1;
+    y = S.i by B1
      .= F2(i) by A2;
     hence y is Group;
   end;

@@ -15,7 +15,7 @@ is an $n\in N$ such that $an=b$.
 \end{theorem}
 
 <<Theorem: if $aN=bN$, then $a^{-1}b\in N$>>=
-theorem Th22:
+theorem Th76:
   for G being Group
   for N being normal Subgroup of G
   for a,b being Element of G
@@ -35,7 +35,7 @@ proof
        .= b by GROUP_1:def 4;
   hence thesis;
 end;
-@ %def Th22
+@ %def Th76
 
 \begin{theorem}[Universal property of quotient groups]
 If $N\normalSubgroup G$ and $\nu\colon G\onto G/N$ is the natural
@@ -134,7 +134,7 @@ proof
   B2: f.x = phi.g0 & x = g0*N by A4;
   consider n being Element of G such that
   B3: n in N & g0*n = g
-  by B1, B2, Th22;
+  by B1, B2, Th76;
   
   phi.g = (phi.g0) * (phi.n) by B3, GROUP_6:def 6
   .= (phi.g0) * (1_H) by A1, B3, GROUP_2:40, GROUP_6:41
@@ -158,25 +158,30 @@ proof
   consider gb being Element of G such that
   B3: f.b = phi.gb and
   B4: b = gb*N by A4;
-  
   (ga * N) * (gb * N)
-  = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
+   = ((ga * 1_G) * N) * (gb * N) by GROUP_1:def 4
   .= ((ga * (gb * gb")) * N) * (gb * N) by GROUP_1:def 5
   .= (((ga * gb) * gb") * N) * (gb * N) by GROUP_1:def 3
   .= ((ga * gb) * (gb" * N)) * (gb * N) by GROUP_2:105
   .= ((ga * gb) * (N * gb")) * (gb * N) by GROUP_3:117
   .= (((ga * gb) * (N * gb")) * gb) * N by GROUP_3:9
-  .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:10
-  .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:34
+  .= ((ga * gb) * ((N * gb") * gb)) * N by GROUP_2:33
+  .= ((ga * gb) * (N * (gb" * gb))) * N by GROUP_2:107
   .= ((ga * gb) * (N * (1_G))) * N by GROUP_1:def 5
-  .= ((ga * gb) * N) * N by GROUP_2:109
-  .= (ga * gb) * (N * N) by GROUP_2:29
-  .= (ga * gb) * N by GROUP_2:76;
-  then B7: (ga * gb) * N = (@ a) * (@ b) by B2,B4
-  .= (a * b) by GROUP_6:19;
+  .= ((ga * gb) * ((1_G) * N)) * N by GROUP_3:117
+  .= (((ga * gb) * (1_G)) * N) * N by GROUP_2:105
+  .= ((ga * gb) * N) * N by GROUP_1:def 4
+  .= ((ga * gb) * (carr N)) * N by GROUP_2:def 13
+  .= ({ga * gb} * (carr N)) * N by GROUP_2:def 3
+  .= {ga * gb} * ((carr N) * N) by GROUP_2:96
+  .= {ga * gb} * ((carr N) * (carr N)) by GROUP_2:def 11
+  .= {ga * gb} * (carr N) by GROUP_2:76
+  .= (ga * gb) * (carr N) by GROUP_2:def 3
+  .= (ga * gb) * N by GROUP_2:def 13;
+  then B5: (ga * gb) * N = (@ a) * (@ b) by B2, B4
+                        .= (a * b) by GROUP_6:19;
   (f.a) * (f.b) = phi.(ga * gb) by B1, B3, GROUP_6:def 6
-  .= f.(a * b) by B7, A5;
-  
+               .= f.(a * b) by B5, A5;
   hence f.(a * b) = (f.a) * (f.b);
 end;
 @ 

@@ -30,6 +30,8 @@ begin :: Projection Morphisms from Product Group to Direct Factors
 <<Theorem: inclusion by any other name>>
 
 <<Theorem: [[proj]] is left-inverse for [[1ProdHom]]>>
+
+<<Theorem: projecting image of [[1ProdHom]] onto different component is trivial>>
 @
 
 \begin{theorem}
@@ -292,34 +294,8 @@ theorem Th40:
 proof
   let g be Element of product F;
   let h be Element of F.i;
-  A1: dom g = I by GROUP_19:3;
-  then dom (g +* (i, h)) = I by FUNCT_7:30;
-  then A2: dom (g +* (i, h)) = dom (Carrier F) by PARTFUN1:def 2;
-  for j being object st j in dom (Carrier F)
-  holds (g +* (i, h)).j in (Carrier F).j
-  proof
-    let j be object;
-    assume j in dom (Carrier F);
-    then reconsider ii=j as Element of I;
-    B1: ex R being 1-sorted
-    st (R = F.ii & (Carrier F).ii = the carrier of R)
-    by PRALG_1:def 15;
-    per cases;
-    suppose B2: i = j;
-      then (g +* (i, h)).i = (g +* (j, h)).j
-      .= (g +* (ii, h)).ii
-      .= h by A1, FUNCT_7:31;
-      hence thesis by B1, B2;
-    end;
-    suppose B3: i <> j;
-      g in product F;
-      then g.ii in F.ii by GROUP_19:5;
-      hence thesis by B1, B3, FUNCT_7:32;
-    end;
-  end;
-
-  then (g +* (i, h)) in product (Carrier F) by A2, CARD_3:def 5;
-  hence (g +* (i, h)) in product F by GROUP_7:def 2;
+  g in product F;
+  hence thesis by GROUP_19:24;
 end;
 @ %def Th40
 
@@ -482,7 +458,7 @@ $f(X)\subset Y$.
 \end{lemma}
 
 <<Lemma: Range is contained in Codomain>>=
-LmRangeContainedInCod:
+theorem LmRangeContainedInCod:
   for X,Y being set
   for f being Function of X,Y
   holds rng f c= Y
@@ -520,30 +496,6 @@ proof
 end;
 @ %def LmRangeContainedInCod
 
-
-<<Old Lemma (range contained in codomain)>>=
-:: LmRangeContainedInCod:
-  for X,Y being set st Y <> {}
-  for f being Function of X,Y
-  holds rng f c= Y
-proof
-  let X,Y be set;
-  assume A1: Y <> {};
-  let f be Function of X,Y;
-  for y being object st y in rng f holds y in Y
-  proof
-    let y be object;
-    assume B1: y in rng f;
-    then consider x being object such that
-    B2: x in dom f and
-    B3: y = f.x
-    by FUNCT_1:def 3;
-    x in X by A1, B2, FUNCT_2:def 1;
-    hence y in Y by A1,B2,B3,FUNCT_2:5;
-  end;
-  hence rng f c= Y;
-end;
-@ 
 
 \begin{lemma}
 If we have two binary operators $f\colon X\times Y\to Z$ and
@@ -658,3 +610,50 @@ proof
   hence thesis by A1, FUNCT_2:124;
 end;
 @ 
+
+\begin{theorem}
+The inclusion morphism of a direct factor into the product group
+([[1ProdHom (F,i)]]) when composed by the projection $\pi_{j}$ (for
+$j\neq i$) is the same thing as the trivial morphism.
+\end{theorem}
+
+<<Theorem: projecting image of [[1ProdHom]] onto different component is trivial>>=
+theorem Th65b:
+  for i,j being Element of I st i <> j
+  holds (proj (F,j)) * (1ProdHom (F,i)) = 1:(F.i, F.j)
+proof
+  let i,j be Element of I;
+  assume A1: i <> j;
+  set U = the carrier of F.i;
+  A2: dom 1:(F.i, F.j) = U & dom ((proj (F,j)) * (1ProdHom (F,i))) = U
+  proof
+    thus dom 1:(F.i, F.j) = U;
+    B1: rng (1ProdHom (F,i)) c= the carrier of ProjGroup (F, i) by RELAT_1:def 19;
+    the carrier of ProjGroup (F,i) c= the carrier of product F by GROUP_2:def 5;
+    then rng (1ProdHom (F,i)) c= the carrier of product F by B1;
+    then (1ProdHom (F,i)) is (the carrier of product F)-valued by RELAT_1:def 19;
+    then dom ((proj (F,j)) * (1ProdHom (F,i))) = dom (1ProdHom (F,i)) by FUNCT_2:123;
+    hence thesis by FUNCT_2:def 1;
+  end;
+  for x being Element of U
+  holds ((proj (F,j)) * (1ProdHom (F,i))).x = (1:(F.i, F.j)).x
+  proof
+    let x be Element of U;
+    dom (1ProdHom (F,i)) = U by FUNCT_2:def 1;
+    then B1: x in dom (1ProdHom (F,i));
+    (1ProdHom (F,i)).x in ProjGroup (F, i);
+    then (1_(product F) +* (i, x)) in ProjGroup (F, i) by GROUP_12:def 3;
+    then B2: (1_(product F) +* (i, x)) in product F by GROUP_2:40;
+    ((proj (F,j)) * (1ProdHom (F,i))).x
+     = (proj (F,j)).((1ProdHom (F,i)).x) by B1,FUNCT_1:13
+    .= (proj (F,j)).(1_(product F) +* (i, x)) by GROUP_12:def 3
+    .= (1_(product F) +* (i, x)).j by Def16, B2
+    .= (1_(product F)).j by A1,FUNCT_7:32
+    .= 1_(F.j) by GROUP_7:6
+    .= (F.i --> (1_(F.j))).x
+    .= (1:(F.i, F.j)).x;
+    hence ((proj (F,j)) * (1ProdHom (F,i))).x = (1:(F.i, F.j)).x;
+  end;
+  hence (proj (F,j)) * (1ProdHom (F,i)) = 1:(F.i, F.j) by A2;
+end;
+@ %def Th65b

@@ -26,21 +26,25 @@ begin :: Universal Property of Direct Products of Groups
 
 <<Theorem: Product Group is a Subgroup iff it is componentwise>>
 
-<<Theorem: Existence of Family of Quotient Groups>>
-
-<<Theorem: existence of family of natural homomorphisms for quotient group>>
-
 <<Theorem: Product of a Subgroup-Family is a Subgroup of the Parent's Product>>
 
 <<Definition: product of subgroup-family>>
 
 <<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
 
-<<Theorem: Homomorphisms preserve Frobenius product>>
+<<Theorem: image of projection morphism>>
 
 <<Theorem: if $\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$, then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$>>
 
-<<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>
+<<Theorem: if $G\subgroup\prod\mathcal{F}$, then $\prod(\pi_{i}\circ\iota_{G})=\id_{G}$>>
+
+<<Theorem: images of equal morphisms are equal (as subgroups)>>
+
+<<Theorem: criteria for group morphism being surjective>>
+
+<<Theorem: product of normal subgroup-family is a normal subgroup of the product group>>
+
+<<Register: product of normal subgroup-family is a normal subgroup>>
 @
 
 \begin{theorem}
@@ -591,10 +595,8 @@ proof
     assume B1: i in dom (Carrier F);
     then reconsider ii=i as Element of I;
     f.i in F.ii by A2;
-    then B2: f.i in the carrier of (F.ii);
-    ex R being 1-sorted st (R = F.i & (Carrier F).i = the carrier of R)
-    by B1, PRALG_1:def 15;
-    hence f.i in (Carrier F).i by B2;
+    then f.i in the carrier of (F.ii);
+    hence f.i in (Carrier F).i by Th20;
   end;
   then f in product (Carrier F) by A1, A3, CARD_3:9;
   hence f in product F by GROUP_7:def 2;
@@ -636,108 +638,6 @@ end;
 @
 
 \begin{theorem}
-Existence of quotient group family: given $\mathcal{F}$ a family of
-groups indexed by $I$, and a family of normal subgroups
-$\mathcal{N}_{i}\normalSubgroup\mathcal{F}_{i}$ for each $i\in I$, then
-there exists a family of groups $\mathcal{Q}_{i}=\mathcal{F}_{i}/\mathcal{N}_{i}$.
-\end{theorem}
-
-<<Theorem: Existence of Family of Quotient Groups>>=
-theorem
-  for N being Group-Family of I
-  st (for i being Element of I holds N.i is normal Subgroup of F.i)
-  ex QG being Group-Family of I
-  st (for i being Element of I
-      ex Ni being normal Subgroup of F.i
-      st Ni = N.i & QG.i = (F.i) ./. Ni)
-proof
-  let N be Group-Family of I;
-  assume A1: for i being Element of I holds N.i is normal Subgroup of F.i;
-  defpred PQ[Element of I, object] means ex Ni being normal Subgroup of
-  F.$1 st Ni = N.$1 & $2 = (F.$1)./.Ni;
-  B1: for i being Element of I ex j being object st PQ[i, j]
-  proof
-    let i be Element of I;
-    reconsider Ni=N.i as normal Subgroup of F.i by A1;
-    take j = (F.i)./.Ni;
-    thus PQ[i, j];
-  end;
-  consider QG being ManySortedSet of I such that
-  A3: for i being Element of I holds PQ[i, QG.i]
-  from PBOOLE:sch 6(B1);
-  for y being object st y in rng QG holds y is Group
-  proof
-    let y be object;
-    assume y in rng QG;
-    then consider x being object such that
-    B1: x in dom QG & y = QG.x by FUNCT_1:def 3;
-    reconsider i=x as Element of I by B1;
-    PQ[i, y] by A3, B1;
-    hence y is Group;
-  end;
-  then QG is Group-yielding by Def1;
-  then reconsider QG as Group-Family of I;
-  take QG;
-  thus thesis by A3;
-end;
-@
-
-\begin{theorem}
-Given a family of normal subgroups $\mathcal{N}_{i}\normalSubgroup\mathcal{F}_{i}$,
-and a family of quotient groups $\mathcal{Q}_{i}=\mathcal{F}_{i}/\mathcal{N}_{i}$,
-there exists a family of morphisms $\varphi_{i}\colon\prod\mathcal{F}\to\mathcal{Q}_{i}$
-such that $\varphi_{i}$ is the composition of the projection morphism
-$\pi_{i}$ followed by the natural homomorphism onto the quotient $\mathcal{Q}_{i}$.
-\end{theorem}
-
-<<Theorem: existence of family of natural homomorphisms for quotient group>>=
-theorem
-  for QG being Group-Family of I
-  st (for i being Element of I ex Ni being normal Subgroup of F.i
-      st QG.i=(F.i)./.Ni)
-  ex phi being Homomorphism-Family of (product F), QG
-  st (for i being Element of I
-      ex Ni being normal Subgroup of F.i
-      st QG.i = (F.i)./.Ni & phi.i = (nat_hom Ni) * (proj (F, i)))
-proof
-  let QG be Group-Family of I;
-  assume A1: for i being Element of I
-             ex Ni being normal Subgroup of F.i
-             st QG.i=(F.i)./.Ni;
-  defpred P[Element of I, object] means ex Ni being normal Subgroup of
-  F.$1 st QG.$1 = (F.$1)./.Ni & $2 = (nat_hom Ni) * (proj (F, $1));
-
-  A2: for i being Element of I ex j being object st P[i, j]
-  proof
-    let i be Element of I;
-    consider Ni being normal Subgroup of F.i such that
-    B1: QG.i = (F.i)./.Ni by A1;
-    take j = (nat_hom Ni) * (proj (F, i));
-    thus P[i, j] by A1,B1;
-  end;
-
-  consider f being ManySortedSet of I such that
-  A3: for i being Element of I holds P[i, f.i]
-  from PBOOLE:sch 6(A2);
-  
-  A4: for i being Element of I holds f.i is Homomorphism of (product F), QG.i
-  proof
-    let i be Element of I;
-    P[i, f.i] by A3;
-    then consider Ni being normal Subgroup of F.i such that
-    B1: QG.i = (F.i)./.Ni & f.i = (nat_hom Ni) * (proj (F, i));
-    thus f.i is Homomorphism of (product F), QG.i by B1;
-  end;
-  then for i being object st i in dom f holds f.i is Function;
-  then f is Function-yielding by FUNCOP_1:def 6;
-  then reconsider f as Homomorphism-Family of (product F), QG by A4,Def13;
-  take f;
-  thus thesis by A3;
-end;
-@ 
-
-
-\begin{theorem}
 Let $g\in\prod\mathcal{F}$, $\nu_{i}\colon\mathcal{F}_{i}\onto\mathcal{F}_{i}/[\mathcal{F}_{i},\mathcal{F}_{i}]$
 be the natural homomorphism of the component $i\in I$.
 Then $g\in\ker(\nu_{i}\circ\pi_{i})$ if and only if $\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$.
@@ -764,115 +664,6 @@ proof
   then 1_H = (nat_hom ((F.i)`)).((proj (F,i)).g) by GROUP_6:41
           .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
   hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
-end;
-@ 
-
-\begin{theorem}
-For any family of groups $\mathcal{F}$, if we introduce the family of
-subgroups $\mathcal{D}_{i}=[\mathcal{F}_{i}, \mathcal{F}_{i}]$, then we
-have
-\begin{equation}
-\prod\mathcal{D} = [\prod\mathcal{F}, \prod\mathcal{F}].
-\end{equation}
-\end{theorem}
-
-<<Theorem: $\prod[\mathcal{F}_{i},\mathcal{F}_{i}] = [\prod\mathcal{F}, \prod\mathcal{F}]$>>=
-theorem
-  for D being Group-Family of I
-  st (for i being Element of I holds D.i = (F.i)`)
-  holds (product F)` = product D
-proof
-  let D be Group-Family of I;
-  assume A1: for i being Element of I holds D.i = (F.i)`;
-  for i being Element of I holds D.i is Subgroup of F.i
-  proof
-    let i be Element of I;
-    D.i = (F.i)` by A1;
-    hence thesis; 
-  end;
-  then A2: product D is strict Subgroup of (product F) by GROUP_21:23;
-  
-  A3: (product F)` is strict Subgroup of (product D)
-  <<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>
-
-  A4: for g being Element of (product F) st g in (product D)
-  holds g in Ker (nat_hom (product F)`)
-  <<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>
-
-  for g being Element of (product F) st g in (product D)
-  holds g in (product F)`
-  proof
-    let g be Element of (product F);
-    assume Z1: g in (product D);
-    then g in Ker (nat_hom (product F)`) by A4;
-    hence g in (product F)` by GROUP_6:43;
-  end;
-  then product D is strict Subgroup of (product F)` by A2, GROUP_2:58;
-  hence thesis by A3, GROUP_2:55;
-end;
-@ 
-
-<<Proof step: $[\prod\mathcal{F},\prod\mathcal{F}]\subgroup\prod\mathcal{D}$>>=
-proof
-  for a, b being Element of (product F) holds [. a,b .] in product D
-  proof
-    let a, b be Element of (product F);
-    set c = [. a, b .];
-    B1: dom c = I by GROUP_19:3;
-    for i being Element of I holds c.i in D.i
-    proof
-      let i be Element of I;
-      C1: a/.i in (Omega).(F.i) & b/.i in (Omega).(F.i);
-      c.i = ((((a") * (b")) * a) * b).i by GROUP_5:def 2
-         .= (((((a") * (b")) * a))/.i) * (b/.i) by GROUP_7:1
-         .= ((((a") * (b"))/.i * (a/.i))) * (b/.i) by GROUP_7:1
-         .= ((((a")/.i * (b")/.i) * (a/.i))) * (b/.i) by GROUP_7:1
-         .= (((((a/.i)") * ((b")/.i)) * (a/.i))) * (b/.i) by GROUP_7:8
-         .= (((((a/.i)") * ((b/.i)")) * (a/.i))) * (b/.i) by GROUP_7:8
-         .= [. (a/.i), (b/.i) .] by GROUP_5:def 2;
-      then c.i in [. (Omega).(F.i), (Omega).(F.i) .] by C1, GROUP_5:65;
-      then c.i in (F.i)` by GROUP_5:def 9;
-      hence c.i in D.i by A1;
-    end;
-    hence c in product D by B1, Th49;
-  end;
-  hence thesis by A2, GROUP_6:7;
-end;
-@ 
-
-<<Proof step: $\forall g\in\prod\mathcal{F}, g\in\prod\mathcal{D}\implies g\in\ker(\nu)$>>=
-proof
-  let g be Element of (product F);
-  assume B1: g in (product D);
-  set QG = (product F)./.((product F)`);
-  
-  deffunc PHI(Element of I) = (nat_hom ((F.$1)`)) * (proj (F, $1));
-  deffunc PHI(Element of I) = nat_hom ((F.$1)`);
-  consider phi being ManySortedSet of I such that
-  B2: for i being Element of I holds phi.i = PHI(i)
-  from PBOOLE:sch 5;
-  for i being Element of I
-  holds phi.i is Homomorphism of F.i, (F.i)./.((F.i)`)
-  proof
-    let i be Element of I;
-    phi.i = PHI(i) by B2;
-    hence phi.i is Homomorphism of F.i, (F.i)./.((F.i)`);
-  end;
-  then reconsider phi as Homomorphism-Family of (product F), D;
-    
-  for i being Element of I
-  for varphi being Homomorphism of (product F),D.i
-  st varphi = (nat_hom ((F.i)`)) * (proj (F, i))
-  ex fi being Homomorphism of QG,D.i
-  st varphi = fi * (nat_hom ((product F)`))
-   & Image fi = (1).(D.i);
-
-    :: construct the Homomorphism-Family from the varphi
-    :: th
-
-  ((nat_hom ((product F)`))/.g) = 1_(QG);
-    :: then (nat_hom ((product F)`)).g = 1_(QG);
-  hence g in Ker (nat_hom (product F)`) by GROUP_6:41;
 end;
 @ 
 
@@ -991,213 +782,19 @@ definition
 end;
 @
 
-\begin{theorem}
-Let $G_{1}$ and $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be
-a group morphism. For any finite sequence $\mathcal{F}_{1}$ of elements
-in $G_{1}$, there is a corresponding finite sequence $\mathcal{F}_{2}$
-of elements of $G_{2}$ obtained by applying $\varphi$ componentwise.
-\end{theorem}
+%% \begin{theorem}
+%% Let $G_{1}$ and $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be
+%% a group morphism. For any finite sequence $\mathcal{F}_{1}$ of elements
+%% in $G_{1}$, there is a corresponding finite sequence $\mathcal{F}_{2}$
+%% of elements of $G_{2}$ obtained by applying $\varphi$ componentwise.
+%% \end{theorem}
 
-\begin{thm-remark}
-I have not seen a standard name for the product of elements in a finite
-sequence for a group $\prod_{g\in\mathcal{F}}g$, but I have seen it
-called the Frobenius product. I guess I will keep that terminology, at
-least for the moment.
-\end{thm-remark}
-
-<<Theorem: Homomorphisms preserve Frobenius product>>=
-theorem ThMappingFrobProd:
-  for G1, G2 being Group
-  for phi being Homomorphism of G1, G2
-  for F1 being FinSequence of the carrier of G1
-  ex F2 being FinSequence of the carrier of G2
-  st len F1 = len F2
-   & F2 = phi * F1
-   & Product F2 = phi.(Product F1)
-proof
-  let G1, G2 be Group;
-  let phi be Homomorphism of G1, G2;
-  let F1 be FinSequence of the carrier of G1;
-  set n1 = len F1;
-  <<Proof step: construct $p\sim\mathcal{F}_{2}$>>
-  take F2 = p;
-
-  thus len F1 = len F2 by A4;
-  thus F2 = phi * F1 by A5;
-
-  <<Proof by induction that $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$>>
-  hence Product F2 = phi.(Product F1) by A6;
-end;
-@ %def ThMappingFrobProd
-
-\begin{proof}[Proof step (construct $p = \varphi\circ\mathcal{F}_{1}$)]
-We begin by constructing our desired ``target'': the sequence of
-elements in $G_{2}$ obtained by applying $\varphi$ component-wise to
-$\mathcal{F}_{1}$. 
-\end{proof}
-
-<<Proof step: construct $p\sim\mathcal{F}_{2}$>>=
-defpred P[object, object] means ex k being Nat st k = $1 &
-$2 = phi.(F1.k);
-A1: for k being Nat st k in Seg n1 holds ex x being object st P[k, x]
-proof
-  let k be Nat;
-  assume B1: k in Seg n1;
-  then B2: k in dom F1 by FINSEQ_1:def 3;
-  consider x being object such that
-  B3: x = phi.(F1.k);
-  take x;
-  thus P[k, x] by B3;
-end;
-
-consider p being FinSequence such that
-A2: dom p = Seg n1 and
-A3: for k being Nat st k in Seg n1 holds P[k, p.k]
-from FINSEQ_1:sch 1(A1);
-A4: len F1 = len p by A2, FINSEQ_1:def 3;
-A5: p = phi * F1
-<<Proof step: $p = \varphi\circ\mathcal{F}_{1}$>>
-then rng p c= the carrier of G2 by FINSEQ_1:def 4;
-then reconsider p as FinSequence of the carrier of G2 by FINSEQ_1:def 4;
-@ 
-
-\begin{proof}[Proof step ($p = \varphi\circ\mathcal{F}_{1}$)]
-This amounts to an arduous proof by inspection, seeing that, yep, each
-component of the sequence really works this way.
-\end{proof}
-
-<<Proof step: $p = \varphi\circ\mathcal{F}_{1}$>>=
-proof
-  B1: len p = len (phi * F1) by A4, FINSEQ_2:33;
-  B2: for k being Nat st 1 <= k & k <= len p holds p.k = (phi * F1).k
-  proof
-    let k be Nat;
-    assume B3: 1 <= k;
-    assume B4: k <= len p;
-    then B5: k in Seg n1 by A4,B3,FINSEQ_1:1;
-    then B6: k in dom F1 by FINSEQ_1:def 3;
-    P[k, p.k] by A3, B5;
-    then ex k0 being Nat st k0 = k & p.k = phi.(F1.k0);
-    then B7: p.k = phi.(F1.k);
-    (phi * F1).k = phi.(F1.k) by B6, FUNCT_1:13
-                .= p.k by B7;
-    hence p.k = (phi * F1).k;
-  end;
-  hence thesis by B1, FINSEQ_1:def 17;
-end;
-@
-
-\begin{proof}[Proof step (induction argument $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$)]
-We can prove by induction on the length of the sequence that the product
-obeys the expected property (namely, it is preserved under the
-homomorphism supplied).
-\end{proof}
-
-<<Proof by induction that $\prod\mathcal{F}_{2}=\varphi(\prod\mathcal{F}_{1})$>>=
-defpred P1[FinSequence of the carrier of G1] means
-phi.(Product $1) = Product (phi * $1);
-B1: P1[ <*>(the carrier of G1) ]
-<<Proof step: base case for homomorphisms preserving Frobenius product>>
-B2: for p0 being FinSequence of the carrier of G1
-for x being Element of the carrier of G1 st P1[p0]
-holds P1[(p0 ^ <* x *>)]
-<<Proof step: inductive case that $P[p_{0}+\langle x\rangle]$>>
-A6: for p0 being FinSequence of the carrier of G1 holds P1[p0]
-from FINSEQ_2:sch 2(B1, B2);
-F2 = phi * F1
-<<Proof step: $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$>>
-@ 
-
-\begin{proof}[Proof step (base case)]
-We can establish the empty sequence satisfies the mapping condition,
-since it basically amounts to translating the identity element.
-\end{proof}
-
-<<Proof step: base case for homomorphisms preserving Frobenius product>>=
-proof
-  phi.(Product <*>(the carrier of G1))
-   = phi.(1_G1) by GROUP_4:8
-  .= 1_(G2) by GROUP_6:31
-  .= Product (<*>(the carrier of G2)) by GROUP_4:8;
-  hence thesis;
-end;
-@ 
-
-\begin{proof}[Proof step (inductive case)]
-We can now prove that $\varphi(p_{0}+\langle x\rangle)=\varphi(p_{0})+\langle\varphi(x)\rangle$.
-\end{proof}
-
-<<Proof step: inductive case that $P[p_{0}+\langle x\rangle]$>>=
-proof
-  let p0 be FinSequence of the carrier of G1;
-  let x be Element of the carrier of G1;
-  assume C1: P1[p0];
-  Product (p0 ^ <* x *>) = (Product p0) * x by GROUP_4:6;
-  then phi.(Product (p0 ^ <* x *>))
-   = (phi.(Product p0)) * (phi.x) by GROUP_6:def 6
-  .= (Product (phi * p0)) * (phi.x) by C1
-  .= Product ((phi * p0) ^ <* phi.x *>) by GROUP_4:6;
-  hence P1[(p0 ^ <* x *>)] by FINSEQOP:8;
-end;
-@ 
-
-\begin{proof}[Proof step]
-We can establish now that $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$.
-\end{proof}
-
-<<Proof step: $\mathcal{F}_{2}=\varphi\circ\mathcal{F}_{1}$>>=
-proof
-  B1: len F2 = len (phi * F1) by A4, FINSEQ_2:33;
-  B2: for k being Nat st 1 <= k & k <= len F2 holds F2.k = (phi * F1).k
-  proof
-    let k be Nat;
-    assume B3: 1 <= k & k <= len F2;
-    then k in Seg n1 by A4, FINSEQ_1:1;
-    then B4: k in dom F1 by FINSEQ_1:def 3;
-    P[k, F2.k] by A3, A4, B3, FINSEQ_1:1;
-    hence F2.k = phi.(F1.k)
-              .= (phi * F1).k by B4, FUNCT_1:13;
-  end;
-  hence thesis by B1, FINSEQ_1:def 17;
-end;
-@
-
-\begin{theorem}
-We have an explicit component-wise version of the previous theorem.
-\end{theorem}
-
-<<Theorem>>=
-theorem
-  for G1, G2 being Group
-  for phi being Homomorphism of G1, G2
-  for F1 being FinSequence of the carrier of G1
-  ex F2 being FinSequence of the carrier of G2
-  st len F1 = len F2
-   & (for i being Nat st i in Seg (len F1) holds F2.i = phi.(F1.i))
-   & Product F2 = phi.(Product F1)
-proof
-  let G1, G2 be Group;
-  let phi be Homomorphism of G1, G2;
-  let F1 be FinSequence of the carrier of G1;
-  consider F2 being FinSequence of the carrier of G2 such that
-  A1: len F1 = len F2 and
-  A2: F2 = phi * F1 and
-  A3: Product F2 = phi.(Product F1)
-  by ThMappingFrobProd;
-  take F2;
-  thus len F1 = len F2 by A1;
-  thus for i being Nat st i in Seg (len F1) holds F2.i = phi.(F1.i)
-  proof
-    let i be Nat;
-    assume i in Seg (len F1);
-    then i in dom F1 by FINSEQ_1:def 3;
-    hence phi.(F1.i) = (phi * F1).i by FUNCT_1:13
-                    .= F2.i by A2;
-  end;
-  thus Product F2 = phi.(Product F1) by A3;
-end;
-@
-
+%% \begin{thm-remark}
+%% I have not seen a standard name for the product of elements in a finite
+%% sequence for a group $\prod_{g\in\mathcal{F}}g$, but I have seen it
+%% called the Frobenius product. I guess I will keep that terminology, at
+%% least for the moment.
+%% \end{thm-remark}
 \begin{theorem}
 The image of the projection morphism is the direct factor (as a strict group).
 \end{theorem}
@@ -1368,22 +965,17 @@ proof
   let f2 be Homomorphism of G1,H;
   assume A1: f1 = f2;
   A2: Image f2 is strict Subgroup of G2 by GROUP_2:56;
-  for g being Element of G2
-  holds g in Image f1 iff g in Image f2
+  for g being Element of G2 holds g in Image f1 iff g in Image f2
   proof
     let g be Element of G2;
     hereby 
       assume g in Image f1;
-      then consider a being Element of G1 such that
-      B1: g = f1.a
-      by GROUP_6:45;
-      thus g in Image f2 by A1, B1, GROUP_6:45;
+      then ex a being Element of G1 st g = f1.a by GROUP_6:45;
+      hence g in Image f2 by A1, GROUP_6:45;
     end;
     assume g in Image f2;
-    then consider a being Element of G1 such that
-    B2: g = f2.a
-    by GROUP_6:45;
-    thus g in Image f1 by A1, B2, GROUP_6:45;
+    then ex a being Element of G1 st g = f2.a by GROUP_6:45;
+    hence g in Image f1 by A1, GROUP_6:45;
   end;
   hence Image f1 = Image f2 by A2, GROUP_2:def 6;
 end;
@@ -1419,5 +1011,66 @@ proof
   end;
   then rng phi = the carrier of G2 by FUNCT_2:10;
   hence thesis;
+end;
+@ 
+
+\begin{theorem}
+Let $\mathcal{S}$ be a family of normal subgroups
+$\mathcal{S}_{i}\normalSubgroup\mathcal{F}_{i}$ for each $i\in I$.
+Then $\prod\mathcal{S}\normalSubgroup\prod\mathcal{F}$.
+\end{theorem}
+
+<<Theorem: product of normal subgroup-family is a normal subgroup of the product group>>=
+theorem Th90:
+  for S being normal Subgroup-Family of F
+  holds product S is normal Subgroup of product F
+proof
+  let S be normal Subgroup-Family of F;
+  for g being Element of product F
+  holds (product S) |^ g is Subgroup of product S
+  proof
+    let g be Element of product F;
+    for h being Element of product F st h in (product S) |^ g
+    holds h in product S
+    proof
+      let h be Element of product F;
+      assume h in (product S) |^ g;
+      then consider a being Element of product F such that
+      A2: h = a |^ g & a in product S
+      by GROUP_3:58;
+      A3: dom h = I by GROUP_19:3;
+      for i being Element of I holds h.i in S.i
+      proof
+        let i be Element of I;
+        B1: a.i in S.i by A2, GROUP_19:5;
+        h.i = (((g") * a) * g).i by A2,GROUP_3:def 2
+           .= (((g") * a)/.i) * (g/.i) by GROUP_7:1
+           .= (((g")/.i) * (a/.i)) * (g/.i) by GROUP_7:1
+           .= (((g/.i)") * (a/.i)) * (g/.i) by GROUP_7:8
+           .= (a/.i) |^ (g/.i) by GROUP_3:def 2;
+        then h.i in (S.i) |^ (g/.i) by B1, GROUP_3:58;
+        then h.i in the multMagma of S.i by GROUP_3:def 13;
+        hence thesis;
+      end;
+      hence h in product S by A3, Th49;
+    end;
+    hence (product S) |^ g is Subgroup of product S by GROUP_2:58; 
+  end;
+  hence thesis by GROUP_3:122;
+end;
+@ %def Th90
+
+\begin{registration}
+We should register the fact that the product of a normal subgroup-family
+is a normal subgroup.
+\end{registration}
+
+<<Register: product of normal subgroup-family is a normal subgroup>>=
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let S be normal Subgroup-Family of F;
+  cluster product S -> normal for Subgroup of product F;
+  correctness by Th90;
 end;
 @ 
