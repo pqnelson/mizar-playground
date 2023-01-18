@@ -1,4 +1,81 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2023-01-17
+
+I am done with proving all the theorems I want to prove for my next
+Mizar submission. I just need to "clean it up", make sure the numberings
+are correct, and so on.
+
+...actually, after looking at my first submission, I realize I didn't
+define the p-core of a group. I believe it is because there was no easy
+way to define the p-residual for a group, which prompted me to write a
+"quality of life" article concerning product groups.
+
+The article I will work on _after_ finishing my current submission will
+almost certainly be Hall's theorem.
+
+## p-local Subgroups
+
+The [definition](https://groupprops.subwiki.org/wiki/Local_subgroup_for_a_prime) of a p-local Subgroup may be formalized in Mizar
+using attributes as:
+
+```mizar
+definition
+  let G be Group;
+  let p be Prime;
+  let IT be Subgroup of G;
+  attr IT is p-local means
+  ex P being non trivial p-group Subgroup of G 
+  st the multMagma of IT = Normalizer P;
+end;
+```
+
+Then we can borrow Aschbacher and Smith's terminology to define:
+
+```mizar
+definition
+  let G be Group;
+  pred G has_even_characteristic means
+  for T being Subgroup of G st T is_Sylow_p-subgroup_of_prime 2
+  for M being 2-local Subgroup of G
+  st (for N being 2-local Subgroup of G st M is Subgroup of N & N <> G
+      holds the multMagma of M = the multMagma of N)
+  & T is Subgroup of M
+  for C being strict Subgroup of M st C = 2-core M
+  holds Centralizer C is Subgroup of C;
+end;
+```
+
+This could be generalized:
+
+```mizar
+definition
+  let G be Group;
+  let p be Nat;
+  pred G has_characteristic p means
+  for T being Subgroup of G st T is_Sylow_p-subgroup_of_prime p
+  for M being p-local Subgroup of G
+  st (for N being p-local Subgroup of G st M is Subgroup of N & N <> G
+      holds the multMagma of M = the multMagma of N)
+  & T is Subgroup of M
+  for C being strict Subgroup of M st C = p-core M
+  holds Centralizer C is Subgroup of C;
+end;
+```
+
+See also [definition of local Subgroup](https://groupprops.subwiki.org/wiki/Local_subgroup)
+and Aschbacher's _Finite Group Theory_ page 203 (i.e., section 39
+between propositions 39.3 and 39.4).
+
+## TODO List
+
+- [ ] Cleanup/synchronize the literate version of `group_23` with the
+      Mizar text
+- [ ] Aschbacher's _Finite Group Theory_ theorem (9.11) could be proven,
+      I think (pidgin Mizar): `for G being finite Group holds G is
+      nilpotent if and only if G, product the_sylow_p-subgroups G
+      are_isomorphic`
+- [ ] Recognition theorem
+
 # 2023-01-06
 
 **Puzzle:** Can we define the semidirect product of `G` and `H` in such
