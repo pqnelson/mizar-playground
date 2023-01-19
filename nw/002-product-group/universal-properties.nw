@@ -30,13 +30,13 @@ begin :: Universal Property of Direct Products of Groups
 
 <<Definition: product of subgroup-family>>
 
-<<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>
-
 <<Theorem: image of projection morphism>>
 
 <<Theorem: if $\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$, then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$>>
 
 <<Theorem: if $G\subgroup\prod\mathcal{F}$, then $\prod(\pi_{i}\circ\iota_{G})=\id_{G}$>>
+
+<<Theorem: commutators of a group form a stable set under morphisms>>
 
 <<Theorem: images of equal morphisms are equal (as subgroups)>>
 
@@ -207,7 +207,7 @@ proof
            .= ((proj (F,i)) * phi).g by FUNCT_2:15;
     hence (f.i).g = ((proj (F,i)) * phi).g;
   end;
-  hence f.i = (proj (F,i)) * phi;
+  hence f.i = (proj (F,i)) * phi by FUNCT_2:def 8;
 end;
 @ 
 
@@ -217,7 +217,7 @@ unique.
 \end{theorem}
 
 <<Theorem: Uniqueness of group products>>=
-theorem
+theorem Th47:
   for f being Homomorphism-Family of G, F
   for phi1, phi2 being Homomorphism of G, product F
   st (for i being Element of I holds f.i = (proj (F,i)) * phi1)
@@ -247,9 +247,9 @@ proof
     end;
     hence phi1.g = phi2.g by B1;
   end;
-  hence phi1 = phi2;
+  hence phi1 = phi2 by FUNCT_2:def 8;
 end;
-@ 
+@ %def Th47
 
 \begin{definition}
 If $\{f_{i}\colon G\to\mathcal{F}_{i}\}_{i\in I}$ is a family of
@@ -328,7 +328,7 @@ proof
       end;
       hence phi1.g = phi2.g by A3;
     end;
-    hence phi1 = phi2;
+    hence phi1 = phi2 by FUNCT_2:def 8;
   end;
   hence thesis;
 end;
@@ -484,7 +484,7 @@ proof
   end;
   then
   A2: the carrier of Ker (f2 * f1) c= f1" (the carrier of Ker f2)
-  by A1;
+  by A1, SUBSET_1:2;
   for g being Element of G1
   st g in f1 " (the carrier of (Ker f2))
   holds g in the carrier of Ker (f2 * f1)
@@ -496,9 +496,10 @@ proof
     hence g in the carrier of Ker (f2 * f1);
   end;
   then
-  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1) by A1;
+  A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1)
+  by A1, SUBSET_1:2;
   thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
-  by A2,A3,XBOOLE_0:def 10;
+  by A2, A3, XBOOLE_0:def 10;
 end;
 @ 
 
@@ -638,36 +639,6 @@ end;
 @
 
 \begin{theorem}
-Let $g\in\prod\mathcal{F}$, $\nu_{i}\colon\mathcal{F}_{i}\onto\mathcal{F}_{i}/[\mathcal{F}_{i},\mathcal{F}_{i}]$
-be the natural homomorphism of the component $i\in I$.
-Then $g\in\ker(\nu_{i}\circ\pi_{i})$ if and only if $\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$.
-\end{theorem}
-
-<<Theorem: $g\in\ker(\nu_{i}\circ\pi_{i})\iff\pi_{i}(g)\in[\mathcal{F}_{i},\mathcal{F}_{i}]$>>=
-theorem
-  for g being Element of product F
-  holds g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)))
-        iff (proj (F,i)).g in (F.i)`
-proof
-  let g be Element of product F;
-  set H=(F.i)./.((F.i)`);
-  hereby
-    assume A1: g in Ker ((nat_hom ((F.i)`)) * (proj (F, i)));
-    (nat_hom ((F.i)`)).((proj (F,i)).g)
-     = ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15
-    .= 1_H by A1, GROUP_6:41;
-    then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:41;
-    hence (proj (F,i)).g in (F.i)` by GROUP_6:43;
-  end;
-  assume (proj (F,i)).g in (F.i)`;
-  then (proj (F,i)).g in Ker (nat_hom ((F.i)`)) by GROUP_6:43;
-  then 1_H = (nat_hom ((F.i)`)).((proj (F,i)).g) by GROUP_6:41
-          .= ((nat_hom ((F.i)`)) * (proj (F, i))).g by FUNCT_2:15;
-  hence g in Ker ((nat_hom ((F.i)`)) * (proj (F, i))) by GROUP_6:41;
-end;
-@ 
-
-\begin{theorem}
 Let $I\neq\emptyset$ be a nonempty set, let $\mathcal{F}$ 
 and $\mathcal{G}$ be families of groups indexed by $I$.
 If for each $i\in I$ we have $\mathcal{F}_{i}\subgroup\mathcal{G}_{i}$,
@@ -706,13 +677,7 @@ We construct a homomorphism $f=\pi_{i}\circ\iota\colon\mathcal{F}_{i}\to\mathcal
 <<Proof step: construct endomorphism family $f_{i}=\pi_{i}\circ\iota$>>=
 deffunc Fun(Element of I) = (incl (F1.$1, F2.$1)) * (proj (F1, $1));
 A2: for i being Element of I
-holds Fun(i) is Homomorphism of product F1, F2.i
-proof
-  let i be Element of I;
-  B1: (proj (F1, i)) is Homomorphism of product F1, F1.i by Def16;
-  incl (F1.i, F2.i) is Homomorphism of F1.i, F2.i;
-  thus thesis by B1,GROUP_6:39;
-end;
+holds Fun(i) is Homomorphism of product F1, F2.i;
 consider f being Homomorphism-Family of product F1, F2 such that
 A3: for i being Element of I holds f.i = Fun(i)
 from RHomFamSch(A2);
@@ -732,8 +697,7 @@ proof
   then B2: (incl (F1.i, F2.i)).(g.i) = g.i by B1, Th8;
   (f.i).g = ((incl (F1.i, F2.i)) * (proj (F1, i))).g by A3
          .= (incl (F1.i, F2.i)).((proj (F1, i)).g) by FUNCT_2:15
-         .= (incl (F1.i, F2.i)).(g.i) by Def16
-         .= (g.i) by B2;
+         .= (g.i) by B2, Def16;
   hence (f.i).g = g.i;
 end;
 @
@@ -756,10 +720,8 @@ proof
        .= (phi.g).j by Def16;
     hence thesis;
   end;
-  B2: dom g = I by GROUP_19:3;
-  dom (phi.g) = I by GROUP_19:3;
-  then dom g = dom (phi.g) by B2;
-  hence g = phi.g by B1, B2, FUNCT_1:2;
+  dom g = I by GROUP_19:3;
+  hence g = phi.g by B1, GROUP_19:3;
 end;
 @
 
@@ -806,26 +768,25 @@ proof
   for x being Element of F.i st x in the carrier of F.i
   holds x in the carrier of Image (proj (F, i))
   proof
-    let x be Element of F.i;
-    assume A1: x in the carrier of F.i;
-    ex g being Element of product F st x = (proj (F, i)).g
+    let g be object;
+    assume g in the carrier of F.i;
+    then reconsider x=g as Element of F.i;
+    ex h being Element of product F st x = (proj (F, i)).h
     proof
       dom (1_(product F)) = I by GROUP_19:3;
       then B1: ((1_(product F)) +* (i,x)).i = x by FUNCT_7:31;
-      (1_(product F)) +* (i,x) in ProjSet (F, i) by A1, GROUP_12:def 1;
-      then reconsider g = ((1_(product F)) +* (i,x)) as Element of product F;
-      take g;
+      (1_(product F)) +* (i,x) in ProjSet (F, i) by GROUP_12:def 1;
+      then reconsider h = ((1_(product F)) +* (i,x)) as Element of product F;
+      take h;
       (proj (F, i)).((1_(product F)) +* (i,x))
-       = (proj (F, i)).g
-      .= ((1_(product F)) +* (i,x)).i by Def16
-      .= x by B1;
+       = (proj (F, i)).h
+      .= x by B1, Def16;
       hence thesis;
     end;
     then x in Image (proj (F, i)) by GROUP_6:45;
-    hence x in the carrier of Image (proj (F, i)) by GROUP_6:def 10;
+    hence g in the carrier of Image (proj (F, i));
   end;
-  then the carrier of F.i c= the carrier of Image (proj (F, i)) by SUBSET_1:2;
-  hence thesis by GROUP_2:61;
+  hence thesis by GROUP_2:61, TARSKI:def 3;
 end;
 @ %def Th59
 
@@ -837,7 +798,7 @@ then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$.
 \end{theorem}
 
 <<Theorem: if $\pi_{i}(\prod\mathcal{F}^{(1)})\subgroup\pi_{i}(\prod\mathcal{F}^{(2)})$, then $\prod\mathcal{F}^{(1)}\subgroup\prod\mathcal{F}^{(2)}$>>=
-theorem Th60:
+theorem
   for F1,F2 being componentwise_strict Subgroup-Family of F
   st (for i being Element of I
       holds Image (proj (F1, i)) is Subgroup of Image (proj (F2, i)))
@@ -850,12 +811,11 @@ proof
   proof
     let i be Element of I;
     Image (proj (F1, i)) is Subgroup of Image (proj (F2, i)) by A1;
-    then F1.i is Subgroup of Image (proj (F2, i)) by Th59;
     hence F1.i is Subgroup of F2.i by Th59;
   end;
   hence thesis by Th56;
 end;
-@ %def Th60
+@
 
 \begin{theorem}
 Let $G\subgroup\prod\mathcal{F}$ be a subgroup,
@@ -867,7 +827,7 @@ Then we have $\prod\varphi=\id_{G}$.
 \end{theorem}
 
 <<Theorem: if $G\subgroup\prod\mathcal{F}$, then $\prod(\pi_{i}\circ\iota_{G})=\id_{G}$>>=
-theorem Th64c:
+theorem
   for G being strict Subgroup of product F
   for S st (for i being Element of I holds S.i = Image ((proj (F,i)) * (incl G)))
   for f being Homomorphism-Family of G, S
@@ -886,10 +846,8 @@ proof
   proof
     let g be Element of G;
     let i be Element of I;
-    for j being Element of I holds S.j is Subgroup of F.j; 
-    then B1: (product S) is Subgroup of (product F) by Th56;
     ((product f).g) in (product S);
-    then B2: ((product f).g) in (product F) by B1, GROUP_2:40;
+    then B2: ((product f).g) in (product F) by GROUP_2:40;
     B3: ((product f).g).i = (proj (F, i)).((product f).g) by B2, Def16
                          .= ((proj (F, i)) * (product f)).g by FUNCT_2:15;
     ((proj (F,i)) * (incl G)).g = (f.i).g by A2
@@ -903,10 +861,8 @@ proof
     assume B1: g in G;
     ((product f).g) in (product F)
     proof
-      for j being Element of I holds S.j is Subgroup of F.j;
-      then C1: (product S) is Subgroup of (product F) by Th56;
-      ((product f).g) in (product S) by B1, FUNCT_2:def 1, FUNCT_2:5;
-      hence ((product f).g) in (product F) by C1, GROUP_2:40;
+      ((product f).g) in (product S) by B1, FUNCT_2:5;
+      hence ((product f).g) in (product F) by GROUP_2:40;
     end;
     then reconsider foo=(product f).g as Element of product F;
     B2: for i being Element of I
@@ -932,6 +888,7 @@ proof
     then foo = g by B3;
     hence (product f).g = g;
   end;
+  A6: dom (product f) = the carrier of G by FUNCT_2:def 1;
   for x being object st x in the carrier of G holds (product f).x = x
   proof
     let x be object;
@@ -940,9 +897,32 @@ proof
     then x in product F by GROUP_2:40;
     hence (product f).x = x by B1, A4;
   end;
-  hence product f = id the carrier of G;
+  hence product f = id the carrier of G by A6, FUNCT_1:17;
 end;
-@ 
+@
+
+\begin{theorem}
+Let $\varphi\colon G_{1}\to G_{2}$ be a group morphism, let $x,y\in G_{1}$.
+Then $\varphi([x,y])$ is a commutator in $G_{2}$.
+\end{theorem}
+
+<<Theorem: commutators of a group form a stable set under morphisms>>=
+theorem ThMorphismOfCommutators:
+  for G1,G2 being Group
+  for phi being Homomorphism of G1, G2
+  for x being Element of G1 st x in commutators G1
+  holds phi.x in commutators G2
+proof
+  let G1,G2 be Group;
+  let phi be Homomorphism of G1, G2;
+  let x be Element of G1;
+  assume x in commutators G1;
+  then consider a,b being Element of G1 such that
+  A2: x = [. a, b .] by GROUP_5:58;
+  phi.x = [. (phi.a), (phi.b) .] by A2, GROUP_6:34;
+  hence phi.x in commutators G2 by GROUP_5:58;
+end;
+@ %def ThMorphismOfCommutators
 
 \begin{theorem}
 If $H\subgroup G_{2}$ is a subgroup, if $\psi\colon G_{1}\to G_{2}$ and $\varphi\colon G_{1}\to H$

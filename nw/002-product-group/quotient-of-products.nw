@@ -70,7 +70,7 @@ definition
                 .= ((proj (F2, i)) * psi).g by B1, FUNCT_1:13;
         hence ((proj (F2, i)) * psi).g = ((f.i) * (proj (F1, i))).g;
       end;
-      hence (proj (F2, i)) * psi = (f.i) * (proj (F1, i));
+      hence (proj (F2, i)) * psi = (f.i) * (proj (F1, i)) by FUNCT_2:def 8;
     end;
 
   end;
@@ -102,12 +102,12 @@ definition
                          .= ((proj (F2, i)) * phi1).g by A3, FUNCT_1:13
                          .= ((f.i) * (proj (F1, i))).g by A1
                          .= ((proj (F2, i)) * phi2).g by A2
-                         .= (proj (F2, i)).(phi2.g) by A3,FUNCT_1:13
+                         .= (proj (F2, i)).(phi2.g) by A3, FUNCT_1:13
                          .= (phi2.g).i by Def16;
         end;
         hence phi1.g = phi2.g by A4;
       end;
-      hence phi1 = phi2;
+      hence phi1 = phi2 by FUNCT_2:def 8;
     end;
     hence thesis;
   end;
@@ -141,7 +141,8 @@ definition
     & IT.i is normal Subgroup of F1.i
     proof
       let i be Element of I;
-      Ker (f.i qua Homomorphism of F1.i,F2.i) is strict normal Subgroup of F1.i;
+      Ker (f.i qua Homomorphism of F1.i,F2.i)
+      is strict normal Subgroup of F1.i;
       hence thesis by A2;
     end;
     then reconsider IT as componentwise_strict normal Subgroup-Family of F1
@@ -170,7 +171,6 @@ definition
         thus N1.i = Ker (f.i qua Homomorphism of F1.i,F2.i) by A1
                  .= N2.i by A2;
       end;
-
       hence N1 = N2 by A3;
     end;
   end;
@@ -216,8 +216,10 @@ definition
   uniqueness
   proof
     thus for N1,N2 being componentwise_strict Subgroup-Family of F2
-    st (for i being Element of I holds N1.i = Image (f.i qua Homomorphism of F1.i,F2.i))
-    & (for i being Element of I holds N2.i = Image (f.i qua Homomorphism of F1.i,F2.i))
+    st (for i being Element of I
+        holds N1.i = Image (f.i qua Homomorphism of F1.i,F2.i))
+    & (for i being Element of I
+       holds N2.i = Image (f.i qua Homomorphism of F1.i,F2.i))
     holds N1 = N2
     proof
       let N1,N2 be componentwise_strict Subgroup-Family of F2;
@@ -263,21 +265,24 @@ proof
         let i be Element of I;
         B1: dom (product f) = the carrier of product F1 & dom (proj
         (F1,i)) = the carrier of product F1 by FUNCT_2:def 1;
-        B2: (proj (F2, i) * (product f)).g = ((f.i) * (proj (F1, i))).g by Def19
+        B2: (proj (F2, i) * (product f)).g
+        = ((f.i) * (proj (F1, i))).g by Def19
         .= (f.i).((proj (F1, i)).g) by B1, FUNCT_1:13
         .= (f.i).(g.i) by Def16;
-        (proj (F2, i) * (product f)).g = (proj (F2, i)).((product f).g) by B1, FUNCT_1:13
+        (proj (F2, i) * (product f)).g
+         = (proj (F2, i)).((product f).g) by B1, FUNCT_1:13
         .= (proj  (F2, i)).(1_(product F2)) by A1, GROUP_6:41
         .= (1_(product F2)).i by Def16
         .= 1_(F2.i) by GROUP_7:6;
-        then (f.i).(g.i) = 1_(F2.i) by B2;
-        then (g/.i) in Ker ((f.i) qua Homomorphism of F1.i,F2.i) by GROUP_6:41;
+        then (g/.i) in Ker ((f.i) qua Homomorphism of F1.i,F2.i)
+        by B2, GROUP_6:41;
         hence g.i in (Ker f).i by Def20;
       end;
       hence g in product (Ker f) by A2, Th49;
     end;
     assume A1: g in product (Ker f);
-    A2: dom (1_(product F2)) = I & dom ((product f).g) = I & dom g = I by GROUP_19:3;
+    A2: dom (1_(product F2)) = I & dom ((product f).g) = I
+        & dom g = I by GROUP_19:3;
     for i being Element of I holds ((product f).g).i = (1_(product F2)).i
     proof
       let i be Element of I;
@@ -285,11 +290,13 @@ proof
       & dom (product f) = the carrier of product F1 by FUNCT_2:def 1;
       g.i in (Ker f).i by A1, GROUP_19:5;
       then B2: g.i in Ker (f.i qua Homomorphism of F1.i,F2.i) by Def20;
-      B3: (proj (F2, i) * (product f)).g = ((f.i) * (proj (F1, i))).g by Def19
-                                        .= (f.i).((proj (F1, i)).g) by B1, FUNCT_1:13
-                                        .= (f.i).(g.i) by Def16;
-      (proj (F2, i) * (product f)).g = (proj (F2, i)).((product f).g) by B1,FUNCT_1:13
-                                    .= ((product f).g).i by Def16;
+      B3: (proj (F2, i) * (product f)).g
+          = ((f.i) * (proj (F1, i))).g by Def19
+         .= (f.i).((proj (F1, i)).g) by B1, FUNCT_1:13
+         .= (f.i).(g.i) by Def16;
+      (proj (F2, i) * (product f)).g
+       = (proj (F2, i)).((product f).g) by B1,FUNCT_1:13
+      .= ((product f).g).i by Def16;
       then ((product f).g).i = (f.i).(g/.i) by B3
                             .= 1_(F2.i) by B2, GROUP_6:41;
       hence thesis by GROUP_7:6;
@@ -359,7 +366,6 @@ proof
     proof
       let i be Element of I;
       P[i, a.i] by A3;
-      then a.i is Element of F1.i;
       hence a.i in F1.i;
     end;
     then a in product F1 by A4, Th49;
@@ -381,7 +387,7 @@ proof
     then g = (product f).a by A5;
     hence g in Image (product f) by GROUP_6:45;
   end;
-  hence Image (product f) = product (Image f);
+  hence Image (product f) = product (Image f) by GROUP_2:def 6;
 end;
 @ %def Th82
 

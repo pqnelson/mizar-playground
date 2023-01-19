@@ -84,7 +84,13 @@ registration
     hence thesis by PRALG_1:def 11;
   end;
   cluster Group-yielding -> multMagma-yielding for Function;
-  coherence;
+  coherence
+  proof
+    let IT be Function;
+    assume IT is Group-yielding;
+    then for x being set st x in rng IT holds x is non empty multMagma;
+    hence thesis by GROUP_7:def 1;
+  end;
 end;
 @
 
@@ -114,19 +120,6 @@ end;
 @ %def Th5
 
 \begin{registration}
-Let $\mathcal{F}$ be a magma-family indexed by a set $I$.
-If $\mathcal{F}$ is assocative group-like, then it is also group-yielding.
-\end{registration}
-
-<<Register: ``associative Group-like'' implies ``Group-yielding'' for magma-families>>=
-registration
-  let I be set;
-  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
-  coherence by Th5;
-end;
-@
-
-\begin{registration}
 Let $I$ be any set. We can affix ``Group-yielding'' as an adjective for
 any ``Many sorted set of $I$''.
 \end{registration}
@@ -154,6 +147,19 @@ registration
   coherence;
 end;
 @ 
+
+\begin{registration}
+Let $\mathcal{F}$ be a magma-family indexed by a set $I$.
+If $\mathcal{F}$ is assocative group-like, then it is also group-yielding.
+\end{registration}
+
+<<Register: ``associative Group-like'' implies ``Group-yielding'' for magma-families>>=
+registration
+  let I be set;
+  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
+  coherence by Th5;
+end;
+@
 
 \begin{registration}
 We can now register ``Group-yielding'' as an adjective for functions.
@@ -207,6 +213,12 @@ registration
   let F be Group-yielding ManySortedSet of I;
   cluster (F . i) -> Group-like associative unital non empty for multMagma;
   correctness by Th6;
+end;
+
+registration
+  let I be set;
+  cluster associative Group-like -> Group-yielding for multMagma-Family of I;
+  coherence by Th5;
 end;
 @
 
@@ -269,7 +281,7 @@ registration
         then F.i is Group by A1, A2, FUNCT_1:3;
         hence thesis;
       end;
-      hence F is Group-like associative by A3;
+      hence F is Group-like associative by A3, GROUP_7:def 3,def 4;
     end;
   end;
 end;

@@ -106,14 +106,12 @@ proof
   let H be Subgroup of G;
   set f = incl (H, G);
   A1: f = id (the carrier of H) by DefIncl;
-  the carrier of H = rng f by A1
-                  .= the carrier of (Image f) by GROUP_6:44;
-  then A2: Image f = the multMagma of H by GROUP_2:59;
-  
+  A2: the carrier of H = rng f by A1
+                      .= the carrier of (Image f) by GROUP_6:44;
   Ker f = (1).H
   <<Proof: $\ker\iota=\trivialSubgroup_{H}$>>
   hence f is one-to-one by GROUP_6:56;
-  thus Image f = the multMagma of H by A2;
+  thus Image f = the multMagma of H by A2, GROUP_2:59;
 end;
 @ %def Th9
 
@@ -140,7 +138,7 @@ proof
     then f.h = 1_G by GROUP_6:31;
     hence h in Ker f by GROUP_6:41;
   end;
-  hence thesis;
+  hence thesis by GROUP_2:def 6;
 end;
 @
 
@@ -186,7 +184,6 @@ proof
     .= phi.x by A1, A2, B1, Th8
     .= (phi|(the carrier of H)).x by B1, FUNCT_1:47;
   end;
-
   hence phi|(the carrier of H) = phi * (incl (H, G))
   by A2, FUNCT_2:def 1;
 end;
@@ -222,7 +219,7 @@ proof
     then (phi|the carrier of H).h = phi.h by FUNCT_1:48;
     hence (phi|H).h = (phi * (incl H)).h by A1, GRSOLV_1:def 2;
   end;
-  hence phi|H = phi * (incl H);
+  hence phi|H = phi * (incl H) by FUNCT_2:def 8;
 end;
 @ 
 
@@ -231,7 +228,7 @@ The inclusion morphism is injective, and its image is its domain.
 \end{theorem}
 
 <<Theorem: image of inclusion morphism>>=
-theorem Th64e:
+theorem Th64f:
   for G being Group
   for H being strict Subgroup of G
   holds Image(incl H) = H

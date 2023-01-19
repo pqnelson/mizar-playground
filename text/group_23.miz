@@ -82,10 +82,8 @@ proof
   A3: len (gs |^ ks) = len (hs |^ ks)
   proof
     thus len (hs |^ ks) = len hs by GROUP_4:def 3
-                       .= len gs by A1
-                       .= len (gs |^ ks) by GROUP_4:def 3;
+                       .= len (gs |^ ks) by A1,GROUP_4:def 3;
   end;
-  A4: dom gs = dom hs by A1;
   for i being Nat st 1 <= i & i <= len (hs |^ ks)
   holds (hs |^ ks).i = (gs |^ ks).i
   proof
@@ -97,20 +95,14 @@ proof
     then B2: i in dom hs by FINSEQ_1:def 3;
     B3: hs /. i = gs /. i
     proof
-      reconsider hsi = hs/.i as Element of G by GROUP_2:42;
-      C1: i in dom gs & dom gs = dom hs by B2, A4;
-      then C2: gs.i = gs/.i by PARTFUN1:def 6;
-      hs.i = gs.i by A1;
-      then gs/.i = hsi by C1, C2, PARTFUN1:def 6;
-      hence thesis;
+      thus gs/.i = gs.i by A1, B2, PARTFUN1:def 6
+                .= hs/.i by A1, B2, PARTFUN1:def 6;
     end;
-    (hs |^ ks).i = (hs /. i) |^ (@ (ks /. i)) by B2, GROUP_4:def 3
-                .= (gs /. i) |^ (@ (ks /. i)) by B3, GROUP_4:2
-                .= (gs |^ ks).i by A4, B2, GROUP_4:def 3;
-    hence (hs |^ ks).i = (gs |^ ks).i;
+    thus (hs |^ ks).i = (hs /. i) |^ (@ (ks /. i)) by B2, GROUP_4:def 3
+                     .= (gs /. i) |^ (@ (ks /. i)) by B3, GROUP_4:2
+                     .= (gs |^ ks).i by A1, B2, GROUP_4:def 3;
   end;
-  then hs |^ ks = gs |^ ks by A3, FINSEQ_1:def 17;
-  hence thesis by GROUP_19:45;
+  hence thesis by A3,GROUP_19:45,FINSEQ_1:def 17;
 end;
 
 theorem ThMappingFrobProdProperty:
@@ -148,14 +140,12 @@ proof
     Product (p0 ^ <* x *>) = (Product p0) * x by GROUP_4:6;
     then phi.(Product (p0 ^ <* x *>))
      = (phi.(Product p0)) * (phi.x) by GROUP_6:def 6
-    .= (Product (phi * p0)) * (phi.x) by B1
-    .= Product ((phi * p0) ^ <* phi.x *>) by GROUP_4:6;
+    .= Product ((phi * p0) ^ <* phi.x *>) by B1,GROUP_4:6;
     hence P1[(p0 ^ <* x *>)] by FINSEQOP:8;
   end;
   A5: for p0 being FinSequence of the carrier of G1 holds P1[p0]
   from FINSEQ_2:sch 2(A3, A4);
-  F2 = phi * F1 by A2;
-  hence Product F2 = phi.(Product F1) by A5;
+  thus Product F2 = phi.(Product F1) by A2, A5;
 end;
 
 theorem ThMappingFrobProd:
@@ -195,20 +185,15 @@ proof
     proof
       let k be Nat;
       assume B2: 1 <= k;
-      assume k <= len p;
-      then B3: k in Seg n1 by A4, B2, FINSEQ_1:1;
+      assume B3: k <= len p;
+      then k in Seg n1 by A4, B2, FINSEQ_1:1;
       then B4: k in dom F1 by FINSEQ_1:def 3;
-      P[k, p.k] by A3, B3;
-      then ex k0 being Nat st k0 = k & p.k = phi.(F1.k0);
-      then B5: p.k = phi.(F1.k);
-      (phi * F1).k = phi.(F1.k) by B4, FUNCT_1:13
-                  .= p.k by B5;
-      hence p.k = (phi * F1).k;
+      P[k, p.k] by A3, A4, B2, B3, FINSEQ_1:1;
+      hence p.k = (phi * F1).k by B4, FUNCT_1:13;
     end;
     hence thesis by B1, FINSEQ_1:def 17;
   end;
-  then rng p c= the carrier of G2 by FINSEQ_1:def 4;
-  then reconsider p as FinSequence of the carrier of G2 by FINSEQ_1:def 4;
+  then reconsider p as FinSequence of the carrier of G2; 
   take F2 = p;
 
   thus len F1 = len F2 by A4;
@@ -237,37 +222,31 @@ proof
   take F2;
   thus len F1 = len F2 & F2 = phi * F1 by A2;
   A3: len (F1 |^ ks) = len (F1) by GROUP_4:def 3
-                    .= len F2 by A2
-                    .= len (F2 |^ ks) by GROUP_4:def 3;
+                    .= len (F2 |^ ks) by A2, GROUP_4:def 3;
   A4: len (phi * (F1 |^ ks)) = len (F1 |^ ks) by FINSEQ_2:33;
   for k being Nat st k in dom (F2 |^ ks)
   holds (phi * (F1 |^ ks)).k = (F2 |^ ks).k
   proof
     let k be Nat;
     assume k in dom (F2 |^ ks);
-    then k in Seg (len (F2 |^ ks)) by FINSEQ_1:def 3;
-    then k in Seg (len (F1 |^ ks)) by A3;
+    then k in Seg (len (F1 |^ ks)) by A3, FINSEQ_1:def 3;
     then B1: k in dom (F1 |^ ks) by FINSEQ_1:def 3;
     then k in Seg (len (F1 |^ ks)) by FINSEQ_1:def 3;
     then k in Seg (len (F1)) by GROUP_4:def 3;
     then B2: k in dom F1 by FINSEQ_1:def 3;
-    then k in Seg (len (F1)) by FINSEQ_1:def 3;
-    then k in Seg (len (F2)) by A2;
+    then k in Seg (len (F2)) by A2, FINSEQ_1:def 3;
     then B3: k in dom F2 by FINSEQ_1:def 3;
-    F1 /. k in G1 & dom phi = the carrier of G1 by FUNCT_2:def 1;
-    then B4: F1 /. k in dom phi;
+    B4: F1 /. k in G1 & dom phi = the carrier of G1 by FUNCT_2:def 1;
     set g = (F1 /. k);
     set n = (@ (ks /. k));
     (phi * (F1 |^ ks)).k = phi.((F1 |^ ks).k) by B1, FUNCT_1:13
-                        .= phi.(g |^ n) by B2,GROUP_4:def 3
+                        .= phi.(g |^ n) by B2, GROUP_4:def 3
                         .= (phi /. g) |^ n by GROUP_6:37
-                        .= ((phi * F1)/.k) |^ n by B2,B4,PARTFUN2:4
-                        .= (F2 /. k) |^ n by A2
-                        .= (F2 |^ ks).k by B3, GROUP_4:def 3;
+                        .= ((phi * F1)/.k) |^ n by B2, B4, PARTFUN2:4
+                        .= (F2 |^ ks).k by A2, B3, GROUP_4:def 3;
     hence (phi * (F1 |^ ks)).k = (F2 |^ ks).k;
   end;
-  then phi * (F1 |^ ks) = F2 |^ ks by A3, A4, FINSEQ_2:9;
-  hence thesis by A3, ThMappingFrobProdProperty;
+  hence thesis by A3, A4, ThMappingFrobProdProperty, FINSEQ_2:9;
 end;
 
 begin :: Preliminary Work about Group-Families and Group-Yielding Many Sorted Sets
@@ -404,7 +383,7 @@ registration
       let F be multMagma-Family of I;
       assume A1: F is Group-yielding;
       A2: dom F = I by PARTFUN1:def 2;
-      for i being set st i in I
+      A3: for i being set st i in I
       ex Fi being non empty Group-like multMagma st Fi = F.i
       proof
         let i be set;
@@ -412,7 +391,6 @@ registration
         then F.i is Group by A1, A2, FUNCT_1:3;
         hence thesis;
       end;
-      then A3: F is Group-like by GROUP_7:def 3;
       for i being set st i in I
       ex Fi being non empty associative multMagma st Fi = F.i
       proof
@@ -421,7 +399,7 @@ registration
         then F.i is Group by A1, A2, FUNCT_1:3;
         hence thesis;
       end;
-      hence F is Group-like associative by A3, GROUP_7:def 4;
+      hence F is Group-like associative by A3, GROUP_7:def 3,def 4;
     end;
   end;
 end;
@@ -486,7 +464,6 @@ proof
   hence thesis;
 end;
 
-
 begin :: Subgroup-Family of a Family of Groups
 definition
   let I be set;
@@ -547,9 +524,6 @@ proof
     hence thesis;
   end;
   assume for i being Element of I holds S.i is Subgroup of F.i;
-  then for i being Element of I
-  for G being Group st G = F.i
-  holds S.i is Subgroup of G;
   then S is F-Subgroup-yielding;
   hence S is Subgroup-Family of F;
 end;
@@ -571,8 +545,7 @@ proof
     B2: x in dom F & y = F.x
     by FUNCT_1:def 3;
     reconsider i=x as Element of I1() by B2;
-    y = F.i by B2
-     .= Fun(i) by A1;
+    y = Fun(i) by A1, B2;
     hence y is Group;
   end;
   then F is Group-yielding;
@@ -602,8 +575,7 @@ proof
     B2: x in dom S & y = S.x
     by FUNCT_1:def 3;
     reconsider i=x as Element of I1() by B2;
-    y = S.i by B2
-     .= F2(i) by A2;
+    y = F2(i) by A2, B2;
     hence y is Group;
   end;
 
@@ -642,8 +614,7 @@ registration
     A1: for i being Element of I holds F.i = Fun(i)
     from GrFamSch;
     take F;
-    for i being Element of I holds F.i is strict Group by A1;
-    hence thesis;
+    thus thesis by A1;
   end;
 end;
 
@@ -670,8 +641,7 @@ registration
     for i being Element of I holds S.i is strict Subgroup of F.i
     proof
       let i be Element of I;
-      S.i = Sub(F.i) by A2
-         .= (1).(F.i);
+      S.i = (1).(F.i) by A2;
       hence thesis;
     end;
     hence thesis;
@@ -854,6 +824,34 @@ registration
   correctness;
 end;
 
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  cluster (1).F -> normal;
+  correctness
+  proof
+    for i being Element of I holds ((1).F).i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      B1: ((1).F).i = (1).(F.i) by Def6;
+      hence thesis;
+    end;
+    hence (1).F is normal;
+  end;
+  cluster (Omega).F -> normal;
+  correctness
+  proof
+    for i being Element of I holds ((Omega).F).i is normal Subgroup of F.i
+    proof
+      let i be Element of I;
+      B1: ((Omega).F).i = (Omega).(F.i) by Def7;
+      hence thesis;
+    end;
+    hence (Omega).F is normal;
+  end;
+end;
+
+
 definition
   let I be non empty set;
   let F be Group-Family of I;
@@ -893,6 +891,25 @@ definition
   end;
 end;
 
+registration
+  let I be non empty set;
+  let F be Group-Family of I;
+  let N be normal Subgroup-Family of F;
+  cluster F ./. N -> componentwise_strict;
+  correctness
+  proof
+    for i being Element of I
+    holds (F ./. N).i is strict Group
+    proof
+      let i be Element of I;
+      A1: (F ./. N).i = (F.i) ./. (N.i) by Def9;
+      (F.i) ./. (N.i) is strict by GROUP_6:def 4;
+      hence thesis by A1;
+    end;
+    hence thesis by Def4;
+  end;
+end;
+
 theorem
   ex S being componentwise_strict normal Subgroup-Family of F
   st for i being Element of I holds S.i = (F.i)`
@@ -924,13 +941,12 @@ proof
   A1: the carrier of M = {x};
   reconsider M as non empty multMagma by A1;
   reconsider x as Element of M by A1, TARSKI:def 1;
-  for a,b,c being Element of M holds (a * b) * c = a * (b * c)
+  A2: for a,b,c being Element of M holds (a * b) * c = a * (b * c)
   proof
     let a,b,c be Element of M;
     (a * b) * c = x & a * (b * c) = x by A1, TARSKI:def 1;
     hence (a * b) * c = a * (b * c);
   end;
-  then A2: M is associative by GROUP_1:def 3;
   
   ex e being Element of M st
   for h being Element of M holds
@@ -943,8 +959,7 @@ proof
     take g = x;
     thus thesis by A1, TARSKI:def 1;
   end;
-  then M is Group-like by GROUP_1:def 2;
-  then reconsider G=M as strict trivial Group by A1, A2;
+  then reconsider G=M as strict trivial Group by A1, A2, GROUP_1:def 2,def 3;
   take G;
   thus thesis;
 end;
@@ -1012,10 +1027,8 @@ proof
   let H be Subgroup of G;
   set f = incl (H, G);
   A1: f = id (the carrier of H) by DefIncl;
-  the carrier of H = rng f by A1
-                  .= the carrier of (Image f) by GROUP_6:44;
-  then A2: Image f = the multMagma of H by GROUP_2:59;
-  
+  A2: the carrier of H = rng f by A1
+                      .= the carrier of (Image f) by GROUP_6:44;
   Ker f = (1).H
   proof
     for h being Element of H holds h in Ker f iff h in (1).H
@@ -1037,7 +1050,7 @@ proof
     hence thesis by GROUP_2:def 6;
   end;
   hence f is one-to-one by GROUP_6:56;
-  thus Image f = the multMagma of H by A2;
+  thus Image f = the multMagma of H by A2, GROUP_2:59;
 end;
 
 registration
@@ -1108,7 +1121,6 @@ proof
   let G be Group;
   let H be strict Subgroup of G;
   (the carrier of H) c= (the carrier of H);
-  then (the carrier of H) is Subset of (the carrier of H);
   then the carrier of H
    = (id the carrier of H) .: (the carrier of H) by FUNCT_1:92
   .= (incl H) .: (the carrier of H) by DefIncl
@@ -1162,7 +1174,6 @@ proof
   let f be Homomorphism of G,H;
   let g be Element of G;
   thus f.g = (1:(G,H)).g by Th11
-          .= (G --> 1_H).g
           .= 1_H;
 end;
 
@@ -1583,17 +1594,15 @@ proof
   implies f is Homomorphism-Family of A, B
   proof
     assume A1: for i being Element of I holds f.i is Homomorphism of A.i, B.i;
-    for i being object st i in I holds f.i is Function of (Carrier A).i,
-    (Carrier B).i
+    for i being object st i in I
+    holds f.i is Function of (Carrier A).i, (Carrier B).i
     proof
       let i be object;
       assume i in I;
       then reconsider ii=i as Element of I;
-      f.ii is Homomorphism of A.ii, B.ii by A1;
-      then B2: f.i is Homomorphism of A.ii, B.ii;
       (Carrier A).i = the carrier of A.ii &
       (Carrier B).i = the carrier of B.ii by ThCarr;
-      hence f.i is Function of (Carrier A).i, (Carrier B).i by B2;
+      hence f.i is Function of (Carrier A).i, (Carrier B).i by A1;
     end;
     then f is ManySortedFunction of (Carrier A), (Carrier B) by PBOOLE:def 15;
     hence thesis by A1, Def14;
@@ -1621,8 +1630,7 @@ proof
     H.i = Fun(i) by A2;
     hence H.i is Homomorphism of Dom().i, Cod().i by A1;
   end;
-  then H is Homomorphism-Family of Dom(), Cod() by ThHom;
-  then reconsider H as Homomorphism-Family of Dom(), Cod();
+  then reconsider H as Homomorphism-Family of Dom(), Cod() by ThHom;
   take H;
   thus thesis by A2;
 end;
@@ -1642,12 +1650,11 @@ proof
   thus f is Homomorphism-Family of G,F
   implies (for i being Element of I holds f.i is Homomorphism of G, F.i)
   by Def13;
-  assume A2: for i being Element of I
+  assume A1: for i being Element of I
   holds f.i is Homomorphism of G, F.i;
-  for i being object st i in dom f holds f.i is Function by A2;
+  for i being object st i in dom f holds f.i is Function by A1;
   then f is Function-yielding by FUNCOP_1:def 6;
-  then f is ManySortedFunction of I;
-  hence f is Homomorphism-Family of G,F by A2, Def13;
+  hence f is Homomorphism-Family of G,F by A1, Def13;
 end;
 
 scheme
@@ -1671,8 +1678,7 @@ proof
     H.i = Fun(i) by A2;
     hence H.i is Homomorphism of Dom(), Cod().i by A1;
   end;
-  then H is Homomorphism-Family of Dom(), Cod() by ThRHom;
-  then reconsider H as Homomorphism-Family of Dom(), Cod();
+  then reconsider H as Homomorphism-Family of Dom(), Cod() by ThRHom;
   take H;
   thus thesis by A2;
 end;
@@ -1706,11 +1712,9 @@ proof
       let i be object;
       assume i in I;
       then reconsider ii=i as Element of I;
-      f.ii is Homomorphism of A.ii, B.ii by A1;
-      then B2: f.i is Homomorphism of A.ii, B.ii;
       (Carrier A).i = the carrier of A.ii &
       (Carrier B).i = the carrier of B.ii by ThCarr;
-      hence f.i is Function of (Carrier A).i, (Carrier B).i by B2;
+      hence f.i is Function of (Carrier A).i, (Carrier B).i by A1;
     end;
     then f is ManySortedFunction of (Carrier A), (Carrier B) by PBOOLE:def 15;
     hence thesis by A1, Def14;
@@ -1927,17 +1931,14 @@ proof
       let y be object;
       assume y in rng f;
       then consider x being object such that
-      B2: x in dom f and
-      B3: y = f.x
+      B2: x in dom f & y = f.x
       by FUNCT_1:def 3;
-      x in X by B2;
-      hence y in Y by A1,B3,FUNCT_2:5;
+      thus y in Y by A1,B2,FUNCT_2:5;
     end;
     hence rng f c= Y by TARSKI:def 3;
   end;
   suppose Y = {};
-    then for y being object st y in rng f holds y in Y;
-    hence rng f c= Y by TARSKI:def 3;
+    hence rng f c= Y;
   end;
 end;
 
@@ -1954,9 +1955,7 @@ proof
   let g be Function of [:X,Y:],W;
   assume A1: for a being Element of X, b being Element of Y
   holds f.(a,b) = g.(a,b);
-  A2: dom f = [:X,Y:] by A0, FUNCT_2:def 1;
-  A3: dom g = [:X,Y:] by A0, FUNCT_2:def 1;
-  A4: dom f = dom g by A2,A3;
+  A2: dom g = [:X,Y:] & dom f = [:X,Y:] by A0, FUNCT_2:def 1;
   for z being object holds z in rng f iff z in rng g
   proof
     let z be object;
@@ -1972,15 +1971,12 @@ proof
       B5: b in Y and
       B6: [a, b] = x
       by B2, ZFMISC_1:def 2;
-      B7: g.([a,b]) = g.x by B6;
-      B8: x in dom g by A4, B2;
       reconsider a as Element of X by B4;
       reconsider b as Element of Y by B5;
-      f.x = f.([a, b]) by B6
-      .= f.(a, b) by BINOP_1:def 1
-      .= g.(a, b) by A1
-      .= g.x by B7, BINOP_1:def 1;
-      hence z in rng g by B3,B8,FUNCT_1:3;
+      f.x = f.(a, b) by B6, BINOP_1:def 1
+         .= g.(a, b) by A1
+         .= g.x by B6, BINOP_1:def 1;
+      hence z in rng g by A2, B2, B3,FUNCT_1:3;
     end;
     thus z in rng g implies z in rng f
     proof
@@ -1994,17 +1990,12 @@ proof
       B5: b in Y and
       B6: [a, b] = x
       by B2, ZFMISC_1:def 2;
-      B7: f.([a,b]) = f.x by B6;
-      x in dom f by A4, B2;
-      then B9: f.x in rng f by FUNCT_1:3;
       reconsider a as Element of X by B4;
       reconsider b as Element of Y by B5;
-      g.x = g.([a, b]) by B6
-      .= g.(a, b) by BINOP_1:def 1
-      .= f.(a, b) by A1
-      .= f.x by B7, BINOP_1:def 1;
-      then f.x = z by B3;
-      hence z in rng f by B9;
+      g.x = g.(a, b) by B6, BINOP_1:def 1
+         .= f.(a, b) by A1
+         .= f.x by B6, BINOP_1:def 1;
+      hence z in rng f by A2, B2, B3, FUNCT_1:3;
     end;
   end;
 
@@ -2023,16 +2014,14 @@ proof
 
   A2: the carrier of G1 c= the carrier of G2
   proof
-    for g being object st g in the carrier of G1
+    for g being Element of the carrier of G1
     holds g in the carrier of G2
     proof
-      let g be object;
-      assume B1: g in the carrier of G1;
-      then reconsider gg=g as Element of G1;
-      (f.gg) in the carrier of G2;
+      let g be Element of the carrier of G1;
+      (f.g) in the carrier of G2;
       hence g in the carrier of G2 by A1;
     end;
-    hence thesis by TARSKI:def 3;
+    hence thesis;
   end;
   then reconsider U=the carrier of G1 as Subset of the carrier of G2;
   set U1 = the carrier of G1;
@@ -2041,10 +2030,8 @@ proof
   dom (the multF of G2) = [: U2, U2 :]
   by FUNCT_2:def 1;
   then A5: dom ((the multF of G2)|[: U1, U1 :]) = [: U1, U1 :]
-  by A3, RELAT_1:62;
-  A5a: dom ((the multF of G2)||U1)
-   = dom ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2
-  .= [: U1, U1 :] by A5;
+  by A2, ZFMISC_1:96, RELAT_1:62;
+  A5a: dom ((the multF of G2)||U1) = [: U1, U1 :] by A5, REALSET1:def 2;
   A5b: ((the multF of G2)||U1)
   = ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2;
   A6: for a being Element of U1
@@ -2053,12 +2040,9 @@ proof
   proof
     let a be Element of U1;
     let b be Element of U1;
-    [a, b] in [: U1, U1 :] by ZFMISC_1:87;
-    then [a, b] in dom ((the multF of G2)||U1) by A5a;
-    then [a, b] in dom ((the multF of G2)|[: U1, U1 :]) by REALSET1:def 2;
-    then B2:
+    B2:
     (the multF of G2).([a, b])
-     = ((the multF of G2)|[: U1, U1 :]).([a, b]) by FUNCT_1:47
+     = ((the multF of G2)|[: U1, U1 :]).([a, b]) by A5, ZFMISC_1:87, FUNCT_1:47
     .= ((the multF of G2)||U1).([a, b]) by REALSET1:def 2
     .= ((the multF of G2)||U1).(a, b) by BINOP_1:def 1;
     set c = a * b;
@@ -2067,7 +2051,6 @@ proof
      .= (the multF of G2).(a, b) by A1;
     c = f.c by A1
      .= (f.a) * (f.b) by GROUP_6:def 6
-     .= (the multF of G2).(f.a, f.b)
      .= (the multF of G2).(a, b) by B4;
     hence (the multF of G1).(a, b) = ((the multF of G2)||U1).(a, b)
     by B2, BINOP_1:def 1;
@@ -2077,34 +2060,22 @@ proof
     B1: rng (the multF of G1) c= U1 by LmRangeContainedInCod;
     B2a: ((the multF of G2)||U1) is Function of [:U1,U1:], U2
     by A3, A5b, FUNCT_2:32;
-    
-    ((the multF of G2)||U1) is Function of dom ((the multF of
-    G2)||U1), rng ((the multF of G2)||U1) by FUNCT_2:1;
-    then B2: ((the multF of G2)||U1) is Function of [: U1, U1 :],
-    rng ((the multF of G2)||U1) by A5a;
-    rng ((the multF of G2)||U1) = rng (the multF of G1)
-    by A6, B2a, LmEqRng;
-    then B3: rng ((the multF of G2)||U1) c= U1 by B1;
+    B2: ((the multF of G2)||U1) is Function of [: U1, U1 :],
+    rng ((the multF of G2)||U1) by A5a, FUNCT_2:1;
+    B3: rng ((the multF of G2)||U1) c= U1 by B1, A6, B2a, LmEqRng;
 
     ([: U1, U1 :] <> {} implies (rng ((the multF of G2)||U1)) <> {})
     proof
       assume [: U1, U1 :] <> {};
-      then [: U1, U1 :] is non empty;
       then consider x being object such that
       C2: x in [: U1, U1 :]
       by XBOOLE_0:def 1;
-      x in dom ((the multF of G2)||U1) by C2, A5a;
-      then ((the multF of G2)||U1).x in rng (((the multF of G2)||U1))
-      by FUNCT_1:3;
-      hence (rng ((the multF of G2)||U1)) <> {};
+      x in dom ((the multF of G2)||U1) by C2, A5, REALSET1:def 2;
+      hence (rng ((the multF of G2)||U1)) <> {} by FUNCT_1:3;
     end;
-    then ((rng ((the multF of G2)||U1)) = {} implies [: U1, U1 :] = {});
-    then ((the multF of G2)||U1) is Function of [: U1, U1 :], U1
-    by B2, B3, FUNCT_2:6;
-    hence thesis;
+    hence thesis by B2, B3, FUNCT_2:6;
   end;
-  then the multF of G1 = (the multF of G2)||U1 by A6, BINOP_1:2;
-  hence G1 is Subgroup of G2 by A2, GROUP_2:def 5;
+  hence G1 is Subgroup of G2 by A2, A6, BINOP_1:2, GROUP_2:def 5;
 end;
 
 theorem Th65b:
@@ -2121,9 +2092,8 @@ proof
     by RELAT_1:def 19;
     the carrier of ProjGroup (F,i) c= the carrier of product F
     by GROUP_2:def 5;
-    then rng (1ProdHom (F,i)) c= the carrier of product F by B1, XBOOLE_1:1;
     then (1ProdHom (F,i)) is (the carrier of product F)-valued
-    by RELAT_1:def 19;
+    by B1, XBOOLE_1:1, RELAT_1:def 19;
     then dom ((proj (F,j)) * (1ProdHom (F,i))) = dom (1ProdHom (F,i))
     by FUNCT_2:123;
     hence thesis by FUNCT_2:def 1;
@@ -2132,32 +2102,26 @@ proof
   holds ((proj (F,j)) * (1ProdHom (F,i))).x = (1:(F.i, F.j)).x
   proof
     let x be Element of U;
-    dom (1ProdHom (F,i)) = U by FUNCT_2:def 1;
-    then B1: x in dom (1ProdHom (F,i));
+    B1: dom (1ProdHom (F,i)) = U by FUNCT_2:def 1;
     (1ProdHom (F,i)).x in ProjGroup (F, i);
     then (1_(product F) +* (i, x)) in ProjGroup (F, i) by GROUP_12:def 3;
     then B2: (1_(product F) +* (i, x)) in product F by GROUP_2:40;
     ((proj (F,j)) * (1ProdHom (F,i))).x
-     = (proj (F,j)).((1ProdHom (F,i)).x) by B1,FUNCT_1:13
+     = (proj (F,j)).((1ProdHom (F,i)).x) by B1, FUNCT_1:13
     .= (proj (F,j)).(1_(product F) +* (i, x)) by GROUP_12:def 3
     .= (1_(product F) +* (i, x)).j by Def16, B2
     .= (1_(product F)).j by A1,FUNCT_7:32
-    .= 1_(F.j) by GROUP_7:6
-    .= (F.i --> (1_(F.j))).x
-    .= (1:(F.i, F.j)).x;
+    .= (1:(F.i, F.j)).x by GROUP_7:6;
     hence ((proj (F,j)) * (1ProdHom (F,i))).x = (1:(F.i, F.j)).x;
   end;
   hence (proj (F,j)) * (1ProdHom (F,i)) = 1:(F.i, F.j) by A2;
 end;
 
-
-
 theorem Th65:
   (proj (F,i)) * (1ProdHom (F, i)) = id (the carrier of F.i)
 proof
   set U = the carrier of F.i;
-  (1ProdHom (F, i)) is Homomorphism of F.i, product F by GROUP_19:6;
-  then A1: ((proj (F,i)) * (1ProdHom (F, i))) is Function of U, U;
+  A1: (1ProdHom (F, i)) is Homomorphism of F.i, product F by GROUP_19:6;
 
   for x being Element of U
   holds ((proj (F,i)) * (1ProdHom (F, i))).x = x
@@ -2553,9 +2517,9 @@ proof
   end;
   then
   A3: f1" (the carrier of Ker f2) c= the carrier of Ker (f2 * f1)
-  by A1,SUBSET_1:2;
+  by A1, SUBSET_1:2;
   thus the carrier of Ker (f2 * f1) = f1" (the carrier of Ker f2)
-  by A2,A3,XBOOLE_0:def 10;
+  by A2, A3, XBOOLE_0:def 10;
 end;
 
 theorem
@@ -2603,9 +2567,7 @@ proof
 
     hence g in Ker (product f) by Th45;
   end;
-  A4: for g being object
-  holds g in Ker (product f)
-        iff g in (meet Fam)
+  A4: for g being object holds g in Ker (product f) iff g in (meet Fam)
   proof
     let g be object;
     g in Ker (product f) iff (for A being set st A in Fam holds g in A) by A3;
@@ -2633,10 +2595,9 @@ proof
   for i being object st i in dom (Carrier F) holds f.i in (Carrier F).i
   proof
     let i be object;
-    assume B1: i in dom (Carrier F);
+    assume i in dom (Carrier F);
     then reconsider ii=i as Element of I;
     f.i in F.ii by A2;
-    then B2: f.i in the carrier of (F.ii);
     hence f.i in (Carrier F).i by Th20;
   end;
   then f in product (Carrier F) by A1, A3, CARD_3:9;
@@ -2693,8 +2654,7 @@ proof
     then B2: (incl (F1.i, F2.i)).(g.i) = g.i by B1, Th8;
     (f.i).g = ((incl (F1.i, F2.i)) * (proj (F1, i))).g by A3
            .= (incl (F1.i, F2.i)).((proj (F1, i)).g) by FUNCT_2:15
-           .= (incl (F1.i, F2.i)).(g.i) by Def16
-           .= (g.i) by B2;
+           .= (g.i) by B2, Def16;
     hence (f.i).g = g.i;
   end;
   consider phi being Homomorphism of product F1, product F2 such
@@ -2716,10 +2676,8 @@ proof
          .= (phi.g).j by Def16;
       hence thesis;
     end;
-    B2: dom g = I by GROUP_19:3;
-    dom (phi.g) = I by GROUP_19:3;
-    then dom g = dom (phi.g) by B2;
-    hence g = phi.g by B1, B2;
+    dom g = I by GROUP_19:3;
+    hence g = phi.g by B1, GROUP_19:3;
   end;
   hence product F1 is Subgroup of product F2 by InclByAnyOtherName;
 end;
@@ -2744,7 +2702,7 @@ proof
   holds g in the carrier of Image (proj (F, i))
   proof
     let g be object;
-    assume A1: g in the carrier of F.i;
+    assume g in the carrier of F.i;
     then reconsider x=g as Element of F.i;
     ex h being Element of product F st x = (proj (F, i)).h
     proof
@@ -2755,16 +2713,13 @@ proof
       take h;
       (proj (F, i)).((1_(product F)) +* (i,x))
        = (proj (F, i)).h
-      .= ((1_(product F)) +* (i,x)).i by Def16
-      .= x by B1;
+      .= x by B1, Def16;
       hence thesis;
     end;
     then x in Image (proj (F, i)) by GROUP_6:45;
     hence g in the carrier of Image (proj (F, i));
   end;
-  then the carrier of F.i c= the carrier of Image (proj (F, i))
-  by TARSKI:def 3;
-  hence thesis by GROUP_2:61;
+  hence thesis by GROUP_2:61, TARSKI:def 3;
 end;
 
 theorem
@@ -2780,8 +2735,7 @@ proof
   proof
     let i be Element of I;
     Image (proj (F1, i)) is Subgroup of Image (proj (F2, i)) by A1;
-    then F1.i is Subgroup of Image (proj (F2, i)) by Th59;
-    hence F1.i is Subgroup of F2.i;
+    hence F1.i is Subgroup of F2.i by Th59;
   end;
   hence thesis by Th56;
 end;
@@ -2857,7 +2811,7 @@ proof
     then x in product F by GROUP_2:40;
     hence (product f).x = x by B1, A4;
   end;
-  hence product f = id the carrier of G by A6,FUNCT_1:17;
+  hence product f = id the carrier of G by A6, FUNCT_1:17;
 end;
 
 theorem ThMorphismOfCommutators:
@@ -2872,11 +2826,11 @@ proof
   assume x in commutators G1;
   then consider a,b being Element of G1 such that
   A2: x = [. a, b .] by GROUP_5:58;
-  phi.x = phi.([. a, b .]) by A2
-       .= [. (phi.a), (phi.b) .] by GROUP_6:34;
+  phi.x = [. (phi.a), (phi.b) .] by A2, GROUP_6:34;
   hence phi.x in commutators G2 by GROUP_5:58;
 end;
 
+:: missing
 theorem
   for f being Homomorphism-Family of G, F
   for phi being Homomorphism of G, product F
@@ -2915,6 +2869,7 @@ proof
   hence phi = product f by FUNCT_2:def 8;
 end;
 
+:: missing
 theorem
   for G1,G2,G3 being Group
   for f1 being Homomorphism of G1,G2
@@ -2927,11 +2882,10 @@ proof
   let f2 be Homomorphism of G2,G3;
   let g be Element of G1;
   dom f1 = the carrier of G1 by FUNCT_2:def 1;
-  then g in dom f1;
   hence (f2 * f1).g = f2.(f1.g) by FUNCT_1:13;
 end;
 
-theorem
+theorem Th64d:
   for G1,G2 being Group
   for H being Subgroup of G2
   for f1 being Homomorphism of G1,G2
@@ -2960,13 +2914,13 @@ proof
   hence Image f1 = Image f2 by A2, GROUP_2:def 6;
 end;
 
-theorem
+theorem :: missing
   for G1,G2 being Group
   for f1,f2 being Homomorphism of G1,G2
   st f1 = f2
   holds Image f1 = Image f2;
 
-theorem
+theorem :: missing
   for X,Y,Z being set
   for A being Subset of X
   for f being Function of X,Y
@@ -2991,9 +2945,7 @@ proof
       take x;
       thus x in dom (g * f) by B2,B3,FUNCT_1:11;
       thus x in A by B3;
-      z = g.(f.x) by B2, B3
-       .= (g * f).x by B3, FUNCT_1:13;
-      hence thesis;
+      thus thesis by B2, B3, FUNCT_1:13;
     end;
     hence z in (g * f) .: A by FUNCT_1:def 6;
   end;
@@ -3010,13 +2962,10 @@ proof
       by B1,FUNCT_1:def 6;
       take y=f.x;
       set B = f .: A;
-      x in dom f by B2, FUNCT_1:11;
-      then B3: f.x in B by B2, FUNCT_1:def 6;
+      B3: x in dom f by B2, FUNCT_1:11;
       thus y in dom g by B2, FUNCT_1:11;
-      thus y in f .: A by B3;
-      thus z = (g * f).x by B2
-            .= g.(f.x) by B2, FUNCT_1:12
-            .= g.y;
+      thus y in f .: A by B2, B3, FUNCT_1:def 6;
+      thus z = g.y by B2, FUNCT_1:12;
     end;
     hence z in g .: (f .: A) by FUNCT_1:def 6;
   end;
@@ -3024,7 +2973,7 @@ proof
   hence (g * f) .: A = g .: (f .: A) by A1, XBOOLE_0:def 10;
 end;
 
-theorem
+theorem :: missing
   for phi being Homomorphism of G,product F
   holds phi = product f iff (
   for i being Element of I
@@ -3064,7 +3013,7 @@ proof
   hence phi = product f by FUNCT_2:def 8;
 end;
   
-theorem
+theorem :: missing
   for A being Subset of G
   for g being Element of product F
   st (ex x being Element of G st x in A & for i being Element of I
@@ -3095,6 +3044,7 @@ proof
   hence g in (product f) .: A by FUNCT_1:def 6;
 end;
 
+:: missing, but needed
 theorem Th77a:
   for a,b being Element of product F
   for i
@@ -3111,6 +3061,7 @@ proof
       .= ([. a, b .]).i by GROUP_5:16;
 end;
 
+:: missing
 theorem Th77:
   for g being Element of product F
   holds g in commutators (product F)
@@ -3203,6 +3154,7 @@ proof
   hence g in commutators (product F) by GROUP_5:58;
 end;
 
+:: missing
 theorem
   for A being Subset of product F st (for g being Element of product F
   holds g in A iff (for i being Element of I holds g.i in commutators (F.i)))
@@ -3223,6 +3175,7 @@ proof
   hence g in commutators (product F) by Th77;
 end;
 
+:: missing
 theorem ThFinSeq:
   for D being non empty set
   for d being Element of D
@@ -3236,6 +3189,7 @@ proof
   hence Seg n --> d is FinSequence of D;
 end;
 
+:: missing
 theorem
   for gs being FinSequence of the carrier of G
   for ks being FinSequence of INT st len gs = len ks
@@ -3259,57 +3213,42 @@ proof
   take ks2 = ks ^ dks;
   A2: len dgs = dk & len dks = dk
   proof
-    thus len dgs = card ((Seg dk) --> 1_G)
-                .= card ([:(Seg dk), {1_G}:]) by FUNCOP_1:def 2
+    thus len dgs = card ([:(Seg dk), {1_G}:]) by FUNCOP_1:def 2
                 .= card (Seg dk) by CARD_1:69
                 .= dk by FINSEQ_1:57;
-    thus len dks = card ((Seg dk) --> 0)
-                .= card ([:(Seg dk), {0}:]) by FUNCOP_1:def 2
+    thus len dks = card ([:(Seg dk), {0}:]) by FUNCOP_1:def 2
                 .= card (Seg dk) by CARD_1:69
                 .= dk by FINSEQ_1:57;
   end;
-  A3: len gs2 = len gs + len dgs by FINSEQ_1:22
-             .= len gs + dk by A2
+  A3: len gs2 = len gs + dk by A2, FINSEQ_1:22
              .= k;
-  len ks2 = len ks + len dks by FINSEQ_1:22
-         .= len gs + len dks by Z1 
-         .= len gs + dk by A2
+  len ks2 = len gs + dk by A2, Z1, FINSEQ_1:22
          .= k;
   hence len (gs2) = len (ks2) by A3;
   thus len (gs2) = k by A3;
   thus gs2|(dom gs) = gs by FINSEQ_1:21;
   thus ks2|(dom ks) = ks by FINSEQ_1:21;
   dgs = dk |-> 1_G by FINSEQ_2:def 2;
-  then dgs |^ dks = (dk |-> 1_G) |^ dks
-                 .= dk |-> 1_G by A2, GROUP_4:27;
+  then dgs |^ dks = dk |-> 1_G by A2, GROUP_4:27;
   then A4: Product (dgs |^ dks) = (1_G) |^ dk by GROUP_4:12
                                .= 1_G by GROUP_1:31;
-  A4b: len gs = len ks & len dks = len dgs by Z1, A2;
   thus Product (gs2 |^ ks2)
-       = Product ((gs ^ dgs) |^ (ks ^ dks))
-      .= Product ((gs |^ ks) ^ (dgs |^ dks)) by A4b, GROUP_4:19
+       = Product ((gs |^ ks) ^ (dgs |^ dks)) by A2, Z1, GROUP_4:19
       .= Product (gs |^ ks) * Product (dgs |^ dks) by GROUP_4:5
       .= Product (gs |^ ks) by A4, GROUP_1:def 4;
   let i be Nat;
   assume Z3: len gs < i;
   assume Z4: i <= k;
-  1 <= (i - (len gs)) & (i - (len gs)) <= dk & (i - (len gs)) is Nat 
+  A7: 1 <= (i - (len gs)) & (i - (len gs)) <= dk & (i - (len gs)) is Nat 
   proof
-    len gs < i by Z3;
-    then (len gs) + 1 <= i by NAT_1:13;
+    (len gs) + 1 <= i by Z3, NAT_1:13;
     then (len gs) + 1 - (len gs) <= i - (len gs) by XREAL_1:9;
     hence 1 <= i - (len gs);
-    i <= k by Z4;
-    then i <= (len gs) + dk;
-    then i - (len gs) <= (len gs) + dk - (len gs) by XREAL_1:9;
-    hence i - (len gs) <= dk;
-    len gs < i by Z3;
-    hence i - (len gs) is Nat by NAT_1:21;
+    thus i - (len gs) <= dk by Z4, XREAL_1:9;
+    thus i - (len gs) is Nat by Z3, NAT_1:21;
   end;
-  then A7: (i - (len gs)) in Seg dk by FINSEQ_1:1;
-  A8: len gs < i & i <= len (gs ^ dgs) by A3,Z3,Z4;
-  (gs ^ dgs).i = dgs.(i - (len gs)) by A8,FINSEQ_1:24
-              .= 1_G by A7, FUNCOP_1:7;
+  (gs ^ dgs).i = dgs.(i - (len gs)) by A3,Z3,Z4,FINSEQ_1:24
+              .= 1_G by A7, FINSEQ_1:1, FUNCOP_1:7;
   hence gs2.i = 1_G;
 end;
 
@@ -3345,9 +3284,7 @@ proof
     B2: x in dom S & y = S.x
     by FUNCT_1:def 3;
     reconsider i=x as Element of I1() by B2;
-    y = S.i by B2;
-    then P1[i, y] by A3;
-    then y is Subgroup of Fam().i;
+    P1[i, y] by A3, B2;
     hence y is Group;
   end;
   then S is Group-yielding;
@@ -3365,11 +3302,11 @@ proof
   proof
     let i be Element of I1();
     P1[i, S.i] by A3;
-    then ex j being Subgroup of Fam().i st S.i=j & P[i, j];
     hence P[i, S.i];
   end;
 end;
 
+:: missing
 theorem Th77:
   for A being ManySortedSet of I
   st (for i being Element of I holds A.i is Subset of F.i)
@@ -3382,8 +3319,7 @@ proof
     let x be object;
     assume B1: x in product A;
     reconsider xx=x as Function by B1;
-    xx in product A by B1;
-    then B2: dom xx = dom A by CARD_3:9;
+    B2: dom xx = dom A by B1, CARD_3:9;
     B3: dom F = I & dom A = I by PARTFUN1:def 2;
     for i being Element of I holds xx.i in F.i
     proof
@@ -3392,12 +3328,13 @@ proof
       xx.i in A.i by B1, B3, CARD_3:9;
       hence xx.i in F.i by C1;
     end;
-    then xx in product F by B2,B3,Th49;
+    then xx in product F by B2, Th49, PARTFUN1:def 2;
     hence thesis;
   end;
   hence product A is Subset of product F by TARSKI:def 3;
 end;
 
+:: missing
 theorem Th78:
   for g being Element of product F
   holds g in commutators (product F) iff (for i ex ai, bi being Element
@@ -3449,7 +3386,6 @@ proof
   proof
     let i be Element of I;
     ex ai,bi being Element of F.i st ai = a.i & g.i = [. ai, bi .] by B2;
-    then ex bi being Element of F.i st g.i = [. a/.i, bi .];
     hence thesis;
   end;
 
@@ -3518,7 +3454,6 @@ proof
     end;
     hence g in commutators (product F) by Th78;
   end;
-
   hence product A is Subset of commutators (product F) by A2, SUBSET_1:2;
 end;
 
@@ -3543,13 +3478,12 @@ proof
       for i being Element of I holds h.i in S.i
       proof
         let i be Element of I;
-        B1: a.i in S.i by A2, GROUP_19:5;
         h.i = (((g") * a) * g).i by A2,GROUP_3:def 2
            .= (((g") * a)/.i) * (g/.i) by GROUP_7:1
            .= (((g")/.i) * (a/.i)) * (g/.i) by GROUP_7:1
            .= (((g/.i)") * (a/.i)) * (g/.i) by GROUP_7:8
            .= (a/.i) |^ (g/.i) by GROUP_3:def 2;
-        then h.i in (S.i) |^ (g/.i) by B1, GROUP_3:58;
+        then h.i in (S.i) |^ (g/.i) by A2, GROUP_19:5, GROUP_3:58;
         then h.i in the multMagma of S.i by GROUP_3:def 13;
         hence thesis;
       end;
@@ -3672,8 +3606,7 @@ proof
    = the carrier of multMagma(# the carrier of G,
                                 the multF of G #) by GROUP_2:def 8
   .= the carrier of G;
-  then x in the carrier of (Omega).G by A1;
-  hence x in (Omega).G;
+  hence x in (Omega).G by A1;
 end;
 
 theorem Th99a:
@@ -3725,7 +3658,6 @@ proof
     B5: for j being object st j in J holds g.j = b.j
     by B1, GROUP_19:7;
     deffunc F1() = support (g, D);
-    B6: g = ((1_(product F)) +* (b|F1())) by B2,B3;
     defpred P[set]
     means ex FS being FinSequence of the carrier of product F st
     ex ks being FinSequence of INT
@@ -3747,8 +3679,7 @@ proof
       assume D3: P[B];
       per cases;
       suppose x in B;
-        then {x} c= B by ZFMISC_1:31;
-        then B \/ {x} = B by XBOOLE_1:12;
+        then B \/ {x} = B by XBOOLE_1:12,ZFMISC_1:31;
         hence thesis by D3;
       end;
       suppose D4: not (x in B);
@@ -3805,13 +3736,12 @@ proof
           thus dom (Product (FS |^ ks)) = I by GROUP_19:3;
           {x} c= J by D1,B2,ZFMISC_1:31; 
           then E0: (B \/ {x}) c= J by B2,D2,XBOOLE_1:8;
-          E1: (B \/ {x}) c= I by E0,XBOOLE_1:1;
           E2: dom b = J by PARTFUN1:def 2;
           dom ((1_(product F)) +* (b|(B \/ {x})))
            = dom (1_(product F)) \/ dom (b|(B \/ {x})) by FUNCT_4:def 1
           .= I \/ dom (b|(B \/ {x})) by GROUP_19:3
           .= I \/ (B \/ {x}) by E2,E0,RELAT_1:62
-          .= I by E1, XBOOLE_1:12;
+          .= I by E0, XBOOLE_1:1, XBOOLE_1:12;
           hence thesis;
         end;
         for j being Element of I
@@ -3825,7 +3755,7 @@ proof
           E1: Product (FS |^ ks) = Product (FSB |^ ksB) * Product(F2 |^ ksg)
           by GROUP_4:5;
           dom b = J by PARTFUN1:def 2;
-          then E2b: dom (b|(B \/ {x})) = (B \/ {x}) by E0,RELAT_1:62;
+          then E2b: dom (b|(B \/ {x})) = (B \/ {x}) by E0, RELAT_1:62;
           
           E3: not (j in B) implies (Product (FSB |^ ksB)).j = 1_(F.j)
           proof
@@ -3838,33 +3768,24 @@ proof
           proof
             assume not (j in {x});
             then AA1: j <> x by TARSKI:def 1; 
-            dom (1ProdHom (F, ii)) = the carrier of F.ii by FUNCT_2:def 1;
-            then AA2: (Product (FSg |^ ksg)) in dom (1ProdHom (F, ii));
+            AA2: dom (1ProdHom (F, ii)) = the carrier of F.ii by FUNCT_2:def 1;
             (proj (F,j)).Product(F2 |^ ksg)
             = ((proj (F,j)) * (1ProdHom (F, ii))).(Product (FSg |^ ksg))
-              by AA2,D8,FUNCT_1:13
+              by AA2, D8, FUNCT_1:13
             .= (1:(F.ii, F.j)).(Product (FSg |^ ksg)) by AA1, Th65b
             .= 1_(F.j);
             hence thesis by Def16;
           end;
-          
-          j in B or j in {x} or not (j in (B \/ {x})) by XBOOLE_0:def 3;
-          then per cases;
+          per cases by XBOOLE_0:def 3;
           suppose D11: j in B;
             D11b: dom b = J by PARTFUN1:def 2;
-            B c= J by D2, B2;
-            then E2b: dom (b|B) = B by D11b,RELAT_1:62;
-            D12: j in dom (b|B) by D11,E2b;
+            D12: j in dom (b|B) by D11,B2, D2, D11b,RELAT_1:62;
             dom (b|(B \/ {x})) = B \/ {x} by D11b,E0,RELAT_1:62;
             then D14: j in dom (b|(B \/ {x})) by D11, XBOOLE_0:def 3;
-            j in B & not (ii in B) by D4,D11;
-            then j <> ii;
-            then not (j in {x}) by TARSKI:def 1;
-            then E3: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
-            E4: (proj (F,j)).(Product (FS |^ ks))
+            E5: (proj (F,j)).(Product (FS |^ ks))
              = ((proj (F,j)).(Product (FSB |^ ksB)))
                 * (proj (F,j)).(Product(F2 |^ ksg)) by E1,GROUP_6:def 6
-            .= ((proj (F,j)).(Product (FSB |^ ksB))) * (1_(F.j)) by E3,Def16
+            .= ((proj (F,j)).(Product (FSB |^ ksB))) * (1_(F.j)) by D4,D11,E4,Def16,TARSKI:def 1
             .= (proj (F,j)).(Product (FSB |^ ksB)) by GROUP_1:def 4
             .= (Product (FSB |^ ksB)).j by Def16
             .= (b|B).j by D5,D12,FUNCT_4:13 
@@ -3874,52 +3795,41 @@ proof
             .= b.j by D14, FUNCT_1:49;
             hence ((1_(product F)) +* (b|(B \/ {x}))).j
                   = (Product (FS |^ ks)).j
-            by Def16,E4;
+            by Def16,E5;
           end;
           suppose D12: j in {x};
-            then D12b: j = x by TARSKI:def 1;
-            not (j in B) by D4,D12b;
-            then D14: (Product (FSB |^ ksB)).j = (1_(F.j)) by E3;
-            dom (1ProdHom (F,ii)) = the carrier of F.ii by FUNCT_2:def 1;
-            then D15b: (Product (FSg |^ ksg)) in dom (1ProdHom (F,ii));
+            D15b: dom (1ProdHom (F,ii)) = the carrier of F.ii by FUNCT_2:def 1;
             j = ii by D12, TARSKI:def 1;
             then D15: (Product(F2 |^ ksg)).j
              = (proj (F, ii)).(Product(F2 |^ ksg)) by Def16
             .= ((proj (F,ii)) * (1ProdHom (F,ii))).(Product (FSg |^ ksg))
                by D8,D15b,FUNCT_1:13
             .= (id (the carrier of F.ii)).(Product (FSg |^ ksg)) by Th65
-            .= g.j by D7,D12b;
+            .= g.j by D7,D12,TARSKI:def 1;
             D16: (Product (FS |^ ks)).j = b.j
             proof
-              j in J by B2,D1,D12b;
-              then AA1: g.j = b.j by B5;
+              AA1: j in J by B2,D1,D12,TARSKI:def 1;
               AA2: ((proj (F,j)).(Product(F2 |^ ksg))) = g.j by Def16,D15;
               AA3: ((proj (F,j)).(Product (FSB |^ ksB))) = 1_(F.j)
-              by Def16,D14;
+              by Def16,E3,D4,D12,TARSKI:def 1;
               (Product (FS |^ ks)).j
                = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg))
                  by E1,Def16
               .= (1_(F.j)) * (g/.j) by AA2, AA3,GROUP_6:def 6
               .= g/.j by GROUP_1:def 4;
-              hence thesis by AA1;
+              hence thesis by AA1,B5; 
             end;
             D17: ((1_(product F)) +* (b|(B \/ {x}))).j = b.j
             proof
-              j in {x} by D12;
-              then j in (B \/ {x}) by XBOOLE_0:def 3;
-              then j in dom (b|(B \/ {x})) by E2b;
+              j in (B \/ {x}) by D12,XBOOLE_0:def 3;
               then ((1_(product F)) +* (b|(B \/ {x}))).j = (b|(B \/ {x})).j
-              & (b|(B \/ {x})).j = b.j by FUNCT_1:49,FUNCT_4:13;
+              & (b|(B \/ {x})).j = b.j by E2b,FUNCT_1:49,FUNCT_4:13;
               hence thesis;
             end;
             thus ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
             by D16,D17;
           end;
           suppose D13: not (j in B \/ {x});
-            not (j in B) by D13, XBOOLE_0:def 3;
-            then D14: (Product (FSB |^ ksB)).j = 1_(F.j) by E3;
-            not (j in {x}) by D13, XBOOLE_0:def 3;
-            then D15: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
             not (j in dom (b|(B \/ {x}))) by D13;
             then D16: ((1_(product F)) +* (b|(B \/ {x}))).j
              = (1_(product F)).j by FUNCT_4:11
@@ -3934,7 +3844,7 @@ proof
               .= ((proj (F,j)).(Product (FSB |^ ksB)))
                  * ((Product(F2 |^ ksg))/.j) by Def16
               .= ((Product (FSB |^ ksB))/.j)*((Product(F2 |^ ksg))/.j) by Def16
-              .= 1_(F.j) by D14, D15, GROUP_1:def 4;
+              .= 1_(F.j) by D13, E3, E4, GROUP_1:def 4, XBOOLE_0:def 3;
               hence thesis;
             end;
             hence ((1_(product F)) +* (b|(B \/ {x}))).j
@@ -3949,7 +3859,7 @@ proof
     end;
 
     P[F1()] from FINSET_1:sch 2(C1, C2, C3);
-    hence g in (product F)` by B6,GROUP_5:73;
+    hence g in (product F)` by B2, B3, GROUP_5:73;
   end;
   hence sum D is strict Subgroup of (product F)` by A2, GROUP_2:58;
 end;
@@ -3997,8 +3907,7 @@ definition
       holds ((proj (F2, i)) * psi).g = ((f.i) * (proj (F1, i))).g
       proof
         let g be Element of product F1;
-        dom psi = the carrier of product F1 by FUNCT_2:def 1;
-        then B1: g in dom psi;
+        B1: dom psi = the carrier of product F1 by FUNCT_2:def 1;
         Fun(i).g = (phi.i).g by A2
                 .= (psi.g).i by Def17
                 .= (proj (F2, i)).(psi.g) by Def16
@@ -4037,7 +3946,7 @@ definition
                          .= ((proj (F2, i)) * phi1).g by A3, FUNCT_1:13
                          .= ((f.i) * (proj (F1, i))).g by A1
                          .= ((proj (F2, i)) * phi2).g by A2
-                         .= (proj (F2, i)).(phi2.g) by A3,FUNCT_1:13
+                         .= (proj (F2, i)).(phi2.g) by A3, FUNCT_1:13
                          .= (phi2.g).i by Def16;
         end;
         hence phi1.g = phi2.g by A4;
@@ -4098,7 +4007,6 @@ definition
         thus N1.i = Ker (f.i qua Homomorphism of F1.i,F2.i) by A1
                  .= N2.i by A2;
       end;
-
       hence N1 = N2 by A3;
     end;
   end;
@@ -4186,8 +4094,8 @@ proof
         .= (proj  (F2, i)).(1_(product F2)) by A1, GROUP_6:41
         .= (1_(product F2)).i by Def16
         .= 1_(F2.i) by GROUP_7:6;
-        then (f.i).(g.i) = 1_(F2.i) by B2;
-        then (g/.i) in Ker ((f.i) qua Homomorphism of F1.i,F2.i) by GROUP_6:41;
+        then (g/.i) in Ker ((f.i) qua Homomorphism of F1.i,F2.i)
+        by B2, GROUP_6:41;
         hence g.i in (Ker f).i by Def20;
       end;
       hence g in product (Ker f) by A2, Th49;
@@ -4271,7 +4179,6 @@ proof
     proof
       let i be Element of I;
       P[i, a.i] by A3;
-      then a.i is Element of F1.i;
       hence a.i in F1.i;
     end;
     then a in product F1 by A4, Th49;
@@ -4345,4 +4252,3 @@ proof
   hence (product F)./.(product S), product (F./.S) are_isomorphic
   by A3, GROUP_6:78;
 end;
-

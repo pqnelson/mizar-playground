@@ -72,12 +72,12 @@ $\mathcal{G}_{i}\subgroup\mathcal{F}_{i}$.
 definition
   let I be set;
   let F, IT be Group-Family of I;
-  attr IT is F-Subgroup-yielding means :Def2:
+  attr IT is F-Subgroup-yielding means :Def3:
   for i being Element of I
   for G being Group st G = F.i
   holds IT.i is Subgroup of G;
 end;
-@ %def Def2 -Subgroup-yielding
+@ %def Def3 -Subgroup-yielding
 
 \begin{voc}
 We add the attribute ``-Subgroup-yielding'' to our vocabulary list.
@@ -149,7 +149,7 @@ definition
   let S be Subgroup-Family of F;
   let i be Element of I;
   redefine func S.i -> Subgroup of F.i;
-  correctness by Def2;
+  correctness by Def3;
 end;
 @
 
@@ -185,9 +185,6 @@ proof
     hence thesis;
   end;
   assume for i being Element of I holds S.i is Subgroup of F.i;
-  then for i being Element of I
-  for G being Group st G = F.i
-  holds S.i is Subgroup of G;
   then S is F-Subgroup-yielding;
   hence S is Subgroup-Family of F;
 end;
@@ -218,8 +215,7 @@ proof
     B1: x in dom F & y = F.x
     by FUNCT_1:def 3;
     reconsider i=x as Element of I1() by B1;
-    y = F.i by B1
-     .= Fun(i) by A1;
+    y = Fun(i) by A1, B1;
     hence y is Group;
   end;
   then F is Group-yielding;
@@ -259,8 +255,7 @@ proof
     B1: x in dom S & y = S.x
     by FUNCT_1:def 3;
     reconsider i=x as Element of I1() by B1;
-    y = S.i by B1
-     .= F2(i) by A2;
+    y = F2(i) by A2, B1;
     hence y is Group;
   end;
 
@@ -322,8 +317,7 @@ registration
     A1: for i being Element of I holds F.i = Fun(i)
     from GrFamSch;
     take F;
-    for i being Element of I holds F.i is strict Group by A1;
-    hence thesis;
+    thus thesis by A1;
   end;
 end;
 @ 
@@ -367,8 +361,7 @@ registration
     for i being Element of I holds S.i is strict Subgroup of F.i
     proof
       let i be Element of I;
-      S.i = Sub(F.i) by A2
-         .= (1).(F.i);
+      S.i = (1).(F.i) by A2;
       hence thesis;
     end;
     hence thesis;
@@ -453,7 +446,7 @@ $\mathcal{A}=\mathcal{B}$.
 \end{theorem}
 
 <<Theorem: equality of strict subgroup families>>=
-theorem Th15:
+theorem ThStrSubEq:
   for A,B being componentwise_strict Subgroup-Family of F
   st (for i being Element of I holds A.i = B.i)
   holds A = B
@@ -463,7 +456,7 @@ proof
   then for i being object st i in I holds A.i = B.i;
   hence A = B by PBOOLE:3;
 end;
-@ %def Th15
+@ %def ThStrSubEq
 
 \begin{definition}
 For any family of groups $\mathcal{F}$ we have the subgroup family
@@ -476,7 +469,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (1).F -> componentwise_strict Subgroup-Family of F means
-  :Def5:
+  :Def6:
   for i being Element of I
   holds it.i = (1).(F.i);
   existence
@@ -503,11 +496,11 @@ definition
         thus A.i = (1).(F.i) by A1
                 .= B.i by A2;
       end;
-      hence thesis by Th15;
+      hence thesis by ThStrSubEq;
     end;
   end;
 end;
-@ %def Def5
+@ %def Def6
 
 \begin{definition}
 Conversely, we can take the improper trivial subgroup for each member of
@@ -519,7 +512,7 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   func (Omega).F -> componentwise_strict Subgroup-Family of F means
-  :Def6:
+  :Def7:
   for i being Element of I
   holds it.i = (Omega).(F.i);
   existence
@@ -546,11 +539,11 @@ definition
         thus A.i = (Omega).(F.i) by A1
                 .= B.i by A2;
       end;
-      hence thesis by Th15;
+      hence thesis by ThStrSubEq;
     end;
   end;
 end;
-@ %def Def6
+@ %def Def7
 
 \begin{definition}
 If $\mathcal{S}$ is a subgroup family for $\mathcal{F}$,
@@ -563,10 +556,10 @@ definition
   let I be non empty set;
   let F be Group-Family of I;
   let IT be Subgroup-Family of F;
-  attr IT is normal means :Def7:
+  attr IT is normal means :Def8:
   for i being Element of I holds IT.i is normal Subgroup of F.i;
 end;
-@ %def Def7
+@ %def Def8
 
 \begin{registration}
 We can meaningfully talk about ``componentwise-strict normal
@@ -609,7 +602,7 @@ registration
   let S be normal Subgroup-Family of F;
   let i be Element of I;
   cluster (S . i) -> normal for Subgroup of F.i;
-  correctness by Def7;
+  correctness by Def8;
 end;
 @ 
 
@@ -644,9 +637,9 @@ registration
     proof
       let i be Element of I;
       B1: ((1).F).i = (1).(F.i) by Def6;
-      hence thesis by GROUP_2:def 7;
+      hence thesis;
     end;
-    hence (1).F is normal by Def7;
+    hence (1).F is normal;
   end;
   cluster (Omega).F -> normal;
   correctness
@@ -654,10 +647,10 @@ registration
     for i being Element of I holds ((Omega).F).i is normal Subgroup of F.i
     proof
       let i be Element of I;
-      B1: ((Omega).F).i = (Omega).(F.i) by Def6;
-      hence thesis by GROUP_2:def 8;
+      B1: ((Omega).F).i = (Omega).(F.i) by Def7;
+      hence thesis;
     end;
-    hence (Omega).F is normal by Def7;
+    hence (Omega).F is normal;
   end;
 end;
 @ 
@@ -757,7 +750,7 @@ proof
     hence S.i is normal Subgroup of F.i;
   end;
   then reconsider S as componentwise_strict normal Subgroup-Family of F
-  by Def7;
+  by Def8;
   take S;
   thus thesis by A2;
 end;

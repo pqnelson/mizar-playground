@@ -43,42 +43,30 @@ proof
   A3: len (gs |^ ks) = len (hs |^ ks)
   proof
     thus len (hs |^ ks) = len hs by GROUP_4:def 3
-                       .= len gs by A1
-                       .= len (gs |^ ks) by GROUP_4:def 3;
+                       .= len (gs |^ ks) by A1,GROUP_4:def 3;
   end;
   A4: dom gs = dom hs by A1;
   for i being Nat st 1 <= i & i <= len (hs |^ ks)
   holds (hs |^ ks).i = (gs |^ ks).i
-  <<Proof step: $\forall i\in\NN, 1\leq i\leq|g|\implies g_{i}^{k_{i}}\in H$>>
-  
-  then hs |^ ks = gs |^ ks by A3, FINSEQ_1:def 17;
-  hence thesis by GROUP_19:45;
+  proof
+    let i be Nat;
+    assume B1: 1 <= i;
+    assume i <= len (hs |^ ks);
+    then i <= len hs by GROUP_4:def 3;
+    then i in Seg (len hs) by B1, FINSEQ_1:1;
+    then B2: i in dom hs by FINSEQ_1:def 3;
+    B3: hs /. i = gs /. i
+    proof
+      thus gs/.i = gs.i by A1, B2, PARTFUN1:def 6
+                .= hs/.i by A1, B2, PARTFUN1:def 6;
+    end;
+    thus (hs |^ ks).i = (hs /. i) |^ (@ (ks /. i)) by B2, GROUP_4:def 3
+                     .= (gs /. i) |^ (@ (ks /. i)) by B3, GROUP_4:2
+                     .= (gs |^ ks).i by A1, B2, GROUP_4:def 3;
+  end;
+  hence thesis by A3, GROUP_19:45, FINSEQ_1:def 17;
 end;
 @ %def FrobProdSubgroup
-
-<<Proof step: $\forall i\in\NN, 1\leq i\leq|g|\implies g_{i}^{k_{i}}\in H$>>=
-proof
-  let i be Nat;
-  assume B1: 1 <= i;
-  assume i <= len (hs |^ ks);
-  then i <= len hs by GROUP_4:def 3;
-  then i in Seg (len hs) by B1, FINSEQ_1:1;
-  then B2: i in dom hs by FINSEQ_1:def 3;
-  B3: hs /. i = gs /. i
-  proof
-    reconsider hsi = hs/.i as Element of G by GROUP_2:42;
-    C1: i in dom gs & dom gs = dom hs by B2, A4;
-    then C2: gs.i = gs/.i by PARTFUN1:def 6;
-    hs.i = gs.i by A1;
-    then gs/.i = hsi by C1, C2, PARTFUN1:def 6;
-    hence thesis;
-  end;
-  (hs |^ ks).i = (hs /. i) |^ (@ (ks /. i)) by B2, GROUP_4:def 3
-              .= (gs /. i) |^ (@ (ks /. i)) by B3, GROUP_4:2
-              .= (gs |^ ks).i by A4, B2, GROUP_4:def 3;
-  hence (hs |^ ks).i = (gs |^ ks).i;
-end;
-@ 
 
 \begin{theorem}
 Let $G_{1}$, $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be a
@@ -132,14 +120,12 @@ proof
     Product (p0 ^ <* x *>) = (Product p0) * x by GROUP_4:6;
     then phi.(Product (p0 ^ <* x *>))
      = (phi.(Product p0)) * (phi.x) by GROUP_6:def 6
-    .= (Product (phi * p0)) * (phi.x) by B1
-    .= Product ((phi * p0) ^ <* phi.x *>) by GROUP_4:6;
+    .= Product ((phi * p0) ^ <* phi.x *>) by B1,GROUP_4:6;
     hence P1[(p0 ^ <* x *>)] by FINSEQOP:8;
   end;
   A5: for p0 being FinSequence of the carrier of G1 holds P1[p0]
   from FINSEQ_2:sch 2(A3, A4);
-  F2 = phi * F1 by A2;
-  hence Product F2 = phi.(Product F1) by A5;
+  thus Product F2 = phi.(Product F1) by A2, A5;
 end;
 @ %def ThMappingFrobProdProperty
 
@@ -193,14 +179,12 @@ proof
       P[k, p.k] by A3, B3;
       then ex k0 being Nat st k0 = k & p.k = phi.(F1.k0);
       then B5: p.k = phi.(F1.k);
-      (phi * F1).k = phi.(F1.k) by B4, FUNCT_1:13
-                  .= p.k by B5;
+      (phi * F1).k = p.k by B4, B5, FUNCT_1:13;
       hence p.k = (phi * F1).k;
     end;
     hence thesis by B1, FINSEQ_1:def 17;
   end;
-  then rng p c= the carrier of G2 by FINSEQ_1:def 4;
-  then reconsider p as FinSequence of the carrier of G2 by FINSEQ_1:def 4;
+  then reconsider p as FinSequence of the carrier of G2;
   take F2 = p;
 
   thus len F1 = len F2 by A4;
@@ -238,8 +222,7 @@ proof
   take F2;
   thus len F1 = len F2 & F2 = phi * F1 by A2;
   A3: len (F1 |^ ks) = len (F1) by GROUP_4:def 3
-                    .= len F2 by A2
-                    .= len (F2 |^ ks) by GROUP_4:def 3;
+                    .= len (F2 |^ ks) by A2, GROUP_4:def 3;
   A4: len (phi * (F1 |^ ks)) = len (F1 |^ ks) by FINSEQ_2:33;
   for k being Nat st k in dom (F2 |^ ks)
   holds (phi * (F1 |^ ks)).k = (F2 |^ ks).k
@@ -275,8 +258,7 @@ proof
                       .= phi.(g |^ n) by B2,GROUP_4:def 3
                       .= (phi /. g) |^ n by GROUP_6:37
                       .= ((phi * F1)/.k) |^ n by B2,B4,PARTFUN2:4
-                      .= (F2 /. k) |^ n by A2
-                      .= (F2 |^ ks).k by B3, GROUP_4:def 3;
+                      .= (F2 |^ ks).k by A2, B3, GROUP_4:def 3;
   hence (phi * (F1 |^ ks)).k = (F2 |^ ks).k;
 end;
 @ 
