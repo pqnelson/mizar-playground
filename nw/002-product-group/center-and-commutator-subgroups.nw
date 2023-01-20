@@ -268,8 +268,7 @@ proof
   assume D3: P[B];
   per cases;
   suppose x in B;
-    then {x} c= B by TARSKI:def 1;
-    then B \/ {x} = B by XBOOLE_1:12;
+    then B \/ {x} = B by XBOOLE_1:12,ZFMISC_1:31;
     hence thesis by D3;
   end;
   suppose D4: not (x in B);
@@ -285,8 +284,10 @@ proof
     D7: len FSg = len ksg & rng FSg c= commutators (F.ii)
     & g.x = Product (FSg |^ ksg) by GROUP_5:73;
     (1ProdHom (F,ii)) is Homomorphism of F.ii, product F by GROUP_19:6;
-    then consider F2 being FinSequence of the carrier of product F such that
-    D8: len F2 = len FSg & F2 = (1ProdHom (F,ii)) * FSg & Product (F2 |^ ksg) = (1ProdHom (F,ii)).(Product (FSg |^ ksg))
+    then consider F2 being FinSequence of the carrier of product F
+    such that
+    D8: len F2 = len FSg & F2 = (1ProdHom (F,ii)) * FSg
+    & Product (F2 |^ ksg) = (1ProdHom (F,ii)).(Product (FSg |^ ksg))
     by D7,ThMappingFrobProd2;
     for y being object st y in rng F2 holds y in commutators (product F)
     proof
@@ -296,23 +297,25 @@ proof
       Z2: xx in dom F2 & y = F2.xx
       by FUNCT_1:def 3;
       xx in dom FSg by Z2,D8,FUNCT_1:11;
-      then Z3: FSg.xx in commutators (F.ii) by D7,FUNCT_1:3;
+      then FSg.xx in rng FSg by FUNCT_1:3;
+      then Z3: FSg.xx in commutators (F.ii) by D7; 
       Z5: y = (1ProdHom (F,ii)).(FSg.xx) by D8, Z2, FUNCT_1:12;
       (1ProdHom (F,ii)) is Homomorphism of F.ii, product F by GROUP_19:6;
       hence y in commutators (product F)
       by Z3,Z5,ThMorphismOfCommutators;
     end;
-    then D9: rng F2 c= commutators (product F);
+    then D9: rng F2 c= commutators (product F) by TARSKI:def 3;
     set FS=FSB ^ F2;
     set ks=ksB ^ ksg;
     len ks = len ksB + len ksg & len FS = len FSB + len F2 by FINSEQ_1:22;
     then E1: len ks = len FS by D5,D7,D8;
     E2: rng FS c= commutators (product F)
     proof
-      rng FSB \/ rng F2 c= rng FSB \/ commutators (product F)
-      & rng FSB \/ commutators (product F) c= commutators (product F) \/ commutators (product F)
+      set X = rng FSB \/ commutators (product F);
+      rng FSB \/ rng F2 c= X
+      & X c= commutators (product F) \/ commutators (product F)
       by D5, D9, XBOOLE_1:9;
-      then rng FSB \/ rng F2 c= commutators (product F);
+      then rng FSB \/ rng F2 c= commutators (product F) by XBOOLE_1:1;
       hence thesis by FINSEQ_1:31;
     end;
     
@@ -320,29 +323,28 @@ proof
     & dom ((1_(product F)) +* (b|(B \/ {x}))) = I
     proof
       thus dom (Product (FS |^ ks)) = I by GROUP_19:3;
-      {x} c= J by D1,B2,TARSKI:def 1; 
+      {x} c= J by D1,B2,ZFMISC_1:31; 
       then E0: (B \/ {x}) c= J by B2,D2,XBOOLE_1:8;
-      J c= I;
-      then E1: (B \/ {x}) c= I by E0;
       E2: dom b = J by PARTFUN1:def 2;
       dom ((1_(product F)) +* (b|(B \/ {x})))
-      = dom (1_(product F)) \/ dom (b|(B \/ {x})) by FUNCT_4:def 1
+       = dom (1_(product F)) \/ dom (b|(B \/ {x})) by FUNCT_4:def 1
       .= I \/ dom (b|(B \/ {x})) by GROUP_19:3
       .= I \/ (B \/ {x}) by E2,E0,RELAT_1:62
-      .= I by E1, XBOOLE_1:12;
+      .= I by E0, XBOOLE_1:1, XBOOLE_1:12;
       hence thesis;
     end;
     for j being Element of I
     holds ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
     proof
       let j be Element of I;
-      {x} c= J by D1,B2,TARSKI:def 1;
+      {x} c= J by D1,B2,ZFMISC_1:31;
       then E0: (B \/ {x}) c= J by B2,D2,XBOOLE_1:8;
       (FS |^ ks) = (FSB |^ ksB) ^ (F2 |^ ksg) by D5,D7,D8,GROUP_4:19;
-      then E1: Product (FS |^ ks) = Product (FSB |^ ksB) * Product(F2 |^ ksg)
+      then
+      E1: Product (FS |^ ks) = Product (FSB |^ ksB) * Product(F2 |^ ksg)
       by GROUP_4:5;
       dom b = J by PARTFUN1:def 2;
-      then E2b: dom (b|(B \/ {x})) = (B \/ {x}) by E0,RELAT_1:62;
+      then E2b: dom (b|(B \/ {x})) = (B \/ {x}) by E0, RELAT_1:62;
       
       E3: not (j in B) implies (Product (FSB |^ ksB)).j = 1_(F.j)
       proof
@@ -355,103 +357,93 @@ proof
       proof
         assume not (j in {x});
         then AA1: j <> x by TARSKI:def 1; 
-        dom (1ProdHom (F, ii)) = the carrier of F.ii by FUNCT_2:def 1;
-        then AA2: (Product (FSg |^ ksg)) in dom (1ProdHom (F, ii));
+        AA2: dom (1ProdHom (F, ii)) = the carrier of F.ii by FUNCT_2:def 1;
         (proj (F,j)).Product(F2 |^ ksg)
-        = ((proj (F,j)) * (1ProdHom (F, ii))).(Product (FSg |^ ksg)) by AA2,D8,FUNCT_1:13
+         = ((proj (F,j)) * (1ProdHom (F, ii))).(Product (FSg |^ ksg))
+           by AA2, D8, FUNCT_1:13
         .= (1:(F.ii, F.j)).(Product (FSg |^ ksg)) by AA1, Th65b
-        .= (F.ii --> (1_(F.j))).(Product (FSg |^ ksg))
         .= 1_(F.j);
         hence thesis by Def16;
       end;
-      
-      j in B or j in {x} or not (j in (B \/ {x})) by XBOOLE_0:def 3;
-      then per cases;
+      per cases by XBOOLE_0:def 3;
       suppose D11: j in B;
         D11b: dom b = J by PARTFUN1:def 2;
-        B c= J by D2, B2;
-        then E2b: dom (b|B) = B by D11b,RELAT_1:62;
-        D12: j in dom (b|B) by D11,E2b;
+        D12: j in dom (b|B) by D11,B2, D2, D11b,RELAT_1:62;
         dom (b|(B \/ {x})) = B \/ {x} by D11b,E0,RELAT_1:62;
         then D14: j in dom (b|(B \/ {x})) by D11, XBOOLE_0:def 3;
-        j in B & not (ii in B) by D4,D11;
-        then j <> ii;
-        then not (j in {x}) by TARSKI:def 1;
-        then E3: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
-        E4: (proj (F,j)).(Product (FS |^ ks))
-        = ((proj (F,j)).(Product (FSB |^ ksB))) * (proj (F,j)).(Product(F2 |^ ksg)) by E1,GROUP_6:def 6
-        .= ((proj (F,j)).(Product (FSB |^ ksB))) * (1_(F.j)) by E3,Def16
+        E5: (proj (F,j)).(Product (FS |^ ks))
+         = ((proj (F,j)).(Product (FSB |^ ksB)))
+            * (proj (F,j)).(Product(F2 |^ ksg)) by E1,GROUP_6:def 6
+        .= ((proj (F,j)).(Product (FSB |^ ksB))) * (1_(F.j))
+            by D4,D11,E4,Def16,TARSKI:def 1
         .= (proj (F,j)).(Product (FSB |^ ksB)) by GROUP_1:def 4
         .= (Product (FSB |^ ksB)).j by Def16
         .= (b|B).j by D5,D12,FUNCT_4:13 
         .= b.j by D11, FUNCT_1:49;
         ((1_(product F)) +* (b|(B \/ {x}))).j
-        = (b|(B \/ {x})).j by D14,FUNCT_4:13
+         = (b|(B \/ {x})).j by D14,FUNCT_4:13
         .= b.j by D14, FUNCT_1:49;
-        hence ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
-        by Def16,E4;
+        hence ((1_(product F)) +* (b|(B \/ {x}))).j
+              = (Product (FS |^ ks)).j
+        by Def16,E5;
       end;
       suppose D12: j in {x};
-        then D12b: j = x by TARSKI:def 1;
-        not (j in B) by D4,D12b;
-        then D14: (Product (FSB |^ ksB)).j = (1_(F.j)) by E3;
-        dom (1ProdHom (F,ii)) = the carrier of F.ii by FUNCT_2:def 1;
-        then D15b: (Product (FSg |^ ksg)) in dom (1ProdHom (F,ii));
+        D15b: dom (1ProdHom (F,ii)) = the carrier of F.ii by FUNCT_2:def 1;
         j = ii by D12, TARSKI:def 1;
         then D15: (Product(F2 |^ ksg)).j
-        = (proj (F, ii)).(Product(F2 |^ ksg)) by Def16
-        .= ((proj (F,ii)) * (1ProdHom (F,ii))).(Product (FSg |^ ksg)) by D8,D15b,FUNCT_1:13
+         = (proj (F, ii)).(Product(F2 |^ ksg)) by Def16
+        .= ((proj (F,ii)) * (1ProdHom (F,ii))).(Product (FSg |^ ksg))
+            by D8,D15b,FUNCT_1:13
         .= (id (the carrier of F.ii)).(Product (FSg |^ ksg)) by Th65
-        .= g.j by D7,D12b;
+        .= g.j by D7,D12,TARSKI:def 1;
         D16: (Product (FS |^ ks)).j = b.j
         proof
-          j in J by B2,D1,D12b;
-          then AA1: g.j = b.j by B5;
+          AA1: j in J by B2,D1,D12,TARSKI:def 1;
           AA2: ((proj (F,j)).(Product(F2 |^ ksg))) = g.j by Def16,D15;
-          AA3: ((proj (F,j)).(Product (FSB |^ ksB))) = 1_(F.j) by Def16,D14;
+          AA3: ((proj (F,j)).(Product (FSB |^ ksB))) = 1_(F.j)
+          by Def16,E3,D4,D12,TARSKI:def 1;
           (Product (FS |^ ks)).j
-          = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg)) by E1,Def16
+           = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg))
+             by E1,Def16
           .= (1_(F.j)) * (g/.j) by AA2, AA3,GROUP_6:def 6
           .= g/.j by GROUP_1:def 4;
-          hence thesis by AA1;
+          hence thesis by AA1,B5; 
         end;
         D17: ((1_(product F)) +* (b|(B \/ {x}))).j = b.j
         proof
-          j in {x} by D12;
-          then j in (B \/ {x}) by XBOOLE_0:def 3;
-          then j in dom (b|(B \/ {x})) by E2b;
+          j in (B \/ {x}) by D12,XBOOLE_0:def 3;
           then ((1_(product F)) +* (b|(B \/ {x}))).j = (b|(B \/ {x})).j
-          & (b|(B \/ {x})).j = b.j by FUNCT_1:49,FUNCT_4:13;
+               & (b|(B \/ {x})).j = b.j by E2b,FUNCT_1:49,FUNCT_4:13;
           hence thesis;
         end;
         thus ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
         by D16,D17;
       end;
       suppose D13: not (j in B \/ {x});
-        not (j in B) by D13, XBOOLE_0:def 3;
-        then D14: (Product (FSB |^ ksB)).j = 1_(F.j) by E3;
-        not (j in {x}) by D13, XBOOLE_0:def 3;
-        then D15: (Product(F2 |^ ksg)).j = 1_(F.j) by E4;
         not (j in dom (b|(B \/ {x}))) by D13;
         then D16: ((1_(product F)) +* (b|(B \/ {x}))).j
-        = (1_(product F)).j by FUNCT_4:11
+         = (1_(product F)).j by FUNCT_4:11
         .= 1_(F.j) by GROUP_7:6;
         (Product (FS |^ ks)).j = 1_(F.j)
         proof
           (Product (FS |^ ks)).j
-          = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg)) by E1,Def16
-          .= ((proj (F,j)).(Product (FSB |^ ksB)))*((proj (F,j)).(Product(F2 |^ ksg)))
-          by GROUP_6:def 6
-          .= ((proj (F,j)).(Product (FSB |^ ksB)))*((Product(F2 |^ ksg))/.j) by Def16
+           = (proj (F,j)).(Product (FSB |^ ksB) * Product(F2 |^ ksg))
+             by E1,Def16
+          .= ((proj (F,j)).(Product (FSB |^ ksB)))
+             * ((proj (F,j)).(Product(F2 |^ ksg))) by GROUP_6:def 6
+          .= ((proj (F,j)).(Product (FSB |^ ksB)))
+             * ((Product(F2 |^ ksg))/.j) by Def16
           .= ((Product (FSB |^ ksB))/.j)*((Product(F2 |^ ksg))/.j) by Def16
-          .= 1_(F.j) by D14, D15, GROUP_1:def 4;
+          .= 1_(F.j) by D13, E3, E4, GROUP_1:def 4, XBOOLE_0:def 3;
           hence thesis;
         end;
-        hence ((1_(product F)) +* (b|(B \/ {x}))).j = (Product (FS |^ ks)).j
-        by D16;
+        hence ((1_(product F)) +* (b|(B \/ {x}))).j
+              = (Product (FS |^ ks)).j by D16;
       end;
     end;
-    then E3: ((1_(product F)) +* (b|(B \/ {x}))) = Product (FS |^ ks) by D10;
+    
+    then E3: ((1_(product F)) +* (b|(B \/ {x}))) = Product (FS |^ ks)
+    by D10;
     thus P[B \/ {x}] by E1,E2,E3;
   end;
 end;
