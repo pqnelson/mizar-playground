@@ -123,6 +123,30 @@ proof
 end;
 @ 
 
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$,
+let $a,b\in\prod\mathcal{F}$, let $i\in I$.
+Then $[a,b]_{i}=[a_{i},b_{i}]$.
+\end{theorem}
+
+<<Theorem: components of a commutator are commutators>>=
+theorem Th77a:
+  for a,b being Element of product F
+  for i
+  holds ([. a, b .]).i = [. a/.i, b/.i .]
+proof
+  let a,b be Element of product F;
+  let i;
+  thus [. a/.i, b/.i .] = (((a/.i)")*((b/.i)"))*((a/.i)*(b/.i)) by GROUP_5:16
+      .= (((a")/.i) * ((b/.i)")) * ((a/.i) * (b/.i)) by GROUP_7:8
+      .= (((a")/.i) * ((b")/.i)) * ((a/.i) * (b/.i)) by GROUP_7:8
+      .= (((a")/.i) * ((b")/.i)) * ((a * b)/.i) by GROUP_7:1
+      .= (((a") * (b"))/.i) * ((a * b)/.i) by GROUP_7:1
+      .= (((a") * (b")) * (a * b))/.i by GROUP_7:1
+      .= ([. a, b .]).i by GROUP_5:16;
+end;
+@ %def Th77a
+
 \begin{lemma}
 If $x\in G$, then $x\in\Omega_{G}$.
 \end{lemma}

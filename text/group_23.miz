@@ -2014,14 +2014,16 @@ proof
 
   A2: the carrier of G1 c= the carrier of G2
   proof
-    for g being Element of the carrier of G1
+    for g being object st g in the carrier of G1
     holds g in the carrier of G2
     proof
-      let g be Element of the carrier of G1;
-      (f.g) in the carrier of G2;
+      let g be object;
+      assume B1: g in the carrier of G1;
+      then reconsider gg=g as Element of G1;
+      (f.gg) in the carrier of G2;
       hence g in the carrier of G2 by A1;
     end;
-    hence thesis;
+    hence thesis by TARSKI:def 3;
   end;
   then reconsider U=the carrier of G1 as Subset of the carrier of G2;
   set U1 = the carrier of G1;

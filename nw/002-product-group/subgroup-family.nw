@@ -24,6 +24,8 @@ begin :: Subgroup-Family of a Family of Groups
 
 <<Scheme: Construct a Subgroup-Family of F using a Functor>>
 
+<<Scheme: Subgroup Family defined extensionally by a predicate>>
+
 <<Define: Componentwise-strict (for Group-Families)>>
 
 <<Register: Componentwise-strict Group-Families>>
@@ -273,6 +275,70 @@ proof
   thus thesis by A2;
 end;
 @ %def SubFamSch
+
+\begin{scheme}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
+Let $\mathcal{P}$ be a predicate of two objects.
+If for each $i\in I$ there exists a subgroup $H\subgroup\mathcal{F}_{i}$
+such that $\mathcal{P}[i, H]$, then there exists a subgroup-family of
+$\mathcal{F}$ consisting of subgroups satisfying the predicate.
+\end{scheme}
+
+<<Scheme: Subgroup Family defined extensionally by a predicate>>=
+scheme
+SubFamEx { I1() -> non empty set,
+           Fam() -> Group-Family of I1(),
+           P[object, object] } :
+  ex S being Subgroup-Family of Fam()
+  st for i being Element of I1() holds P[i, S.i]
+provided
+A1: for i being Element of I1() ex j being Subgroup of Fam().i st P[i, j]
+proof
+  defpred P1[Element of I1(), object] means ex j being Subgroup of Fam().$1
+  st $2=j & P[$1, j];
+  A2: for i being Element of I1() ex j being object st P1[i, j]
+  proof
+    let i be Element of I1();
+    consider j being Subgroup of Fam().i such that
+    B1: P[i, j]
+    by A1;
+    take j;
+    thus P1[i, j] by B1;
+  end;
+
+  consider S being ManySortedSet of I1() such that
+  A3: for i being Element of I1() holds P1[i, S.i]
+  from PBOOLE:sch 6(A2);
+  for y being object st y in rng S holds y is Group
+  proof
+    let y be object;
+    assume y in rng S;
+    then consider x being object such that
+    B2: x in dom S & y = S.x
+    by FUNCT_1:def 3;
+    reconsider i=x as Element of I1() by B2;
+    P1[i, y] by A3, B2;
+    hence y is Group;
+  end;
+  then S is Group-yielding;
+  then reconsider S as Group-Family of I1();
+  for i being Element of I1() holds S.i is Subgroup of Fam().i
+  proof
+    let i be Element of I1();
+    P1[i, S.i] by A3;
+    hence S.i is Subgroup of Fam().i;
+  end;
+  then S is Fam()-Subgroup-yielding;
+  then reconsider S as Subgroup-Family of Fam();
+  take S;
+  thus for i being Element of I1() holds P[i, S.i]
+  proof
+    let i be Element of I1();
+    P1[i, S.i] by A3;
+    hence P[i, S.i];
+  end;
+end;
+@ %def SubFamEx
 
 \begin{definition}
 Let $I\neq\emptyset$, let $\mathcal{F}$ be an $I$-indexed family of
