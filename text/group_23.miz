@@ -903,10 +903,9 @@ registration
     proof
       let i be Element of I;
       A1: (F ./. N).i = (F.i) ./. (N.i) by Def9;
-      (F.i) ./. (N.i) is strict by GROUP_6:def 4;
-      hence thesis by A1;
+      hence thesis;
     end;
-    hence thesis by Def4;
+    hence thesis;
   end;
 end;
 
@@ -2834,45 +2833,6 @@ end;
 
 :: missing
 theorem
-  for f being Homomorphism-Family of G, F
-  for phi being Homomorphism of G, product F
-  holds phi = product f iff (for i being Element of I
-                             for g being Element of G
-                             holds (proj (F, i) * phi).g = (f.i).g)
-proof
-  let f be Homomorphism-Family of G, F;
-  let phi be Homomorphism of G, product F;
-  hereby 
-    assume B1: phi = product f;
-    let i be Element of I;
-    let g be Element of G;
-    (f.i).g = (phi.g).i by B1,Def17
-           .= (proj (F, i)).(phi.g) by Def16
-           .= ((proj (F, i)) * phi).g by FUNCT_2:15;
-    hence (proj (F, i) * phi).g = (f.i).g;
-  end;
-  assume B2: for i being Element of I
-  for g being Element of G holds (proj (F, i) * phi).g = (f.i).g;
-  for g being Element of G holds ((product f).g) = (phi.g)
-  proof
-    let g be Element of G;
-    C1: for i being Element of I holds ((product f).g).i = (phi.g).i
-    proof
-      let i be Element of I;
-      (phi.g).i = (proj (F,i)).(phi.g) by Def16
-               .= (proj (F, i) * phi).g by FUNCT_2:15
-               .= (f.i).g by B2
-               .= ((product f).g).i by Def17;
-      hence ((product f).g).i = (phi.g).i;
-    end;
-    dom (phi.g) = I & dom ((product f).g) = I by GROUP_19:3;
-    hence ((product f).g) = (phi.g) by C1;
-  end;
-  hence phi = product f by FUNCT_2:def 8;
-end;
-
-:: missing
-theorem
   for G1,G2,G3 being Group
   for f1 being Homomorphism of G1,G2
   for f2 being Homomorphism of G2,G3
@@ -2915,12 +2875,6 @@ proof
   end;
   hence Image f1 = Image f2 by A2, GROUP_2:def 6;
 end;
-
-theorem :: missing
-  for G1,G2 being Group
-  for f1,f2 being Homomorphism of G1,G2
-  st f1 = f2
-  holds Image f1 = Image f2;
 
 theorem :: missing
   for X,Y,Z being set
@@ -2975,78 +2929,6 @@ proof
   hence (g * f) .: A = g .: (f .: A) by A1, XBOOLE_0:def 10;
 end;
 
-theorem :: missing
-  for phi being Homomorphism of G,product F
-  holds phi = product f iff (
-  for i being Element of I
-  for g being Element of G
-  holds (f.i).g = (proj (F,i)).(phi.g))
-proof
-  let phi be Homomorphism of G,product F;
-  hereby 
-    assume A1: phi = product f;
-    let i be Element of I;
-    let g be Element of G;
-    (proj (F, i)).(phi.g) = (phi.g).i by Def16;
-    hence (f.i).g = (proj (F,i)).(phi.g) by A1,Def17;
-  end;
-  assume A2: for i being Element of I
-  for g being Element of G
-  holds (f.i).g = (proj (F,i)).(phi.g);
-
-  for g being Element of G
-  holds (product f).g = phi.g
-  proof
-    let g be Element of G;
-    B1: dom (phi.g) = I & dom ((product f).g) = I by GROUP_19:3;
-    for i being object st i in I
-    holds ((product f).g).i = (phi.g).i
-    proof
-      let i be object;
-      assume i in I;
-      then reconsider ii=i as Element of I;
-      (phi.g).ii = (proj (F, ii)).(phi.g) by Def16
-               .= (f.ii).g by A2
-               .= ((product f).g).ii by Def17;
-      hence thesis;
-    end;
-    hence (product f).g = phi.g by B1; 
-  end;
-  hence phi = product f by FUNCT_2:def 8;
-end;
-  
-theorem :: missing
-  for A being Subset of G
-  for g being Element of product F
-  st (ex x being Element of G st x in A & for i being Element of I
-                                          holds g.i = (f.i).x)
-  holds g in (product f) .: A
-proof
-  let A be Subset of G;
-  let g be Element of product F;
-  given x being Element of G such that 
-  A1: x in A and
-  A2: for i being Element of I holds g.i = (f.i).x;
-  A2a: dom g = I & dom ((product f).x) = I by GROUP_19:3;
-  for i being Element of I holds ((product f).x).i = g.i
-  proof
-    let i be Element of I;
-    thus ((product f).x).i = (f.i).x by Def17
-                          .= g.i by A2;
-  end;
-
-  then A3: (product f).x = g by A2a;
-  ex y being object st y in dom (product f) & y in A & g = (product f).y
-  proof
-    take y=x;
-    dom (product f) = the carrier of G by FUNCT_2:def 1;
-    hence y in dom (product f);
-    thus thesis by A1, A3;
-  end;
-  hence g in (product f) .: A by FUNCT_1:def 6;
-end;
-
-:: missing, but needed
 theorem Th77a:
   for a,b being Element of product F
   for i
@@ -3156,104 +3038,6 @@ proof
   hence g in commutators (product F) by GROUP_5:58;
 end;
 
-:: missing
-theorem
-  for A being Subset of product F st (for g being Element of product F
-  holds g in A iff (for i being Element of I holds g.i in commutators (F.i)))
-  for g being Element of product F
-  holds g in commutators (product F) iff g in A
-proof
-  let A be Subset of product F;
-  assume A1: for g being Element of product F
-  holds g in A iff (for i being Element of I holds g.i in commutators (F.i));
-  let g be Element of product F;
-  hereby 
-    assume g in commutators (product F);
-    then for i being Element of I holds g.i in commutators (F.i) by Th77;
-    hence g in A by A1;
-  end;
-  assume g in A;
-  then for i being Element of I holds g.i in commutators (F.i) by A1;
-  hence g in commutators (product F) by Th77;
-end;
-
-:: missing
-theorem ThFinSeq:
-  for D being non empty set
-  for d being Element of D
-  for n being Nat
-  holds Seg n --> d is FinSequence of D
-proof
-  let D be non empty set;
-  let d be Element of D;
-  let n be Nat;
-  Seg n --> d = n |-> d by FINSEQ_2:def 2;
-  hence Seg n --> d is FinSequence of D;
-end;
-
-:: missing
-theorem
-  for gs being FinSequence of the carrier of G
-  for ks being FinSequence of INT st len gs = len ks
-  for k being Nat st k > len gs
-  ex gs2 being FinSequence of the carrier of G, ks2 being FinSequence of INT
-  st len (gs2) = len (ks2) & len (gs2) = k & gs2|(dom gs) = gs
-  & ks2|(dom ks) = ks & Product (gs |^ ks) = Product (gs2 |^ ks2)
-  & (for i being Nat st len gs < i & i <= k holds gs2.i = 1_G)
-proof
-  let gs be FinSequence of the carrier of G;
-  let ks be FinSequence of INT;
-  assume Z1: len gs = len ks;
-  let k be Nat;
-  assume Z2: k > len gs;
-  reconsider dk = k - len gs as Nat by Z2, NAT_1:21;
-  reconsider dgs = ((Seg dk) --> 1_G) as FinSequence of the carrier of G
-  by ThFinSeq;
-  0 in INT by INT_1:def 1;
-  then reconsider dks = ((Seg dk) --> 0) as FinSequence of INT by ThFinSeq;
-  take gs2 = gs ^ dgs;
-  take ks2 = ks ^ dks;
-  A2: len dgs = dk & len dks = dk
-  proof
-    thus len dgs = card ([:(Seg dk), {1_G}:]) by FUNCOP_1:def 2
-                .= card (Seg dk) by CARD_1:69
-                .= dk by FINSEQ_1:57;
-    thus len dks = card ([:(Seg dk), {0}:]) by FUNCOP_1:def 2
-                .= card (Seg dk) by CARD_1:69
-                .= dk by FINSEQ_1:57;
-  end;
-  A3: len gs2 = len gs + dk by A2, FINSEQ_1:22
-             .= k;
-  len ks2 = len gs + dk by A2, Z1, FINSEQ_1:22
-         .= k;
-  hence len (gs2) = len (ks2) by A3;
-  thus len (gs2) = k by A3;
-  thus gs2|(dom gs) = gs by FINSEQ_1:21;
-  thus ks2|(dom ks) = ks by FINSEQ_1:21;
-  dgs = dk |-> 1_G by FINSEQ_2:def 2;
-  then dgs |^ dks = dk |-> 1_G by A2, GROUP_4:27;
-  then A4: Product (dgs |^ dks) = (1_G) |^ dk by GROUP_4:12
-                               .= 1_G by GROUP_1:31;
-  thus Product (gs2 |^ ks2)
-       = Product ((gs |^ ks) ^ (dgs |^ dks)) by A2, Z1, GROUP_4:19
-      .= Product (gs |^ ks) * Product (dgs |^ dks) by GROUP_4:5
-      .= Product (gs |^ ks) by A4, GROUP_1:def 4;
-  let i be Nat;
-  assume Z3: len gs < i;
-  assume Z4: i <= k;
-  A7: 1 <= (i - (len gs)) & (i - (len gs)) <= dk & (i - (len gs)) is Nat 
-  proof
-    (len gs) + 1 <= i by Z3, NAT_1:13;
-    then (len gs) + 1 - (len gs) <= i - (len gs) by XREAL_1:9;
-    hence 1 <= i - (len gs);
-    thus i - (len gs) <= dk by Z4, XREAL_1:9;
-    thus i - (len gs) is Nat by Z3, NAT_1:21;
-  end;
-  (gs ^ dgs).i = dgs.(i - (len gs)) by A3,Z3,Z4,FINSEQ_1:24
-              .= 1_G by A7, FINSEQ_1:1, FUNCOP_1:7;
-  hence gs2.i = 1_G;
-end;
-
 scheme
 SubFamEx { I1() -> non empty set,
            Fam() -> Group-Family of I1(),
@@ -3320,17 +3104,17 @@ proof
   proof
     let x be object;
     assume B1: x in product A;
-    reconsider xx=x as Function by B1;
-    B2: dom xx = dom A by B1, CARD_3:9;
+    reconsider x as Function by B1;
+    B2: dom x = dom A by B1, CARD_3:9;
     B3: dom F = I & dom A = I by PARTFUN1:def 2;
-    for i being Element of I holds xx.i in F.i
+    for i being Element of I holds x.i in F.i
     proof
       let i be Element of I;
       C1: A.i is Subset of F.i by A1;
-      xx.i in A.i by B1, B3, CARD_3:9;
-      hence xx.i in F.i by C1;
+      x.i in A.i by B1, B3, CARD_3:9;
+      hence x.i in F.i by C1;
     end;
-    then xx in product F by B2, Th49, PARTFUN1:def 2;
+    then x in product F by B2, Th49, PARTFUN1:def 2;
     hence thesis;
   end;
   hence product A is Subset of product F by TARSKI:def 3;
