@@ -1,0 +1,705 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Recognition Theorems}
+
+There are times when, given a group $G$ and some [finite] family of
+subgroups $\mathcal{F}$ of $G$, we want to treat
+$\langle\mathcal{F}_{i}:i\in I\rangle$ as ``the same as'' the direct product
+$\prod\mathcal{F}$.
+By ``the same as'', we can mean either \emph{isomorphic to} or
+\emph{equal to}.
+
+These theorems will be useful when we define the Fitting subgroup as the
+product of $\pCore{\pi}{G}$ over $\pi\in\powerset(\pi(G))$.
+
+A version of these theorems were formalized in~\mml{group19,group20,group21},
+but were too faithful to the ``letter of the law'' rather than the
+spirit of the law, in the sense that: it is technically a formalization
+of the mathematics, but it is not user-friendly.
+
+We should note that, in Mizar, the product of normal subgroups
+$N_{1}N_{2}$ is encoded as the join $\langle N_{1},N_{2}\rangle$ (or, in
+Mizar notation, [[N1 "\/" N2]]). The internal product of a family of
+normal subgroups would then be given as [[gr (union (Carrier Fam))]]
+or something like that.
+
+<<Recognition theorems about internal direct products>>=
+begin :: Internal direct products
+<<Definition: ``normal'' and ``componentwise-strict'' for Subgroup-Family of $G$>>
+
+<<Register: componentwise-strict normal Subgroup-Family of $G$>>
+
+<<Redefine: [[S.i]] is Subgroup of $G$>>
+
+<<Register: [[N.i]] is normal>>
+
+<<Theorem: $[H_{1},H_{2}]=\trivialSubgroup$ implies $\forall a\in H_{1},b\in H_{2},ab=ba$>>
+
+<<Theorem: let $N\normalSubgroup G$, let $a,b\in N$. Then $a^{b}\in N$>>
+
+<<Theorem: Disjoint normal subgroups are permutable>>
+
+<<Theorem: join of normal subgroup family is a normal subgroup>>
+
+<<Theorem: restrictions of group-families are group-families>>
+
+<<Theorem: the join of all-but-one members of a normal subgroup family is a normal subgroup>>
+
+<<Theorem: Range of many-sorted set>>
+
+<<Theorem: family of strict subgroups is [[(Subgroups G)-valued]]>>
+
+<<Register: [[(Subgroups G)-valued]] for family of strict subgroups of $G$>>
+
+<<Definition: Element of family of 1-sorted sets>>
+
+<<Theorem: element of group family is a family of group elements>>
+
+<<Register: Element of subgroup-family of $G$ is $G$-valued>>
+
+<<Register: $I$-defined relation-like function-like for Element of $\prod\mathcal{S}$>>
+
+<<Register: Elements of $\prod\mathcal{S}$ are $G$-valued $I$-defined total>>
+@
+
+\begin{definition}
+Let $G$ be a group, let $\mathcal{S}$ be a family of subgroups of $G$
+indexed by $I\neq\emptyset$.
+We will call $\mathcal{S}$ \define{Normal} if
+$\mathcal{S}_{i}\normalSubgroup G$ for each $i\in I$.
+\end{definition}
+
+\begin{definition}
+Let $G$ be a group, let $\mathcal{S}$ be a family of subgroups of $G$
+indexed by $I\neq\emptyset$.
+We will call $\mathcal{S}$ \define{Componentwise-strict} if
+$\mathcal{S}_{i}$ is a strict subgroup of $G$ for each $i\in I$.
+\end{definition}
+
+<<Definition: ``normal'' and ``componentwise-strict'' for Subgroup-Family of $G$>>=
+definition
+  let I be non empty set;
+  let G be Group;
+  let IT be Subgroup-Family of I,G;
+  attr IT is normal means :DefS1:
+  for i being Element of I holds IT.i is normal Subgroup of G;
+  attr IT is componentwise_strict means :DefS2:
+  for i being Element of I holds IT.i is strict Subgroup of G;
+end;
+@ %def DefS1 DefS2
+
+\begin{registration}
+We can meaningfully talk about ``componentwise-strict normal
+Subgroup-Families of $G$''.
+\end{registration}
+
+<<Register: componentwise-strict normal Subgroup-Family of $G$>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  cluster componentwise_strict normal for Subgroup-Family of I,G;
+  existence
+  proof
+    deffunc Fun(Element of I) = (1).G;
+    consider F being Group-Family of I such that
+    A2: for i being Element of I holds F.i = Fun(i)
+    from GrFamSch;
+    for i being object st i in I holds F.i is Subgroup of G by A2;
+    then reconsider F as Subgroup-Family of I,G by GROUP_20:def 1;
+    take F;
+    thus thesis by A2;
+  end;
+end;
+@
+
+\begin{definition*}
+When $\mathcal{S}$ is a family of Subgroups of $G$, then we
+should treat $\mathcal{S}_{i}$ as a Subgroup of $G$.
+\end{definition*}
+
+<<Redefine: [[S.i]] is Subgroup of $G$>>=
+definition
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  let i be Element of I;
+  redefine func F.i -> Subgroup of G;
+  coherence by GROUP_20:def 1;
+end;
+@
+
+\begin{registration}
+When $\mathcal{N}$ is a family of normal subgroups of $G$, then we
+should register the fact that $\mathcal{N}_{i}\normalSubgroup G$ for
+each $i\in I$.
+\end{registration}
+
+<<Register: [[N.i]] is normal>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  let F be normal Subgroup-Family of I,G;
+  let i be Element of I;
+  cluster F.i -> normal for Subgroup of G;
+  correctness by DefS1;
+end;
+@ 
+
+\begin{theorem}
+Let $H_{1}\subgroup G$, $H_{2}\subgroup G$.
+If $[H_{1},H_{2}]=\trivialSubgroup$, then for any $a\in H_{1}$ and $b\in H_{2}$
+we have $ab=ba$.
+\end{theorem}
+
+<<Theorem: $[H_{1},H_{2}]=\trivialSubgroup$ implies $\forall a\in H_{1},b\in H_{2},ab=ba$>>=
+theorem
+  for H1,H2 being Subgroup of G st [. H1, H2 .] = (1).G
+  for a,b being Element of G st a in H1 & b in H2
+  holds a*b = b*a
+proof
+  let H1,H2 be Subgroup of G;
+  assume A1: [. H1, H2 .] = (1).G;
+  let a,b be Element of G;
+  assume A2: a in H1;
+  assume A3: b in H2;
+  [.a,b.] = 1_G by A1, A2, A3, GROUP_5:1, GROUP_5:65;
+  hence thesis by GROUP_5:36;
+end;
+@
+
+\begin{theorem}
+Let $N\normalSubgroup G$, let $a,b\in N$. Then $a^{b}\in N$.
+\end{theorem}
+
+\begin{thm-remark}
+A more restrictive version of this appears in Theorem~\mml[Th3]{group5},
+which forces our hand in proving our weaker version.
+\end{thm-remark}
+
+<<Theorem: let $N\normalSubgroup G$, let $a,b\in N$. Then $a^{b}\in N$>>=
+theorem ThNorm:
+  for N being normal Subgroup of G
+  for a,b being Element of G
+  st a in N holds a |^ b in N
+proof
+  let N be normal Subgroup of G;
+  let a,b be Element of G;
+  assume A1: a in N;
+  then a |^ b in N |^ b by GROUP_3:58;
+  then a |^ b in the multMagma of N by GROUP_3:def 13;
+  hence a |^ b in N;
+end;
+@ %def ThNorm
+
+\begin{theorem}
+Let $H\normalSubgroup G$ and $K\normalSubgroup G$. Let $h\in H$ and $k\in K$.
+If $H\cap K=\trivialSubgroup$, then $hk=kh$.
+\end{theorem}
+
+<<Theorem: Disjoint normal subgroups are permutable>>=
+theorem
+  for H,K being normal Subgroup of G
+  st H /\ K = (1).G
+  for h,k being Element of G st h in H & k in K
+  holds h*k = k*h
+proof
+  let H,K be normal Subgroup of G;
+  assume A1: H /\ K = (1).G;
+  let h,k be Element of G;
+  assume A2: h in H;
+  assume A3: k in K;
+  [. h, k .] in H /\ K
+  proof
+    [.h,k.] = ((k") |^ h) * k & [.h,k.] = (h") * (h |^ k) by GROUP_5:18;
+    B1: [. h, k .] in H
+    proof
+      B2: h" in H by A2, GROUP_2:51;
+      h |^ k in H by A2, ThNorm;
+      then (h") * (h |^ k) in H by B2, GROUP_2:50;
+      hence [. h, k .] in H by GROUP_5:18;
+    end;
+    [. h, k .] in K
+    proof
+      k" in K by A3, GROUP_2:51;
+      then (k") |^ h in K by ThNorm;
+      then ((k") |^ h) * k in K by A3, GROUP_2:50;
+      hence [. h, k .] in K by GROUP_5:18;
+    end;
+    hence thesis by B1,GROUP_2:82;
+  end;
+  then 1_G = [. h, k .] by A1,GROUP_5:1;
+  hence thesis by GROUP_5:36;
+end;
+@
+
+\begin{theorem}\label{thm:002-product:recognition-theorems:th-join-norm}
+Let $G$ be a group, $I\neq\emptyset$, $\mathcal{N}$ be a family of
+normal subgroups of $G$ indexed by $I$.
+Then there exists a normal subgroup $N\normalSubgroup G$ such that
+it is generated by the union of family members $N=\langle\mathcal{N}_{i} : i\in I\rangle$.
+\end{theorem}
+
+<<Theorem: join of normal subgroup family is a normal subgroup>>=
+theorem ThJoinNorm:
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = union {the carrier of F.i where i is Element of I : not contradiction }
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  set X = {the carrier of F.i where i is Element of I : not contradiction };
+  assume A1: A = union X;
+  reconsider N=gr A as strict Subgroup of G;
+  A2: for i being Element of I holds the carrier of F.i c= the carrier of N
+  proof
+    let i be Element of I;
+    (the carrier of F.i) in X;
+    then B1: the carrier of F.i c= A by A1,ZFMISC_1:74;
+    A c= the carrier of N by GROUP_4:def 4;
+    hence the carrier of F.i c= the carrier of N by B1, XBOOLE_1:1;
+  end;
+
+  for a being Element of G holds N |^ a is Subgroup of N
+  proof
+    let a be Element of G;
+    for g being Element of G st g in N |^ a holds g in N
+    proof
+      let g be Element of G;
+      assume A3: g in N |^ a;
+      then consider x being Element of G such that
+      A4: g = x |^ a & x in N
+      by GROUP_3:58;
+      consider FS being FinSequence of the carrier of G,
+               ks being FinSequence of INT such that
+      A5: len FS = len ks & rng FS c= A & Product (FS |^ ks) = x
+      by A4,GROUP_4:28;
+      A6: Product ((FS |^ ks) |^ a) = Product ((FS |^ a) |^ ks) by GROUP_5:15;
+      for y being object st y in rng ((FS |^ a) |^ ks)
+      holds y in carr N
+      proof
+        let y be object;
+        assume y in rng ((FS |^ a) |^ ks);
+        then consider xi being object such that
+        A7: xi in dom ((FS |^ a) |^ ks) & y = ((FS |^ a) |^ ks).xi
+        by FUNCT_1:def 3;
+        A8: len ((FS |^ a) |^ ks) = len ((FS |^ ks) |^ a) by GROUP_5:15
+                                 .= len (FS |^ ks) by GROUP_5:def 1;
+        A9: dom ((FS |^ a) |^ ks)
+         = Seg (len ((FS |^ a) |^ ks)) by FINSEQ_1:def 3
+        .= Seg (len (FS |^ ks)) by A8
+        .= dom (FS |^ ks) by FINSEQ_1:def 3;
+        reconsider xi as Nat by A7;
+        A10: dom (FS |^ ks) = Seg (len (FS |^ ks)) by FINSEQ_1:def 3
+                           .= Seg (len FS) by GROUP_4:def 3
+                           .= dom FS by FINSEQ_1:def 3;
+        FS.xi in rng FS by A7, A9, A10, FUNCT_1:3;
+        then consider Fi being set such that
+        A11: FS.xi in Fi & Fi in X by A1,A5,TARSKI:def 4;
+        consider i0 being Element of I such that
+        A12: Fi = the carrier of F.i0 by A11;
+        (FS /. xi) in F.i0 by A10, A7, A9, A11,A12, PARTFUN1:def 6;
+        then (FS /. xi) |^ (@ (ks /. xi)) in F.i0 by GROUP_4:4;
+        then (FS |^ ks) . xi in F.i0 by A7, A9, A10, GROUP_4:def 3;
+        then (FS |^ ks) /. xi in F.i0 by A7, A9, PARTFUN1:def 6;
+        then A14: ((FS |^ ks) /. xi) |^ a in F.i0 by ThNorm;
+        y = ((FS |^ ks) |^ a).xi by A7, GROUP_5:15
+         .= ((FS |^ ks) /. xi) |^ a by A7, A9, GROUP_5:def 1;
+        then y in the carrier of N by A2, A14, TARSKI:def 3;
+        hence thesis by GROUP_2:def 9;
+      end;
+      then Product ((FS |^ a) |^ ks) in N by GROUP_4:18, TARSKI:def 3;
+      hence g in N by A4,A5,A6,GROUP_5:14;
+    end;
+
+    hence N |^ a is Subgroup of N by GROUP_2:58;
+  end;
+
+  then reconsider N as strict normal Subgroup of G by GROUP_3:122;
+  take N;
+  thus N = gr A;
+end;
+@ %def ThJoinNorm
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$, let
+$J\subset I$. Then $\mathcal{F}|_{J}$ is a family of groups indexed by $J$.
+\end{theorem}
+
+<<Theorem: restrictions of group-families are group-families>>=
+theorem ThGrFamRes:
+  for F being Group-Family of I
+  for J being set st J c= I
+  holds F|J is Group-Family of J
+proof
+  let F be Group-Family of I;
+  let J be set;
+  assume A1: J c= I;
+  A2: (F|J) is ManySortedSet of J
+  proof
+    dom (F|J) = dom F /\ J by RELAT_1:61
+             .= I /\ J by PARTFUN1:def 2
+             .= J by A1, XBOOLE_1:28;
+    hence thesis by PARTFUN1:def 2;
+  end;
+  for y being object st y in rng (F|J) holds y is Group
+  proof
+    let y be object;
+    assume y in rng (F|J);
+    then consider i being object such that
+    A3: i in dom (F|J) & y = (F|J).i
+    by FUNCT_1:def 3;
+    dom (F|J) c= dom F by RELAT_1:60;
+    then F.i in rng F by A3, FUNCT_1:3;
+    then F.i is Group by Def1;
+    hence y is Group by A3, FUNCT_1:47;
+  end;
+  then F|J is Group-yielding ManySortedSet of J by A2, Def1;
+  hence F|J is Group-Family of J;
+end;
+@ %def ThGrFamRes
+
+\begin{theorem}
+Let $\mathcal{S}$ be a family of subgroups of $G$ indexed by $I\neq\emptyset$.
+Let $J\subset I$. 
+Then the restriction $\mathcal{S}|_{J}$ of $\mathcal{S}$ to $J$ is a
+family of subgroups of $G$.
+\end{theorem}
+
+<<Theorem: restrictions of subgroup-families are subgroup-families>>=
+theorem ThSubFamRes:
+  for F being Subgroup-Family of I,G
+  for J being set st J c= I
+  holds F|J is Subgroup-Family of J,G
+proof
+  let F be Subgroup-Family of I,G;
+  let J be set;
+  assume A1: J c= I;
+  then A2: F|J is Group-Family of J by ThGrFamRes;
+  for j being object st j in J holds (F|J).j is Subgroup of G
+  proof
+    let j be object;
+    assume B1: j in J;
+    then F.j is Subgroup of G by A1, GROUP_20:def 1; 
+    hence (F|J).j is Subgroup of G by B1, FUNCT_1:49;
+  end;
+  hence F|J is Subgroup-Family of J,G by A2,GROUP_20:def 1;
+end;
+@ %def ThSubFamRes
+
+\begin{theorem}
+Let $\mathcal{N}$ be a family of normal subgroups of $G$ indexed by $I\neq\emptyset$.
+Let $i\in I$.
+Then $\langle\mathcal{N}_{j} : j\neq i\rangle$ is a normal subgroup of $G$.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+This boils down to two cases: is $I=\{i\}$ or not? If $I=\{i\}$, then
+the group generated is $\trivialSubgroup$ which is trivially normal.
+
+The more interesting case is when $I\setminus\{i\}\neq\emptyset$. Then
+set $J=I\setminus\{i\}$, and we know that $\mathcal{N}|_{J}$ is a
+subgroup family. It's obvious that $\mathcal{N}|_{J}$ is a family of normal
+subgroups. In this case, we invoke Theorem~\ref{thm:002-product:recognition-theorems:th-join-norm}
+to obtain the desired result.
+\end{proof}
+
+<<Theorem: the join of all-but-one members of a normal subgroup family is a normal subgroup>>=
+theorem ThJoinNorm2:
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  for i being Element of I
+  st A = union { the carrier of F.j where j is Element of I : i <> j }
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  let i be Element of I;
+  set X1 = {the carrier of F.j where j is Element of I : i <> j };
+  assume A1: A = union X1;
+  set J = I \ {i};
+  per cases;
+  suppose J is empty;
+    then I <> {} & I c= {i} by XBOOLE_1:37;
+    then A3: I = {i} by ZFMISC_1:33;
+    for x being object holds x in X1 implies contradiction
+    proof
+      let x be object;
+      assume x in X1;
+      then ex j being Element of I st x = the carrier of F.j & i <> j;
+      hence contradiction by A3, TARSKI:def 1;
+    end;
+    then X1 = {} by XBOOLE_0:def 1;
+    then A4: A = ({} the carrier of G) by A1, ZFMISC_1:2, SUBSET_1:def 2;
+    take N = (1).G;
+    thus thesis by A4, GROUP_4:30;
+  end;
+  suppose J is non empty;
+    then reconsider J as non empty set;
+    reconsider FF=F|J as Subgroup-Family of J,G by ThSubFamRes;
+    for j being Element of J holds FF.j is normal Subgroup of G
+    proof
+      let j be Element of J;
+      j in I by XBOOLE_0:def 5;
+      then F.j is normal Subgroup of G by DefS1;
+      hence FF.j is normal Subgroup of G by FUNCT_1:49;
+    end;
+    then reconsider FF as normal Subgroup-Family of J,G by DefS1;
+    set X2 = { the carrier of FF.j where j is Element of J : not contradiction };
+    for x being object holds x in X1 iff x in X2
+    proof
+      let x be object;
+      hereby 
+        assume x in X1;
+        then consider j being Element of I such that
+        Z1: x = the carrier of F.j & i <> j;
+        j in I & not j in {i} by Z1, TARSKI:def 1;
+        then reconsider jj=j as Element of J by XBOOLE_0:def 5;
+        F.j = FF.jj by FUNCT_1:49;
+        hence x in X2 by Z1;
+      end;
+      assume x in X2;
+      then consider j being Element of J such that
+      Z1: x = the carrier of FF.j;
+      j in I & not j in {i} by XBOOLE_0:def 5;
+      then Z2: j in I & j <> i by TARSKI:def 1;
+      then reconsider ii=j as Element of I;
+      the carrier of F.ii = x by Z1, FUNCT_1:49;
+      hence x in X1 by Z2;
+    end;
+    then A3: X1 = X2 by TARSKI:2;
+    then reconsider B = union X2 as Subset of G by A1;
+    consider N being strict normal Subgroup of G such that
+    A2: N = gr B
+    by ThJoinNorm;
+    take N;
+    thus N = gr A by A1, A2, A3;
+  end;
+end;
+@ %def ThJoinNorm2
+
+\begin{theorem}
+Let $M$ be a family of sets indexed by $I\neq\emptyset$.
+A $y$ is in the range of $M$ if and only if there is some $i\in I$ such
+that $y=M_{i}$.
+\end{theorem}
+
+<<Theorem: Range of many-sorted set>>=
+theorem MssRng:
+  for M being ManySortedSet of I
+  for y being object
+  holds y in rng M iff (ex i being Element of I st y = M.i)
+proof
+  let M be ManySortedSet of I;
+  let y be object;
+  hereby 
+    assume y in rng M;
+    then consider i0 being object such that
+    A1: i0 in dom M & y = M.i0
+    by FUNCT_1:def 3;
+    reconsider i=i0 as Element of I by A1;
+    take i;
+    thus y = M.i by A1;
+  end;
+  given i being Element of I such that 
+  A2: y = M.i;
+  dom M = I by PARTFUN1:def 2;
+  hence y in rng M by A2, FUNCT_1:3;
+end;
+@ %def MssRng
+
+\begin{theorem}
+Let $\mathcal{S}$ be a family of strict subgroups of $G$ indexed by $I\neq\emptyset$.
+Then $\mathcal{S}$ is ``Subgroups $G$''-valued.
+\end{theorem}
+
+\begin{thm-remark}
+We need this theorem to register the fact that componentwise-strict
+subgroup families are ``Subgroups $G$''-valued, which is useful for
+later results.
+\end{thm-remark}
+
+<<Theorem: family of strict subgroups is [[(Subgroups G)-valued]]>>=
+theorem CSSubFam:
+  for F being componentwise_strict Subgroup-Family of I, G
+  holds F is (Subgroups G)-valued
+proof
+  let F be componentwise_strict Subgroup-Family of I, G;
+  for y being object st y in rng F holds y in Subgroups G
+  proof
+    let y be object;
+    assume y in rng F;
+    then consider i being Element of I such that
+    A1: y = F.i by MssRng;
+    y is strict Subgroup of G by A1, DefS2;
+    hence y in Subgroups G by GROUP_3:def 1;
+  end;
+  hence F is (Subgroups G)-valued by RELAT_1:def 19, TARSKI:def 3;
+end;
+@ %def CSSubFam
+
+\begin{registration}
+When $I\neq\emptyset$, any family of strict subgroups of $G$ is also 
+[[(Subgroups G)-valued]].
+\end{registration}
+
+<<Register: [[(Subgroups G)-valued]] for family of strict subgroups of $G$>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  cluster -> (Subgroups G)-valued for componentwise_strict Subgroup-Family of I,G;
+  correctness by CSSubFam;
+end;
+@
+
+\begin{definition}
+Let $I$ be a set, let $\mathcal{F}$ be a 1-sorted-yielding family of
+sets indexed by $I$.
+We define an \define{Element} of $\mathcal{F}$ to be an element of the
+underlying family of sets.
+\end{definition}
+
+\begin{def-remark}
+This is to make explicit how to handle ``an element of a family of groups'',
+since Definition~\mml[def 14]{pboole} caused problems when I tried to
+use it on a family of subgroups.
+\end{def-remark}
+
+<<Definition: Element of family of 1-sorted sets>>=
+definition
+  let I be set;
+  let F be 1-sorted-yielding ManySortedSet of I;
+  mode Element of F is Element of Carrier F;
+end;
+@
+
+\begin{theorem}
+Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$.
+Let $g\in\mathcal{F}$ be an element of the family.
+Then $g_{i}\in\mathcal{F}_{i}$ for each $i\in I$.
+\end{theorem}
+
+<<Theorem: element of group family is a family of group elements>>=
+theorem EltGF:
+  for F being Group-Family of I
+  for g being Element of F
+  for i being Element of I
+  holds g.i is Element of F.i
+proof
+  let F be Group-Family of I;
+  let g be Element of F;
+  let i be Element of I;
+  g.i is Element of (Carrier F).i by PBOOLE:def 14;
+  hence g.i is Element of F.i by Th20;
+end;
+@ %def EltGF
+
+\begin{registration}
+Let $I\neq\emptyset$, let $G$ be a group, let $\mathcal{S}$ be a family
+of subgroups of $G$ indexed by $I$.
+Then we register the fact that an element of $\mathcal{S}$ is $G$-valued.
+\end{registration}
+
+\begin{remark}
+This is necessary to handle finite families of subgroups of $G$, we
+should be able to take the product of an element for such a family. That
+is to say, if $\mathcal{S}$ is a family of subgroups indexed by a finite
+set $I\neq\emptyset$, then any element $g\in\mathcal{S}$ may be plugged
+into the product of its components --- i.e., $\prod_{i\in I}g_{i}$ makes
+sense and we can compute it. We will do this using Definition~\mml[def 1]{group17}.
+\end{remark}
+
+<<Register: Element of subgroup-family of $G$ is $G$-valued>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster -> (the carrier of G)-valued for Element of F;
+  correctness
+  proof
+    let g be Element of F;
+    g is ManySortedSet of I;
+    for y being object st y in rng g holds y in the carrier of G
+    proof
+      let y be object;
+      assume A1: y in rng g;
+      then consider i being Element of I such that
+      A2: y = g.i
+      by MssRng;
+      g.i is Element of F.i by EltGF;
+      then g.i is Element of G by GROUP_2:42;
+      hence y in the carrier of G by A2;
+    end;
+    hence g is (the carrier of G)-valued by RELAT_1:def 19, TARSKI:def 3;
+  end;
+end;
+@
+
+\begin{registration}
+For a family of subgroups $\mathcal{S}$ of $G$ indexed by $I\neq\emptyset$,
+an element in $\prod\mathcal{S}$ is an $I$-defined relation-like
+function-like gadget.
+\end{registration}
+
+<<Register: $I$-defined relation-like function-like for Element of $\prod\mathcal{S}$>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster -> I-defined Relation-like Function-like for Element of product F;
+  coherence
+  proof
+    let g be Element of product F;
+    A1: dom g = I by GROUP_19:3;
+    then A2: g is I-defined by RELAT_1:def 18;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{registration}
+In particular, elements of $\prod\mathcal{S}$ are $G$-valued $I$-defined
+total functions.
+\end{registration}
+
+\begin{remark}
+We need this so we can define a homomorphism $\prod\mathcal{S}\to G$
+defined by taking the product of components for elements of $\prod\mathcal{S}$
+using Definition~\mml[def 1]{group17}.
+\end{remark}
+
+<<Register: Elements of $\prod\mathcal{S}$ are $G$-valued $I$-defined total>>=
+registration
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster -> I-defined (the carrier of G)-valued total for Element of product F;
+  correctness
+  proof
+    let g be Element of product F;
+    A1: dom g = I by GROUP_19:3;
+    then A2: g is I-defined total by PARTFUN1:def 2;
+    for y being object st y in rng g holds y in the carrier of G
+    proof
+      let y be object;
+      assume y in rng g;
+      then consider i0 being object such that
+      A3: i0 in dom g & y = g.i0
+      by FUNCT_1:def 3;
+      i0 in I by A3;
+      then reconsider i=i0 as Element of I;
+      A4: y = g.i by A3;
+      g in product F;
+      then g.i in F.i by GROUP_19:5;
+      then y in F.i by A4;
+      then y in G by GROUP_2:40;
+      hence y in the carrier of G;
+    end;
+    then rng g c= the carrier of G by TARSKI:def 3;
+    then g is (the carrier of G)-valued by RELAT_1:def 19;
+    hence g is I-defined (the carrier of G)-valued total by A2;
+  end;
+end;
+@ 

@@ -18,7 +18,7 @@ PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/trivial-product.nw $(PRODGRP)/inclusion-morphism.nw \
 	$(PRODGRP)/homomorphism-family.nw $(PRODGRP)/projection-morphism.nw \
 	$(PRODGRP)/universal-properties.nw $(PRODGRP)/center-and-commutator-subgroups.nw \
-	$(PRODGRP)/quotient-of-products.nw \
+	$(PRODGRP)/quotient-of-products.nw $(PRODGRP)/recognition-theorems.nw \
 	$(PRODGRP)/null-object.nw $(PRODGRP)/quotient-groups.nw 
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
