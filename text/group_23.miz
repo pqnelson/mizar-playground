@@ -3865,37 +3865,97 @@ proof
   thus N = gr A;
 end;
 
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be ManySortedSet of I;
+  cluster F|J -> J-defined total;
+  correctness
+  proof
+    J c= I;
+    then J c= dom F by PARTFUN1:def 2;
+    then dom (F|J) = J by RELAT_1:62;
+    hence thesis by PARTFUN1:def 2;
+  end;
+end;
+
+
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be 1-sorted-yielding ManySortedSet of I;
+  cluster F|J -> 1-sorted-yielding J-defined total;
+  correctness
+  proof
+    for x being object st x in dom (F|J) holds (F|J).x is 1-sorted
+    proof
+      let x be object;
+      assume A1: x in dom (F|J);
+      A2: J c= I & dom F = I by PARTFUN1:def 2;
+      then A3: dom (F|J) = J by RELAT_1:62;
+      then A4: dom (F|J) c= dom F by A2, TARSKI:def 1;
+      then A5: x in dom F by A1;
+      x in J & x in dom (F|J) by A1, A3;
+      then (F|J).x = F.x & F.x is 1-sorted by A4, A5, FUNCT_1:47, PRALG_1:def 12;
+      hence (F|J).x is 1-sorted;
+    end;
+
+    hence thesis by PRALG_1:def 12;
+  end;
+end;
+
+theorem MssRng:
+  for M being ManySortedSet of I
+  for y being object
+  holds y in rng M iff (ex i being Element of I st y = M.i)
+proof
+  let M be ManySortedSet of I;
+  let y be object;
+  hereby 
+    assume y in rng M;
+    then consider i0 being object such that
+    A1: i0 in dom M & y = M.i0
+    by FUNCT_1:def 3;
+    reconsider i=i0 as Element of I by A1;
+    take i;
+    thus y = M.i by A1;
+  end;
+  given i being Element of I such that 
+  A2: y = M.i;
+  dom M = I by PARTFUN1:def 2;
+  hence y in rng M by A2, FUNCT_1:3;
+end;
+
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be Group-yielding ManySortedSet of I;
+  cluster F|J -> Group-yielding J-defined total;
+  correctness
+  proof
+    for y being object st y in rng (F|J) holds y is Group
+    proof
+      let y be object;
+      assume A1: y in rng (F|J);
+      then consider j being object such that
+      A2: j in dom (F|J) & y = (F|J).j
+      by FUNCT_1:def 3;
+      (F|J).j = F.j by A2, FUNCT_1:47;
+      then A3: y = F.j by A2;
+      dom (F|J) = J & dom F = I by PARTFUN1:def 2;
+      then j in dom F by A2, RELAT_1:60;
+      then F.j in rng F by FUNCT_1:3;
+      then F.j is Group by Def1;
+      hence y is Group by A3;
+    end;
+    hence thesis;
+  end;
+end;
+
 theorem ThGrFamRes:
   for F being Group-Family of I
   for J being set st J c= I
-  holds F|J is Group-Family of J
-proof
-  let F be Group-Family of I;
-  let J be set;
-  assume A1: J c= I;
-  A2: (F|J) is ManySortedSet of J
-  proof
-    dom (F|J) = dom F /\ J by RELAT_1:61
-             .= I /\ J by PARTFUN1:def 2
-             .= J by A1, XBOOLE_1:28;
-    hence thesis by PARTFUN1:def 2;
-  end;
-  for y being object st y in rng (F|J) holds y is Group
-  proof
-    let y be object;
-    assume y in rng (F|J);
-    then consider i being object such that
-    A3: i in dom (F|J) & y = (F|J).i
-    by FUNCT_1:def 3;
-    dom (F|J) c= dom F by RELAT_1:60;
-    then F.i in rng F by A3, FUNCT_1:3;
-    then F.i is Group by Def1;
-    hence y is Group by A3, FUNCT_1:47;
-  end;
-  then F|J is Group-yielding ManySortedSet of J by A2,Def1;
-  hence F|J is Group-Family of J;
-end;
-
+  holds F|J is Group-Family of J;
 
 theorem ThSubFamRes:
   for F being Subgroup-Family of I,G
@@ -3914,6 +3974,15 @@ proof
     hence (F|J).j is Subgroup of G by B1, FUNCT_1:49;
   end;
   hence F|J is Subgroup-Family of J,G by A2,GROUP_20:def 1;
+end;
+
+definition
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  let J be Subset of I;
+  redefine func F|J -> Subgroup-Family of J,G;
+  correctness by ThSubFamRes;
 end;
 
 theorem ThJoinNorm2:
@@ -3989,26 +4058,103 @@ proof
   end;
 end;
 
-theorem MssRng:
-  for M being ManySortedSet of I
-  for y being object
-  holds y in rng M iff (ex i being Element of I st y = M.i)
+:: theorem ThNormSubGrRes;
+
+theorem ThNormSubFamResIsNorm:
+  for J being non empty Subset of I
+  for F being normal Subgroup-Family of I,G
+  holds F|J is normal Subgroup-Family of J,G
 proof
-  let M be ManySortedSet of I;
-  let y be object;
-  hereby 
-    assume y in rng M;
-    then consider i0 being object such that
-    A1: i0 in dom M & y = M.i0
-    by FUNCT_1:def 3;
-    reconsider i=i0 as Element of I by A1;
-    take i;
-    thus y = M.i by A1;
+  let J be non empty Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  for j being Element of J holds (F|J).j is normal Subgroup of G
+  proof
+    let j be Element of J;
+    j in J;
+    then j in dom (F|J) by PARTFUN1:def 2;
+    then A1: F.j = (F|J).j by FUNCT_1:47;
+    j in I;
+    then F.i is normal Subgroup of G by DefS1;
+    hence (F|J).j is normal Subgroup of G by A1;
   end;
-  given i being Element of I such that 
-  A2: y = M.i;
-  dom M = I by PARTFUN1:def 2;
-  hence y in rng M by A2, FUNCT_1:3;
+
+  hence F|J is normal Subgroup-Family of J,G by DefS1;
+end;
+
+
+registration
+  let I be non empty set;
+  let J be non empty Subset of I;
+  let G be Group;
+  let F be normal Subgroup-Family of I,G;
+  cluster F|J -> normal for Subgroup-Family of J,G;
+  correctness by ThNormSubFamResIsNorm;
+end;
+
+theorem ThJoinNormUnionRes:
+  for J being non empty Subset of I
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = Union (Carrier (F|J))
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let J be non empty Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  assume A1: A = Union (Carrier (F|J));
+  set Fam = {the carrier of (F|J).j where j is Element of J : not
+  contradiction};
+  set X = union Fam;
+  for x being object holds x in A iff x in X
+  proof
+    let x be object;
+    hereby 
+      assume B1: x in A;
+      then x in union (rng (Carrier (F|J))) by A1, CARD_3:def 4;
+      then consider Uj being set such that
+      B2: x in Uj & Uj in rng (Carrier (F|J)) by TARSKI:def 4;
+      Carrier (F|J) is ManySortedSet of J;
+      then consider j being Element of J such that
+      B3: Uj = (Carrier (F|J)).j
+      by B2, MssRng;
+      Uj = the carrier of (F|J).j by B3, Th20;
+      then Uj in Fam;
+      hence x in X by B2, TARSKI:def 4;
+    end;
+    assume B1: x in X;
+    then consider Uj being set such that
+    B2: x in Uj & Uj in Fam by TARSKI:def 4;
+    consider j being Element of J such that
+    B3: Uj = the carrier of (F|J).j by B2;
+    B4: dom (Carrier (F|J)) = J by PARTFUN1:def 2;
+    B5: j in dom (Carrier (F|J)) by B4;
+    Uj = (Carrier (F|J)).j by B3,Th20;
+    then B6: Uj in rng (Carrier (F|J)) by B5, FUNCT_1:3;
+    then x in union (rng (Carrier (F|J))) by B2, TARSKI:def 4;
+    then x in Union (Carrier (F|J)) by CARD_3:def 4;
+    hence x in A by A1;
+  end;
+  then A2: X = A by TARSKI:2;
+  then ex N being strict normal Subgroup of G st N = gr A by ThJoinNorm;
+  hence thesis by ThJoinNorm;
+end;
+
+theorem ThJoinNormUnion:
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = Union (Carrier F)
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  assume A1: A = Union (Carrier F);
+  I c= I & I is non empty;
+  then reconsider J=I as non empty Subset of I;
+  A2: (F|J) = F;
+  then A = Union (Carrier (F|J)) by A1;
+  hence thesis by ThJoinNormUnionRes;
 end;
 
 theorem CSSubFam:
@@ -4124,31 +4270,109 @@ registration
   end;
 end;
 
-theorem ThProdComm:
-  for I being finite non empty set
+theorem ThSubFamIsBoolValued:
+  for I being set
+  for G being Group
   for F being Subgroup-Family of I,G
-  st (for i,j being Element of I st i <> j
-      holds [. (F.i), (F.j) .] = (1).G)
-  for a,b being Element of product F
-  holds (Product a)*(Product b) = Product (a * b)
+  holds Carrier F is (bool the carrier of G)-valued
 proof
-  let I be finite non empty set;
+  let I be set;
+  let G be Group;
   let F be Subgroup-Family of I,G;
-  assume A1: for i,j being Element of I st i <> j holds [. (F.i), (F.j) .] = (1).G;
-  let a,b be Element of product F;
-  consider fa being FinSequence of the carrier of G such that
-  A2: Product a = Product fa & fa = a * (canFS I)
-  by GROUP_17:def 1;
-  consider fb being FinSequence of the carrier of G such that
-  A2: Product b = Product fb & fb = b * (canFS I)
-  by GROUP_17:def 1;
-  
-  thus (Product a)*(Product b) = Product (a * b);
-::>                                            *4
+  per cases;
+  suppose I is empty;
+    then A1: Carrier F = {};
+    rng {} = {} & {} c= (bool the carrier of G) by RELAT_1:38, XBOOLE_1:2;
+    then rng (Carrier F) c= bool the carrier of G by A1;
+    hence Carrier F is (bool the carrier of G)-valued by A1,RELAT_1:def 19;
+  end;
+  suppose A2: I is non empty;
+    then reconsider I as non empty set;
+    reconsider F as Subgroup-Family of I,G;
+    for z being object st z in rng (Carrier F)
+    holds z in bool the carrier of G
+    proof
+      let z be object;
+      assume A3: z in rng (Carrier F);
+      reconsider y=z as set by TARSKI:1;
+      y in rng (Carrier F) by A3;
+      then consider i being object such that
+      A4: i in dom (Carrier F) & y = (Carrier F).i
+      by FUNCT_1:def 3;
+      dom (Carrier F) = I by PARTFUN1:def 2;
+      then reconsider i as Element of I by A4;
+      y = the carrier of F.i by A4, Th20;
+      then y c= the carrier of G by GROUP_2:def 5;
+      then y in bool the carrier of G by ZFMISC_1:def 1;
+      hence thesis;
+    end;
+    then rng (Carrier F) c= bool the carrier of G by TARSKI:def 3;
+    hence thesis by RELAT_1:def 19;
+  end;
 end;
 
-proof end;
-::> *396
+registration
+  let I be set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster Carrier F -> (bool the carrier of G)-valued;
+  correctness by ThSubFamIsBoolValued;
+end;
+
+registration
+  let I,X be set;
+  cluster (bool X)-valued for ManySortedSet of I;
+  existence
+  proof
+    take M = I --> X;
+    for a being object st a in rng M holds a in bool X
+    proof
+      let a be object;
+      assume a in rng M;
+      then ex x being object st x in dom M & a = M.x by FUNCT_1:def 3;
+      then A1: a = X by FUNCOP_1:7;
+      X c= X;
+      then X in bool X by ZFMISC_1:def 1;
+      hence thesis by A1;
+    end;
+    then rng M c= bool X by TARSKI:def 3;
+    hence M is (bool X)-valued by RELAT_1:def 19;
+  end;
+end;
+
+definition
+  let I,X be set;
+  let M be (bool X)-valued ManySortedSet of I;
+  redefine func Union M -> Subset of X;
+  correctness
+  proof
+    for A being set st A in rng M holds A c= X
+    proof
+      let A be set;
+      assume A1: A in rng M;
+      rng M c= bool X by RELAT_1:def 19;
+      then A in bool X by A1;
+      hence A c= X by ZFMISC_1:def 1;
+    end;
+    then union (rng M) c= X by ZFMISC_1:76;
+    then Union M c= X by CARD_3:def 4;
+    hence Union M is Subset of X;
+  end;
+end;
+
+:: Aschbacher, Finite Group Theory, Theorem (1.9)
+:: Hungerford, Algebra, Ch. 1, section 8, theorem 8.6
+:: Robinson, Theory of Groups, Ch 1, section 4, theorem 1.4.7 (ii)
+theorem ThProdComm:
+  for I being finite non empty set
+  for F being normal Subgroup-Family of I,G
+  st G = gr Union (Carrier F)
+  & (for i being Element of I
+     for N being strict normal Subgroup of G
+     st N = gr (Union (Carrier (F|(I \ {i}))))
+     holds F.i /\ N = (1).G)
+  holds product F, G are_isomorphic;
+::>                               *4
 
 theorem
   for I being finite non empty set
@@ -4216,101 +4440,14 @@ proof
 ::>                             *4
 end;
 
-theorem
-  for I being finite non empty set
-  for N being normal Subgroup-Family of I,G
-  st (for i being Element of I
-      for Ni being Subset of G
-      st Ni = union {the carrier of N.j where j is Element of I : i <> j }
-      holds N.i /\ gr Ni = (1).G)
-  for i,j being Element of I st i <> j
-  holds N.i /\ N.j = (1).G;
-::>                      *4
-
-:: Aschbacher, Finite Group Theory, Theorem (1.9)
-theorem
-  for I being finite non empty set
-  for N being normal Subgroup-Family of I,G
-  st (for i being Element of I
-      for Ni being Subset of G
-      st Ni = union {the carrier of N.j where j is Element of I : i <> j }
-      holds N.i /\ gr Ni = (1).G)
-  for A being Subset of G
-  st A = union {the carrier of N.i where i is Element of I : not contradiction}
-  & gr A = G
-  holds G,product N are_isomorphic
-proof
-  let I be finite non empty set;
-  let N be normal Subgroup-Family of I,G;
-  assume A1: for i being Element of I
-  for Ni being Subset of G
-  st Ni = union {the carrier of N.j where j is Element of I : i <> j }
-  holds N.i /\ gr Ni = (1).G;
-  let A be Subset of G;
-  assume A2: A = union {the carrier of N.i where i is Element of I : not
-  contradiction};
-  assume A3: gr A = G;
-  defpred P[object, object] means
-  ex y being finite-support Function of I,G st y=$1 & $2 = Product y;
-  A4: for x being Element of the carrier of product N
-  ex y being Element of G st P[x, y]
-  proof
-    let x be Element of the carrier of product N;
-    x is finite-support Function of I,G
-    proof
-      x is Function;
-      B1: dom x = I by GROUP_19:3;
-      B2: for i being object st i in I holds N.i is Subgroup of G by GROUP_20:def 1;
-      x in product N & product N = sum N by GROUP_7:9;
-      then x in sum N;
-      hence x is finite-support Function of I,G by B2, GROUP_19:10;
-    end;
-    then reconsider f=x as finite-support Function of I,G;
-    reconsider y=Product f as Element of G;
-    take y;
-    thus P[x, y];
-  end;
-
-  consider f being Function of the carrier of product N, the carrier of
-  G such that
-  A5: for x being Element of the carrier of product N holds P[x, f.x]
-  from FUNCT_2:sch 3(A4);
-  for a,b being Element of product N holds f.(a * b) = (f.a) * (f.b)
-  proof
-    let a,b be Element of product N;
-    consider x being finite-support Function of I,G such that
-    B1: x = a & f.a = Product x
-    by A5;
-    consider y being finite-support Function of I,G such that
-    B2: y = b & f.b = Product y
-    by A5;
-    (f.a) * (f.b) = (Product x) * (f.b) by B1
-                 .= (Product x) * (Product y) by B2
-                 .= Product (x * y)
-::>                       *103
-                 .= f.(a * b);
-    hence f.(a * b) = (f.a) * (f.b);
-  end;
-
-  then reconsider f as Homomorphism of product N, G by GROUP_6:def 6;
-  f is bijective;
-::>            *4
-  hence G,product N are_isomorphic by GROUP_6:def 11;
-end;
-
 :: Aschbacher, Finite Group Theory, Theorem (1.9)
 theorem
   for I being finite non empty set
   for N being normal Subgroup-Family of I,G
   st (for g being Element of G
-      ex FS being FinSequence of the carrier of G
-      st len FS = card I & (for i being Element of I holds FS.i in N.i)
-       & g = Product FS
-       & (for FS2 being FinSequence of the carrier of G
-          st len FS2 = card I
-           & (for i being Element of I holds FS2.i in N.i)
-           & g = Product FS2
-          holds FS2 = FS))
+      ex x being Element of product N
+      st g = Product x
+      & (for y being Element of product N st g = Product y holds x = y))
   holds G, product N are_isomorphic;
 ::>                               *4
 
@@ -4687,4 +4824,3 @@ proof
 end;
 ::> 4: This inference is not accepted
 ::> 103: Unknown functor
-::> 396: Formula expected

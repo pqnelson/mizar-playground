@@ -322,6 +322,94 @@ proof
 end;
 @ %def ThJoinNorm
 
+
+%%% NEW
+\begin{registration}
+When $J\subset I$, we note that $\mathcal{F}|_{J}$ is a $J$-defined
+total function.
+\end{registration}
+
+<<Register: $\mathcal{F}|_{J}$ is $J$-defined and total>>=
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be ManySortedSet of I;
+  cluster F|J -> J-defined total;
+  correctness
+  proof
+    J c= I;
+    then J c= dom F by PARTFUN1:def 2;
+    then dom (F|J) = J by RELAT_1:62;
+    hence thesis by PARTFUN1:def 2;
+  end;
+end;
+@ 
+
+% NEW
+\begin{registration}
+We also note that $\mathcal{F}|_{J}$ is 1-sorted-yielding $J$-defined
+and total.
+\end{registration}
+
+<<Registration: $\mathcal{F}|_{J}$ is 1-sorted-yielding $J$-defined total>>=
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be 1-sorted-yielding ManySortedSet of I;
+  cluster F|J -> 1-sorted-yielding J-defined total;
+  correctness
+  proof
+    for x being object st x in dom (F|J) holds (F|J).x is 1-sorted
+    proof
+      let x be object;
+      assume A1: x in dom (F|J);
+      A2: J c= I & dom F = I by PARTFUN1:def 2;
+      then A3: dom (F|J) = J by RELAT_1:62;
+      then A4: dom (F|J) c= dom F by A2, TARSKI:def 1;
+      then A5: x in dom F by A1;
+      x in J & x in dom (F|J) by A1, A3;
+      then (F|J).x = F.x & F.x is 1-sorted by A4, A5, FUNCT_1:47, PRALG_1:def 12;
+      hence (F|J).x is 1-sorted;
+    end;
+
+    hence thesis by PRALG_1:def 12;
+  end;
+end;
+@
+
+% NEW
+\begin{registration}
+When $\mathcal{F}$ is group-yielding, then $\mathcal{F}|_{J}$ is group-yielding.
+\end{registration}
+
+<<Register: $\mathcal{F}|_{J}$ is group-yielding>>=
+registration
+  let I be set;
+  let J be Subset of I;
+  let F be Group-yielding ManySortedSet of I;
+  cluster F|J -> Group-yielding J-defined total;
+  correctness
+  proof
+    for y being object st y in rng (F|J) holds y is Group
+    proof
+      let y be object;
+      assume A1: y in rng (F|J);
+      then consider j being object such that
+      A2: j in dom (F|J) & y = (F|J).j
+      by FUNCT_1:def 3;
+      (F|J).j = F.j by A2, FUNCT_1:47;
+      then A3: y = F.j by A2;
+      dom (F|J) = J & dom F = I by PARTFUN1:def 2;
+      then j in dom F by A2, RELAT_1:60;
+      then F.j in rng F by FUNCT_1:3;
+      then F.j is Group by Def1;
+      hence y is Group by A3;
+    end;
+    hence thesis;
+  end;
+end;
+@ 
+
 \begin{theorem}
 Let $\mathcal{F}$ be a family of groups indexed by $I\neq\emptyset$, let
 $J\subset I$. Then $\mathcal{F}|_{J}$ is a family of groups indexed by $J$.
@@ -387,6 +475,23 @@ proof
   hence F|J is Subgroup-Family of J,G by A2,GROUP_20:def 1;
 end;
 @ %def ThSubFamRes
+
+% NEW
+\begin{definition*}
+When $\mathcal{F}$ is a family of subgroups of $G$ indexed by $I$,  when
+$J\subset I$, we have $\mathcal{F}|_{J}$ be a family of subgroups of $G$.
+\end{definition*}
+
+<<Redefine: $\mathcal{F}|_{J}$ as a subgroup family of $G$>>=
+definition
+  let I be non empty set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  let J be Subset of I;
+  redefine func F|J -> Subgroup-Family of J,G;
+  correctness by ThSubFamRes;
+end;
+@ 
 
 \begin{theorem}
 Let $\mathcal{N}$ be a family of normal subgroups of $G$ indexed by $I\neq\emptyset$.
@@ -479,6 +584,136 @@ proof
   end;
 end;
 @ %def ThJoinNorm2
+
+\begin{theorem}
+Let $J\subset I$, let $\mathcal{F}$ be a family of normal subgroups of
+$G$ indexed by $I$. Then $\mathcal{F}|_{J}$ is a family of normal
+subgroups of $G$.
+\end{theorem}
+
+<<Theorem: $\mathcal{F}|_{J}$ is a normal subgroup-family of $G$>>=
+theorem ThNormSubFamResIsNorm:
+  for J being non empty Subset of I
+  for F being normal Subgroup-Family of I,G
+  holds F|J is normal Subgroup-Family of J,G
+proof
+  let J be non empty Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  for j being Element of J holds (F|J).j is normal Subgroup of G
+  proof
+    let j be Element of J;
+    j in J;
+    then j in dom (F|J) by PARTFUN1:def 2;
+    then A1: F.j = (F|J).j by FUNCT_1:47;
+    j in I;
+    then F.i is normal Subgroup of G by DefS1;
+    hence (F|J).j is normal Subgroup of G by A1;
+  end;
+
+  hence F|J is normal Subgroup-Family of J,G by DefS1;
+end;
+@ %def ThNormSubFamResIsNorm
+
+% new
+\begin{registration}
+We register the fact that $\mathcal{F}|_{J}$ is a normal subgroup family
+when $\mathcal{F}$ is one.
+\end{registration}
+
+<<Register: restriction of normal subgroup-family is normal>>=
+registration
+  let I be non empty set;
+  let J be non empty Subset of I;
+  let G be Group;
+  let F be normal Subgroup-Family of I,G;
+  cluster F|J -> normal for Subgroup-Family of J,G;
+  correctness by ThNormSubFamResIsNorm;
+end;
+@ 
+
+% NEW
+\begin{theorem}
+Let $\mathcal{F}$ be a family of normal subgroups of $G$ indexed by
+$I\neq\emptyset$, let $J\subset I$, let $A=\bigcup\mathcal{F}|_{J}$
+be the union of the underlying sets. Then $\langle A\rangle$ is a normal
+subgroup of $G$.
+\end{theorem}
+
+<<Theorem: $\langle\bigcup\mathcal{F}|_{J}\rangle$ is normal subgroup>>=
+theorem ThJoinNormUnionRes:
+  for J being non empty Subset of I
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = Union (Carrier (F|J))
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let J be non empty Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  assume A1: A = Union (Carrier (F|J));
+  set Fam = {the carrier of (F|J).j where j is Element of J : not
+  contradiction};
+  set X = union Fam;
+  for x being object holds x in A iff x in X
+  proof
+    let x be object;
+    hereby 
+      assume B1: x in A;
+      then x in union (rng (Carrier (F|J))) by A1, CARD_3:def 4;
+      then consider Uj being set such that
+      B2: x in Uj & Uj in rng (Carrier (F|J)) by TARSKI:def 4;
+      Carrier (F|J) is ManySortedSet of J;
+      then consider j being Element of J such that
+      B3: Uj = (Carrier (F|J)).j
+      by B2, MssRng;
+      Uj = the carrier of (F|J).j by B3, Th20;
+      then Uj in Fam;
+      hence x in X by B2, TARSKI:def 4;
+    end;
+    assume B1: x in X;
+    then consider Uj being set such that
+    B2: x in Uj & Uj in Fam by TARSKI:def 4;
+    consider j being Element of J such that
+    B3: Uj = the carrier of (F|J).j by B2;
+    B4: dom (Carrier (F|J)) = J by PARTFUN1:def 2;
+    B5: j in dom (Carrier (F|J)) by B4;
+    Uj = (Carrier (F|J)).j by B3,Th20;
+    then B6: Uj in rng (Carrier (F|J)) by B5, FUNCT_1:3;
+    then x in union (rng (Carrier (F|J))) by B2, TARSKI:def 4;
+    then x in Union (Carrier (F|J)) by CARD_3:def 4;
+    hence x in A by A1;
+  end;
+  then A2: X = A by TARSKI:2;
+  then ex N being strict normal Subgroup of G st N = gr A by ThJoinNorm;
+  hence thesis by ThJoinNorm;
+end;
+@ %def ThJoinNormUnionRes
+
+% NEW
+\begin{corollary}
+When $\mathcal{F}$ is a family of normal subgroups of $G$, we have
+$\langle\bigcup\mathcal{F}\rangle$ be a normal subgroup of $G$.
+\end{corollary}
+
+<<Corollary: union of normal subgroups is normal subgroup>>=
+theorem ThJoinNormUnion:
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = Union (Carrier F)
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  assume A1: A = Union (Carrier F);
+  I c= I & I is non empty;
+  then reconsider J=I as non empty Subset of I;
+  A2: (F|J) = F;
+  then A = Union (Carrier (F|J)) by A1;
+  hence thesis by ThJoinNormUnionRes;
+end;
+@ %def ThJoinNormUnion
 
 \begin{theorem}
 Let $M$ be a family of sets indexed by $I\neq\emptyset$.
@@ -702,4 +937,167 @@ registration
     hence g is I-defined (the carrier of G)-valued total by A2;
   end;
 end;
+@
+
+% NEW
+\begin{theorem}
+When $\mathcal{F}$ is a family of subgroups of $G$, $U(\mathcal{F})$
+induces a ``subset of $G$''-valued function.
+\end{theorem}
+
+\begin{thm-remark}
+The idea is that we will eventually want to do things like take a family
+of normal subgroups, then consider the subgroup generated by their union.
+Mizar does not know their union \emph{is} a subset of $G$, and therefore
+Mizar will panic when trying to consider the group generated by [unknown set].
+We will register the fact that the [[Carrier]] for a family of subgroups 
+is a family of subsets of $G$, i.e., it is [[bool (the carrier of G)]]-valued.
+Then we will redefine the [[Union]] for such families of subsets to be a
+subset. This will expedite reasoning about subgroups generated by
+unions of families of subgroups.
+\end{thm-remark}
+
+<<Theorem: [[Carrier F]] is $\powerset(G)$-valued>>=
+theorem ThSubFamIsBoolValued:
+  for I being set
+  for G being Group
+  for F being Subgroup-Family of I,G
+  holds Carrier F is (bool the carrier of G)-valued
+proof
+  let I be set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  per cases;
+  suppose I is empty;
+    then A1: Carrier F = {};
+    rng {} = {} & {} c= (bool the carrier of G) by RELAT_1:38, XBOOLE_1:2;
+    then rng (Carrier F) c= bool the carrier of G by A1;
+    hence Carrier F is (bool the carrier of G)-valued by A1,RELAT_1:def 19;
+  end;
+  suppose A2: I is non empty;
+    then reconsider I as non empty set;
+    reconsider F as Subgroup-Family of I,G;
+    for z being object st z in rng (Carrier F)
+    holds z in bool the carrier of G
+    proof
+      let z be object;
+      assume A3: z in rng (Carrier F);
+      reconsider y=z as set by TARSKI:1;
+      y in rng (Carrier F) by A3;
+      then consider i being object such that
+      A4: i in dom (Carrier F) & y = (Carrier F).i
+      by FUNCT_1:def 3;
+      dom (Carrier F) = I by PARTFUN1:def 2;
+      then reconsider i as Element of I by A4;
+      y = the carrier of F.i by A4, Th20;
+      then y c= the carrier of G by GROUP_2:def 5;
+      then y in bool the carrier of G by ZFMISC_1:def 1;
+      hence thesis;
+    end;
+    then rng (Carrier F) c= bool the carrier of G by TARSKI:def 3;
+    hence thesis by RELAT_1:def 19;
+  end;
+end;
+@ %def ThSubFamIsBoolValued
+
+\begin{registration}
+We should register $U(\mathcal{F})$ is $\powerset(G)$-valued.
+\end{registration}
+
+<<Register: $U(\mathcal{F})$ is $\powerset(G)$-valued>>=
+registration
+  let I be set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster Carrier F -> (bool the carrier of G)-valued;
+  correctness by ThSubFamIsBoolValued;
+end;
+@
+
+\begin{registration} %NEW
+It makes sense to speak of ``$\powerset(X)$-valued Many-sorted sets
+indexed by $I$''.
+\end{registration}
+
+<<Register: [[(bool X)-valued]] for Many-sorted sets>>=
+registration
+  let I,X be set;
+  cluster (bool X)-valued for ManySortedSet of I;
+  existence
+  proof
+    take M = I --> X;
+    for a being object st a in rng M holds a in bool X
+    proof
+      let a be object;
+      assume a in rng M;
+      then ex x being object st x in dom M & a = M.x by FUNCT_1:def 3;
+      then A1: a = X by FUNCOP_1:7;
+      X c= X;
+      then X in bool X by ZFMISC_1:def 1;
+      hence thesis by A1;
+    end;
+    then rng M c= bool X by TARSKI:def 3;
+    hence M is (bool X)-valued by RELAT_1:def 19;
+  end;
+end;
+@
+
+\begin{definition*}
+When $\mathcal{M}$ is a family of subsets of $X$, then
+$\bigcup\mathcal{M}$ is a subset of $X$.
+\end{definition*}
+
+<<Redefinition: [[Union]] for [[bool X]]-valued families of sets>>=
+definition
+  let I,X be set;
+  let M be (bool X)-valued ManySortedSet of I;
+  redefine func Union M -> Subset of X;
+  correctness
+  proof
+    for A being set st A in rng M holds A c= X
+    proof
+      let A be set;
+      assume A1: A in rng M;
+      rng M c= bool X by RELAT_1:def 19;
+      then A in bool X by A1;
+      hence A c= X by ZFMISC_1:def 1;
+    end;
+    then union (rng M) c= X by ZFMISC_1:76;
+    then Union M c= X by CARD_3:def 4;
+    hence Union M is Subset of X;
+  end;
+end;
+@
+
+% NEW
+\begin{theorem}[Recognition]
+Let $I\neq\emptyset$ be a finite set, let $G$ be any group,
+let $\mathcal{N}$ be a family of normal subgroups of $G$ indexed by $I$.
+If $G = \langle\bigcup\mathcal{N}\rangle$ and if for each $i\in I$ we
+have $\mathcal{N}_{i}\cap\langle\mathcal{N}_{j}:j\in I,j\neq i\rangle=\trivialGroup$,
+then $G\iso\prod\mathcal{N}$.
+\end{theorem}
+
+\begin{thm-remark}
+The family of normal subgroups which obey the hypotheses of this theorem
+``behave like'' an ``ordinary'' direct product when we just multiply
+them together
+$\mathcal{N}_{1}\mathcal{N}_{2}\dots\mathcal{N}_{|I|}$. For this reason,
+mathematicians invent a new notion called a \define{Internal Direct Product}
+which is a \emph{predicate} on a family of normal subgroups.
+\end{thm-remark}
+
+<<Theorem: recognition of direct product>>=
+:: Aschbacher, Finite Group Theory, Theorem (1.9)
+:: Hungerford, Algebra, Ch. 1, section 8, theorem 8.6
+:: Robinson, Theory of Groups, Ch 1, section 4, theorem 1.4.7 (ii)
+theorem ThProdComm:
+  for I being finite non empty set
+  for F being normal Subgroup-Family of I,G
+  st G = gr Union (Carrier F)
+  & (for i being Element of I
+     for N being strict normal Subgroup of G
+     st N = gr (Union (Carrier (F|(I \ {i}))))
+     holds F.i /\ N = (1).G)
+  holds product F, G are_isomorphic;
 @ 
