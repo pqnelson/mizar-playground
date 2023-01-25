@@ -18,8 +18,8 @@ environ
    FINSEQ_2, FUNCT_1, FUNCT_2, FUNCT_3, FUNCT_4, FUNCOP_1, NUMBERS,
    PRALG_1, ALGSTR_0, PARTFUN1, CARD_1, CARD_3, GROUP_1, GROUP_2, GROUP_3,
    PRE_TOPC, GROUP_4, GROUP_6, GROUP_7, GROUP_12, SUBSET_1, XBOOLE_0, PBOOLE,
-   GROUP_19, GROUP_20, GROUP_23, SETFAM_1, REALSET1, GROUP_5, 
-   ARYTM_1, ARYTM_3;
+   VECTMETR, GROUP_19, GROUP_20, GROUP_23, SETFAM_1, REALSET1, GROUP_5, 
+   ARYTM_1, ARYTM_3, GRNILP_1;
 
  constructors FINSET_1, WELLORD2, CARD_1, ORDINAL1, NAT_1, ZFMISC_1,
    BINOP_2, PBOOLE, BINOP_1, REALSET1, RELAT_1, FUNCT_2, FUNCOP_1,
@@ -27,18 +27,19 @@ environ
    PRALG_1, GROUP_12, GROUP_7, FUNCT_7, RELSET_1, PARTFUN1, :: GROUP_17,
    GRSOLV_1, ALGSTR_0, SETFAM_1, GROUP_19, FINSEQ_1, FINSEQ_2, FINSOP_1,
    FINSEQOP, GROUP_3, GROUP_5, INT_2, GROUP_1, FINSEQ_4, :: GROUP_4,
-   SQUARE_1, INT_1, FUNCT_3, FUNCT_4, GROUP_2, GROUP_6, GROUP_4, GROUP_17, GROUP_20;
+   SQUARE_1, INT_1, FUNCT_3, FUNCT_4, GROUP_2, GROUP_6, GROUP_4,
+   GROUP_17, GROUP_20, FUNCT_6, GRNILP_1, SUBSET_1, DOMAIN_1;
 
  notations FINSET_1, WELLORD2, CARD_1, ZFMISC_1, TARSKI, XBOOLE_0,
    RELAT_1, SUBSET_1, RELSET_1, FUNCT_1, BINOP_1, BINOP_2, REALSET1,
    FUNCT_2, FUNCT_7, FUNCOP_1, PBOOLE, ARYTM_1, ARYTM_3, NAT_1, CARD_3,
-   ORDINAL1, NUMBERS, XXREAL_0, XREAL_0, INT_1, DOMAIN_1, STRUCT_0,
+   ORDINAL1, NUMBERS, XXREAL_0, XREAL_0, INT_1, STRUCT_0,
    XCMPLX_0, MONOID_0, PARTFUN1, :: GROUP_17,
    ALGSTR_0, SETFAM_1, PRALG_1,
    GROUP_19, GROUP_12, GROUP_7, FINSOP_1, FINSEQ_1, FINSEQOP, FINSEQ_2,
    GRSOLV_1, GROUP_3, GROUP_5, GROUP_1, :: GROUP_4,
    GROUP_2, GROUP_6,
-   FUNCT_4, GROUP_4, GROUP_17, GROUP_20;
+   FUNCT_4, GROUP_4, GROUP_17, GROUP_20, GRNILP_1, DOMAIN_1;
 
  registrations XBOOLE_0, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2, MONOID_0,
    NAT_1, RELAT_1, FUNCT_1, 
@@ -58,7 +59,8 @@ environ
    PARTFUN1, PRALG_1, GROUP_17, GROUP_19, SETFAM_1, XBOOLE_0, GROUP_21,
    SUBSET_1, PBOOLE, GRSOLV_1, RELAT_1, GROUP_22, XBOOLE_1, BINOP_1,
    ZFMISC_1, REALSET1, FINSEQ_1, NAT_1, FINSEQOP, GROUP_4, FINSEQ_2,
-   PARTFUN2, XREAL_1, INT_1, CARD_1, FUNCT_4, GROUP_20;
+   PARTFUN2, XREAL_1, INT_1, CARD_1, FUNCT_4, GROUP_20, FUNCT_6,
+   GRNILP_1;
 
  requirements BOOLE, SUBSET, NUMERALS, ARITHM, REAL;
 
@@ -3679,29 +3681,61 @@ end;
 
 begin :: Internal direct products
 definition
+  let I be set;
+  let G be Group;
+  let IT be Subgroup-Family of I,G;
+  attr IT is normal means :DefA1:
+  for i being object st i in I holds IT.i is normal Subgroup of G;
+  attr IT is componentwise_strict means :DefA2:
+  for i being object st i in I holds IT.i is strict Subgroup of G;
+end;
+
+definition
   let I be non empty set;
   let G be Group;
   let IT be Subgroup-Family of I,G;
-  attr IT is normal means :DefS1:
+  redefine attr IT is normal means :DefS1:
   for i being Element of I holds IT.i is normal Subgroup of G;
-  attr IT is componentwise_strict means :DefS2:
+  correctness;
+  redefine attr IT is componentwise_strict means :DefS2:
   for i being Element of I holds IT.i is strict Subgroup of G;
+  correctness;
 end;
 
 registration
-  let I be non empty set;
+  let I be set;
   let G be Group;
   cluster componentwise_strict normal for Subgroup-Family of I,G;
   existence
   proof
     deffunc Fun(Element of I) = (1).G;
-    consider F being Group-Family of I such that
-    A2: for i being Element of I holds F.i = Fun(i)
-    from GrFamSch;
-    for i being object st i in I holds F.i is Subgroup of G by A2;
+    set F = I --> (1).G;
+    A1: for i being object st i in I holds F.i = (1).G
+    proof
+      let i be object;
+      assume A2: i in I;
+      dom F = I by PARTFUN1:def 2;
+      hence F.i = (1).G by A2, FUNCOP_1:7;
+    end;
+    A2: for y being object st y in rng F holds y is Group
+    proof
+      let y be object;
+      assume B1: y in rng F;
+      then dom F = I & ex i being object st i in dom F & y = F.i
+      by PARTFUN1:def 2, FUNCT_1:def 3;
+      then y = (1).G by A1;
+      hence y is Group;
+    end;
+    dom F = I by PARTFUN1:def 2;
+    then F is total I-defined;
+    then F is ManySortedSet of I;
+    then F is Group-yielding ManySortedSet of I by A1,A2,Def1;
+    then F is Group-Family of I;
+    then reconsider F as Group-Family of I;
+    for i being object st i in I holds F.i is Subgroup of G by A1;
     then reconsider F as Subgroup-Family of I,G by GROUP_20:def 1;
     take F;
-    thus thesis by A2;
+    thus thesis by A1;
   end;
 end;
 
@@ -3958,31 +3992,51 @@ theorem ThGrFamRes:
   holds F|J is Group-Family of J;
 
 theorem ThSubFamRes:
+  for I being set
   for F being Subgroup-Family of I,G
   for J being set st J c= I
   holds F|J is Subgroup-Family of J,G
 proof
+  let I be set;
   let F be Subgroup-Family of I,G;
   let J be set;
   assume A1: J c= I;
-  then A2: F|J is Group-Family of J by ThGrFamRes;
-  for j being object st j in J holds (F|J).j is Subgroup of G
-  proof
-    let j be object;
-    assume B1: j in J;
-    then F.j is Subgroup of G by A1, GROUP_20:def 1; 
-    hence (F|J).j is Subgroup of G by B1, FUNCT_1:49;
+  per cases;
+  suppose A2: I is empty;
+    then J is empty by A1, XBOOLE_1:3;
+    then A3: I = J by A2;
+    then F|J = F;
+    hence F|J is Subgroup-Family of J,G by A3;
   end;
-  hence F|J is Subgroup-Family of J,G by A2,GROUP_20:def 1;
+  suppose I is non empty;
+    A3: F|J is Group-Family of J by A1,ThGrFamRes;
+    for j being object st j in J holds (F|J).j is Subgroup of G
+    proof
+      let j be object;
+      assume B1: j in J;
+      then F.j is Subgroup of G by A1, GROUP_20:def 1; 
+      hence (F|J).j is Subgroup of G by B1, FUNCT_1:49;
+    end;
+    hence F|J is Subgroup-Family of J,G by A3,GROUP_20:def 1;
+  end;
 end;
 
 definition
-  let I be non empty set;
+  let I be set;
   let G be Group;
   let F be Subgroup-Family of I,G;
   let J be Subset of I;
   redefine func F|J -> Subgroup-Family of J,G;
   correctness by ThSubFamRes;
+end;
+
+registration
+  let I be set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  let J be Subset of I;
+  cluster F|J -> Group-yielding;
+  correctness;
 end;
 
 theorem ThJoinNorm2:
@@ -4060,7 +4114,7 @@ end;
 
 :: theorem ThNormSubGrRes;
 
-theorem ThNormSubFamResIsNorm:
+theorem
   for J being non empty Subset of I
   for F being normal Subgroup-Family of I,G
   holds F|J is normal Subgroup-Family of J,G
@@ -4082,16 +4136,39 @@ proof
 end;
 
 
+theorem ThNormSubFamResIsNorm:
+  for I being set
+  for J being Subset of I
+  for F being normal Subgroup-Family of I,G
+  holds F|J is normal Subgroup-Family of J,G
+proof
+  let I be set;
+  let J be Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  F|J is Subgroup-Family of J, G by ThSubFamRes;
+  for i being object st i in J holds (F|J).i is normal Subgroup of G
+  proof
+    let i be object;
+    assume A1: i in J;
+    then i in I;
+    then A2: F.i is normal Subgroup of G by DefA1;
+    dom (F|J) = J by PARTFUN1:def 2;
+    then (F|J).i = F.i by A1, FUNCT_1:47;
+    hence (F|J).i is normal Subgroup of G by A2;
+  end;
+  hence F|J is normal Subgroup-Family of J,G by DefA1; 
+end;
+
 registration
-  let I be non empty set;
-  let J be non empty Subset of I;
+  let I be set;
+  let J be Subset of I;
   let G be Group;
   let F be normal Subgroup-Family of I,G;
   cluster F|J -> normal for Subgroup-Family of J,G;
   correctness by ThNormSubFamResIsNorm;
 end;
 
-theorem ThJoinNormUnionRes:
+LmJoinNormUnionRes:
   for J being non empty Subset of I
   for F being normal Subgroup-Family of I,G
   for A being Subset of G
@@ -4140,19 +4217,63 @@ proof
   hence thesis by ThJoinNorm;
 end;
 
+theorem ThCarrierEmptySet:
+  for I being set
+  for J being Subset of I st J is empty
+  for F being normal Subgroup-Family of I,G
+  holds Carrier (F|J) = {} --> (bool the carrier of G);
+
+theorem ThJoinNormUnionRes:
+  for I being set
+  for J being Subset of I
+  for F being normal Subgroup-Family of I,G
+  for A being Subset of G
+  st A = Union (Carrier (F|J))
+  ex N being strict normal Subgroup of G 
+  st N = gr A
+proof
+  let I be set;
+  let J be Subset of I;
+  let F be normal Subgroup-Family of I,G;
+  let A be Subset of G;
+  assume A1: A = Union (Carrier (F|J));
+  J is empty or J is non empty;
+  then per cases;
+  suppose A2: J is empty;
+    then Carrier (F|J) = {} --> (bool the carrier of G);
+    then Union Carrier (F|J) = {} by FUNCT_6:26;
+    then A = {} the carrier of G by A1, SUBSET_1:def 2;
+    then A3: gr A = (1).G by GROUP_4:30;
+    take N = (1).G;
+    thus thesis by A3;
+  end;
+  suppose A3: J is non empty;
+    then ex x being object st x in J by XBOOLE_0:def 1;
+    then ex x being object st x in I;
+    then I is non empty;
+    then reconsider I as non empty set;
+    reconsider J as non empty Subset of I by A3;
+    reconsider F as normal Subgroup-Family of I,G;
+    A = Union (Carrier (F|J)) by A1;
+    hence thesis by A1, LmJoinNormUnionRes;
+  end;
+end;
+
 theorem ThJoinNormUnion:
+  for I being set
   for F being normal Subgroup-Family of I,G
   for A being Subset of G
   st A = Union (Carrier F)
   ex N being strict normal Subgroup of G 
   st N = gr A
 proof
+  let I be set;
   let F be normal Subgroup-Family of I,G;
   let A be Subset of G;
   assume A1: A = Union (Carrier F);
-  I c= I & I is non empty;
-  then reconsider J=I as non empty Subset of I;
-  A2: (F|J) = F;
+  reconsider J=[#] I as Subset of I by SUBSET_1:def 3;
+  I = J by SUBSET_1:def 3;
+  then A2: (F|J) = F;
   then A = Union (Carrier (F|J)) by A1;
   hence thesis by ThJoinNormUnionRes;
 end;
@@ -4311,13 +4432,7 @@ proof
   end;
 end;
 
-registration
-  let I be set;
-  let G be Group;
-  let F be Subgroup-Family of I,G;
-  cluster Carrier F -> (bool the carrier of G)-valued;
-  correctness by ThSubFamIsBoolValued;
-end;
+
 
 registration
   let I,X be set;
@@ -4340,6 +4455,14 @@ registration
   end;
 end;
 
+registration
+  let I be set;
+  let G be Group;
+  let F be Subgroup-Family of I,G;
+  cluster Carrier F -> (bool the carrier of G)-valued;
+  correctness by ThSubFamIsBoolValued;
+end;
+
 definition
   let I,X be set;
   let M be (bool X)-valued ManySortedSet of I;
@@ -4360,17 +4483,691 @@ definition
   end;
 end;
 
-:: Aschbacher, Finite Group Theory, Theorem (1.9)
-:: Hungerford, Algebra, Ch. 1, section 8, theorem 8.6
-:: Robinson, Theory of Groups, Ch 1, section 4, theorem 1.4.7 (ii)
-theorem ThProdComm:
-  for I being finite non empty set
+theorem ThCanFSIsMss:
+  for A being finite set
+  holds canFS A is ManySortedSet of Seg (card A)
+proof
+  let A be finite set;
+  set f=canFS A;
+  len f = card A by FINSEQ_1:93;
+  then A1: dom f = Seg (card A) by FINSEQ_1:def 3;
+  then A2: f is (Seg (card A))-defined by RELAT_1:def 18;
+  then reconsider f as (Seg (card A))-defined Function;
+  f is total by A1, PARTFUN1:def 2;
+  hence canFS A is ManySortedSet of Seg (card A) by A2;
+end;
+
+theorem ThCanSubgrFam:
+  for G being Group
+  for S being finite Subset of Subgroups G
+  for n being Nat st n = card S
+  holds canFS S is Subgroup-Family of Seg n, G
+proof
+  let G be Group;
+  let S be finite Subset of Subgroups G;
+  let n be Nat;
+  assume A1: n = card S;
+  len (canFS S) = n by A1, FINSEQ_1:93;
+  then A2: dom (canFS S) = Seg n by FINSEQ_1:def 3;
+  A3: canFS S is ManySortedSet of Seg n by A1, ThCanFSIsMss;
+  A4: for y being object st y in rng (canFS S) holds y is Subgroup of G
+  proof
+    let y be object;
+    assume Z1: y in rng (canFS S);
+    then y in S by FINSEQ_1:def 4, TARSKI:def 3;
+    then y in Subgroups G;
+    hence thesis by GROUP_3:def 1;
+  end;
+  then canFS S is Group-yielding;
+  then A5: canFS S is Group-Family of Seg n by A3;
+  for i being object st i in (Seg n) holds (canFS S).i is Subgroup of G
+  proof
+    let i be object;
+    assume Z1: i in Seg n;
+    then i in dom (canFS S) by A2;
+    then (canFS S).i in rng (canFS S) by FUNCT_1:3;
+    then (canFS S).i in S by FINSEQ_1:def 4, TARSKI:def 3;
+    hence thesis by GROUP_3:def 1;
+  end;
+  hence thesis by A5, GROUP_20:def 1;
+end;
+
+theorem ThCanFsNormSubGrFam:
+  for G being Group
+  for N being finite Subset of the_normal_subgroups_of G
+  for n being Nat st n = card N
+  holds canFS N is normal Subgroup-Family of Seg n, G
+proof
+  let G be Group;
+  let N be finite Subset of the_normal_subgroups_of G;
+  let n be Nat;
+  assume A1: n = card N;
+  len (canFS N) = n by A1, FINSEQ_1:93;
+  then A2: dom (canFS N) = Seg n by FINSEQ_1:def 3;
+  the_normal_subgroups_of G c= Subgroups G by GRNILP_1:17;
+  then N is finite Subset of Subgroups G by XBOOLE_1:1;
+  then A3: canFS N is Subgroup-Family of (Seg n),G by A1,ThCanSubgrFam;
+  for i being object st i in Seg n
+  holds (canFS N).i is normal Subgroup of G
+  proof
+    let i be object;
+    assume Z1: i in Seg n;
+    then i in dom (canFS N) by A2;
+    then (canFS N).i in rng (canFS N) by FUNCT_1:3;
+    then (canFS N).i in N by FINSEQ_1:def 4, TARSKI:def 3;
+    hence thesis by GRNILP_1:def 1;
+  end;
+  hence canFS N is normal Subgroup-Family of (Seg n), G by A3, DefA1;
+end;
+
+theorem ThJoinEmptyGr:
+  for G being Group
+  for I being empty set
   for F being normal Subgroup-Family of I,G
-  st G = gr Union (Carrier F)
+  holds gr Union (Carrier F) = (1).G
+proof
+  let G be Group;
+  let I be empty set;
+  let F be normal Subgroup-Family of I,G;
+  Carrier F = {} --> (bool the carrier of G);
+  then Union Carrier F = {} by FUNCT_6:26;
+  then Union Carrier F = {} the carrier of G by SUBSET_1:def 2;
+  hence gr Union (Carrier F) = (1).G by GROUP_4:30;
+end;
+
+
+LmEmptyProdHelper:
+  for G being Group
+  for I being empty set
+  for F being normal Subgroup-Family of I,G
+  for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F | J)))
+  holds F.i /\ N = (1).G
+proof
+  let G be Group;
+  let I be empty set;
+  let F be normal Subgroup-Family of I,G;
+  let i be Element of I;
+  assume A1: i in I;
+  then contradiction by XBOOLE_0:def 1;
+  hence thesis;
+end;
+
+:: Ideally, this would be our definition for "is_internal_product_of",
+:: but it doesn't work as intended when I is non empty set.
+:: Initially I thought there was a problem in the second clause,
+:: which states each family member is a lattice complement to the
+:: remaining family members, but I suspect the problem has to do with
+:: "Subgroup-Family of I,G" changing its meaning when I is a "non empty set"
+:: as opposed to I being just a "set".
+definition
+  let G be Group;
+  let I be set;
+  let F be normal Subgroup-Family of I,G;
+  pred G is_product_of F means :DefPO:
+  (the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G);
+end;
+
+:: This is the version I came up with in paranoia that the first
+:: version was somehow not explicit, and there was typing ambiguities
+:: in the second clause (about lattice complements).
+definition
+  let G be Group;
+  let I be set;
+  let F be normal Subgroup-Family of I,G;
+  pred G is_internal_product_of F means :DefIPO:
+  (the multMagma of G = gr Union (Carrier F))
+  & (for i being Element of I st i in I
+     for J being Subset of I st J = I \ {i}
+     for UF being (bool the carrier of G)-valued ManySortedSet of J
+     st UF = Carrier (F|J)
+     for UFi being Subset of G st UFi = Union UF
+     for N being strict normal Subgroup of G
+     st N = gr UFi
+     holds F.i /\ N = (1).G);
+end;
+
+::
+:: definition
+::   let G be Group;
+::   let I be non empty set;
+::   let F be normal Subgroup-Family of I,G;
+::   pred G is_internal_product_of F means :DefIPO:
+::   (the multMagma of G = gr Union (Carrier F))
+::   & (for i being Element of I
+::      for N being strict normal Subgroup of G
+::      st N = gr (Union (Carrier (F|(I \ {i}))))
+::      holds F.i /\ N = (1).G);
+:: end;
+
+
+:: When we have I be any set which just so happens to be "non empty"
+:: (apparently a distinct situation from "I being non empty set"?)
+:: everything works as expected.
+for G being Group
+for I being set st I is non empty
+for F being normal Subgroup-Family of I,G
+holds G is_internal_product_of F iff
+((the multMagma of G = gr Union (Carrier F))
+  & (for i being Element of I st i in I
+     for J being Subset of I st J = I \ {i}
+     for UF being (bool the carrier of G)-valued ManySortedSet of J
+     st UF = Carrier (F|J)
+     for UFi being Subset of G st UFi = Union UF
+     for N being strict normal Subgroup of G
+     st N = gr UFi
+     holds F.i /\ N = (1).G)) by DefIPO;
+
+:: When I is a "non empty set", the first clause works fine.
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+holds G is_internal_product_of F
+implies (the multMagma of G = gr Union (Carrier F)) by DefIPO;
+:: ... ok, so the first clause seems to be fine, regardless of I
+:: being "non empty set" or just "set"...
+
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+holds G is_internal_product_of F
+implies (for i being Element of I st i in I
+         for J being Subset of I st J = I \ {i}
+         for UF being (bool the carrier of G)-valued ManySortedSet of J
+         st UF = Carrier (F|J)
+         for UFi being Subset of G st UFi = Union UF
+         for N being strict normal Subgroup of G
+         st N = gr UFi
+         holds F.i /\ N = (1).G) by DefIPO;
+::>                               *4
+:: But it's the SECOND clause which causes problems, for some reason!
+
+:: When we try the "is_product_of" predicate on a non empty set I...
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+st G is_product_of F
+holds  (the multMagma of G = gr Union (Carrier F)) by DefPO;
+
+
+for G being Group
+for I being set
+for F being normal Subgroup-Family of I,G
+for i being Element of I st i in I
+holds I \ {i} is Subset of I;
+
+for G being Group
+for I being set
+for F being normal Subgroup-Family of I,G
+for i being Element of I st i in I
+for J being Subset of I st J = I \ {i}
+holds F|J is normal Subgroup-Family of J,G;
+
+
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+for i being Element of I st i in I
+holds I \ {i} is Subset of I;
+
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+for i being Element of I st i in I
+for J being Subset of I st J = I \ {i}
+holds F|J is normal Subgroup-Family of J,G;
+
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+st G is_product_of F
+holds (for i being Element of I st i in I
+       for J being Subset of I st J = I \ {i}
+       for N being strict normal Subgroup of G
+       st N = gr (Union (Carrier (F|J)))
+       holds F.i /\ N = (1).G) by DefPO;
+::>                             *4
+
+for G being Group
+for I being set st I is non empty set
+for F being normal Subgroup-Family of I,G
+st G is_product_of F
+holds  (the multMagma of G = gr Union (Carrier F))
+       & (for i being Element of I st i in I
+          for J being Subset of I st J = I \ {i}
+          for N being strict normal Subgroup of G
+          st N = gr (Union (Carrier (F|J)))
+          holds F.i /\ N = (1).G) by DefPO;
+
+
+for G being Group
+for I being non empty set
+for F being normal Subgroup-Family of I,G
+holds G is_internal_product_of F iff
+((the multMagma of G = gr Union (Carrier F))
+  & (for i being Element of I st i in I
+     for J being Subset of I st J = I \ {i}
+     for UF being (bool the carrier of G)-valued ManySortedSet of J
+     st UF = Carrier (F|J)
+     for UFi being Subset of G st UFi = Union UF
+     for N being strict normal Subgroup of G
+     st N = gr UFi
+     holds F.i /\ N = (1).G)) by DefIPO;
+::>                            *4,4
+
+:: Consequently, here's the workaround I needed to use:
+:: (1) Define an ancillary predicate "is_nontrivial_internal_product_of"
+::     specifically when "I" is a "non empty set"
+:: (2) Define the "is_nontrivial_product_of" to defer to this ancillary
+::     predicate, when I is a non empty set
+:: (3) Prove a theorem stating the general case, and use that theorem
+::     instead of a single definition.
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  pred G is_nontrivial_internal_product_of F means :DefNTIPO:
+  (the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|(I \ {i}))))
+      holds F.i /\ N = (1).G);
+end;
+
+definition
+  let G be Group;
+  let I be set;
+  let F be normal Subgroup-Family of I,G;
+  pred G is_internal_product_of2 F means :DefIPO2:
+  G is trivial if I is empty
+  otherwise ex I1 being non empty set, F1 being normal Subgroup-Family
+  of I1,G st I1 = I & F1 = F & G is_nontrivial_internal_product_of F1;
+  consistency;
+end;
+
+theorem ThNontrivialCase:
+  for G being Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of2 F
+  iff ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  thus (G is_internal_product_of2 F)
+  implies ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+  proof
+    assume G is_internal_product_of2 F;
+    then ex I1 being non empty set, F1 being normal Subgroup-Family
+    of I1,G st I1 = I & F1 = F & G is_nontrivial_internal_product_of F1
+    by DefIPO2;
+    hence thesis by DefNTIPO;
+  end;
+  assume A1: the multMagma of G = gr Union (Carrier F);
+  assume A2: for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G;
+  then A3: G is_nontrivial_internal_product_of F by A1, DefNTIPO;
+  hence G is_internal_product_of2 F by DefIPO2;
+end;
+
+theorem ThTrivialCase:
+  for G being Group
+  for I being empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of2 F  
+  iff ((the multMagma of G = gr Union (Carrier F))
+      & (for i being Element of I st i in I
+         for J being Subset of I st J = I \ {i}
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|J)))
+         holds F.i /\ N = (1).G))
+proof
+  let G be Group;
+  let I be empty set;
+  let F be normal Subgroup-Family of I,G;
+  thus G is_internal_product_of2 F  
+  implies ((the multMagma of G = gr Union (Carrier F))
+      & (for i being Element of I st i in I 
+         for J being Subset of I st J = I \ {i}
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|J)))
+         holds F.i /\ N = (1).G))
+  proof
+    assume A1: G is_internal_product_of2 F;
+    then G is trivial by DefIPO2;
+    A1b: (1).G = the multMagma of G
+    proof
+      B1: G is trivial by A1, DefIPO2;
+      then 1_G in G & ex x being object st the carrier of G = {x} by GROUP_6:def 2;
+      then B2: the carrier of G = {1_G} by B1, TARSKI:def 1, GROUP_6:def 2;
+      then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
+      hence the multMagma of G = (1).G by  GROUP_2:61;
+    end;    
+    hence the multMagma of G = gr Union (Carrier F) by ThJoinEmptyGr;
+    thus thesis by DefIPO2, LmEmptyProdHelper, ThJoinEmptyGr;
+  end;
+  assume A1: the multMagma of G = gr Union (Carrier F);
+  assume A2: for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G;
+  the multMagma of G = (1).G by A1, ThJoinEmptyGr;
+  then G is trivial;
+  hence G is_internal_product_of2 F by DefIPO2;
+end;
+
+theorem ThIPO:
+  for G being Group
+  holds
+  (for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of2 F  
+  iff ((the multMagma of G = gr Union (Carrier F))
+      & (for i being Element of I st i in I
+         for J being Subset of I st J = I \ {i}
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|J)))
+         holds F.i /\ N = (1).G))) &
+  (for I being empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of2 F  
+  iff ((the multMagma of G = gr Union (Carrier F))
+      & (for i being Element of I st i in I
+         for J being Subset of I st J = I \ {i}
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|J)))
+         holds F.i /\ N = (1).G)))
+proof
+  let G be Group;
+  thus thesis by ThTrivialCase,ThNontrivialCase;
+end;
+
+
+  for G being Group
+  for I being set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of2 F  
+  iff ((the multMagma of G = gr Union (Carrier F))
+      & (for i being Element of I st i in I
+         for J being Subset of I st J = I \ {i}
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|J)))
+         holds F.i /\ N = (1).G))
+proof
+  let G be Group;
+  let I be set;
+  per cases;
+  suppose I is non empty set;
+    hence thesis by ThIPO, DefNTIPO;
+::>               *4,4
+  end;
+  suppose I is empty set;
+    hence thesis by ThIPO;
+  end;
+end;
+
+proof end;
+::> *396
+
+theorem ThEmptyIPO:
+  for G being Group
+  for I being empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of F iff G is trivial
+proof
+  let G be Group;
+  let I be empty set;
+  let F be normal Subgroup-Family of I,G;
+  hereby 
+    assume G is_internal_product_of F;
+    hence G is trivial by DefIPO, LmEmptyProdHelper, ThJoinEmptyGr;
+  end;
+  assume A1: G is trivial;
+  hence thesis by DefIPO;
+::>             *4
+  :: A1b: (1).G = the multMagma of G
+  :: proof
+  ::   1_G in G & ex x being object st the carrier of G = {x} by A1,GROUP_6:def 2;
+  ::   then B1: the carrier of G = {1_G} by A1, TARSKI:def 1, GROUP_6:def 2;
+  ::   then the carrier of G = the carrier of (1).G by GROUP_2:def 7;
+  ::   hence the multMagma of G = (1).G by  GROUP_2:61;
+  :: end;
+  :: A2: gr Union (Carrier F) = (1).G by ThJoinEmptyGr
+  ::                         .= the multMagma of G by A1b, GROUP_6:12;
+  :: A3: for i being Element of I st i in I
+  ::    for J being Subset of I st J = I \ {i}
+  ::    for N being strict normal Subgroup of G
+  ::    st N = gr (Union (Carrier (F|J)))
+  ::    holds F.i /\ N = (1).G by LmEmptyProdHelper;
+  :: hence G is_internal_product_of F by A2;
+end;
+
+theorem ThNonEmptyIPO:
+  for G being Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  holds (G is_internal_product_of F iff
+         ((the multMagma of G = gr Union (Carrier F))
+         & (for i being Element of I
+         for N being strict normal Subgroup of G
+         st N = gr (Union (Carrier (F|(I \ {i}))))
+         holds F.i /\ N = (1).G)))
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  I is non empty implies (G is_internal_product_of F iff
+  ((the multMagma of G = gr Union (Carrier F)) &
+     for i being Element of I
+     for N being strict normal Subgroup of G
+     st N = gr (Union (Carrier (F|(I \ {i}))))
+     holds F.i /\ N = (1).G)) by DefIPO;
+::>                            *4,4
+  hence thesis;
+  proof end;
+::>   *396
+     thus G is_internal_product_of F implies
+::>       *51
+       ((the multMagma of G = gr Union (Carrier F))
+       & (for i being Element of I
+       for N being strict normal Subgroup of G
+       st N = gr (Union (Carrier (F|(I \ {i}))))
+       holds F.i /\ N = (1).G))
+  proof
+    assume A1: G is_internal_product_of F;
+    hence (the multMagma of G = gr Union (Carrier F)) by DefIPO;
+    let i be Element of I;
+    let N be strict normal Subgroup of G;
+    assume A2: N = gr (Union (Carrier (F|(I \ {i}))));
+    i in I;
+    then for J being Subset of I st J = I \ {i}
+    for N1 being strict normal Subgroup of G
+    st N1 = gr (Union (Carrier (F|J)))
+    holds F.i /\ N1 = (1).G by A1, DefIPO;
+::>                          *4
+    F.i is normal Subgroup of G;
+    
+    thus F.i /\ N = (1).G by A1,A2,DefIPO;
+::>                        *4
+
+    then A2: (the multMagma of G = gr Union (Carrier F))
+    & (for i being Element of I st i in I
+    for J being Subset of I st J = I \ {i}
+    for N being strict normal Subgroup of G
+    st N = gr (Union (Carrier (F|J)))
+    holds F.i /\ N = (1).G) by A1, DefIPO;
+::>                          *4
+    hence thesis;
+  end;
+  assume A1: the multMagma of G = gr Union (Carrier F);
+  assume A2: for i being Element of I
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|(I \ {i}))))
+  holds F.i /\ N = (1).G;
+
+  A3: for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G
+  proof
+    let i be Element of I;
+    assume B1: i in I;
+    let J be Subset of I;
+    assume B2: J = I \ {i};
+    let N be strict normal Subgroup of G;
+    assume B3: N = gr (Union (Carrier (F|J)));
+    then N = gr (Union (Carrier (F|(I \ {i})))) by B1,B2;
+    hence F.i /\ N = (1).G by A2;
+  end;
+  (the multMagma of G = gr Union (Carrier F))
+  & (for i being Element of I st i in I
+     for J being Subset of I st J = I \ {i}
+     for N being strict normal Subgroup of G
+     st N = gr (Union (Carrier (F|J)))
+     holds F.i /\ N = (1).G) by A1,A3;
+  hence G is_internal_product_of F by DefIPO;
+::>                                 *4
+end;
+
+definition
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  redefine pred G is_internal_product_of F means :DefIPO1:
+  (the multMagma of G = gr Union (Carrier F))
   & (for i being Element of I
      for N being strict normal Subgroup of G
      st N = gr (Union (Carrier (F|(I \ {i}))))
-     holds F.i /\ N = (1).G)
+     holds F.i /\ N = (1).G);
+  compatibility by ThNonEmptyIPO;
+end;
+
+
+:: definition
+::   let G be Group;
+::   let I be non empty set;
+::   let F be normal Subgroup-Family of I,G;
+::   redefine pred G is_internal_product_of F means :DefIPO1:
+::   ((the multMagma of G = gr Union (Carrier F))
+::   & (for i being Element of I
+::      for N being strict normal Subgroup of G
+::      st N = gr (Union (Carrier (F|(I \ {i}))))
+::      holds F.i /\ N = (1).G));
+::   compatibility
+::   proof
+::     I is non empty;
+::     then (G is_internal_product_of F) iff
+::     (((the multMagma of G = gr Union (Carrier F))
+::     & (for i being Element of I
+::        for N being strict normal Subgroup of G
+::        st N = gr (Union (Carrier (F|(I \ {i}))))
+::        holds F.i /\ N = (1).G))) by DefIPO;
+:: ::>                               *4,4
+::     hence thesis;
+::   end;
+:: end;
+
+theorem
+  for G being strict Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  st G is_internal_product_of F
+  holds F is internal DirectSumComponents of G,I
+proof
+  let G be strict Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  assume A1: G is_internal_product_of F;
+  
+  A2: (for i being Element of I holds F.i is normal Subgroup of G);
+  A3: ex UF being Subset of G st ( UF = Union (Carrier F) & gr UF = G )
+  by A1, DefIPO;
+  A4: for i being Element of I
+  ex UFi being Subset of G
+  st (UFi = Union ((Carrier F) | (I \ {i}))
+   & ([#] (gr UFi)) /\ ([#] (F . i)) = {(1_ G)})
+  proof
+    let i be Element of I;
+    set J = I \ {i};
+    take UFi = Union (Carrier (F|(I \ {i})));
+    
+    (Carrier (F|J)) = ((Carrier F) | J)
+    proof
+      per cases;
+      suppose J is empty;
+        hence thesis;
+      end;
+      suppose J is non empty;
+        then reconsider J as non empty Subset of I;
+        for j being Element of J
+        holds (Carrier (F|J)).j = ((Carrier F) | J).j
+        proof
+          let j be Element of J;
+          j in J;
+          then j in dom (F|J) by PARTFUN1:def 2;
+          then B1: (F|J).j = F.j by FUNCT_1:47;
+          B2: (Carrier (F|J)).j = the carrier of (F|J).j by Th20;
+          B3: (Carrier (F|J)).j
+                = the carrier of (F|J).j by B2
+               .= the carrier of F.j by B1
+               .= (Carrier F).j by Th20;
+          dom ((Carrier F)|J) = J by PARTFUN1:def 2;
+          then j in dom ((Carrier F)|J);
+          then ((Carrier F)|J).j = (Carrier F).j by FUNCT_1:47;
+          hence (Carrier (F|J)).j = ((Carrier F) | J).j by B3;
+        end;
+        hence thesis by PBOOLE:def 21;
+      end;
+    end;
+    hence B1: UFi = Union ((Carrier F) | (I \ {i})) by A1,DefIPO;
+    J c= I;
+    then consider N being strict normal Subgroup of G such that
+    B2: N = gr (Union (Carrier (F|(I \ {i}))))
+    by ThJoinNormUnionRes;
+    B3: N = gr UFi by B1, B2;
+    B4: F.i /\ N = (1).G by A1, B2, DefIPO;
+    then B5: [#] ((F.i) /\ N) = [#] (1).G
+                             .= {1_G} by GROUP_2:def 7;
+    [#] ((F.i) /\ N) = (carr (F.i)) /\ (carr N) by GROUP_2:def 10
+                    .= ([#] (F.i)) /\ (carr N) by GROUP_2:def 9, STRUCT_0:def 3
+                    .= ([#] (F.i)) /\ ([#] N) by GROUP_2:def 9, STRUCT_0:def 3
+                    .= ([#] (F.i)) /\ ([#] (gr UFi)) by B3;
+    hence ([#] (gr UFi)) /\ ([#] (F . i)) = {(1_ G)} by B5,GROUP_2:81;
+  end;
+  thus F is internal DirectSumComponents of G,I by A2,A3,A4,GROUP_20:16;
+end;
+
+
+:: Aschbacher, Finite Group Theory, Theorem (1.9)
+:: Hungerford, Algebra, Ch. 1, section 8, theorem 8.6
+:: Robinson, Theory of Groups, Ch 1, section 4, theorem 1.4.7 (ii)
+theorem ThRecog:
+  for I being finite set
+  for F being normal Subgroup-Family of I,G
+  st G is_internal_product_of F
   holds product F, G are_isomorphic;
 ::>                               *4
 
@@ -4823,4 +5620,6 @@ proof
   by A3, GROUP_6:78;
 end;
 ::> 4: This inference is not accepted
+::> 51: Invalid conclusion
 ::> 103: Unknown functor
+::> 396: Formula expected
