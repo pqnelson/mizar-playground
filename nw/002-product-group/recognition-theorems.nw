@@ -1279,4 +1279,202 @@ theorem ThRecog:
   for F being normal Subgroup-Family of I,G
   holds G is_internal_product_of F
   iff F is internal DirectSumComponents of G,I;
+
+definition
+  let G be Group;
+  let H,K be Subgroup of G;
+  pred H is_a_complement_of K means :DefComp:
+  H /\ K = (1).G & H*K = the carrier of G;
+end;
+
+definition
+  let G be Group;
+  func carrs G -> Function of Subgroups G, bool the carrier of G
+  means :DefCarr:
+  for H being strict Subgroup of G
+  holds it.H = the carrier of H;
+  existence;
+::>       *4
+  uniqueness;
+::>        *4,4
+end;
+
+definition
+  let G be Group;
+  let Fam be Subset of Subgroups G;
+  pred G is_product_of Fam means :DefPO:
+  ((for A being Subset of G st A = (union ((carrs G) .: Fam))
+    holds the carrier of G = gr A)
+   & (for S being object st S in F holds S is normal Subgroup of G)
+   & (for S being strict Subgroup of G st S in Fam
+      for A being Subset of G st A = (union ((carrs G) .: (Fam \ {S})))
+      for N being strict normal Subgroup of G
+      st N = gr A
+      holds S /\ N = (1).G));
+end;
+
+definition
+  let G be Group;
+  let I be set;
+  let F be Subgroup-Family of I,G;
+  pred G is_internal_product_of F means :DefIPO:
+  for S being Subset of Subgroups G st S = rng F
+  holds G is_product_of S;
+end;
+
+theorem ThIPO:
+  for G being Group
+  for I being set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of F
+  iff ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G));
+::>                          *4,4,4
+
+reserve I for set;
+reserve F for Subgroup-Family of I,G;
+theorem ThUnionRng:
+  Union (Carrier F) = union ((carrs G) .: (rng F));
+::>                                              *4
+
+theorem ThComp:
+  for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  holds Union (Carrier (F|J)) = union ((carrs G) .: ((rng F) \ (F.i)));
+::>                                                                  *4
+
+theorem ThIPO2:
+  for G being Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  holds G is_internal_product_of F
+  iff ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  thus G is_internal_product_of F implies
+  ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+  proof
+    assume A1: G is_internal_product_of F;
+    then for Fam being Subset of Subgroups G st Fam = rng F
+    holds G is_product_of Fam by DefIPO;
+    then for Fam being Subset of Subgroups G st Fam = rng F
+    holds (((for A being Subset of G st A = (union ((carrs G) .: Fam))
+    holds the carrier of G = gr A)
+    & (for S being object st S in F holds S is normal Subgroup of G)
+    & (for S being strict Subgroup of G st S in Fam
+    for A being Subset of G st A = (union ((carrs G) .: (Fam \ {S})))
+    for N being strict normal Subgroup of G
+    st N = gr A
+    holds S /\ N = (1).G))) by DefPO;
+::>                          *4,4,4,4
+    thus the multMagma of G = gr Union (Carrier F);
+::>                                              *4
+    let i be Element of I;
+    assume A2: i in I;
+    let J be Subset of I;
+    assume A3: J = I \ {i};
+    let N be strict normal Subgroup of G;
+    assume A4: N = gr (Union (Carrier (F|J)));
+    thus F.i /\ N = (1).G;
+::>                     *4
+  end;
+  assume A1: the multMagma of G = gr Union (Carrier F);
+  assume A2: for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G;
+  thus G is_internal_product_of F;
+::>                             *4
+end;
+
+theorem
+  for G being strict Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  st G is_internal_product_of F
+  holds F is internal DirectSumComponents of G,I
+proof
+  let G be strict Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  assume A1: G is_internal_product_of F;
+  
+  A2: (for i being Element of I holds F.i is normal Subgroup of G);
+  A3: ex UF being Subset of G st (UF = Union (Carrier F) & gr UF = G)
+  proof
+    B1: the multMagma of G = gr Union (Carrier F) by A1, ThIPO2;
+    take UF = Union (Carrier F);
+    thus thesis by B1;
+  end;
+  A4: for i being Element of I
+  ex UFi being Subset of G
+  st (UFi = Union ((Carrier F) | (I \ {i}))
+   & ([#] (gr UFi)) /\ ([#] (F . i)) = {(1_ G)})
+  proof
+    let i be Element of I;
+    set J = I \ {i};
+    take UFi = Union (Carrier (F|(I \ {i})));
+    
+    (Carrier (F|J)) = ((Carrier F) | J)
+    proof
+      per cases;
+      suppose J is empty;
+        hence thesis;
+      end;
+      suppose J is non empty;
+        then reconsider J as non empty Subset of I;
+        for j being Element of J
+        holds (Carrier (F|J)).j = ((Carrier F) | J).j
+        proof
+          let j be Element of J;
+          j in J;
+          then j in dom (F|J) by PARTFUN1:def 2;
+          then B1: (F|J).j = F.j by FUNCT_1:47;
+          B2: (Carrier (F|J)).j = the carrier of (F|J).j by Th20;
+          B3: (Carrier (F|J)).j
+                = the carrier of (F|J).j by B2
+               .= the carrier of F.j by B1
+               .= (Carrier F).j by Th20;
+          dom ((Carrier F)|J) = J by PARTFUN1:def 2;
+          then j in dom ((Carrier F)|J);
+          then ((Carrier F)|J).j = (Carrier F).j by FUNCT_1:47;
+          hence (Carrier (F|J)).j = ((Carrier F) | J).j by B3;
+        end;
+        hence thesis by PBOOLE:def 21;
+      end;
+    end;
+    hence B1: UFi = Union ((Carrier F) | (I \ {i})) by A1,DefIPO;
+    J c= I;
+    then consider N being strict normal Subgroup of G such that
+    B2: N = gr (Union (Carrier (F|(I \ {i}))))
+    by ThJoinNormUnionRes;
+    B3: N = gr UFi by B1, B2;
+    B4: F.i /\ N = (1).G by A1, B2, ThIPO2;
+    then B5: [#] ((F.i) /\ N) = [#] (1).G
+                             .= {1_G} by GROUP_2:def 7;
+    [#] ((F.i) /\ N) = (carr (F.i)) /\ (carr N) by GROUP_2:def 10
+                    .= ([#] (F.i)) /\ (carr N) by GROUP_2:def 9, STRUCT_0:def 3
+                    .= ([#] (F.i)) /\ ([#] N) by GROUP_2:def 9, STRUCT_0:def 3
+                    .= ([#] (F.i)) /\ ([#] (gr UFi)) by B3;
+    hence ([#] (gr UFi)) /\ ([#] (F . i)) = {(1_ G)} by B5,GROUP_2:81;
+  end;
+  thus F is internal DirectSumComponents of G,I by A2,A3,A4,GROUP_20:16;
+end;
 @ 
