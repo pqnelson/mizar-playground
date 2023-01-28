@@ -4482,7 +4482,6 @@ proof
   hence F|J is normal Subgroup-Family of J,G by ThS1;
 end;
 
-
 theorem ThNormSubFamResIsNorm:
   for I being set
   for J being Subset of I
@@ -4510,6 +4509,36 @@ registration
   let F be normal Subgroup-Family of I,G;
   cluster F|J -> normal for Subgroup-Family of J,G;
   correctness by ThNormSubFamResIsNorm;
+end;
+
+theorem ThStrSubFamResIsStr:
+  for I being set
+  for J being Subset of I
+  for F being componentwise_strict Subgroup-Family of I,G
+  holds F|J is componentwise_strict Subgroup-Family of J,G
+proof
+  let I be set;
+  let J be Subset of I;
+  let F be componentwise_strict Subgroup-Family of I,G;
+  for i being object st i in J
+  holds (F|J).i is strict Subgroup of G
+  proof
+    let i be object;
+    assume A1: i in J;
+    then A2: F.i is strict Subgroup of G by DefA2;
+    dom (F|J) = J by PARTFUN1:def 2;
+    hence (F|J).i is strict Subgroup of G by A1,A2,FUNCT_1:47;
+  end;
+  hence F|J is componentwise_strict Subgroup-Family of J,G by DefA2; 
+end;
+
+registration
+  let I be set;
+  let J be Subset of I;
+  let G be Group;
+  let F be componentwise_strict Subgroup-Family of I,G;
+  cluster F|J -> componentwise_strict for Subgroup-Family of J,G;
+  correctness by ThStrSubFamResIsStr;
 end;
 
 LmJoinNormUnionRes:
@@ -4904,7 +4933,7 @@ definition
    & (the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
       for N being strict normal Subgroup of G
-      st N = gr (Union (Carrier (F|(I \ {i}))))
+      st N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))))
       holds F/.i /\ N = (1).G);
 end;
 
@@ -4931,7 +4960,7 @@ theorem ThIPOa:
   iff ((for i being Element of I holds F.i is normal Subgroup of G)
    & (the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
-      for J being Subset of I st J = I \ {i}
+      for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
       for N being strict normal Subgroup of G
       st N = gr (Union (Carrier (F|J)))
       holds F.i /\ N = (1).G))
@@ -4943,7 +4972,7 @@ proof
   implies ((for i being Element of I holds F.i is normal Subgroup of G)
    & (the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
-      for J being Subset of I st J = I \ {i}
+      for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
       for N being strict normal Subgroup of G
       st N = gr (Union (Carrier (F|J)))
       holds F.i /\ N = (1).G))
@@ -4954,7 +4983,7 @@ proof
     let i be Element of I;
     assume A2: i in I;
     let J be Subset of I;
-    assume A3: J = I \ {i};
+    assume A3: J = I \ {j where j is Element of I : F.i = F.j};
     let N be strict normal Subgroup of G;
     assume A4: N = gr (Union (Carrier (F|J)));
     reconsider I0=I as set;
@@ -4968,7 +4997,7 @@ proof
   assume A0: for i being Element of I holds F.i is normal Subgroup of G;
   assume A1: the multMagma of G = gr Union (Carrier F);
   assume A2: for i being Element of I st i in I
-  for J being Subset of I st J = I \ {i}
+  for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
   for N being strict normal Subgroup of G
   st N = gr (Union (Carrier (F|J)))
   holds F.i /\ N = (1).G;
@@ -4978,7 +5007,7 @@ proof
   holds F0.i is normal Subgroup of G by A0;
   
   for i0 being Element of I0 st i0 in I0
-  for J0 being Subset of I0 st J0 = I0 \ {i0}
+  for J0 being Subset of I0 st J0 = I0 \ {j where j is Element of I : F.i0 = F.j}
   for N being strict normal Subgroup of G
   st N = gr (Union (Carrier (F0|J0)))
   holds (F0/.i0) /\ N = (1).G
@@ -4986,11 +5015,11 @@ proof
     let i0 be Element of I0;
     assume i0 in I0;
     let J0 be Subset of I0;
-    assume B2: J0 = I0 \ {i0};
+    assume B2: J0 = I0 \ {j where j is Element of I : F.i0 = F.j};
     let N be strict normal Subgroup of G;
     assume B3: N = gr (Union (Carrier (F0|J0)));
     reconsider i=i0 as Element of I;
-    reconsider J=I \ {i} as Subset of I;
+    reconsider J=I \ {j where j is Element of I : F.i = F.j} as Subset of I;
     N = gr (Union (Carrier (F|J))) by B2, B3;
     then F.i /\ N = (1).G by A2;
     hence (F0/.i0) /\ N = (1).G by DefSFM;
@@ -5006,7 +5035,7 @@ definition
   (the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
       for N being strict normal Subgroup of G
-      st N = gr (Union (Carrier (F|(I \ {i}))))
+      st N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))))
       holds F/.i /\ N = (1).G);
   correctness by DefA1;
 end;
@@ -5018,7 +5047,7 @@ theorem ThIPO:
   holds G is_internal_product_of F
   iff ((the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
-      for J being Subset of I st J = I \ {i}
+      for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
       for N being strict normal Subgroup of G
       st N = gr (Union (Carrier (F|J)))
       holds F.i /\ N = (1).G))
@@ -5029,13 +5058,13 @@ proof
   thus G is_internal_product_of F
   implies ((the multMagma of G = gr Union (Carrier F))
    & (for i being Element of I st i in I
-      for J being Subset of I st J = I \ {i}
+      for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
       for N being strict normal Subgroup of G
       st N = gr (Union (Carrier (F|J)))
       holds F.i /\ N = (1).G)) by ThIPOa;
   assume A1: the multMagma of G = gr Union (Carrier F);
   assume A2: for i being Element of I st i in I
-  for J being Subset of I st J = I \ {i}
+  for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
   for N being strict normal Subgroup of G
   st N = gr (Union (Carrier (F|J)))
   holds F.i /\ N = (1).G;
@@ -5043,18 +5072,140 @@ proof
   hence thesis by A1,A2,ThIPOa;
 end;
 
+theorem ThInjectiveIPO:
+  for G being Group
+  for I being non empty set
+  for F being normal Subgroup-Family of I,G
+  st F is one-to-one
+  holds G is_internal_product_of F
+  iff ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be normal Subgroup-Family of I,G;
+  assume A1: F is one-to-one;
+  thus G is_internal_product_of F implies
+  ((the multMagma of G = gr Union (Carrier F))
+   & (for i being Element of I st i in I
+      for J being Subset of I st J = I \ {i}
+      for N being strict normal Subgroup of G
+      st N = gr (Union (Carrier (F|J)))
+      holds F.i /\ N = (1).G))
+  proof
+    assume Z2: G is_internal_product_of F;
+    hence the multMagma of G = gr Union (Carrier F);
+    let i be Element of I;
+    assume Z3: i in I;
+    A2: {i} c= {j where j is Element of I : F.i = F.j}
+    proof
+      for x being object st x in {i}
+      holds x in {j where j is Element of I : F.i = F.j}
+      proof
+        let x be object;
+        assume B1: x in {i};
+        then B2: x = i by TARSKI:def 1;
+        then F.x = F.i;
+        then ex x0 being Element of I st x0 = x & F.x0 = F.i by B2; 
+        hence x in {j where j is Element of I : F.i = F.j};
+      end;
+      hence thesis by TARSKI:def 3;
+    end;
+    for x being object st x in {j where j is Element of I : F.i = F.j}
+    holds x in {i}
+    proof
+      let x be object;
+      assume B1: x in {j where j is Element of I : F.i = F.j};
+      then consider j being Element of I such that
+      B2: x = j & F.i = F.j;
+      dom F = I by PARTFUN1:def 2;
+      then i in dom F & j in dom F & F.i = F.j by B2;
+      then i = j by A1, FUNCT_1:def 4;
+      then x = i by B2;
+      hence x in {i} by TARSKI:def 1;
+    end;
+    then {j where j is Element of I : F.i = F.j} c= {i} by TARSKI:def 3;
+    then A3: {j where j is Element of I : F.i = F.j} = {i} by A2, XBOOLE_0:def 10;
+    let J be Subset of I;
+    assume Z4a: J = I \ {i};
+    then Z4: J = I \ {j where j is Element of I : F.i = F.j} by A3;
+    let N be strict normal Subgroup of G;
+    assume Z5: N = gr (Union (Carrier (F|J)));
+    then N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))))
+    by Z4;
+    hence F.i /\ N = (1).G by A3,A1,Z2,Z3,Z4,Z5,ThIPO;
+  end;
+  assume Z6: the multMagma of G = gr Union (Carrier F);
+  assume Z7: for i being Element of I st i in I
+  for J being Subset of I st J = I \ {i}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G;
+  
+  for i being Element of I st i in I
+  for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|J)))
+  holds F.i /\ N = (1).G
+  proof
+    let i be Element of I;
+    assume B1: i in I;
+    let J be Subset of I;
+    assume B2: J = I \ {j where j is Element of I : F.i = F.j};
+    A2: {i} c= {j where j is Element of I : F.i = F.j}
+    proof
+      for x being object st x in {i}
+      holds x in {j where j is Element of I : F.i = F.j}
+      proof
+        let x be object;
+        assume B1: x in {i};
+        then B2: x = i by TARSKI:def 1;
+        then F.x = F.i;
+        then ex x0 being Element of I st x0 = x & F.x0 = F.i by B2; 
+        hence x in {j where j is Element of I : F.i = F.j};
+      end;
+      hence thesis by TARSKI:def 3;
+    end;
+    for x being object st x in {j where j is Element of I : F.i = F.j}
+    holds x in {i}
+    proof
+      let x be object;
+      assume B1: x in {j where j is Element of I : F.i = F.j};
+      then consider j being Element of I such that
+      B2: x = j & F.i = F.j;
+      dom F = I by PARTFUN1:def 2;
+      then i in dom F & j in dom F & F.i = F.j by B2;
+      then i = j by A1, FUNCT_1:def 4;
+      then x = i by B2;
+      hence x in {i} by TARSKI:def 1;
+    end;
+    then {j where j is Element of I : F.i = F.j} c= {i} by TARSKI:def 3;
+    then A3: {j where j is Element of I : F.i = F.j} = {i} by A2, XBOOLE_0:def 10;
+    let N be strict normal Subgroup of G;
+    assume B3: N = gr (Union (Carrier (F|J)));
+    thus F.i /\ N = (1).G by Z7,B1,B2,B3,A3,ThIPO;
+  end;
+
+  hence G is_internal_product_of F by Z6, ThIPO;
+end;
+
+
 theorem
   for G being strict Group
   for I being non empty set
   for F being normal Subgroup-Family of I,G
-  st G is_internal_product_of F
+  st G is_internal_product_of F & F is one-to-one
   holds F is internal DirectSumComponents of G,I
 proof
   let G be strict Group;
   let I be non empty set;
   let F be normal Subgroup-Family of I,G;
   assume A1: G is_internal_product_of F;
-  
+  assume A1b: F is one-to-one;
   A2: (for i being Element of I holds F.i is normal Subgroup of G);
   A3: ex UF being Subset of G st (UF = Union (Carrier F) & gr UF = G) by A1;
   A4: for i being Element of I
@@ -5094,7 +5245,8 @@ proof
     consider N being strict normal Subgroup of G such that
     B3: N = gr (Union (Carrier (F|(I \ {i}))))
     by ThJoinNormUnionRes;
-    B4: [#] ((F.i) /\ N) = {1_G} by A1, B3, ThIPO, GROUP_2:def 7;
+    ((F.i) /\ N) = (1).G by A1,A1b,B3,ThInjectiveIPO;
+    then B4: [#] ((F.i) /\ N) = {1_G} by A1, A1b, B3, ThInjectiveIPO, GROUP_2:def 7;
     [#] ((F.i) /\ N) = (carr (F.i)) /\ (carr N) by GROUP_2:def 10
                     .= ([#] (F.i)) /\ (carr N) by GROUP_2:def 9
                     .= ([#] (F.i)) /\ ([#] (gr UFi)) by B3, GROUP_2:def 9;
@@ -5253,13 +5405,13 @@ proof
   thus G is_internal_product_of Fam by A5,A6,A7;
 end;
 
-theorem
+theorem ThCarrG:
   for G being Group
   for I being non empty set
   for F being componentwise_strict Subgroup-Family of I,G
   for Fam being Subset of Subgroups G st Fam = rng F
   holds union { A where A is Subset of G : ex H being strict Subgroup of G
-  st A = the carrier of H & H in Fam } = Union (Carrier F)
+  st H in Fam & A = the carrier of H } = Union (Carrier F)
 proof
   let G be Group;
   let I be non empty set;
@@ -5267,7 +5419,7 @@ proof
   let Fam be Subset of Subgroups G;
   assume A1: Fam = rng F;
   set X = { A where A is Subset of G : ex H being strict Subgroup of G
-                                       st A = the carrier of H & H in Fam };
+                                       st H in Fam & A = the carrier of H };
   for x being object holds x in X iff x in rng (Carrier F)
   proof
     let x be object;
@@ -5275,9 +5427,9 @@ proof
       assume A2: x in X;
       then consider A being Subset of G such that
       A2b: x = A &
-      ex H being strict Subgroup of G st A = the carrier of H & H in Fam;
+      ex H being strict Subgroup of G st H in Fam & A = the carrier of H;
       consider H being strict Subgroup of G such that
-      A3: x = the carrier of H & H in Fam by A2b;
+      A3: H in Fam & x = the carrier of H by A2b;
       H in rng F by A1,A3;
       then consider i being Element of I such that
       A4: H = F.i
@@ -5310,18 +5462,171 @@ proof
   hence union X = Union (Carrier F) by CARD_3:def 4;
 end;
 
-theorem
+theorem ThCoim:
+  for f being Function
+  for X being non empty set st dom f = X
+  for x,x0 being Element of X
+  holds f.x = f.x0 iff x in f " {f.x0}
+proof
+  let f be Function;
+  let X be non empty set;
+  assume Z1: dom f = X;
+  let x,x0 be Element of X;
+  thus f.x = f.x0 implies x in f " {f.x0}
+  proof
+    assume Z2: f.x = f.x0;
+    x in dom f & f.x in {f.x0} by Z1, Z2, TARSKI:def 1;
+    hence x in f " {f.x0} by Z1, Z2, FUNCT_1:def 7;
+  end;
+  assume Z3: x in f " {f.x0};
+  then x in dom f & f.x in {f.x0} by Z1, FUNCT_1:def 7;
+  hence f.x = f.x0 by TARSKI:def 1;
+end;
+
+theorem ThCoim2:
+  for f being Function
+  for X being non empty set st X = dom f
+  for x,x0 being Element of X
+  holds f.x = f.x0 iff x in {x1 where x1 is Element of X : f.x0 = f.x1 }
+proof
+  let f be Function;
+  let X be non empty set;
+  assume Z1: X = dom f;
+  let x,x0 be Element of X;
+  hereby 
+    assume f.x = f.x0;
+    hence x in {x1 where x1 is Element of X : f.x0 = f.x1 } by Z1;
+  end;
+  assume Z2: x in {x1 where x1 is Element of X : f.x0 = f.x1 };
+  then consider x1 being Element of X such that
+  Z3: x = x1 & f.x0 = f.x1;
+  thus f.x = f.x0 by Z1,Z2,Z3;
+end;
+
+theorem ThSantasLHelper:
   for G being Group
   for I being non empty set
   for F being componentwise_strict Subgroup-Family of I,G
   for Fam being Subset of Subgroups G st Fam = rng F
   for H being strict Subgroup of G st H in Fam
-  ex i being Element of I, J being Subset of I
-  st J = I \ {i} & H = F.i 
-  & union { A where A is Subset of G : ex K being strict Subgroup of G
-                                       st A = the carrier of K & K in F }
-    = Union (Carrier (F|J));
-::>                       *4
+  for i being Element of I st H = F.i
+  for J being Subset of I st J = I \ {j where j is Element of I : F.i = F.j}
+  holds
+  union { A where A is Subset of G :
+          ex K being strict Subgroup of G
+          st K in Fam & A = the carrier of K & K <> H }
+  = Union (Carrier (F|J))
+proof
+  let G be Group;
+  let I be non empty set;
+  let F be componentwise_strict Subgroup-Family of I,G;
+  let Fam be Subset of Subgroups G;
+  assume A1: Fam = rng F;
+  let H be strict Subgroup of G;
+  assume A2: H in Fam;
+  let i be Element of I;
+  assume A3: H = F.i;
+  let J be Subset of I;
+  assume A4: J = I \ {j where j is Element of I : F.i = F.j};
+  set X = { A where A is Subset of G :
+            ex K being strict Subgroup of G
+            st K in Fam & A = the carrier of K & K <> H };
+  for x being object holds x in X iff x in rng (Carrier (F|J))
+  proof
+    let x be object;
+    thus x in X implies x in rng (Carrier (F|J))
+    proof
+      assume B1: x in X;
+      then consider A being Subset of G such that
+      B2: A = x & ex K being strict Subgroup of G
+                  st K in Fam & A = the carrier of K & K <> H;
+      consider K being strict Subgroup of G such that
+      B3: K in Fam & A = the carrier of K & K <> H by B2;
+      K in rng F by A1, B3;
+      then consider j being Element of I such that
+      B4: F.j = K by MssRng;
+      B5: dom (F|J) = J & dom (Carrier (F|J)) = J by PARTFUN1:def 2;
+      B6: j in J
+      proof
+        Z0: j in I;
+        Z1: i in I & j in I & dom F = I & I is non empty
+        & F is Function by PARTFUN1:def 2;
+        F is Function;
+        F.j <> H by B3, B4;
+        then Z2: F.j <> F.i by A3;
+        :: then not j in F " {F.i} by Z1, ThCoim;
+        then not j in {j1 where j1 is Element of I : F.i = F.j1} by Z1, ThCoim2;
+        then j in I \ {j1 where j1 is Element of I : F.i = F.j1} by XBOOLE_0:def 5;
+        hence thesis by A4;
+      end;
+      then reconsider j as Element of J;
+      (F|J).j is Subgroup of G by B6, GROUP_20:def 1;
+      then reconsider Fj=(F|J).j as Subgroup of G;
+      B7: (Carrier (F|J)).j = the carrier of Fj by B6, Th20;
+      B8: (F|J).j = K by B4, B6, FUNCT_1:49;
+      then the carrier of Fj = the carrier of K by B6;
+      then A = the carrier of K by B3
+      .= the carrier of Fj by B5,B6,B8
+      .= (Carrier (F|J)).j by B5, B7, Th20, GROUP_20:def 1;
+      then A in rng (Carrier (F|J)) by B5, B6, FUNCT_1:3;
+      hence x in rng (Carrier (F|J)) by B2;
+    end;
+    assume Z2: x in rng (Carrier (F|J));
+    then consider j0 being object such that
+    Z3: j0 in dom (Carrier (F|J)) & x = (Carrier (F|J)).j0
+    by FUNCT_1:def 3;
+    Z4: dom (Carrier (F|J)) = J by PARTFUN1:def 2;
+    then reconsider j=j0 as Element of J by Z3;
+    F|J is Subgroup-Family of J,G;
+    Z5: j in J by Z3, Z4;
+    then reconsider Fj = (F|J).j as Subgroup of G by GROUP_20:def 1;
+    the carrier of Fj c= the carrier of G by GROUP_2:def 5;
+    then reconsider A = the carrier of Fj as Subset of G;
+    Z5b: Fj = F.j
+    proof
+      B1: j in I by Z5;
+      then B2: j in dom F by PARTFUN1:def 2;
+      (F|J).j = F.j by Z5, FUNCT_1:49;
+      hence thesis;
+    end;
+    Z6: Fj in Fam
+    proof
+      B1: j in I by Z5;
+      then B2: j in dom F by PARTFUN1:def 2;
+      (F|J).j = F.j by Z5, FUNCT_1:49;
+      then (F|J).j in rng F by B2, FUNCT_1:3;
+      hence thesis by A1;
+    end;
+    Z7: Fj <> H
+    proof
+      B1: i in I & j in I & I is non empty & F is Function &
+      dom F = I by Z5, PARTFUN1:def 2;
+      j in I \ {j where j is Element of I : F.i = F.j} by A4, Z5;
+      then not j in {j where j is Element of I : F.i = F.j} by XBOOLE_0:def 5;
+      then F.i <> F.j by B1, ThCoim2;
+      then F.i <> Fj by Z5b;
+      hence H <> Fj by A3;
+    end;
+    Z8: x = (Carrier (F|J)).j by Z3, Z4, Z5
+         .= the carrier of Fj by Z5, Th20;
+    A = the carrier of Fj;
+    Fj <> H & Fj in Fam & A = the carrier of Fj by Z6, Z7;
+    ex K being strict Subgroup of G
+    st K in Fam & A = the carrier of K & K <> H
+    proof
+      F|J is componentwise_strict Subgroup-Family of J,G;
+      then reconsider K = Fj as strict Subgroup of G by Z5, DefA2;
+      take K;
+      thus thesis by Z6, Z7;
+    end;
+    then A in X;
+    hence x in X by Z8;
+  end;
+  then X = rng (Carrier (F|J)) by TARSKI:2;
+  hence union X = Union (Carrier (F|J)) by CARD_3:def 4;
+end;
+
+
 
 theorem ThEquivDefs:
   for G being Group
@@ -5339,12 +5644,127 @@ proof
   thus G is_internal_product_of F implies G is_internal_product_of Fam
   proof
     assume B1: G is_internal_product_of F;
-    thus G is_internal_product_of Fam;
-::>                                 *4,4,4
+    B2: for H being strict Subgroup of G st H in Fam
+    holds H is normal Subgroup of G
+    proof
+      let H be strict Subgroup of G;
+      assume H in Fam;
+      then H in rng F by A1;
+      then consider i being Element of I such that
+      Z1: H = F.i by MssRng;
+      F.i is normal Subgroup of G by B1;
+      hence H is normal Subgroup of G by Z1;
+    end;
+
+    B3: ex A being Subset of G
+        st A = union { UH where UH is Subset of G :
+                       ex H being strict Subgroup of G
+                       st H in Fam & UH = the carrier of H }
+        & the multMagma of G = gr A
+    proof
+      consider A being Subset of G such that
+      Z1: A = Union (Carrier F);
+      take A;
+      thus union { A where A is Subset of G :
+                   ex H being strict Subgroup of G
+                   st H in Fam & A = the carrier of H }
+       = Union (Carrier F) by A1, ThCarrG
+      .= A by Z1;
+      thus the multMagma of G = gr A by Z1, B1;
+    end;
+    B4: for i being Element of I st i in I
+        for N being strict normal Subgroup of G
+        st N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))))
+        holds F/.i /\ N = (1).G by B1;
+    for H being strict Subgroup of G st H in Fam
+    for A being Subset of G
+    st A = union { UK where UK is Subset of G :
+                   ex K being strict Subgroup of G
+                   st K in Fam & UK = the carrier of K
+                    & K <> H }
+    holds H /\ gr A = (1).G
+    proof
+      let H be strict Subgroup of G;
+      assume Z1: H in Fam;
+      let A be Subset of G;
+      assume Z2: A = union { UK where UK is Subset of G :
+                             ex K being strict Subgroup of G
+                             st K in Fam & UK = the carrier of K & K <> H };
+      H in rng F by A1,Z1;
+      then consider i being Element of I such that
+      Z3: H = F.i by MssRng;
+      reconsider J=I \ {j where j is Element of I : F.i = F.j} as Subset of I;
+      
+      Z4: union { A where A is Subset of G : ex K being strict Subgroup of G
+                                       st K in Fam & A = the carrier of K & K <> H }
+        = Union (Carrier (F|J))
+      by A1, Z1, Z3, ThSantasLHelper;
+      for i being Element of I holds F.i is normal Subgroup of G by B1;
+      then F is normal Subgroup-Family of I,G by ThS1;
+      then consider N being strict normal Subgroup of G such that
+      Z5: N = gr Union (Carrier (F|J)) by ThJoinNormUnionRes;
+      H = F/.i & F/.i /\ N = (1).G by B1, Z3, Z5, DefSFM;
+      then H /\ N = (1).G;
+      hence H /\ gr A = (1).G by Z2, Z4, Z5;
+    end;
+
+    hence G is_internal_product_of Fam by B2, B3;
   end;
   assume B1: G is_internal_product_of Fam;
-  thus G is_internal_product_of F;
-::>                             *4,4,4,4
+  for H being strict Subgroup of G st H in Fam
+  holds H is normal Subgroup of G by B1;
+
+  B2: for i being Element of I st i in I holds F.i is normal Subgroup of G
+  proof
+    let i be Element of I;
+    assume Z1: i in I;
+    Z2: F.i is Subgroup of G & F.i is strict Subgroup of G
+    by ThS2;
+    F.i in rng F by MssRng;
+    then F.i in Fam by A1;
+    hence F.i is normal Subgroup of G by B1, Z2;
+  end;
+
+  B3: the multMagma of G = gr Union (Carrier F)
+  proof
+    consider A being Subset of G such that
+    Z1: A = union { UH where UH is Subset of G :
+                     ex H being strict Subgroup of G
+                     st H in Fam & UH = the carrier of H }
+        & the multMagma of G = gr A by B1;
+    A = Union (Carrier F) by A1, Z1, ThCarrG;
+    hence thesis by Z1;
+  end;
+  for i being Element of I st i in I
+  for N being strict normal Subgroup of G
+  st N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))))
+  holds F/.i /\ N = (1).G
+  proof
+    let i be Element of I;
+    assume Z1: i in I;
+    let N be strict normal Subgroup of G;
+    assume Z2: N = gr (Union (Carrier (F|(I \ {j where j is Element of I : F.i = F.j}))));
+    F.i is strict Subgroup of G by Z1,DefA2;
+    then reconsider H=F.i as strict Subgroup of G;
+    F.i in rng F by Z1,MssRng;
+    then Z3: H in Fam by A1;
+    then H is normal Subgroup of G by B1;
+    then reconsider H as strict normal Subgroup of G;
+    reconsider J = I \ {j where j is Element of I : F.i = F.j} as Subset of I;
+    Z4: union { A0 where A0 is Subset of G :
+                ex K being strict Subgroup of G
+                st K in Fam & A0 = the carrier of K & K <> H }
+    = Union (Carrier (F|J)) by A1, Z3, ThSantasLHelper; then
+    reconsider A = union { A0 where A0 is Subset of G :
+                           ex K being strict Subgroup of G
+                           st K in Fam & A0 = the carrier of K & K <> H }
+    as Subset of G;
+    Z5: A = Union (Carrier (F|J)) by Z4;
+    then N = gr A by Z2, Z4;
+    then H /\ N = (1).G by B1, Z2, Z3, Z4, Z5;
+    hence thesis by DefSFM;
+  end;
+
+  hence G is_internal_product_of F by B2, B3;
 end;
 
-::> 4: This inference is not accepted
