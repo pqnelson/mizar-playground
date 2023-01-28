@@ -9,7 +9,6 @@
 :: licenses, or see http://www.gnu.org/licenses/gpl.html and
 :: http://creativecommons.org/licenses/by-sa/3.0/.
 
-
 environ
 
  vocabularies PRE_POLY, SEMI_AF1, FINSET_1, WELLORD1, NEWTON, MSSUBFAM,
@@ -2418,7 +2417,6 @@ definition
   end;
 end;
 
-
 theorem Th50:
   Image (proj (F, i)) = the multMagma of F.i
 proof
@@ -3806,7 +3804,6 @@ registration
   end;
 end;
 
-
 registration
   let I be set;
   let J be Subset of I;
@@ -4811,7 +4808,6 @@ proof
   end;
 end;
 
-
 definition
   let G be Group;
   let Fam be Subset of Subgroups G;
@@ -5188,4 +5184,22 @@ proof
 
   hence G is_internal_product_of F by A1, B1, B2, ThCarrG;
 end;
-::> 396: Formula expected
+
+begin :: Appendix: random useful lemmas
+
+theorem
+  for X,Y being set
+  for f being Function of X,Y
+  holds rng f c= Y by LmRangeContainedInCod;
+
+
+theorem
+  for X,Y,Z,W being set st Z <> {} & W <> {}
+  for f being Function of [:X,Y:],Z
+  for g being Function of [:X,Y:],W
+  st (for a being Element of X, b being Element of Y holds f.(a,b) = g.(a,b))
+  holds rng f = rng g by LmEqRng;
+
+theorem
+  for x being object st x in G
+  holds x in (Omega).G by LmOmega;
