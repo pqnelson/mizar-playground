@@ -1,0 +1,496 @@
+\section{Solvable Groups}
+
+This is the formal proof sketches of \S9 of Aschbacher~\cite{aschbacher2000finite}.
+
+\begin{definition}[{\cite[\S8]{aschbacher2000finite}}]
+We define the $n^{\text{th}}$-derived subgroup (for any $n\in\NN$) as:
+\begin{enumerate}
+\item $G^{(0)} = G$
+\item $G^{(1)} = [G, G]$ 
+\item $G^{(n+1)} = [G^{(n)}, G^{(n)}]$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[{\cite[(9.1)]{aschbacher2000finite}}]
+A group $G$ is solvable if and only if there exists some positive
+$n\in\NN$ such that $G^{(n)}=\trivialGroup$.
+\end{theorem}
+
+\begin{theorem}[{\cite[(9.2)]{aschbacher2000finite}}]
+A finite group is solvable if and only if all its composition factors
+are of prime order.
+\end{theorem}
+
+\begin{theorem}
+  \begin{enumerate}
+  \item If $G$ is a solvable group and $\varphi\colon G\to H$ is a group
+morphism, then $\varphi(G)$ is a solvable group.
+\item If $G$ is solvable and $H\subgroup G$, then $H$ is solvable.
+\item Let $H\normalSubgroup G$. If $H$ is solvable and $G/H$ is
+  solvable, then $G$ is solvable.
+  \end{enumerate}
+\end{theorem}
+
+\begin{thm-remark}
+This first claim is proven in Theorem~\mml[Th16]{grsolv1},
+the second claim is proven in Theorem~\mml[Th5]{grsolv1}.
+\end{thm-remark}
+
+\begin{definition}
+Let $G$ be a group. We call a subgroup $H$ a \define{Minimal Normal}
+subgroup if $H\normalSubgroup G$ and for any $N\normalSubgroup G$
+such that $N\subgroup H$ we necessarily have $N=\trivialGroup$.
+\end{definition}
+
+\begin{mizar}
+definition
+  let G be Group;
+  let IT be Subgroup of G;
+  attr IT is minimal_normal means
+  IT is normal & for N being strict normal Subgroup of G
+  st N is Subgroup of IT holds N=(1).G;
+end;
+
+registration
+  let G be Group;
+  cluster minimal_normal for Subgroup of G;
+  existence; :: take (1).G;
+end;
+
+registration
+  let G be Group;
+  cluster minimal_normal -> normal for Subgroup of G;
+  correctness;
+end;
+\end{mizar}
+
+\begin{definition}
+Let $p\in\NN$ be prime.
+A \define{Elementary Abelian} $p$-group is a group whose non-identity
+elements are order $p$.
+\end{definition}
+
+\begin{mizar}
+definition
+  let p be Nat;
+  let IT be p-group Group;
+  attr IT is elementary_abelian means
+  for g being Element of IT st g <> 1_IT holds ord g = p;
+end;
+
+registration
+  let p be Prime;
+  cluster elementary_abelian for p-group Group;
+  existence; :: take INT.Group(p)
+end;
+
+registration
+  let p be Prime;
+  cluster elementary_abelian for solvable p-group Group;
+  existence;
+end;
+\end{mizar}
+
+\begin{theorem}[{\cite[(9.4)]{aschbacher2000finite}}]
+Solvable minimal normal subgroups of finite groups are elementary
+abelian $p$-groups.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for G being finite Group
+  for H being solvable minimal_normal Subgroup of G
+  ex p being Prime st H is elementary_abelian p-group Group;
+\end{mizar}
+
+\begin{definition}
+Let $G$ be a group. The \define{Lower Central Series} is a family of
+groups defined recursively as:
+\begin{enumerate}
+\item $L_{1}(G) = G$
+\item $L_{n+1}(G) = [L_{n}(G), G]$.
+\end{enumerate}
+\end{definition}
+
+\begin{mizar}
+definition
+  let G be Group;
+  func lower_central_series G -> Function means
+  dom it = pos Nat & it.1 = G
+  & for n being pos Nat holds it.(n+1) = [. (it.n), (Omega).G .];
+  existence;
+  uniqueness;
+end;
+
+definition
+  let G be Group;
+  synonym L(G) for lower_centra_series G;
+end;
+\end{mizar}
+
+
+\begin{theorem} Let $G$ be a group.
+\begin{enumerate}
+\item $L_{n}(G)$ is a characteristic subgroup of $G$ for each $n\in\NN$
+\item $L_{n+1}(G)\subgroup L_{n}(G)$ for each $n\in\NN$
+\item $L_{n}(G)/L_{n+1}(G)\subgroup Z(G/L_{n+1}(G))$ for each $n\in\NN$.
+\end{enumerate}
+\end{theorem}
+
+\begin{mizar}
+reserve G for Group;
+
+theorem
+  for n being pos Nat
+  holds L(G).n is strict characteristic Subgroup of G;
+
+definition
+  let G be Group;
+  let n be positive Nat;
+  redefine (lower_central_series G).n -> strict
+  characteristic Subgroup of G;
+  correctness;
+end;
+
+theorem
+  for n being positive Nat
+  holds L(G).(n+1) is Subgroup of L(G).n;
+
+theorem
+  for n being positive Nat
+  for Gn being strict normal Subgroup of L(G).(n+1)
+  st Gn = (lower_central_series G).n
+  holds ((lower_central_series G).(n+1)) ./. Gn
+         = center (G ./. (lower_central_series G).n);
+\end{mizar}
+
+\begin{theorem}
+Let $G_{1}$, $G_{2}$ be groups, let $\varphi\colon G_{1}\to G_{2}$ be a
+group morphism, and let $H_{2}\subgroup G_{2}$ be a subgroup.
+Then the pre-image $\varphi^{-1}(H_{2})$ forms a subgroup of $G_{1}$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for G1,G2 being Group
+  for H2 being Subgroup of G2
+  for phi being Homomorphism of G1,G2
+  ex H1 being strict Subgroup of G1
+  st carr H1 = phi " carr H2;
+
+definition
+  let G1,G2 be Group;
+  let H2 be Subgroup of G2;
+  let phi be Homomorphism of G1,G2;
+  func Preimage(phi,H) -> strict Subgroup of G1 means
+  carr it = phi " carr H2;
+  existence;
+  uniqueness;
+end;
+
+registration
+  let G1,G2 be Group;
+  let N be normal Subgroup of G2;
+  let phi be Homomorphism of G1,G2;
+  cluster Preimage(phi, N) -> normal;
+  correctness;
+end;
+\end{mizar}
+
+\begin{definition}
+Let $G$ be a group. We define the \define{Upper Central Series} for $G$
+to be a function on $\NN$ defined recursively by:
+\begin{enumerate}
+\item $Z_{0}(G)=\trivialSubgroup$
+\item $Z_{n}$ is the pre-image in $G$ of $Z(G/Z_{n-1}(G))$.
+\end{enumerate}
+Observe $Z_{1}=Z(G)$ and that each $Z_{n}(G)$ is a characteristic
+Subgroup of $G$.
+\end{definition}
+
+\begin{def-remark}
+Compare this to Definition~\mml[def2]{grnilp1}
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let G be Group;
+  func upper_central_series G -> Function of Nat, the_normal_subgroups_of G
+  means
+  it.0 = (1).G
+  & for n being pos Nat
+    holds it.(n+1) = Preimage(nat_hom it.n, G./.(it/.n));
+  existence;
+  uniqueness;
+end;
+\end{mizar}
+
+\begin{proposition}
+For each $n\in\NN$, we see $Z_{n}(G)$ is a characteristic Subgroup of $G$.
+\end{proposition}
+
+\begin{mizar}
+definition
+  let G be Group;
+  let n be Nat;
+  redefine (upper_central_series G).n -> strict characteristic
+  Subgroup of G;
+  
+  correctness;
+end;
+\end{mizar}
+
+\begin{definition}
+Let $G$ be a nilpotent group. We define the \define{Nilpotence Class}
+of $G$ to be the smallest $n$ for which there exists a defining subgroup
+series for it.
+\end{definition}
+
+\begin{def-remark}
+I am trying to be consistent with how Mizar defines a nilpotent group,
+which is in terms of the upper central series (but without using that
+name). This means we have to define it in terms of the upper central
+series.
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let G be nilpotent Group;
+  func nilpotence_class G -> pos Nat means
+  for F being FinSequence of the_normal_subgroups_of G st
+  (len F > 0 & F.1 = (Omega).G & F.(len F) = (1).G &
+   (for i being Element of NAT st i in dom F & i+1 in dom F
+    for G1, G2 being strict normal Subgroup of G
+    st G1 = F.i & G2 = F.(i + 1)
+    holds (G2 is Subgroup of G1 &
+           G1./.((G1,G2)`*`) is Subgroup of
+             center (G./.G2))))
+  for n being Nat st n <= len F
+  holds n <= it & it <= len F;
+end; 
+\end{mizar}
+
+
+\begin{theorem}[{\cite[(9.7)]{aschbacher2000finite}}]
+Let $G$ be a nontrivial group.
+Then $G$ is nilpotent of class $m$ if and only if $G/Z(G)$ is nilpotent
+of class $m-1$.
+\end{theorem}
+
+\begin{mizar}
+theorem ThNilpotentIffQuotientByCenter:
+  G is nilpotent iff G./.(center G) is nilpotent;
+
+registration
+  let G be nilpotent Group;
+  cluster G./.(center G) -> nilpotent;
+  correctness;
+end;
+
+theorem
+  for G being nilpotent Group
+  holds nilpotence_class (G./.(center G)) = nilpotence_class G - 1;
+\end{mizar}
+
+\begin{theorem}[{\cite[(5.16)]{aschbacher2000finite}}]
+If $G$ is a nontrivial $p$-group, then $Z(G)\neq\trivialSubgroup$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for p being Prime
+  for G being non trivial p-group Group
+  holds center G is non trivial;
+\end{mizar}
+
+\begin{theorem}[{\cite[(9.8)]{aschbacher2000finite}}]
+Let $p\in\NN$ be prime. Then $p$-groups are nilpotent.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for p being Prime
+  for G being p-group Group
+  holds G is nilpotent
+proof
+  let p be Prime;
+  let G be p-group Group;
+  per cases;
+  suppose G is trivial;
+    hence thesis;
+  end;
+  suppose A1: G is non trivial;
+    defpred P[Group] means $1 is p-group;
+    defpred Q[Group] means $1 is nilpotent;
+    (not Q[G] &
+    for H being Group st P[H] & card H < card G holds Q[H])
+    implies contradiction
+    proof
+      assume A2: not Q[G];
+      assume A3: for H being Group
+                 st P[H] & card H < card G
+                 holds Q[H];
+      P[center G];
+      P[G./.(center G)] & card (G./.(center G)) < card G;
+      then Q[G./.(center G)] by A3;
+      then Q[G] by ThNilpotentIffQuotientByCenter;
+      hence contradiction by A2;
+    end;
+    hence thesis; :: by minimal counter-example
+  end;
+end;
+  
+registration
+  let p be Prime;
+  cluster p-group -> nilpotent for Group;
+  correctness;
+end;
+\end{mizar}
+
+\begin{thm-remark}
+We should take a moment to think about the structure of the proof here,
+the ``argument by minimal counter-example'' appears to be a regular
+induction proof. Recall well-founded induction looks like: if $x$ is an
+element of $X$ and $P[y]$ is true for all $y$ such that $y~R~x$, then
+$P[x]$ must also be true.
+
+We are trying to prove for any group $G$ that $P[G]\implies Q[G]$.
+We start by proving for any group $H$ such that $H~R~G$ (i.e., $|H|<|G|$)
+that $P[H]\implies Q[H]$ holds must imply $P[G]\implies Q[G]$ holds.
+This is logically equivalent to $P[G]\land(P[H]\implies Q[H])\implies Q[G]$ 
+by Currying. We have assumed $P[G]$. We can Curry again, writing
+$Q[G]=(\neg Q[G])\implies\bot$ to make the proof obligation become
+$P[G]\land(P[H]\implies Q[H])\land\neg Q[G]\implies\bot$ by Currying,
+which is what we have proven.
+
+For this to work in Mizar, I believe we need to define a lattice of
+finite groups. We then need to use the scheme ``\lstinline{WFInduction}''
+from~\mml{wellfnd1}.
+\end{thm-remark}
+
+\begin{mizar}
+scheme :: WELLFND1:sch 3
+WFInduction{ F1() -> non empty RelStr , P1[ set ] } :
+  for x being Element of F1() holds P1[x]
+provided
+  A1: for x being Element of F1()
+      st (for y being Element of F1()
+          st y <> x & [y,x] in the InternalRel of F1()
+          holds P1[y])
+      holds P1[x] and
+  A2: F1() is well_founded;
+\end{mizar}
+
+\begin{theorem}
+If $G$ is a nilpotent group of class $m$, then subgroups and homomorphic
+images of $G$ are nilpotent of class at most $m$.
+\end{theorem}
+
+\begin{theorem}
+If $G$ is nilpotent and $H\subgroup G$ is a subgroup,
+then $H\properSubgroup N_{G}(H)$ is a proper subgroup of its normalizer
+in $G$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for G being nilpotent Group
+  for H being Subgroup of G
+  holds H is proper Subgroup of Normalizer H;
+\end{mizar}
+
+\begin{theorem}
+A finite group is nilpotent if and only if it is the [internal] direct
+product of its Sylow subgroups.
+\end{theorem}
+
+\begin{mizar}
+definition
+  let G be Group;
+  func Sylow_subgroups G -> Subset of Subgroups G means
+  for P being strict Subgroup of G
+  holds P in it
+        iff ex p being Prime
+            st P is_Sylow_p-subgroup_of_prime p;
+  existence;
+  uniqueness;
+end;
+
+theorem ThProdOfNilpotents:
+  for G being Group
+  for I being set
+  for F being normal Subgroup-Family of G,I
+  st (for i being Element of I holds F.i is nilpotent)
+   & G is_internal_product_of F
+  holds G is nilpotent;
+
+theorem ThUniqueSylowSubgroups:
+  for G being finite Group
+  st (for p being Prime st p divides card G
+      ex P being strict Subgroup of G
+      st the_sylow_p-subgroups_of_prime (p,G) = {P})
+  holds G is_internal_product_of Sylow_subgroups G;
+  
+theorem
+  for G being finite Group
+  holds G is_internal_product_of Sylow_subgroups G
+        iff G is nilpotent
+proof
+  thus C1: G is_internal_product_of Sylow_subgroups G
+           implies G is nilpotent
+  proof
+    assume A1: G is_internal_product_of Sylow_subgroups G;
+    reconsider I=Sylow_subgroups of G as set,
+    F=id (Sylow_subgroups of G) as Subgroup-Family of I,G;
+    A2: G is_internal_product_of F by A1;
+    for i being Element of I holds F.i is nilpotent;
+    hence thesis by A2, ThProdOfNilpotents;
+  end;
+  thus G is nilpotent
+       implies G is_internal_product_of Sylow_subgroups G
+  proof
+    assume A1: G is nilpotent;
+    for p being Prime st p divides card G
+    for P being Subgroup of G
+    st P is_Sylow_p-subgroup_of_prime p
+    holds the_sylow_p-subgroups_of_prime (p,G) = {P};
+    then G is_internal_product_of Sylow_subgroups G
+    by ThUniqueSylowSubgroups;
+    hence thesis by C1;
+  end;
+end;
+\end{mizar}
+
+\subsection{More about ``Proof by Minimal Counter-example''}
+We want to be able to perform proofs by minimal counter-example
+easily. Towards that end, we need to construct the infrastructure to
+facilitate such proofs. We need something like
+
+\begin{mizar}
+definition
+  func finite_groups -> RelStr means
+  (for G being object
+   holds G is strict finite Group
+         iff G in the carrier of it)
+  & (for x,y being strict finite Group
+     holds [x,y] in the InternalRel of it
+           iff card x < card y);
+  existence;
+  uniqueness;
+end;
+
+registration
+  cluster finite_groups -> non empty;
+  correctness; :: the trivial finite Group in finite_groups
+end;
+\end{mizar}
+
+We need to prove that ``\lstinline{finite_groups}'' is well-founded,
+then we can construct a scheme which basically amounts to a wrapper
+around the well-founded induction scheme.
+
+However, it is unclear to me whether we should restrict ourselves to
+\emph{strict} finite groups, or whether we should permit \emph{all}
+finite groups. I think all finite groups would no longer be
+well-founded, which could cause problems: our induction scheme would
+only work for proving properties about \emph{strict} finite groups.
