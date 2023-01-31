@@ -1,0 +1,286 @@
+\section{Semidirect Product}
+
+This is the proof sketch for formalizing \S10 of
+Aschbacher~\cite{aschbacher2000finite}.
+
+\begin{definition}
+Let $G$ be a group, let $N\normalSubgroup G$, let $H\subgroup G$.
+We call $H$ a \define{Complement to} $N$ in $G$ if $G=HN$ and $H\cap N=\trivialSubgroup$.
+\end{definition}
+
+\begin{mizar}
+definition
+  let G be Group;
+  let H, K be Subgroup of G;
+  attr H is_complement_to K means
+  (H is normal or K is normal)
+  & H "\/" K = the multMagma of G
+  & H /\ K = (1).G;
+  symmetry
+  proof
+    thus for A,B being Subgroup of G
+    st ((A is normal or B is normal)
+        & (A "\/" B = the multMagma of G)
+        & (A "/\" B = (1).G))
+    holds ((B is normal or A is normal)
+        & (B "\/" A = the multMagma of G)
+        & (B "/\" A = (1).G));
+  end;
+end;  
+\end{mizar}
+
+\begin{definition}
+Let $N$, $H$ be groups, let $\varphi\colon H\to\Aut(N)$ be a group morphism.
+We define the \define{Semidirect Product} of $N$ by $H$ along $\varphi$
+as the group $S(H,N,\varphi)=N\rtimes_{\varphi} H$ consisting of ordered pairs $(h,n)\in H\times N$
+with binary operator
+\begin{equation}
+(h_{1},n_{1})(h_{2},n_{2}) = (h_{1}h_{2}, \varphi_{h_{2}}(n_{1})n_{2})
+\end{equation}
+where $\varphi_{h_{2}}\in\Aut(N)$.
+\end{definition}
+
+\begin{def-remark}
+This is a rather massive definition. It's best to attack this
+piece-meal: we define the semidirect product to be a ``\lstinline{multMagma}'',
+then register it is associative, unital, and group-like (thus proving it
+is a Group).
+\end{def-remark}
+
+\begin{def-remark}
+We choose to define the semidirect product as a \emph{strict} magma,
+because we want the definition to reduce to the direct product when
+$\varphi$ is the trivial morphism (and Definition~\mml[def 2]{group7}
+defines the product group as a \emph{strict} magma).
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let H, N be Group;
+  let phi be Homomorphism of H,AutGroup(N);
+  func semi_product(H,N,phi) -> strict multMagma means
+  the carrier of it = the carrier of product <* H, N *>
+  & for h1,h2 being Element of H
+    for n1,n2 being Element of N
+    holds (the multF of it).(<*h1,n1*>, <*h2,n2*>)
+    = <*(h1*h2), ((phi.h2).n1)*n2 *>;
+  existence;
+  uniqueness;
+end;
+\end{mizar}
+
+\begin{registration}
+The semidirect product is non empty.
+\end{registration}
+
+\begin{remark}
+It's rather urgent to register this fact, otherwise all future proofs
+concerning the semidirect product will require proving it.
+\end{remark}
+
+\begin{mizar}
+registration
+  let H, N be Group;
+  let phi be Homomorphism of H,AutGroup(N);
+  cluster semi_product(H,N,phi) -> non empty;
+  coherence
+  proof
+    <* 1_H, 1_N *> in semi_product(H, N, phi);
+    hence semi_product(H,N,phi) is non empty;
+  end;
+end;
+\end{mizar}
+
+\begin{definition}
+Let $H$, $N$ be groups, let $\varphi\colon H\to\Aut(N)$ be a group morphism.
+We use the notation $\langle[h,n]\rangle$ for an element of the
+semidirect product $S(H,N,\varphi)=N\rtimes_{\varphi} H$.
+\end{definition}
+
+\begin{def-remark}
+This definition is just to avoid ambiguity when referring to elements of
+$S(H,N,\varphi)$ as opposed to $H\times N$ (which will matter when
+working with, e.g., the multiplication of elements).
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let H, N be Group;
+  let phi be Homomorphism of H,AutGroup(N);
+  let h be Element of H;
+  let n be Element of N;
+  func <[* h, n *]> -> Element of (semi_product(H,N,phi))
+  equals <* h, n *>;
+  coherence;
+  :: goal: <* h, n *> is Element of semi_product(H, N, phi)
+end;
+\end{mizar}
+
+\begin{theorem}
+For any element of the semidirect product $x\in S(H, N, \varphi)$,
+there exists elements $h\in H$ and $n\in N$ such that $x=\langle[h,n]\rangle$.
+\end{theorem}
+
+\begin{thm-remark}
+See also Theorem (8.8) in Suzuki~\cite{suzuki1982group}, chapter 1.
+There Suzuki proves if $G=HN$ and $H\cap N=\trivialSubgroup$, then any
+$g\in G$ may be written uniquely as $g=hn$ for some $h\in H$ and $n\in N$.
+\end{thm-remark}
+
+\begin{mizar}
+theorem
+  for x being Element of semi_product(H, N, phi)
+  ex h being Element of H, n being Element of N
+  st x = <[* h, n *]>;
+\end{mizar}
+
+\begin{registration}
+The semidirect product is associative.
+\end{registration}
+
+\begin{mizar}
+registration
+  let H, N be Group;
+  let phi be Homomorphism of H,AutGroup(N);
+  cluster semi_product(H,N,phi) -> non empty associative;
+  coherence
+  proof
+    for x, y, z being Element of semi_product(H,N,phi)
+    holds (x * y) * z = x * (y * z);
+    hence semi_product(H,N,phi) is associative by GROUP_1:def 3;
+  end;
+end;
+\end{mizar}
+
+\begin{registration}
+The semidirect product is group-like.
+\end{registration}
+
+\begin{remark}
+This will complete the proof that the semidirect product is a group, and
+Mizar will automatically think of the semidirect product of groups
+\emph{as a group} from now on.
+\end{remark}
+
+\begin{mizar}
+registration
+  let H, N be Group;
+  let phi be Homomorphism of H,AutGroup(N);
+  cluster semi_product(H,N,phi) -> non empty Group-like associative;
+  coherence
+  proof
+    ex e being Element of semi_product(H,N,phi) st
+    for x being Element of semi_product(H,N,phi)
+    holds (x * e = x & e * x = x
+           & ex y being Element of semi_product(H,N,phi)
+             st x * y = e & y * x = e);
+    hence semi_product(H,N,phi) is Group-like by GROUP_1:def 2;
+  end;
+end;
+\end{mizar}
+
+\begin{theorem}
+When $\varphi$ is the trivial homomorphism, then the semidirect product
+coincides with the direct product.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  semi_product(H, N, 1:(H, AutGroup(N))) = product <* H, N *>;
+\end{mizar}
+
+\begin{theorem}[{\cite[(10.1.2)]{aschbacher2000finite}}]
+The maps $\sigma_{H}\colon H\to S(H, N,\varphi)$ 
+sending $\sigma_{H}(h)=\langle[h,1]\rangle$, 
+and $\sigma_{N}\colon N\to S(H, N, \varphi)$
+sending $\sigma_{N}(n)=\langle[1,n]\rangle$,
+are both injective group morphisms.
+\end{theorem}
+
+\begin{theorem}[{\cite[(10.1.3)]{aschbacher2000finite}}]
+The image $\sigma_{N}(N)\normalSubgroup S(H, N, \varphi)$ is a normal
+subgroup of the semidirect product.
+\end{theorem}
+
+\begin{theorem}[{\cite[(10.1.3)]{aschbacher2000finite}}]
+The image $\sigma_{N}(N)$ is a complement of $\sigma_{H}(H)$ in the
+semidirect product $\normalSubgroup S(H, N, \varphi)$.
+\end{theorem}
+
+\begin{theorem}[{\cite[(10.1.4)]{aschbacher2000finite}}]
+For any $n\in N$ and $h\in H$ we have
+$\langle[1, n]\rangle^{\langle[h,1]\rangle} = \langle[1, \varphi_{h}(n)]\rangle$ 
+in the semidirect product.
+\end{theorem}
+
+\begin{theorem}[{\cite[(10.2)]{aschbacher2000finite}}]
+Let $G$ be a group, let $N\normalSubgroup G$, and let $H\subgroup G$ be a
+complement to $N$ in $G$.
+Let $\alpha\colon H\to\Aut(N)$ be the conjugation map (so
+$\alpha(h)\colon n\mapsto n^{h}$).
+Let $\beta\colon S(H, N, \alpha)\to G$ be the group morphism defined by
+$\beta(h,n)=hn$. Then $\beta$ is an isomorphism.
+\end{theorem}
+
+\begin{thm-remark}
+See also Theorem (8.7) in Suzuki~\cite{suzuki1982group}, chapter 1.
+\end{thm-remark}
+
+\begin{theorem}[{\cite[(10.3)]{aschbacher2000finite}}]
+Let $S_{i}=S(H_{i}, N_{i}, \varphi_{i})$ for $i=1,2$ be semidirect products.
+Then there exists an isomorphism $\psi\colon S_{1}\to S_{2}$ with
+$(\psi\circ\sigma_{H_{1}})(H_{1})=\sigma_{H_{2}}(H_{2})$ and
+$(\psi\circ\sigma_{N_{1}})(N_{1})=\sigma_{N_{2}}(N_{2})$ if and only if
+$\varphi_{1}$ is quasi-equivalent to $\varphi_{2}$ (i.e., if there
+exists an isomorphism $\beta\colon H_{2}\to H_{1}$ and an isomorphism
+$\alpha\colon N_{1}\to N_{2}$ such that the ``obvious'' induced isomorphism
+$\alpha^{*}\colon\Aut(N_{1})\to\Aut(N_{2})$
+satisfies $\varphi_{2}=\alpha^{*}\circ\varphi_{1}\circ\beta$).
+\end{theorem}
+
+\begin{thm-remark}
+Aschbacher uses a highly idiosyncratic notion of ``quasiequivalence'',
+which appears only in his book on finite group theory.
+Basically, if we have two representations $\rho_{i}\colon G\to\Aut(X_{i})$
+for $i=1,2$, if there exists an isomorphism $\alpha\colon X_{1}\to X_{2}$,
+then there is an isomorphism $\alpha^{*}\colon\Aut(X_{1})\to\Aut(X_{2})$
+such that $\rho_{2}=\alpha^{*}\circ\rho_{1}$. 
+
+More generally, in any category, if $\alpha\colon A\to B$ is an
+isomorphism, we can define $\alpha^{*}\colon\End(A)\to\End(B)$ by
+$\alpha^{*}(\beta)=\alpha\circ\beta\circ\alpha^{-1}$.
+
+But when there are two representations of two groups
+$\rho_{i}\colon G_{i}\to\Aut(X_{i})$ for $i=1,2$, then they are called
+\define{Quasiequivalent} if there exists an isomorphism of groups
+$\beta\colon G_{2}\to G_{1}$ and an isomorphism $\alpha\colon X_{1}\to X_{2}$
+such that $\rho_{2}=\alpha^{*}\circ\rho_{1}\circ\beta$.
+This makes sense since $\rho_{1}\circ\beta\colon G_{2}\to\Aut(X_{1})$,
+so for any $g\in G_{2}$ we would have
+$(\alpha^{*}\circ\rho_{1}\circ\beta)(g)=\alpha\circ\bigl((\rho_{1}\circ\beta)(g)\bigr)\circ\alpha^{-1}$.
+\end{thm-remark}
+
+
+\begin{theorem}[{\cite[(I.8.9)]{suzuki1982group}}]
+Let $G=S(H,N,\varphi)$ be the semidirect product of $H$ and $N$ along $\varphi$.
+Let $\widetilde{H}=\sigma_{H}(H)\subgroup G$ and
+$\widetilde{N}=\sigma_{N}(N)\normalSubgroup G$.
+Then:
+\begin{enumerate}
+\item $N_{G}(\widetilde{H})\cap\widetilde{N}$ commutes elementwise with $\widetilde{H}$,
+\item $N_{G}(\widetilde{H})\cap\widetilde{N} = C_{\widetilde{N}}(\widetilde{H})$,
+and
+\item $N_{G}(\widetilde{H}) = \widetilde{H}C_{\widetilde{N}}(\widetilde{H})$.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[{G\"aschutz~\cite[(10.4)]{aschbacher2000finite}}]
+Let $p$ be a prime, $V$ a commutative normal $p$-subgroup of a finite
+group $G$, let $P\in\SylowSubgroups{p}{G}$. 
+Then $G$ splits over $V$ if and only if $P$ splits over $V$.
+\end{theorem}
+
+\begin{thm-remark}
+See also Higman~\cite{higman1954remarks} and Rose~\cite{rose1966} for
+more about this particular theorem. 
+\end{thm-remark}

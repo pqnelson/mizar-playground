@@ -1,4 +1,37 @@
 <!--- -*- mode: Markdown; var: -*- -->
+# 2023-01-31
+
+I submitted `group_23` a few days ago, and I have started sketching out
+the formalization of matrix groups. There is one small problem I have
+encountered, namely: there is `n-Matrices_over R` which is the set of
+square n-by-n matrices over a ring R, and then there is `Matrix of n,R`
+which is the type of a single n-by-n matrix over R. Matrix operations
+and attributes are defined on the latter.
+
+I think I need to redefine them for Elements of the former. This is
+unfortunate, because there doesn't seem to be a way to tell Mizar, "Hey,
+Elements of `n-Matrices_over R` are `Matrix of n,R`!"
+
+But other than that, I think it should be straightforward.
+
+## Wish List: "Extensible" Definitions
+
+I realize one thing that Mizar lacks is an "extensible" definition
+system. For example, if I define `GL(n,F)` as a strict Group, and later
+I want to define it as a strict topological group with the Zariski
+topology...well, I'm not sure if redefinitions alone can do this?
+
+It would be nice to have a "promotion"-type definition, where we equip an
+object (i.e., a functor producing a Structure instance) with some canonical 
+extra structure in some "compatible" way.
+
+Perhaps this is possible, I just haven't considered its possibility
+until now.
+
+(I think this _might_ be possible, first `redefine func GL(n,F) -> Group`,
+then redefine `redefine func GL(n, F) means ...` to include topological
+structure, then `redefine func GL(n, F) -> TopGroup`, and that should work?)
+
 # 2023-01-17
 
 I am done with proving all the theorems I want to prove for my next
