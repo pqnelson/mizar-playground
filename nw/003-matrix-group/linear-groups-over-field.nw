@@ -9,30 +9,578 @@ over a field.
 <<Linear Groups Over Fields>>=
 begin :: Linear Groups over Fields
 
-<<Definition: matrix multiplication as a binary operator>>
+<<Reserve: [[F]] for Field>>
+
+<<Definition: ``invertible'' for element of $\Mat(n, \FF)$>>
+
+<<Register: ``invertible'' for element of $\Mat(n, \FF)$>>
+
+<<Definition: [[invertible]] (for Element of $n$-matrices over $\FF$)>>
+
+<<Register: [[invertible]] (for Element of $n$-matrices over $\FF$)>>
+
+<<Theorem: invertible matrices are equivalent to invertible elements of $n$-matrices over $\FF$>>
+
+<<Definition: $n$-invertible Matrices over $\FF$>>
+
+<<Theorem: Matrix multiplication is closed on the set of square invertible matrices>>
+
+<<Definition: $\GL(n,\FF)$>>
+
+<<Theorem: invertible matrices are equivalent to elements of $\GL(n,\FF)$>>
+
+<<Theorem: $I\in\GL(n,\FF)$>>
+
+<<Theorem: elements of $\GL(n,\FF)$ are invertible elements of the set of $n\times n$ matrices over $\FF$>>
+
+<<Theorem: $\forall x,y\in\GL(n,\FF)$, $xy$ = [[matrix_mult]]($x$, $y$)>>
+
+<<Theorem: Matrix multiplication is the binary operation of $\GL(n,\FF)$>>
+
+<<Theorem: $\GL(n,\FF)$ is an associative magma>>
+
+<<Register: $\GL(n,\FF)$ is associative magma>>
+
+<<Lemma: identity matrix acts like unit for $\GL(n,\FF)$>>
+
+<<Theorem: $\GL(n,\FF)$ is group-like>>
+
+<<Register: ``Group-like'' for $\GL(n,\FF)$>>
+
+<<Theorem: $\GL(n,\FF)$ is a group>>
+
+<<Theorem: The identity matrix is the unit for the group $\GL(n,\FF)$>>
+
+<<Theorem: The group's inverse operator for $\GL(n,\FF)$ is precisely matrix inversion>>
+@
+
+\begin{reserve}
+We reserve $\FF$ for a field.
+\end{reserve}
+
+<<Reserve: [[F]] for Field>>=
+reserve F for Field;
 @
 
 \begin{definition}
-Let $R$ be a ring, let $n\in\NN$ be a fixed positive integer.
-We define \define{Matrix Multiplication} to be a binary operator on the
-$n$-matrices over $R$ defined in the obvious way.
+We call an element $x\in\Mat(n,\FF)$ \define{Invertible} if it is an
+invertible matrix.
 \end{definition}
 
-<<Definition: matrix multiplication as a binary operator>>=
+<<Definition: ``invertible'' for element of $\Mat(n, \FF)$>>=
 definition
-  let R be Ring;
-  let n be Nat;
-  func matrix_mult -> BinOp of n-Matrices_over R means :Def1:
-  for A,B being Matrix of n,R holds it.(A, B) = A*B;
-  existence;
-  uniqueness;
+  let n be positive Nat;
+  let F be Field;
+  let x be Element of Mat(n, F);
+  attr x is invertible means :Def5:
+  ex X being invertible Matrix of n,F st X = x;
 end;
-@ %def matrix_mult Def1
+@ %def Def5 invertible
+
+\begin{registration}
+We can meaningfully talk about an ``invertible element'' of the monoid
+$\Mat(n, \FF)$.
+\end{registration}
+
+<<Register: ``invertible'' for element of $\Mat(n, \FF)$>>=
+registration
+  let n be positive Nat;
+  let F be Field;
+  cluster invertible for Element of Mat(n, F);
+  existence
+  proof
+    take x = 1_(Mat(n,F));
+    x = 1.(F,n) & 1.(F,n) is invertible by Th5, MATRIX_6:8;
+    hence thesis by Def5;
+  end;
+end;
+@
+
+\begin{definition}
+We will also want to define \define{Invertible} for elements of the set
+of $n\times n$ matrices over $\FF$.
+\end{definition}
+
+<<Definition: [[invertible]] (for Element of $n$-matrices over $\FF$)>>=
+definition
+  let n be positive Nat;
+  let F be Field;
+  let x be Element of n-Matrices_over F;
+  attr x is invertible means :Def6:
+  ex X being invertible Matrix of n,F st X = x;
+end;
+@ %def Def6
+
+\begin{registration}
+We register ``invertible'' as an adjective for elements of $n$-matrices
+over $\FF$.
+\end{registration}
+
+<<Register: [[invertible]] (for Element of $n$-matrices over $\FF$)>>=
+registration
+  let n be positive Nat;
+  let F be Field;
+  cluster invertible for Element of n-Matrices_over F;
+  existence
+  proof
+    reconsider x=1.(F,n) as Element of n-Matrices_over F by MATRIX_1:2;
+    take x;
+    thus thesis;
+  end;
+end;
+@ 
+
+\begin{theorem}
+Let $x$ be arbitrary. Then $x$ is an invertible $n\times n$ matrix over
+$\FF$ if and only if it is a invertible element of the set of $n\times n$
+matrices over $\FF$.
+\end{theorem}
+
+<<Theorem: invertible matrices are equivalent to invertible elements of $n$-matrices over $\FF$>>=
+theorem Th6:
+  for x being object
+  holds x is invertible Element of n-Matrices_over F
+  iff x is invertible Matrix of n,F
+proof
+  let x be object;
+  hereby 
+    assume x is invertible Element of n-Matrices_over F;
+    then ex X being invertible Matrix of n,F st X = x by Def6;
+    hence x is invertible Matrix of n,F;
+  end;
+  assume x is invertible Matrix of n,F;
+  hence x is invertible Element of n-Matrices_over F by Def6,MATRIX_1:2;
+end;
+@ %def Th6
+
+\begin{definition}
+We define the \define{Set of $n\times n$ invertible matrices over $\FF$}
+as the subset of $n\times n$ matrices over $\FF$ consisting of
+invertible elements.
+\end{definition}
+
+<<Definition: $n$-invertible Matrices over $\FF$>>=
+definition
+  let F be Field;
+  let n be positive Nat;
+  func n-invertible_Matrices_over F -> non empty Subset of n-Matrices_over F
+  means :Def7:
+  for x being object holds x in it iff x is invertible Element of n-Matrices_over F;
+  existence
+  proof
+    defpred P[object] means ex M being Matrix of n,F st M = $1 & M is invertible;
+    deffunc F1() = n-Matrices_over F;
+    consider B being Subset of F1() such that
+    A1: for x being Element of F1() holds (x in B iff P[x])
+    from SUBSET_1:sch 3;
+    A2: for x being Element of n-Matrices_over F holds x in B iff x is invertible
+    proof
+      let x be Element of n-Matrices_over F;
+      hereby 
+        assume x in B;
+        then P[x] by A1; 
+        hence x is invertible;
+      end;
+      assume Z1: x is invertible;
+      reconsider X=x as Element of n-Matrices_over F;
+      thus x in B by A1,Z1;
+    end;
+    1.(F, n) is invertible Element of n-Matrices_over F by Th6; 
+    then reconsider B as non empty Subset of n-Matrices_over F by A2;
+    take B;
+    thus thesis by A2;
+  end;
+  uniqueness
+  proof
+    let A,B be non empty Subset of n-Matrices_over F;
+    assume A1: for x being object
+    holds x in A iff x is invertible Element of n-Matrices_over F;
+    assume A2: for x being object
+    holds x in B iff x is invertible Element of n-Matrices_over F;
+    
+    for x being Element of n-Matrices_over F
+    holds (x in A iff x in B)
+    proof
+      let x be Element of n-Matrices_over F;
+      (x in A iff x is invertible) & (x in B iff x is invertible) by A1,A2;
+      hence x in A iff x in B;
+    end;
+    hence A = B by SUBSET_1:3;
+  end;
+end;
+@ %def Def7 -invertible_Matrices_over
 
 \begin{voc}
-We need to define [[matrix_mult]] as a functor.
+We need to add ``[[-invertible_Matrices_over]]'' to the vocabulary file.
 \end{voc}
 
 <<DICT/matgrp-1.voc>>=
-Omatrix_mult
+O-invertible_Matrices_over
 @
+
+\begin{theorem}
+Matrix multiplication is closed on the set of square invertible matrices.
+\end{theorem}
+
+<<Theorem: Matrix multiplication is closed on the set of square invertible matrices>>=
+theorem Th7:
+  n-invertible_Matrices_over F is (matrix_mult (n,F))-binopclosed
+proof
+  set U = n-invertible_Matrices_over F;
+  set V = n-Matrices_over F;
+  for x being set st x in [: U, U :]
+  holds (matrix_mult (n,F)).x in U
+  proof
+    let x be set;
+    assume x in [: U, U :];
+    then consider a,b being object such that
+    A1: a in U & b in U & x = [a,b]
+    by ZFMISC_1:def 2;
+    reconsider A=a,B=b as Element of V by A1;
+    A2: A * B is invertible Element of n-Matrices_over F
+    proof
+      A is invertible by A1, Def7;
+      then consider X being invertible Matrix of n,F such that
+      B1: X = A;
+      B is invertible by A1, Def7;
+      then consider Y being invertible Matrix of n,F such that
+      B2: Y = B;
+      reconsider Z = X * Y as invertible Matrix of n,F by MATRIX_6:36;
+      Z = A*B by B1,B2;
+      hence thesis by Def6, MATRIX_1:2;
+    end;
+    (matrix_mult (n,F)).x = (matrix_mult (n,F)).(A, B) by A1
+                         .= A*B by Def3;
+    hence (matrix_mult (n,F)).x in U by A2, Def7;
+  end;
+  hence thesis by REALSET1:def 1;
+end;
+@ %def Th7
+
+\begin{definition}
+We define the gadget \define{$\GL(n,\FF)$} to consist of all invertible
+$n\times n$ matrices over $\FF$ equipped with matrix multiplication.
+\end{definition}
+
+\begin{remark}
+Since we have carved out the definition of the underlying set, it will
+simplify proving the uniqueness of the $\GL(n, \FF)$ group. In fact, we
+have just proven it is closed under matrix multiplication!
+\end{remark}
+
+<<Definition: $\GL(n,\FF)$>>=
+definition
+  let n be positive Nat;
+  let F be Field;
+  func GL(n, F) -> non empty (n,F)-matrix-membered strict multMagma
+  means :Def8:
+  the carrier of it = n-invertible_Matrices_over F
+  & the multF of it = ((matrix_mult (n,F))||(the carrier of it));
+  existence
+  proof
+    set U = n-invertible_Matrices_over F;
+    set f = ((matrix_mult (n,F))||(U));
+    set V = n-Matrices_over F;
+    U is (matrix_mult (n,F))-binopclosed by Th7;
+    then reconsider f as BinOp of U by REALSET1:2;
+    set M = multMagma (# U, f #);
+    for x being object st x in the carrier of M holds x is Matrix of n,F
+    proof
+      let x be object;
+      assume x in the carrier of M;
+      then x is Element of n-Matrices_over F;
+      hence x is Matrix of n,F;
+    end;
+
+    then M is (n,F)-matrix-membered by Def1;
+    then reconsider M as non empty (n,F)-matrix-membered strict multMagma;
+    take M;
+    thus the carrier of M = U;
+    thus the multF of M = ((matrix_mult (n,F))||(the carrier of M));
+  end;
+  uniqueness;
+end;
+@ %def GL Def8
+
+\begin{voc}
+We need to add ``[[GL]]'' to the vocabulary file.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+OGL
+@
+
+\begin{theorem}
+Every invertible $n\times n$ matrix over $\FF$ is an element of
+$\GL(n,\FF)$, and vice-versa.
+\end{theorem}
+
+<<Theorem: invertible matrices are equivalent to elements of $\GL(n,\FF)$>>=
+theorem Th8:
+  for x being object
+  holds x is Element of GL(n, F) iff x is invertible Matrix of n, F
+proof
+  let x be object;
+  A1: x is invertible Element of n-Matrices_over F
+      iff x is invertible Matrix of n,F by Th6;
+  x is Element of n-invertible_Matrices_over F
+  iff x is Element of GL(n, F) by Def8;
+  hence thesis by A1, Def7;
+end;
+@ %def Th8
+
+\begin{theorem}
+In particular, the identity matrix $I\in\GL(n,\FF)$.
+\end{theorem}
+
+<<Theorem: $I\in\GL(n,\FF)$>>=
+theorem Th9:
+  1.(F,n) is Element of GL(n, F) by Th8;
+@ %def Th9
+
+\begin{theorem}
+Any element of $\GL(n,\FF)$ is also an invertible element of the set of
+$n\times n$ matrices over $\FF$.
+\end{theorem}
+
+<<Theorem: elements of $\GL(n,\FF)$ are invertible elements of the set of $n\times n$ matrices over $\FF$>>=
+theorem Th10:
+  for x being object
+  holds x is Element of GL(n, F)
+    iff x is invertible Element of n-Matrices_over F
+proof
+  let x be object;
+  thus x is Element of GL(n, F)
+  implies x is invertible Element of n-Matrices_over F
+  proof
+    assume x is Element of GL(n, F);
+    then reconsider X=x as Element of GL(n, F);
+    X is Element of n-invertible_Matrices_over F by Def8;
+    hence x is invertible Element of n-Matrices_over F by Def7;
+  end;
+  thus x is invertible Element of n-Matrices_over F
+  implies x is Element of GL(n, F)
+  proof
+    assume x is invertible Element of n-Matrices_over F;
+    then x is Element of n-invertible_Matrices_over F by Def7;
+    hence x is Element of GL(n, F) by Def8;
+  end;
+end;
+@ %def Th10
+
+\begin{theorem}
+The binary operator of $\GL(n,\FF)$ is precisely matrix multiplication,
+since its range (when restricted to invertible matrices) is precisely $\GL(n,\FF)$.
+\end{theorem}
+
+<<Theorem: $\forall x,y\in\GL(n,\FF)$, $xy$ = [[matrix_mult]]($x$, $y$)>>=
+theorem Th11:
+  for x,y being Element of GL(n,F)
+  holds x * y = (matrix_mult (n, F)).(x, y)
+proof
+  let x,y be Element of GL(n,F);
+  set U = n-invertible_Matrices_over F;
+  A1: U = the carrier of GL(n, F) by Def8;
+  x is Element of n-invertible_Matrices_over F
+  & y is Element of n-invertible_Matrices_over F by Def8;
+  then A2: [x,y] in [: U, U :] by ZFMISC_1:def 2;
+  A3: ((matrix_mult (n, F))||U).(x,y)
+         = ((matrix_mult (n, F))|[: U, U :]).([x,y]) by REALSET1:def 2
+        .= (matrix_mult (n, F)).(x,y) by A2,FUNCT_1:49;
+  thus x * y = (matrix_mult (n, F)).(x, y) by A1,A3,Def8;
+end;
+@ %def Th11
+
+\begin{theorem}
+Matrix multiplication is the binary operation of $\GL(n,\FF)$.
+\end{theorem}
+
+<<Theorem: Matrix multiplication is the binary operation of $\GL(n,\FF)$>>=
+theorem Th12:
+  for x,y being Element of GL(n,F)
+  for X,Y being invertible Matrix of n, F st X = x & Y = y
+  holds X * Y = x*y
+proof
+  let x,y be Element of GL(n,F);
+  let X,Y be invertible Matrix of n, F;
+  assume A1: X = x & Y = y;
+  reconsider a=x, b=y as Element of n-Matrices_over F by Th10;
+  thus x * y = (matrix_mult (n,F)).(x, y) by Th11
+            .= a * b by Def3
+            .= X * Y by A1;
+end;
+@ %def Th12
+
+\subsection{Proving $\GL(n, \FF)$ is a group}
+
+\begin{theorem}
+$\GL(n,\FF)$ is an associative magma.
+\end{theorem}
+
+<<Theorem: $\GL(n,\FF)$ is an associative magma>>=
+theorem Th13:
+  GL(n, F) is associative
+proof
+  for x,y,z being Element of GL(n, F) holds (x*y)*z=x*(y*z)
+  proof
+    let x,y,z be Element of GL(n, F);
+    reconsider X=x,Y=y,Z=z as invertible Matrix of n,F by Th8;
+    A1: X*Y = x*y & Y*Z = y*z by Th12;
+    X*Y is invertible Matrix of n,F & Y*Z is invertible Matrix of n,F
+    by MATRIX_6:36;
+    then A2: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by A1,Th12;
+    width X = len Y & width Y = len Z
+    proof
+      width X = n & len Y = n & width Y = n & len Z = n by MATRIX_0:23;
+      hence thesis;
+    end;
+    hence (x*y)*z=x*(y*z) by A2, MATRIX_3:33;
+  end;
+  hence GL(n, F) is associative by GROUP_1:def 3;
+end;
+@ %def Th13
+
+\begin{registration}
+We register the fact that $\GL(n,\FF)$ is an associative magma.
+\end{registration}
+
+<<Register: $\GL(n,\FF)$ is associative magma>>=
+registration
+  let n be positive Nat;
+  let F be Field;
+  cluster GL(n, F) -> associative;
+  correctness by Th13;
+end;
+@
+
+\begin{lemma}
+For any $x\in\GL(n,\FF)$, we have $x\cdot I=x$ and $I\cdot x=x$.
+\end{lemma}
+
+<<Lemma: identity matrix acts like unit for $\GL(n,\FF)$>>=
+Lm3:
+  for e being Element of GL(n,F) st e = 1.(F,n)
+  for x being Element of GL(n,F)
+  holds (x * e = x & e * x = x)
+proof
+  let e be Element of GL(n, F);
+  assume A1: e=1.(F,n);
+  let x be Element of GL(n,F);
+  reconsider X=x as invertible Matrix of n,F by Th8;
+  A2: e is invertible Element of n-Matrices_over F &
+      x is invertible Element of n-Matrices_over F by Th10;
+  thus x * e = (matrix_mult (n,F)).(x, e) by Th11
+            .= X * 1.(F,n) by A1,A2,Def3
+            .= x by MATRIX_3:19;
+  thus e * x = (matrix_mult (n,F)).(e, x) by Th11
+            .= 1.(F, n) * X by A1,A2,Def3
+            .= x by MATRIX_3:18;
+end;
+@ %def Lm3
+
+\begin{theorem}
+$\GL(n,\FF)$ has inverses and a unit element.
+\end{theorem}
+
+<<Theorem: $\GL(n,\FF)$ is group-like>>=
+theorem Th14:
+  GL(n, F) is Group-like
+proof
+  ex e being Element of GL(n, F) st
+  for h being Element of GL(n, F) holds
+  (h * e = h & e * h = h & ex g being Element of GL(n, F) st
+  (h * g = e & g * h = e))
+  proof
+    reconsider e=1.(F,n) as Element of GL(n, F) by Th8;
+    take e;
+    let x be Element of GL(n, F);
+    thus x * e = x & e * x = x by Lm3;
+    reconsider X=x as invertible Matrix of n, F by Th8;
+    consider Y being Matrix of n, F such that
+    A1: Y is_reverse_of X by MATRIX_6:def 3;
+    Y = X~ by A1, MATRIX_6:def 4;
+    then reconsider Y as invertible Matrix of n, F;
+    reconsider y=Y as Element of GL(n, F) by Th8;
+    A2: y*x = Y*X by Th12
+           .= X*Y by A1,MATRIX_6:def 2
+           .= x*y by Th12;
+    A3: y*x = Y*X by Th12
+           .= e by A1,MATRIX_6:def 2;
+    take y;
+    thus thesis by A2,A3;
+  end;
+  hence thesis by GROUP_1:def 2;
+end;
+@ %def Th14
+
+\begin{registration}
+We register ``Group-like'' for $\GL(n,\FF)$.
+\end{registration}
+
+<<Register: ``Group-like'' for $\GL(n,\FF)$>>=
+registration
+  let n be positive Nat;
+  let F be Field;
+  cluster GL(n, F) -> Group-like;
+  correctness by Th14;
+end;
+@
+
+\begin{theorem}
+$\GL(n,\FF)$ is, in fact, a group.
+\end{theorem}
+
+<<Theorem: $\GL(n,\FF)$ is a group>>=
+theorem Th15:
+  GL(n, F) is strict Group;
+@ %def Th15
+
+\subsection{Identifying the group structure explicitly}
+It will be helpful to identify the group inverse with matrix inversion
+explicitly, and the identity element of the group to the identity
+matrix.
+
+\begin{theorem}
+The identity matrix is the unit for the group $\GL(n,\FF)$.
+\end{theorem}
+
+<<Theorem: The identity matrix is the unit for the group $\GL(n,\FF)$>>=
+theorem Th16:
+  1_(GL(n,F)) = 1.(F, n)
+proof
+  reconsider e=1.(F,n) as Element of GL(n, F) by Th8;
+  for x being Element of GL(n, F)
+  holds (x * e = x & e * x = x) by Lm3;
+  hence thesis by GROUP_1:def 4;
+end;
+@ %def Th16
+
+\begin{theorem}
+The group's inverse operator for $\GL(n,\FF)$ is precisely matrix inversion.
+\end{theorem}
+
+<<Theorem: The group's inverse operator for $\GL(n,\FF)$ is precisely matrix inversion>>=
+theorem Th17:
+  for x being Element of GL(n, F)
+  for X being invertible Matrix of n,F st x = X
+  holds x" = X~
+proof
+  let x be Element of GL(n, F);
+  let X be invertible Matrix of n,F;
+  assume A1: x = X;
+
+  consider Y being Matrix of n, F such that
+  A2: Y is_reverse_of X by MATRIX_6:def 3;
+  Y = X~ by A2, MATRIX_6:def 4;
+  then reconsider Y as invertible Matrix of n, F;
+  reconsider y=Y as Element of GL(n, F) by Th8;
+  A3: y*x = Y*X by A1,Th12
+         .= X*Y by A2,MATRIX_6:def 2
+         .= x*y by A1,Th12;
+  y*x = Y*X by A1,Th12
+     .= 1.(F,n) by A2,MATRIX_6:def 2
+     .= 1_(GL(n, F)) by Th16;
+  then x" = Y by A3, GROUP_1:def 5;
+  hence x" = X~ by A2, MATRIX_6:def 4;
+end;
+@ %def Th17

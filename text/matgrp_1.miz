@@ -60,7 +60,7 @@ definition
   let R be Ring;
   let n be positive Nat;
   let IT be set;
-  attr IT is (n,R)-matrix-membered means :DefUh:
+  attr IT is (n,R)-matrix-membered means :Def1:
   for x being object st x in IT holds x is Matrix of n,R;
 end;
 
@@ -104,54 +104,52 @@ definition
   let n be positive Nat;
   let A be non empty (n,R)-matrix-membered set;
   redefine mode Element of A -> Matrix of n,R;
-  correctness by DefUh;
+  correctness by Def1;
 end;
 
-definition
-  let R,n;
-  redefine func n-Matrices_over R equals :DefNewMat:
-  the set of all M where M is Matrix of n, R;
- :: { A where A is Matrix of n, R : not contradiction };
-  compatibility
-  proof
-    set M = { A where A is Matrix of n, R : not contradiction };
-    for x being set holds x = n-Matrices_over R iff x = M 
-    proof
-      let x be set;
-      for y being object holds y in n-Matrices_over R iff y in M
-      proof
-        let y be object;
-        hereby 
-          assume y in n-Matrices_over R;
-          then y is Matrix of n, R by MATRIX_1:2;
-          hence y in M;
-        end;
-        assume Z2: y in M;
-        then ex Y being Matrix of n,R st y=Y;
-        then y is Matrix of n, R;
-        then y is Element of n-Matrices_over R by MATRIX_1:2;
-        hence y in n-Matrices_over R;
-      end;
-      then A1: n-Matrices_over R = M by TARSKI:2;
-      hereby 
-        assume x = n-Matrices_over R;
-        hence x = M by A1;
-      end;
-      assume x = M;
-      hence x = n-Matrices_over R by A1;
-    end;
-    hence thesis;
-  end;
-  correctness by MATRIX_1:2;
-end;
-definition
-  let R,n;
-  redefine func n-Matrices_over R equals :NewDef:
-  the set of all M where M is Matrix of n, R;
-  correctness;
-end;
-for x being Element of n-Matrices_over R
-holds x is Matrix of n,R;
+:: definition
+::   let R,n;
+::   redefine func n-Matrices_over R equals :DefNewMat:
+::   the set of all M where M is Matrix of n, R;
+::  :: { A where A is Matrix of n, R : not contradiction };
+::   compatibility
+::   proof
+::     set M = { A where A is Matrix of n, R : not contradiction };
+::     for x being set holds x = n-Matrices_over R iff x = M 
+::     proof
+::       let x be set;
+::       for y being object holds y in n-Matrices_over R iff y in M
+::       proof
+::         let y be object;
+::         hereby 
+::           assume y in n-Matrices_over R;
+::           then y is Matrix of n, R by MATRIX_1:2;
+::           hence y in M;
+::         end;
+::         assume Z2: y in M;
+::         then ex Y being Matrix of n,R st y=Y;
+::         then y is Matrix of n, R;
+::         then y is Element of n-Matrices_over R by MATRIX_1:2;
+::         hence y in n-Matrices_over R;
+::       end;
+::       then A1: n-Matrices_over R = M by TARSKI:2;
+::       hereby 
+::         assume x = n-Matrices_over R;
+::         hence x = M by A1;
+::       end;
+::       assume x = M;
+::       hence x = n-Matrices_over R by A1;
+::     end;
+::     hence thesis;
+::   end;
+:: end;
+
+:: definition
+::   let R,n;
+::   redefine func n-Matrices_over R equals :NewDef:
+::   the set of all M where M is Matrix of n, R;
+::   correctness;
+:: end;
 
 definition
   let R be Ring;
@@ -160,8 +158,7 @@ definition
   redefine mode Element of A -> Matrix of n,R;
   correctness
   proof
-    thus for x being Element of A holds x is Matrix of n,R
-    by DefUh, MATRIX_1:2;
+    thus for x being Element of A holds x is Matrix of n,R by MATRIX_1:2;
   end;
 end;
 
@@ -169,7 +166,7 @@ definition
   let R be Ring;
   let n be positive Nat;
   let IT be 1-sorted;
-  attr IT is (n,R)-matrix-membered means :DefUh2:
+  attr IT is (n,R)-matrix-membered means :Def2:
   the carrier of IT is (n,R)-matrix-membered;
   :: for x being Element of IT holds x is Matrix of n,R;
 end;
@@ -183,7 +180,7 @@ registration
     take A = 1-sorted (# n-Matrices_over R #);
     thus A is strict;
     thus A is non empty;
-    thus A is (n,R)-matrix-membered by DefUh;
+    thus A is (n,R)-matrix-membered;
   end;
 end;
 
@@ -192,14 +189,8 @@ registration
   let n be positive Nat;
   let A be non empty (n,R)-matrix-membered 1-sorted;
   cluster the carrier of A -> non empty (n,R)-matrix-membered;
-  correctness by DefUh,DefUh2;
+  correctness by Def2;
 end;
-
-for x being Element of n-Matrices_over R
-holds x is Matrix of n,R;
-
-for x,y being Element of n-Matrices_over R
-holds x * y is Matrix of n,R;
 
 :: definition
 ::   let n be positive Nat;
@@ -304,7 +295,7 @@ registration
   proof
     reconsider M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #)
     as strict non empty multMagma;
-    M is (n,R)-matrix-membered by DefUh2;
+    M is (n,R)-matrix-membered;
     hence thesis;
   end;
 end;
@@ -317,18 +308,10 @@ definition
   coherence
   proof
     set M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #);
-    M is (n,R)-matrix-membered by DefUh;
+    M is (n,R)-matrix-membered;
     hence thesis;
   end;
 end;
-
-
-for A being non empty (n,R)-matrix-membered 1-sorted
-for x being Element of A
-holds x is Matrix of n,R by DefUh;
-
-for x being Element of Mat(n, R)
-holds x is Matrix of n,R by DefUh;
 
 theorem Th1:
   for R being commutative Ring
@@ -340,7 +323,7 @@ proof
   for x,y,z being Element of Mat (n, R) holds (x*y)*z=x*(y*z)
   proof
     let x,y,z be Element of Mat (n, R);
-    reconsider X=x,Y=y,Z=z as Matrix of n,R by DefUh;
+    reconsider X=x,Y=y,Z=z as Matrix of n,R by Def1;
     X*Y = x*y & Y*Z = y*z by Def3;
     then A1: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by Def3;
     width X = len Y & width Y = len Z
@@ -360,20 +343,12 @@ registration
   correctness by Th1;
 end;
 
-the carrier of Mat(n, R) is (n,R)-matrix-membered;
-
-for x being Element of the carrier of Mat(n, R)
-holds x is Matrix of n, R;
-
-for x being Element of Mat(n, R)
-holds x is Matrix of n, R by DefUh;
-
 theorem Th2:
   for A being Matrix of n,R
   holds A is Element of Mat(n, R) by MATRIX_1:2;
 
 theorem Th3:
-  1.(R,n) in Mat(n, R) by Th2;
+  1.(R,n) is Element of Mat(n, R) by MATRIX_1:2;
 
 Lm2:
   for R being commutative Ring
@@ -386,11 +361,9 @@ proof
   assume A1: e=1.(R,n);
   let x be Element of Mat(n,R);
   reconsider X=x as Matrix of n,R by MATRIX_1:2;
-  thus x * e = (matrix_mult (n,R)).(x, e) by Def4
-            .= X * 1.(R,n) by A1,Def3
+  thus x * e = X * 1.(R,n) by A1,Def3
             .= x by MATRIX_3:19;
-  thus e * x = (matrix_mult (n,R)).(e, x) by Def4
-            .= 1.(R, n) * X by A1,Def3
+  thus e * x = 1.(R, n) * X by A1,Def3
             .= x by MATRIX_3:18;
 end;
 
@@ -403,7 +376,7 @@ proof
   st for x being Element of Mat(n,R)
   holds (x * e = x & e * x = x) 
   proof
-    reconsider e=1.(R,n) as Element of Mat(n,R) by Th2;
+    reconsider e=1.(R,n) as Element of Mat(n,R) by MATRIX_1:2;
     take e;
     thus thesis by Lm2;
   end;
@@ -422,7 +395,7 @@ theorem Th5:
   holds 1_(Mat(n,R)) = 1.(R, n)
 proof
   let R be commutative Ring;
-  reconsider e=1.(R,n) as Element of Mat(n,R) by Th2;
+  reconsider e=1.(R,n) as Element of Mat(n,R) by MATRIX_1:2;
   for x being Element of Mat(n,R)
   holds x*e = x & e*x = x by Lm2;
   hence thesis by GROUP_1:def 4;
@@ -447,8 +420,8 @@ registration
   existence
   proof
     take x = 1_(Mat(n,F));
-    x = 1.(F,n) & 1.(F,n) is invertible by Th5, MATRIX_6:8;
-    hence thesis by Def5;
+    x = 1.(F,n) by Th5;
+    hence thesis;
   end;
 end;
 
@@ -456,7 +429,7 @@ definition
   let n be positive Nat;
   let F be Field;
   let x be Element of n-Matrices_over F;
-  attr x is invertible means :Def5b:
+  attr x is invertible means :Def6:
   ex X being invertible Matrix of n,F st X = x;
 end;
 
@@ -468,8 +441,7 @@ registration
   proof
     reconsider x=1.(F,n) as Element of n-Matrices_over F by MATRIX_1:2;
     take x;
-    1.(F,n) is invertible by MATRIX_6:8;
-    hence thesis by Def5b;
+    thus thesis;
   end;
 end;
 
@@ -481,11 +453,11 @@ proof
   let x be object;
   hereby 
     assume x is invertible Element of n-Matrices_over F;
-    then ex X being invertible Matrix of n,F st X = x by Def5b;
+    then ex X being invertible Matrix of n,F st X = x by Def6;
     hence x is invertible Matrix of n,F;
   end;
   assume x is invertible Matrix of n,F;
-  hence x is invertible Element of n-Matrices_over F by Def5b,MATRIX_1:2;
+  hence x is invertible Element of n-Matrices_over F by Def6,MATRIX_1:2;
 end;
 
 
@@ -493,7 +465,7 @@ definition
   let F be Field;
   let n be positive Nat;
   func n-invertible_Matrices_over F -> non empty Subset of n-Matrices_over F
-  means :Def6:
+  means :Def7:
   for x being object holds x in it iff x is invertible Element of n-Matrices_over F;
   existence
   proof
@@ -507,20 +479,15 @@ definition
       let x be Element of n-Matrices_over F;
       hereby 
         assume x in B;
-        then P[x] by A1, MATRIX_1:2;
+        then P[x] by A1; 
         hence x is invertible;
       end;
       assume Z1: x is invertible;
-      x is Element of n-Matrices_over F by MATRIX_1:2;
-      then reconsider X=x as Element of n-Matrices_over F;
-      P[x] by Z1;
-      then P[X];
-      then X in B by A1, MATRIX_1:2;
-      hence x in B;
+      reconsider X=x as Element of n-Matrices_over F;
+      thus x in B by A1,Z1;
     end;
-    1.(F, n) is invertible Element of n-Matrices_over F by Th6,MATRIX_6:8;
-    then 1.(F, n) in B by A2, MATRIX_1:2, MATRIX_6:8;
-    then reconsider B as non empty Subset of n-Matrices_over F;
+    1.(F, n) is invertible Element of n-Matrices_over F by Th6; 
+    then reconsider B as non empty Subset of n-Matrices_over F by A2;
     take B;
     thus thesis by A2;
   end;
@@ -537,8 +504,7 @@ definition
     proof
       let x be Element of n-Matrices_over F;
       (x in A iff x is invertible) & (x in B iff x is invertible) by A1,A2;
-      then x in A iff x in B;
-      hence thesis;
+      hence x in A iff x in B;
     end;
     hence A = B by SUBSET_1:3;
   end;
@@ -557,28 +523,22 @@ proof
     then consider a,b being object such that
     A1: a in U & b in U & x = [a,b]
     by ZFMISC_1:def 2;
-    a in V & b in V by A1;
-    then reconsider A=a,B=b as Element of V;
+    reconsider A=a,B=b as Element of V by A1;
     A2: A * B is invertible Element of n-Matrices_over F
     proof
-      A is invertible by A1, Def6;
+      A is invertible by A1, Def7;
       then consider X being invertible Matrix of n,F such that
-      B1: X = A by Def5;
-      B is invertible by A1, Def6;
+      B1: X = A;
+      B is invertible by A1, Def7;
       then consider Y being invertible Matrix of n,F such that
-      B2: Y = B by Def5;
-      X * Y is invertible Matrix of n,F by MATRIX_6:36;
-      then reconsider Z = X * Y as invertible Matrix of n,F;
-      B3: Z = A*B by B1,B2;
-      hence thesis by Def5, Def5b, MATRIX_1:2;
+      B2: Y = B;
+      reconsider Z = X * Y as invertible Matrix of n,F by MATRIX_6:36;
+      Z = A*B by B1,B2;
+      hence thesis by Def6, MATRIX_1:2;
     end;
-    then A * B in U by Def6;
-    (matrix_mult (n,F)).(A, B) = A*B by Def3;
-    x = [A,B] by A1;
-    then (matrix_mult (n,F)).x = (matrix_mult (n,F)).([A, B])
-                              .= (matrix_mult (n,F)).(A, B)
-                              .= A*B by Def3;
-    hence (matrix_mult (n,F)).x in U by A2, Def6;
+    (matrix_mult (n,F)).x = (matrix_mult (n,F)).(A, B) by A1
+                         .= A*B by Def3;
+    hence (matrix_mult (n,F)).x in U by A2, Def7;
   end;
   hence thesis by REALSET1:def 1;
 end;
@@ -587,7 +547,7 @@ definition
   let n be positive Nat;
   let F be Field;
   func GL(n, F) -> non empty (n,F)-matrix-membered strict multMagma
-  means :Def7:
+  means :Def8:
   the carrier of it = n-invertible_Matrices_over F
   & the multF of it = ((matrix_mult (n,F))||(the carrier of it));
   existence
@@ -596,8 +556,7 @@ definition
     set f = ((matrix_mult (n,F))||(U));
     set V = n-Matrices_over F;
     U is (matrix_mult (n,F))-binopclosed by Th7;
-    then f is BinOp of U by REALSET1:2;
-    then reconsider f as BinOp of U;
+    then reconsider f as BinOp of U by REALSET1:2;
     set M = multMagma (# U, f #);
     for x being object st x in the carrier of M holds x is Matrix of n,F
     proof
@@ -607,7 +566,7 @@ definition
       hence x is Matrix of n,F;
     end;
 
-    then M is (n,F)-matrix-membered by DefUh;
+    then M is (n,F)-matrix-membered by Def1;
     then reconsider M as non empty (n,F)-matrix-membered strict multMagma;
     take M;
     thus the carrier of M = U;
@@ -623,22 +582,9 @@ proof
   let x be object;
   A1: x is invertible Element of n-Matrices_over F
       iff x is invertible Matrix of n,F by Th6;
-  A2: x is Element of n-invertible_Matrices_over F
-  implies x is invertible Element of n-Matrices_over F
-  proof
-    assume B1: x is Element of n-invertible_Matrices_over F;
-    hence x is invertible Element of n-Matrices_over F by Def6;
-  end;
-  A3: x is invertible Element of n-Matrices_over F
-  implies x is Element of n-invertible_Matrices_over F
-  proof
-    assume B1: x is invertible Element of n-Matrices_over F;
-    hence x is Element of n-invertible_Matrices_over F by Def6;
-  end;
-  x in n-invertible_Matrices_over F iff x in GL(n, F) by Def7;
-  then x is Element of n-invertible_Matrices_over F
-  iff x is Element of GL(n, F) by Def7;
-  hence thesis by A1,A2,A3;
+  x is Element of n-invertible_Matrices_over F
+  iff x is Element of GL(n, F) by Def8;
+  hence thesis by A1,Def7;
 end;
 
 theorem Th9:
@@ -653,18 +599,17 @@ proof
   thus x is Element of GL(n, F)
   implies x is invertible Element of n-Matrices_over F
   proof
-    assume A1: x is Element of GL(n, F);
+    assume x is Element of GL(n, F);
     then reconsider X=x as Element of GL(n, F);
-    X is Element of n-invertible_Matrices_over F by Def7;
-    then X is invertible Element of n-Matrices_over F by Def6;
-    hence x is invertible Element of n-Matrices_over F;
+    X is Element of n-invertible_Matrices_over F by Def8;
+    hence x is invertible Element of n-Matrices_over F by Def7;
   end;
   thus x is invertible Element of n-Matrices_over F
   implies x is Element of GL(n, F)
   proof
-    assume A1: x is invertible Element of n-Matrices_over F;
-    then x is Element of n-invertible_Matrices_over F by Def6;
-    hence x is Element of GL(n, F) by Def7;
+    assume x is invertible Element of n-Matrices_over F;
+    then x is Element of n-invertible_Matrices_over F by Def7;
+    hence x is Element of GL(n, F) by Def8;
   end;
 end;
 
@@ -674,19 +619,14 @@ theorem Th11:
 proof
   let x,y be Element of GL(n,F);
   set U = n-invertible_Matrices_over F;
-  A1: U = the carrier of GL(n, F) by Def7;
+  A1: U = the carrier of GL(n, F) by Def8;
   x is Element of n-invertible_Matrices_over F
-  & y is Element of n-invertible_Matrices_over F by Def7;
-  then x in n-invertible_Matrices_over F
-       & y in n-invertible_Matrices_over F;
+  & y is Element of n-invertible_Matrices_over F by Def8;
   then A2: [x,y] in [: U, U :] by ZFMISC_1:def 2;
-  then A3: ((matrix_mult (n, F))||U).(x,y)
-         = ((matrix_mult (n, F))||U).([x,y])
-        .= ((matrix_mult (n, F))|[: U, U :]).([x,y]) by REALSET1:def 2
-        .= ((matrix_mult (n, F))).([x,y]) by A2,FUNCT_1:49
-        .= (matrix_mult (n, F)).(x,y);
-  hence x * y = ((matrix_mult (n, F))||U).(x,y) by A1,Def7
-             .= (matrix_mult (n, F)).(x, y) by A3,Def7;
+  A3: ((matrix_mult (n, F))||U).(x,y)
+         = ((matrix_mult (n, F))|[: U, U :]).([x,y]) by REALSET1:def 2
+        .= (matrix_mult (n, F)).(x,y) by A2,FUNCT_1:49;
+  thus x * y = (matrix_mult (n, F)).(x, y) by A1,A3,Def8;
 end;
 
 theorem Th12:
@@ -710,10 +650,10 @@ proof
   proof
     let x,y,z be Element of GL(n, F);
     reconsider X=x,Y=y,Z=z as invertible Matrix of n,F by Th8;
-    A1: X*Y = x*y & Y*Z = y*z by Th11, Th12, Def3, MATRIX_6:36;
+    A1: X*Y = x*y & Y*Z = y*z by Th12;
     X*Y is invertible Matrix of n,F & Y*Z is invertible Matrix of n,F
     by MATRIX_6:36;
-    then A2: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by A1,Th12,Def3,MATRIX_6:36;
+    then A2: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by A1,Th12;
     width X = len Y & width Y = len Z
     proof
       width X = n & len Y = n & width Y = n & len Z = n by MATRIX_0:23;
@@ -731,7 +671,7 @@ registration
   correctness by Th13;
 end;
 
-Lm4:
+Lm3:
   for e being Element of GL(n,F) st e = 1.(F,n)
   for x being Element of GL(n,F)
   holds (x * e = x & e * x = x)
@@ -739,8 +679,7 @@ proof
   let e be Element of GL(n, F);
   assume A1: e=1.(F,n);
   let x be Element of GL(n,F);
-  x is invertible Matrix of n, F by Th8;
-  then reconsider X=x as invertible Matrix of n,F;
+  reconsider X=x as invertible Matrix of n,F by Th8;
   A2: e is invertible Element of n-Matrices_over F &
       x is invertible Element of n-Matrices_over F by Th10;
   thus x * e = (matrix_mult (n,F)).(x, e) by Th11
@@ -759,27 +698,23 @@ proof
   (h * e = h & e * h = h & ex g being Element of GL(n, F) st
   (h * g = e & g * h = e))
   proof
-    reconsider e=1.(F,n) as Element of GL(n, F) by Th9;
+    reconsider e=1.(F,n) as Element of GL(n, F) by Th8;
     take e;
     let x be Element of GL(n, F);
-    thus x * e = x & e * x = x by Lm4;
-    x is invertible Matrix of n, F by Th8;
+    thus x * e = x & e * x = x by Lm3;
     reconsider X=x as invertible Matrix of n, F by Th8;
     consider Y being Matrix of n, F such that
     A1: Y is_reverse_of X by MATRIX_6:def 3;
-    X is invertible;
-    then A1b: Y = X~ by A1, MATRIX_6:def 4;
+    Y = X~ by A1, MATRIX_6:def 4;
     then reconsider Y as invertible Matrix of n, F;
-    A2: Y*X = X*Y & Y*X = 1.(F,n) by A1,MATRIX_6:def 2,def 3;
     reconsider y=Y as Element of GL(n, F) by Th8;
-    A3: y*x = Y*X by Th12
-           .= X*Y by A2
+    A2: y*x = Y*X by Th12
+           .= X*Y by A1,MATRIX_6:def 2
            .= x*y by Th12;
-    A4: y*x = Y*X by Th12
-           .= 1.(F,n) by A2
-           .= e;
+    A3: y*x = Y*X by Th12
+           .= e by A1,MATRIX_6:def 2;
     take y;
-    thus thesis by A3,A4;
+    thus thesis by A2,A3;
   end;
   hence thesis by GROUP_1:def 2;
 end;
@@ -797,9 +732,9 @@ theorem Th15:
 theorem Th16:
   1_(GL(n,F)) = 1.(F, n)
 proof
-  reconsider e=1.(F,n) as Element of GL(n, F) by Th9;
+  reconsider e=1.(F,n) as Element of GL(n, F) by Th8;
   for x being Element of GL(n, F)
-  holds (x * e = x & e * x = x) by Lm4;
+  holds (x * e = x & e * x = x) by Lm3;
   hence thesis by GROUP_1:def 4;
 end;
 
@@ -814,20 +749,17 @@ proof
 
   consider Y being Matrix of n, F such that
   A2: Y is_reverse_of X by MATRIX_6:def 3;
-  X is invertible;
-  then A3: Y = X~ by A2, MATRIX_6:def 4;
+  Y = X~ by A2, MATRIX_6:def 4;
   then reconsider Y as invertible Matrix of n, F;
-  A4: Y*X = X*Y & Y*X = 1.(F,n) by A2,MATRIX_6:def 2,def 3;
   reconsider y=Y as Element of GL(n, F) by Th8;
-  A5: y*x = Y*X by A1,Th12
-         .= X*Y by A4
+  A3: y*x = Y*X by A1,Th12
+         .= X*Y by A2,MATRIX_6:def 2
          .= x*y by A1,Th12;
-  A6: y*x = Y*X by A1,Th12
-         .= 1.(F,n) by A4
-         .= 1_(GL(n, F)) by Th16;
-  then x" = y by A5, Th16, GROUP_1:def 5
-         .= Y;
-  hence x" = X~ by A3,GROUP_1:def 5;
+  y*x = Y*X by A1,Th12
+     .= 1.(F,n) by A2,MATRIX_6:def 2
+     .= 1_(GL(n, F)) by Th16;
+  then x" = Y by A3, GROUP_1:def 5;
+  hence x" = X~ by A2, MATRIX_6:def 4;
 end;
 
 

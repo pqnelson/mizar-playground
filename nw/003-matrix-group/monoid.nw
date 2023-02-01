@@ -59,10 +59,18 @@ definition
   let R be Ring;
   let n be positive Nat;
   let IT be set;
-  attr IT is (n,R)-matrix-membered means :DefUh:
+  attr IT is (n,R)-matrix-membered means :Def1:
   for x being object st x in IT holds x is Matrix of n,R;
 end;
-@ %def -matrix-membered DefUh
+@ %def -matrix-membered Def1
+
+\begin{voc}
+We need to add ``[[-matrix-membered]]'' to the vocabulary file.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+V-matrix-membered
+@
 
 \begin{registration}
 The set `\lstinline{n-Matrices_over R}' is matrix membered.
@@ -115,7 +123,7 @@ definition
   let n be positive Nat;
   let A be non empty (n,R)-matrix-membered set;
   redefine mode Element of A -> Matrix of n,R;
-  correctness by DefUh;
+  correctness by Def1;
 end;
 @
 
@@ -136,11 +144,11 @@ definition
   let R be Ring;
   let n be positive Nat;
   let IT be 1-sorted;
-  attr IT is (n,R)-matrix-membered means :DefUh2:
+  attr IT is (n,R)-matrix-membered means :Def2:
   the carrier of IT is (n,R)-matrix-membered;
   :: for x being Element of IT holds x is Matrix of n,R;
 end;
-@ %def DefUh2
+@ %def Def2
 
 \begin{lemma}
 An element of $\Mat(n,R)$ is an $n\times n$ matrix with entries in $R$.
@@ -167,7 +175,7 @@ registration
     take A = 1-sorted (# n-Matrices_over R #);
     thus A is strict;
     thus A is non empty;
-    thus A is (n,R)-matrix-membered by DefUh;
+    thus A is (n,R)-matrix-membered by Def1;
   end;
 end;
 @
@@ -240,6 +248,15 @@ definition
 end;
 @ %def Def3 matrix_mult
 
+
+\begin{voc}
+We need to add ``[[matrix_mult]]'' to the vocabulary file.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+Omatrix_mult
+@
+
 \begin{registration}
 We can meaningfully talk about a ``strict non-empty matrix-membered'' magma.
 \end{registration}
@@ -253,7 +270,7 @@ registration
   proof
     reconsider M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #)
                as strict non empty multMagma;
-    M is (n,R)-matrix-membered by DefUh2;
+    M is (n,R)-matrix-membered by Def2;
     hence thesis;
   end;
 end;
@@ -274,11 +291,19 @@ definition
   coherence
   proof
     set M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #);
-    M is (n,R)-matrix-membered by DefUh2;
+    M is (n,R)-matrix-membered by Def2;
     hence thesis;
   end;
 end;
 @ %def Mat Def4
+
+\begin{voc}
+We need to add ``[[Mat]]'' to the vocabulary file.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+OMat
+@
 
 \begin{theorem}
 The magma $\Mat(n,R)$ is associative, when $R$ is a commutative ring.
@@ -295,7 +320,7 @@ proof
   for x,y,z being Element of Mat (n, R) holds (x*y)*z=x*(y*z)
   proof
     let x,y,z be Element of Mat (n, R);
-    reconsider X=x,Y=y,Z=z as Matrix of n,R by DefUh;
+    reconsider X=x,Y=y,Z=z as Matrix of n,R by Def1;
     X*Y = x*y & Y*Z = y*z by Th4;
     then A1: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by Def3;
     width X = len Y & width Y = len Z
@@ -473,14 +498,14 @@ end;
 \end{mizar}
 But we should also observe that the \texttt{[citation needed]}
 for justifying the claim an ``[[Element of Mat(n,R)]]'' is a matrix is
-precisely [[DefUh]]. For example, Mizar accepts the following:
+precisely [[Def1]]. For example, Mizar accepts the following:
 \begin{mizar}
 for A being non empty (n,R)-matrix-membered 1-sorted
 for x being Element of A
-holds x is Matrix of n,R by DefUh;
+holds x is Matrix of n,R by Def1;
 
 for x being Element of Mat(n, R)
-holds x is Matrix of n,R by DefUh;
+holds x is Matrix of n,R by Def1;
 \end{mizar}
 If we try to change the definition for [[Mat(n,R)]] to explicitly state
 its elements are matrices, like:
@@ -496,4 +521,4 @@ definition
 end;
 \end{mizar}
 Well, Mizar will just want an explicit reference to [[Def4]] instead of
-[[DefUh]]. I'm not sure this is any better.
+[[Def1]]. I'm not sure this is any better.
