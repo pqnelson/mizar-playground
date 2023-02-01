@@ -20,6 +20,9 @@ PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/universal-properties.nw $(PRODGRP)/center-and-commutator-subgroups.nw \
 	$(PRODGRP)/quotient-of-products.nw $(PRODGRP)/recognition-theorems.nw \
 	$(PRODGRP)/null-object.nw $(PRODGRP)/quotient-groups.nw 
+MATGRP1=nw/003-matrix-group
+MATRIXGROUP1=$(MATGRP1).nw $(MATGRP1)/environ.nw $(MATGRP1)/index.nw \
+	$(MATGRP1)/monoid.nw $(MATGRP1)/linear-groups-over-field.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
 	$(RADRES)/pi-numbers.nw \
@@ -47,7 +50,7 @@ rm_defs:
 defs: rm_defs
 #	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
 	nodefs $(PRODUCT_GROUP) > 002.defs
-	nodefs $(RADICALS) > 003.defs
+	nodefs $(MATRIXGROUP1) > 003.defs
 #	nodefs $(PERMUTATION_GROUP) > 004.defs
 	sort -u 001.defs | cpif 001.defs
 	sort -u 002.defs | cpif 002.defs
@@ -62,14 +65,17 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 
 dumb_extract_text: defs
 #	noweave -indexfrom 001.defs $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
-	noweave -indexfrom 002.defs $(NOWEBOPTS) $(PRODUCT_GROUP) > tex/product-group.tex
-	noweave $(NOWEBOPTS) -indexfrom 003.defs $(RADICALS) > tex/radicals.tex
+#	noweave -indexfrom 002.defs $(NOWEBOPTS) $(PRODUCT_GROUP) > tex/product-group.tex
+	noweave $(NOWEBOPTS) -indexfrom 003.defs $(MATRIXGROUP1) > tex/matrix-group1.tex
 #	noweave $(NOWEBOPTS) -indexfrom 004.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
 code:
 #	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 #	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
-	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) | tr -d '\r' > text/group_23.miz
-	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) | tr -d '\r' > dict/group_23.voc
+#	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) | tr -d '\r' > text/group_23.miz
+#	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) | tr -d '\r' > dict/group_23.voc
+	notangle -RTEXT/matgrp-1.miz $(MATRIXGROUP1) | tr -d '\r' > text/matgrp_1.miz
+	notangle -RDICT/matgrp-1.voc $(MATRIXGROUP1) | tr -d '\r' > dict/matgrp_1.voc
+
 without_bib:
 	$(TEX) $(BOOK)
 	noindex $(BOOK)

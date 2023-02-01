@@ -1,0 +1,499 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Monoids of Matrices}
+
+<<Monoids of Matrices>>=
+begin :: Monoid of Square Matrices over a Commutative Ring
+
+<<Reserve: $n\in\NN$ and $R$ for ring>>
+
+<<Definition: Matrix Membered (Set)>>
+
+<<Register: n-Matrices over R is matrix-membered>>
+
+<<Register: ``non empty matrix-membered'' for set>>
+
+<<Redefine: Element of matrix-membered non-empty set>>
+
+<<Definition: Matrix-membered (for 1-sorted)>>
+
+<<Lemma: check elements of $\Mat(n,R)$ are matrices>>
+
+<<Register: ``strict non-empty matrix-membered'' for 1-sorted>>
+
+<<Define: Matrix multiplication as binary operator on $\Mat(n,R)$>>
+
+<<Register: ``strict non-empty matrix-membered'' for magma>>
+
+<<Definition: $\Mat(n,R)$>>
+
+<<Theorem: If $R$ is commutative, then $\Mat(n, R)$ is associative>>
+
+<<Register: If $R$ is commutative, then $\Mat(n,R)$ is associative>>
+
+<<Theorem: every $n\times n$ matrix over $R$ is in $\Mat(n, R)$>>
+
+<<Theorem: If $R$ is commutative, $\Mat(n, R)$ is unital>>
+
+<<Register: If $R$ is commutative, then $\Mat(n, R)$ is unital>>
+
+<<Theorem: [[1_(Mat(n,R)) = 1.(R, n)]] provided $R$ is commutative>>
+@
+
+\begin{reserve}
+We reserve $n$ for a positive natural number, $R$ refers to a ring.
+\end{reserve}
+
+<<Reserve: $n\in\NN$ and $R$ for ring>>=
+reserve n for positive Nat;
+reserve R for Ring;
+@
+
+\begin{definition}
+We say a set is \define{$(n,R)$-Matrix Membered} if every element of the
+set is an $n\times n$ matrix with entries in $R$.
+\end{definition}
+
+<<Definition: Matrix Membered (Set)>>=
+definition
+  let R be Ring;
+  let n be positive Nat;
+  let IT be set;
+  attr IT is (n,R)-matrix-membered means :DefUh:
+  for x being object st x in IT holds x is Matrix of n,R;
+end;
+@ %def -matrix-membered DefUh
+
+\begin{registration}
+The set `\lstinline{n-Matrices_over R}' is matrix membered.
+\end{registration}
+
+<<Register: n-Matrices over R is matrix-membered>>=
+registration
+  let R be Ring;
+  let n be positive Nat;
+  cluster n-Matrices_over R -> (n, R)-matrix-membered;
+  correctness
+  proof
+    for x being object
+    holds x in n-Matrices_over R iff x is Matrix of n,R
+    proof
+      let x be object;
+      x is Element of n-Matrices_over R iff x is Matrix of n,R by MATRIX_1:2;
+      hence thesis;
+    end;
+    hence (n-Matrices_over R) is (n, R)-matrix-membered;
+  end;
+end;
+@
+
+\begin{registration}
+We can meaningfully talk about ``non empty matrix-membered sets''.
+\end{registration}
+
+<<Register: ``non empty matrix-membered'' for set>>=
+registration
+  let R be Ring;
+  let n be positive Nat;
+  cluster non empty (n,R)-matrix-membered for set;
+  existence
+  proof
+    take A = n-Matrices_over R;
+    thus thesis;
+  end;
+end;
+@
+
+\begin{redefinition*}
+We redefine an \define{Element} of a matrix-membered non-empty set to be
+a matrix.
+\end{redefinition*}
+
+<<Redefine: Element of matrix-membered non-empty set>>=
+definition
+  let R be Ring;
+  let n be positive Nat;
+  let A be non empty (n,R)-matrix-membered set;
+  redefine mode Element of A -> Matrix of n,R;
+  correctness by DefUh;
+end;
+@
+
+\begin{definition}
+When we have a 1-sorted set, we can meaningfully call it \define{Matrix Membered}
+to mean its underlying set is matrix-membered.
+\end{definition}
+
+\begin{def-remark}
+We can implement this in one of two ways: either assert the underlying
+set is matrix-membered, or that every element of the 1-sorted gadget is
+an $n\times n$ matrix with entries in $R$. I'm uncertain which is
+better, at present.
+\end{def-remark}
+
+<<Definition: Matrix-membered (for 1-sorted)>>=
+definition
+  let R be Ring;
+  let n be positive Nat;
+  let IT be 1-sorted;
+  attr IT is (n,R)-matrix-membered means :DefUh2:
+  the carrier of IT is (n,R)-matrix-membered;
+  :: for x being Element of IT holds x is Matrix of n,R;
+end;
+@ %def DefUh2
+
+\begin{lemma}
+An element of $\Mat(n,R)$ is an $n\times n$ matrix with entries in $R$.
+\end{lemma}
+
+<<Lemma: check elements of $\Mat(n,R)$ are matrices>>=
+Lm1:
+  for x being Element of n-Matrices_over R
+  holds x is Matrix of n,R;
+@ %def Lm1
+
+\begin{registration}
+We can meaningfully speak of ``strict non-empty matrix-membered'' for
+1-sorted gadgets.
+\end{registration}
+
+<<Register: ``strict non-empty matrix-membered'' for 1-sorted>>=
+registration
+  let R be Ring;
+  let n be positive Nat;
+  cluster strict non empty (n,R)-matrix-membered for 1-sorted;
+  existence
+  proof
+    take A = 1-sorted (# n-Matrices_over R #);
+    thus A is strict;
+    thus A is non empty;
+    thus A is (n,R)-matrix-membered by DefUh;
+  end;
+end;
+@
+
+\begin{definition}
+Matrix multiplication forms a binary operator on $\Mat(n,R)$.
+\end{definition}
+
+<<Define: Matrix multiplication as binary operator on $\Mat(n,R)$>>=
+definition
+  let n be positive Nat;
+  let R be Ring;
+  func matrix_mult (n,R) -> BinOp of n-Matrices_over R means :Def3:
+  for A,B being Element of n-Matrices_over R 
+  holds it.(A,B) = A*B;
+  existence
+  proof
+    set F1=n-Matrices_over R;
+    defpred P[object, object, object] means ex X,Y,Z being Matrix of n,R
+    st $1=X & $2=Y & $3=Z & Z = X*Y;
+  
+    A1: for x being object holds x in F1 iff x is Matrix of n,R
+    proof
+      let x be object;
+      x is Element of F1 iff x is Matrix of n,R by MATRIX_1:2;
+      hence thesis;
+    end;
+    
+    A2: for x,y being object st x in F1 & y in F1 ex z being object st
+    (z in F1 & P[x,y,z])
+    proof
+      let x,y be object;
+      assume x in F1 & y in F1;
+      then reconsider A=x, B=y as Matrix of n,R by A1;
+      width A = n & len B = n by MATRIX_0:23;
+      then reconsider B as Matrix of width A,n,R;
+      take z = A*B;
+      thus z in F1 by A1;
+      thus P[x, y, z];
+    end;
+    
+    consider f being Function of [: F1, F1 :],F1 such that
+    A3: for x,y being object st x in F1 & y in F1 holds P[x, y, f.(x,y)]
+    from BINOP_1:sch 1(A2);
+    reconsider f as BinOp of F1;
+    take f;
+    for A,B being Element of F1 holds f.(A,B) = A*B
+    proof
+      let A,B be Element of F1;
+      P[A, B, f.(A,B)] by A3;
+      hence f.(A,B) = A*B;
+    end;
+    hence thesis;
+  end;
+  uniqueness
+  proof
+    let f,g be BinOp of n-Matrices_over R;
+    set F1=n-Matrices_over R;
+    assume A1: for A,B being Element of F1 holds f.(A,B) = A*B;
+    assume A2: for A,B being Element of F1 holds g.(A,B) = A*B;
+    for A,B being Element of F1 holds f.(A,B) = g.(A,B)
+    proof
+      let A,B be Element of F1;
+      thus f.(A,B) = A*B by A1
+                  .= g.(A,B) by A2;
+    end;
+
+    hence thesis;
+  end;
+end;
+@ %def Def3 matrix_mult
+
+\begin{registration}
+We can meaningfully talk about a ``strict non-empty matrix-membered'' magma.
+\end{registration}
+
+<<Register: ``strict non-empty matrix-membered'' for magma>>=
+registration
+  let R be Ring;
+  let n be positive Nat;
+  cluster strict non empty (n,R)-matrix-membered for multMagma;
+  existence
+  proof
+    reconsider M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #)
+               as strict non empty multMagma;
+    M is (n,R)-matrix-membered by DefUh2;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{definition}
+We denote by $\Mat(n,R)$ the magma consisting of all square $n\times n$
+matrices over a ring $R$, whose binary operator is matrix multiplication.
+\end{definition}
+
+<<Definition: $\Mat(n,R)$>>=
+definition
+  let R be Ring;
+  let n be positive Nat;
+  func Mat(n,R) -> non empty (n,R)-matrix-membered multMagma equals
+  :Def4:
+  multMagma (# n-Matrices_over R, matrix_mult (n,R) #) ;
+  coherence
+  proof
+    set M = multMagma (# n-Matrices_over R, matrix_mult (n,R) #);
+    M is (n,R)-matrix-membered by DefUh2;
+    hence thesis;
+  end;
+end;
+@ %def Mat Def4
+
+\begin{theorem}
+The magma $\Mat(n,R)$ is associative, when $R$ is a commutative ring.
+\end{theorem}
+
+<<Theorem: If $R$ is commutative, then $\Mat(n, R)$ is associative>>=
+theorem Th1:
+  for R being commutative Ring
+  for n
+  holds Mat(n, R) is associative
+proof
+  let R be commutative Ring;
+  let n be positive Nat;
+  for x,y,z being Element of Mat (n, R) holds (x*y)*z=x*(y*z)
+  proof
+    let x,y,z be Element of Mat (n, R);
+    reconsider X=x,Y=y,Z=z as Matrix of n,R by DefUh;
+    X*Y = x*y & Y*Z = y*z by Th4;
+    then A1: (X*Y)*Z = (x*y)*z & X*(Y*Z) = x*(y*z) by Def3;
+    width X = len Y & width Y = len Z
+    proof
+      width X = n & len Y = n & width Y = n & len Z = n by MATRIX_0:23;
+      hence thesis;
+    end;
+    hence (x*y)*z=x*(y*z) by A1, MATRIX_3:33;
+  end;
+  hence Mat (n, R) is associative by GROUP_1:def 3;
+end;
+@ %def Th1
+
+\begin{registration}
+We register $\Mat(n,R)$ is a monoid.
+\end{registration}
+
+<<Register: If $R$ is commutative, then $\Mat(n,R)$ is associative>>=
+registration
+  let R be commutative Ring;
+  let n be positive Nat;
+  cluster Mat(n,R) -> associative;
+  correctness by Th1;
+end;
+@
+
+\begin{theorem}
+Any square matrix is in $\Mat(n,R)$.
+\end{theorem}
+
+<<Theorem: every $n\times n$ matrix over $R$ is in $\Mat(n, R)$>>=
+theorem Th2:
+  for A being Matrix of n,R
+  holds A is Element of Mat(n, R) by MATRIX_1:2;
+@ %def Th2
+
+\begin{corollary}
+The identity matrix is in $\Mat(n, R)$.
+\end{corollary}
+
+<<Corollary: the identity matrix belongs to $\Mat(n, R)$>>=
+theorem Th3:
+  1.(R,n) in Mat(n, R) by Th2;
+@ 
+
+\begin{lemma}
+If $R$ is a commutative ring, then
+the identity matrix acts as the unit for the magma $\Mat(n, R)$.
+\end{lemma}
+
+<<Lemma: If $R$ is commutative, then identity matrix is unit for $\Mat(n, R)$>>=
+Lm2:
+  for R being commutative Ring
+  for e being Element of Mat(n,R) st e = 1.(R,n)
+  for x being Element of Mat(n,R)
+  holds (x * e = x & e * x = x)
+proof
+  let R be commutative Ring;
+  let e be Element of Mat(n, R);
+  assume A1: e=1.(R,n);
+  let x be Element of Mat(n,R);
+  reconsider X=x as Matrix of n,R by MATRIX_1:2;
+  thus x * e = (matrix_mult (n,R)).(x, e) by Def4
+            .= X * 1.(R,n) by A1,Def3
+            .= x by MATRIX_3:19;
+  thus e * x = (matrix_mult (n,R)).(e, x) by Def4
+            .= 1.(R, n) * X by A1,Def3
+            .= x by MATRIX_3:18;
+end;
+@ %def Lm2
+
+\begin{theorem}
+Let $R$ be a commutative ring.
+Then $\Mat(n, R)$ is unital.
+\end{theorem}
+
+<<Theorem: If $R$ is commutative, $\Mat(n, R)$ is unital>>=
+
+<<Lemma: If $R$ is commutative, then identity matrix is unit for $\Mat(n, R)$>>
+
+theorem Th4:
+  for R being commutative Ring
+  holds Mat (n, R) is unital
+proof
+  let R be commutative Ring;
+  ex e being Element of Mat(n, R)
+  st for x being Element of Mat(n,R)
+  holds (x * e = x & e * x = x)
+  proof
+    reconsider e=1.(R,n) as Element of Mat(n,R) by Th2;
+    take e;
+    thus thesis by Lm2;
+  end;
+  hence thesis by GROUP_1:def 1;
+end;
+@ %def Th4
+
+\begin{registration}
+We register the fact that $\Mat(n, R)$ is unital.
+\end{registration}
+
+<<Register: If $R$ is commutative, then $\Mat(n, R)$ is unital>>=
+registration
+  let R be commutative Ring;
+  let n be positive Nat;
+  cluster Mat(n,R) -> unital associative;
+  correctness by Th4;
+end;
+@
+
+\begin{theorem}
+Let $R$ be commutative.
+Then the identity matrix is the unit for the monoid $\Mat(n, R)$.
+\end{theorem}
+
+<<Theorem: [[1_(Mat(n,R)) = 1.(R, n)]] provided $R$ is commutative>>=
+theorem Th5:
+  for R being commutative Ring
+  holds 1_(Mat(n,R)) = 1.(R, n)
+proof
+  let R be commutative Ring;
+  reconsider e=1.(R,n) as Element of Mat(n,R) by Th2;
+  for x being Element of Mat(n,R)
+  holds x*e = x & e*x = x by Lm2;
+  hence thesis by GROUP_1:def 4;
+end;
+@ %def Th5
+
+\subsection{Code Review of Implementation}
+Let us assess how ``user friendly'' this formalization
+is. Unfortunately, if we have ``\lstinline{let x be Element of Mat(n,R)}'',
+then Mizar is clueless about $x$ being a ``\lstinline{Matrix of n,R}''.
+That's not very user-friendly, in my assessment.
+
+As far as I can see, there are two ways to go about this:
+\begin{enumerate}
+\item Try a different approach to make ``\lstinline{let x be Element of Mat(n,R)}''
+promotable to ``\lstinline{Matrix of n,R}'' somehow.
+\item Redefine the relevant attributes and functors so things are
+  well-defined and we can meaningfully discuss invertible elements of
+  $\Mat(n, R)$.
+\end{enumerate}
+To be clear, we have Mizar handle the following situations:
+\begin{mizar}
+the carrier of Mat(n, R) is (n,R)-matrix-membered;
+
+for x being Element of the carrier of Mat(n, R)
+holds x is Matrix of n, R;
+
+for x being Element of Mat(n, R)
+holds x is Matrix of n, R;
+::>                     *4,4,4
+\end{mizar}
+So, somehow the type ``\lstinline{Element of Mat(n, R)}'' is not
+expanding as it should. It appears that the definition used may be
+traced back to \mml{struct0}:
+\begin{mizar}
+definition
+  let S be 1-sorted;
+  mode Element of S is Element of the carrier of S;
+  mode Subset of S is Subset of the carrier of S;
+  mode Subset-Family of S is Subset-Family of the carrier of S;
+end; 
+\end{mizar}
+This means ``Element'' is an expandable mode and, in particular, we
+cannot redefine it. So we cannot do something like:
+\begin{mizar}
+definition
+  let R be Ring;
+  let n be positive Nat;
+  let A be non empty (n,R)-matrix-membered 1-sorted;
+  redefine mode Element of A -> Matrix of n,R; :: ILLEGAL!!!
+  correctness;
+end;
+\end{mizar}
+But we should also observe that the \texttt{[citation needed]}
+for justifying the claim an ``[[Element of Mat(n,R)]]'' is a matrix is
+precisely [[DefUh]]. For example, Mizar accepts the following:
+\begin{mizar}
+for A being non empty (n,R)-matrix-membered 1-sorted
+for x being Element of A
+holds x is Matrix of n,R by DefUh;
+
+for x being Element of Mat(n, R)
+holds x is Matrix of n,R by DefUh;
+\end{mizar}
+If we try to change the definition for [[Mat(n,R)]] to explicitly state
+its elements are matrices, like:
+\begin{mizar}
+definition
+  let R be Ring;
+  let n be positive Nat;
+  func Mat(n,R) -> non empty (n,R)-matrix-membered multMagma
+  means :Def4:
+  (for x being Element of it holds x is Matrix of n,R)
+  & (the multF of it = matrix_mult (n,R));
+  correctness;
+end;
+\end{mizar}
+Well, Mizar will just want an explicit reference to [[Def4]] instead of
+[[DefUh]]. I'm not sure this is any better.

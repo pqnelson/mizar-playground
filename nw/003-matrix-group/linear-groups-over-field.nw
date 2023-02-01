@@ -1,0 +1,38 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+
+\section{Linear Groups over Fields}
+
+We want to formalize the notion of groups like $\GL(n,\FF)$ or $\SL(n, \FF)$.
+Later we will formalize groups like $\GL(V)$ where $V$ is a vector space
+over a field.
+
+<<Linear Groups Over Fields>>=
+begin :: Linear Groups over Fields
+
+<<Definition: matrix multiplication as a binary operator>>
+@
+
+\begin{definition}
+Let $R$ be a ring, let $n\in\NN$ be a fixed positive integer.
+We define \define{Matrix Multiplication} to be a binary operator on the
+$n$-matrices over $R$ defined in the obvious way.
+\end{definition}
+
+<<Definition: matrix multiplication as a binary operator>>=
+definition
+  let R be Ring;
+  let n be Nat;
+  func matrix_mult -> BinOp of n-Matrices_over R means :Def1:
+  for A,B being Matrix of n,R holds it.(A, B) = A*B;
+  existence;
+  uniqueness;
+end;
+@ %def matrix_mult Def1
+
+\begin{voc}
+We need to define [[matrix_mult]] as a functor.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+Omatrix_mult
+@
