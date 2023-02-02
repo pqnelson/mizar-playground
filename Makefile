@@ -22,7 +22,8 @@ PRODUCT_GROUP=$(PRODGRP).nw $(PRODGRP)/environ.nw $(PRODGRP)/index.nw \
 	$(PRODGRP)/null-object.nw $(PRODGRP)/quotient-groups.nw 
 MATGRP1=nw/003-matrix-group
 MATRIXGROUP1=$(MATGRP1).nw $(MATGRP1)/environ.nw $(MATGRP1)/index.nw \
-	$(MATGRP1)/monoid.nw $(MATGRP1)/linear-groups-over-field.nw
+	$(MATGRP1)/monoid.nw $(MATGRP1)/linear-groups-over-field.nw \
+	$(MATGRP1)/special-linear-group.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
 	$(RADRES)/pi-numbers.nw \

@@ -31,11 +31,15 @@ vocabular defined by our new article. Further, since we will need binary
 operators, we add that to our vocabularies.
 
 We also need to refer to functions ([[FUNCT_1]]), empty sets ([[XBOOLE_0]]),
-we may need the ``linear'' attribute ([[FDIFF_1]]).
+we may need the ``linear'' attribute ([[FDIFF_1]]). The determinant
+(defined in [[MATRIX_3]]) is necessary. We will need to make sure that
+we can refer to properties of rings defined in [[VECTSP_2]], so I add it
+out of caution than necessity.
 
 <<[[matgrp_1.miz]] vocabularies>>=
-vocabularies TARSKI, <<[[matrix_6]] vocabularies>> MATGRP_1, BINOP_1,
-  FUNCT_1, MONOID_0, XBOOLE_0, FDIFF_1, REALSET1;
+vocabularies TARSKI, <<[[matrix_6]] vocabularies>> MATGRP_1, MATRIX_3,
+  BINOP_1, FUNCT_1, MONOID_0, XBOOLE_0, FDIFF_1, REALSET1,
+  VECTSP_2;
 @
 
 <<[[matrix_6]] vocabularies>>=
@@ -49,18 +53,20 @@ MATRIX_6, FUNCSDOM, MATRIX_0,
 
 
 \subsection{Constructors}
-We begin with the constructors found in \mml{matrix6}:
+We begin with the constructors found in \mml{matrix6}, but re-ordered
+slightly. 
 
 <<[[matgrp_1.miz]] constructors>>=
-constructors XBOOLE_0, NUMBERS, <<[[matrix_6]] constructors>>,
+constructors XBOOLE_0, ALGSTR_0, NUMBERS, <<[[matrix_6]] constructors>>,
   VECTSP_1,
   RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0, GROUP_1,
-  MATRIX_3;
+  MATRIX_3, MATRIX_6,
+  VECTSP_2, MATRIX11,
+  STRUCT_0, SUBSET_1;
 @
 
 <<[[matrix_6]] constructors>>=
-XXREAL_0, FVSUM_1, MATRIX_3, MATRIX_4, MATRIX_1, MATRIX_6,
-BINOP_1
+XXREAL_0, FVSUM_1, MATRIX_4, MATRIX_1, BINOP_1
 @ 
 
 \subsection{Notations}
@@ -68,15 +74,17 @@ The notations used may be found in \mml{matrix6}:
 
 <<[[matgrp_1.miz]] notations>>=
 notations <<[[matrix_6]] notations>>
-  SUBSET_1, STRUCT_0,
+  SUBSET_1,
   RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0,
-  MATRIX_3, ALGSTR_0;
+  MATRIX_3, MATRIX_6,
+  VECTSP_2, MATRIX11,
+  STRUCT_0, ALGSTR_0;
 @
 
 <<[[matrix_6]] notations>>=
 TARSKI, ZFMISC_1, ORDINAL1, NUMBERS, FINSEQ_1,
 RLVECT_1, GROUP_1, VECTSP_1, MATRIX_0, STRUCT_0, MATRIX_1,
-MATRIX_3, MATRIX_4, XXREAL_0, MATRIX_6, BINOP_1,
+MATRIX_4, XXREAL_0, BINOP_1,
 @ 
 
 \subsection{Registrations}
@@ -87,11 +95,14 @@ registrations XBOOLE_0, <<[[matrix_6]] registrations>>
   ALGSTR_0, GROUP_1, GROUP_2,
 @
 
+We also include [[VECTSP_2]] to handle all the registrations relevant
+for fields being ``nice Rings''.
+
 <<[[matrix_6]] registrations>>=
 RELSET_1, XREAL_0, STRUCT_0, VECTSP_1, ORDINAL1, MATRIX_0,
 MATRIX_1, MATRIX_6, NAT_1, RELAT_1, FUNCT_1, PARTFUN1,
 REALSET1, RELSET_1, NUMBERS, SUBSET_1, FUNCT_2, XREAL_0,
-XXREAL_0, MEMBERED, VECTSP_1, ORDINAL1, MATRIX_0, MATRIX_1,
+XXREAL_0, MEMBERED, VECTSP_1, VECTSP_2, ORDINAL1, MATRIX_0, MATRIX_1,
 MATRIX_6;
 @ 
 
@@ -118,12 +129,16 @@ expansions BINOP_1, ALGSTR_0, STRUCT_0;
 @
 
 \subsection{Theorems}
+We rely on [[MATRIX1]] for proving the product of determinants is the
+determinant of products, and [[MATRIX_7]] for the determinant of the
+identity matrix.
+
 <<[[matgrp_1.miz]] theorems>>=
 theorems ALGSTR_0, ZFMISC_1, RLVECT_1, MATRIX_0, MATRIX_4, MATRIX_3,
   VECTSP_1, NAT_1, SUBSET_1, STRUCT_0, MONOID_0,
   CARD_2, XXREAL_0, MATRIX_1, MATRIX_6, TARSKI,
   FUNCT_1, FUNCT_2, BINOP_1, PARTFUN1,
-  GROUP_1;
+  GROUP_1, REALSET1, MATRIX_7, MATRIX11;
 @
 
 \subsection{Schemes}

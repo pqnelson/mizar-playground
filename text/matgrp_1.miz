@@ -12,28 +12,33 @@
 environ
 
  vocabularies TARSKI, NAT_1, VECTSP_1, SUBSET_1, MATRIX_1, REWRITE1, RELAT_1,
-   MESFUNC1, STRUCT_0, ALGSTR_0, NUMBERS, ARYTM_1, FINSEQ_1, TREES_1, ARYTM_3, SUPINF_2,
+   MESFUNC1, STRUCT_0, ALGSTR_0, NUMBERS, ARYTM_1, FINSEQ_1, TREES_1,
+   ARYTM_3, SUPINF_2, 
    XXREAL_0, CARD_1, QC_LANG1, ZFMISC_1, RELAT_2, FUNCOP_1, GROUP_1,
-   MATRIX_6, FUNCSDOM, MATRIX_0, MATGRP_1,
-   BINOP_1, FUNCT_1, MONOID_0, XBOOLE_0, FDIFF_1, REALSET1;
+   MATRIX_6, FUNCSDOM, MATRIX_0, MATGRP_1, MATRIX_3, 
+   BINOP_1, FUNCT_1, MONOID_0, XBOOLE_0, FDIFF_1, REALSET1,
+   VECTSP_2, GROUP_2;
    
- constructors XBOOLE_0, NUMBERS, XXREAL_0, :: STRUCT_0,
-   ALGSTR_0, FVSUM_1,
-   MATRIX_4, MATRIX_1,
+ constructors XBOOLE_0, ALGSTR_0, NUMBERS, XXREAL_0, 
+   FVSUM_1, MATRIX_4, MATRIX_1,
    VECTSP_1,
    RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0, GROUP_1,
-   MATRIX_3,  MATRIX_6, STRUCT_0, SUBSET_1;
+   MATRIX_3,  MATRIX_6,
+   VECTSP_2, MATRIX11,
+   STRUCT_0, SUBSET_1, GROUP_2;
    
  notations TARSKI, XBOOLE_0, ZFMISC_1, ORDINAL1, NUMBERS, FINSEQ_1,
    RLVECT_1, GROUP_1, VECTSP_1, MATRIX_0, MATRIX_1,
-   MATRIX_4, XXREAL_0, SUBSET_1, :: STRUCT_0,
+   MATRIX_4, XXREAL_0, SUBSET_1,
    RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0,
-   MATRIX_3, MATRIX_6, STRUCT_0, ALGSTR_0;
+   MATRIX_3, MATRIX_6,
+   VECTSP_2, MATRIX11,
+   STRUCT_0, ALGSTR_0, GROUP_2;
 
  registrations XBOOLE_0, SUBSET_1, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2, MONOID_0,
    RELAT_1, FUNCT_1, PARTFUN1, REALSET1, RELSET_1, FUNCT_2,
    NUMBERS, ORDINAL1, XXREAL_0, XREAL_0, NAT_1, INT_1, NAT_2,
-   MEMBERED, VECTSP_1, MATRIX_0, MATRIX_1, MATRIX_6;
+   MEMBERED, VECTSP_1, VECTSP_2, MATRIX_0, MATRIX_1, MATRIX_6;
 
  requirements BOOLE, SUBSET, NUMERALS, REAL, ARITHM;
 
@@ -47,7 +52,7 @@ environ
    VECTSP_1, NAT_1, SUBSET_1, STRUCT_0, MONOID_0,
    CARD_2, XXREAL_0, MATRIX_1, MATRIX_6, TARSKI,
    FUNCT_1, FUNCT_2, BINOP_1, PARTFUN1,
-   GROUP_1, REALSET1;
+   GROUP_1, REALSET1, MATRIX_7, MATRIX11, GROUP_2;
 
  schemes BINOP_1, SUBSET_1;
 
@@ -107,50 +112,6 @@ definition
   correctness by Def1;
 end;
 
-:: definition
-::   let R,n;
-::   redefine func n-Matrices_over R equals :DefNewMat:
-::   the set of all M where M is Matrix of n, R;
-::  :: { A where A is Matrix of n, R : not contradiction };
-::   compatibility
-::   proof
-::     set M = { A where A is Matrix of n, R : not contradiction };
-::     for x being set holds x = n-Matrices_over R iff x = M 
-::     proof
-::       let x be set;
-::       for y being object holds y in n-Matrices_over R iff y in M
-::       proof
-::         let y be object;
-::         hereby 
-::           assume y in n-Matrices_over R;
-::           then y is Matrix of n, R by MATRIX_1:2;
-::           hence y in M;
-::         end;
-::         assume Z2: y in M;
-::         then ex Y being Matrix of n,R st y=Y;
-::         then y is Matrix of n, R;
-::         then y is Element of n-Matrices_over R by MATRIX_1:2;
-::         hence y in n-Matrices_over R;
-::       end;
-::       then A1: n-Matrices_over R = M by TARSKI:2;
-::       hereby 
-::         assume x = n-Matrices_over R;
-::         hence x = M by A1;
-::       end;
-::       assume x = M;
-::       hence x = n-Matrices_over R by A1;
-::     end;
-::     hence thesis;
-::   end;
-:: end;
-
-:: definition
-::   let R,n;
-::   redefine func n-Matrices_over R equals :NewDef:
-::   the set of all M where M is Matrix of n, R;
-::   correctness;
-:: end;
-
 definition
   let R be Ring;
   let n be positive Nat;
@@ -191,40 +152,6 @@ registration
   cluster the carrier of A -> non empty (n,R)-matrix-membered;
   correctness by Def2;
 end;
-
-:: definition
-::   let n be positive Nat;
-::   let R be Ring;
-::   let x, y be Matrix of n,R;
-::   redefine func x * y -> Element of n-Matrices_over R;
-::   correctness by MATRIX_1:2;
-:: end;
-
-:: definition
-::   let n be positive Nat;
-::   let R be Ring;
-::   let x, y be Element of n-Matrices_over R;
-::   redefine func x * y -> Element of n-Matrices_over R;
-::   correctness by MATRIX_1:2;
-:: end;
-
-:: definition
-::   let n be positive Nat;
-::   let R be Ring;
-::   let A be non empty (n,R)-matrix-membered 1-sorted;
-::   let x, y be Element of A;
-::   redefine func x * y -> Element of A;
-:: ::>               *113
-::   correctness by MATRIX_1:2;
-:: end;
-
-:: notation
-::   let n,k,m be Nat;
-::   let R be Ring;
-::   let A be Matrix of n,k,R;
-::   let B be Matrix of width A,m,R;
-::   synonym matrix_mult(A,B) for A * B;
-:: end;
 
 definition
   let n be positive Nat;
@@ -460,21 +387,23 @@ proof
   hence x is invertible Element of n-Matrices_over F by Def6,MATRIX_1:2;
 end;
 
-
 definition
   let F be Field;
   let n be positive Nat;
   func n-invertible_Matrices_over F -> non empty Subset of n-Matrices_over F
   means :Def7:
-  for x being object holds x in it iff x is invertible Element of n-Matrices_over F;
+  for x being object
+  holds x in it iff x is invertible Element of n-Matrices_over F;
   existence
   proof
-    defpred P[object] means ex M being Matrix of n,F st M = $1 & M is invertible;
+    defpred P[object] means ex M being Matrix of n,F
+    st M = $1 & M is invertible;
     deffunc F1() = n-Matrices_over F;
     consider B being Subset of F1() such that
     A1: for x being Element of F1() holds (x in B iff P[x])
     from SUBSET_1:sch 3;
-    A2: for x being Element of n-Matrices_over F holds x in B iff x is invertible
+    A2: for x being Element of n-Matrices_over F
+    holds x in B iff x is invertible
     proof
       let x be Element of n-Matrices_over F;
       hereby 
@@ -762,5 +691,232 @@ proof
   hence x" = X~ by A2, MATRIX_6:def 4;
 end;
 
+begin :: The Special Linear Group
 
-::  MATRIX11:62 proves Det(A * B) = (Det A) * (Det B)
+theorem Th18:
+  for A,B being Matrix of n,F
+  st Det(A) = 1.F & Det(B) = 1.F
+  holds Det(A * B) = 1.F
+proof
+  let A,B be Matrix of n,F;
+  assume A1: Det(A) = 1.F;
+  assume A2: Det(B) = 1.F;
+  thus Det(A * B) = (Det A) * (Det B) by MATRIX11:62
+                 .= 1.F * 1.F by A1,A2
+                 .= 1.F;
+end;
+
+theorem Th19:
+  Det(1.(F, n)) = 1.F
+proof
+  n >= 1 by NAT_1:25;
+  hence Det(1.(F, n)) = 1_ F by MATRIX_7:16
+                     .= 1.F;
+end;
+
+theorem Th20:
+  for A being invertible Matrix of n,F
+  holds A * (A~) = 1.(F, n) & (A~) * A = 1.(F, n)
+proof
+  let A be invertible Matrix of n,F;
+  A~ is_reverse_of A by MATRIX_6:def 4;
+  then (A~) * A = A * (A~) & (A~) * A = 1.(F,n) by MATRIX_6:def 2;
+  hence thesis;
+end;
+
+theorem Th21:
+  for A being invertible Matrix of n,F
+  st Det(A) = 1.F
+  holds Det(A~) = 1.F
+proof
+  let A be invertible Matrix of n,F;
+  assume A1: Det(A) = 1.F;
+  1.F = Det(1.(F, n)) by Th19
+     .= Det(A * (A~)) by Th20
+     .= (Det A) * (Det (A~)) by MATRIX11:62
+     .= (1.F) * (Det (A~)) by A1
+     .= Det (A~);
+  hence thesis;
+end;
+
+scheme
+SubgroupSch { F1() -> Field,
+              n1() -> positive Nat,
+              P[Matrix of n1(), F1()] } :
+  ex H being strict Subgroup of GL(n1(), F1()) st
+  the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X }
+provided
+A1: P[1.(F1(), n1())] and
+A2: for X,Y being invertible Matrix of n1(), F1()
+    st P[X] & P[Y] holds P[X*Y] and
+A3: for X being invertible Matrix of n1(), F1()
+    st P[X]
+    holds P[X~]
+proof
+  set U = {A where A is Element of GL(n1(), F1()) : ex X being invertible
+  Matrix of n1(), F1() st P[X] & A = X};
+  for x being object st x in U holds x in the carrier of GL(n1(), F1())
+  proof
+    let x be object;
+    assume Z1: x in U;
+    then ex A being Element of GL(n1(), F1()) st A = x & ex X being
+    invertible Matrix of n1(), F1() st P[X] & A = X;
+    then x in GL(n1(), F1());
+    hence x in the carrier of GL(n1(), F1());
+  end;
+  then U c= the carrier of GL(n1(), F1()) by TARSKI:def 3;
+  then reconsider U as Subset of GL(n1(), F1());
+
+  A4: for x being invertible Matrix of n1(),F1()
+  holds x in U iff P[x] & x in GL(n1(), F1())
+  proof
+    let x be invertible Matrix of n1(),F1();
+    thus x in U implies (P[x] & x in GL(n1(), F1()))
+    proof
+      assume x in U;
+      then ex A being Element of GL(n1(), F1()) st A = x
+      & ex X being invertible Matrix of n1(),F1() st P[X] & A = X;
+      hence thesis;
+    end;
+    assume P[x] & x in GL(n1(), F1());
+    hence thesis;
+  end;
+
+  A5: 1_(GL(n1(), F1())) in U
+  proof
+    B1: 1.(F1(), n1()) is invertible Matrix of n1(),F1();
+    1.(F1(), n1()) is Element of GL(n1(), F1()) by Th9;
+    then B2: 1.(F1(), n1()) in GL(n1(), F1());
+    B3: P[1.(F1(), n1())] by A1;
+    1_(GL(n1(), F1())) = 1.(F1(), n1()) by Th16;
+    hence thesis by A4, B1, B2, B3, Th19;
+  end;
+  A6: for g1,g2 being Element of GL(n1(), F1()) st g1 in U & g2 in U
+  holds g1*g2 in U
+  proof
+    let g1,g2 be Element of GL(n1(), F1());
+    assume B1: g1 in U;
+    assume B2: g2 in U;
+    then ex A being Element of GL(n1(), F1()) st A = g2 & ex Y being
+    invertible Matrix of n1(),F1() st P[Y] & A = Y;
+    then consider Y being invertible Matrix of n1(),F1() such that
+    B3: P[Y] & g2 = Y;
+    ex A being Element of GL(n1(), F1()) st A = g1 & ex Y being
+    invertible Matrix of n1(),F1() st P[Y] & A = Y by B1;
+    then consider X being invertible Matrix of n1(),F1() such that
+    B4: P[X] & g1 = X;
+    ex Z being invertible Matrix of n1(),F1() st P[Z] & g1*g2 = Z
+    proof
+      X*Y is invertible Matrix of n1(),F1() by MATRIX_6:36;
+      then reconsider Z = X*Y as invertible Matrix of n1(),F1();
+      take Z;
+      thus P[Z] by B3,B4,A2;
+      thus g1*g2 = Z by B3,B4,Th12;
+    end;
+    hence g1*g2 in U;
+  end;
+  
+  A7: for g being Element of GL(n1(), F1()) st g in U
+  holds g" in U
+  proof
+    let g be Element of GL(n1(), F1());
+    assume B1: g in U;
+    then ex A being Element of GL(n1(), F1()) st A = g & ex X being
+    invertible Matrix of n1(),F1() st P[X] & A = X;
+    then consider X being invertible Matrix of n1(),F1() such that
+    B2: P[X] & g = X;
+    B3: P[X~] by B2, A3;
+    g" = X~ by B2, Th17;
+    hence g" in U by B3;
+  end;
+  hence ex H being strict Subgroup of GL(n1(), F1()) st
+  the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X } by A5, A6, GROUP_2:52;
+end;
+
+scheme
+SubgroupSch2 { F1() -> Field,
+               n1() -> positive Nat,
+               P[Matrix of n1(), F1()] } :
+  ex H being strict Subgroup of GL(n1(), F1()) st
+  for x being invertible Matrix of n1(), F1()
+  holds x in H iff P[x] & x in GL(n1(), F1())
+provided
+A1: P[1.(F1(), n1())] and
+A2: for X,Y being invertible Matrix of n1(), F1()
+    st P[X] & P[Y] holds P[X*Y] and
+A3: for X being invertible Matrix of n1(), F1()
+    st P[X]
+    holds P[X~]
+proof
+  consider H being strict Subgroup of GL(n1(), F1()) such that
+  A4: the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X }
+  from SubgroupSch(A1,A2,A3);
+  take H;
+  for x being invertible Matrix of n1(), F1()
+  holds x in H iff P[x] & x in GL(n1(), F1())
+  proof
+    let x be invertible Matrix of n1(), F1();
+    thus x in H implies P[x] & x in GL(n1(), F1())
+    proof
+      assume Z1: x in H;
+      then ex A being Element of GL(n1(), F1()) st A = x &
+      ex X being invertible Matrix of n1(),F1() st P[X] & A = X by A4;
+      hence thesis;
+    end;
+    assume B1: P[x];
+    assume B2: x in GL(n1(), F1());
+    then reconsider A=x as Element of GL(n1(), F1());
+    ex X being invertible Matrix of n1(),F1() st P[X] & A = X by B1,B2;
+    then A in H by A4;
+    hence x in H;
+  end;
+  hence thesis;
+end;
+
+definition
+  let n be positive Nat;
+  let F be Field;
+  func SL(n, F) -> strict Subgroup of GL(n, F) means :Def9:
+  for x being invertible Matrix of n, F
+  holds x in it iff (Det x) = 1.F & x in GL(n, F);
+  existence
+  proof
+    defpred P[Matrix of n,F] means Det($1) = 1.F;
+    A1: P[1.(F, n)] by Th19;
+    A2: for X,Y being invertible Matrix of n,F
+    st P[X] & P[Y] holds P[X*Y] by Th18;
+    A3: for X being invertible Matrix of n,F
+    st P[X]
+    holds P[X~] by Th21;
+    consider H being strict Subgroup of GL(n, F) such that
+    A4: for x being invertible Matrix of n,F
+    holds x in H iff P[x] & x in GL(n,F)
+    from SubgroupSch2(A1,A2,A3); 
+    take H;
+    thus thesis by A4;
+  end;
+  uniqueness
+  proof
+    let H1, H2 be strict Subgroup of GL(n, F);
+    assume A1: for x being invertible Matrix of n, F
+    holds x in H1 iff (Det x) = 1.F & x in GL(n, F);
+    assume A2: for x being invertible Matrix of n, F
+    holds x in H2 iff (Det x) = 1.F & x in GL(n, F);
+    
+    for x being Element of GL(n, F) holds x in H1 iff x in H2
+    proof
+      let x be Element of GL(n, F);
+      reconsider X=x as invertible Matrix of n, F by Th8;
+      X in H1 iff Det X = 1.F & X in GL(n,F) by A1;
+      then X in H1 iff X in H2 by A2;
+      hence thesis;
+    end;
+    hence H1 = H2 by GROUP_2:def 6;
+  end;
+end;

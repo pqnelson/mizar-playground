@@ -1,0 +1,359 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Special Linear Group}
+
+The adjective ``special'' refers to having determinant 1.
+
+<<Special Linear Group>>=
+<<Theorem: If $\det(A)=\det(B)=1$, then $\det(AB)=1$>>
+
+<<Theorem: determinant of identity matrix>>
+
+<<Theorem: $A$ invertible implies $A^{-1}A=I$ and $AA^{-1}=I$>>
+
+<<Theorem: if $\det(A)=1$, then $\det(A^{-1})=1$>>
+
+<<Schema: Existence of subgroup of $\GL(n,\FF)$ (coarse version)>>
+
+<<Schema: Existence of subgroup of $\GL(n,\FF)$ (nice version)>>
+
+<<Definition: Special linear group>>
+@
+
+\begin{theorem}
+Let $A$, $B$ be $n\times n$ matrices over $\FF$.
+If $\det(A)=\det(B)=1$, then $\det(AB)=1$.
+\end{theorem}
+
+<<Theorem: If $\det(A)=\det(B)=1$, then $\det(AB)=1$>>=
+theorem Th18:
+  for A,B being Matrix of n,F
+  st Det(A) = 1.F & Det(B) = 1.F
+  holds Det(A * B) = 1.F
+proof
+  let A,B be Matrix of n,F;
+  assume A1: Det(A) = 1.F;
+  assume A2: Det(B) = 1.F;
+  thus Det(A * B) = (Det A) * (Det B) by MATRIX11:62
+                 .= 1.F * 1.F by A1,A2
+                 .= 1.F;
+end;
+@ %def Th18
+
+\begin{theorem}
+The determinant of the identity matrix is 1.
+\end{theorem}
+
+<<Theorem: determinant of identity matrix>>=
+theorem Th19:
+  Det(1.(F, n)) = 1.F
+proof
+  n >= 1 by NAT_1:25;
+  hence Det(1.(F, n)) = 1_ F by MATRIX_7:16
+                     .= 1.F;
+end;
+@ %def Th19
+
+\begin{theorem}
+Let $A$ be an invertible $n\times n$ matrix over $\FF$.
+Then $A^{-1}A=I$ and $AA^{-1}=I$.
+\end{theorem}
+
+<<Theorem: $A$ invertible implies $A^{-1}A=I$ and $AA^{-1}=I$>>=
+theorem Th20:
+  for A being invertible Matrix of n,F
+  holds A * (A~) = 1.(F, n) & (A~) * A = 1.(F, n)
+proof
+  let A be invertible Matrix of n,F;
+  A~ is_reverse_of A by MATRIX_6:def 4;
+  then (A~) * A = A * (A~) & (A~) * A = 1.(F,n) by MATRIX_6:def 2;
+  hence thesis;
+end;
+@ %def Th20
+
+\begin{theorem}
+Let $A$ be an invertible square matrix over $\FF$.
+If $\det(A)=1$, then $\det(A^{-1})=1$.
+\end{theorem}
+
+<<Theorem: if $\det(A)=1$, then $\det(A^{-1})=1$>>=
+theorem Th21:
+  for A being invertible Matrix of n,F
+  st Det(A) = 1.F
+  holds Det(A~) = 1.F
+proof
+  let A be invertible Matrix of n,F;
+  assume A1: Det(A) = 1.F;
+  1.F = Det(1.(F, n)) by Th19
+     .= Det(A * (A~)) by Th20
+     .= (Det A) * (Det (A~)) by MATRIX11:62
+     .= (1.F) * (Det (A~)) by A1
+     .= Det (A~);
+  hence thesis;
+end;
+@ %def Th21
+
+\begin{road-map}
+Before we define the special linear group, we should note that we will
+use a recurring pattern: there is a subgroup of $\GL(n,\FF)$ defined by
+some predicate $P[X]$ describing invertible square matrices over $\FF$
+which is sufficiently nice (i.e., for any $X$, $Y$ such that $P[X]$ and
+$P[Y]$, we have $P[XY]$ and $P[X^{-1}]$ and $P[I]$), then there is a
+strict subgroup consisting of these elements. We can describe this using
+a scheme, so we do the heavy lifting in the first scheme, then we make
+it palatable in the second scheme. Then we will define the special
+linear subgroup.
+\end{road-map}
+
+\begin{scheme}
+Let $F_{1}$ be a field and $n_{1}$ be a positive natural number and
+$P[X]$ be a unary predicate predicate of $n_{1}\times n_{1}$ matrices
+over $F_{1}$.
+When
+\begin{enumerate}
+\item $P[I]$ holds; and
+\item for any $X,Y$ invertible $n_{1}\times n_{1}$ matrices
+over $F_{1}$ such that $P[X]$ and $P[Y]$, we have $P[XY]$; and
+\item for any $X$ invertible $n_{1}\times n_{1}$ matrix
+over $F_{1}$ which satisfies $P[X]$, then we also have $P[X^{-1}]$;
+\end{enumerate}
+then there exists a strict subgroup $H\subgroup GL(n_{1}, F_{1})$
+such that its underlying set is $\{\,A\in\GL(n_{1},F_{1}) : \exists
+X\in\Mat(n_{1},F_{1}),P[X]\land A=X\,\}$.
+\end{scheme}
+
+\begin{sch-remark}
+We want to use the subgroup criteria, established in
+Theorem~\mml[Th52]{group2}; i.e., if we let
+\begin{equation}
+U = \{X\in\GL(n,\FF)\mid P[X] \},
+\end{equation}
+and if further
+\begin{enumerate}
+\item $U\neq\emptyset$;
+\item for any $g_{1},g_{2}\in\GL(n,\FF)$ such that $g_{1}\in U$ and
+  $g_{2}\in U$, then $g_{1}g_{2}\in U$; and
+\item for any $g\in\GL(n,\FF)$ such that $g\in U$, then $g^{-1}\in U$;
+\end{enumerate}
+then there exists a subgroup $H\subgroup G$ such that the underlying set
+of $H$ is $U$.
+\end{sch-remark}
+
+
+<<Schema: Existence of subgroup of $\GL(n,\FF)$ (coarse version)>>=
+scheme
+SubgroupSch { F1() -> Field,
+              n1() -> positive Nat,
+              P[Matrix of n1(), F1()] } :
+  ex H being strict Subgroup of GL(n1(), F1()) st
+  the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X }
+provided
+A1: P[1.(F1(), n1())] and
+A2: for X,Y being invertible Matrix of n1(), F1()
+    st P[X] & P[Y] holds P[X*Y] and
+A3: for X being invertible Matrix of n1(), F1()
+    st P[X]
+    holds P[X~]
+proof
+  set U = {A where A is Element of GL(n1(), F1()) : ex X being invertible
+  Matrix of n1(), F1() st P[X] & A = X};
+  for x being object st x in U holds x in the carrier of GL(n1(), F1())
+  proof
+    let x be object;
+    assume Z1: x in U;
+    then ex A being Element of GL(n1(), F1()) st A = x & ex X being
+    invertible Matrix of n1(), F1() st P[X] & A = X;
+    then x in GL(n1(), F1());
+    hence x in the carrier of GL(n1(), F1());
+  end;
+  then U c= the carrier of GL(n1(), F1()) by TARSKI:def 3;
+  then reconsider U as Subset of GL(n1(), F1());
+
+  A4: for x being invertible Matrix of n1(),F1()
+  holds x in U iff P[x] & x in GL(n1(), F1())
+  proof
+    let x be invertible Matrix of n1(),F1();
+    thus x in U implies (P[x] & x in GL(n1(), F1()))
+    proof
+      assume x in U;
+      then ex A being Element of GL(n1(), F1()) st A = x
+      & ex X being invertible Matrix of n1(),F1() st P[X] & A = X;
+      hence thesis;
+    end;
+    assume P[x] & x in GL(n1(), F1());
+    hence thesis;
+  end;
+
+  A5: 1_(GL(n1(), F1())) in U
+  proof
+    B1: 1.(F1(), n1()) is invertible Matrix of n1(),F1();
+    1.(F1(), n1()) is Element of GL(n1(), F1()) by Th9;
+    then B2: 1.(F1(), n1()) in GL(n1(), F1());
+    B3: P[1.(F1(), n1())] by A1;
+    1_(GL(n1(), F1())) = 1.(F1(), n1()) by Th16;
+    hence thesis by A4, B1, B2, B3, Th19;
+  end;
+  A6: for g1,g2 being Element of GL(n1(), F1()) st g1 in U & g2 in U
+  holds g1*g2 in U
+  proof
+    let g1,g2 be Element of GL(n1(), F1());
+    assume B1: g1 in U;
+    assume B2: g2 in U;
+    then ex A being Element of GL(n1(), F1()) st A = g2 & ex Y being
+    invertible Matrix of n1(),F1() st P[Y] & A = Y;
+    then consider Y being invertible Matrix of n1(),F1() such that
+    B3: P[Y] & g2 = Y;
+    ex A being Element of GL(n1(), F1()) st A = g1 & ex Y being
+    invertible Matrix of n1(),F1() st P[Y] & A = Y by B1;
+    then consider X being invertible Matrix of n1(),F1() such that
+    B4: P[X] & g1 = X;
+    ex Z being invertible Matrix of n1(),F1() st P[Z] & g1*g2 = Z
+    proof
+      X*Y is invertible Matrix of n1(),F1() by MATRIX_6:36;
+      then reconsider Z = X*Y as invertible Matrix of n1(),F1();
+      take Z;
+      thus P[Z] by B3,B4,A2;
+      thus g1*g2 = Z by B3,B4,Th12;
+    end;
+    hence g1*g2 in U;
+  end;
+  
+  A7: for g being Element of GL(n1(), F1()) st g in U
+  holds g" in U
+  proof
+    let g be Element of GL(n1(), F1());
+    assume B1: g in U;
+    then ex A being Element of GL(n1(), F1()) st A = g & ex X being
+    invertible Matrix of n1(),F1() st P[X] & A = X;
+    then consider X being invertible Matrix of n1(),F1() such that
+    B2: P[X] & g = X;
+    B3: P[X~] by B2, A3;
+    g" = X~ by B2, Th17;
+    hence g" in U by B3;
+  end;
+  hence ex H being strict Subgroup of GL(n1(), F1()) st
+  the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X } by A5, A6, GROUP_2:52;
+end;
+@ %def SubgroupSch
+
+\begin{scheme}
+Let $F_{1}$ be a field and $n_{1}$ be a positive natural number and
+$P[X]$ be a unary predicate predicate of $n_{1}\times n_{1}$ matrices
+over $F_{1}$.
+When
+\begin{enumerate}
+\item $P[I]$ holds; and
+\item for any $X,Y$ invertible $n_{1}\times n_{1}$ matrices
+over $F_{1}$ such that $P[X]$ and $P[Y]$, we have $P[XY]$; and
+\item for any $X$ invertible $n_{1}\times n_{1}$ matrix
+over $F_{1}$ which satisfies $P[X]$, then we also have $P[X^{-1}]$;
+\end{enumerate}
+then there exists a strict subgroup $H\subgroup GL(n_{1}, F_{1})$
+such that for any invertible $n_{1}\times n_{1}$ matrix over $F_{1}$, $X$,
+we have $X\in H$ if and only if $X\in\GL(n_{1}, F_{1})$ and $P[X]$.
+\end{scheme}
+
+<<Schema: Existence of subgroup of $\GL(n,\FF)$ (nice version)>>=
+scheme
+SubgroupSch2 { F1() -> Field,
+               n1() -> positive Nat,
+               P[Matrix of n1(), F1()] } :
+  ex H being strict Subgroup of GL(n1(), F1()) st
+  for x being invertible Matrix of n1(), F1()
+  holds x in H iff P[x] & x in GL(n1(), F1())
+provided
+A1: P[1.(F1(), n1())] and
+A2: for X,Y being invertible Matrix of n1(), F1()
+    st P[X] & P[Y] holds P[X*Y] and
+A3: for X being invertible Matrix of n1(), F1()
+    st P[X]
+    holds P[X~]
+proof
+  consider H being strict Subgroup of GL(n1(), F1()) such that
+  A4: the carrier of H = { A where A is Element of GL(n1(), F1()) :
+                       ex X being invertible Matrix of n1(), F1()
+                       st P[X] & A = X }
+  from SubgroupSch(A1,A2,A3);
+  take H;
+  for x being invertible Matrix of n1(), F1()
+  holds x in H iff P[x] & x in GL(n1(), F1())
+  proof
+    let x be invertible Matrix of n1(), F1();
+    thus x in H implies P[x] & x in GL(n1(), F1())
+    proof
+      assume Z1: x in H;
+      then ex A being Element of GL(n1(), F1()) st A = x &
+      ex X being invertible Matrix of n1(),F1() st P[X] & A = X by A4;
+      hence thesis;
+    end;
+    assume B1: P[x];
+    assume B2: x in GL(n1(), F1());
+    then reconsider A=x as Element of GL(n1(), F1());
+    ex X being invertible Matrix of n1(),F1() st P[X] & A = X by B1,B2;
+    then A in H by A4;
+    hence x in H;
+  end;
+  hence thesis;
+end;
+@ %def SubgroupSch2
+
+\begin{definition}
+We define the \define{Special Linear Group} to be the subgroup of
+$\GL(n,\FF)$ consisting of those elements whose determinant is $1$.
+\end{definition}
+
+<<Definition: Special linear group>>=
+definition
+  let n be positive Nat;
+  let F be Field;
+  func SL(n, F) -> strict Subgroup of GL(n, F) means :Def9:
+  for x being invertible Matrix of n, F
+  holds x in it iff (Det x) = 1.F & x in GL(n, F);
+  existence
+  proof
+    defpred P[Matrix of n,F] means Det($1) = 1.F;
+    A1: P[1.(F, n)] by Th19;
+    A2: for X,Y being invertible Matrix of n,F
+    st P[X] & P[Y] holds P[X*Y] by Th18;
+    A3: for X being invertible Matrix of n,F
+    st P[X]
+    holds P[X~] by Th21;
+    consider H being strict Subgroup of GL(n, F) such that
+    A4: for x being invertible Matrix of n,F
+    holds x in H iff P[x] & x in GL(n,F)
+    from SubgroupSch2(A1,A2,A3); 
+    take H;
+    thus thesis by A4;
+  end;
+  uniqueness
+  proof
+    let H1, H2 be strict Subgroup of GL(n, F);
+    assume A1: for x being invertible Matrix of n, F
+    holds x in H1 iff (Det x) = 1.F & x in GL(n, F);
+    assume A2: for x being invertible Matrix of n, F
+    holds x in H2 iff (Det x) = 1.F & x in GL(n, F);
+    
+    for x being Element of GL(n, F) holds x in H1 iff x in H2
+    proof
+      let x be Element of GL(n, F);
+      reconsider X=x as invertible Matrix of n, F by Th8;
+      X in H1 iff Det X = 1.F & X in GL(n,F) by A1;
+      then X in H1 iff X in H2 by A2;
+      hence thesis;
+    end;
+    hence H1 = H2 by GROUP_2:def 6;
+  end;
+end;
+@ %def SL Def9
+
+\begin{voc}
+We need to add ``[[SL]]'' to the vocabulary file.
+\end{voc}
+
+<<DICT/matgrp-1.voc>>=
+OSL
+@
+
