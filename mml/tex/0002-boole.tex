@@ -1,0 +1,139 @@
+\section{Boolean Properties of Sets}
+
+Originally, this was the article for identifier \verb#BOOLE# which was
+refactored into \verb#XBOOLE_0#. In MML version \verb#7.10.01_4.111.1036#,
+the definition of the empty set $\emptyset$ changed by introducing the
+empty adjective.
+\bigskip
+
+\begin{paracol}{2}
+        \sloppy
+For simplicity
+we adopt the following convention: $x$ will denote an object; $X$, $Y$,
+$Z$, $V$ will have denote sets.
+
+\switchcolumn
+
+\begin{mizar}
+reserve X, Y, Z for set,
+  x, y, z for object;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}
+
+The scheme \emph{Separation} concerns a constant $\mathcal{A}$ that has
+the type set and a unary predicate $\mathcal{P}$ and states that the
+following holds
+\[ \ex X \st\ \forall x \holds x\in X\iff x\in\mathcal{A}\land\mathcal{P}[x] \]
+for all values of the parameters.
+
+\switchcolumn
+
+\begin{mizar}
+scheme :: XBOOLE_0:sch 1
+  Separation { A()-> set, P[object] } :
+  ex X being set st
+  for x
+  holds x in X iff x in A() & P[x];      
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}
+
+We say that a set $X$ is \textit{empty} if
+\[\neg\ \ex x \st x\in X.\]
+
+\switchcolumn
+
+\begin{mizar}
+definition
+  let X be set;
+  attr X is empty
+  means :: XBOOLE_0:def 1
+  not ex x st x in X;
+end;
+\end{mizar}
+
+
+\switchcolumn*\ensurevspace{5cm}
+
+\noindent Let us observe there is an empty set.
+
+\switchcolumn
+
+\begin{mizar}
+registration
+  cluster empty for set;
+end;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}
+
+We now define several new constructions. The constant $\emptyset$ is a set, and is
+defined by
+\[\IT \is\ \THE \mathrm{empty}\ \mathrm{set} \]
+
+\switchcolumn
+
+\begin{mizar}
+definition
+  func {} -> set
+  equals :: XBOOLE_0:def 2
+  the empty set;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}\noindent%
+Let $X$, $Y$ be sets. The functor
+\[ X\cup Y,\]
+with values of type set, is defined by
+\[ x\in\IT \iff x\in X\lor x\in Y. \]
+
+\switchcolumn
+
+\begin{mizar}
+  let X,Y be set;
+  func X \/ Y -> set
+  means :: XBOOLE_0:def 3
+  for x holds x in it
+  iff x in X or x in Y;
+  commutativity;
+  idempotence;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}\sloppy\noindent%
+The functor
+\[ X\cap Y,\]
+with values of type set, is defined by
+\[ x\in\IT \iff x\in X\land x\in Y. \]
+
+\switchcolumn
+
+\begin{mizar}
+  func X /\ Y -> set
+  means :: XBOOLE_0:def 4
+  for x holds x in it
+  iff x in X & x in Y;
+  commutativity;
+  idempotence;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}\noindent%
+The functor
+\[ X\setminus Y,\]
+with values of type set, is defined by
+\[ x\in\IT \iff x\in X\land\ \neg x\in Y. \]
+
+\switchcolumn
+
+\begin{mizar}
+  func X \ Y -> set
+  means :: XBOOLE_0:def 5
+  for x holds x in it
+  iff x in X & not x in Y;
+end;
+\end{mizar}
+
+\switchcolumn*
+\switchcolumn
+\begin{mizar}
+\end{mizar}
+\end{paracol}

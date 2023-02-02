@@ -8,10 +8,10 @@ will denote objects of the type set.
   
 Next we will state two axioms:
 \begin{equation}
-x~\textbf{is}~\textrm{set},
+x \is \textrm{set},
 \end{equation}
 \begin{equation}
-(\textbf{for}~x~\textbf{holds}~x\in X~\textbf{iff}~x\in Y)~\textbf{implies}~X=Y.
+(\forall x\holds x\in X\iff x\in Y)\implies X=Y.
 \end{equation}
 
 \switchcolumn
@@ -37,19 +37,19 @@ theorem :: TARSKI:2
 We now introduce two functors. Let us consider $y$. The functor
 \[ \{\,y\,\} \]
 with values of the type set, is defined by
-\[ x\in\textbf{it}~\textbf{iff}~x=y.\]
+\[ x\in\IT \iff x=y.\]
 Let us consider $z$. The functor
 \[ \{\,y,z\,\} \]
 with values of the type set, is defined by
-\[ x\in\textbf{it}~\textbf{iff}~x=y~\textbf{or}~x=z.\]
+\[ x\in\IT \iff x=y \lor x=z.\]
 The following axioms hold:
 \begin{equation}
-X=\{y\}~\textbf{iff\ for}~x~\textbf{holds}~x\in X~\textbf{iff}~x=y,
+X=\{y\} \iff\ \forall x \holds x\in X \iff x=y,
 \end{equation}
 \begin{multline}
-X=\{y,z\}~\textbf{iff\ for}~x~\textbf{holds}~x\in X\;\textbf{iff}\\
+X=\{y,z\} \iff\ \forall x\holds x\in X\iff\\
 %\textbf{iff}~
-x=y~\textbf{or}~x=z.
+x=y\lor x=z.
 \end{multline}
 
 \switchcolumn
@@ -75,34 +75,38 @@ end;
 
 Let us consider $X$, $Y$. The predicate
 \[ X\subset Y\quad\mbox{is defined by}\quad x\in
-X\;\textbf{implies}\;x\in Y.\]
+X\implies x\in Y.\]
+\switchcolumn
+\begin{mizar}
+definition 
+  let X,Y;
+  pred X c= Y
+  means :: TARSKI:def 3
+  for x being object 
+  holds x in X implies x in Y;
+  reflexivity;
+end;
+\end{mizar}
+
+\switchcolumn*\ensurevspace{5cm}
 Let us consider $X$. The functor
 \[\bigcup X,\]
 with values of the type set, is defined by
-\[x\in\textbf{it\ iff\ ex}\;Y\;\textbf{st}\;x\in Y\land Y\in X.\] 
+\[x\in\IT\ \iff\ \ex Y\st x\in Y\land Y\in X.\] 
 Then we get
 \begin{multline}
-X=\bigcup Y\;\textbf{iff}\;\textbf{for}\; x\;\textbf{holds}\; x\in
-X\;\textbf{iff}\\
-\textbf{ex}\; Z\;\textbf{st}\; x\in Z\land Z\in Y,
+X=\bigcup Y\iff\ \forall x\holds x\in
+X\iff\\
+\ex Z\st x\in Z\land Z\in Y,
 \end{multline}
 \begin{equation}
-X=\bool\,Y\;\textbf{iff}\;\textbf{for}\; Z\;\textbf{holds}\;
-Z\in X\;\textbf{iff}\;Z\subset Y.
+X=\bool Y\iff\ \forall Z\holds 
+Z\in X \iff Z\subset Y.
 \end{equation}
 
 \switchcolumn
 
 \begin{mizar}
-definition 
-  let X,Y;
-  pred X c= Y means
-:: TARSKI:def 3
-   for x being object 
-   holds x in X implies x in Y;
-  reflexivity;
-end;
-
 definition 
   let X;
   func union X -> set means
@@ -116,8 +120,8 @@ end;
 
 The regularity axiom claims that
 \begin{multline}
-x\in X\;\textbf{implies\ ex}\;Y\textbf{st}\; Y\in X\land\\
-\textbf{not\ ex}\; x\;\textbf{st}\; x\in X\land x\in Y.
+x\in X\implies\ \ex Y\st Y\in X\land\\
+\neg\ \ex x\st x\in X\land x\in Y.
 \end{multline}
 
 \switchcolumn
@@ -130,9 +134,6 @@ theorem :: TARSKI:3
      not ex x st x in X & x in Y;
 \end{mizar}
 
-%% \switchcolumn
-
-%% \switchcolumn
 \begin{mizar}
 definition let x, X be set;
   redefine pred x in X;
@@ -147,14 +148,14 @@ The scheme \textit{Fraenkel} deals with a constant $\mathcal{A}$ that
 has the type set and a binary predicate $\mathcal{P}$ and states that
 the following holds:
 \begin{multline*}
-  \textbf{ex}\; X\;\textbf{st\ for}\;x\;\textbf{holds}\\
-  x\in X\;\textbf{iff}\;
-\textbf{ex}\;y\;\textbf{st}\;y\in\mathcal{A}\land\mathcal{P}[y,x]
+  \ex X\st\ \forall x\holds \\
+  x\in X\iff
+\ex y\st y\in\mathcal{A}\land\mathcal{P}[y,x]
 \end{multline*}
 provided the parameters satisfy the following extra condition:
 \begin{itemize}
-\item \textbf{for} $x$, $y$, $z$ \textbf{st}
-  $\mathcal{P}[x,y]\land\mathcal{P}[x,z]$ \textbf{holds} $y=z$.
+\item $\forall$ $x$, $y$, $z$ $\st$ 
+  $\mathcal{P}[x,y]\land\mathcal{P}[x,z]$ $\holds$  $y=z$.
 \end{itemize}
 
 \switchcolumn
@@ -180,7 +181,7 @@ provided
 Let us consider $x$, $y$. The functor
 \[\langle x,y\rangle,\]
 is defined by
-\[\textbf{it} = \{\,\{x,y\,\},\{\,x\,\}\,\}.\]
+\[\IT = \{\,\{x,y\,\},\{\,x\,\}\,\}.\]
 According to the definition
 \begin{equation}
 \langle x,y\rangle = \{\,\{x,y\,\},\{\,x\,\}\,\}.
@@ -196,21 +197,19 @@ definition
 end;
 \end{mizar}
 
-\switchcolumn*
-\ensurevspace{5cm}
 
+\switchcolumn*\ensurevspace{5cm}
 Let us consider $X$, $Y$. The predicate
 \[X\equipotent Y\]
 is defined by
 \begin{multline*}
-\textbf{ex}\;Z\;\textbf{st}(\textbf{for}\;x\;\textbf{st}\;x\in X\;\textbf{ex}\;
-y\;\textbf{st}y\in Y\land\langle x,y\rangle\in Z)\land\\
-(\textbf{for}\;x\;\textbf{st}\;x\in X\;\textbf{ex}\;
-y\;\textbf{st}y\in Y\land\langle x,y\rangle\in Z)\land\\
-\textbf{for}\;x,y,z,u\;\textbf{st}\langle x,y\rangle\in Z\land\langle z,u\rangle\in Z\\
-\textbf{holds}\;x=z\;\textbf{iff}\;y=u.
+\ex Z\st\!\! (\forall x\st x\in X\ex 
+y\st y\in Y\land\langle x,y\rangle\in Z)\land\\
+(\forall x\st x\in X\ex 
+y\st y\in Y\land\langle x,y\rangle\in Z)\land\\
+\forall x,y,z,u\st \langle x,y\rangle\in Z\land\langle z,u\rangle\in Z\\
+\holds x=z\iff y=u.
 \end{multline*}
-\
 
 \switchcolumn
 
@@ -228,20 +227,19 @@ definition let X,Y;
 end;
 \end{mizar}
 
-\switchcolumn
-
+\switchcolumn*\ensurevspace{5cm}\nopagebreak
 The Tarski's axiom A claims that
 \begin{multline}
-\textbf{ex}\;M\;\textbf{st}\;N\in M\land\\
-(\textbf{for}\;X,Y\;\textbf{holds}\;X\in M\land
-Y\subset X\;\textbf{implies}\;Y\in M)\land\\
-(\textbf{for}\;X\;\textbf{holds}\;X\in M
-\;\textbf{implies}\;\bool X\in M)\land\\
-(\textbf{for}\;X\;\textbf{holds}\;X\subset M\;\textbf{implies}\;
-X\equipotent M\;\textbf{or}\;X\in M).
+\ex  M \st  N\in M\land\\
+(\forall X,Y \holds  X\in M\land
+Y\subset X \implies Y\in M)\land\\
+(\forall X \holds  X\in M
+ \implies \bool X\in M)\land\\
+(\forall X \holds  X\subset M \implies 
+X\equipotent M \lor X\in M).
 \end{multline}
 
-\switchcolumn
+\switchcolumn\nopagebreak
 
 \begin{mizar}
 theorem :: TARSKI_A:1
@@ -256,4 +254,5 @@ theorem :: TARSKI_A:1
     implies X,M are_equipotent
             or X in M);
 \end{mizar}
+
 \end{paracol}

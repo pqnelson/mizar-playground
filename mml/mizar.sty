@@ -44,9 +44,12 @@
 
 \def\defaultCommentStyle{\color{gray}}
 \def\mizarDefaultStyle{}
-\def\mizarFormulaStyle{\color{smagenta}}%{\color{ghPurple}}%{\color{solarizedPurple}}
-\def\mizarKWStyle{\color{sblue}}%{\color{solarizedBlue}}
-\def\mizarProofKWStyle{\color{sgreen}}%{\color{scyan}}%{\color{solarizedGreen}}
+\def\mizarFormulaStyle{\color{smagenta}}
+%{\color{ghPurple}}%{\color{solarizedPurple}}
+\def\mizarKWStyle{\color{sblue}}
+%{\color{solarizedBlue}}
+\def\mizarProofKWStyle{\color{sgreen}}
+%{\color{scyan}}%{\color{solarizedGreen}}
 
 % hack from https://tex.stackexchange.com/a/536920/14751
 \newcommand\beginlstdelim[3]{%
@@ -107,7 +110,7 @@
 \setlength\innermizarbottommargin{0em}
 \RequirePackage{mdframed}
 \mdfsetup{skipabove=\medskipamount,
-  skipbelow=\medskipamount,
+  %skipbelow=\medskipamount,
   outermargin=\outermizarmargin, %-1em,
   innermargin=\innermizarmargin, %-1em,
   leftmargin=0pt,
@@ -116,25 +119,34 @@
   innerrightmargin=0pt,
   rightline=false,
   leftline=false,
-  frametitlerule=true,
+  %bottomline=true,
+  %topline=false,
+%  nobreak=true,
+  frametitlerule=false,%true,
   innertopmargin=\innermizartopmargin,%\topsep,
   innerbottommargin=\innermizarbottommargin,%\topsep,
-  splittopskip=\topsep}
+  splittopskip=\topsep
+}
 \lstset{%
   basicstyle=\ttfamily,
   language=mizar,
-  backgroundcolor=\color{bgcolor}
+  %backgroundcolor=\color{bgcolor}
 }
 \lstnewenvironment{mizar}%
-                  {\mdframed[backgroundcolor=bgcolor]
-                    \lstset{language=mizar,
+                  {\lstset{language=mizar,
                       basicstyle=\color{sbase03}\ttfamily\small,
-                      upquote=true}}%
+                      %basicstyle=\ttfamily\small,
+                      upquote=true}\mdframed[usetwoside=false]}%
                   {\endmdframed}
+%% \lstnewenvironment{mizar}%
+%%                   {\lstset{language=mizar,
+%%                       basicstyle=\color{sbase03}\ttfamily\small,
+%%                       upquote=true}}%
+%%                   {}
 \lstset{%
   basicstyle=\ttfamily,
   language=mizar,
-  backgroundcolor=\color{bgcolor}
+  %backgroundcolor=\color{bgcolor}
 }
 %% \newenvironment{mizar}%
 %%                {\begin{mdframed}[backgroundcolor=bgcolor]\begin{rawmizar}}
