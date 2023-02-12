@@ -17,6 +17,14 @@ The adjective ``special'' refers to having determinant 1.
 <<Schema: Existence of subgroup of $\GL(n,\FF)$ (nice version)>>
 
 <<Definition: Special linear group>>
+
+<<Register: $\SL(1, \FF)$ is trivial>>
+
+<<Theorem: components of an elementary matrix of the first-kind>>
+
+<<Theorem: Elementary matrices are triangular>>
+
+<<Theorem: Elementary Matrices Generate $\SL(n,\FF)$>>
 @
 
 \begin{theorem}
@@ -357,3 +365,353 @@ We need to add ``[[SL]]'' to the vocabulary file.
 OSL
 @
 
+\begin{lemma}
+If $M$ is a $1\times 1$ matrix over $\FF$, then there exists some
+$a\in\FF$ such that $M=[a]$.
+\end{lemma}
+
+<<Lemma: explicit formula for a $1\times 1$ matrix>>=
+LmSingleton:
+  for M being Matrix of 1,F
+  ex a being Element of F
+  st M = <*<* a *>*> & a = M * (1,1)
+proof
+  let M be Matrix of 1,F;
+  A1: Indices M = [: Seg 1, Seg 1 :] & 1 in Seg 1
+  by MATRIX_0:24, FINSEQ_1:2, TARSKI:def 1;
+  then A2: [1,1] in Indices M by ZFMISC_1:87;
+  then consider a being Element of F such that
+  A3: a = M * (1, 1) by MATRIX_0:def 5;
+  take a;
+  <*<* a *>*> is Matrix of 1, F;
+  thus M = <*<* a *>*>
+  proof
+    len M = 1 & len <*<* a *>*> = 1 & width M = 1 & width <*<* a *>*> = 1
+    by MATRIX_0:24;
+    then B1: len M = len <*<* a *>*> & width M = width <*<* a *>*>;
+    for i,j being Nat st [i,j] in Indices M
+    holds M * (i, j) = <*<* a *>*> * (i,j)
+    proof
+      let i,j be Nat;
+      assume B2: [i,j] in Indices M;
+      then i in Seg 1 & j in Seg 1 by A1, ZFMISC_1:87;
+      then i = 1 & j = 1 by FINSEQ_1:2, TARSKI:def 1;
+      hence M * (i, j) = <*<* a *>*> * (i,j) by B2,A2,A3, MATRIX_0:49;
+    end;
+
+    hence thesis by B1, MATRIX_0:21;
+  end;
+  thus a = M * (1,1) by A3;
+end;
+@ %def LmSingleton
+
+\begin{lemma}
+The $1\times 1$ identity matrix is $I_{1} = [1]$.
+\end{lemma}
+
+<<Lemma: the $1\times 1$ identity matrix is $[1]$>>=
+<<Lemma: explicit formula for a $1\times 1$ matrix>>
+
+LmSingletonId:
+  1.(F, 1) = <*<* 1.F *>*>
+proof
+  consider a being Element of F such that
+  A1: 1.(F, 1) = <*<* a *>*> & a = 1.(F,1) * (1,1)
+  by LmSingleton;
+  Indices 1.(F,1) = [: Seg 1, Seg 1 :] & 1 in Seg 1
+  by MATRIX_0:24, FINSEQ_1:2, TARSKI:def 1;
+  then [1,1] in Indices 1.(F,1) by ZFMISC_1:87;
+  then 1.(F,1) * (1,1) = 1.F by MATRIX_1:def 3;
+  hence thesis by A1;
+end;
+@ %def LmSingletonId
+
+\begin{registration}
+The group $\SL(1,\FF)$ is trivial.
+\end{registration}
+
+<<Register: $\SL(1, \FF)$ is trivial>>=
+<<Lemma: the $1\times 1$ identity matrix is $[1]$>>
+
+registration
+  let F;
+  cluster SL(1, F) -> trivial;
+  correctness
+  proof
+    A1: the carrier of SL(1, F) c= {1.(F, 1)}
+    proof
+      the carrier of SL(1, F) c= the carrier of GL(1, F) by GROUP_2:def 5;
+      then the carrier of SL(1, F) is Subset of the carrier of GL(1, F);
+      then B1: the carrier of SL(1, F) is Subset of GL(1, F) by Def9;
+      
+      for x being object st x in {1.(F, 1)} holds x in the carrier of GL(1,F)
+      proof
+        let x be object;
+        assume x in {1.(F, 1)};
+        then x = 1.(F, 1) by TARSKI:def 1;
+        then x is Element of GL(1, F) by Th9;
+        hence x in the carrier of GL(1,F);
+      end;
+      then {1.(F,1)} c= the carrier of GL(1, F) by TARSKI:def 3;
+      then B2: {1.(F, 1)} is Subset of GL(1, F) by TARSKI:def 1;
+
+      for x being Element of GL(1, F) st x in the carrier of SL(1, F)
+      holds x in {1.(F, 1)}
+      proof
+        let x be Element of GL(1, F);
+        assume B3: x in the carrier of SL(1, F);
+        reconsider X=x as invertible Matrix of 1, F by Th8;
+        x in SL(1, F) by B3;
+        then X in SL(1, F);
+        then B4: (Det X) = 1.F & X in GL(1, F) by Def9;
+
+        consider x1 being Element of F such that
+        B5: X = <* <* x1 *> *> & x1 = X * (1, 1)
+        by LmSingleton;
+        
+        B6: X = <* <* x1 *> *> by B5, LmSingleton, MATRIX_0:15, MATRIX_0:49;
+        1.F = Det X by B4
+           .= x1 by B5, MATRIX_3:34;
+        then X = <* <* 1.F *> *> by B6
+              .= 1.(F, 1) by LmSingletonId;
+        then x = 1.(F, 1);
+        hence x in {1.(F, 1)} by TARSKI:def 1;
+      end;
+
+      hence thesis by B1,B2,SUBSET_1:2;
+    end;
+
+    1.(F, 1) in SL(1, F) by LmIdentityOfSL;
+    then for x being object st x in {1.(F,1)} holds x in the carrier of SL(1,F)
+    by TARSKI:def 1,def 3;
+    then {1.(F, 1)} c= the carrier of SL(1, F) by Def9, TARSKI:def 1,def 3;
+    then the carrier of SL(1, F) = {1.(F, 1)} by A1, XBOOLE_0:def 10;
+    hence thesis by GROUP_6:def 2;
+  end;
+end;
+@ 
+
+\begin{theorem}
+The components of an elementary matrix of the first-kind $E_{\ell,k}(a)$
+is given as:
+\begin{enumerate}
+\item $[E_{\ell,k}(a)]_{i,j}=1$ when $i=j$;
+\item $[E_{\ell,k}(a)]_{i,j}=a$ when $i=\ell$ and $j=k$;
+\item $[E_{\ell,k}(a)]_{i,j}=0$ when $i\neq j$ and either $i\neq\ell$ or $k\neq j$.
+\end{enumerate}
+\end{theorem}
+
+<<Theorem: components of an elementary matrix of the first-kind>>=
+theorem Th22:
+  for a being Element of F
+  for ell, k being Nat st ell <> k & [k, ell] in Indices 1.(F,n)
+  for i,j being Nat st [i,j] in Indices 1.(F, n)
+  holds (i = j implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 1.F)
+  & (i = ell & j = k implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = a)
+  & ((i <> ell or j <> k) & i <> j
+     implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: ell <> k;
+  assume A2: [k,ell] in Indices 1.(F,n);
+  let i,j be Nat;
+  assume A3: [i,j] in Indices 1.(F, n);
+  then A4: i in dom (1.(F, n)) & j in Seg width (1.(F, n)) by ZFMISC_1:87;
+  
+  A5: i in dom 1.(F,n) & j in dom 1.(F,n) & k in dom 1.(F,n) & ell in
+      dom 1.(F,n)
+  proof
+    width 1.(F,n) = n & len 1.(F,n) = n by MATRIX_0:23;
+    then width 1.(F,n) = n & dom (1.(F,n)) = Seg n by FINSEQ_1:def 3;
+    hence thesis by A3, A2, ZFMISC_1:87;
+  end;
+  
+  A6: [k,j] in Indices 1.(F,n) & [ell, j] in Indices 1.(F,n)
+  proof
+    width 1.(F,n) = n & len 1.(F,n) = n by MATRIX_0:23;
+    then B1: width 1.(F,n) = n & dom (1.(F,n)) = Seg n by FINSEQ_1:def 3;
+    k in dom (1.(F, n)) & ell in Seg width (1.(F, n)) by A2, ZFMISC_1:87;
+    hence thesis by A4, B1, ZFMISC_1:87;
+  end;
+  thus (i = j implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 1.F)
+  proof
+    assume B1: i = j;
+    per cases;
+    suppose B2: i = ell;
+      RlineXScalar(1.(F, n), ell, k, a) * (i,j)
+       = a*((1.(F, n)) * (k, j)) + ((1.(F,n)) * (ell, j)) by A4,A5,B2,MATRIX12:def 3
+      .= a*(0.F) + ((1.(F,n)) * (i, j)) by A1, A6, B1, B2, MATRIX_1:def 3
+      .= (1.(F,n)) * (i, j) by RLVECT_1:4
+      .= 1.F by A3, B1, MATRIX_1:def 3;
+      hence thesis;
+    end;
+    suppose B3: i <> ell;
+      RlineXScalar(1.(F, n), ell, k, a) * (i,j)
+       = (1.(F, n)) * (i,j) by A4, A5, B3, MATRIX12:def 3
+      .= 1.F by A3, B1, MATRIX_1:def 3;
+      hence RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 1.F;
+    end;
+  end;
+  thus (i = ell & j = k implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = a)
+  proof 
+    assume B1: i = ell;
+    assume B2: j = k;
+    RlineXScalar(1.(F, n), ell, k, a) * (i,j)
+     = a*((1.(F,n)) * (k,j)) + ((1.(F,n)) * (ell, j)) by A4,A5,B1,MATRIX12:def 3
+    .= a*((1.(F,n)) * (k,j)) + 0.F by A1, A6, B2, MATRIX_1:def 3
+    .= a*((1.(F,n)) * (k,j)) by RLVECT_1:4
+    .= a*(1.F) by A6, B2, MATRIX_1:def 3
+    .= a;
+    hence RlineXScalar(1.(F, n), ell, k, a) * (i,j) = a;
+  end;
+  A7: i <> ell & i <> j
+  implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F
+  proof
+    assume B1: i <> ell;
+    assume B2: i <> j;
+    thus RlineXScalar(1.(F, n), ell, k, a) * (i,j)
+       = ((1.(F,n)) * (i, j)) by B1, A4, A5, MATRIX12:def 3
+      .= 0.F by A3, B2, MATRIX_1:def 3;
+  end;
+  j <> k & i <> j
+  implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F
+  proof
+    assume B1: j <> k;
+    assume B2: i <> j;
+    per cases;
+    suppose i <> ell;
+      hence thesis by A7,B2;
+    end;
+    suppose B3: i = ell;
+      hence RlineXScalar(1.(F, n), ell, k, a) * (i,j)
+       = a * ((1.(F,n)) * (k,j)) + ((1.(F,n)) * (ell, j))
+         by A4, A5, MATRIX12:def 3
+      .= a * (0.F) + ((1.(F,n)) * (i, j)) by A6, B1, B3, MATRIX_1:def 3
+      .= 0.F + 0.F by A3, B2, MATRIX_1:def 3
+      .= 0.F by RLVECT_1:4;
+    end;
+  end;
+  hence (i <> ell or j <> k) & i <> j
+  implies RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F by A7;
+end;
+@ %def Th22
+
+\begin{theorem}
+When $\ell < k$, $[E_{\ell,k}(a)]_{i,j} = 0$ for $i > j$; i.e., $E_{\ell,k}(a)$
+is upper-triangular. Similarly, when $\ell > k$, $E_{\ell,k}(a)$ is lower-triangular.
+\end{theorem}
+
+<<Theorem: Elementary matrices are triangular>>=
+theorem Th23:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n)
+  holds (ell < k implies RlineXScalar(1.(F, n), ell, k, a) is upper_triangular)
+  & (ell > k implies RlineXScalar(1.(F, n), ell, k, a) is lower_triangular)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: [k, ell] in Indices 1.(F,n);
+  A2: Indices RlineXScalar(1.(F, n), ell, k, a) = Indices 1.(F, n)
+  proof
+    len 1.(F, n) = n & width 1.(F,n) = n by MATRIX_0:23;
+    Indices 1.(F, n) = [: dom 1.(F,n), Seg n :] by MATRIX_0:23
+                    .= [: Seg (len 1.(F,n)), Seg n :] by FINSEQ_1:def 3
+                    .= [: Seg n, Seg n :] by MATRIX_0:23;
+    hence thesis by MATRIX_0:24;
+  end;
+  thus (ell < k implies RlineXScalar(1.(F, n), ell, k, a) is upper_triangular)
+  proof 
+    assume A3: ell < k;
+    for i,j being Nat
+    st [i,j] in Indices RlineXScalar(1.(F, n), ell, k, a) & i > j
+    holds RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F
+    proof
+      let i,j be Nat;
+      assume B1: [i,j] in Indices RlineXScalar(1.(F, n), ell, k, a);
+      assume B2: i > j;
+      B3: [i,j] in Indices 1.(F, n) by A2,B1;
+      per cases;
+      suppose i = ell;
+        hence thesis by A1,A2,A3,B1,B2,Th22;
+      end;
+      suppose i <> ell;
+        hence thesis by A1,A2,A3,B1,B2,Th22;
+      end;
+    end;
+
+    hence RlineXScalar(1.(F, n), ell, k, a) is upper_triangular;
+  end;
+  assume A4: ell > k;
+  for i,j being Nat
+  st [i,j] in Indices RlineXScalar(1.(F, n), ell, k, a) & i < j
+  holds RlineXScalar(1.(F, n), ell, k, a) * (i,j) = 0.F
+  proof
+    let i,j be Nat;
+    assume B1: [i,j] in Indices RlineXScalar(1.(F, n), ell, k, a);
+    assume B2: i < j;
+    B3: [i,j] in Indices 1.(F, n) by A2,B1;
+    per cases;
+    suppose i = ell;
+      hence thesis by A1,A2,A4,B1,B2,Th22;
+    end;
+    suppose i <> ell;
+      hence thesis by A1,A2,A4,B1,B2,Th22;
+    end;
+  end;
+
+  hence RlineXScalar(1.(F, n), ell, k, a) is lower_triangular;
+end;
+@ %def Th23
+
+\begin{theorem}
+The special linear group is generated by elementary matrices of the
+first kind.
+\end{theorem}
+
+\begin{thm-remark}
+The elemenetary matrices of the first kind are defined as
+``\lstinline{RlineXScalar}'' in Definition~\mml[def3]{matrix12}.
+We have
+\begin{equation}
+E_{\ell,k}(\lambda) = \begin{bmatrix}
+  1 &        &         &        &   &        &   \\
+    & \ddots &         &        &   &        &   \\
+    &        & 1       &        &   &        &   \\
+    &        &         & \ddots &   &        &   \\
+    &        & \lambda &        & 1 &        &   \\
+    &        &         &        &   & \ddots &   \\
+    &        &         &        &   &        & 1
+\end{bmatrix},
+\end{equation}
+where $\lambda$ is placed in column $\ell$ and row $k$. In particular,
+when multiplying an $n\times m$ matrix on the left by a $n\times n$
+elementary matrix $E_{\ell,k}(\lambda)$ corresponds to the row operation
+$R_{\ell}\mapsto R_{\ell}+\lambda R_{k}$. This is established in
+Theorem~\mml[Th5]{matrix12}. 
+
+We will want to use facts established in
+Theorems~\mml[Th6,Th7]{matrix13} stating the determinant of a triangular
+matrix is the product of diagonal entries.
+
+One direction is obvious, namely, the subgroup generated by all these
+elementary matrices \emph{obviously} forms a subgroup of $\SL(n,\FF)$.
+The other direction is not obvious to me, namely: \emph{every} element
+of $\SL(n,\FF)$ may be written as a product of elementary matrices.
+\end{thm-remark}
+
+<<Theorem: Elementary Matrices Generate $\SL(n,\FF)$>>=
+theorem
+  for A being Subset of GL(n, F)
+  st A = { g where g is Element of GL(n, F) :
+           ex ell,k being Nat, a being Element of F
+           st g = RlineXScalar(1.(F, n), ell, k, a) }
+  holds SL(n, F) = gr A
+proof
+  let A be Subset of GL(n, F);
+  assume A1: A = { g where g is Element of GL(n, F) :
+                   ex ell,k being Nat, a being Element of F
+                   st g = RlineXScalar(1.(F, n), ell, k, a) };
+  thus SL(n, F) = gr A;
+end;
+@ 
