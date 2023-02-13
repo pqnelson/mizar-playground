@@ -24,6 +24,16 @@ The adjective ``special'' refers to having determinant 1.
 
 <<Theorem: Elementary matrices are triangular>>
 
+<<Theorem: diagonal components of elementary matrices>>
+
+<<Theorem: The identity matrix is a diagonal matrix>>
+
+<<Register: identity matrix is diagonal>>
+
+<<Theorem: determinant of elementary matrices>>
+
+<<Theorem: Elementary matrices of the first kind are elements of the special linear group>>
+
 <<Theorem: Elementary Matrices Generate $\SL(n,\FF)$>>
 @
 
@@ -663,6 +673,154 @@ proof
   hence RlineXScalar(1.(F, n), ell, k, a) is lower_triangular;
 end;
 @ %def Th23
+
+\begin{theorem}
+The diagonal of $E_{i,j}(\lambda)$ is equal to the diagonal of the
+identity matrix.
+\end{theorem}
+
+<<Theorem: diagonal components of elementary matrices>>=
+theorem Th24:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds diagonal_of_Matrix RlineXScalar(1.(F, n), ell, k, a)
+  = diagonal_of_Matrix 1.(F,n)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  set LHS = diagonal_of_Matrix RlineXScalar(1.(F, n), ell, k, a);
+  set RHS = diagonal_of_Matrix 1.(F,n);
+  A3: len LHS = n by MATRIX_3:def 10
+             .= len RHS by MATRIX_3:def 10;
+  for i being Nat st 1 <= i & i <= len LHS holds LHS.i = RHS.i
+  proof
+    let i be Nat;
+    assume B1: 1 <= i & i <= len LHS;
+    then 1 <= i & i <= n by MATRIX_3:def 10;
+    then B2: i in Seg n by FINSEQ_1:1;
+    Indices 1.(F, n) = [: dom 1.(F,n), Seg n :] by MATRIX_0:23
+                    .= [: Seg (len 1.(F,n)), Seg n :] by FINSEQ_1:def 3
+                    .= [: Seg n, Seg n :] by MATRIX_0:23;
+    then B3: [i, i] in Indices 1.(F,n) by B2, ZFMISC_1:87;
+    thus LHS.i = RlineXScalar(1.(F, n), ell, k, a) * (i,i) by B2,MATRIX_3:def 10
+    .= 1.F by A1,A2,B3,Th22
+    .= (1.(F,n)) * (i, i) by B3, MATRIX_1:def 3
+    .= RHS.i by B2,MATRIX_3:def 10;
+  end;
+
+  hence LHS = RHS by A3, FINSEQ_1:def 17;
+end;
+@ %def Th24
+
+\begin{theorem}
+The identity matrix is a diagonal matrix.
+\end{theorem}
+
+<<Theorem: The identity matrix is a diagonal matrix>>=
+theorem Th25:
+  1.(F, n) is diagonal
+proof
+  for i,j being Nat st [i, j] in Indices 1.(F,n) & (1.(F,n)) * (i,j) <> 0.F
+  holds i=j
+  proof
+    let i,j be Nat;
+    assume A1: [i, j] in Indices 1.(F,n);
+    assume A2: (1.(F,n)) * (i,j) <> 0.F;
+    per cases;
+    suppose i <> j;
+      then (1.(F,n)) * (i,j) = 0.F by A1, MATRIX_1:def 3;
+      then contradiction by A2;
+      hence thesis;
+    end;
+    suppose i=j;
+      hence thesis;
+    end;
+  end;
+  hence thesis;
+end;
+@ %def Th25
+
+\begin{registration}
+The identity matrix is diagonal.
+\end{registration}
+
+<<Register: identity matrix is diagonal>>=
+registration
+  let F,n;
+  cluster 1.(F,n) -> diagonal;
+  correctness by Th25;
+end;
+@
+
+\begin{theorem}
+The determinant of elementary matrices is unity, i.e., $\det(E_{ij}(\lambda))=1$.
+\end{theorem}
+
+<<Theorem: determinant of elementary matrices>>=
+theorem Th26:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds Det RlineXScalar(1.(F, n), ell, k, a) = 1.F
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  set M = RlineXScalar(1.(F, n), ell, k, a);
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  A3: Det (1.(F, n)) = (the multF of F) $$ (diagonal_of_Matrix 1.(F,n))
+  by MATRIX13:7;
+  ell < k or ell > k by A2,XXREAL_0:1;
+  then per cases;
+  suppose ell < k;
+    then M is upper_triangular by A1, Th23;
+    then
+    Det M = (the multF of F) $$ (diagonal_of_Matrix M) by MATRIX13:7
+         .= (the multF of F) $$ (diagonal_of_Matrix 1.(F,n)) by A1,A2,Th24
+         .= Det (1.(F, n)) by A3
+         .= 1.F by Th19;
+    hence thesis;
+  end;
+  suppose ell > k;
+    then M is lower_triangular by A1, Th23; then
+    Det M = (the multF of F) $$ (diagonal_of_Matrix M) by MATRIX13:8
+         .= (the multF of F) $$ (diagonal_of_Matrix 1.(F,n)) by A1,A2,Th24
+         .= Det (1.(F, n)) by A3
+         .= 1.F by Th19;
+    hence thesis;
+  end;
+end;
+@ %def Th26
+
+\begin{theorem}
+Elementary matrices of the first kind are elements of the special linear group.
+\end{theorem}
+
+<<Theorem: Elementary matrices of the first kind are elements of the special linear group>>=
+theorem Th27:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds RlineXScalar(1.(F, n), ell, k, a) in SL(n, F)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  then A3: Det RlineXScalar(1.(F, n), ell, k, a) = 1.F by A1, Th26;
+  Indices 1.(F, n) = [: dom 1.(F,n), Seg n :] by MATRIX_0:23
+                  .= [: dom 1.(F,n), Seg (len 1.(F,n)) :] by MATRIX_0:23
+                  .= [: dom 1.(F,n), dom 1.(F,n) :] by FINSEQ_1:def 3;
+  then k in dom (1.(F,n)) & ell in dom (1.(F,n)) by A1, ZFMISC_1:87;
+  then
+  A4: RlineXScalar(1.(F, n), ell, k, a) is invertible Matrix of n,F
+  by A2, MATRIX12:13;
+  A5: Det RlineXScalar(1.(F, n), ell, k, a) = 1.F by A1,A2,Th26;
+  RlineXScalar(1.(F, n), ell, k, a) is Element of GL(n, F) by A4,Th8;
+  then RlineXScalar(1.(F, n), ell, k, a) in GL(n, F);
+  hence thesis by A4,A5,Def9;
+end;
+@ %def Th27
 
 \begin{theorem}
 The special linear group is generated by elementary matrices of the

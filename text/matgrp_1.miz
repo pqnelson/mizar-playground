@@ -13,27 +13,27 @@ environ
 
  vocabularies TARSKI, NAT_1, VECTSP_1, SUBSET_1, MATRIX_1, REWRITE1, RELAT_1,
    MESFUNC1, STRUCT_0, ALGSTR_0, NUMBERS, ARYTM_1, FINSEQ_1, TREES_1,
-   ARYTM_3, SUPINF_2, 
+   ARYTM_3, SUPINF_2, FINSOP_1, SETWISEO,
    XXREAL_0, CARD_1, QC_LANG1, ZFMISC_1, RELAT_2, FUNCOP_1, GROUP_1,
    MATRIX_6, FUNCSDOM, MATRIX_0, MATGRP_1, MATRIX_3, 
    BINOP_1, FUNCT_1, MONOID_0, XBOOLE_0, FDIFF_1, REALSET1,
    VECTSP_2, GROUP_2, MATRIX12, GROUP_4;
    
- constructors XBOOLE_0, ALGSTR_0, NUMBERS, XXREAL_0, 
+ constructors FINSOP_1, XBOOLE_0, ALGSTR_0, NUMBERS, XXREAL_0,
    FVSUM_1, MATRIX_4, MATRIX_1,
    VECTSP_1,
    RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0, GROUP_1,
    MATRIX_3,  MATRIX_6,
    VECTSP_2, MATRIX11,
-   STRUCT_0, SUBSET_1, GROUP_2, MATRIX12, GROUP_4;
+   STRUCT_0, SUBSET_1, GROUP_2, MATRIX12, SETWISEO, GROUP_4;
    
- notations TARSKI, XBOOLE_0, ZFMISC_1, ORDINAL1, NUMBERS, FINSEQ_1,
+ notations TARSKI, XBOOLE_0, ZFMISC_1, ORDINAL1, NUMBERS, SETWOP_2, FINSEQ_1,
    RLVECT_1, GROUP_1, VECTSP_1, MATRIX_0, MATRIX_1,
    MATRIX_4, XXREAL_0, SUBSET_1,
    RELSET_1, FUNCT_1, FUNCT_2, FUNCT_5, REALSET1, BINOP_1, MONOID_0,
    MATRIX_3, MATRIX_6,
-   VECTSP_2, MATRIX11,
-   STRUCT_0, ALGSTR_0, GROUP_2, MATRIX12, GROUP_4;
+   VECTSP_2, MATRIX11, STRUCT_0, ALGSTR_0,
+   GROUP_2, FINSOP_1, MATRIX12, GROUP_4, SETWISEO;
 
  registrations XBOOLE_0, SUBSET_1, STRUCT_0, ALGSTR_0, GROUP_1, GROUP_2, MONOID_0,
    RELAT_1, FUNCT_1, PARTFUN1, REALSET1, RELSET_1, FUNCT_2,
@@ -1202,6 +1202,125 @@ proof
   hence thesis by A1, Th23;
 end;
 
+theorem Th24:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds diagonal_of_Matrix RlineXScalar(1.(F, n), ell, k, a)
+  = diagonal_of_Matrix 1.(F,n)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  set LHS = diagonal_of_Matrix RlineXScalar(1.(F, n), ell, k, a);
+  set RHS = diagonal_of_Matrix 1.(F,n);
+  A3: len LHS = n by MATRIX_3:def 10
+             .= len RHS by MATRIX_3:def 10;
+  for i being Nat st 1 <= i & i <= len LHS holds LHS.i = RHS.i
+  proof
+    let i be Nat;
+    assume B1: 1 <= i & i <= len LHS;
+    then 1 <= i & i <= n by MATRIX_3:def 10;
+    then B2: i in Seg n by FINSEQ_1:1;
+    Indices 1.(F, n) = [: dom 1.(F,n), Seg n :] by MATRIX_0:23
+                    .= [: Seg (len 1.(F,n)), Seg n :] by FINSEQ_1:def 3
+                    .= [: Seg n, Seg n :] by MATRIX_0:23;
+    then B3: [i, i] in Indices 1.(F,n) by B2, ZFMISC_1:87;
+    thus LHS.i = RlineXScalar(1.(F, n), ell, k, a) * (i,i) by B2,MATRIX_3:def 10
+    .= 1.F by A1,A2,B3,Th22
+    .= (1.(F,n)) * (i, i) by B3, MATRIX_1:def 3
+    .= RHS.i by B2,MATRIX_3:def 10;
+  end;
+
+  hence LHS = RHS by A3, FINSEQ_1:def 17;
+end;
+
+
+theorem Th25:
+  1.(F, n) is diagonal
+proof
+  for i,j being Nat st [i, j] in Indices 1.(F,n) & (1.(F,n)) * (i,j) <> 0.F
+  holds i=j
+  proof
+    let i,j be Nat;
+    assume A1: [i, j] in Indices 1.(F,n);
+    assume A2: (1.(F,n)) * (i,j) <> 0.F;
+    per cases;
+    suppose i <> j;
+      then (1.(F,n)) * (i,j) = 0.F by A1, MATRIX_1:def 3;
+      then contradiction by A2;
+      hence thesis;
+    end;
+    suppose i=j;
+      hence thesis;
+    end;
+  end;
+  hence thesis;
+end;
+
+registration
+  let F,n;
+  cluster 1.(F,n) -> diagonal;
+  correctness by Th25;
+end;
+
+theorem Th26:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds Det RlineXScalar(1.(F, n), ell, k, a) = 1.F
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  set M = RlineXScalar(1.(F, n), ell, k, a);
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  A3: Det (1.(F, n)) = (the multF of F) $$ (diagonal_of_Matrix 1.(F,n))
+  by MATRIX13:7;
+  ell < k or ell > k by A2,XXREAL_0:1;
+  then per cases;
+  suppose ell < k;
+    then M is upper_triangular by A1, Th23;
+    then
+    Det M = (the multF of F) $$ (diagonal_of_Matrix M) by MATRIX13:7
+         .= (the multF of F) $$ (diagonal_of_Matrix 1.(F,n)) by A1,A2,Th24
+         .= Det (1.(F, n)) by A3
+         .= 1.F by Th19;
+    hence thesis;
+  end;
+  suppose ell > k;
+    then M is lower_triangular by A1, Th23; then
+    Det M = (the multF of F) $$ (diagonal_of_Matrix M) by MATRIX13:8
+         .= (the multF of F) $$ (diagonal_of_Matrix 1.(F,n)) by A1,A2,Th24
+         .= Det (1.(F, n)) by A3
+         .= 1.F by Th19;
+    hence thesis;
+  end;
+end;
+
+theorem Th27:
+  for a being Element of F
+  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
+  holds RlineXScalar(1.(F, n), ell, k, a) in SL(n, F)
+proof
+  let a be Element of F;
+  let ell, k be Nat;
+  assume A1: [k, ell] in Indices 1.(F,n);
+  assume A2: ell <> k;
+  then A3: Det RlineXScalar(1.(F, n), ell, k, a) = 1.F by A1, Th26;
+  Indices 1.(F, n) = [: dom 1.(F,n), Seg n :] by MATRIX_0:23
+                  .= [: dom 1.(F,n), Seg (len 1.(F,n)) :] by MATRIX_0:23
+                  .= [: dom 1.(F,n), dom 1.(F,n) :] by FINSEQ_1:def 3;
+  then k in dom (1.(F,n)) & ell in dom (1.(F,n)) by A1, ZFMISC_1:87;
+  then
+  A4: RlineXScalar(1.(F, n), ell, k, a) is invertible Matrix of n,F
+  by A2, MATRIX12:13;
+  A5: Det RlineXScalar(1.(F, n), ell, k, a) = 1.F by A1,A2,Th26;
+  RlineXScalar(1.(F, n), ell, k, a) is Element of GL(n, F) by A4,Th8;
+  then RlineXScalar(1.(F, n), ell, k, a) in GL(n, F);
+  hence thesis by A4,A5,Def9;
+end;
+
+
 theorem
   for a,b being Element of F
   for i,j,k being Nat
@@ -1211,11 +1330,6 @@ theorem
   holds M * N * (M~) * (N~) = RlineXScalar(1.(F, n), i, k, a*b);
 ::>                                                           *4
 
-theorem
-  for a being Element of F
-  for ell, k being Nat st [k, ell] in Indices 1.(F,n) & ell <> k
-  holds Det RlineXScalar(1.(F, n), ell, k, a) = 1;
-::>                                             *4
 
 theorem
   for A being Subset of GL(n, F)
