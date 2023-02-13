@@ -30,6 +30,43 @@ end;
 \end{mizar}
 
 \begin{definition}
+Let $G$ be a group, let $H$ be another group. We say that $H$
+\define{Has a Complement In} $G$ if $H$ is a subgroup of $G$ and there
+exists a subgroup $K\subgroup G$ such that $H$ is a complement to $K$.
+\end{definition}
+
+\begin{def-remark}
+This is more generous than specifically saying, ``Group $H$ has
+complement $K$ in group $G$''. We don't even need $H$ to be a subgroup
+for us to state it.
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let G,H be Group;
+  pred H has_complement_in G
+  means
+  ex H1 being strict Subgroup of G
+  st H1 = the multMagma of H
+  & ex K being Subgroup of G
+    st H1 is_complement_of K;
+end;
+\end{mizar}
+
+\begin{theorem}
+Let $H\subgroup G$. Then $H$ has a complement in $G$ if and only if
+there exists a $K\subgroup G$ such that $H$ is complement to $K$ in $G$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for H being Subgroup of G
+  holds H has_complement_in G iff
+        ex K being Subgroup of G
+        st H is_complement_to K;
+\end{mizar}
+
+\begin{definition}
 Let $N$, $H$ be groups, let $\varphi\colon H\to\Aut(N)$ be a group morphism.
 We define the \define{Semidirect Product} of $N$ by $H$ along $\varphi$
 as the group $S(H,N,\varphi)=N\rtimes_{\varphi} H$ consisting of ordered pairs $(h,n)\in H\times N$
@@ -197,21 +234,61 @@ sending $\sigma_{N}(n)=\langle[1,n]\rangle$,
 are both injective group morphisms.
 \end{theorem}
 
+\begin{thm-remark}
+It is tempting to define some new constants for these inclusion
+morphisms, but there is no obvious way to do it. At the moment, I will
+instead just note the existence of such morphisms (and neglect thinking
+about their uniqueness, although it is obvious).
+\end{thm-remark}
+
+\begin{mizar}
+theorem
+  ex sigmaH being Homomorphism of H, semi_product(H, N, phi)
+  st (for h being Element of H holds sigmaH.h = <[* h, 1_N *]> );
+
+theorem
+  ex sigmaN being Homomorphism of N, semi_product(H, N, phi)
+  st (for n being Element of N holds sigmaH.h = <[* 1_H, n *]> );
+\end{mizar}
+
 \begin{theorem}[{\cite[(10.1.3)]{aschbacher2000finite}}]
 The image $\sigma_{N}(N)\normalSubgroup S(H, N, \varphi)$ is a normal
 subgroup of the semidirect product.
 \end{theorem}
+
+\begin{mizar}
+theorem
+  for sigmaN being Homomorphism of N, semi_product(H, N, phi)
+  st (for n being Element of N holds sigmaH.h = <[* 1_H, n *]> )
+  holds Image sigmaN is normal Subgroup of semi_product(H, N, phi);
+\end{mizar}
 
 \begin{theorem}[{\cite[(10.1.3)]{aschbacher2000finite}}]
 The image $\sigma_{N}(N)$ is a complement of $\sigma_{H}(H)$ in the
 semidirect product $\normalSubgroup S(H, N, \varphi)$.
 \end{theorem}
 
+\begin{mizar}
+theorem
+  for sigmaH being Homomorphism of H, semi_product(H, N, phi)
+  for sigmaN being Homomorphism of N, semi_product(H, N, phi)
+  st (for n being Element of N holds sigmaH.h = <[* 1_H, n *]> )
+   & (for h being Element of H holds sigmaH.h = <[* h, 1_N *]> )
+  holds Image sigmaN is_complement_to Image sigmaH;
+\end{mizar}
+
 \begin{theorem}[{\cite[(10.1.4)]{aschbacher2000finite}}]
 For any $n\in N$ and $h\in H$ we have
 $\langle[1, n]\rangle^{\langle[h,1]\rangle} = \langle[1, \varphi_{h}(n)]\rangle$ 
 in the semidirect product.
 \end{theorem}
+
+\begin{mizar}
+theorem
+  for n being Element of N
+  for h being Element of H
+  holds <[* 1_H, n *]> |^ <[* h, 1_N *]> = <[* 1_H (phi.h).n *]>;
+\end{mizar}
 
 \begin{theorem}[{\cite[(10.2)]{aschbacher2000finite}}]
 Let $G$ be a group, let $N\normalSubgroup G$, and let $H\subgroup G$ be a
@@ -225,6 +302,23 @@ $\beta(h,n)=hn$. Then $\beta$ is an isomorphism.
 \begin{thm-remark}
 See also Theorem (8.7) in Suzuki~\cite{suzuki1982group}, chapter 1.
 \end{thm-remark}
+
+\begin{mizar}
+theorem
+  for N being normal Subgroup of G
+  for H being Subgroup of G st N is_complement_to H
+  for alpha being Homomorphism of H, AutGroup(N)
+  st (for h being Element of H
+      for n being Element of N
+      for g1,g2 being Element of G st g1 = h & g2 = n
+      holds (alpha.h).n = g2 |^ g1) :: holds h is_inner_wrt (alpha.h))
+  for beta being Homomorphism of semi_product (H, N, alpha), G
+  st (for h being Element of H
+      for n being Element of N
+      for g1,g2 being Element of G st g1 = h & g2 = n
+      holds beta.<[*h,n*]> = g1*g2)
+  holds beta is bijective;
+\end{mizar}
 
 \begin{theorem}[{\cite[(10.3)]{aschbacher2000finite}}]
 Let $S_{i}=S(H_{i}, N_{i}, \varphi_{i})$ for $i=1,2$ be semidirect products.
@@ -274,7 +368,104 @@ and
 \end{enumerate}
 \end{theorem}
 
-\begin{theorem}[{G\"aschutz~\cite[(10.4)]{aschbacher2000finite}}]
+\begin{definition}
+We say a group $G$ is an \define{Extension of} group $X$ by group $Y$ if
+there exists a normal subgroup $N\normalSubgroup G$ such that
+\begin{enumerate}
+\item $N\iso X$, and
+\item $G/N\iso Y$.
+\end{enumerate}
+\end{definition}
+
+\begin{def-remark}
+We can make ``extension'' a mode (and we really should), but leaving it
+as a predicate suffices for our concerns at the moment.
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let G,X,Y be Group;
+  pred G extends_by X,Y means
+  ex N being normal Subgroup of G
+  st N,X are_isomorphic & G./.N,Y are_isomorphic;
+end;
+
+:: "is_extension_of" in LATTICE5 vocabulary
+definition
+  let G,X be Group;
+  pred G is_extension_of X means
+  ex Y being Group st G extends_by X,Y;
+end;
+\end{mizar}
+
+\begin{theorem}
+For any normal subgroup $N\normalSubgroup G$, we can say that $G$ is an
+extension of $N$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for N being normal Subgroup of G
+  holds G is_extension_of N
+proof
+  let N be normal Subgroup of G;
+  ex Y being Group st G extends_by X,Y
+  proof
+    take Y = G./.N;
+    take N;
+    B1: N,N are_isomorphic;
+    G./.N,Y are_isomorphic;
+    hence thesis;
+  end;
+  hence thesis;
+end;
+\end{mizar}
+
+\begin{definition}
+Let $G$ be a group extension of $X$ by $Y$ with $N\normalSubgroup G$
+being $N\iso X$. We say $G$ \define{Splits Over} $X$ if $N\iso X$ has a
+complement in $G$.
+\end{definition}
+
+\begin{def-remark}
+This is faithful to the definition given in Aschbacher~\cite[(\S10)]{aschbacher2000finite}
+and found earlier in Gasch\"{u}tz's original paper.
+\end{def-remark}
+
+\begin{mizar}
+definition
+  let G,X be Group;
+  pred G splits_over X means
+  ex Y being Group st
+  ex N being strict normal Subgroup of G st
+  N,X are_isomorphic & G./.N,Y are_isomorphic &
+  (ex K being Subgroup of G st N is_complement_to K);
+end;
+
+theorem
+  for G,X being Group
+  st G splits_over X
+  holds G is_extension_of X;
+\end{mizar}
+
+\begin{theorem}
+Let $N\normalSubgroup G$. Then $G$ splits over $N$ if and only if $N$
+has a complement in $G$.
+\end{theorem}
+
+\begin{mizar}
+theorem
+  for G being Group
+  for N being normal Subgroup of G
+  holds G splits_over N iff N has_complement_in G;
+\end{mizar}
+
+\begin{theorem}[Schur]
+Let $G$ be a finite group, let $N\normalSubgroup G$.
+If $|N|$ is coprime to $\Index{G}{N}$, then $G$ splits over $N$.
+\end{theorem}
+
+\begin{theorem}[{Gasch\"{u}tz~\cite[(10.4)]{aschbacher2000finite}}]
 Let $p$ be a prime, $V$ a commutative normal $p$-subgroup of a finite
 group $G$, let $P\in\SylowSubgroups{p}{G}$. 
 Then $G$ splits over $V$ if and only if $P$ splits over $V$.
@@ -284,3 +475,57 @@ Then $G$ splits over $V$ if and only if $P$ splits over $V$.
 See also Higman~\cite{higman1954remarks} and Rose~\cite{rose1966} for
 more about this particular theorem. 
 \end{thm-remark}
+
+\begin{mizar}
+theorem
+  for p being Prime
+  for G being finite Group
+  for V being commutative p-group normal Subgroup of G
+  for P being Subgroup of G
+  st P is_Sylow_p-subgroup_of_prime p
+  holds G splits_over V iff P splits_over V
+proof
+  let p be Prime, G be finite Group;
+  let V be commutative p-group normal Subgroup of G;
+  let P be Subgroup of G;
+  assume A1: P is_Sylow_p-subgroup_of_prime p;
+  thus G splits_over V implies P splits_over V
+  proof
+    assume A2: G splits_over V;
+    then consider H being Subgroup of G such that
+    A3: V is_complement_to H; :: by Theorem 3.32
+    A4: V is Subgroup of P by GROUP_10:12;
+    A5: P = P /\ G
+         .= P /\ (VH)
+         .= V(P /\ H);
+    V has_complement_in P
+    proof
+      take K = P /\ H;
+      thus thesis by A5;
+    end;
+    hence thesis; :: by Theorem 3.32  
+  end;
+  thus P splits_over V implies G splits_over V
+  proof
+    assume A2: P splits_over V;
+    then consider Q being Subgroup of V such that
+    A3: V is_complement_of Q;
+    :: Thesis: P has_complement_in G;
+  end;
+end;
+\end{mizar}
+
+\subsection{Other Results}
+There are other results from Gasch\"{u}tz which may be worth
+formalizing, for example:
+
+\begin{theorem}
+Let $N$ be a normal Subgroup of $G$.
+Then $N\subgroup\Phi(G)$ if and only if $G$ does not split over $N$.
+\end{theorem}
+
+\begin{theorem}
+Let $G'$ be the commutator subgroup of $G$.
+Then $G'\cap Z(G)\subgroup\Phi(G)$.
+\end{theorem}
+
