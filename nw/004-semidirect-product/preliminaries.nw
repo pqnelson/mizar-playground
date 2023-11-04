@@ -1,0 +1,146 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Preliminaries about Automorphisms}
+
+
+<<Preliminaries about Automorphism Groups>>=
+
+<<Register: Element of $\Aut(G)$ is multiplicative>>
+
+<<Definition: [[phi /. a]] is an Endomorphism of G>>
+
+<<Lemma: $\varphi(a_{1}a_{2})=\varphi(a_{1})\circ\varphi(a_{2})$>>
+
+<<Register: Underlying set of $A\times G$ is non empty>>
+
+<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>
+
+<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>
+
+@
+
+\begin{registration}
+An element of the set underlying $\Aut(G)$ is multiplicative (as a function).
+\end{registration}
+
+<<Register: Element of $\Aut(G)$ is multiplicative>>=
+registration
+  let G be strict Group;
+  cluster -> multiplicative for Element of Aut G;
+  correctness by AUTGROUP:def 1;
+end;
+@ 
+
+\begin{definition}
+Let $a\in A$. Then we should think of $\varphi(a)$ as a Homomorphism of
+$G$ to $G$.
+\end{definition}
+
+<<Definition: [[phi /. a]] is an Endomorphism of G>>=
+definition
+  let A, G, phi;
+  let a be Element of A;
+  func phi /. a -> Homomorphism of G,G equals phi.a;
+  correctness
+  proof
+    phi.a is Element of Aut G;
+    hence phi.a is Homomorphism of G, G;
+  end;
+end;
+@
+
+\begin{lemma}
+For any $a_{1}$, $a_{2}\in A$ and group morphism $\varphi\colon A\to\Aut(G)$,
+we have $\varphi(a_{1}a_{2})=\varphi(a_{1})\circ\varphi(a_{2})$.
+\end{lemma}
+
+<<Lemma: $\varphi(a_{1}a_{2})=\varphi(a_{1})\circ\varphi(a_{2})$>>=
+LmCompose:
+  for a1, a2 being Element of A
+  holds phi.(a1 * a2) = (phi.a1) * (phi.a2) by GROUP_6:def 6;
+@ %def LmCompose
+
+\begin{registration}
+The underlying set of the product group $A\times G$ is nonempty;
+\end{registration}
+
+<<Register: Underlying set of $A\times G$ is non empty>>=
+registration
+  let G, A;
+  cluster product (Carrier <*A,G*>) -> non empty;
+  correctness;
+end;
+@
+
+\begin{lemma}
+If $x\in U(A\times G)$ is an element of the underlying set, then
+$x_{1}\in A$ and $x_{2}\in G$.
+\end{lemma}
+
+<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>=
+Lm0:
+  for x being Element of product (Carrier <*A,G*>)
+  holds x.1 in A & x.2 in G
+proof
+  let x be Element of product (Carrier <*A,G*>);
+  A1: dom (Carrier <*A,G*>) = {1,2} by PARTFUN1:def 2;
+  A2: dom x = {1,2} & (for i being object st i in {1,2} holds x.i in (Carrier <*A,G*>).i)
+  proof
+    x in product (Carrier <*A,G*>);
+    then dom x = dom (Carrier <*A,G*>)
+         & (for i being object st i in dom (Carrier <*A,G*>)
+            holds x.i in (Carrier <*A,G*>).i) by CARD_3:9;
+    hence thesis by A1;
+  end;
+  <<Proof: $x_{1}\in A$>>
+  <<Proof: $x_{2}\in G$>>
+end;
+@ %def Lm0
+
+<<Proof: $x_{1}\in A$>>=
+A3: (Carrier <*A,G*>).1 = the carrier of A
+proof
+  1 in {1,2} by TARSKI:def 2; then
+  1 in dom (Carrier <*A,G*>) by A1; then
+  ex R being 1-sorted st (R = <*A,G*>.1 & (Carrier <*A,G*>).1 = the
+  carrier of R) by PRALG_1:def 15;
+  hence thesis by FINSEQ_1:44;
+end;
+
+1 in {1,2} by TARSKI:def 2;
+then x.1 in (Carrier <*A,G*>).1 by A2;
+then x.1 in the carrier of A by A3;
+hence x.1 in A;
+@
+
+<<Proof: $x_{2}\in G$>>=
+A4: (Carrier <*A,G*>).2 = the carrier of G
+proof
+  2 in {1,2} by TARSKI:def 2; then
+  2 in dom (Carrier <*A,G*>) by A1; then
+  ex R being 1-sorted st (R = <*A,G*>.2 & (Carrier <*A,G*>).2 = the
+  carrier of R) by PRALG_1:def 15;
+  hence thesis by FINSEQ_1:44;
+end;
+
+2 in {1,2} by TARSKI:def 2;
+then x.2 in (Carrier <*A,G*>).2 by A2;
+then x.2 in the carrier of G by A4;
+hence x.2 in G;
+@
+
+\begin{lemma}
+For $a\in A$ and $g\in G$, we have $(a,g)\in U(A\times G)$ be an element
+of the underlying set.
+\end{lemma}
+
+<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>=
+Lm1:
+  for a being Element of A, g being Element of G
+  holds <*a,g*> in product (Carrier <*A,G*>)
+proof
+  let a be Element of A;
+  let g be Element of G;
+  <*a,g*> in the carrier of (product <*A,G*>);
+  hence <*a,g*> in product (Carrier <*A,G*>) by GROUP_7:def 2;
+end;
+@ %def Lm1

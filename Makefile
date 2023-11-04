@@ -24,6 +24,9 @@ MATGRP1=nw/003-matrix-group
 MATRIXGROUP1=$(MATGRP1).nw $(MATGRP1)/environ.nw $(MATGRP1)/index.nw \
 	$(MATGRP1)/monoid.nw $(MATGRP1)/linear-groups-over-field.nw \
 	$(MATGRP1)/special-linear-group.nw
+G24=nw/004-semidirect-product
+GROUP24=$(G24).nw $(G24)/environ.nw $(G24)/index.nw $(G24)/preliminaries.nw \
+	$(G24)/semidirect-product.nw $(G24)/universal-property.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
 	$(RADRES)/pi-numbers.nw \
@@ -52,6 +55,7 @@ defs: rm_defs
 #	nodefs $(CHARACTERISTIC_SUBGROUP) > 001.defs
 	nodefs $(PRODUCT_GROUP) > 002.defs
 	nodefs $(MATRIXGROUP1) > 003.defs
+	nodefs $(GROUP24) > 004.defs
 #	nodefs $(PERMUTATION_GROUP) > 004.defs
 	sort -u 001.defs | cpif 001.defs
 	sort -u 002.defs | cpif 002.defs
@@ -67,7 +71,8 @@ fancy_extract_text: defs $(EXTRACT_CMD)
 dumb_extract_text: defs
 #	noweave -indexfrom 001.defs $(NOWEBOPTS) $(CHARACTERISTIC_SUBGROUP) > tex/characteristic.tex
 #	noweave -indexfrom 002.defs $(NOWEBOPTS) $(PRODUCT_GROUP) > tex/product-group.tex
-	noweave $(NOWEBOPTS) -indexfrom 003.defs $(MATRIXGROUP1) > tex/matrix-group1.tex
+#	noweave $(NOWEBOPTS) -indexfrom 003.defs $(MATRIXGROUP1) > tex/matrix-group1.tex
+	noweave $(NOWEBOPTS) -indexfrom 004.defs $(GROUP24) > tex/semidirect-product.tex
 #	noweave $(NOWEBOPTS) -indexfrom 004.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
 code:
 #	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
