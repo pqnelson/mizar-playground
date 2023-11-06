@@ -11,10 +11,11 @@ environ
    EQREL_1, :: for "\/"
    NATTRA_1, :: for `*`
    NEWTON, :: for "|^"
+   REALSET1, :: for "||"
    GROUP_24;
  notations TARSKI, XBOOLE_0, ENUMSET1, SUBSET_1, RELAT_1, FUNCT_1, ZFMISC_1,
    NAT_1, FINSEQ_1, RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4, BINOP_1,
-   PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, GROUP_2,
+   PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, REALSET1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, CARD_3, PRALG_1, AUTGROUP, GROUP_7, GROUP_22;
  constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1, XXREAL_0, REALSET1, GROUP_1,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, MONOID_0, PRALG_1, PRALG_2, RELSET_1, FUNCT_2, FUNCT_4,
@@ -75,6 +76,24 @@ holds phi/.a is Homomorphism of G, G by Lm1;
 reserve G for strict Group,
   A for Group,
   phi for Homomorphism of A, AutGroup G;
+
+registration
+  let A;
+  cluster id A -> multiplicative;
+  correctness by GROUP_6:38;
+
+  cluster id A -> bijective;
+  coherence
+  proof
+    set f = id A;
+    rng (id A) = the carrier of A by RELAT_1:45;
+    then (id A is one-to-one & id A is onto) by FUNCT_2:def 3;
+    hence id A is bijective;
+  end;
+end;
+
+LmCheckIdIsAutomorphism:
+  id A is Automorphism of A;
 
 registration
   let G;
@@ -859,8 +878,9 @@ proof
 end;
 
 
+
 :: Aschbacher, Finite Group Theory (10.1.2)
-theorem
+theorem th22:
   ex j2 being Homomorphism of G,semidirect_product (A, G, phi)
   st (for g being Element of G holds j2.g = <*1_A, g*>)
   & j2 is one-to-one
@@ -915,19 +935,171 @@ proof
 end;
 
 
+theorem th23:
+  for H being Subgroup of A
+  holds H is normal
+  iff (for a,h being Element of A st h in H holds h |^ a in H)
+proof
+  let H be Subgroup of A;
+  thus H is normal implies (for a,h being Element of A st h in H holds h |^ a in H)
+  proof
+    assume B1: H is normal;
+    let a,h be Element of A;
+    assume B2: h in H;
+    H |^ a = the multMagma of H by B1, GROUP_3:def 13; then
+    B3: the carrier of (H |^ a) = the carrier of H by B1, GROUP_3:def 13;
+    h |^ a in H |^ a by B2, GROUP_3:58;
+    then h |^ a in the carrier of H |^ a;
+    then h |^ a in the carrier of H by B3, GROUP_3:def 13;
+    then h |^ a in H;
+    hence h |^ a in H;
+  end;
+  thus (for a,h being Element of A st h in H holds h |^ a in H) implies
+  H is normal
+  proof
+    assume B1: for a,h being Element of A st h in H holds h |^ a in H;
+    B2: for a,h being Element of A st h in H holds h in H |^ a
+    proof
+      let a,h be Element of A;
+      assume Z1: h in H;
+      (a") is Element of A;
+      then h |^ (a") in H by B1,Z1;
+      then (h |^ (a")) |^ a in H |^ a by GROUP_3:58;
+      hence h in H |^ a by GROUP_3:25;
+    end;
+    B3: for a,h being Element of A st h in H |^ a holds h in H
+    proof
+      let a,h be Element of A;
+      assume Z1: h in H |^ a;
+      Z2: the carrier of (H |^ (1_A)) = (carr H) |^ (1_A) by GROUP_3:def 6
+                                     .= carr H by GROUP_3:52
+                                     .= the carrier of H by GROUP_2:def 9;
+      (a") is Element of A;
+      then h |^ (a") in (H |^ a) |^ (a") by Z1, GROUP_3:58;
+      then h |^ (a") in H |^ (a * (a")) by GROUP_3:60;
+      then h |^ (a") in H |^ (1_A) by GROUP_1:def 5;
+      then h |^ (a") in H by Z2;
+      then (h |^ (a")) |^ a in H by B1;
+      hence h in H by GROUP_3:25;
+    end;
+
+    for a being Element of A
+    holds the carrier of H = the carrier of (H |^ a)
+    proof
+      let a be Element of A;
+      for h being object st h in the carrier of H
+      holds h in the carrier of (H |^ a)
+      proof
+        let h be object;
+        assume Z1: h in the carrier of H;
+        then h in H;
+        then reconsider h0=h as Element of A by GROUP_2:42;
+        h0 in H by Z1;
+        then h0 in H |^ a by B2;
+        hence h in the carrier of (H |^ a);
+      end;
+      then B4: the carrier of H c= the carrier of (H |^ a) by TARSKI:def 3;
+      for h being object st h in the carrier of (H |^ a)
+      holds h in the carrier of H
+      proof
+        let h be object;
+        assume Z1: h in the carrier of (H |^ a);
+        then h in H |^ a;
+        then reconsider h0=h as Element of A by GROUP_2:42;
+        h0 in H |^ a by Z1;
+        then h0 in H by B3;
+        hence h in the carrier of H;
+      end;
+      then the carrier of (H |^ a) c= the carrier of H by TARSKI:def 3;
+      hence the carrier of H = the carrier of (H |^ a) by B4, XBOOLE_0:def 10;
+    end;
+    then for a being Element of A
+    holds the multMagma of H = H |^ a by GROUP_2:59,GROUP_3:def 6;
+    hence thesis by GROUP_3:def 6,def 13;
+  end;
+end;
+
+
 :: Aschbacher, Finite Group Theory (10.1.3)
+theorem
+  for j2 being Homomorphism of G,semidirect_product (A, G, phi)
+  st (for g being Element of G holds j2.g = <*1_A, g*>)
+  holds Image j2 is normal Subgroup of semidirect_product (A, G, phi)
+  & G,Image j2 are_isomorphic
+proof
+  let j2 be Homomorphism of G,semidirect_product (A, G, phi);
+  assume A1: for g being Element of G holds j2.g = <*1_A, g*>;
+  for a,h being Element of semidirect_product (A, G, phi)
+  st h in Image j2 holds h |^ a in Image j2;
+::>                                       *4
+  hence Image j2 is normal Subgroup of semidirect_product (A, G, phi) by th23;
+
+  
+  for a,b being Element of G
+  st j2.a = j2.b
+  holds a = b
+  proof
+    let a,b be Element of G;
+    assume B1: j2.a = j2.b;
+    j2.a = <*1_A, a*> & j2.b = <*1_A, b*> by A1;
+    hence a = b by B1, Lm1;
+  end;
+  then A2: j2 is one-to-one by GROUP_6:1;
+  set H = Image j2;
+  A3: H = Image j2 & H is strict Group & H is strict Subgroup of semidirect_product(A,G,phi); then
+  reconsider f=j2 as Homomorphism of G,H by GROUP_6:49;
+  A4: f = j2 & f is one-to-one by A2;
+  Image f = Image j2
+  proof
+    B1: the carrier of Image f = f .: the carrier of G by GROUP_6:def 10
+                              .= j2 .: the carrier of G by A4
+                              .= the carrier of Image j2 by GROUP_6:def 10;
+    Image f is Subgroup of semidirect_product (A, G, phi) by A3;
+::>                                                        *4
+    hence thesis by B1, GROUP_2:59;
+  end; then
+  A5: H = Image f by A3,A4;
+  :: f is Homomorphism of G,Image j2 by GROUP_6:49; then
+  f is Homomorphism of G,H; then
+  f is Homomorphism of G,H & f is onto by A3,A4,A5,GROUP_6:57;
+  hence G,Image j2 are_isomorphic by A2, A4, GROUP_6:def 11;
+end;
+
+
 theorem
   ex N being normal Subgroup of semidirect_product (A, G, phi)
   st N, G are_isomorphic;
 ::>                    *4
 
 :: Aschbacher, Finite Group Theory, 10.1.4
-:: theorem
-::   for a being Element of A
-::   for g being Element of G
-::   for x,y,z being Element of semidirect_product(A,G,phi)
-::   st x = <*1_A,g*> & y = <*a,1_G*> & z = <*1_A,(phi/.a).g*>
-::   holds x |^ y = z;
+theorem
+  for a being Element of A
+  for g being Element of G
+  for x,y,z being Element of semidirect_product(A,G,phi)
+  st x = <*1_A,g*> & y = <*a",1_G*> & z = <*1_A,(phi/.a).g*>
+  holds x |^ y = z
+proof
+  let a be Element of A;
+  let g be Element of G;
+  let x,y,z be Element of semidirect_product(A,G,phi);
+  assume A1: x = <*1_A,g*>;
+  assume A2: y = <*a",1_G*>;
+  assume A3: z = <*1_A,(phi/.a).g*>;
+  A4: y" = <* (a")", (phi /. ((a")"))/.((1_G)")*> by A2,th15
+        .= <* a, (phi /. a)/.((1_G)") *> 
+        .= <* a, (phi /. a)/.(1_G) *> by GROUP_1:8
+        .= <* a, 1_G *> by GROUP_6:31;
+  (y") * x = <* (a) * (1_A), (1_G) * ((phi /. (a)) /. g) *> by A1,A4,th6
+          .= <* (a), (1_G) * ((phi /. (a)) /. g) *> by GROUP_1:def 4
+          .= <* (a), ((phi /. (a)) /. g) *> by GROUP_1:def 4; then
+  ((y") * x) * y = <* a*(a"), ((phi/.(a))/.g)*((phi/.(a))/.1_G) *> by A2,th6
+                .= <* 1_A, ((phi/.(a))/.g)*((phi/.(a))/.1_G) *> by GROUP_1:def 5
+                .= <* 1_A, ((phi/.(a))/.g)*(1_G) *> by GROUP_6:31
+                .= <* 1_A, (phi/.(a))/.g *> by GROUP_1:def 4
+                .= z by A3;
+  hence x |^ y = z by GROUP_3:def 2;
+end;
+
 
 begin :: Universal Property of Semidirect Products
 
@@ -1055,90 +1227,6 @@ registration
   correctness by th22;
 end;
 
-theorem th23:
-  for H being Subgroup of A
-  holds H is normal
-  iff (for a,h being Element of A st h in H holds h |^ a in H)
-proof
-  let H be Subgroup of A;
-  thus H is normal implies (for a,h being Element of A st h in H holds h |^ a in H)
-  proof
-    assume B1: H is normal;
-    let a,h be Element of A;
-    assume B2: h in H;
-    H |^ a = the multMagma of H by B1, GROUP_3:def 13; then
-    B3: the carrier of (H |^ a) = the carrier of H by B1, GROUP_3:def 13;
-    h |^ a in H |^ a by B2, GROUP_3:58;
-    then h |^ a in the carrier of H |^ a;
-    then h |^ a in the carrier of H by B3, GROUP_3:def 13;
-    then h |^ a in H;
-    hence h |^ a in H;
-  end;
-  thus (for a,h being Element of A st h in H holds h |^ a in H) implies
-  H is normal
-  proof
-    assume B1: for a,h being Element of A st h in H holds h |^ a in H;
-    B2: for a,h being Element of A st h in H holds h in H |^ a
-    proof
-      let a,h be Element of A;
-      assume Z1: h in H;
-      (a") is Element of A;
-      then h |^ (a") in H by B1,Z1;
-      then (h |^ (a")) |^ a in H |^ a by GROUP_3:58;
-      hence h in H |^ a by GROUP_3:25;
-    end;
-    B3: for a,h being Element of A st h in H |^ a holds h in H
-    proof
-      let a,h be Element of A;
-      assume Z1: h in H |^ a;
-      Z2: the carrier of (H |^ (1_A)) = (carr H) |^ (1_A) by GROUP_3:def 6
-                                     .= carr H by GROUP_3:52
-                                     .= the carrier of H by GROUP_2:def 9;
-      (a") is Element of A;
-      then h |^ (a") in (H |^ a) |^ (a") by Z1, GROUP_3:58;
-      then h |^ (a") in H |^ (a * (a")) by GROUP_3:60;
-      then h |^ (a") in H |^ (1_A) by GROUP_1:def 5;
-      then h |^ (a") in H by Z2;
-      then (h |^ (a")) |^ a in H by B1;
-      hence h in H by GROUP_3:25;
-    end;
-
-    for a being Element of A
-    holds the carrier of H = the carrier of (H |^ a)
-    proof
-      let a be Element of A;
-      for h being object st h in the carrier of H
-      holds h in the carrier of (H |^ a)
-      proof
-        let h be object;
-        assume Z1: h in the carrier of H;
-        then h in H;
-        then reconsider h0=h as Element of A by GROUP_2:42;
-        h0 in H by Z1;
-        then h0 in H |^ a by B2;
-        hence h in the carrier of (H |^ a);
-      end;
-      then B4: the carrier of H c= the carrier of (H |^ a) by TARSKI:def 3;
-      for h being object st h in the carrier of (H |^ a)
-      holds h in the carrier of H
-      proof
-        let h be object;
-        assume Z1: h in the carrier of (H |^ a);
-        then h in H |^ a;
-        then reconsider h0=h as Element of A by GROUP_2:42;
-        h0 in H |^ a by Z1;
-        then h0 in H by B3;
-        hence h in the carrier of H;
-      end;
-      then the carrier of (H |^ a) c= the carrier of H by TARSKI:def 3;
-      hence the carrier of H = the carrier of (H |^ a) by B4, XBOOLE_0:def 10;
-    end;
-    then for a being Element of A
-    holds the multMagma of H = H |^ a by GROUP_2:59,GROUP_3:def 6;
-    hence thesis by GROUP_3:def 6,def 13;
-  end;
-end;
-
 
 :: GROUP_3:58?
 theorem th24:
@@ -1171,10 +1259,47 @@ end;
 
 theorem th25:
   for G1,G2 being Group
+  for H1 being Subgroup of G1
+  for H2 being Subgroup of G2
+  holds product <*H1,H2*> is Subgroup of product <*G1,G2*>
+proof
+  let G1,G2 be Group;
+  let H1 be Subgroup of G1;
+  let H2 be Subgroup of G2;
+  product <*G1,G2*> is Subgroup of product <*G1,G2*> by GROUP_2:54;
+  A1: the carrier of product <*H1,H2*> c= the carrier of product <*G1,G2*>;
+::>                                                                      *4
+  
+  the multF of product <*H1,H2*> = (the multF of product <*G1,G2*>)||(the carrier of product <*H1,H2*>);
+::>                                                                                                   *4,4
+  hence product <*H1,H2*> is Subgroup of product <*G1,G2*> by A1, GROUP_2:def 5;
+end;
+
+
+
+theorem th26:
+  for G1,G2 being Group
   for N1 being normal Subgroup of G1
   for N2 being normal Subgroup of G2
-  holds product <*N1,N2*> is normal Subgroup of product <*G1,G2*>;
-::>                                                             *4,4
+  holds product <*N1,N2*> is normal Subgroup of product <*G1,G2*>
+proof
+  let G1,G2 be Group;
+  let N1 be normal Subgroup of G1;
+  let N2 be normal Subgroup of G2;
+  A1: product <*N1,N2*> is Subgroup of product <*G1,G2*> by th25;
+  for x,n being Element of product <*G1,G2*>
+  st n in product <*N1,N2*>
+  holds n |^ x in product <*N1,N2*>
+  proof
+    let x,n be Element of product <*G1,G2*>;
+    assume A2: n in product <*N1,N2*>;
+    thus n |^ x in product <*N1,N2*>;
+::>                                *4
+  end;
+
+  hence product <*N1,N2*> is normal Subgroup of product <*G1,G2*> by A1,th23;
+end;
+
 
 :: The definition of a central product of groups first appears in:
 :: - P. Hall, Finite-by-nilpotent groups, Proc. Camb. Phil. Soc., 52
