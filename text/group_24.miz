@@ -1616,7 +1616,7 @@ proof
 end;
 
 
-theorem Th28:
+theorem Th29:
   for G being strict Group
   for H being Subgroup of G
   for N being strict normal Subgroup of G
@@ -1640,13 +1640,13 @@ end;
 
 
 theorem
-  for G being strict Group
+  for G being Group
   for H1, H2 being Subgroup of G
   for N being strict normal Subgroup of G
   st H1,N are_complements_in G & H2,N are_complements_in G
   holds H1,H2 are_isomorphic
 proof
-  let G be strict Group;
+  let G be Group;
   let H1, H2 be Subgroup of G;
   let N be strict normal Subgroup of G;
   assume A1: H1,N are_complements_in G;
@@ -1663,5 +1663,139 @@ definition
   pred G splits_over N means :Def5:
   ex H being Subgroup of G st H,N are_complements_in G;
 end;
+
+theorem Th40:
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Subgroup of G
+  st H,N are_complements_in G
+  for g being Element of G
+  ex h,n being Element of G
+  st h in H & n in N & h*n = g;
+::>                          *4
+
+:: Aschbacher, Theorem 10.2
+theorem
+  for G being Group
+  for N being strict normal Subgroup of G
+  for H being Subgroup of G
+  st H,N are_complements_in G
+  for alpha being Homomorphism of H,AutGroup N
+  st (for h,n being Element of G st h in H & n in N
+      holds (alpha/.h).n = n |^ h)
+  ex beta being Homomorphism of semidirect_product(H,N,alpha), G
+  st (for h,n being Element of G st h in H & n in N
+      holds beta.(<*h,n*>) = h*n)
+   & beta is bijective
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  let alpha be Homomorphism of H,AutGroup N;
+  assume A2: for h,n being Element of G st h in H & n in N holds (alpha/.h).n = n |^ h;
+  set S = semidirect_product(H,N,alpha);
+  defpred P[Element of S, Element of G]
+  means ex h,n being Element of G st h in H & n in N & $1 = <*h,n*> & $2 = h*n;
+
+  A3: for x being Element of semidirect_product(H, N, alpha)
+  ex y being Element of G
+  st P[x, y];
+::>        *4
+  consider beta being Function of S,G
+  such that
+  A4: for x being Element of semidirect_product(H, N, alpha) holds P[x, beta.x]
+  from FUNCT_2:sch 3(A3);
+
+  for x1,x2 being Element of semidirect_product(H, N, alpha)
+  holds beta.(x1 * x2) = (beta.x1) * (beta.x2);
+::>                                          *4
+  then reconsider beta as Homomorphism of S,G
+  by GROUP_6:def 6;
+
+  take beta;
+  
+  thus A5: (for h,n being Element of G st h in H & n in N holds beta.(<*h,n*>) = h*n)
+  proof 
+    let h,n be Element of G;
+    assume B1: h in H;
+    assume B2: n in N;
+    reconsider x = <*h,n*> as Element of S
+    by B1,B2,th3;
+    consider h1,n1 being Element of G such that
+    B3: h1 in H & n1 in N & x = <*h1,n1*> & beta.x = h1*n1
+    by A4;
+    <*h,n*> = x
+           .= <*h1,n1*> by B3;
+    then h = h1 & n = n1 by Lm1;
+    hence beta.(<*h,n*>) = h*n by B1,B2,B3,A4,Lm1;
+  end;
+
+  for y being Element of G
+  ex x being Element of S
+  st beta.x = y
+  proof
+    let y be Element of G;
+    consider h,n being Element of G such that
+    B1: h in H & n in N & y = h*n
+    by A1,Th40;
+    reconsider h0 = h as Element of H by B1;
+    reconsider n0 = n as Element of N by B1;
+    <*h0, n0*> is Element of S by th3; then
+    consider x being Element of S such that
+    B2: x = <*h0,n0*>
+    by th3;
+    take x;
+    thus beta.x = y by B1,B2,A5;
+  end;
+  then A6: beta is onto by LmOnto;
+  
+  beta is one-to-one
+  proof
+    B1: (1).S is Subgroup of Ker beta by GROUP_2:65;
+    for x being Element of S st x in Ker beta holds x in (1).S
+    proof
+      let x be Element of S;
+      assume B2: x in Ker beta;
+      consider h being Element of H, n being Element of N such that
+      B3: x = <*h,n*>
+      by th5;
+      B4: h in H & n in N;
+      h in G & n in G by GROUP_2:41;
+      then reconsider h,n as Element of G;
+      h in H & n in N by B4; 
+      h*n = beta.x by B3,B4,A5
+         .= 1_G by B2, GROUP_6:41;
+      then (1_G) * (n") = (h*n) * (n")
+      .= h * (n * n") by GROUP_1:def 3
+      .= h * 1_G by GROUP_1:def 5
+      .= h by GROUP_1:def 4;
+      then B5: h = n" by GROUP_1:def 4;
+      then h in N & h in H by B4, GROUP_2:51;
+      then h in H /\ N by GROUP_2:82;
+      then B6: h in (1).G by A1, Def4;
+      then h in the carrier of (1).G;
+      then h in {1_G} by GROUP_2:def 7;
+      then B7: h = 1_G by GROUP_2:def 7, TARSKI:def 1
+                .= 1_H by B4,GROUP_2:44;
+      then B8: n = h" by B5
+            .= (1_G)" by B7,GROUP_2:44
+            .= 1_G by GROUP_1:8
+            .= 1_N by B4,GROUP_2:44;
+      then x = <*h,n*> by B3
+            .= <*1_H,1_N*> by B7,B8;
+      then x = 1_S by th14;
+      then x in {1_S} by TARSKI:def 1;
+      then x in the carrier of (1).S by GROUP_2:def 7;
+      hence x in (1).S;
+    end;
+
+    then Ker beta is Subgroup of (1).S by GROUP_2:58;
+    then Ker beta = (1).S by B1, GROUP_2:55;
+    hence beta is one-to-one by GROUP_6:56;
+  end;
+  hence beta is bijective by A6;
+end;
+
 
 ::> 4: This inference is not accepted
