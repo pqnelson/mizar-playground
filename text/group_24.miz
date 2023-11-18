@@ -18,35 +18,49 @@ environ
    NAT_1, NUMBERS, :: for NAT
    GROUP_10, :: for Sylow subgroup stuff
    FINSET_1, :: for "finite"
+   UPROOTS, :: for "canFS"
+   ARYTM_3, :: for "<"
+   INT_1, :: for "mod"
    GROUP_24;
  notations TARSKI, XBOOLE_0, ENUMSET1, SUBSET_1, RELAT_1, FUNCT_1, ZFMISC_1,
    ORDINAL1, :: for Nat
-   NUMBERS, NAT_1,
+   NUMBERS, NAT_1, NAT_D, CARD_1,
+   XCMPLX_0, :: for "*"
+   XXREAL_0,
+   FINSET_1, :: for finite
    NEWTON, :: for GROUP_10:def 17
    REALSET1, :: for "||"
-   FINSEQ_1, RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4,
    INT_2, :: for Prime
    PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, GROUP_2,
-   LATTICES, GROUP_3, GROUP_4, GROUP_5, GROUP_6, CARD_3, PRALG_1, BINOP_1,
-   AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
- constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1, XXREAL_0, REALSET1,
-   GROUP_1, LATTICES,
+   LATTICES, GROUP_3, CARD_3, GROUP_4, GROUP_5, GROUP_6, PRALG_1, BINOP_1,
+   FINSEQ_1, AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
+ constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1,
+   ARYTM_2, XXREAL_0, :: for "<"
+   ARYTM_0, XCMPLX_0, :: for "*"
+   REALSET1,
+   GROUP_1, LATTICES, WELLORD2, CARD_1, 
    FINSUB_1, :: for GROUP_2:81
    ORDINAL1, NAT_1, NAT_D, :: for GROUP_10:def 18
+   FINSET_1, :: for finite
+   FINSEQ_1, 
    INT_2, :: for Prime
    NEWTON, :: for GROUP_10:def 17
    GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, MONOID_0, PRALG_1, PRALG_2,
    RELSET_1, FUNCT_2, FUNCT_4, AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
  registrations XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, FINSET_1,
+   XCMPLX_0, :: for "m * n" to be a Nat
    XREAL_0, :: needed for |^ to work properly
+   NAT_1, :: for "m * n" to be a Nat
    FINSEQ_1, REALSET1, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, MONOID_0,
-   LATTICES, ORDINAL1, CARD_3, NEWTON, FUNCOP_1, RELSET_1, FUNCT_2,
+   LATTICES, ORDINAL1, CARD_1, CARD_3, NEWTON, FUNCOP_1, RELSET_1, FUNCT_2,
    FUNCT_4, GROUP_6, GROUP_7, GR_CY_1, GR_CY_2, GROUPP_1;
- requirements NUMERALS, REAL, BOOLE, SUBSET;
+ requirements NUMERALS, REAL, BOOLE, SUBSET, ARITHM;
  definitions STRUCT_0, GROUP_1, TARSKI, ALGSTR_0;
  equalities STRUCT_0, ALGSTR_0, PARTFUN1, AUTGROUP;
  expansions STRUCT_0, GROUP_1, TARSKI;
  theorems :: STRUCT_0, ALGSTR_0, SUBSET_1, ZFMISC_1,
+   RELSET_1,
    PRALG_1, FUNCT_1, CARD_3, FUNCT_2, BINOP_1, TARSKI, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, FINSEQ_1, NEWTON, XBOOLE_0,
    XBOOLE_1, MONOID_0, PARTFUN1, AUTGROUP, GROUP_7, GROUP_10;
@@ -1912,7 +1926,8 @@ proof
   hence A,G are_isomorphic by GROUP_6:def 11;
 end;
 
-theorem Th30:
+::  GROUP_2:114 may suffice?
+theorem Th30b:
   for G being Group
   for N being normal Subgroup of G
   for g1,g2 being Element of G
@@ -1988,7 +2003,7 @@ proof
                  .= g12 * N by B1, B4, GROUP_6:def 6;
     then consider n being Element of G1 such that
     B5: n in N & g12 = (g1 * g2) * n
-    by Th30;
+    by Th30b;
     f.g12 = (f.(g1 * g2)) * (f.n) by B5, GROUP_6:def 6
          .= (f.(g1 * g2)) * (1_G2) by A1, B5, GROUP_2:40, GROUP_6:41
          .= f.(g1 * g2) by GROUP_1:def 4
@@ -2009,7 +2024,7 @@ proof
     g * N = g1 * N by B1, GROUP_6:def 8;
     then consider n being Element of G1 such that
     B2: n in N & g = g1 * n
-    by Th30;
+    by Th30b;
     f.g = (f.g1) * (f.n) by B2, GROUP_6:def 6
        .= (f.g1) * (1_G2) by A1, B2, GROUP_2:40, GROUP_6:41
        .= f.g1 by GROUP_1:def 4
@@ -2101,7 +2116,7 @@ proof
                       .= (phi.x2) * N2 by GROUP_6:def 8;
     then consider n being Element of G2 such that
     B6: n in N2 & phi.x1 = (phi.x2) * n
-    by Th30;
+    by Th30b;
     consider n1 being object such that
     B7: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
     by A2, B6, FUNCT_2:64;
@@ -3142,23 +3157,26 @@ theorem Th104:
   for N being normal Subgroup of G
   ex x being Function of G./.N,G
   st ((nat_hom N) * x = id (G./.N))
-  & (ex gamma being Function of [: the carrier of (G./.N),the carrier of (G./.N):],N
-  st for a,b being Element of G./.N
-  for n,n1 being Element of N st n = x.(a * b)
-  & n1 = gamma.(a,b)
-  holds (x.a)*(x.b) = n * n1)
+  & (for a being Element of G./.N holds a = (x.a)*N)
 proof
   let G be Group;
   let N be normal Subgroup of G;
   deffunc F(Element of G./.N) = the Element of $1;
 
   defpred Px[Element of G./.N, Element of G] means
-  $2 = the Element of $1 & $2 in $1;
+  $1 = $2*N;
 
   A1: for a being Element of G./.N
   ex g being Element of G
-  st Px[a, g];
-::>         *4
+  st Px[a, g]
+  proof
+    let a be Element of G./.N;
+    a in G./.N; then
+    consider g being Element of G such that
+    B1: a = g*N & a = N*g by GROUP_6:23;
+    take g;
+    thus Px[a, g] by B1;
+  end;
 
   consider x being Function of G./.N,G such that
   A2: for a being Element of G./.N holds Px[a, x.a]
@@ -3169,78 +3187,155 @@ proof
   holds ((nat_hom N) * x).a = (id (G./.N)).a
   proof
     let a be Element of G./.N;
-    a in Cosets N;
-::>             *4
-    then consider g being Element of G such that
-    B1: a = g * N & a = N * g
-    by GROUP_6:13;
-    B2: a is non empty set;
-::>                      *4
-    B3: 1_G in N by GROUP_2:46;
-    (x.a) * (1_G) = x.a by GROUP_1:def 4;
-    then B4: (x.a) in (x.a)*N by B3,GROUP_2:103;
-
-    Px[a, x.a] by A2; then
-    :: x.a is Element of a by A2; then
-    x.a in a ::; by B2;
-    & x.a in (x.a) * N by GROUP_2:108;
-    then a = (x.a) * N;
-::>                  *4
-    then consider n being Element of N such that
-    B5: n in N & (nat_hom N).(x.a) = a;
-::>                                  *4
-    then ((nat_hom N) * x).a = a by FUNCT_2:15;
-::>    *164
-    hence ((nat_hom N) * x).a = (id (G./.N)).a;
+    a = (x.a) * N by A2
+     .= (nat_hom N).(x.a) by GROUP_6:def 8
+     .= ((nat_hom N) * x).a by FUNCT_2:15;
+    hence thesis;
   end;
-
-  
   hence (nat_hom N) * x = id (G./.N) by FUNCT_2:def 7;
-
-
-  set UGN = the carrier of (G./.N);
-  set UN = N; :: the carrier of N;
-  defpred P[Element of UGN, Element of UGN, Element of UN] means
-  ex n1,n2,n3 being Element of N st n1 = x.($1 * $2) & n2 = x.($1)
-  & n3 = x.($2) & $3 = (n1")*n2*n3;
-
-  A3: for x,y being Element of UGN
-  ex z being Element of UN
-  st P[x, y, z];
-::>           *4
-
-  consider gamma being Function of [:UGN,UGN:],UN such that
-  A4: for x being Element of UGN
-  for y being Element of UGN
-  holds P[x, y, gamma.(x,y)]
-  from BINOP_1:sch 3(A3);
-  take gamma;
-  
-  let a,b be Element of G./.N;
-  let n,n1 be Element of N;
-  assume Z1: n = x.(a * b);
-  assume Z2: n1 = gamma.(a,b);
-  a is Element of UGN & b is Element of UGN;
-  then P[a, b, n1] by A2,Z2;
-::>                 *4
-  then ex m1,m2,m3 being Element of N st m1 = x.(a * b)
-  & m2 = x.(a) & m3 = x.(b) & n1 = (m1")*m2*m3 by A2;
-  then n1 = (n")*(x/.a)*(x/.b) by Z1,Z2;
-::>             *103
-
-  n1 = gamma.(a,b) by Z2
-     .= (n")*(x/.a)*(x/.b) by A2;
-::>         *103
-  then n*n1 = n*((the multF of G).(n", (x/.a)*(x/.b))
-::>            *103                                  *370
-  .= (the multF of G).(n * (n"),(x.a)*(x.b)) by GROUP_1:def 3
-  .= (1_G)*(x.a)*(x.b) by GROUP_2:44,GROUP_1:def 5
-  .= (x.a) * (x.b) by GROUP_1:def 4;
-
-  thus (x.a)*(x.b) = n * n1;
-::>                       *4
+  thus thesis by A2;
 end;
 
+theorem Th105:
+  for G being Group
+  for N being normal Subgroup of G
+  for a,b being Element of G
+  holds (a*N) * (b*N) = (a*b)*N
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let a,b be Element of G;
+  thus (a * N) * (b * N) = ((a * N) * b) * N by GROUP_3:9
+                        .= (a * (N * b)) * N by GROUP_2:106
+                        .= (a * (b * N)) * N by GROUP_3:117
+                        .= ((a * b) * N) * N by GROUP_2:105
+                        .= (a * b) * N by GROUP_6:5;
+end;
+
+theorem Th105b:
+  for G being Group
+  for N being normal Subgroup of G
+  for g,h being Element of G
+  for a,b being Element of (G./.N)
+  st a = g*N & b = h*N
+  holds a * b = (g * h)*N
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let g,h be Element of G;
+  let a,b be Element of (G./.N);
+  assume Z1: a = g*N;
+  assume Z2: b = h*N;
+  A1: a = (nat_hom N).g by Z1, GROUP_6:def 8;
+  A2: b = (nat_hom N).h by Z2, GROUP_6:def 8;
+  thus a * b = ((nat_hom N).g) * b by A1
+  .= ((nat_hom N).g) * ((nat_hom N).h) by A2
+  .= (nat_hom N).(g * h) by GROUP_6:def 6
+  .= (g * h)*N by GROUP_6:def 8;
+end;
+
+theorem Th106:
+  for G being Group
+  for N being normal Subgroup of G
+  for x being Function of G./.N,G
+  st (for a being Element of G./.N holds a = (x.a)*N) :: ((nat_hom N) * x = id (G./.N))
+  ex gamma being Function of [: the carrier of (G./.N),the carrier of (G./.N):],N
+  st (for a,b being Element of G./.N
+  for n,n1 being Element of N st n = x.(a * b)
+  & n1 = gamma.(a,b)
+  holds (x.a)*(x.b) = n * n1)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let x be Function of G./.N,G;
+  assume A1: (for a being Element of G./.N holds a = (x.a)*N);
+
+  set UGN = the carrier of (G./.N);
+  set UN = N;
+  defpred P[Element of UGN, Element of UGN, Element of UN] means
+  ex n being Element of G st n in N & (x.$1)*(x.$2) = (x.($1*$2))*n
+  & n = $3;
+
+  A2: for a,b being Element of UGN
+  ex n being Element of UN
+  st P[a, b, n]
+  proof
+    let a,b be Element of UGN;
+    B1: a = (x.a) * N by A1;
+    B2: b = (x.b) * N by A1;
+    B3: x.(a * b) * N = a * b by A1
+                     .= ((x.a) * (x.b)) * N by B1, B2, Th105b;
+    then consider n being Element of G such that
+    B4: n in N & ((x.a) * (x.b)) = (x.(a * b)) * n by Th30b;
+    reconsider n0=n as Element of N by B4,GROUP_2:42;
+    take n0;
+    thus thesis by B4;
+  end;
+
+  consider gamma being Function of [:UGN,UGN:],UN such that
+  A3: for x being Element of UGN
+  for y being Element of UGN
+  holds P[x, y, gamma.(x,y)]
+  from BINOP_1:sch 3(A2);
+
+  take gamma;
+  let a,b be Element of G./.N;
+  let n,n1 be Element of N;
+  assume A4: n = x.(a * b);
+  assume A5: n1 = gamma.(a,b);
+
+  P[a,b,n1] by A1,A3,A5;
+  then consider k being Element of G such that
+  A6: k in N & (x.a)*(x.b) = (x.(a*b))*k & k = n1 by A3;
+
+  thus thesis by A4,A5,A6, GROUP_2:43;
+end;
+
+theorem Th107:
+  for G being Group
+  for N being normal Subgroup of G
+  for x being Function of G./.N,G
+  st (for a being Element of G./.N holds a = (x.a)*N) :: ((nat_hom N) * x = id (G./.N))
+  ex gamma being Function of [: the carrier of (G./.N),the carrier of (G./.N):],G
+  st (for a,b being Element of G./.N
+  holds (x.a)*(x.b) = (x.(a * b)) * (gamma.(a,b))
+  & gamma.(a,b) in N)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let x be Function of G./.N,G;
+  assume A1: (for a being Element of G./.N holds a = (x.a)*N);
+  set UGN=the carrier of (G./.N);
+  deffunc GAMMA(Element of UGN, Element of UGN) = ((x.($1 * $2))")*((x.($1))*(x.($2)));
+  consider gamma being Function of [: the carrier of (G./.N),the carrier of (G./.N):],G
+  such that
+  A2: for a,b being Element of G./.N holds gamma.(a,b) = GAMMA(a,b)
+  from BINOP_1:sch 4;
+  take gamma;
+  thus for a,b being Element of G./.N holds (x.a)*(x.b) = (x.(a * b))*(gamma.(a,b))
+  & gamma.(a,b) in N
+  proof
+    let a,b be Element of G./.N;
+    thus (x.a)*(x.b) = (x.(a * b))*(gamma.(a,b)) by A2, GROUP_1:13;
+::>                                               *4
+    thus gamma.(a,b) in N;
+::>                     *4
+  end;
+end;
+
+registration
+  let G be finite Group;
+  cluster the carrier of G -> finite;
+  correctness;
+  let H be Subgroup of G;
+  cluster Index H -> finite;
+  correctness
+  proof
+    Left_Cosets H is finite by GROUP_2:134;
+    then card (Left_Cosets H) is finite;
+    hence Index H is finite by GROUP_2:def 17;
+  end;
+end;
 
 ::$N Gasch\"{u}tz's Theorem
 theorem
@@ -3283,13 +3378,112 @@ proof
     H /\ P, V are_complements_in P by A3,Z3,Z4,ThDef7Sub3;
     hence thesis by A3,Def5;
   end;
-  
-  assume A3: P splits_over V;
-  thus G splits_over V;
-::>                  *4
+
+  thus P splits_over V implies G splits_over V
+  proof
+    assume B1: P splits_over V;
+    then consider Q being Subgroup of P such that
+    B2: Q,P are_complements_in P
+    by A3, Def5;
+::>  *4
+    B3: Q * P = the carrier of P & Q /\ P = (1).P by B2,Def7;
+::>                                                *4,4
+
+    consider x being Function of G./.V,G such that
+    B4: ((nat_hom V) * x = id (G./.V)) and
+    B5: (for a being Element of G./.V holds a = (x.a)*V)
+    by Th104;
+    consider gamma being Function of [:the carrier of (G./.V),the carrier of (G./.V):],G
+    such that
+    B6: (for a,b being Element of G./.V holds (x.a)*(x.b) = (x.(a * b)) * (gamma.(a,b))
+  & gamma.(a,b) in V) by B5,Th107;
+    
+    Eq1: for a,b being Element of (G./.V)
+    holds (x.a) * (x.b) = (x.(a * b)) * (gamma.(a,b))
+    by B6;
+    
+    Eq2: for a,b,c being Element of (G./.V)
+    holds (gamma.(a*b,c)) * ((gamma.(a,b)) |^ (x.c))
+    = (gamma.(a,b*c))*(gamma.(b,c));
+::>                               *4
+    
+    
+    Eq3: for g being Element of G st g in Q
+    for a being Element of (G./.V)
+    holds x.((nat_hom V).g) = g & gamma.((nat_hom V).g, a) = 1_G;
+::>                                                            *4,4
+
+    Eq4: for b,c being Element of (G./.V)
+    for g being Element of G st g in Q
+    holds gamma.(((nat_hom V).g)*b,c) = gamma.(b,c);
+::>                                               *4
+    set X = rng x;
+    consider Y being Subset of G such that
+    Eq51: X = Q * Y;
+::>               *4
+
+    the carrier of G is finite set;
+    consider beta being Function of (G./.V),G such that
+    Eq5: for c being Element of (G./.V)
+    ex setfactors being finite Subset of the carrier of G, factors being
+    FinSequence of the carrier of G
+    st (setfactors = the set of all gamma.(y,c) where y is Element of ((nat_hom V) .: Y))
+    & factors = canFS setfactors
+    & beta.c = Product factors
+    & beta.c in V;
+::>             *4
+
+    set m = Index P;
+    Eq6: for b,c being Element of (G./.V)
+    holds (beta.c)*((beta.b) |^ (x.c)) = (beta.(b * c))*((gamma.(b,c)) |^ m);
+::>                                                                        *4
+
+
+    consider n being Nat such that
+    Eq61: n < card V & (m * n) mod (card V) = 1;
+::>                                           *4
+    
+    deffunc ALPHA(Element of G./.V) = ((beta.$1)") |^ n;
+    consider alpha being Function of (G./.V),G such that
+    Eq62: for c being Element of (G./.V) holds alpha.c = ALPHA(c)
+    from FUNCT_2:sch 4;
+
+    for c being Element of (G./.V) holds alpha.c in V;
+::>                                                 *4
+    
+    Eq7: for b,c being Element of (G./.V)
+    holds (alpha.c)*((alpha.b) |^ (x.c)) = (alpha.(b*c))*((gamma.(b,c))");
+::>                                                                     *4
+
+
+    deffunc Fy(Element of (G./.V)) = (x.$1)*(alpha.$1);
+    consider y being Function of (G./.V),G such that
+    Eq701: for c being Element of (G./.V) holds y.c = Fy(c)
+    from FUNCT_2:sch 4;
+    
+    
+:: theorem Th52: :: GROUP_2:52
+:: for G being Group
+:: for A being Subset of G st A <> {} & ( for g1, g2 being Element of G st g1 in A & g2 in A holds
+:: g1 * g2 in A ) & ( for g being Element of G st g in A holds
+:: g " in A ) holds
+:: ex H being strict Subgroup of G st the carrier of H = A;
+    set UH = rng y; :: the set of all y.a where a is Element of (G./.V);
+    reconsider UH as Subset of G;
+    UH <> {} & (for g1,g2 being Element of G st g1 in UH & g2 in UH
+    holds g1 * g2 in UH) & (for g being Element of G st g in UH
+    holds g" in UH);
+::>               *4,4
+    then consider H being strict Subgroup of G such that
+    Eq71: the carrier of H = UH
+    by GROUP_2:52;
+    H * V = the carrier of G & H /\ V = (1).G;
+::>                                         *4,4
+    then H,V are_complements_in G by Def7;
+    hence G splits_over V by Def5;
+  end;
 end;
 
 ::> 4: This inference is not accepted
-::> 103: Unknown functor
-::> 164: Nothing to link
-::> 370: ")" expected
+::> 140: Unknown variable
+::> 306: Attribute symbol expected
