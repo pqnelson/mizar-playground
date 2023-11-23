@@ -28,10 +28,6 @@
 
 <<Theorem: inverse element for semidirect product>>
 
-<<Theorem: semidirect product is Group-like>>
-
-<<Theorem: semidirect product is associative>>
-
 <<Register: semidirect product is a group>>
 
 <<Theorem: The unit for the semidirect product>>
@@ -60,7 +56,7 @@ for every $a_{1}$, $a_{2}\in A$ and $g_{1}$, $g_{2}\in G$.
 definition
   let A, G, phi;
   func semidirect_product (A, G, phi) -> non empty strict multMagma means
-  :Def1:
+  :Def1: :: GROUP_24:def 3
   the carrier of it = product (Carrier <* A, G *>) &
   (for f, g being Element of product (Carrier <* A, G *>)
    ex h being Function, a1 being Element of A, g2 being Element of G
@@ -93,7 +89,6 @@ proof
   A1: for x, y being Element of U ex z being Element of U st P[x,y,z]
   proof
     let x, y be Element of U;
-    
     x.1 in A by Lm0; then
     reconsider a1 = x.1 as Element of A;
     y.2 in G by Lm0; then
@@ -254,7 +249,7 @@ underlying set of the direct product.
 \end{theorem}
 
 <<Theorem: Carrier of semidirect product is the carrier of the direct product>>=
-theorem th2:
+theorem th2:  :: GROUP_24:2
   the carrier of semidirect_product (A, G, phi) = the carrier of product <*A,G*>
 proof
   thus the carrier of semidirect_product (A,G,phi)
@@ -269,7 +264,7 @@ element of $A\ltimes_{\varphi}G$.
 \end{theorem}
 
 <<Theorem: $\forall a\in A,g\in G, \langle a,g\rangle\in A\ltimes_{\varphi}G$>>=
-theorem th3:
+theorem th3:  :: GROUP_24:3
   for a being Element of A
   for g being Element of G
   holds <* a, g *> is Element of semidirect_product (A, G, phi) by th2;
@@ -281,38 +276,14 @@ and $\dom(x)=\{1,2\}$.
 \end{theorem}
 
 <<Theorem: $x\in A\ltimes_{\varphi}G$ implies $x_{1}\in A$ and $x_{2}\in G$ and $\dom(x)=\{1,2\}$>>=
-theorem th4:
+theorem th4:  :: GROUP_24:4
   for x being Element of semidirect_product (A, G, phi)
   holds x.1 in A & x.2 in G & dom x = {1,2}
 proof
   let x be Element of semidirect_product (A, G, phi);
-  A1: dom (Carrier <*A,G*>) = {1,2} by PARTFUN1:def 2;
-
-  x in semidirect_product (A, G, phi);
-  then x in product (Carrier <*A,G*>) by Def1;
-  then consider f being Function such that
-  A2: x = f & dom f = dom (Carrier <*A,G*>) & (for y being object st y
-  in dom (Carrier <*A,G*>) holds f.y in (Carrier <*A,G*>).y)
-  by CARD_3:def 5;
-
-  thus x.1 in A
-  proof
-    B1: <* A, G *>.1 = A by FINSEQ_1:44;
-    B2: 1 in dom (Carrier <*A,G*>) by A1, TARSKI:def 2;
-    then ex R being 1-sorted st
-    (R = <*A,G*>.1 & (Carrier <*A,G*>).1 = the carrier of R) by PRALG_1:def 15;
-    hence thesis by A2, B1, B2;
-  end;
-
-  thus x.2 in G
-  proof
-    B1: <* A, G *>.2 = G by FINSEQ_1:44;
-    B2: 2 in dom (Carrier <*A,G*>) by A1, TARSKI:def 2;
-    then ex R being 1-sorted st
-    (R = <*A,G*>.2 & (Carrier <*A,G*>).2 = the carrier of R) by PRALG_1:def 15;
-    hence thesis by A2, B1, B2;
-  end;
-  thus dom x = {1,2} by A2, PARTFUN1:def 2;
+  x in the carrier of semidirect_product (A, G, phi);
+  then x in the carrier of product <*A,G*> by th2;
+  hence thesis by th4a;
 end;
 @ %def th4
 
@@ -322,7 +293,7 @@ and $g\in G$ such that $x=\langle a,g\rangle$.
 \end{theorem}
 
 <<Theorem: $x\in A\ltimes G$ implies $\exists a\in A,g\in G,x=\langle a,g\rangle$>>=
-theorem th5:
+theorem th5:  :: GROUP_24:5
   for x being Element of semidirect_product (A, G, phi)
   ex a being Element of A, g being Element of G
   st x = <* a, g *>
@@ -342,13 +313,37 @@ end;
 @ %def th5
 
 \begin{theorem}
+Let $x_{1}$, $x_{2}$, $y_{1}$, $y_{2}$ be objects.
+Then $\langle x_{1}, y_{1}\rangle = \langle x_{2},y_{2}\rangle$ if and
+only if $x_{1}=x_{2}$ and $y_{1}=y_{2}$.
+\end{theorem}
+
+<<Theorem: $\langle x,y\rangle$ satisfies the properties of an ordered pair>>=
+theorem Lm1: :: GROUP_24:6
+  for x1, x2, y1, y2 being object
+  holds <*x1,y1*> = <*x2,y2*> iff (x1 = x2 & y1 = y2)
+proof
+  let x1, x2, y1, y2 be object;
+  thus <*x1,y1*> = <*x2,y2*> implies (x1 = x2 & y1 = y2)
+  proof
+    assume A1: <*x1,y1*> = <*x2,y2*>;
+    thus x1 = <*x1,y1*>.1 by FINSEQ_1:44
+           .= x2 by A1, FINSEQ_1:44;
+    thus y1 = <*x1,y1*>.2 by FINSEQ_1:44
+           .= y2 by A1, FINSEQ_1:44;
+  end;
+  thus (x1 = x2 & y1 = y2) implies <*x1,y1*> = <*x2,y2*>;
+end;
+@ 
+
+\begin{theorem}
 Let $x$, $y\in A\ltimes G$, let $a_{1}$, $a_{2}\in A$, and let
 $g_{1},g_{2}\in G$. If $x=\langle a_{1},g_{1}\rangle$ and $y=\langle a_{2},g_{2}\rangle$,
 then $xy = \langle a_{1}a_{2}, g_{1}\cdot\varphi_{a_{1}}(g_{2})\rangle$.
 \end{theorem}
 
 <<Theorem: $\langle a_{1},g_{1}\rangle\langle a_{2},g_{2}\rangle = \langle a_{1}a_{2}, g_{1}\cdot\varphi_{a_{1}}(g_{2})\rangle$>>=
-theorem th6:
+theorem th6:  :: GROUP_24:7
   for x,y being Element of semidirect_product (A, G, phi)
   for a1,a2 being Element of A
   for g1,g2 being Element of G
@@ -389,7 +384,7 @@ For any $g\in G$, we have $\varphi_{1_{A}}(g)=g$.
 \end{theorem}
 
 <<Theorem: $\varphi_{1_{A}}(g)=g$>>=
-theorem th7:
+theorem th7:  :: GROUP_24:8
   for g being Element of G
   holds (phi /. 1_A) /. g = g
 proof
@@ -406,7 +401,7 @@ Then for any $x\in A\ltimes G$, we have $xe=ex=x$.
 \end{theorem}
 
 <<Theorem: $e\in A\ltimes G$ be such that $e=\langle 1_{A}, 1_{G}\rangle$ is the identity element>>=
-theorem th8:
+theorem th8:  :: GROUP_24:9
   for x,e being Element of semidirect_product (A, G, phi)
   st e = <* 1_A, 1_G*>
   holds x * e = x & e * x = x
@@ -436,7 +431,7 @@ end;
 \end{theorem}
 
 <<Theorem: $(\varphi_{a_{1}}\circ\varphi_{a_{2}})(g)=\varphi_{a_{1}a_{2}}(g)$>>=
-theorem th9:
+theorem th9:  :: GROUP_24:10
   for a1,a2 being Element of A
   for g being Element of G
   holds (phi.a1) . ((phi /. a2) . g) = (phi /. (a1 * a2)) . g
@@ -456,7 +451,7 @@ and $(\varphi_{a}\circ\varphi_{a^{-1}})(g)=g$.
 \end{theorem}
 
 <<Theorem: $(\varphi_{a^{-1}}\circ\varphi_{a})(g)=g$ and $(\varphi_{a}\circ\varphi_{a^{-1}})(g)=g$>>=
-theorem th10:
+theorem th10:  :: GROUP_24:11
   for a being Element of A
   for g being Element of G
   holds (phi/.(a")) /. ((phi /. a) /. g) = g
@@ -480,7 +475,7 @@ element to $x$, i.e., $xy=e$ and $yx=e$.
 \end{theorem}
 
 <<Theorem: inverse element for semidirect product>>=
-theorem th11:
+theorem th11:  :: GROUP_24:12
   for x,y,e being Element of semidirect_product (A, G, phi)
   for a being Element of A
   for g being Element of G
@@ -507,88 +502,6 @@ proof
 end;
 @ %def th11
 
-\begin{theorem}
-There is an element $e\in A\ltimes G$ such that for all $h\in A\ltimes G$
-we have $he=eh=h$ and there is a corresponding $g\in A\ltimes G$ such
-that $hg=e$ and $e=gh$.
-\end{theorem}
-
-<<Theorem: semidirect product is Group-like>>=
-theorem th12:
-  for G being strict Group
-  for A being Group
-  for phi being Homomorphism of A, AutGroup G
-  ex e being Element of semidirect_product (A, G, phi)
-  st (for h being Element of semidirect_product (A, G, phi)
-      holds h * e = h & e * h = h
-      & ex g being Element of semidirect_product (A, G, phi)
-      st h * g = e & g * h = e)
-proof
-  let G be strict Group;
-  let A be Group;
-  let phi be Homomorphism of A, AutGroup G;
-  <* 1_A, 1_G *> is Element of semidirect_product (A, G, phi) by th2;
-  then consider e being Element of semidirect_product (A, G, phi) such that
-  A1: e = <* 1_A, 1_G *>;
-  take e;
-
-  for h being Element of semidirect_product (A, G, phi)
-  ex g being Element of semidirect_product (A, G, phi)
-  st h * g = e & g * h = e
-  proof
-    let h be Element of semidirect_product (A, G, phi);
-    consider a being Element of A, g being Element of G such that
-    B1: h = <* a, g *> by th5;
-    set g2 = (phi/.(a"))/.(g");
-    reconsider g2 as Element of G;
-    reconsider g = <* a", g2 *> as Element of semidirect_product (A,G,phi)
-    by th2;
-    take g;
-    thus h * g = e & g * h = e by A1,B1,th11;
-  end;
-  hence thesis by A1, th8;
-end;
-@ %def th12
-
-\begin{theorem}
-For any $x$, $y$, $z\in A\ltimes G$, we have $(xy)z=x(yz)$.
-\end{theorem}
-
-<<Theorem: semidirect product is associative>>=
-theorem th13:
-  for x, y, z being Element of semidirect_product (A, G, phi)
-  holds (x * y) * z = x * (y * z)
-proof
-  let x, y, z be Element of semidirect_product (A, G, phi);
-  consider a1 being Element of A, g1 being Element of G such that
-  A1: x = <* a1, g1 *>
-  by th5;
-  consider a2 being Element of A, g2 being Element of G such that
-  A2: y = <* a2, g2 *>
-  by th5;
-  consider a3 being Element of A, g3 being Element of G such that
-  A3: z = <* a3, g3 *>
-  by th5;
-
-  A4: x * y = <* a1 * a2, g1 * ((phi /. a1)/.g2) *> by A1,A2,th6;
-  then
-  A5: (x * y) * z = <* (a1 * a2) * a3, (g1 * ((phi /.a1)/.g2)) *
-  ((phi /. (a1 * a2)) /. g3)*> by A3,th6;
-
-  y * z = <* a2 * a3, g2 * ((phi /. a2)/.g3) *> by A2,A3,th6; then
-  A6: x*(y*z) = <* a1 * (a2 * a3), g1 * ((phi/.a1)/.(g2 * ((phi/.a2)/.g3))) *>
-  by A1,th6;
-
-  A7: (a1 * a2) * a3 = a1 * (a2 * a3) by GROUP_1:def 3;
-
-  ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by th9;
-  then 
-  ((phi /. a1).(g2 * ((phi /. a2)/.g3)))
-  = ((phi /. a1).g2) * ((phi /. (a1 * a2)) . g3) by GROUP_6:def 6;
-  hence thesis by A5,A6,A7,GROUP_1:def 3;
-end;
-@ %def th13
-
 \begin{registration}
 The semidirect product really is a group after all.
 \end{registration}
@@ -599,9 +512,81 @@ registration
   let A be Group;
   let phi be Homomorphism of A, AutGroup G;
   cluster semidirect_product (A, G, phi) -> associative;
-  correctness by th13;
+  correctness
+  proof
+    thus for x, y, z being Element of semidirect_product (A, G, phi)
+    holds (x * y) * z = x * (y * z)
+    proof
+      let x, y, z be Element of semidirect_product (A, G, phi);
+      consider a1 being Element of A, g1 being Element of G such that
+      A1: x = <* a1, g1 *>
+      by th5;
+      consider a2 being Element of A, g2 being Element of G such that
+      A2: y = <* a2, g2 *>
+      by th5;
+      consider a3 being Element of A, g3 being Element of G such that
+      A3: z = <* a3, g3 *>
+      by th5;
+      
+      x * y = <* a1 * a2, g1 * ((phi /. a1)/.g2) *> by A1,A2,th6;
+      then A5: (x * y) * z = <* (a1 * a2) * a3, (g1 * ((phi /.a1)/.g2)) *
+      ((phi /. (a1 * a2)) /. g3)*> by A3,th6;
+      
+      y * z = <* a2 * a3, g2 * ((phi /. a2)/.g3) *> by A2,A3,th6;
+      then A6: x * (y * z) = <* a1 * (a2 * a3),
+      g1 * ((phi /. a1)/.(g2 * ((phi /. a2)/.g3))) *>
+      by A1,th6;
+      
+      A7: (a1 * a2) * a3 = a1 * (a2 * a3) by GROUP_1:def 3;
+      
+      ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by th9;
+      then 
+      ((phi /. a1).(g2 * ((phi /. a2)/.g3)))
+      = ((phi /. a1).g2) * ((phi /. (a1 * a2)) . g3) by GROUP_6:def 6;
+      then (((phi /.a1)/.g2) * ((phi /. (a1 * a2)) /. g3))
+      = ((phi /. a1)/.(g2 * ((phi /. a2)/.g3)));
+      then 
+      (g1 * ((phi /.a1)/.g2)) * ((phi /. (a1 * a2)) /. g3)
+      = g1 * ((phi /. a1)/.(g2 * ((phi /. a2)/.g3)))
+      by GROUP_1:def 3;
+      hence thesis by A5,A6,A7;
+    end;
+  end;
+  
   cluster semidirect_product (A, G, phi) -> Group-like;
-  correctness by th12;
+  correctness
+  proof
+    thus ex e being Element of semidirect_product (A, G, phi)
+    st (for h being Element of semidirect_product (A, G, phi)
+        holds h * e = h & e * h = h
+        & ex g being Element of semidirect_product (A, G, phi)
+        st h * g = e & g * h = e)
+    proof
+      <* 1_A, 1_G *> is Element of semidirect_product (A, G, phi) by th3;
+      then consider e being Element of semidirect_product (A, G, phi) such that
+      A1: e = <* 1_A, 1_G *>;
+
+      take e;
+      A2: for h being Element of semidirect_product (A, G, phi)
+      holds h * e = h & e * h = h by A1, th8;
+      
+      for h being Element of semidirect_product (A, G, phi)
+      ex g being Element of semidirect_product (A, G, phi)
+      st h * g = e & g * h = e
+      proof
+        let h be Element of semidirect_product (A, G, phi);
+        consider a being Element of A, g being Element of G such that
+        B1: h = <* a, g *> by th5;
+        set g2 = (phi/.(a"))/.(g");
+        reconsider g2 as Element of G;
+        reconsider g = <* a", g2 *> as Element of semidirect_product (A,G,phi)
+        by th3;
+        take g;
+        thus h * g = e & g * h = e by A1,B1,th11;
+      end;
+      hence thesis by A2;
+    end;
+  end;
 end;
 
 LmDoubleCheckSemidirectProductIsGroup:
@@ -613,7 +598,7 @@ We have $1_{A\ltimes G}=\langle 1_{A}, 1_{G}\rangle$.
 \end{theorem}
 
 <<Theorem: The unit for the semidirect product>>=
-theorem th14:
+theorem th14: :: GROUP_24:13
   1_(semidirect_product (A, G, phi)) = <* 1_A, 1_G *>
 proof
   reconsider e = <* 1_A, 1_G *> as Element of semidirect_product (A, G, phi)
@@ -630,7 +615,7 @@ have $x^{-1}=\langle a^{-1}, \varphi_{a^{-1}}(g^{-1})\rangle$.
 \end{theorem}
 
 <<Theorem: $\langle a,g\rangle^{-1} = \langle a^{-1}, \varphi_{a^{-1}}(g^{-1})\rangle$>>=
-theorem th15:
+theorem th15: :: GROUP_24:14
   for a being Element of A
   for g being Element of G
   for x being Element of semidirect_product (A, G, phi)

@@ -6,11 +6,21 @@
 
 <<Register: Element of $\Aut(G)$ is multiplicative>>
 
+<<Register: $\id_{G}$ is a group automorphism>>
+
+<<Register: The automorphism group is non-empty, strict, and consists of functions>>
+
 <<Definition: [[phi /. a]] is an Endomorphism of G>>
+
+<<Definition: $\varphi H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>
+
+<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>
 
 <<Lemma: $\varphi(a_{1}a_{2})=\varphi(a_{1})\circ\varphi(a_{2})$>>
 
 <<Register: Underlying set of $A\times G$ is non empty>>
+
+<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>
 
 <<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>
 
@@ -28,6 +38,39 @@ registration
   cluster -> multiplicative for Element of Aut G;
   correctness by AUTGROUP:def 1;
 end;
+@
+
+\begin{registration}
+For any group $G$, the identity function $\id_{G}$ is a group automorphism.
+\end{registration}
+
+<<Register: $\id_{G}$ is a group automorphism>>=
+registration
+  let A be Group;
+  cluster id A -> multiplicative;
+  correctness by GROUP_6:38;
+
+  cluster id A -> bijective;
+  coherence
+  proof
+    set f = id A;
+    rng (id A) = the carrier of A;
+    then (id A is one-to-one & id A is onto) by FUNCT_2:def 3;
+    hence id A is bijective;
+  end;
+end;
+@
+
+\begin{registration}
+The automorphism group is non-empty, strict, and consists of functions.
+\end{registration}
+
+<<Register: The automorphism group is non-empty, strict, and consists of functions>>=
+registration
+  let G be strict Group;
+  cluster AutGroup G -> non empty strict constituted-Functions;
+  coherence by MONOID_0:80;
+end;
 @ 
 
 \begin{definition}
@@ -39,7 +82,7 @@ $G$ to $G$.
 definition
   let A, G, phi;
   let a be Element of A;
-  func phi /. a -> Homomorphism of G,G equals phi.a;
+  func phi /. a -> Homomorphism of G,G equals phi.a; :: GROUP_24:def 1
   correctness
   proof
     phi.a is Element of Aut G;
@@ -47,6 +90,44 @@ definition
   end;
 end;
 @
+
+\begin{definition}
+Let $H\subgroup A$, $G$ be groups, and $\varphi\colon H\to\Aut(G)$ be a
+group morphism. If $a$ is an Element of $A$ and $a\in H$, then
+$\varphi(h)$ is an function of $G$ to $G$.
+\end{definition}
+
+<<Definition: $\varphi H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>=
+definition
+  let A,G;
+  let H be Subgroup of A;
+  let phi be Homomorphism of H,AutGroup G;
+  let a be Element of A such that
+A1: a in H;
+  func phi /. a -> Function of G,G equals :: GROUP_24:def 2
+  :Def2a: phi.a;
+  correctness
+  proof
+    reconsider h=a as Element of H by A1;
+    phi.h = phi.a & phi.h is Element of Aut G;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{registration}
+In fact, $\varphi(a)$ is an automorphism.
+\end{registration}
+
+<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>=
+registration
+  let G be strict Group, A be Group;
+  let phi be Homomorphism of A, AutGroup G;
+  let a be Element of A;
+  cluster phi/.a -> multiplicative;
+  coherence;
+end;
+@ 
 
 \begin{lemma}
 For any $a_{1}$, $a_{2}\in A$ and group morphism $\varphi\colon A\to\Aut(G)$,
@@ -69,7 +150,60 @@ registration
   cluster product (Carrier <*A,G*>) -> non empty;
   correctness;
 end;
+
+registration
+  let G, A be Group;
+  cluster product (Carrier <*A,G*>) -> non empty;
+  correctness;
+end;
 @
+
+\begin{theorem}
+  Let $G_{1}$, $G_{2}$ be groups.
+  If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$.
+\end{theorem}
+
+<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>=
+
+theorem th4a: :: GROUP_24:1
+  for G1,G2 being Group
+  for x being Element of product (<*G1,G2*>)
+  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
+proof
+  let G1,G2 be Group;
+  let x be Element of product (<*G1,G2*>);
+  A1: dom (Carrier <*G1,G2*>) = {1,2} by PARTFUN1:def 2;
+  x in the carrier of product (<*G1,G2*>);
+  then x in product (Carrier <*G1,G2*>) by GROUP_7:def 2;
+  then consider f being Function such that
+  A2: x = f
+      & dom f = dom (Carrier <*G1,G2*>)
+      & (for y being object st y in dom (Carrier <*G1,G2*>)
+         holds f.y in (Carrier <*G1,G2*>).y)
+  by CARD_3:def 5;
+
+  thus x.1 in G1
+  proof
+    B1: <* G1, G2 *>.1 = G1 by FINSEQ_1:44;
+    B2: 1 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
+    then ex R being 1-sorted st
+    (R = <*G1,G2*>.1 & (Carrier <*G1,G2*>).1 = the carrier of R)
+    by PRALG_1:def 15;
+    hence thesis by A2, B1, B2;
+  end;
+
+  thus x.2 in G2
+  proof
+    B1: <* G1, G2 *>.2 = G2 by FINSEQ_1:44;
+    B2: 2 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
+    then ex R being 1-sorted st
+    (R = <*G1,G2*>.2 & (Carrier <*G1,G2*>).2 = the carrier of R)
+    by PRALG_1:def 15;
+    hence thesis by A2, B1, B2;
+  end;
+  thus dom x = {1,2} by A2,PARTFUN1:def 2; :: A1,
+end;
+@ 
 
 \begin{lemma}
 If $x\in U(A\times G)$ is an element of the underlying set, then
@@ -79,54 +213,14 @@ $x_{1}\in A$ and $x_{2}\in G$.
 <<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>=
 Lm0:
   for x being Element of product (Carrier <*A,G*>)
-  holds x.1 in A & x.2 in G
+  holds x.1 in A & x.2 in G & dom x = {1,2}
 proof
-  let x be Element of product (Carrier <*A,G*>);
-  A1: dom (Carrier <*A,G*>) = {1,2} by PARTFUN1:def 2;
-  A2: dom x = {1,2} & (for i being object st i in {1,2} holds x.i in (Carrier <*A,G*>).i)
-  proof
-    x in product (Carrier <*A,G*>);
-    then dom x = dom (Carrier <*A,G*>)
-         & (for i being object st i in dom (Carrier <*A,G*>)
-            holds x.i in (Carrier <*A,G*>).i) by CARD_3:9;
-    hence thesis by A1;
-  end;
-  <<Proof: $x_{1}\in A$>>
-  <<Proof: $x_{2}\in G$>>
+  let G1,G2 be Group;
+  let x be Element of product (Carrier <*G1,G2*>);
+  x is Element of the carrier of product <*G1,G2*> by GROUP_7:def 2;
+  hence thesis by th4a;
 end;
 @ %def Lm0
-
-<<Proof: $x_{1}\in A$>>=
-A3: (Carrier <*A,G*>).1 = the carrier of A
-proof
-  1 in {1,2} by TARSKI:def 2; then
-  1 in dom (Carrier <*A,G*>) by A1; then
-  ex R being 1-sorted st (R = <*A,G*>.1 & (Carrier <*A,G*>).1 = the
-  carrier of R) by PRALG_1:def 15;
-  hence thesis by FINSEQ_1:44;
-end;
-
-1 in {1,2} by TARSKI:def 2;
-then x.1 in (Carrier <*A,G*>).1 by A2;
-then x.1 in the carrier of A by A3;
-hence x.1 in A;
-@
-
-<<Proof: $x_{2}\in G$>>=
-A4: (Carrier <*A,G*>).2 = the carrier of G
-proof
-  2 in {1,2} by TARSKI:def 2; then
-  2 in dom (Carrier <*A,G*>) by A1; then
-  ex R being 1-sorted st (R = <*A,G*>.2 & (Carrier <*A,G*>).2 = the
-  carrier of R) by PRALG_1:def 15;
-  hence thesis by FINSEQ_1:44;
-end;
-
-2 in {1,2} by TARSKI:def 2;
-then x.2 in (Carrier <*A,G*>).2 by A2;
-then x.2 in the carrier of G by A4;
-hence x.2 in G;
-@
 
 \begin{lemma}
 For $a\in A$ and $g\in G$, we have $(a,g)\in U(A\times G)$ be an element
