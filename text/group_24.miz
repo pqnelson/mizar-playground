@@ -3655,31 +3655,70 @@ theorem Th77c:
   for G being Group
   for A,B being Subgroup of G st B is Subgroup of A
   for g being Element of G
-  holds (g * B) * A = g * A;
-::>                       *4
+  holds (g * B) * A = g * A
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let g be Element of G;
+  thus (g * B) * A = g * (B * A) by GROUP_4:45
+  .= g * (carr A) by A1,Th76
+  .= g * A by GROUP_2:def 13;
+end;
+
 
 
 theorem Th77d:
   for G being Group
   for A,B being Subgroup of G st B is Subgroup of A
   for g,a being Element of G st a in A
-  holds (g * a * B) * A = g * A;
-::>                           *4
+  holds (g * a * B) * A = g * A
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let g,a be Element of G;
+  assume A2: a in A;
+  thus (g * a * B) * A = ((g * a) * B) * A by GROUP_2:105
+  .= (g * a) * B * A by GROUP_4:45
+  .= (g * a) * A by A1,Th77c
+  .= g * (a * A) by GROUP_2:105
+  .= g * (carr A) by A2,GROUP_2:113
+  .= g * A by GROUP_2:def 13;
+end;
 
 theorem Th77cr:
   for G being Group
   for A,B being Subgroup of G st B is Subgroup of A
   for g being Element of G
-  holds A * (B * g) = A * g;
-::>                       *4
-
+  holds A * (B * g) = A * g
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let g be Element of G;
+  thus A * (B * g) = (A * B) * g by GROUP_4:46
+  .= (carr A) * g by A1,Th76
+  .= A * g by GROUP_2:def 14;
+end;
 
 theorem Th77dr:
   for G being Group
   for A,B being Subgroup of G st B is Subgroup of A
   for g,a being Element of G st a in A
-  holds A * (B * a * g) = A * g;
-::>                           *4
+  holds A * (B * a * g) = A * g
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let g,a be Element of G;
+  assume A2: a in A;
+  thus A * (B * a * g) = A * (B * (a * g)) by GROUP_2:107
+  .= A * (a * g) by A1,Th77cr
+  .= (A * a) * g by GROUP_2:107
+  .= (carr A) * g by A2, GROUP_2:119
+  .= A * g by GROUP_2:def 14;
+end;
 
 :: theorem Th78:
 ::   for G being Group
@@ -3802,8 +3841,7 @@ proof
       then w*x in A*z*x by A1;
       then w*x in (A*z)*x by GROUP_2:107;
       then consider h being Element of G such that
-      Z2: w*x = h*x & h in A*z by GROUP_2:27;
-::>                             *4
+      Z2: w*x = h*x & h in A*z by GROUP_2:28;
       w = h by Z2, GROUP_1:6;
       hence w in A*z by Z2,GROUP_2:28;
     end;
@@ -3815,8 +3853,7 @@ proof
     then consider h being Element of G such that
     Z2: w*x = h*x & h in A*y by GROUP_2:28;
     w = h by Z2, GROUP_1:6;
-    hence w in y*A by Z2,GROUP_2:28;
-::>       *51       *4
+    hence w in A*y by Z2,GROUP_2:28;
   end;
   hence thesis by SUBSET_1:3;
 end;
@@ -4206,41 +4243,6 @@ proof
   end;
 end;
 
-theorem ThLTR:
-  for G being Group
-  for H being Subgroup of G
-  for f being Function of Left_Cosets H,G
-  st (for a being Element of Left_Cosets H
-      holds (f/.a)*H = a)
-  ex g being Function of Right_Cosets H,G
-  st (for a being Element of Right_Cosets H holds H*(g/.a)=a)
-  & (for h being Element of G
-  for a being Element of Right_Cosets H st a = H*h
-  for b being Element of Left_Cosets H st b = h*H
-  holds f.b = g.a);
-::>              *4
-
-theorem ThRTL:
-  for G being Group
-  for H being Subgroup of G
-  for g being Function of Right_Cosets H,G
-  st (for a being Element of Right_Cosets H holds H*(g/.a)=a)
-  ex f being Function of Left_Cosets H,G
-  st (for a being Element of Left_Cosets H
-      holds (f/.a)*H = a)
-  & (for h being Element of G
-  for a being Element of Right_Cosets H st a = H*h
-  for b being Element of Left_Cosets H st b = h*H
-  holds f.b = g.a);
-::>              *4
-
-theorem Th101:
-  for G being Group
-  for A,B being Subgroup of G st B is Subgroup of A
-  for g being Element of G
-  holds A*B*g = A*g;
-::>               *4
-
 theorem Th102:
   for G being Group
   for A being Subgroup of G
@@ -4338,9 +4340,6 @@ proof
   .= (A * B) * g by GROUP_4:46
   .= (carr A) * g by A1,Th76
   .= A * g by GROUP_2:def 14;
-            :: .= g * (B * A) by GROUP_4:45
-            :: .= g * (carr A) by A1,Th76
-            :: .= g * A by GROUP_2:def 13;
 end;
 
 theorem Th88d:
@@ -4392,8 +4391,7 @@ proof
     consider g being Element of G such that
     B1: b = B*g by GROUP_2:def 16;
     A*b = A*(B*g) by B1
-       .= A*B*g by GROUP_4:46
-       .= A*g by A1,Th101;
+       .= A*g by A1,Th77cr;
 
     ex xalpha, ybeta being Element of G
     st xalpha in rng(fa) & ybeta in rng(fb) & B*ybeta*xalpha = b
@@ -4527,7 +4525,7 @@ proof
   hence thesis;
 end;
 
-
+:::: This is the "obvious" part of Aschbacher's proof of Gaschutz's theorem
 theorem Th88c:
   for G being Group
   for A,B being Subgroup of G st B is Subgroup of A
@@ -4623,7 +4621,7 @@ proof
       .= y by B3;
       b1 in A by Z4; then
       reconsider ba=b1 as Element of A;
-      C5: B * b1 = B0*ba by A1,A2,Th103;
+      B * b1 = B0*ba by A1,A2,Th103;
       then fb.(B * b1) = fb.(B0 * ba)
       .= ba by Z4, A4, Th102
       .= b1;
@@ -4635,26 +4633,6 @@ proof
 end;
 
 
-
-
-
-
-theorem Th78b:
-  for G being Group
-  for H being Subgroup of G
-  for a,b being Element of G
-  st a in b*H holds a*H = b*H;
-::>                         *4
-
-theorem Th79b:
-  for G being Group
-  for H being Subgroup of G
-  for N being Subgroup of G
-  for N0 being Subgroup of H st the carrier of N = the carrier of N0
-  for q being Element of G st q in H
-  for q0 being Element of H st q0 = q
-  holds q*N = q0*N0;
-::>               *4
 
 definition
   let G be Group;
@@ -4718,6 +4696,106 @@ proof
   hence q*N = q0*((H,N)`*`) by TARSKI:2;
 end;
 
+
+
+theorem Th85r:
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Subgroup of G st H,N are_complements_in G
+  ex f being Function of Right_Cosets N,G
+  st (f.(carr N) = 1_G)
+  & (for n being Element of Right_Cosets N holds n = N*(f/.n))
+  & (for n being Element of Right_Cosets N holds f.n in H)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  then consider f being Function of Left_Cosets N,G such that
+  A2: f.(carr N) = 1_G and
+  A3: for n being Element of Left_Cosets N holds n = (f/.n)*N and
+  A4: for n being Element of Left_Cosets N holds f.n in H by Th85;
+  Left_Cosets N = Right_Cosets N by GROUP_3:127; 
+  then reconsider f as Function of Right_Cosets N,G;
+  take f;
+  thus f.(carr N) = 1_G by A2;
+  thus for n being Element of Right_Cosets N holds n = N*(f/.n)
+  proof
+    let n be Element of Right_Cosets N;
+    n in Right_Cosets N; then
+    n in Left_Cosets N by GROUP_3:127;
+    hence n = (f/.n)*N by A3
+           .= N * (f/.n) by GROUP_3:117;
+  end;
+
+  thus for n being Element of Right_Cosets N holds f.n in H
+  proof
+    let n be Element of Right_Cosets N;
+    n in Right_Cosets N; then
+    n in Left_Cosets N by GROUP_3:127;
+    hence f.n in H by A4;
+  end;
+end;
+
+:: Existence of a Right Transversal
+theorem Th74r:
+  for G being Group
+  for A being Subgroup of G
+  for g0 being Element of G st g0 in A
+  ex x being Function of Right_Cosets A,G
+  st (for a being Element of Right_Cosets A holds a = A*(x/.a))
+  & x.(carr A) = g0
+proof
+  let G be Group;
+  let A be Subgroup of G;
+  let g0 be Element of G;
+  assume A0: g0 in A;
+
+  defpred P[Element of Right_Cosets A, Element of G] means
+  ($1 = carr A & $2 = g0) or ($1 <> carr A & $1 = A*$2);
+
+  A1: for a being Element of Right_Cosets A
+  ex g being Element of G
+  st P[a, g]
+  proof
+    let a be Element of Right_Cosets A;
+    per cases;
+    suppose B1: a = carr A;
+      take g = g0;
+      thus P[a, g] by B1;
+    end;
+    suppose B2: a <> carr A;
+      a in Right_Cosets A; then
+      consider g being Element of G such that
+      B3: a = A*g by GROUP_2:def 16;
+      take g;
+      thus P[a, g] by B2,B3;
+    end;
+  end;
+
+  consider x being Function of Right_Cosets A,G such that
+  A2: for a being Element of Right_Cosets A holds P[a, x.a]
+  from FUNCT_2:sch 3(A1);
+  take x;
+  thus for a being Element of Right_Cosets A holds a = A*(x/.a)
+  proof
+    let a be Element of Right_Cosets A;
+    per cases;
+    suppose B1: a = carr A;
+      then x.a = g0 by A2;
+      hence A*(x/.a) = A*(g0)
+                    .= carr A by A0, GROUP_2:119
+                    .= a by B1;
+    end;
+    suppose B2: a <> carr A;
+      hence thesis by A2;
+    end;
+  end;
+  carr A in Right_Cosets A by GROUP_2:135; then
+  reconsider a=carr A as Element of Right_Cosets A;
+  thus x.(carr A) = x.a
+                 .= g0 by A2;
+end;
 
 theorem Th79:
   for G being Group
@@ -5479,3 +5557,8 @@ proof
     hence G splits_over V by Def5;
   end;
 end;
+::> 4: This inference is not accepted
+::> 70: Something remains to be proved
+::> 103: Unknown functor
+::> 165: Unknown functor format
+::> 321: Predicate symbol or "is" expected
