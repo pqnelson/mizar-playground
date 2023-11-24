@@ -69,7 +69,7 @@ environ
    ZFMISC_1, SUBSET_1, RELSET_1, XTUPLE_0,
    PRALG_1, FUNCT_1, CARD_3, FUNCT_2, BINOP_1, TARSKI, GROUP_1, GROUP_2,
    GROUP_3, GROUP_4, GROUP_5, GROUP_6, FINSEQ_1, NEWTON, XBOOLE_0,
-   XBOOLE_1, MONOID_0, PARTFUN1, AUTGROUP, GROUP_7, GROUP_10;
+   XBOOLE_1, MONOID_0, PARTFUN1, AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
  schemes BINOP_1, FUNCT_2;
 
 begin  :: The product of the families of the groups
@@ -3409,6 +3409,8 @@ registration
     the carrier of H is non empty;
     hence thesis by GROUP_2:def 9;
   end;
+  cluster Right_Cosets H -> non empty;
+  correctness by GROUP_2:135;
 end;
 
 registration
@@ -3648,6 +3650,37 @@ proof
             .= g * A by GROUP_2:def 13;
 end;
 
+
+theorem Th77c:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g being Element of G
+  holds (g * B) * A = g * A;
+::>                       *4
+
+
+theorem Th77d:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g,a being Element of G st a in A
+  holds (g * a * B) * A = g * A;
+::>                           *4
+
+theorem Th77cr:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g being Element of G
+  holds A * (B * g) = A * g;
+::>                       *4
+
+
+theorem Th77dr:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g,a being Element of G st a in A
+  holds A * (B * a * g) = A * g;
+::>                           *4
+
 :: theorem Th78:
 ::   for G being Group
 ::   for A,B being Subgroup of G st B is Subgroup of A
@@ -3746,12 +3779,48 @@ proof
   hence thesis by SUBSET_1:3;
 end;
 
-theorem Th83a:
-  for G1,G2 being Group
-  for phi being Homomorphism of G1,G2
-  for h being Element of G2 st h in rng phi
-  ex g being Element of G1 st phi.g = h;
-::>                                   *4
+theorem Th82r:
+  for G being Group
+  for A being Subgroup of G
+  for x,y,z being Element of G
+  st A*y*x = A*z*x
+  holds A*y = A*z
+proof
+  let G be Group;
+  let A be Subgroup of G;
+  let x,y,z be Element of G;
+  assume A1: A*y*x = A*z*x;
+  for w being Element of G holds w in A*y
+  iff w in A*z
+  proof
+    let w be Element of G;
+    thus w in A*y implies w in A*z
+    proof
+      assume Z1: w in A*y;
+      then w*x in (A*y)*x by GROUP_2:28;
+      then w*x in A*y*x by GROUP_2:107;
+      then w*x in A*z*x by A1;
+      then w*x in (A*z)*x by GROUP_2:107;
+      then consider h being Element of G such that
+      Z2: w*x = h*x & h in A*z by GROUP_2:27;
+::>                             *4
+      w = h by Z2, GROUP_1:6;
+      hence w in A*z by Z2,GROUP_2:28;
+    end;
+    assume Z1: w in A*z;
+    then w*x in (A*z)*x by GROUP_2:28;
+    then w*x in A*z*x by GROUP_2:105;
+    then w*x in A*y*x by A1;
+    then w*x in (A*y)*x by GROUP_2:105;
+    then consider h being Element of G such that
+    Z2: w*x = h*x & h in A*y by GROUP_2:28;
+    w = h by Z2, GROUP_1:6;
+    hence w in y*A by Z2,GROUP_2:28;
+::>       *51       *4
+  end;
+  hence thesis by SUBSET_1:3;
+end;
+
 
 theorem Th83:
   for G being Group
@@ -3797,13 +3866,65 @@ end;
 
 theorem Th85:
   for G being Group
-  for H,N being Subgroup of G st H,N are_complements_in G
+  for N being normal Subgroup of G
+  for H being Subgroup of G st H,N are_complements_in G
   ex f being Function of Left_Cosets N,G
   st (f.(carr N) = 1_G)
   & (for n being Element of Left_Cosets N holds n = (f/.n)*N)
-  & (for n being Element of Left_Cosets N holds f.n in H);
-::>                                                     *4
+  & (for n being Element of Left_Cosets N holds f.n in H)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  then consider psi being Homomorphism of H,G./.N such that
+  A2: for h being Element of H
+      for g being Element of G st g = h
+      holds psi.h = g*N and
+  A3: psi is bijective by Th28b;
+  reconsider phi=psi" as Homomorphism of G./.N,H by A3,GROUP_6:62;
+  phi is Function of Left_Cosets N,G
+  proof
+    B1: the carrier of H <> {} & the carrier of H c= the carrier of G by GROUP_2:def 5;
+    B2: the carrier of G./.N = Left_Cosets N by GROUP_6:17;
+    phi is Function of the carrier of G./.N, the carrier of H;
+    then phi is Function of Left_Cosets N, the carrier of H by B2;
+    then phi is Function of Left_Cosets N, the carrier of G by B1,FUNCT_2:7;
+    hence thesis;
+  end;
+  then reconsider f = phi as Function of Left_Cosets N,G;
+  take f;
+  thus f.(carr N) = phi.(carr N)
+                 .= phi.(1_(G./.N)) by GROUP_6:24
+                 .= 1_H by GROUP_6:31
+                 .= 1_G by GROUP_2:44;
+  thus (for n being Element of Left_Cosets N holds n = (f/.n)*N)
+  proof
+    let n be Element of Left_Cosets N;
+    dom phi = the carrier of G./.N by FUNCT_2:def 1
+           .= Left_Cosets N by GROUP_6:17;
+    then B1: n in dom phi;
+    then B2: f/.n = phi/.n by PARTFUN1:def 6;
+    phi/.n is Element of H & f/.n is Element of G;
+    then B3: psi.(phi/.n) = (f/.n) * N by B2,A2;
 
+    B4: psi.((psi").n) = n by A3, B1, GROUP_22:4, FUNCT_2:def 1;
+    psi.(phi.n) = psi.((psi").n)
+               .= n by A3, B4, GROUP_22:4;
+    then n = psi.(phi.n)
+          .= (f/.n) * N by A2,B2;
+    hence thesis by B3;
+  end;
+  thus for n being Element of Left_Cosets N holds f.n in H
+  proof
+    let n be Element of Left_Cosets N;
+    dom phi = the carrier of G./.N by FUNCT_2:def 1
+           .= Left_Cosets N by GROUP_6:17;
+    then n in dom phi;
+    then phi.n in H by FUNCT_2:5;
+    hence f.n in H;
+  end;
+end;
 
 theorem Th78c:
   for G being Group
@@ -3815,10 +3936,9 @@ theorem Th78c:
   st (for b being Element of Left_Cosets B0 holds (fb/.b) * B0 = b)
   ex x being Function of Left_Cosets B,G
   st (for b being Element of Left_Cosets B holds b = (x/.b)*B)
-  & (for rngB being Subset of G st rngB = rng fb holds rng(x) = (rng(fa))*rngB)
-  & (for g,y being Element of G st g in A
-     for a being Element of A st a = g & y = fb.(a * B0)
-     holds x.(g*B) = (fa/.(carr A))*y)
+  & (for g,y,g0 being Element of G st g0 = fa.(g * A)
+     for a being Element of A st a = (g0")*g & y = fb.(a * B0)
+     holds x.(g*B) = (fa/.(g0*A))*y)
 proof
   let G be Group;
   let A,B be Subgroup of G;
@@ -4023,37 +4143,496 @@ proof
     Z3: b = a1*b1*B & x.b = a1*b1 by Z2,XTUPLE_0:1;
     thus b = (x/.b)*B by Z3, C2, PARTFUN1:def 6;
   end;
-  thus for rngB being Subset of G st rngB = rng fb
-  holds rng(x) = (rng(fa))*rngB;
-::>                           *4
-
-  thus for g,y being Element of G st g in A
-  for a being Element of A st a = g & y = fb.(a * B1)
-  holds x.(g*B) = (fa/.(carr A))*y
+  thus for g,y,g0 being Element of G st g0 = fa.(g * A)
+  for a being Element of A st a = (g0")*g & y = fb.(a * B1)
+  holds x.(g*B) = (fa/.(g0*A))*y
   proof
-    let g,y be Element of G;
-    assume Z1: g in A;
+    let g,y,g0 be Element of G;
+    assume Z1: g0 = fa.(g * A);
     let a be Element of A;
-    assume Z2: a = g;
+    assume Z2: a = (g0")*g;
     assume Z3: y = fb.(a * B1);
-    Z6: g*B in Left_Cosets B by GROUP_2:def 15;
-    then g*B in dom x by A5a;
+    g*B in dom x by A5a, GROUP_2:def 15;
     then [g*B, x.(g*B)] in x by FUNCT_1:def 2;
     then consider a1,b1 being Element of G such that
     Z4: [g*B, x.(g*B)] = [a1*b1*B, a1*b1] & a1 in rng fa & b1 in rng fb;
-    Z5: g*B = a1*b1*B & x.(g*B) = a1*b1 by Z4,XTUPLE_0:1;
-
-    :: ((a1*b1)")*g in B;
-
-    reconsider gB=g*B as Element of Left_Cosets B;
-::>                                             *4
-    gB * A = g * A by A1,Th77b;
+    Z5: g*B = a1*b1*B & x.(g*B) = a1*b1 by Z4, XTUPLE_0:1;
+    Z6: a1 = (fa/.(g0*A)) & a1 = (fa/.(g*A))
+    proof
+      dom fa = Left_Cosets A by FUNCT_2:def 1;
+      then C1: g*A in dom fa & g0*A in dom fa by GROUP_2:def 15;
+      g0 = fa/.(g * A) by Z1, C1, PARTFUN1:def 6;
+      then C2: g0*A = (fa/.(g * A)) * A
+      .= g * A by C1,A3, GROUP_2:def 15;
+      C3: b1 in A by Z4;
+      C4: a1*A in Left_Cosets A by GROUP_2:def 15;
+      g0 * A = g * A by C2
+      .= (g * B) * A by A1,Th77c
+      .= (a1*b1*B) * A by Z5
+      .= a1*A by A1,C3,Th77d;
+      then fa.(g0 * A) = fa.(a1 * A)
+      .= a1 by C4,Z4,A3,Th83;
+      hence thesis by C1,C2,Z1,PARTFUN1:def 6;
+    end;
+    b1 = y
+    proof
+      dom fa = Left_Cosets A by FUNCT_2:def 1;
+      then C1: g*A in dom fa & g0*A in dom fa by GROUP_2:def 15;
+      C2: a1 = (fa/.(g*A)) by Z6
+      .= fa.(g*A) by C1, PARTFUN1:def 6
+      .= g0 by Z1;
+      C3: ((g0")*g) * B = a * B1 by A1,A2,Z2,Th81;
+      ((g0") * g)  * B = (g0")*(g*B) by GROUP_2:105
+      .= (g0")*(a1*b1*B) by Z5
+      .= (g0")*(a1*(b1*B)) by GROUP_2:105
+      .= ((g0")*a1)*(b1*B) by GROUP_2:32
+      .= ((g0")*g0)*(b1*B) by C2
+      .= (1_G) * (b1*B) by GROUP_1:def 5
+      .= ((1_G)*b1)*B by GROUP_2:105
+      .= b1*B by GROUP_1:def 4;
+      then a * B1 = b1*B by C3;
+      then C4: fb.(b1 * B) = fb.(a * B1)
+      .= y by Z3;
+      b1 in A by Z4; then
+      reconsider ba=b1 as Element of A;
+      C5: b1 * B = ba*B1 by A1,A2,Th81;
+      then fb.(b1 * B) = fb.(ba * B1)
+      .= ba by Z4, A4, Th83
+      .= b1;
+      hence thesis by C4;
+    end;
     
-    thus x.(g*B) = (fa/.(carr A))*y;
-::>                               *4
+    hence x.(g*B) = (fa/.(g0*A))*y by Z5,Z6;
   end;
 end;
 
+theorem ThLTR:
+  for G being Group
+  for H being Subgroup of G
+  for f being Function of Left_Cosets H,G
+  st (for a being Element of Left_Cosets H
+      holds (f/.a)*H = a)
+  ex g being Function of Right_Cosets H,G
+  st (for a being Element of Right_Cosets H holds H*(g/.a)=a)
+  & (for h being Element of G
+  for a being Element of Right_Cosets H st a = H*h
+  for b being Element of Left_Cosets H st b = h*H
+  holds f.b = g.a);
+::>              *4
+
+theorem ThRTL:
+  for G being Group
+  for H being Subgroup of G
+  for g being Function of Right_Cosets H,G
+  st (for a being Element of Right_Cosets H holds H*(g/.a)=a)
+  ex f being Function of Left_Cosets H,G
+  st (for a being Element of Left_Cosets H
+      holds (f/.a)*H = a)
+  & (for h being Element of G
+  for a being Element of Right_Cosets H st a = H*h
+  for b being Element of Left_Cosets H st b = h*H
+  holds f.b = g.a);
+::>              *4
+
+theorem Th101:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g being Element of G
+  holds A*B*g = A*g;
+::>               *4
+
+theorem Th102:
+  for G being Group
+  for A being Subgroup of G
+  for f being Function of Right_Cosets A,G
+  st (for a being Element of Right_Cosets A holds A*(f/.a) = a)
+  for g being Element of G
+  st g in rng f
+  holds f.(A * g) = g
+proof
+  let G be Group;
+  let A be Subgroup of G;
+  let f be Function of Right_Cosets A,G;
+  assume A1: for a being Element of Right_Cosets A holds A*(f/.a) = a;
+  let g be Element of G;
+  assume A2: g in rng f;
+  ex a being Element of Right_Cosets A st g = f.a
+  proof
+    consider a0 being object such that
+    B1: a0 in dom f & g = f.a0 by A2,FUNCT_1:def 3;
+    dom f = Right_Cosets A by FUNCT_2:def 1;
+    then reconsider a=a0 as Element of Right_Cosets A by B1;
+    take a;
+    thus thesis by B1;
+  end;
+  then consider a being Element of Right_Cosets A such that
+  A3: g = f.a;
+  a = A*(f/.a) by A1
+   .= A*g by A3;
+  hence f.(A*g) = g by A3;
+end;
+
+theorem Th103:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for B1 being Subgroup of A st the carrier of B = the carrier of B1
+  for a being Element of A
+  for g being Element of G
+  st a = g
+  holds B1*a = B*g
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let B1 be Subgroup of A;
+  assume A2: the carrier of B = the carrier of B1;
+  let a be Element of A;
+  let g be Element of G;
+  assume A3: a = g;
+  for x being object
+  holds x in B1*a iff x in B*g
+  proof
+    let x be object;
+    thus x in B1*a implies x in B*g
+    proof
+      assume x in B1*a;
+      then consider h1 being Element of A such that
+      Z1: x = h1*a & h1 in B1
+      by GROUP_2:104;
+      reconsider h=h1 as Element of G by GROUP_2:42;
+      Z2: h in B by A2,Z1;
+      a = g & h = h1 by A3; then
+      h*g = h1*a by GROUP_2:43
+         .= x by Z1;
+      hence x in B*g by Z2,GROUP_2:104;
+    end;
+    assume x in B*g;
+    then consider h being Element of G such that
+    Z1: x = h*g & h in B by GROUP_2:104;
+    h in B1 by A2,Z1;
+    then reconsider h1=h as Element of A by GROUP_2:42;
+    Z2: h1 in B1 by A2,Z1;
+    a = g & h = h1 by A3; then
+    h1*a = h*g by GROUP_2:43
+        .= x by Z1;
+    hence x in B1*a by Z2, GROUP_2:104;
+  end;
+
+  hence B1*a = B*g by TARSKI:2;
+end;
+
+theorem Th77r:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for g being Element of G
+  for b being Element of Right_Cosets B st b = B * g
+  holds A * b = A * g
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let g be Element of G;
+  let b be Element of Right_Cosets B;
+  assume A2: b = B * g;
+  thus A * b = A * (B * g) by A2
+  .= (A * B) * g by GROUP_4:46
+  .= (carr A) * g by A1,Th76
+  .= A * g by GROUP_2:def 14;
+            :: .= g * (B * A) by GROUP_4:45
+            :: .= g * (carr A) by A1,Th76
+            :: .= g * A by GROUP_2:def 13;
+end;
+
+theorem Th88d:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for B0 being Subgroup of A st the carrier of B = the carrier of B0
+  for fa being Function of Right_Cosets A,G
+  st (for a being Element of Right_Cosets A holds A * (fa/.a) = a)
+  for fb being Function of Right_Cosets B0,A
+  st (for b being Element of Right_Cosets B0 holds B0 * (fb/.b) = b)
+  holds {[B*yb*ya,yb*ya] where ya,yb is Element of G : ya in rng fa &
+  yb in rng fb} is Function of Right_Cosets B,G
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let B0 be Subgroup of A;
+  assume A2: the carrier of B = the carrier of B0;
+  let fa be Function of Right_Cosets A,G;
+  assume A3: for a being Element of Right_Cosets A holds A * (fa/.a) = a;
+  let fb be Function of Right_Cosets B0,A;
+  assume A4: for b being Element of Right_Cosets B0 holds B0 * (fb/.b) = b;
+  set f = {[B*yb*ya,yb*ya] where ya,yb is Element of G : ya in rng fa & yb in rng fb};
+
+  for z being object st z in f
+  holds z in [: (Right_Cosets B), (the carrier of G) :]
+  proof
+    let z be object;
+    assume B1: z in f;
+    then consider ya,yb being Element of G such that
+    B2: z = [B*yb*ya, yb*ya] & ya in rng fa & yb in rng fb;
+    B3: B*yb*ya in Right_Cosets B
+    proof
+      C1: B*(yb*ya) in Right_Cosets B by GROUP_2:def 16;
+      B*yb*ya = B*(yb*ya) by GROUP_2:107;
+      hence thesis by C1;
+    end;
+    yb*ya in the carrier of G;
+    hence z in [: (Right_Cosets B), (the carrier of G) :] by B2,B3,ZFMISC_1:def 2;
+  end;
+  then f c= [:(Right_Cosets B),(the carrier of G) :] by TARSKI:def 3;
+  then f is Subset of [:Right_Cosets B,the carrier of G:];
+  then reconsider f as Relation of Right_Cosets B,the carrier of G;
+
+  for b being Element of Right_Cosets B
+  holds b in dom f
+  proof
+    let b be Element of Right_Cosets B;
+    consider g being Element of G such that
+    B1: b = B*g by GROUP_2:def 16;
+    A*b = A*(B*g) by B1
+       .= A*B*g by GROUP_4:46
+       .= A*g by A1,Th101;
+
+    ex xalpha, ybeta being Element of G
+    st xalpha in rng(fa) & ybeta in rng(fb) & B*ybeta*xalpha = b
+    & [b, ybeta*xalpha] in f
+    proof
+      D1: A * g in Right_Cosets A by GROUP_2:def 16;
+      then D2: A * g in dom fa by FUNCT_2:def 1;
+      then reconsider xalpha = fa/.(A * g) as Element of G by PARTFUN1:def 6;
+      C1: xalpha in rng(fa)
+      proof
+        fa.(A * g) in rng(fa) by D2,FUNCT_2:112;
+        hence thesis by D2, PARTFUN1:def 6;
+      end;
+      then D3: fa.(A * xalpha) = xalpha by A3,Th102;
+
+      A * g = A * (fa/.(A * g)) by D1,A3
+           .= A * xalpha; then
+      g*(xalpha") in A by GROUP_2:120; then
+      reconsider a0=g*(xalpha") as Element of A by GROUP_2:42;
+      set yb=fb/.(B0*a0);
+      D4: yb in rng(fb)
+      proof
+        B0 * a0 in Right_Cosets B0 by GROUP_2:def 16;
+        then D1: B0 * a0 in dom fb by FUNCT_2:def 1;
+        then fb.(B0 * a0) in rng(fb) by FUNCT_2:112;
+        hence thesis by D1,PARTFUN1:def 6;
+      end;
+      then reconsider ybeta=yb as Element of G by GROUP_2:42;
+      C2: ybeta in rng(fb) by D4;
+
+      C3: B*ybeta*xalpha = b
+      proof
+        fb.(B0 * yb) = yb by A4,C2,Th102;
+        D1: a0 = (g*(xalpha")) & yb = ybeta;
+        D2: B0*a0 in Right_Cosets B0 by GROUP_2:def 16; then
+        B0 * (fb/.(B0*a0)) = B0 * a0 by A4;
+        B * (g*(xalpha")) = B0 * a0 by A1,A2,D1,Th103
+        .= B0 * (fb/.(B0*a0)) by A4,D2
+        .= B0 * yb
+        .= B * ybeta by A1,A2,D1,Th103;
+        then D3: (g*(xalpha"))*(ybeta") in B by GROUP_2:120;
+        (g*(xalpha"))*(ybeta") = g*((xalpha")*(ybeta")) by GROUP_1:def 3
+        .= g*((ybeta*xalpha)") by GROUP_1:17;
+        then g*((ybeta*xalpha)") in B by D3;
+        then B*g = B*(ybeta*xalpha) by D2, GROUP_2:120
+        .= B * ybeta * xalpha by GROUP_2:107;
+        hence thesis by B1;
+      end;
+
+      take xalpha, ybeta;
+      thus xalpha in rng(fa) by C1;
+      thus ybeta in rng(fb) by C2;
+      thus B*ybeta*xalpha = b by C3;
+      thus [b, ybeta*xalpha] in f by C1,C2,C3;
+    end;
+
+    hence b in dom f by XTUPLE_0:def 12;
+  end;
+
+  then Right_Cosets B c= dom f;
+  then A5a: dom f = Right_Cosets B by XBOOLE_0:def 10;
+  then A5: f is quasi_total by FUNCT_2:def 1;
+
+  for x,y1,y2 being object
+  st [x,y1] in f & [x,y2] in f
+  holds y1=y2
+  proof
+    let x,y1,y2 be object;
+    assume Z1: [x,y1] in f;
+    then consider ya1,yb1 being Element of G such that
+    Z2: [x,y1] = [B*yb1*ya1,yb1*ya1] & ya1 in rng fa & yb1 in rng fb;
+    assume Z3: [x,y2] in f;
+    then consider ya2,yb2 being Element of G such that
+    Z4: [x,y2] = [B*yb2*ya2,yb2*ya2] & ya2 in rng fa & yb2 in rng fb;
+
+    Z5: x = B*yb1*ya1 & y1 = yb1*ya1 by Z2,XTUPLE_0:1;
+    Z6: x = B*yb2*ya2 & y2 = yb2*ya2 by Z4,XTUPLE_0:1;
+
+    x in dom f by Z3, XTUPLE_0:def 12; then
+    x in Right_Cosets B by A5a;
+    then reconsider x as Element of Right_Cosets B;
+    
+    Z7: ya1 = ya2
+    proof
+      Y1: yb1 in A by Z2,Th84;
+      x = B*(yb1*ya1) by Z5,GROUP_2:107; then
+      Y2: A*x = A*(yb1*ya1) by A1,Z5,Th77r
+             .= (A*yb1)*ya1 by GROUP_2:107
+             .= (carr A)*ya1 by Y1, GROUP_2:119
+             .= A*ya1 by GROUP_2:def 14;
+      Y3: yb2 in A by Z4,Th84;
+      x = B*(yb2*ya2) by Z6,GROUP_2:107; then
+      A*x = A*(yb2*ya2) by A1,Z6,Th77r
+         .= (A*yb2)*ya2 by GROUP_2:107
+         .= (carr A)*ya2 by Y3, GROUP_2:119
+         .= A*ya2 by GROUP_2:def 14;
+      then Y4: A * ya1 = A * ya2 by Y2;
+      dom fa = Right_Cosets A by FUNCT_2:def 1; then
+      Y5: A*ya1 in dom fa & A*ya2 in dom fa by Y1,Y3,GROUP_2:def 16;
+      thus ya1 = fa.(A*ya1) by A3,Z2,Th102
+              .= fa.(A*ya2) by Y4,Y5
+              .= ya2 by A3,Z4,Th102;
+    end;
+
+    Z8: yb1 = yb2
+    proof
+      B*yb1*ya1 = B*yb2*ya1 by Z5,Z6,Z7;
+      then Y1: B*yb1 = B*yb2 by Th82r;
+      Y4: yb1 in A & yb2 in A by Z2,Z4,Th84; then
+      reconsider bb1=yb1,bb2=yb2 as Element of A by GROUP_2:42;
+      Y2: B0*bb1 = B*yb1 by A1,A2,Th103
+                .= B*yb2 by Y1
+                .= B0*bb2 by A1,A2,Th103;
+      dom fb = Right_Cosets B0 by FUNCT_2:def 1; then
+      Y3: B0*bb1 in dom fb & B0*bb2 in dom fb by Y4,GROUP_2:def 16;
+      bb1 = fb.(B0*bb1) by A4,Z2,Th102
+         .= fb.(B0*bb2) by Y2,Y3
+         .= bb2 by A4,Z4,Th102;
+      hence thesis;
+    end;
+
+    thus y1 = yb1*ya1 by Z5
+           .= yb1*ya2 by Z7
+           .= yb2*ya2 by Z8
+           .= y2 by Z6;
+  end;
+
+  then f is Function-like by FUNCT_1:def 1;
+  then reconsider f as Function of Right_Cosets B, the carrier of G by A5;
+  f is Function of Right_Cosets B,G;
+  hence thesis;
+end;
+
+
+theorem Th88c:
+  for G being Group
+  for A,B being Subgroup of G st B is Subgroup of A
+  for B0 being Subgroup of A st the carrier of B = the carrier of B0
+  for fa being Function of Right_Cosets A,G
+  st (for a being Element of Right_Cosets A holds A * (fa/.a) = a)
+  for fb being Function of Right_Cosets B0,A
+  st (for b being Element of Right_Cosets B0 holds B0 * (fb/.b) = b)
+  ex x being Function of Right_Cosets B,G
+  st (for b being Element of Right_Cosets B holds b = B*(x/.b))
+  & (for g,y,g0 being Element of G st g0 = fa.(A * g)
+     for a being Element of A st a = g*(g0") & y = fb.(B0 * a)
+     holds x.(B * g) = y*(fa/.(A * g0)))
+proof
+  let G be Group;
+  let A,B be Subgroup of G;
+  assume A1: B is Subgroup of A;
+  let B0 be Subgroup of A;
+  assume A2: the carrier of B = the carrier of B0;
+  let fa be Function of Right_Cosets A,G;
+  assume A3: for a being Element of Right_Cosets A holds A * (fa/.a) = a;
+  let fb be Function of Right_Cosets B0,A;
+  assume A4: for b being Element of Right_Cosets B0 holds B0 * (fb/.b) = b;
+  
+  reconsider x = {[B*yb*ya,yb*ya] where ya,yb is Element of G : ya in rng fa &
+  yb in rng fb} as Function of Right_Cosets B,G
+  by A1,A2,A3,A4,Th88d;
+  take x;
+
+  A5: dom x = Right_Cosets B by FUNCT_2:def 1;
+
+  thus (for b being Element of Right_Cosets B holds b = B*(x/.b))
+  proof 
+    let b be Element of Right_Cosets B;
+    consider g being Element of G such that
+    C1: b = B*g by GROUP_2:def 16;
+    C2: b in dom x by A5,FUNCT_2:def 1;
+    then [b, x.b] in x by FUNCT_1:def 2;
+    then consider a1,b1 being Element of G such that
+    C3: [b, x.b] = [B*b1*a1, b1*a1] & a1 in rng fa & b1 in rng fb;
+    b = B*b1*a1 & x.b = b1*a1 by C3,XTUPLE_0:1;
+    hence b = B*(x/.b) by C2, PARTFUN1:def 6, GROUP_2:107;
+  end;
+  thus (for g,y,g0 being Element of G st g0 = fa.(A * g)
+     for a being Element of A st a = g*(g0") & y = fb.(B0 * a)
+     holds x.(B * g) = y*(fa/.(A * g0)))
+  proof
+    let g,y,g0 be Element of G;
+    assume B1: g0 = fa.(A * g);
+    let a be Element of A;
+    assume B2: a = g*(g0");
+    assume B3: y = fb.(B0 * a);
+    B*g in dom x by A5, GROUP_2:def 16;
+    then [B*g, x.(B*g)] in x by FUNCT_1:def 2;
+    then consider a1,b1 being Element of G such that
+    Z4: [B*g, x.(B*g)] = [B*b1*a1, b1*a1] & a1 in rng fa & b1 in rng fb;
+    Z5: B*g = B*b1*a1 & x.(B*g) = b1*a1 by Z4, XTUPLE_0:1;
+    Z6: a1 = (fa/.(A*g0)) & a1 = (fa/.(A*g))
+    proof
+      dom fa = Right_Cosets A by FUNCT_2:def 1;
+      then C1: A*g in dom fa & A*g0 in dom fa by GROUP_2:def 16;
+      g0 = fa/.(A * g) by B1, C1, PARTFUN1:def 6;
+      then C2: A * g0 = A * (fa/.(A * g))
+      .= A * g by C1,A3, GROUP_2:def 16;
+      C3: b1 in A by Z4;
+      C4: A*a1 in Right_Cosets A by GROUP_2:def 16;
+      A * g0 = A * g by C2
+      .= A * (B * g) by A1,Th77cr
+      .= A * (B * b1 * a1) by Z5
+      .= A * a1 by A1,C3,Th77dr;
+      then fa.(A * g0) = fa.(A * a1)
+      .= a1 by C4,Z4,A3,Th102;
+      hence thesis by C1,C2,B1,PARTFUN1:def 6;
+    end;
+    b1 = y
+    proof
+      dom fa = Right_Cosets A by FUNCT_2:def 1;
+      then C1: A*g in dom fa & A*g0 in dom fa by GROUP_2:def 16;
+      C2: a1 = (fa/.(A*g)) by Z6
+      .= fa.(A*g) by C1, PARTFUN1:def 6
+      .= g0 by B1;
+      C3: B * (g*(g0")) = B0 * a by A1,A2,B2,Th103;
+      B * (g * (g0")) = (B*g)*(g0") by GROUP_2:107
+      .= (B*b1*a1)*(g0") by Z5
+      .= ((B*b1)*a1)*(g0") by GROUP_2:107
+      .= (B*b1)*(a1*(g0")) by GROUP_2:34
+      .= (B*b1)*(g0*(g0")) by C2
+      .= (B*b1)*(1_G) by GROUP_1:def 5
+      .= B*(b1*(1_G)) by GROUP_2:107
+      .= B*b1 by GROUP_1:def 4;
+      then B0*a = B*b1 by C3;
+      then C4: fb.(B * b1) = fb.(B0 * a)
+      .= y by B3;
+      b1 in A by Z4; then
+      reconsider ba=b1 as Element of A;
+      C5: B * b1 = B0*ba by A1,A2,Th103;
+      then fb.(B * b1) = fb.(B0 * ba)
+      .= ba by Z4, A4, Th102
+      .= b1;
+      hence thesis by C4;
+    end;
+    
+    hence x.(B * g) = y*(fa/.(A * g0)) by Z5,Z6;
+  end;
+end;
 
 
 
@@ -4283,8 +4862,6 @@ proof
   end;
 
 end;
-proof end;
-::> *396
 
 
 
@@ -4902,9 +5479,3 @@ proof
     hence G splits_over V by Def5;
   end;
 end;
-::> 4: This inference is not accepted
-::> 70: Something remains to be proved
-::> 103: Unknown functor
-::> 165: Unknown functor format
-::> 321: Predicate symbol or "is" expected
-::> 396: Formula expected
