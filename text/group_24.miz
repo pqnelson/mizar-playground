@@ -74,6 +74,49 @@ environ
 
 begin  :: The product of the families of the groups
 
+registration
+  let G be Group;
+  let H be Subgroup of G;
+  cluster the carrier of H -> non empty;
+  correctness
+  proof
+    1_H in H by GROUP_1:def 4;
+    hence thesis;
+  end;
+  cluster carr H -> non empty;
+  correctness
+  proof
+    1_H in H by GROUP_1:def 4;
+    hence thesis by GROUP_2:def 9;
+  end;
+end;
+
+registration
+  let G be Group;
+  let H be Subgroup of G;
+  cluster carr H -> non empty;
+  correctness
+  proof
+    the carrier of H is non empty;
+    hence thesis by GROUP_2:def 9;
+  end;
+  cluster Right_Cosets H -> non empty;
+  correctness by GROUP_2:135;
+end;
+
+registration
+  let G be finite Group;
+  cluster the carrier of G -> finite;
+  correctness;
+  let H be Subgroup of G;
+  cluster Index H -> finite;
+  correctness
+  proof
+    Left_Cosets H is finite by GROUP_2:134;
+    then card (Left_Cosets H) is finite;
+    hence Index H is finite by GROUP_2:def 17;
+  end;
+end;
 
 registration
   let G be strict Group;
@@ -1552,7 +1595,7 @@ proof
       then x in (carr H1) * (carr N1) by B4;
       hence x in H1 * N1 by GROUP_4:def 8;
     end;
-    assume Z2: x in H1 * N1;
+    assume x in H1 * N1;
     then x in (carr H1) * (carr N1) by GROUP_4:def 8;
     then consider h1,n1 being Element of K such that
     B1: x = h1 * n1 & h1 in carr H1 & n1 in carr N1
@@ -1676,14 +1719,14 @@ proof
   let N be normal Subgroup of G;
   assume A2: N is Subgroup of K;
   then A3: N is normal Subgroup of K by GROUP_6:8;
-  then B1: the multMagma of N is strict Subgroup of K by LmDef5a;
-  B2: the multMagma of H is strict Subgroup of K by A1,LmDef5a;
+  then the multMagma of N is strict Subgroup of K by LmDef5a;
+  the multMagma of H is strict Subgroup of K by A1,LmDef5a;
   A4: N * H = H * N by A1,A3,Th58Helper;
 
   thus H,((K,N)`*`) are_complements_in K
   implies ((N * H = the carrier of K) & (H /\ N = (1).K))
   proof
-    assume B1: H,((K,N)`*`) are_complements_in K;
+    assume H,((K,N)`*`) are_complements_in K;
     then consider H1 being strict Subgroup of K,
                   N1 being strict normal Subgroup of K such that
     B1: H1 = the multMagma of H
@@ -1701,7 +1744,7 @@ proof
       let x be Element of G;
       thus x in N * H implies x in UK
       proof
-        assume Z1: x in N * H;
+        assume x in N * H;
         then x in H * N by A4;
         then consider h,n being Element of G such that
         Z2: x = h * n & h in H & n in N by GROUP_5:4;
@@ -1713,7 +1756,7 @@ proof
         then x in the carrier of K by B1;
         hence x in UK;
       end;
-      assume Z1: x in UK;
+      assume x in UK;
       then x in the carrier of K;
       then x in H1*N1 by B1;
       then consider h1,n1 being Element of K such that
@@ -1747,7 +1790,7 @@ proof
         hence x in (1).G by GROUP_2:63;
 
       end;
-      assume Z1: x in (1).G;
+      assume x in (1).G;
       then x in (1).K by GROUP_2:63;
       then x in (H1 /\ N1) by B1;
       then x in H1 & x in N1 by GROUP_2:82;
@@ -1791,7 +1834,7 @@ proof
         let x be object;
         thus x in H1*N1 implies x in the carrier of K
         proof
-          assume Z1: x in H1 * N1;
+          assume x in H1 * N1;
           then ex a, b being Element of K st
           ( x = a * b & a in H1 & b in N1) by GROUP_5:4;
           then consider n1,h1 being Element of K such that
@@ -1804,7 +1847,7 @@ proof
           then x in N * H by A4;
           hence x in the carrier of K by B1,GROUP_2:42;
         end;
-        assume Z2: x in the carrier of K;
+        assume x in the carrier of K;
         then x in N * H by B1;
         then x in H * N by A4;
         then consider h,n being Element of G such that
@@ -1824,7 +1867,7 @@ proof
         let x be Element of K;
         thus x in H1 /\ N1 implies x in (1).K
         proof
-          assume Z1: x in H1 /\ N1;
+          assume x in H1 /\ N1;
           then x in H1 & x in N1 by GROUP_2:82;
           then x in the carrier of H1 & x in N1;
           then x in the carrier of H1 & x in the carrier of N1;
@@ -1835,7 +1878,7 @@ proof
           then x in (H /\ N) by GROUP_2:82;
           hence x in (1).K by B2;
         end;
-        assume Z2: x in (1).K;
+        assume x in (1).K;
         then x in (H /\ N) by B2;
         then x in H & x in N by GROUP_2:82;
         then x in the carrier of H & x in N;
@@ -1935,7 +1978,7 @@ proof
       the carrier of H1 = the carrier of H by A1;
       then B2: h1 in H by B1;
       the carrier of N1 = the carrier of N by A2;
-      then B3: n1 in N by B1;
+      then n1 in N by B1;
       then h1 * n1 in H * N by B2, GROUP_5:4;
       hence x in H * N by B1;
     end;
@@ -1997,7 +2040,7 @@ proof
   let H,N be Subgroup of G;
   let H1,N1 be strict Subgroup of G;
   assume A1: H1 = the multMagma of H;
-  assume A2: N1 = the multMagma of N;
+  assume N1 = the multMagma of N;
   then the carrier of H1 = the carrier of H
   & the carrier of N1 = the carrier of N by A1;
   hence thesis by ThDef7HelperCore;
@@ -2414,7 +2457,7 @@ proof
   let G be Group;
   let H be Subgroup of G;
   let N be normal Subgroup of G;
-  assume A1: H,N are_complements_in G;
+  assume H,N are_complements_in G;
   then A2: H * N = the carrier of G & H /\ N = (1).G by Def7;
 
   defpred P[Element of H, Element of G./.N] means
@@ -2532,7 +2575,7 @@ proof
   let G be Group;
   let H be Subgroup of G;
   let N be normal Subgroup of G;
-  assume Z1: H,N are_complements_in G;
+  assume H,N are_complements_in G;
   then ex phi being Homomorphism of H,G./.N
   st (for h being Element of H
       for g being Element of G st g = h
@@ -2580,9 +2623,8 @@ proof
   let H be Subgroup of G;
   let N be normal Subgroup of G;
   let N1 be strict normal Subgroup of G;
-  assume A1: N1 = the multMagma of N;
-  then
-  A2: the carrier of H = the carrier of H
+  assume N1 = the multMagma of N;
+  then the carrier of H = the carrier of H
   & the carrier of N1 = the carrier of N;
   hence thesis by ThDef7HelperCore;
 end;
@@ -3155,7 +3197,7 @@ proof
   let H be Subgroup of G;
   let N be normal Subgroup of G;
   assume A1: H /\ N = (1).G;
-  assume A2: N * H = the carrier of G;
+  assume N * H = the carrier of G;
   then H * N = the carrier of G by GROUP_5:8;
   hence H,N are_complements_in G by A1, Def7;
 end;
@@ -3389,44 +3431,6 @@ begin :: Universal Property of Semidirect Products
 
 begin :: Results concerning Transversals
 
-registration
-  let G be Group;
-  let H be Subgroup of G;
-  cluster the carrier of H -> non empty;
-  correctness
-  proof
-    1_H in H by GROUP_1:def 4;
-    hence thesis;
-  end;
-end;
-
-registration
-  let G be Group;
-  let H be Subgroup of G;
-  cluster carr H -> non empty;
-  correctness
-  proof
-    the carrier of H is non empty;
-    hence thesis by GROUP_2:def 9;
-  end;
-  cluster Right_Cosets H -> non empty;
-  correctness by GROUP_2:135;
-end;
-
-registration
-  let G be finite Group;
-  cluster the carrier of G -> finite;
-  correctness;
-  let H be Subgroup of G;
-  cluster Index H -> finite;
-  correctness
-  proof
-    Left_Cosets H is finite by GROUP_2:134;
-    then card (Left_Cosets H) is finite;
-    hence Index H is finite by GROUP_2:def 17;
-  end;
-end;
-
 theorem Th104:
   for G being Group
   for N being normal Subgroup of G
@@ -3520,7 +3524,7 @@ proof
                     .= carr A by A0, GROUP_2:113
                     .= a by B1;
     end;
-    suppose B2: a <> carr A;
+    suppose a <> carr A;
       hence thesis by A2;
     end;
   end;
@@ -3587,7 +3591,7 @@ proof
   holds g in A * B
   proof
     let g be Element of G;
-    assume B1: g in carr A;
+    assume g in carr A;
     then g in the carrier of A by GROUP_2:def 9;
     then g in A & 1_G in B by GROUP_2:46;
     then g * (1_G) in A * B by GROUP_5:4;
@@ -3601,7 +3605,7 @@ proof
   holds g in B * A
   proof
     let g be Element of G;
-    assume B1: g in carr A;
+    assume g in carr A;
     then g in the carrier of A by GROUP_2:def 9;
     then 1_G in B & g in A by GROUP_2:46;
     then (1_G) * g in B * A by GROUP_5:4;
@@ -3739,7 +3743,7 @@ theorem Th81:
 proof
   let G be Group;
   let A,B be Subgroup of G;
-  assume A1: B is Subgroup of A;
+  assume B is Subgroup of A;
   let B1 be Subgroup of A;
   assume A2: the carrier of B = the carrier of B1;
   let a be Element of A;
@@ -3795,7 +3799,7 @@ proof
     let w be Element of G;
     thus w in y*A implies w in z*A
     proof
-      assume Z1: w in y*A;
+      assume w in y*A;
       then x*w in x*(y*A) by GROUP_2:27;
       then x*w in x*y*A by GROUP_2:105;
       then x*w in x*z*A by A1;
@@ -3805,7 +3809,7 @@ proof
       w = h by Z2, GROUP_1:6;
       hence w in z*A by Z2,GROUP_2:27;
     end;
-    assume Z1: w in z*A;
+    assume w in z*A;
     then x*w in x*(z*A) by GROUP_2:27;
     then x*w in x*z*A by GROUP_2:105;
     then x*w in x*y*A by A1;
@@ -3835,7 +3839,7 @@ proof
     let w be Element of G;
     thus w in A*y implies w in A*z
     proof
-      assume Z1: w in A*y;
+      assume w in A*y;
       then w*x in (A*y)*x by GROUP_2:28;
       then w*x in A*y*x by GROUP_2:107;
       then w*x in A*z*x by A1;
@@ -3845,7 +3849,7 @@ proof
       w = h by Z2, GROUP_1:6;
       hence w in A*z by Z2,GROUP_2:28;
     end;
-    assume Z1: w in A*z;
+    assume w in A*z;
     then w*x in (A*z)*x by GROUP_2:28;
     then w*x in A*z*x by GROUP_2:105;
     then w*x in A*y*x by A1;
@@ -3913,7 +3917,7 @@ proof
   let G be Group;
   let N be normal Subgroup of G;
   let H be Subgroup of G;
-  assume A1: H,N are_complements_in G;
+  assume H,N are_complements_in G;
   then consider psi being Homomorphism of H,G./.N such that
   A2: for h being Element of H
       for g being Element of G st g = h
@@ -3994,7 +3998,7 @@ proof
   holds z in [: (Left_Cosets B), (the carrier of G) :]
   proof
     let z be object;
-    assume Z1: z in x;
+    assume z in x;
     then consider ya,yb being Element of G such that
     Z2: z = [ya*yb*B,ya*yb] & ya in rng fa & yb in rng fb;
     Z3: ya*yb*B in Left_Cosets B
@@ -4023,7 +4027,7 @@ proof
     st xalpha in rng(fa) & ybeta in rng(fb) & xalpha*ybeta*B = b
     & [b, xalpha*ybeta] in x
     proof
-      ZZ1: b * A in Left_Cosets A by A1,Th77;
+      b * A in Left_Cosets A by A1,Th77;
       then (fa/.(b * A)) * A = b * A by A3
       .= g * A by A1, Z0, Th77b;
       
@@ -4055,7 +4059,7 @@ proof
       Z3b: a1 * B1 = (fb/.(a1 * B1)) * B1 by A4
                   .= yb * B1 by Z3;
       then consider b0 being Element of A such that
-      Z4: b0 = (yb") * a1 & b0 in B1
+      b0 = (yb") * a1 & b0 in B1
       by GROUP_2:114;
       Z5: yb in rng(fb)
       proof
@@ -4104,7 +4108,7 @@ proof
   holds y1 = y2
   proof
     let b,y1,y2 be object;
-    assume Z1: [b,y1] in x;
+    assume [b,y1] in x;
     then consider ya1,yb1 being Element of G such that
     Z2: [b,y1] = [ya1*yb1*B,ya1*yb1] & ya1 in rng fa & yb1 in rng fb;
     assume Z3: [b,y2] in x;
@@ -4161,7 +4165,7 @@ proof
            .= y2 by Z6;
   end;
 
-  then A6: x is Function-like by FUNCT_1:def 1; then
+  then x is Function-like by FUNCT_1:def 1; then
   reconsider x as Function of Left_Cosets B,the carrier of G
   by A5, FUNCT_2:def 1, FUNCT_1:def 1;
   take x;
@@ -4172,7 +4176,7 @@ proof
   proof 
     let b be Element of Left_Cosets B;
     consider g being Element of G such that
-    C1: b = g*B by GROUP_2:def 15;
+    b = g*B by GROUP_2:def 15;
     C2: b in dom x by A5a;
     then [b, x.b] in x by FUNCT_1:def 2;
     then consider a1,b1 being Element of G such that
@@ -4232,7 +4236,7 @@ proof
       .= y by Z3;
       b1 in A by Z4; then
       reconsider ba=b1 as Element of A;
-      C5: b1 * B = ba*B1 by A1,A2,Th81;
+      b1 * B = ba*B1 by A1,A2,Th81;
       then fb.(b1 * B) = fb.(ba * B1)
       .= ba by Z4, A4, Th83
       .= b1;
@@ -4285,7 +4289,7 @@ theorem Th103:
 proof
   let G be Group;
   let A,B be Subgroup of G;
-  assume A1: B is Subgroup of A;
+  assume B is Subgroup of A;
   let B1 be Subgroup of A;
   assume A2: the carrier of B = the carrier of B1;
   let a be Element of A;
@@ -4368,7 +4372,7 @@ proof
   holds z in [: (Right_Cosets B), (the carrier of G) :]
   proof
     let z be object;
-    assume B1: z in f;
+    assume z in f;
     then consider ya,yb being Element of G such that
     B2: z = [B*yb*ya, yb*ya] & ya in rng fa & yb in rng fb;
     B3: B*yb*ya in Right_Cosets B
@@ -4802,191 +4806,147 @@ theorem Th79:
   for P being Subgroup of G
   for V being normal Subgroup of G st V is Subgroup of P
   for Q being Subgroup of P
-  st Q,P./.((P,V)`*`) are_isomorphic & Q /\ V=(1).G
-  & V * Q = the carrier of P
+  st Q,V are_complements_in P
   ex x being Function of G./.V,G
   st (for a being Element of G./.V holds (x.a)*V = a)
-  & (for q being Element of G st q in Q holds x.(q*V) = q)
-proof
-  let G be Group;
-  let P be Subgroup of G;
-  let V be normal Subgroup of G;
-  assume V is Subgroup of P;
-  then A1: V is normal Subgroup of P by GROUP_6:8;
-  let Q be Subgroup of P;
-  set J = ((P,V)`*`);
-  assume A2: Q, P./.J are_isomorphic;
-  assume A3: Q /\ V = (1).G;
-  assume A3b: V * Q = the carrier of P;
-  Q /\ V = (1).P by A3, GROUP_2:63;
-  then 
-  Q,V are_complements_in P by A1,A3,A3b,ThDef7Sub3, GROUP_2:63; then
-  Q,J are_complements_in P by A1,ThDef7Sub6; then
-  consider phi being Homomorphism of Q,P./.J such that
-  A4: (for h being Element of Q
-      for g being Element of P st g = h
-      holds phi.h = g*J) &
-      phi is bijective by Th28b;
+  & (for q being Element of G st q in Q
+  for a being Element of G./.V holds x.(((nat_hom V).q)*a) = q*(x.a))
+  & x.(1_(G./.V)) = 1_G
+  & ex Y being Subset of G st rng x = Q*Y;
+::>                                     *4
+:: proof
+::   let G be Group;
+::   let P be Subgroup of G;
+::   let V be normal Subgroup of G;
+::   assume V is Subgroup of P;
+::   then A1: V is normal Subgroup of P by GROUP_6:8;
+::   let Q be Subgroup of P;
+::   set J = ((P,V)`*`);
+::   assume A2: Q, P./.J are_isomorphic;
+::   assume A3: Q /\ V = (1).G;
+::   assume A3b: V * Q = the carrier of P;
+::   Q /\ V = (1).P by A3, GROUP_2:63;
+::   then 
+::   Q,V are_complements_in P by A1,A3,A3b,ThDef7Sub3, GROUP_2:63; then
+::   Q,J are_complements_in P by A1,ThDef7Sub6; then
+::   consider phi being Homomorphism of Q,P./.J such that
+::   A4: (for h being Element of Q
+::       for g being Element of P st g = h
+::       holds phi.h = g*J) &
+::       phi is bijective by Th28b;
 
-  :: defpred P[Element of G./.V, Element of G] means
-  :: (ex a0 being Element of P./.J st a0 = $1 & $2 = phi.a0)
-  :: or (not (ex a0 being Element of P./.J st a0 = $1) & $1 = $2*V);
+::   :: defpred P[Element of G./.V, Element of G] means
+::   :: (ex a0 being Element of P./.J st a0 = $1 & $2 = phi.a0)
+::   :: or (not (ex a0 being Element of P./.J st a0 = $1) & $1 = $2*V);
 
-  defpred P[Element of G./.V, Element of G] means
-  ($1 in P./.J & (ex a0 being Element of P./.J st a0 = $1 & $2 = phi.a0)
-   & $2 in Q & $1 = $2*V)
-  or (not ($1 in P./.J) & $1 = $2*V);
+::   defpred P[Element of G./.V, Element of G] means
+::   ($1 in P./.J & (ex a0 being Element of P./.J st a0 = $1 & $2 = phi.a0)
+::    & $2 in Q & $1 = $2*V)
+::   or (not ($1 in P./.J) & $1 = $2*V);
 
-  A5: for x being Element of G./.V
-  ex y being Element of G
-  st P[x, y]
-  proof
-    let x be Element of G./.V;
-    per cases;
-    suppose B1: x in P./.J;
-      then reconsider a0=x as Element of P./.J;
-      (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
-      B2: (phi").a0 in Q by B1,FUNCT_2:5;
-      then reconsider y=(phi").a0 as Element of G by GROUP_2:42;
-      take y;
-      reconsider h=(phi").a0 as Element of Q by B2,GROUP_2:42;
-      (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
-      B2d: (phi") is Function of the carrier of (P./.J),the carrier of Q
-      & the carrier of Q <> {}
-      & a0 in the carrier of (P./.J);
+::   A5: for x being Element of G./.V
+::   ex y being Element of G
+::   st P[x, y]
+::   proof
+::     let x be Element of G./.V;
+::     per cases;
+::     suppose B1: x in P./.J;
+::       then reconsider a0=x as Element of P./.J;
+::       (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
+::       B2: (phi").a0 in Q by B1,FUNCT_2:5;
+::       then reconsider y=(phi").a0 as Element of G by GROUP_2:42;
+::       take y;
+::       reconsider h=(phi").a0 as Element of Q by B2,GROUP_2:42;
+::       (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
+::       B2d: (phi") is Function of the carrier of (P./.J),the carrier of Q
+::       & the carrier of Q <> {}
+::       & a0 in the carrier of (P./.J);
 
-      (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
-      B2e: (phi") is Function of the carrier of (P./.J),the carrier of Q
-      & the carrier of Q <> {} & rng phi = the carrier of (P./.J)
-      & phi is one-to-one by A4, FUNCT_2:def 3;
-      then phi * (phi") = id (the carrier of (P./.J)) by FUNCT_2:29;
-      reconsider y0=y as Element of P by B2, GROUP_2:42;
-      h in Q & y0 in P & y0 = h;
-      B3f: h = y;
-      B4: phi.h = phi.((phi").a0)
-      .= (phi * (phi")).a0 by A4, B2d, FUNCT_2:15, FUNCT_2:def 3
-      .= (id (the carrier of (P./.J))).a0 by A4, B2e, FUNCT_2:29, FUNCT_2:def 3
-      .= a0
-      .= x;
-      then B3: x = y0*J by A4,B3f;
-      x in (P./.J) by B1;
-      phi.h = phi.y by B3f; :: then
-      B5: (ex a1 being Element of P./.J st a1 = x & y = phi.a1)
-      proof
-        take a1=a0;
-        thus a1 = x;
-        phi.a1 
-::>           *321
-        thus y = phi.a1;
-      end;
-::>     *70
-:: by B3f,B4;
-      y in Q by B2;
-      V is Subgroup of P & y in P by A1,B2,GROUP_2:40; then
-      y*V = y0*J by A1, Th79a
-         .= x by B3;
-      hence thesis by B1, B2, B3, B5;
-    end;
-    suppose B2: not (x in P./.J);
-      x in G./.V; then x in Left_Cosets V by GROUP_6:17;
-      then
-      consider y being Element of G such that
-      B3: x = y * V by GROUP_2:def 15;
-      take y;
-      thus thesis by B2,B3;
-    end;
-  end;
+::       (phi") is Homomorphism of (P./.J),Q by A4,GROUP_6:62; then
+::       B2e: (phi") is Function of the carrier of (P./.J),the carrier of Q
+::       & the carrier of Q <> {} & rng phi = the carrier of (P./.J)
+::       & phi is one-to-one by A4, FUNCT_2:def 3;
+::       then phi * (phi") = id (the carrier of (P./.J)) by FUNCT_2:29;
+::       reconsider y0=y as Element of P by B2, GROUP_2:42;
+::       h in Q & y0 in P & y0 = h;
+::       B3f: h = y;
+::       B4: phi.h = phi.((phi").a0)
+::       .= (phi * (phi")).a0 by A4, B2d, FUNCT_2:15, FUNCT_2:def 3
+::       .= (id (the carrier of (P./.J))).a0 by A4, B2e, FUNCT_2:29, FUNCT_2:def 3
+::       .= a0
+::       .= x;
+::       then B3: x = y0*J by A4,B3f;
+::       x in (P./.J) by B1;
+::       phi.h = phi.y by B3f; :: then
+::       B5: (ex a1 being Element of P./.J st a1 = x & y = phi.a1)
+::       proof
+::         take a1=a0;
+::         thus a1 = x;
+::         phi.a1 
+:: ::>           *321
+::         thus y = phi.a1;
+::       end;
+:: ::>     *70
+:: :: by B3f,B4;
+::       y in Q by B2;
+::       V is Subgroup of P & y in P by A1,B2,GROUP_2:40; then
+::       y*V = y0*J by A1, Th79a
+::          .= x by B3;
+::       hence thesis by B1, B2, B3, B5;
+::     end;
+::     suppose B2: not (x in P./.J);
+::       x in G./.V; then x in Left_Cosets V by GROUP_6:17;
+::       then
+::       consider y being Element of G such that
+::       B3: x = y * V by GROUP_2:def 15;
+::       take y;
+::       thus thesis by B2,B3;
+::     end;
+::   end;
 
-  consider f being Function of G./.V,G such that
-  A6: for x being Element of G./.V holds P[x, f.x]
-  from FUNCT_2:sch 3(A5);
+::   consider f being Function of G./.V,G such that
+::   A6: for x being Element of G./.V holds P[x, f.x]
+::   from FUNCT_2:sch 3(A5);
 
-  take f;
-  thus for a being Element of G./.V holds (f.a)*V = a by A6;
+::   take f;
+::   thus for a being Element of G./.V holds (f.a)*V = a by A6;
 
-  thus for q being Element of G st q in Q holds f.(q*V) = q
-  proof
-    let q be Element of G;
-    assume Z1: q in Q;
-    q*V in Left_Cosets V by GROUP_2:def 15;
-    then q*V in G./.V by GROUP_6:17; then
-    reconsider a=q*V as Element of G./.V;
+::   thus for q being Element of G st q in Q holds f.(q*V) = q
+::   proof
+::     let q be Element of G;
+::     assume Z1: q in Q;
+::     q*V in Left_Cosets V by GROUP_2:def 15;
+::     then q*V in G./.V by GROUP_6:17; then
+::     reconsider a=q*V as Element of G./.V;
 
-    q*V = (f.a)*V by A6;
-    then Z2: (q")*(f.a) in V by GROUP_2:114;
-    Z3: a in P./.J
-    proof
-      reconsider q0=q as Element of P by Z1, GROUP_2:42;
-      q0*J in Left_Cosets J by GROUP_2:def 15;
-      then C1: q0*J in P./.J by GROUP_6:17;
-      q0 in P by Z1;
-      q in P by Z1, GROUP_2:40;
-      q = q0 & q in P & q0 in P & V is normal Subgroup of P
-      by A1,Z1,GROUP_2:40;
-      then q*V = q0*J by Th79a;
-      hence thesis by C1;
-    end;
-    then f.a in Q by A6; then
-    (q") in Q & f.a in Q by A6, Z1, GROUP_2:51;
-    then (q")*(f.a) in Q by GROUP_2:50;
-    then (q")*(f.a) in Q /\ V by Z2, GROUP_2:82;
-    then (q")*(f.a) in (1).G by A3;
-    then (q")*(f.a) = 1_G by GROUP_5:1;
-    then q = q*((q")*(f.a)) by GROUP_1:def 4
-          .= (q*(q"))*(f.a) by GROUP_1:def 3
-          .= (1_G)*(f.a) by GROUP_1:def 5
-          .= f.a by GROUP_1:def 4;
-    hence thesis by A6;
-  end;
+::     q*V = (f.a)*V by A6;
+::     then Z2: (q")*(f.a) in V by GROUP_2:114;
+::     Z3: a in P./.J
+::     proof
+::       reconsider q0=q as Element of P by Z1, GROUP_2:42;
+::       q0*J in Left_Cosets J by GROUP_2:def 15;
+::       then C1: q0*J in P./.J by GROUP_6:17;
+::       q0 in P by Z1;
+::       q in P by Z1, GROUP_2:40;
+::       q = q0 & q in P & q0 in P & V is normal Subgroup of P
+::       by A1,Z1,GROUP_2:40;
+::       then q*V = q0*J by Th79a;
+::       hence thesis by C1;
+::     end;
+::     then f.a in Q by A6; then
+::     (q") in Q & f.a in Q by A6, Z1, GROUP_2:51;
+::     then (q")*(f.a) in Q by GROUP_2:50;
+::     then (q")*(f.a) in Q /\ V by Z2, GROUP_2:82;
+::     then (q")*(f.a) in (1).G by A3;
+::     then (q")*(f.a) = 1_G by GROUP_5:1;
+::     then q = q*((q")*(f.a)) by GROUP_1:def 4
+::           .= (q*(q"))*(f.a) by GROUP_1:def 3
+::           .= (1_G)*(f.a) by GROUP_1:def 5
+::           .= f.a by GROUP_1:def 4;
+::     hence thesis by A6;
+::   end;
 
-end;
-
-
-
-theorem Th80:
-  for G being Group
-  for P being Subgroup of G
-  for V being normal Subgroup of G st V is Subgroup of P
-  for Q being Subgroup of P
-  st V*Q=P & Q*V=P
-  ex x being Function of G./.V,G
-  st (for a being Element of G./.V holds (x.a)*V = a)
-  & (for q being Element of G st q in Q holds x.(q*V) = q)
-proof
-  let G be Group;
-  let P be Subgroup of G;
-  let V be normal Subgroup of G;
-  assume V is Subgroup of P;
-  then A1: V is normal Subgroup of P by GROUP_6:8;
-  let Q be Subgroup of P;
-  assume A2: V*Q=P;
-  assume A3: Q*V=P;
-  1_G in V by GROUP_2:46; then
-  consider x being Function of Left_Cosets V,G such that
-  A4: (for a being Element of Left_Cosets V holds a = (x/.a)*V) and
-  A5: x.(carr V) = 1_G by Th74;
-  the carrier of (G./.V) = Left_Cosets V by GROUP_6:17; then
-  x is Function of the carrier of (G./.V),the carrier of G;
-  then reconsider x1=x as Function of G./.V,G;
-
-  A6: for a being Element of G./.V holds x.a=x1.a;
-
-  take x1;
-  thus (for a being Element of G./.V holds (x1.a)*V = a)
-  proof 
-    let a be Element of G./.V;
-    a in the carrier of G./.V; then
-    a in Left_Cosets V by GROUP_6:17; hence
-    a = (x/.a)*V by A4,GROUP_6:17
-     .= (x1/.a)*V by A6
-     .= (x1.a)*V;
-  end;
-  let q be Element of G;
-  assume Z4: q in Q;
-  thus x1.(q*V) = q;
-::>               *4
-end;
-
+:: end;
 
 
 
@@ -5220,65 +5180,6 @@ proof
   end;
 end;
 
-theorem Th104:
-  for G being Group
-  for N being normal Subgroup of G
-  for H being Subgroup of G st H /\ N = (1).G
-  ex x being Function of G./.N,G
-  st ((nat_hom N) * x = id (G./.N))
-  & (for a being Element of G./.N holds a = (x.a)*N)
-  & (for g being Element of G st g in H holds x.((nat_hom N).g) = g)
-  :: & (for H being Subgroup of G st H /\ N = (1).G
-  ::    for g being Element of G st g in H
-  ::    holds x.((nat_hom N).g) = g)
-proof
-  let G be Group;
-  let N be normal Subgroup of G;
-  let H be Subgroup of G;
-  assume A0: H /\ N = (1).G;
-  deffunc F(Element of G./.N) = the Element of $1;
-
-  defpred Px[Element of G./.N, Element of G] means
-  $1 = $2*N;
-
-  A1: for a being Element of G./.N
-  ex g being Element of G
-  st Px[a, g]
-  proof
-    let a be Element of G./.N;
-    a in G./.N; then
-    consider g being Element of G such that
-    B1: a = g*N & a = N*g by GROUP_6:23;
-    take g;
-    thus Px[a, g] by B1;
-  end;
-
-  consider x being Function of G./.N,G such that
-  A2: for a being Element of G./.N holds Px[a, x.a]
-  from FUNCT_2:sch 3(A1);
-  take x;
-
-  for a being Element of G./.N
-  holds ((nat_hom N) * x).a = (id (G./.N)).a
-  proof
-    let a be Element of G./.N;
-    a = (x.a) * N by A2
-     .= (nat_hom N).(x.a) by GROUP_6:def 8
-     .= ((nat_hom N) * x).a by FUNCT_2:15;
-    hence thesis;
-  end;
-  hence (nat_hom N) * x = id (G./.N) by FUNCT_2:def 7;
-  thus (for a being Element of G./.N holds a = (x.a)*N) by A2;
-
-  thus for g being Element of G st g in H holds x.((nat_hom N).g) = g
-  proof
-    let g be Element of G;
-    assume Z1: g in H;
-    thus x.((nat_hom N).g) = g;
-::>                          *4
-  end;
-end;
-
 
 
 
@@ -5395,25 +5296,22 @@ proof
     V is Subgroup of P & Q,P./.((P,V)`*`) are_isomorphic & Q /\ V=(1).G
     by A3, B3, GROUP_2:63;
     then consider x being Function of G./.V,G such that
-    :: B4: ((nat_hom V) * x = id (G./.V)) and
     B4: (for a being Element of G./.V holds a = (x.a)*V) and
-    B5: (for q being Element of G st q in Q holds x.(q*V) = q)
-    :: & (for H being Subgroup of G st H /\ V = (1).G
-    :: for g being Element of G st g in G
-    :: holds x.((nat_hom N).g) = g)
-    by A3,B3,Th79;
-::>  *4
-    
+    B5: (for q being Element of G st q in Q
+         for a being Element of G./.V holds x.(((nat_hom V).q)*a) = q*(x.a)) and
+    B6: x.(1_(G./.V)) = 1_G and
+    B7: ex Y being Subset of G st rng x = Q*Y
+    by A3,B2,Th79;
     consider gamma
     being Function of [:the carrier of (G./.V),the carrier of (G./.V):],G
     such that
-    B6: (for a,b being Element of G./.V
+    B8: (for a,b being Element of G./.V
          holds (x.a)*(x.b) = (x.(a * b)) * (gamma.(a,b))
          & gamma.(a,b) in V) by B4,Th107;
     
     Eq1: for a,b being Element of (G./.V)
     holds (x.a) * (x.b) = (x.(a * b)) * (gamma.(a,b))
-    by B6;
+    by B8;
     
     :: Eq2 follows from Eq1 and associativity
     Eq2: for a,b,c being Element of (G./.V)
@@ -5457,28 +5355,20 @@ proof
       let g be Element of G;
       assume Z1: g in Q;
       let a be Element of (G./.V);
-      thus Z2: x.((nat_hom V).g) = x.(g * V) by A3, GROUP_6:def 8
-                                .= g by B5,Z1;
-                                
-      (x.(g*a))*(gamma.(g*V,a)) = (x.(g * V))*(x.a) by Eq1
-::>        *103                              *103
-      .= (x.((nat_hom V).g))*(x.a) by A3,GROUP_6:def 8
-      .= g*(x.a) by Z2;
-      (x.(g * V))*(x.a) = (x.((nat_hom V).g))*(x.a) by A3,GROUP_6:def 8
-::>              *103
-      .= g*(x.a) by Z2;
-      ((nat_hom V).g) * a = ((nat_hom V).g) * ((nat_hom V).(x.a))
-::>                                                             *4
-      .= (nat_hom).(g * (x.a)) by GROUP_6:def 6;
-::>             *165
-      :: ((x.g)*V)*((x.a)*V) =
-      (x.(a * ((nat_hom V).g))) * (gamma.(a, (nat_hom V).g))
-      = (x.a) * (x.((nat_hom V).g)) by Eq1
-      .= (x.a) * g by Z2;
-      thus gamma.((nat_hom V).g, a) = 1_G;
-::>                                     *4
+      x.((nat_hom V)/.g) = x.(((nat_hom V)/.g) * (1_(G./.V))) by GROUP_1:def 4
+      .= g*(x/.(1_(G./.V))) by B5,Z1
+      .= g*(1_G) by B6
+      .= g by GROUP_1:def 4;
+      hence Z2: x.((nat_hom V).g) = g;
+      set gBar = (nat_hom V)/.g;
+      (g * (x.a)) * (1_G) = g * (x.a) by GROUP_1:def 4
+      .= (x.gBar) * (x.a) by Z2
+      .= (x.(gBar * a)) * (gamma.(gBar, a)) by Eq1
+      .= (x.(gBar * a)) * (gamma.(gBar, a))
+      .= (g * (x/.a)) * (gamma.(gBar, a)) by Z1,B5;
+      then 1_G = gamma.(gBar, a) by GROUP_1:6;
+      hence thesis;
     end;
-
 
     Eq4: for b,c being Element of (G./.V)
     for g being Element of G st g in Q
@@ -5498,8 +5388,7 @@ proof
 
     set X = rng x;
     consider Y being Subset of G such that
-    Eq51: X = Q * Y;
-::>               *4
+    Eq51: X = Q * Y by B7;
 
     the carrier of G is finite set;
     consider beta being Function of (G./.V),G such that
@@ -5544,10 +5433,10 @@ proof
     
     set UH = rng y; :: the set of all y.a where a is Element of (G./.V);
     reconsider UH as Subset of G;
-    UH <> {} & (for g1,g2 being Element of G st g1 in UH & g2 in UH
-    holds g1 * g2 in UH) & (for g being Element of G st g in UH
-    holds g" in UH);
-::>               *4,4
+    UH <> {}
+    & (for g1,g2 being Element of G st g1 in UH & g2 in UH holds g1 * g2 in UH)
+    & (for g being Element of G st g in UH holds g" in UH);
+::>                                                      *4,4
     then consider H being strict Subgroup of G such that
     Eq71: the carrier of H = UH
     by GROUP_2:52;
@@ -5558,7 +5447,3 @@ proof
   end;
 end;
 ::> 4: This inference is not accepted
-::> 70: Something remains to be proved
-::> 103: Unknown functor
-::> 165: Unknown functor format
-::> 321: Predicate symbol or "is" expected
