@@ -1,5 +1,100 @@
+environ
+
+ vocabularies TARSKI, BINOP_1, XBOOLE_0, FUNCT_1, RELAT_1, ALGSTR_0,
+   FUNCOP_1, SUBSET_1, FUNCT_2, STRUCT_0, ZFMISC_1, CARD_3, MONOID_0,
+   GROUP_1, GROUP_2, FINSEQ_1, FINSEQ_2, GROUP_6, PARTFUN1, MSSUBFAM, RLVECT_2,
+   PRE_TOPC, WELLORD1, AUTGROUP, MOD_4,
+   CQC_SIM1, :: for "index"
+   :: ORDINAL1, :: for "natural"
+   RLSUB_1, :: for "(Omega)."
+   CARD_1, :: for "card", "0"
+   GROUP_3, :: for "are_conjugated"
+   GROUP_4, :: for "gr"
+   EQREL_1, :: for "\/"
+   NATTRA_1, :: for `*`
+   NEWTON, :: for "|^"
+   REALSET1, :: for "||"
+   NAT_1, NUMBERS, :: for NAT
+   GROUP_10, :: for Sylow subgroup stuff
+   FINSET_1, :: for "finite"
+   UPROOTS, :: for "canFS"
+   ARYTM_1, :: for "-"
+   ARYTM_3, :: for "<"
+   INT_1, :: for "mod"
+   INT_2, :: for "gcd"
+   XXREAL_0, :: for ">"
+   GROUP_24;
+ notations TARSKI, XBOOLE_0, ENUMSET1, SUBSET_1, RELAT_1, FUNCT_1, ZFMISC_1,
+   ORDINAL1, :: for Nat
+   NUMBERS, INT_1, NAT_1,
+   :: NAT_D,
+   CARD_1,
+   XCMPLX_0, :: for "*"
+   XXREAL_0,
+   FINSET_1, :: for finite
+   NEWTON, :: for GROUP_10:def 17
+   REALSET1, :: for "||"
+   CARD_3, FINSEQ_1, FINSEQ_2,
+   RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4,
+   INT_2, :: for Prime
+   PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, GROUP_2,
+   LATTICES, GROUP_3, :: CARD_3,
+   NAT_D,
+   GROUP_4,
+   GROUP_5, GROUP_6, PRALG_1, BINOP_1, :: FINSEQ_1,
+   AUTGROUP, GROUP_7,
+   GROUP_10, GROUP_22;
+ constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1,
+   ARYTM_2, XXREAL_0, :: for "<"
+   ARYTM_0, XCMPLX_0, :: for "*"
+   RELAT_1, :: for "dom"
+   REALSET1,
+   GROUP_1, LATTICES, WELLORD2, CARD_1, 
+   FINSUB_1, :: for GROUP_2:81
+   ORDINAL1, INT_1, NAT_1, NAT_D, :: for GROUP_10:def 18
+   FINSET_1, :: for finite
+   FINSEQ_1, FINSEQ_2,
+   INT_2, :: for Prime
+   NEWTON, :: for GROUP_10:def 17
+   GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, MONOID_0, PRALG_1, PRALG_2,
+   RELSET_1, FUNCT_2, FUNCT_4, AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
+ registrations XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, FINSET_1,
+   INT_1, :: for integer to be real
+   XCMPLX_0, :: for "m * n" to be a Nat
+   XREAL_0, :: needed for |^ to work properly
+   NAT_1, :: for "m * n" to be a Nat
+   GROUP_8, :: for "-> non empty for Left_Cosets"
+   FINSEQ_1, REALSET1, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, MONOID_0,
+   LATTICES, ORDINAL1, CARD_1, CARD_3, NEWTON, FUNCOP_1, RELSET_1, FUNCT_2,
+   FUNCT_4, GROUP_6, GROUP_7, GR_CY_1, GR_CY_2, GROUPP_1;
+ requirements NUMERALS, REAL, BOOLE, SUBSET, ARITHM;
+ definitions STRUCT_0, GROUP_1, TARSKI, ALGSTR_0;
+ equalities STRUCT_0, ALGSTR_0, PARTFUN1, GROUP_2, GROUP_4, AUTGROUP;
+ expansions STRUCT_0, GROUP_1, TARSKI;
+ theorems :: STRUCT_0, ALGSTR_0, SUBSET_1,
+   ZFMISC_1, SUBSET_1, RELSET_1, XTUPLE_0, NAT_1, NAT_D, XCMPLX_0,
+   XCMPLX_1, INT_1, FUNCOP_1, GROUP_8,
+   PRALG_1, FUNCT_1, CARD_3, FUNCT_2, BINOP_1, TARSKI, GROUP_1, GROUP_2,
+   GROUP_3, GROUP_4, GROUP_5, GROUP_6, FINSEQ_1, FINSEQ_2, NEWTON, XBOOLE_0,
+   XBOOLE_1, MONOID_0, PARTFUN1, AUTGROUP, GROUP_7, GROUP_10, GROUP_22,
+   GR_CY_1;
+ schemes BINOP_1, FUNCT_2, FINSEQ_2;
 
 begin :: Results concerning Transversals
+
+registration
+  let G be finite Group;
+  cluster the carrier of G -> finite;
+  correctness;
+  let H be Subgroup of G;
+  cluster Index H -> finite;
+  correctness
+  proof
+    Left_Cosets H is finite by GROUP_2:134;
+    then card (Left_Cosets H) is finite;
+    hence Index H is finite by GROUP_2:def 17;
+  end;
+end;
 
 theorem Th104:
   for G being Group
