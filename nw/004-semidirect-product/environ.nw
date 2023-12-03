@@ -7,82 +7,102 @@ environment from [[group_7]] (the article defining product groups).
 
 <<Environment for [[group_24.miz]]>>=
 environ
-<<[[group_24.miz]] vocabularies>>
-
-<<[[group_24.miz]] notations>>
-
-<<[[group_24.miz]] constructors>>
-
-<<[[group_24.miz]] registrations>>
-
-<<[[group_24.miz]] requirements>>
-
-<<[[group_24.miz]] definitions>>
-
-<<[[group_24.miz]] equalities>>
-
-<<[[group_24.miz]] expansions>>
-
-<<[[group_24.miz]] theorems>>
-
-<<[[group_24.miz]] schemes>>
+ <<[[group_24.miz]] vocabularies>>
+ <<[[group_24.miz]] notations>>
+ <<[[group_24.miz]] constructors>>
+ <<[[group_24.miz]] registrations>>
+ <<[[group_24.miz]] requirements>>
+ <<[[group_24.miz]] definitions>>
+ <<[[group_24.miz]] equalities>>
+ <<[[group_24.miz]] expansions>>
+ <<[[group_24.miz]] theorems>>
+ <<[[group_24.miz]] schemes>>
 @
 
 \subsection{Vocabularies}
 We will want to include [[AUTGROUP]] since external semidirect products
-require $\varphi\colon A\to\Aut(G)$ as part of the definition.
+require $\varphi\colon A\to\Aut(G)$ as part of the definition. We
+particularly note that we include:
+\begin{enumerate}
+\item GROUP-4 for [[gr]]
+\item EQREL-1 for [[\/]]
+\item NATTRA-1 for [[*]]
+\item NEWTON for [[|^]]
+\item REALSET1 for [[||]]
+\item NUMBERS for [[NAT]]
+\end{enumerate}
 
 <<[[group_24.miz]] vocabularies>>=
-vocabularies BINOP_1, XBOOLE_0, FUNCT_1, RELAT_1, ALGSTR_0, PRALG_1,
-  FUNCOP_1, SUBSET_1, FUNCT_2, STRUCT_0, ZFMISC_1, CARD_3, MONOID_0, GROUP_1,
-  GROUP_2, FINSEQ_1, GROUP_6, PARTFUN1, MSSUBFAM, RLVECT_2, HAHNBAN,
-  PRE_TOPC, WELLORD1, AUTGROUP, GROUP_24;
+vocabularies TARSKI, BINOP_1, XBOOLE_0, FUNCT_1, RELAT_1, ALGSTR_0,
+  FUNCOP_1, SUBSET_1, FUNCT_2, STRUCT_0, ZFMISC_1, CARD_3, MONOID_0,
+  GROUP_1, GROUP_2, FINSEQ_1, GROUP_6, PARTFUN1, MSSUBFAM, RLVECT_2,
+  PRE_TOPC, WELLORD1, AUTGROUP, MOD_4,
+  GROUP_4, :: for "gr"
+  EQREL_1, :: for "\/"
+  NATTRA_1, :: for `*`
+  NEWTON, :: for "|^"
+  REALSET1, :: for "||"
+  NUMBERS, :: for NAT
+  GROUP_24;
 @
 
+\subsection{Notation}
 <<[[group_24.miz]] notations>>=
 notations TARSKI, XBOOLE_0, ENUMSET1, SUBSET_1, RELAT_1, FUNCT_1, ZFMISC_1,
-   NAT_1, FINSEQ_1, RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4, BINOP_1,
-   PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, GROUP_2,
-   GROUP_3, GROUP_6, CARD_3, PRALG_1, AUTGROUP, GROUP_7;
+  REALSET1, :: for "||"
+  CARD_3, FINSEQ_1, FINSEQ_2,
+  RELSET_1, PARTFUN1, FUNCT_2, FUNCT_4,
+  PBOOLE, FUNCOP_1, STRUCT_0, ALGSTR_0, MONOID_0, GROUP_1, GROUP_2,
+  LATTICES, GROUP_3,
+  GROUP_4,
+  GROUP_5, GROUP_6, PRALG_1, BINOP_1,
+  AUTGROUP, GROUP_7,
+  GROUP_22;
 @
 
+\subsection{Constructors}
 <<[[group_24.miz]] constructors>>=
-constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1, XXREAL_0, REALSET1, GROUP_1,
-   GROUP_3, GROUP_6, MONOID_0, PRALG_1, PRALG_2, RELSET_1, FUNCT_4,
-   AUTGROUP, GROUP_7;
+constructors STRUCT_0, ALGSTR_0, ZFMISC_1, BINOP_1, REALSET1,
+  GROUP_1, LATTICES, WELLORD2, CARD_1, 
+  FINSUB_1, :: for GROUP_2:81
+  FINSET_1, :: for finite
+  FINSEQ_1, FINSEQ_2,
+  GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, MONOID_0, PRALG_1, PRALG_2,
+  RELSET_1, FUNCT_2, FUNCT_4, AUTGROUP, GROUP_7, GROUP_10, GROUP_22;
 @ 
 
+\subsection{Registrations}
 <<[[group_24.miz]] registrations>>=
-registrations XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, FINSET_1, XREAL_0,
-   FINSEQ_1, REALSET1, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, MONOID_0,
-   ORDINAL1, CARD_3, FUNCOP_1, RELSET_1, FUNCT_2, FUNCT_4, GROUP_6,
-   GROUP_7, GR_CY_2;
+registrations XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, FINSET_1,
+  FINSEQ_1, REALSET1, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, MONOID_0,
+  LATTICES, ORDINAL1, CARD_1, CARD_3, NEWTON, FUNCOP_1, RELSET_1, FUNCT_2,
+  FUNCT_4, GROUP_6, GROUP_7, GR_CY_1, GR_CY_2, GROUPP_1;
 @
 
+\subsection{Requirements}
 <<[[group_24.miz]] requirements>>=
-requirements NUMERALS, BOOLE, SUBSET;
+requirements NUMERALS, REAL, BOOLE, SUBSET, ARITHM;
 @
 
 <<[[group_24.miz]] definitions>>=
-definitions STRUCT_0, GROUP_1, TARSKI, GROUP_6, XBOOLE_0, PRALG_1, FUNCT_1,
-  PBOOLE, ALGSTR_0, AUTGROUP;
+definitions STRUCT_0, GROUP_1, TARSKI, ALGSTR_0;
 @
 
 <<[[group_24.miz]] equalities>>=
-equalities FINSEQ_1, BINOP_1, REALSET1, STRUCT_0, ALGSTR_0, PARTFUN1, AUTGROUP;
+equalities STRUCT_0, ALGSTR_0, PARTFUN1, AUTGROUP;
 @
 
 <<[[group_24.miz]] expansions>>=
-expansions STRUCT_0, GROUP_1, TARSKI, FINSEQ_1, FUNCT_1;
+expansions STRUCT_0, GROUP_1, TARSKI;
 @
 
 <<[[group_24.miz]] theorems>>=
-theorems PRALG_1, FUNCT_1, CARD_3, FUNCT_2, BINOP_1, TARSKI, ZFMISC_1,
-   GROUP_1, GROUP_2, GROUP_6, FUNCT_4, FINSEQ_1, FINSEQ_3, ENUMSET1,
-   RELSET_1, XBOOLE_0, XBOOLE_1, RELAT_1, FUNCOP_1, MONOID_0,
-   PARTFUN1, AUTGROUP, GROUP_7;
+theorems SUBSET_1, PRALG_1, FUNCT_1, CARD_3, FUNCT_2, BINOP_1, TARSKI,
+  ZFMISC_1, RELAT_1,
+  GROUP_1, GROUP_2, GROUP_3, GROUP_4, GROUP_5, GROUP_6, FINSEQ_1,
+  XBOOLE_0, MONOID_0, PARTFUN1, AUTGROUP, GROUP_7;
 @
 
 <<[[group_24.miz]] schemes>>=
-schemes BINOP_1, FUNCT_1, PBOOLE, FUNCT_2, XBOOLE_0;
+schemes BINOP_1, FUNCT_2;
 @ 

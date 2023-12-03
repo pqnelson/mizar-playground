@@ -75,12 +75,14 @@ dumb_extract_text: defs
 	noweave $(NOWEBOPTS) -indexfrom 004.defs $(GROUP24) > tex/semidirect-product.tex
 #	noweave $(NOWEBOPTS) -indexfrom 004.defs $(PERMUTATION_GROUP) > tex/permutation_group.tex
 code:
+	notangle -RTEXT/group-24.miz $(GROUP24) | tr -d '\r' > text/group_24.miz
+	notangle -RDICT/group-24.voc $(GROUP24) | tr -d '\r' > dict/group_24.voc
 #	notangle -RTEXT/group-22.miz $(CHARACTERISTIC_SUBGROUP) > text/group_22.miz
 #	notangle -RDICT/GROUP-22.VOC $(CHARACTERISTIC_SUBGROUP) > dict/group_22.voc
 #	notangle -RTEXT/group-23.miz $(PRODUCT_GROUP) | tr -d '\r' > text/group_23.miz
 #	notangle -RDICT/GROUP-23.VOC $(PRODUCT_GROUP) | tr -d '\r' > dict/group_23.voc
-	notangle -RTEXT/matgrp-1.miz $(MATRIXGROUP1) | tr -d '\r' > text/matgrp_1.miz
-	notangle -RDICT/matgrp-1.voc $(MATRIXGROUP1) | tr -d '\r' > dict/matgrp_1.voc
+#	notangle -RTEXT/matgrp-1.miz $(MATRIXGROUP1) | tr -d '\r' > text/matgrp_1.miz
+#	notangle -RDICT/matgrp-1.voc $(MATRIXGROUP1) | tr -d '\r' > dict/matgrp_1.voc
 
 without_bib:
 	$(TEX) $(BOOK)

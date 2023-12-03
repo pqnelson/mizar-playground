@@ -1,7 +1,15 @@
-:: Semidirect products of groups
+:: Semidirect products
+::  by Alexander M. Nelson
+::
+:: This code can be distributed under the GNU General Public Licence
+:: version 3.0 or later, or the Creative Commons Attribution-ShareAlike
+:: License version 3.0 or later, subject to the binding interpretation
+:: detailed in file COPYING.interpretation.
+:: See COPYING.GPL and COPYING.CC-BY-SA for the full text of these
+:: licenses, or see http://www.gnu.org/licenses/gpl.html and
+:: http://creativecommons.org/licenses/by-sa/3.0/.
 
 environ
-
  vocabularies TARSKI, BINOP_1, XBOOLE_0, FUNCT_1, RELAT_1, ALGSTR_0,
    FUNCOP_1, SUBSET_1, FUNCT_2, STRUCT_0, ZFMISC_1, CARD_3, MONOID_0,
    GROUP_1, GROUP_2, FINSEQ_1, GROUP_6, PARTFUN1, MSSUBFAM, RLVECT_2,
@@ -83,24 +91,14 @@ registration
   correctness by GROUP_2:135;
 end;
 
-
 registration
   let G be strict Group;
   cluster -> multiplicative for Element of Aut G;
   correctness by AUTGROUP:def 1;
 end;
 
-LmDoubleCheckAutElementsAreMorphisms:
-  for G being strict Group
-  for f being Element of Aut G
-  holds f is Homomorphism of G,G;
-
-reserve G for strict Group,
-  A for Group,
-  phi for Homomorphism of A, AutGroup G;
-
 registration
-  let A;
+  let A be Group;
   cluster id A -> multiplicative;
   correctness by GROUP_6:38;
 
@@ -114,24 +112,20 @@ registration
   end;
 end;
 
-LmCheckIdIsAutomorphism:
-  id A is Automorphism of A;
-
 registration
-  let G;
+  let G be strict Group;
   cluster AutGroup G -> non empty strict constituted-Functions;
   coherence by MONOID_0:80;
 end;
 
 definition
-  let A,G,phi;
+  let A, G, phi;
   let a be Element of A;
-  func phi /. a -> Function of G,G equals
-  phi.a;
+  func phi /. a -> Homomorphism of G,G equals phi.a;
   correctness
   proof
     phi.a is Element of Aut G;
-    hence thesis;
+    hence phi.a is Homomorphism of G, G;
   end;
 end;
 
@@ -158,20 +152,6 @@ registration
   cluster phi/.a -> multiplicative;
   coherence;
 end;
-
-
-:: :: Since there is no way to tell Mizar that the Element of AutGroup G
-:: :: is automatically an Element of Aut G which is also automatically
-:: :: a Function of G,G; we just short-circuit the whole machinery.
-:: definition
-::   let G be strict Group, A be Group;
-::   let phi be Homomorphism of A, AutGroup G;
-::   let a be Element of A;
-::   func phi/.a -> Homomorphism of G,G equals phi.a;
-::   coherence;
-:: end;
-
-
 
 registration
   let G, A be Group;
@@ -229,47 +209,6 @@ proof
   thus dom x = {1,2} by A2,PARTFUN1:def 2;
 end;
 
-:: Lm0:
-::   for x being Element of product (Carrier <*A,G*>)
-::   holds x.1 in A & x.2 in G
-:: proof
-::   let x be Element of product (Carrier <*A,G*>);
-::   A1: dom (Carrier <*A,G*>) = {1,2} by PARTFUN1:def 2;
-
-::   A2: (Carrier <*A,G*>).1 = the carrier of A
-::   proof
-::     1 in {1,2} by TARSKI:def 2; then
-::     1 in dom (Carrier <*A,G*>) by A1; then
-::     ex R being 1-sorted st (R = <*A,G*>.1 & (Carrier <*A,G*>).1 = the
-::     carrier of R) by PRALG_1:def 15;
-::     hence thesis by FINSEQ_1:44;
-::   end;
-::   A3: (Carrier <*A,G*>).2 = the carrier of G
-::   proof
-::     2 in {1,2} by TARSKI:def 2; then
-::     2 in dom (Carrier <*A,G*>) by A1; then
-::     ex R being 1-sorted st (R = <*A,G*>.2 & (Carrier <*A,G*>).2 = the
-::     carrier of R) by PRALG_1:def 15;
-::     hence thesis by FINSEQ_1:44;
-::   end;
-::   x in product (Carrier <*A,G*>);
-::   then dom x = dom (Carrier <*A,G*>) & (for i being object st i in dom
-::   (Carrier <*A,G*>) holds x.i in (Carrier <*A,G*>).i) by CARD_3:9;
-::   then A4: dom x = {1,2} & (for i being object st i in {1,2}
-::   holds x.i in (Carrier <*A,G*>).i) by A1;
-
-::   1 in {1,2} by TARSKI:def 2;
-::   then x.1 in (Carrier <*A,G*>).1 by A4;
-::   then x.1 in the carrier of A by A2;
-::   hence x.1 in A;
-
-::   2 in {1,2} by TARSKI:def 2;
-::   then x.2 in (Carrier <*A,G*>).2 by A4;
-::   then x.2 in the carrier of G by A3;
-::   hence x.2 in G;
-:: end;
-
-
 Lm0:
   for G1,G2 being Group
   for x being Element of product (Carrier <*G1,G2*>)
@@ -280,7 +219,6 @@ proof
   x is Element of the carrier of product <*G1,G2*> by GROUP_7:def 2;
   hence thesis by th4a;
 end;
-
 
 Lm1:
   for a being Element of A, g being Element of G
@@ -661,7 +599,7 @@ proof
   hence (phi /. 1_A) /. g = g;
 end;
 
-theorem th8:
+Lm8:
   for x,e being Element of semidirect_product (A, G, phi)
   st e = <* 1_A, 1_G*>
   holds x * e = x & e * x = x
@@ -682,6 +620,28 @@ proof
             .= <* a, 1_G * ((phi /. (1_A)) /. g) *> by GROUP_1:def 4
             .= <* a, (1_G) * (g) *> by A3, GROUP_1:def 4
             .= x by A2,GROUP_1:def 4;
+end;
+
+registration
+  let G, A, phi;
+  cluster semidirect_product (A, G, phi) -> unital;
+  correctness
+  proof
+    set S = semidirect_product (A, G, phi);
+    reconsider e = <* 1_A, 1_G*> as Element of S by th3;
+    take e;
+    thus thesis by Lm8;
+  end;
+end;
+
+theorem th14:
+  1_(semidirect_product (A, G, phi)) = <* 1_A, 1_G *>
+proof
+  reconsider e = <* 1_A, 1_G *> as Element of semidirect_product (A, G, phi)
+  by th3;
+  for x being Element of semidirect_product (A, G, phi)
+  holds x * e = x & e * x = x by Lm8;
+  hence thesis by GROUP_1:def 4;
 end;
 
 theorem th9:
@@ -714,30 +674,58 @@ proof
 end;
 
 theorem th11:
-  for x,y,e being Element of semidirect_product (A, G, phi)
+  for x,y being Element of semidirect_product (A, G, phi)
   for a being Element of A
   for g being Element of G
-  st x = <* a, g *> & e = <* 1_A, 1_G *> & y = <* a", (phi/.(a"))/.(g") *>
-  holds x * y = e & y * x = e
+  st x = <* a, g *> & y = <* a", (phi/.(a"))/.(g") *>
+  holds x * y = 1_(semidirect_product (A, G, phi)) & y * x = 1_(semidirect_product (A, G, phi))
 proof
-  let x,y,e be Element of semidirect_product (A, G, phi);
+  let x,y be Element of semidirect_product (A, G, phi);
   let a be Element of A;
   let g be Element of G;
   assume A1: x = <* a, g *>;
-  assume A2: e = <* 1_A, 1_G *>;
-  assume A3: y = <* a", (phi/.(a"))/.(g") *>;
-  A4: ((phi /. (a")) /. (g")) * ((phi/.(a"))/.(g))
+  assume A2: y = <* a", (phi/.(a"))/.(g") *>;
+  A3: ((phi /. (a")) /. (g")) * ((phi/.(a"))/.(g))
    = (phi /. (a")) /. (g" * g) by GROUP_6:def 6
   .= (phi /. (a")) /. 1_G by GROUP_1:def 5
   .= 1_G by GROUP_6:31;
-  A5: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by th10;
+  A4: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by th10;
 
-  thus x * y = <* a * (a"), g * ((phi/.a)/.((phi/.(a"))/.(g"))) *> by A1,A3,th6
-            .= <* a * a", 1_G *> by A5,GROUP_1:def 5
-            .= e by A2,GROUP_1:def 5;
-  thus y * x = <* (a") * a, (phi/.(a")).(g") * ((phi/. a")/.g)*> by A1,A3,th6
-            .= e by A2,A4,GROUP_1:def 5;
+  thus x * y = <* a * (a"), g * ((phi/.a)/.((phi/.(a"))/.(g"))) *> by A1,A2,th6
+            .= <* a * a", 1_G *> by A4,GROUP_1:def 5
+            .= <* 1_A, 1_G *> by GROUP_1:def 5
+            .= 1_(semidirect_product (A, G, phi)) by th14;
+  thus y * x = <* (a") * a, (phi/.(a")).(g") * ((phi/. a")/.g)*> by A1,A2,th6
+            .= <* 1_A, 1_G *> by A3,GROUP_1:def 5
+            .= 1_(semidirect_product (A, G, phi)) by th14;
 end;
+
+
+theorem thUnitalMagmaIsGroupCond:
+  for M being non empty unital multMagma
+  st (for h being Element of M ex g being Element of M st h * g = 1_M
+  & g * h = 1_M)
+  holds M is Group-like
+proof
+  let M be non empty unital multMagma;
+  assume A1: for h being Element of M
+  ex g being Element of M
+  st h * g = 1_M & g * h = 1_M;
+  
+  ex e being Element of M st
+  for h being Element of M
+  holds (h * e = h & e * h = h & ex g being Element of M st
+  (h * g = e & g * h = e))
+  proof
+    take e = 1_M;
+    let h be Element of M;
+    thus h * e = h by GROUP_1:def 4;
+    thus e * h = h by GROUP_1:def 4;
+    thus thesis by A1;
+  end;
+  hence M is Group-like by A1, GROUP_1:def 1, GROUP_1:def 3;
+end;
+
 
 registration
   let G be strict Group;
@@ -788,51 +776,24 @@ registration
   cluster semidirect_product (A, G, phi) -> Group-like;
   correctness
   proof
-    thus ex e being Element of semidirect_product (A, G, phi)
-    st (for h being Element of semidirect_product (A, G, phi)
-        holds h * e = h & e * h = h
-        & ex g being Element of semidirect_product (A, G, phi)
-        st h * g = e & g * h = e)
+    set S=semidirect_product (A, G, phi);
+    for h being Element of S ex g being Element of S st h * g = 1_S
+    & g * h = 1_S
     proof
-      <* 1_A, 1_G *> is Element of semidirect_product (A, G, phi) by th3;
-      then consider e being Element of semidirect_product (A, G, phi) such that
-      A1: e = <* 1_A, 1_G *>;
-
-      take e;
-      A2: for h being Element of semidirect_product (A, G, phi)
-      holds h * e = h & e * h = h by A1, th8;
-      
-      for h being Element of semidirect_product (A, G, phi)
-      ex g being Element of semidirect_product (A, G, phi)
-      st h * g = e & g * h = e
-      proof
-        let h be Element of semidirect_product (A, G, phi);
-        consider a being Element of A, g being Element of G such that
-        B1: h = <* a, g *> by th5;
-        set g2 = (phi/.(a"))/.(g");
-        reconsider g2 as Element of G;
-        reconsider g = <* a", g2 *> as Element of semidirect_product (A,G,phi)
-        by th3;
-        take g;
-        thus h * g = e & g * h = e by A1,B1,th11;
-      end;
-      hence thesis by A2;
+      let h be Element of S;
+      consider a being Element of A, g being Element of G such that
+      B1: h = <* a, g *> by th5;
+      reconsider y = <* a", (phi/.(a"))/.(g") *> as Element of S by th3;
+      take y;
+      thus h * y = 1_S by B1,th11;
+      thus y * h = 1_S by B1,th11;
     end;
+    hence thesis by thUnitalMagmaIsGroupCond;
   end;
 end;
 
 LmDoubleCheckSemidirectProductIsGroup:
   semidirect_product (A, G, phi) is Group;
-
-theorem th14:
-  1_(semidirect_product (A, G, phi)) = <* 1_A, 1_G *>
-proof
-  reconsider e = <* 1_A, 1_G *> as Element of semidirect_product (A, G, phi)
-  by th3;
-  for x being Element of semidirect_product (A, G, phi)
-  holds x * e = x & e * x = x by th8;
-  hence thesis by GROUP_1:def 4;
-end;
 
 theorem th15:
   for a being Element of A
@@ -841,21 +802,17 @@ theorem th15:
   st x = <* a, g *>
   holds x" = <* a", (phi/.(a"))/.(g") *>
 proof
+  set S = semidirect_product (A, G, phi);
   let a be Element of A;
   let g be Element of G;
   let x be Element of semidirect_product (A, G, phi);
   assume A1: x = <* a, g *>;
-  reconsider e = <* 1_A, 1_G *> as Element of semidirect_product (A, G, phi)
-  by th3;
-  reconsider y = <* a", (phi/.(a"))/.(g") *> as Element of
-  semidirect_product (A, G, phi)
-  by th3;
-  x * y = e & y * x = e by A1,th11;
-  then x * y = 1_(semidirect_product(A, G, phi))
-  & y * x = 1_(semidirect_product(A, G, phi)) by th14; then
-  y = x" by GROUP_1:def 5;
-  hence x" = <* a", (phi/.(a"))/.(g") *>;
+  reconsider y = <* a", (phi/.(a"))/.(g") *> as Element of S by th3;
+  x * y = 1_S & y * x = 1_S by A1,th11;
+  then y = x" by GROUP_1:5;
+  hence thesis;
 end;
+
 
 theorem th16:
   for g1,g2 being Element of G
