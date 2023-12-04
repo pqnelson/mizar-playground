@@ -1,9 +1,23 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
 \section{Subgroup Complements}
 
-<<Subgroup Complements>>=
+The notion of subgroup complements appear in transfer and fusion of
+subgroups. For our purposes, the notion which is relevant is the
+complement of a normal subgroup (the complement of $N\normalSubgroup G$
+is a subgroup $H$ such that $HN=G$ and $H\cap N=\trivialSubgroup$). It's
+a predicate, ``$H$ and $N$ are complements in $G$''. This can be
+generalized (as John Rose's \textit{A Course in Group Theory} shows in
+chapter 10) to consider: $J\normalSubgroup H\subgroup G$ having the
+section $H/J$ be complementary to $K$ in $G$ by having $H\cap K=J$ and $HK=G$.
+When $J=\trivialSubgroup$, we recover an isomorphic (but not identical)
+notion of complementary subgroups.
 
-<<Theorem: $x\in G_{1}\times G_{2}$ implies $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\operatorname{len}(x)=2$>>
+We are interested in using the notion to define a predicate, ``$G$
+splits over $N$'', to indicate there exists a subgroup $H\subgroup G$
+such that $H$ and $N$ are complements in $G$.
+
+<<Subgroup Complements>>=
+begin :: Complementary Subgroups
 
 <<Definition: $H$, $N$ are complements in $G$>>
 
@@ -31,54 +45,6 @@
 
 <<Theorem: multiplication from different subgroups is injective iff the subgroups are disjoint>>
 @
-
-\begin{theorem}
-Let $G_{1}$, $G_{2}$ be groups, let $x\in G_{1}\times G_{2}$.
-Then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\operatorname{len}(x)=2$.
-\end{theorem}
-
-<<Theorem: $x\in G_{1}\times G_{2}$ implies $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\operatorname{len}(x)=2$>>=
-theorem th4a:
-  for G1,G2 being Group
-  for x being Element of product (<*G1,G2*>)
-  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
-proof
-  let G1,G2 be Group;
-  let x be Element of product (<*G1,G2*>);
-  A1: dom (Carrier <*G1,G2*>) = {1,2} by PARTFUN1:def 2;
-  x in the carrier of product (<*G1,G2*>); then
-  x in product (Carrier <*G1,G2*>) by GROUP_7:def 2;
-  then consider f being Function such that
-  A2: x = f & dom f = dom (Carrier <*G1,G2*>) & (for y being object st y
-  in dom (Carrier <*G1,G2*>) holds f.y in (Carrier <*G1,G2*>).y)
-  by A1, Def1, CARD_3:def 5;
-  A3: <* G1, G2 *>.1 = G1 by FINSEQ_1:44;
-  A4: <* G1, G2 *>.2 = G2 by FINSEQ_1:44;
-
-  thus x.1 in G1
-  proof
-    1 in {1,2} by TARSKI:def 2;
-    then B1: 1 in dom (Carrier <*G1,G2*>) by A1;
-    then ex R being 1-sorted st
-    (R = <*G1,G2*>.1 & (Carrier <*G1,G2*>).1 = the carrier of R) by PRALG_1:def 15;
-    then (Carrier <*G1,G2*>).1 = the carrier of G1 by A3;
-    then x.1 in the carrier of G1 by A2, B1;
-    hence thesis;
-  end;
-
-  thus x.2 in G2
-  proof
-    2 in {1,2} by TARSKI:def 2;
-    then B1: 2 in dom (Carrier <*G1,G2*>) by A1;
-    then ex R being 1-sorted st
-    (R = <*G1,G2*>.2 & (Carrier <*G1,G2*>).2 = the carrier of R) by PRALG_1:def 15;
-    then (Carrier <*G1,G2*>).2 = the carrier of G2 by A4;
-    then x.2 in the carrier of G2 by A2, B1;
-    hence thesis;
-  end;
-  thus dom x = {1,2} by A1,A2;
-end;
-@ %def th4a
 
 \begin{definition}
 Let $G$ be a group, let $H\subgroup G$ be a subgroup, let
