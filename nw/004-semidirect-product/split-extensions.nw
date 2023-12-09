@@ -16,8 +16,6 @@ begin :: Split extensions of groups.
 
 <<Theorem: if $H$, $N$ are complements, then any $g\in G$ may be factorized as $g=hn$>>
 
-<<Theorem: Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.>>
-
 @
 
 \begin{definition}
@@ -36,6 +34,14 @@ definition
   st H,N are_complements_in G);
 end;
 @ %def splits_over Def6
+
+\begin{voc}
+We add [[splits_over]] as a predicate in our vocabulary.
+\end{voc}
+
+<<DICT/group-24.voc>>=
+Rsplits_over
+@
 
 \begin{lemma}
 Let $H\subgroup G$, $N\normalSubgroup G$, and $N_{1}\normalSubgroup G$ strict.
@@ -188,132 +194,3 @@ proof
   thus h*n = g by A2;
 end;
 @ %def Th40
-
-\begin{theorem}
-Let $H,K\subgroup G$.
-Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.
-\end{theorem}
-
-<<Theorem: Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.>>=
-:: Bourbaki mentions this, literally in passing in a sentence in
-:: General Topology Chapter II, not even making a proposition or lemma
-:: out of it.
-theorem Th55:
-  for G being Group
-  for H,K being Subgroup of G
-  for phi being Function of product <*H,K*>,G
-  st (for h,k being Element of G st h in H & k in K
-      holds phi.(<*h,k*>) = h*k)
-  holds phi is one-to-one iff H /\ K = (1).G
-proof
-  let G be Group;
-  let H,K be Subgroup of G;
-  let phi be Function of product <*H,K*>,G;
-  assume A1: for h,k being Element of G st h in H & k in K
-  holds phi.(<*h,k*>) = h*k;
-  A2: 1_G in H & 1_G in K by GROUP_2:46;
-
-  thus phi is one-to-one implies H /\ K = (1).G
-  proof
-    assume B1: phi is one-to-one;
-    B1b: for h1,h2,k1,k2 being Element of G
-    st h1 in H & h2 in H & k1 in K & k2 in K
-    & phi.(<*h1,k1*>) = phi.(<*h2,k2*>)
-    holds <*h1,k1*> = <*h2,k2*>
-    proof
-      let h1,h2,k1,k2 be Element of G;
-      assume Z1: h1 in H;
-      assume Z2: h2 in H;
-      assume Z3: k1 in K;
-      assume Z4: k2 in K;
-      assume Z5: phi.(<*h1,k1*>) = phi.(<*h2,k2*>);
-      <*h1,k1*> in product <*H,K*> by Z1,Z3,Th50;
-      then reconsider x1 = <*h1,k1*> as Element of product <*H,K*>;
-      <*h2,k2*> in product <*H,K*> by Z2,Z4,Th50;
-      then reconsider x2 = <*h2,k2*> as Element of product <*H,K*>;
-      phi.x1 = phi.x2 by Z5;
-      then x1 = x2 by B1,GROUP_6:1;
-      hence <*h1,k1*> = <*h2,k2*>;
-    end;
-
-    H /\ K <> (1).G implies contradiction
-    proof
-      assume B2: H /\ K <> (1).G;
-      (1).G is Subgroup of H /\ K by GROUP_2:65;
-      then consider h1 being Element of G such that
-      B3: h1 in H /\ K & not h1 in (1).G by B2,Th51;
-      B4: h1 in H & h1 in K by B3, GROUP_2:82;
-      B5: h1 <> 1_G by B3, GROUP_5:1;
-      h1" in K by B4, GROUP_2:51;
-      then B6: h1 in H & h1" in K by B4;
-      then phi.(<*h1,h1"*>) = h1 * (h1") by A1
-      .= 1_G by GROUP_1:def 5
-      .= (1_G) * (1_G) by GROUP_1:def 4
-      .= phi.(<*1_G, 1_G*>) by A1,A2;
-      then <*h1, h1"*> = <*1_G,1_G*> by A2,B1b,B6;
-      then h1 = 1_G & h1" = 1_G by Lm1;
-      hence contradiction by B5;
-    end;
-
-    hence H /\ K = (1).G;
-  end;
-  thus H /\ K = (1).G implies phi is one-to-one
-  proof
-    assume B1: H /\ K = (1).G;
-    for x,y being Element of product <*H,K*>
-    st phi.x = phi.y
-    holds x = y
-    proof
-      let x,y be Element of product <*H,K*>;
-      assume B2: phi.x = phi.y;
-      x.1 in H & x.2 in K & dom x = {1,2} by th4a;
-      then x.1 in H & x.1 in G & x.2 in K & x.2 in G & dom x = {1,2}
-      by GROUP_2:41;
-      then consider h1,k1 being Element of G such that
-      B3a: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K;
-      dom x = {1,2} by th4a;
-      then len x = 2 by FINSEQ_1:2,def 3;
-      then x = <*h1,k1*> by B3a,FINSEQ_1:44;
-      then B3: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K & x = <*h1,k1*>
-      by B3a;
-      y.1 in H & y.2 in K & dom y = {1,2} by th4a;
-      then y.1 in G & y.1 in H & y.2 in G & y.2 in K & dom y = {1,2}
-      by GROUP_2:41;
-      then consider h2,k2 being Element of G such that
-      B4a: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K;
-      dom y = {1,2} by th4a;
-      then len y = 2 by FINSEQ_1:2,def 3;
-      then y = <*h2,k2*> by B4a,FINSEQ_1:44;
-      then B4: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K & y = <*h2,k2*>
-      by B4a;
-      h1*k1 = phi.x by A1,B3
-           .= h2*k2 by A1,B2,B4;
-      then (h2") * (h1 * k1) = ((h2") * h2) * k2 by GROUP_1:def 3
-                            .= (1_G) * k2 by GROUP_1:def 5
-                            .= k2 by GROUP_1:def 4;
-      then B6: k2 * (k1") = (((h2") * h1) * k1) * (k1") by GROUP_1:def 3
-                         .= ((h2") * h1) * (k1 * (k1")) by GROUP_1:def 3
-                         .= ((h2") * h1) * 1_G by GROUP_1:def 5
-                         .= (h2") * h1 by GROUP_1:def 4;
-      k2 in K & k1" in K by B3,B4, GROUP_2:51;
-      then B7: k2 * (k1") in K by GROUP_2:50;
-      then B8: (h2") * h1 in K by B6;
-      h1 in H & h2" in H by B3,B4, GROUP_2:51;
-      then B9: (h2") * h1 in H by GROUP_2:50;
-      then B10: k2 * (k1") in H by B6;
-      (h2") * h1 in H /\ K by B8,B9,GROUP_2:82;
-      then (h2") * h1 = 1_G by B1,GROUP_5:1;
-      then B11: h1 = (h2")" by GROUP_1:12
-      .= h2;
-      k2 * (k1") in H /\ K by B7,B10,GROUP_2:82;
-      then k2 * (k1") = 1_G by B1,GROUP_5:1;
-      then k2 = (k1")" by GROUP_1:12
-      .= k1;
-      then <*h1,k1*> = <*h2,k2*> by B11;
-      hence x = y by B3,B4;
-    end;
-
-    hence phi is one-to-one by GROUP_6:1;
-  end;
-end;
-@ %def Th55

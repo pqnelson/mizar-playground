@@ -71,6 +71,20 @@ begin :: Complementary Subgroups
 <<Theorem: if $K\properSubgroup H\subgroup G$, then $\exists g\in H, g\notin K$ >>
 
 <<Theorem: multiplication from different subgroups is injective iff the subgroups are disjoint>>
+
+<<Theorem: existence of $f\colon H\times K\to G$, $f(h,k)=hk$>>
+
+<<Theorem: Existence of homomorphism $\varphi\colon N\rtimes H\to G$, $\varphi(n,h)=nh$.>>
+
+<<Theorem: If $H_{1},H_{2}\subgroup G$, then $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$>>
+
+<<Theorem: If $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$, then $H_{2}\cdot H_{1}\subset U(H_{1}\vee H_{2})$>>
+
+<<Theorem: If $H_{1}\cdot H_{2}=U(H_{1}\vee H_{2})$, then $H_{1}\cdot H_{2}=H_{2}\cdot H_{1}$>>
+
+<<Theorem: If $H$ and $N$ are complements in $G$, then $H\cdot N=G$ and $N\cdot H=G$>>
+
+<<Theorem: $\beta\colon N\rtimes H\to G$, $\beta(n,h)=nh$ is an isomorphism>>
 @
 
 \begin{definition}
@@ -930,7 +944,7 @@ isomorphic to the quotient group $H\iso G/N$.
 theorem Th28:
   for G being Group
   for H being Subgroup of G
-  for N being strict normal Subgroup of G
+  for N being normal Subgroup of G
   st H,N are_complements_in G
   holds G ./. N, H are_isomorphic
 proof
@@ -1063,7 +1077,10 @@ Then $\varphi$ is injective iff $H\cap K=\trivialSubgroup$.
 \end{theorem}
 
 <<Theorem: multiplication from different subgroups is injective iff the subgroups are disjoint>>=
-theorem
+:: Bourbaki mentions this, literally in passing in a sentence in
+:: General Topology Chapter II, not even making a proposition or lemma
+:: out of it.
+theorem Th55:
   for G being Group
   for H,K being Subgroup of G
   for phi being Function of product <*H,K*>,G
@@ -1183,4 +1200,342 @@ proof
     hence phi is one-to-one by GROUP_6:1;
   end;
 end;
-@ 
+@ %def Th55
+
+\begin{theorem}
+There exists a function $f\colon H\times K\to G$ such that $f(h,k)=hk$,
+and it is injective iff $H\cap K=\trivialSubgroup$.
+\end{theorem}
+
+<<Theorem: existence of $f\colon H\times K\to G$, $f(h,k)=hk$>>=
+theorem Th56:
+  for G being Group
+  for H,K being Subgroup of G
+  ex phi being Function of product (Carrier <*H,K*>),G
+  st (for h,k being Element of G st h in H & k in K
+      holds phi.(<*h,k*>) = h*k)
+  & (phi is one-to-one iff H /\ K = (1).G)
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  defpred P[Element of product (Carrier <*H,K*>), Element of G] means
+  ex h,k being Element of G st h in H & k in K & $1 = <*h,k*> & $2 = h*k;
+
+  A1: for x being Element of product (Carrier <*H,K*>)
+  ex y being Element of G
+  st P[x, y]
+  proof
+    let x be Element of product (Carrier <*H,K*>);
+    x in product (Carrier <*H,K*>);
+    then x in the carrier of product <*H,K*> by GROUP_7:def 2;
+    then x in product (<*H,K*>);
+    then B1: x.1 in H & x.2 in K & dom x = {1,2} by th4a;
+    then x.1 in H & x.1 in G & x.2 in K & x.2 in G by GROUP_2:40;
+    then consider h,k being Element of G such that
+    B2: h = x.1 & k = x.2 & h in H & k in K;
+    len x = 2 by B1,FINSEQ_1:2,def 3;
+    then B3: x = <*h, k*> by B2, FINSEQ_1:44;
+    take y = h*k;
+    thus P[x, y] by B2,B3;
+  end;
+
+  consider phi being Function of product (Carrier <*H,K*>),G such that
+  A2: for x being Element of product (Carrier <*H,K*>) holds P[x, phi.x]
+  from FUNCT_2:sch 3(A1);
+  take phi;
+
+  A3: for h,k being Element of G st h in H & k in K
+  holds phi.(<*h,k*>) = h*k
+  proof
+    let h,k be Element of G;
+    assume B1: h in H;
+    assume B2: k in K;
+
+    <*h,k*> in product <*H,K*> by B1,B2,Th50; then
+    <*h,k*> in the carrier of product <*H,K*>; then
+    reconsider x=<*h,k*> as Element of product (Carrier <*H,K*>)
+    by GROUP_7:def 2;
+    P[x, phi.x] by A2;
+    then consider h1,k1 being Element of G such that
+    B3: h1 in H & k1 in K & x = <*h1,k1*> & phi.x = h1*k1;
+    h1 = h & k1 = k by B3,Lm1;
+    hence phi.(<*h,k*>) = h*k by B3;
+  end;
+
+  thus for h,k being Element of G st h in H & k in K
+  holds phi.(<*h,k*>) = h*k by A3;
+
+  the carrier of product <*H,K*> = product (Carrier <*H,K*>) by GROUP_7:def 2;
+  then phi is Function of product <*H,K*>,G;
+  hence phi is one-to-one iff H /\ K = (1).G by A3,Th55;
+end;
+@ %def Th56
+
+\begin{theorem}
+Existence of homomorphism $\varphi\colon N\rtimes H\to G$, $\varphi(n,h)=nh$.
+\end{theorem}
+
+<<Theorem: Existence of homomorphism $\varphi\colon N\rtimes H\to G$, $\varphi(n,h)=nh$.>>=
+theorem Th57:
+  for G being Group
+  for H being Subgroup of G
+  for N being strict normal Subgroup of G
+  for phi being Homomorphism of H,AutGroup N
+  ex psi being Function of semidirect_product (N,H,phi),G
+  st (for n,h being Element of G st n in N & h in H
+      holds psi.(<*n,h*>) = n*h)
+  & (psi is one-to-one iff N /\ H = (1).G)
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be strict normal Subgroup of G;
+  let phi be Homomorphism of H, AutGroup N;
+  A1: for f being Function of product (Carrier <*N,H*>),G
+  holds f is Function of semidirect_product (N,H,phi), G
+  proof
+    let f be Function of product (Carrier <*N,H*>),G;
+    the carrier of semidirect_product (N,H,phi) = product (Carrier <*N,H*>)
+    by Def1;
+    hence f is Function of semidirect_product (N,H,phi), G;
+  end;
+  consider psi being Function of product (Carrier <*N,H*>),G such
+  that
+  A2: (for n,h being Element of G st n in N & h in H holds psi.(<*n,h*>)=n*h)
+  & (psi is one-to-one iff N /\ H = (1).G)
+  by Th56;
+  reconsider psi as Function of semidirect_product (N,H,phi), G by A1;
+  take psi;
+  thus thesis by A2;
+end;
+@ %def Th57
+
+\begin{theorem}
+If $H_{1},H_{2}\subgroup G$, then $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$.
+\end{theorem}
+
+<<Theorem: If $H_{1},H_{2}\subgroup G$, then $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$>>=
+theorem Lm60:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  holds H1*H2 c= the carrier of H1 "\/" H2
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  H1 "\/" H2 = gr (H1 * H2) by GROUP_4:50;
+  hence H1 * H2 c= the carrier of H1 "\/" H2 by GROUP_4:def 4;
+end;
+@ %def Lm60
+
+\begin{theorem}
+If $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$, then $H_{2}\cdot H_{1}\subset U(H_{1}\vee H_{2})$.
+\end{theorem}
+
+<<Theorem: If $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$, then $H_{2}\cdot H_{1}\subset U(H_{1}\vee H_{2})$>>=
+theorem Th60:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  holds H1*H2 c= the carrier of H1 "\/" H2
+  & H2 * H1  c= the carrier of H1 "\/" H2
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  thus H1*H2 c= the carrier of H1 "\/" H2 by Lm60;
+  H2 * H1 c= the carrier of H2 "\/" H1 by Lm60;
+  hence H2 * H1 c= the carrier of H1 "\/" H2 by GROUP_4:56;
+end;
+@ %def Th60
+
+\begin{theorem}
+If $H_{1}\cdot H_{2}=U(H_{1}\vee H_{2})$, then $H_{1}\cdot H_{2}=H_{2}\cdot H_{1}$.
+\end{theorem}
+
+<<Theorem: If $H_{1}\cdot H_{2}=U(H_{1}\vee H_{2})$, then $H_{1}\cdot H_{2}=H_{2}\cdot H_{1}$>>=
+theorem Th88:
+  for G being Group
+  for H1,H2 being Subgroup of G
+  st H1 * H2 = the carrier of (H1 "\/" H2)
+  holds H1 * H2 = H2 * H1
+proof
+  let G be Group;
+  let H1,H2 be Subgroup of G;
+  assume A1: H1 * H2 = the carrier of (H1 "\/" H2);
+
+  then A2: H2 * H1 c= H1 * H2 by Th60;
+  for x being Element of G st x in H1 * H2 holds x in H2 * H1
+  proof
+    let x be Element of G;
+    assume x in H1 * H2;
+    then x in H1 "\/" H2 by A1;
+    then x" in H1 "\/" H2 by GROUP_2:51;
+    then x" in H1 * H2 by A1;
+    then consider h1,h2 being Element of G such that
+    B2: x" = h1*h2 & h1 in H1 & h2 in H2
+    by GROUP_5:4;
+    B3: x = (x")"
+         .= (h2") * (h1") by B2, GROUP_1:17;
+    h2" in H2 & h1" in H1 by B2,GROUP_2:51;
+    hence x in H2 * H1 by B3,GROUP_5:4;
+  end;
+
+  then A3: H1 * H2 c= H2 * H1;
+  thus thesis by A2,A3,XBOOLE_0:def 10;
+end;
+@ %def Th88
+
+\begin{theorem}
+If $H$ and $N$ are complements in $G$, then $H\cdot N=G$ and $N\cdot H=G$.
+\end{theorem}
+
+<<Theorem: If $H$ and $N$ are complements in $G$, then $H\cdot N=G$ and $N\cdot H=G$>>=
+theorem Th89:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H,N are_complements_in G
+  holds H * N = the carrier of G & N * H = the carrier of G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  A2: H * N = the carrier of G by A1;
+  H "\/" N = the multMagma of G by A1,Th26; then
+  A3: the carrier of (H "\/" N) = the carrier of G;
+  H * N = the carrier of (H "\/" N) by A2,A3;
+  then H * N = N * H by Th88;
+  hence thesis by A2;
+end;
+@ %def Th89
+
+\begin{theorem}
+Suppose $H$, $N$ are complements in $G$.
+For any morphism $\alpha\colon H\to\Aut(N)$ such that $\alpha_{h}(n)=n^{h^{-1}}$,
+there exists a morphism $\beta\colon N\rtimes_{\alpha} H\to G$ such that
+$\beta(n,h)=nh$ and $\beta$ is bijective (i.e., an isomorphism).
+\end{theorem}
+
+<<Theorem: $\beta\colon N\rtimes H\to G$, $\beta(n,h)=nh$ is an isomorphism>>=
+:: Aschbacher, Theorem 10.2
+theorem Th70:
+  for G being Group
+  for N being strict normal Subgroup of G
+  for H being Subgroup of G
+  st H,N are_complements_in G
+  for alpha being Homomorphism of H,AutGroup N
+  st (for h,n being Element of G st h in H & n in N
+      holds (alpha/.h).n = n |^ (h"))
+  ex beta being Homomorphism of semidirect_product(N,H,alpha), G
+  st (for gh,gn being Element of G
+      for h being Element of H
+      for n being Element of N st gh = h & gn = n
+      holds beta.(<*n,h*>) = gn*gh)
+   & beta is bijective
+proof
+  let G be Group;
+  let N be strict normal Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  let alpha be Homomorphism of H,AutGroup N;
+  assume A2: for h,n being Element of G st h in H & n in N
+  holds (alpha/.h).n = n |^ (h");
+  set S = semidirect_product(N,H,alpha);
+  consider beta being Function of S, G such that
+  A3: (for n,h being Element of G st n in N & h in H
+       holds beta.(<*n,h*>) = n*h)
+  & (beta is one-to-one iff N /\ H = (1).G)
+  by Th57;
+
+  for x,y being Element of S
+  holds beta.(x * y) = (beta.x) * (beta.y)
+  proof
+    let x,y be Element of S;
+    consider n1 being Element of N, a1 being Element of H such that
+    B1: x = <*n1,a1*> by th5;
+    a1 is Element of G & n1 is Element of G by GROUP_2:42;
+    then reconsider ga1=a1,gn1=n1 as Element of G;
+    consider n2 being Element of N, a2 being Element of H such that
+    B2: y = <*n2,a2*> by th5;
+    a2 is Element of G & n2 is Element of G by GROUP_2:42;
+    then reconsider ga2=a2,gn2=n2 as Element of G;
+    B6: ga1 in H & gn1 in N & ga2 in H & gn2 in N;
+    B7: gn2 |^ (ga1") = (((ga1")")*gn2) * (ga1") by GROUP_3:def 2
+                     .= (ga1 * gn2) * (ga1");
+    beta.x = gn1 * ga1 by B1,B6,A3;
+    then beta.x = gn1*ga1 & beta.y = gn2*ga2 by A3,B2,B6;
+    then B5: (beta.x) * (beta.y) = gn1 * ga1 * gn2 * ga2 by GROUP_1:def 3
+    .= gn1 * ga1 * gn2 * (1_G) * ga2 by GROUP_1:def 4
+    .= gn1 * ga1 * gn2 * ((ga1") * ga1) * ga2 by GROUP_1:def 5
+    .= gn1 * ga1 * gn2 * (ga1") * ga1 * ga2 by GROUP_1:def 3
+    .= gn1 * (ga1 * gn2) * (ga1") * ga1 * ga2 by GROUP_1:def 3
+    .= gn1 * (gn2 |^ (ga1")) * ga1 * ga2 by B7, GROUP_1:def 3;
+    B4: ((alpha /. ga1) . gn2) = gn2 |^ (ga1") & gn2 |^ (ga1") in N
+    by A2,B6,th23;
+    then B10: ga1 * ga2 in H & gn1 * (gn2 |^ (ga1")) in N by B6, GROUP_2:50;
+    B11: n1 * ((alpha/.a1).n2) = (the multF of G).(gn1, (alpha/.ga1).gn2)
+    proof
+      alpha/.a1 = alpha/.ga1 by B6, Def2a;
+      then C1: (alpha/.a1).n2 = (alpha/.ga1).gn2;
+      (alpha/.ga1).gn2 in N by C1;
+      then (alpha/.ga1).gn2 in G by GROUP_2:40;
+      then reconsider y = (alpha/.ga1).gn2 as Element of G;
+      reconsider x = (alpha/.a1).n2 as Element of N;
+      gn1 * y = (the multF of G).(gn1, (alpha/.ga1).gn2);
+      hence thesis by C1, GROUP_2:43;
+    end;
+    x * y = <*n1 * ((alpha/.a1)/.n2), a1*a2 *> by B1,B2,th6
+         .= <* gn1 * (gn2 |^ (ga1")), ga1*ga2 *> by B4, B11, GROUP_2:43;
+    then beta.(x * y) = (gn1 * (gn2 |^ (ga1"))) * (ga1 * ga2) by A3,B10
+                     .= (beta.x) * (beta.y) by B5, GROUP_1:def 3;
+    hence beta.(x * y) = (beta.x) * (beta.y);
+  end;
+
+  then reconsider beta as Homomorphism of S, G by GROUP_6:def 6;
+  take beta;
+
+  (for h,n being Element of G st h in H & n in N holds beta.(<*n,h*>) = n*h)
+  implies (for gh,gn being Element of G
+  for h being Element of H
+  for n being Element of N st gh = h & gn = n
+  holds beta.(<*n,h*>) = gn*gh)
+  proof
+    assume for h,n being Element of G st h in H & n in N
+    holds beta.(<*n,h*>) = n*h;
+    let gh,gn be Element of G;
+    let h be Element of H;
+    let n be Element of N;
+    assume B2: gh = h;
+    assume B3: gn = n;
+    gh in H & gn in N by B2,B3;
+    then B5: beta.(<*gn,gh*>) = gn*gh by A3;
+    <*gn,gh*> = <*n,h*> by B2,B3;
+    hence beta.(<*n,h*>) = gn*gh by B5;
+  end;
+  hence (for gh,gn being Element of G
+  for h being Element of H
+  for n being Element of N st gh = h & gn = n
+  holds beta.(<*n,h*>) = gn*gh) by A3;
+
+  N /\ H = (1).G by A1;
+  then A4: beta is one-to-one by A3;
+
+  for y being Element of G
+  ex x being Element of S
+  st beta.x = y
+  proof
+    let y be Element of G;
+    y in the carrier of G;
+    then y in N * H by A1,Th89;
+    then consider n,h being Element of G such that
+    B1: y = n * h & n in N & h in H
+    by GROUP_5:4;
+    reconsider h1=h as Element of H by B1;
+    reconsider n1=n as Element of N by B1;
+    reconsider x = <*n1,h1*> as Element of S by th3;
+    take x;
+    thus beta.x = y by B1,A3;
+  end;
+
+  then beta is onto by LmOnto;
+  hence thesis by A4;
+end;
+@ %def Th70
