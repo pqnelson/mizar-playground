@@ -25,8 +25,10 @@ MATRIXGROUP1=$(MATGRP1).nw $(MATGRP1)/environ.nw $(MATGRP1)/index.nw \
 	$(MATGRP1)/monoid.nw $(MATGRP1)/linear-groups-over-field.nw \
 	$(MATGRP1)/special-linear-group.nw
 G24=nw/004-semidirect-product
-GROUP24=$(G24).nw $(G24)/environ.nw $(G24)/index.nw $(G24)/preliminaries.nw \
-	$(G24)/semidirect-product.nw $(G24)/complements.nw $(G24)/universal-property.nw
+GROUP24=$(G24).nw $(G24)/environ.nw $(G24)/index.nw \
+	$(G24)/preliminaries.nw $(G24)/prelim-products.nw $(G24)/prelim-aut.nw \
+	$(G24)/semidirect-product.nw $(G24)/complements.nw \
+	$(G24)/universal-property.nw
 RADRES=nw/003-radicals-residues
 RADICALS=$(RADRES).nw $(RADRES)/environ.nw $(RADRES)/outline.nw \
 	$(RADRES)/pi-numbers.nw \

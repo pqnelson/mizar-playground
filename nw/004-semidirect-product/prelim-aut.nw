@@ -1,0 +1,162 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\subsection{Automorphism Groups}
+
+<<Preliminaries about Automorphism Groups>>=
+begin :: Automorphism Group results
+
+<<The carrier of a subgroup is non-empty>>
+
+<<Right cosets of a subgroup are a non-empty set>>
+
+<<Register: Element of $\Aut(G)$ is multiplicative>>
+
+<<Register: $\id_{G}$ is a group automorphism>>
+
+<<Register: The automorphism group is non-empty, strict, and consists of functions>>
+
+<<Definition: [[phi /. a]] is an Endomorphism of G>>
+
+<<Definition: $\varphi\colon H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>
+
+<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>
+
+@
+
+\begin{registration}
+The carrier of a subgroup is non-empty.
+\end{registration}
+
+<<The carrier of a subgroup is non-empty>>=
+registration
+  let G be Group;
+  let H be Subgroup of G;
+  cluster the carrier of H -> non empty;
+  correctness;
+end;
+
+registration
+  let G be Group;
+  let H be Subgroup of G;
+  cluster carr H -> non empty;
+  correctness
+  proof
+    1_H in H;
+    hence thesis by GROUP_2:def 9;
+  end;
+end;
+@ 
+
+\begin{registration}
+Right cosets of a subgroup are a non-empty set.
+Left cosets are registered in [[GROUP_8]] as non-empty.
+\end{registration}
+
+<<Right cosets of a subgroup are a non-empty set>>=
+registration
+  let G be Group;
+  let H be Subgroup of G;
+  cluster Right_Cosets H -> non empty;
+  correctness by GROUP_2:135;
+end;
+@ 
+
+\begin{registration}
+An element of the set underlying $\Aut(G)$ is multiplicative (as a function).
+\end{registration}
+
+<<Register: Element of $\Aut(G)$ is multiplicative>>=
+registration
+  let G be strict Group;
+  cluster -> multiplicative for Element of Aut G;
+  correctness by AUTGROUP:def 1;
+end;
+@
+
+\begin{registration}
+For any group $G$, the identity function $\id_{G}$ is a group automorphism.
+\end{registration}
+
+<<Register: $\id_{G}$ is a group automorphism>>=
+registration
+  let A be Group;
+  cluster id A -> multiplicative;
+  correctness by GROUP_6:38;
+
+  cluster id A -> bijective;
+  coherence
+  proof
+    set f = id A;
+    rng (id A) = the carrier of A;
+    then (id A is one-to-one & id A is onto) by FUNCT_2:def 3;
+    hence id A is bijective;
+  end;
+end;
+@
+
+\begin{registration}
+The automorphism group is non-empty, strict, and consists of functions.
+\end{registration}
+
+<<Register: The automorphism group is non-empty, strict, and consists of functions>>=
+registration
+  let G be strict Group;
+  cluster AutGroup G -> non empty strict constituted-Functions;
+  coherence by MONOID_0:80;
+end;
+@ 
+
+\begin{definition}
+Let $a\in A$. Then we should think of $\varphi(a)$ as a Homomorphism of
+$G$ to $G$.
+\end{definition}
+
+<<Definition: [[phi /. a]] is an Endomorphism of G>>=
+definition
+  let A, G, phi;
+  let a be Element of A;
+  func phi /. a -> Homomorphism of G,G equals phi.a;
+  correctness
+  proof
+    phi.a is Element of Aut G;
+    hence phi.a is Homomorphism of G, G;
+  end;
+end;
+@
+
+\begin{definition}
+Let $H\subgroup A$, $G$ be groups, and $\varphi\colon H\to\Aut(G)$ be a
+group morphism. If $a$ is an Element of $A$ and $a\in H$, then
+$\varphi(h)$ is an function of $G$ to $G$.
+\end{definition}
+
+<<Definition: $\varphi\colon H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>=
+definition
+  let A,G;
+  let H be Subgroup of A;
+  let phi be Homomorphism of H,AutGroup G;
+  let a be Element of A such that
+A1: a in H;
+  func phi /. a -> Function of G,G equals
+  :Def2a: phi.a;
+  correctness
+  proof
+    reconsider h=a as Element of H by A1;
+    phi.h = phi.a & phi.h is Element of Aut G;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{registration}
+In fact, $\varphi(a)$ is an automorphism.
+\end{registration}
+
+<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>=
+registration
+  let G be strict Group, A be Group;
+  let phi be Homomorphism of A, AutGroup G;
+  let a be Element of A;
+  cluster phi/.a -> multiplicative;
+  coherence;
+end;
+@ 

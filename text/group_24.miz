@@ -53,6 +53,9 @@ environ
  schemes BINOP_1, FUNCT_2;
 
 begin  :: The product of the families of the groups
+reserve G for strict Group;
+reserve A for Group;
+reserve phi for Homomorphism of A,AutGroup(G);
 
 for X being set
 for f being Function of X, {}
@@ -1361,6 +1364,44 @@ definition
    & H1 /\ N1 = (1).G;
 end;
 
+theorem ThCapLemma:
+  for G being Group
+  for H1,H2,K being Subgroup of G
+  for K1,K2 being Subgroup of K
+  st the multMagma of H1 = the multMagma of K1
+  & the multMagma of H2 = the multMagma of K2
+  holds H1 /\ H2 = K1 /\ K2
+proof
+  let G be Group;
+  let H1,H2,K be Subgroup of G;
+  let K1,K2 be Subgroup of K;
+  assume Z1: the multMagma of H1 = the multMagma of K1;
+  assume Z2: the multMagma of H2 = the multMagma of K2;
+  Z3: K1 /\ K2 is Subgroup of G by GROUP_2:56;
+  Z4: for g being Element of G
+  st g in H1 /\ H2 holds g in K1 /\ K2
+  proof
+    let g be Element of G;
+    assume g in H1 /\ H2;
+    then g in H1 & g in H2 by GROUP_2:82;
+    then g in H1 & g in K2 by Z2;
+    then g in K1 & g in K2 by Z1;
+    hence g in K1 /\ K2 by GROUP_2:82;
+  end;
+
+  for g being Element of G
+  st g in K1 /\ K2 holds g in H1 /\ H2
+  proof
+    let g be Element of G;
+    assume g in K1 /\ K2;
+    then g in K1 & g in K2 by GROUP_2:82;
+    then g in H1 & g in K2 by Z1;
+    then g in H1 & g in H2 by Z2;
+    hence g in H1 /\ H2 by GROUP_2:82;
+  end;
+  hence H1 /\ H2 = K1 /\ K2 by Z3, Z4, GROUP_2:def 6;
+end;
+
 theorem ThProdLemma:
   for G being Group
   for H1,H2,K being Subgroup of G
@@ -1418,8 +1459,6 @@ proof
   .= K1 * K2 by A5,GROUP_4:def 8;
 end;
 
-
-
 theorem LmDef5a:
   for G being Group
   for H being Subgroup of G
@@ -1459,70 +1498,20 @@ proof
   by GROUP_3:def 13;
 end;
 
-theorem ThDef7Sub2:
+theorem ThCarrEq:
   for G being Group
-  for H,K being Subgroup of G st H is Subgroup of K
-  for N being Subgroup of G
-  st N is normal Subgroup of K
-  holds H,N are_complements_in K
-  iff ((H * N = the carrier of K) & (H /\ N = (1).K))
+  for H,K being Subgroup of G
+  for HK being Subgroup of K
+  st the multMagma of H = the multMagma of HK
+  holds carr H = carr HK
 proof
   let G be Group;
   let H,K be Subgroup of G;
-  assume A1: H is Subgroup of K;
-  let N be Subgroup of G;
-  assume A2: N is normal Subgroup of K;
-  thus H,N are_complements_in K implies ((H * N = the carrier of K) & (H /\ N = (1).K))
-  proof
-    assume H,N are_complements_in K;
-    then consider H1 being strict Subgroup of K,
-    N1 being strict normal Subgroup of K such that
-    B1: H1 = the multMagma of H
-    & N1 = the multMagma of N
-    & H1 * N1 = the carrier of K
-    & H1 /\ N1 = (1).K;
-    thus H * N = the carrier of K by B1,ThProdLemma;
-    
-    B2: carr (H1 /\ N1) = the carrier of (H1 /\ N1) by GROUP_2:def 9
-                       .= (carr H1) /\ (carr N1) by GROUP_2:def 10;
-
-    B3: carr H = the carrier of H by GROUP_2:def 9
-              .= carr H1 by B1,GROUP_2:def 9;
-    B4: (1).K is Subgroup of G by GROUP_2:56;
-    carr N = the carrier of N by GROUP_2:def 9
-          .= carr N1 by B1,GROUP_2:def 9;
-    then carr H = carr H1 & carr N = carr N1 by B3;
-    then (carr H) /\ (carr N) = the carrier of (1).K by B1,B2,GROUP_2:def 9;
-    then the carrier of (H /\ N) = the carrier of (1).K by GROUP_2:def 10;
-    hence H /\ N = (1).K by B4, GROUP_2:59;
-  end;
-  assume A3: H * N = the carrier of K;
-  assume A4: H /\ N = (1).K;
-  ex H1 being strict Subgroup of K st
-  ex N1 being strict normal Subgroup of K
-  st H1 = the multMagma of H
-   & N1 = the multMagma of N
-   & H1 * N1 = the carrier of K
-   & H1 /\ N1 = (1).K
-  proof
-    the multMagma of H is strict Subgroup of K by A1,LmDef5a;
-    then reconsider H1=the multMagma of H as strict Subgroup of K;
-    take H1;
-    the multMagma of N is strict normal Subgroup of K by A2,LmDef5;
-    then reconsider N1=the multMagma of N as strict normal Subgroup of K;
-    take N1;
-    thus H1 = the multMagma of H;
-    thus N1 = the multMagma of N;
-    thus H1 * N1 = the carrier of K by A3, ThProdLemma;
-    B1: (the carrier of H1) /\ (the carrier of N1)
-    = (carr H1) /\ (the carrier of N1) by GROUP_2:def 9
-    .= (carr H1) /\ (carr N1) by GROUP_2:def 9
-    .= the carrier of (H1 /\ N1) by GROUP_2:def 10;
-    (the carrier of H1) /\ (the carrier of N1)
-    = the carrier of (1).K by A4,GROUP_2:80;
-    hence H1 /\ N1 = (1).K by B1, GROUP_2:59;
-  end;
-  hence H,N are_complements_in K;
+  let HK be Subgroup of K;
+  assume A1: the multMagma of H = the multMagma of HK;
+  thus carr H = the carrier of H by GROUP_2:def 9
+             .= the carrier of HK by A1
+             .= carr HK by GROUP_2:def 9;
 end;
 
 theorem Th58Helper:
@@ -1535,136 +1524,183 @@ proof
   let G be Group;
   let H,K be Subgroup of G;
   assume A1: H is Subgroup of K;
+  then reconsider H0=H as Subgroup of K;
   let N be Subgroup of G;
   assume A2: N is normal Subgroup of K;
-  reconsider H1=H as Subgroup of K by A1;
-  reconsider N1=N as normal Subgroup of K by A2;
-  for x being object
-  holds x in H * N iff x in H1 * N1
-  proof
-    let x be object;
-    hereby 
-      assume x in H * N;
-      then x in (carr H) * (carr N) by GROUP_4:def 8;
-      then consider h,n being Element of G such that
-      B1: x = h * n & h in carr H & n in carr N
-      by GROUP_2:8;
-      h in the carrier of H by B1, GROUP_2:def 9;
-      then h in the carrier of H1;
-      then B2: h in H1;
-      then reconsider h1=h as Element of K by GROUP_2:42;
-      n in the carrier of N by B1, GROUP_2:def 9;
-      then n in the carrier of N1;
-      then B3: n in N1;
-      then reconsider n1=n as Element of K by GROUP_2:42;
-      B4: h1 * n1 = x by B1,GROUP_2:43;
-      h1 in carr H1 & n1 in carr N1 by B2, B3, GROUP_2:def 9;
-      then h1*n1 in (carr H1) * (carr N1) by GROUP_2:8;
-      then x in (carr H1) * (carr N1) by B4;
-      hence x in H1 * N1 by GROUP_4:def 8;
-    end;
-    assume x in H1 * N1;
-    then x in (carr H1) * (carr N1) by GROUP_4:def 8;
-    then consider h1,n1 being Element of K such that
-    B1: x = h1 * n1 & h1 in carr H1 & n1 in carr N1
-    by GROUP_2:8;
-    h1 in the carrier of H1 by B1, GROUP_2:def 9;
-    then h1 in the carrier of H1;
-    then B2: h1 in H;
-    reconsider h=h1 as Element of G by GROUP_2:42;
-    n1 in the carrier of N1 by B1, GROUP_2:def 9;
-    then n1 in the carrier of N1;
-    then B3: n1 in N;
-    reconsider n=n1 as Element of G by GROUP_2:42;
-    B4: h * n = x by B1,GROUP_2:43;
-    h in carr H & n in carr N by B2,B3,GROUP_2:def 9;
-    then h*n in (carr H) * (carr N) by GROUP_2:8;
-    then x in (carr H) * (carr N) by B4;
-    hence x in H * N by GROUP_4:def 8;
-  end;
-  then A3: H * N = H1 * N1 by TARSKI:2;
+  then reconsider N0=N as normal Subgroup of K;
+  A3: the multMagma of N0 = the multMagma of N;
+  A4: the multMagma of H0 = the multMagma of H;
+  thus N * H = N0 * H0 by ThProdLemma,A3,A4
+            .= H0 * N0 by GROUP_5:8
+            .= H * N by ThProdLemma,A3,A4;
+end;
 
-  for x being object
-  holds x in N * H iff x in N1 * H1
+theorem Lm6:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st N is Subgroup of H
+  holds the multMagma of N = the multMagma of (H,N)`*`
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume Z1: N is Subgroup of H;
+  then N is normal Subgroup of H by GROUP_6:8;
+  then reconsider N1=the multMagma of N as strict normal Subgroup of H
+  by LmDef5;
+  thus the multMagma of N = the multMagma of N1
+                         .= the multMagma of (H,N)`*` by GROUP_6:def 1;
+end;
+
+theorem ThDef7Helper:
+  for G being Group
+  for H1,N1,H2,N2 being Subgroup of G
+  st the multMagma of H1 = the multMagma of H2
+  & the multMagma of N1 = the multMagma of N2
+  holds H1*N1 = H2*N2 & H1 /\ N1 = H2 /\ N2
+proof
+  let G be Group;
+  let H1,N1,H2,N2 be Subgroup of G;
+  assume A1: the multMagma of H1 = the multMagma of H2;
+  assume A2: the multMagma of N1 = the multMagma of N2;
+  reconsider K=G as Subgroup of G by GROUP_2:54;
+  reconsider HK=the multMagma of H1,NK=the multMagma of N1 as Subgroup of K
+  by LmDef5a;
+  thus H1*N1 = HK*NK by ThProdLemma
+            .= H2*N2 by A1,A2,ThProdLemma;
+  thus H1 /\ N1 = HK /\ NK by ThCapLemma
+               .= H2 /\ N2 by A1,A2,ThCapLemma;
+end;
+
+definition
+  let G be Group;
+  let H,N be Subgroup of G;
+  redefine pred H,N are_complements_in G means :Def7:
+  N is normal & H * N = the carrier of G & H /\ N = (1).G;
+  compatibility
   proof
-    let x be object;
-    hereby 
-      assume x in N * H;
-      then x in (carr N) * (carr H) by GROUP_4:def 8;
-      then consider n,h being Element of G such that
-      B1: x = n * h & n in carr N & h in carr H by GROUP_2:8;
-      n in the carrier of N by B1, GROUP_2:def 9;
-      then n in the carrier of N1;
-      then B2: n in N1;
-      then reconsider n1=n as Element of K by GROUP_2:42;
-      h in the carrier of H1 by B1, GROUP_2:def 9;
-      then h in the carrier of H1;
-      then B3: h in H1;
-      then reconsider h1=h as Element of K by GROUP_2:42;
-      B4: n1 * h1 = x by B1,GROUP_2:43;
-      n1 in carr N1 & h1 in carr H1 by B2,B3,GROUP_2:def 9;
-      then n1*h1 in (carr N1)*(carr H1) by GROUP_2:8;
-      then x in (carr N1)*(carr H1) by B4;
-      hence x in N1 * H1 by GROUP_4:def 8;
+    thus H,N are_complements_in G
+    implies (N is normal & H*N = the carrier of G & H/\N = (1).G)
+    proof
+      assume H,N are_complements_in G;
+      then consider H1 being strict Subgroup of G,
+      N1 being strict normal Subgroup of G such that
+      A1: H1 = the multMagma of H
+      & N1 = the multMagma of N
+      & H1 * N1 = the carrier of G
+      & H1 /\ N1 = (1).G;
+      for g being Element of G
+      holds N |^ g = the multMagma of N
+      proof
+        let g be Element of G;
+        B1: carr N1 = the carrier of N1 by GROUP_2:def 9
+                   .= carr N by A1, GROUP_2:def 9;
+        the carrier of N |^ g = (carr N) |^ g by GROUP_3:def 6
+        .= the carrier of (N1 |^ g) by B1,GROUP_3:def 6
+        .= the carrier of N1 by GROUP_3:def 13
+        .= carr N by B1,GROUP_2:def 9
+        .= the carrier of N by GROUP_2:def 9;
+        hence N |^ g = the multMagma of N by GROUP_2:59;
+      end;
+      hence N is normal by GROUP_3:def 13;
+      thus H * N = the carrier of G by A1,ThDef7Helper;
+      thus H /\ N = (1).G by A1,ThDef7Helper;
     end;
-    assume x in N1 * H1;
-    then x in (carr N1) * (carr H1) by GROUP_4:def 8;
-    then consider n1,h1 being Element of K such that
-    B1: x = n1 * h1 & n1 in carr N1 & h1 in carr H1 by GROUP_2:8;
-    n1 in the carrier of N1 by B1, GROUP_2:def 9;
-    then n1 in the carrier of N;
-    then B2: n1 in N;
-    reconsider n=n1 as Element of G by GROUP_2:42;
-    h1 in the carrier of H1 by B1, GROUP_2:def 9;
-    then h1 in the carrier of H;
-    then B3: h1 in H;
-    reconsider h=h1 as Element of G by GROUP_2:42;
-    B4: n * h = x by B1,GROUP_2:43;
-    n in carr N & h in carr H by B2, B3, GROUP_2:def 9;
-    then n * h in (carr N) * (carr H) by GROUP_2:8;
-    then x in (carr N) * (carr H) by B4;
-    hence x in N * H by GROUP_4:def 8;
+    assume A1: N is normal;
+    assume A2: H * N = the carrier of G;
+    assume A3: H /\ N = (1).G;
+    
+    ex H1 being strict Subgroup of G st
+    ex N1 being strict normal Subgroup of G
+    st H1 = the multMagma of H
+    & N1 = the multMagma of N
+    & H1 * N1 = the carrier of G
+    & H1 /\ N1 = (1).G
+    proof
+      reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+      take H1;
+      thus thesis
+      proof
+        reconsider N1=the multMagma of N as strict normal Subgroup of G
+        by A1,LmDef5;
+        take N1;
+        thus H1 = the multMagma of H;
+        thus N1 = the multMagma of N;
+        thus H1 * N1 = the carrier of G by A2,ThDef7Helper;
+        thus H1 /\ N1 = (1).G by A3,ThDef7Helper;
+      end;
+    end;
+    hence H,N are_complements_in G;
   end;
-  hence N * H = N1 * H1 by TARSKI:2 
-             .= H * N by A3,GROUP_5:8;
 end;
 
 theorem ThDef7Sub3:
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
-  for N being Subgroup of G
-  st N is normal Subgroup of K
+  for N being Subgroup of G st N is normal Subgroup of K
   holds H,N are_complements_in K
   iff ((N * H = the carrier of K) & (H /\ N = (1).K))
 proof
   let G be Group;
   let H,K be Subgroup of G;
   assume A1: H is Subgroup of K;
+  then reconsider H1=the multMagma of H as strict Subgroup of K
+  by LmDef5a;
   let N be Subgroup of G;
   assume A2: N is normal Subgroup of K;
-  thus H,N are_complements_in K
-  implies ((N * H = the carrier of K) & (H /\ N = (1).K))
+  then reconsider N1=the multMagma of N as strict normal Subgroup of K
+  by LmDef5;
+  A3: N * H = N1 * H1 by ThProdLemma;
+  A4: N /\ H = N1 /\ H1 & H /\ N = H1 /\ N1 by ThCapLemma;
+  A5: H1 /\ (N1 qua Subgroup of K) = (N1 qua Subgroup of K) /\ H1;
+  thus H,N are_complements_in K implies ((N * H = the carrier of K) & (H /\ N = (1).K))
   proof
     assume H,N are_complements_in K;
-    then B1: ((H * N = the carrier of K) & (H /\ N = (1).K))
-    by A1,A2,ThDef7Sub2;
-    :: thus N * H = H * N by A1,A2,Th58Helper
-    ::           .= the carrier of K by B1;
-    hence N * H = the carrier of K by A1,A2,Th58Helper;
-    thus H /\ N = (1).K by B1;
+    then B1: H1,N1 are_complements_in K;
+    thus the carrier of K = H1 * N1 by B1,Def7
+                         .= N1 * H1 by GROUP_5:8
+                         .= N * H by A3;
+
+    thus (1).K = H1 /\ N1 by B1,Def7
+              .= H /\ N by A4;
   end;
-  thus ((N * H = the carrier of K) & (H /\ N = (1).K))
-  implies H,N are_complements_in K
+
+  thus ((N * H = the carrier of K) & (H /\ N = (1).K)) implies H,N are_complements_in K
   proof
     assume B1: N * H = the carrier of K;
     assume B2: H /\ N = (1).K;
-    :: H * N = N * H by A1,A2,Th58Helper
-    ::      .= the carrier of K by B1;
-    H * N = the carrier of K by A1,A2,B1,Th58Helper;
-    hence H,N are_complements_in K by A1,A2,B2,ThDef7Sub2;
+    H1, N1 are_complements_in K
+    proof
+      thus N1 is normal;
+      thus the carrier of K = N * H by B1
+                           .= N1 * H1 by A3
+                           .= H1 * N1 by GROUP_5:8;
+      thus (1).K = H /\ N by B2
+                .= H1 /\ N1 by A4;
+    end;
+    hence H,N are_complements_in K;
   end;
+
+  thus thesis by A3,A4,Def7;
 end;
 
+theorem ThDef7Sub2:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being Subgroup of G st N is normal Subgroup of K
+  holds H,N are_complements_in K
+  iff ((H * N = the carrier of K) & (H /\ N = (1).K))
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  let N be Subgroup of G;
+  assume A2: N is normal Subgroup of K;
+  then A3: N*H=H*N by A1,Th58Helper;
+  then (H * N = the carrier of K) iff (N * H = the carrier of K);
+  hence thesis by A1,A2,ThDef7Sub3;
+end;
 
 theorem ThDef7Sub4:
   for G being Group
@@ -1676,169 +1712,14 @@ proof
   let G be Group;
   let H,K be Subgroup of G;
   assume A1: H is Subgroup of K;
+  then reconsider H1=the multMagma of H as strict Subgroup of K by LmDef5a;
   let N be normal Subgroup of G;
-  assume A2: N is Subgroup of K;
-  then A3: N is normal Subgroup of K by GROUP_6:8;
-  then A4: N * H = H * N by A1,Th58Helper;
-
-  thus H,((K,N)`*`) are_complements_in K
-  implies ((N * H = the carrier of K) & (H /\ N = (1).K))
-  proof
-    assume H,((K,N)`*`) are_complements_in K;
-    then consider H1 being strict Subgroup of K,
-                  N1 being strict normal Subgroup of K such that
-    B1: H1 = the multMagma of H
-      & N1 = the multMagma of ((K,N)`*`)
-      & H1 * N1 = the carrier of K
-      & H1 /\ N1 = (1).K;
-    the carrier of K c= the carrier of G by GROUP_2:def 5;
-    then reconsider UK = the carrier of K as Subset of G;
-    B2: the carrier of H1 = the carrier of H by B1;
-    the multMagma of N is Subgroup of K by A2,LmDef5a; then
-    B3: the carrier of N1 = the carrier of N by B1,GROUP_6:def 1;
-    for x being Element of G
-    holds x in N * H iff x in UK
-    proof
-      let x be Element of G;
-      thus x in N * H implies x in UK
-      proof
-        assume x in N * H;
-        then x in H * N by A4;
-        then consider h,n being Element of G such that
-        Z2: x = h * n & h in H & n in N by GROUP_5:4;
-        Z3: h in H1 by Z2,B2;
-        Z4: n in N1 by Z2,B3;
-        reconsider h1=h,n1=n as Element of K by Z3,Z4,GROUP_2:42;
-        x = h1*n1 & h1 in H1 & n1 in N1 by Z2,Z3,Z4,GROUP_2:43;
-        then x in H1*N1 by GROUP_5:4;
-        then x in the carrier of K;
-        hence x in UK;
-      end;
-      assume x in UK;
-      then x in the carrier of K;
-      then x in H1*N1 by B1;
-      then consider h1,n1 being Element of K such that
-      Z2: x = h1*n1 & h1 in H1 & n1 in N1 by GROUP_5:4;
-      reconsider h=h1,n=n1 as Element of G by GROUP_2:42;
-      x = h * n & h in H & n in N by Z2,B2,B3,GROUP_2:43;
-      then x in H * N by GROUP_5:4;
-      hence x in N * H by A4;
-    end;
-    then N * H = UK by SUBSET_1:3;
-    hence N * H = the carrier of K;
-    
-    for x being Element of G
-    holds x in H /\ N iff x in (1).G
-    proof
-      let x be Element of G;
-      thus x in H /\ N implies x in (1).G
-      proof
-        assume x in H /\ N;
-        then x in H & x in N by GROUP_2:82;
-        then x in the carrier of H & x in N;
-        then x in the carrier of H & x in the carrier of N;
-        then x in the carrier of H1 & x in the carrier of N by B2;
-        then x in the carrier of H1 & x in the carrier of N1 by B3;
-        then x in the carrier of H1 & x in N1;
-        then x in H1 & x in N1;
-        then x in (H1 /\ N1) by GROUP_2:82;
-        then x in (1).K by B1;
-        hence x in (1).G by GROUP_2:63;
-
-      end;
-      assume x in (1).G;
-      then x in (1).K by GROUP_2:63;
-      then x in (H1 /\ N1) by B1;
-      then x in H1 & x in N1 by GROUP_2:82;
-      then x in the carrier of H1 & x in N1;
-      then x in the carrier of H1 & x in the carrier of N1;
-      then x in the carrier of H1 & x in the carrier of N by B3;
-      then x in the carrier of H & x in the carrier of N by B2;
-      then x in the carrier of H & x in N;
-      then x in H & x in N;
-      hence x in H /\ N by GROUP_2:82;
-    end;
-    hence H /\ N = (1).G by GROUP_2:def 6
-                .= (1).K by GROUP_2:63;
-  end;
-
-
-  thus ((N * H = the carrier of K) & (H /\ N = (1).K))
-  implies H,((K,N)`*`) are_complements_in K
-  proof
-    assume B1: N * H = the carrier of K;
-    assume B2: H /\ N = (1).K;
-    reconsider H1=the multMagma of H as strict Subgroup of K by A1,LmDef5a;
-
-    ex H1 being strict Subgroup of K st
-    ex N1 being strict normal Subgroup of K
-    st H1 = the multMagma of H
-    & N1 = the multMagma of ((K,N)`*`)
-    & H1 * N1 = the carrier of K
-    & H1 /\ N1 = (1).K
-    proof
-      take H1;
-      take N1 = ((K,N)`*`);
-      thus H1 = the multMagma of H;
-      thus N1 = the multMagma of ((K,N)`*`);
-      B3: the carrier of H1 = the carrier of H;
-      the multMagma of N is Subgroup of K by A2,LmDef5a; then
-      B4: the carrier of N1 = the carrier of N by GROUP_6:def 1;
-      for x being object
-      holds x in H1 * N1 iff x in the carrier of K
-      proof
-        let x be object;
-        thus x in H1*N1 implies x in the carrier of K by A4,B1,B4,GROUP_2:43,GROUP_5:4;
-        assume x in the carrier of K;
-        then x in N * H by B1;
-        then x in H * N by A4;
-        then consider h,n being Element of G such that
-        Z1: x = h*n & h in H & n in N by GROUP_5:4;
-        Z2: n in N1 by B4,Z1;
-        h in H1 by Z1;
-        then reconsider n1=n,h1=h as Element of K by Z2,GROUP_2:42;
-        x = h1 * n1 & h1 in H1 & n1 in N1 by Z1,Z2,GROUP_2:43;
-        hence x in H1 * N1 by GROUP_5:4;
-      end;
-      hence H1 * N1 = the carrier of K by TARSKI:2;
-
-      for x being Element of K
-      holds x in H1 /\ N1 iff x in (1).K
-      proof
-        let x be Element of K;
-        thus x in H1 /\ N1 implies x in (1).K
-        proof
-          assume x in H1 /\ N1;
-          then x in H1 & x in N1 by GROUP_2:82;
-          then x in the carrier of H1 & x in N1;
-          then x in the carrier of H1 & x in the carrier of N1;
-          then x in the carrier of H1 & x in the carrier of N by B4;
-          then x in the carrier of H & x in the carrier of N;
-          then x in the carrier of H & x in N;
-          then x in H & x in N;
-          then x in (H /\ N) by GROUP_2:82;
-          hence x in (1).K by B2;
-        end;
-        assume x in (1).K;
-        then x in (H /\ N) by B2;
-        then x in H & x in N by GROUP_2:82;
-        then x in the carrier of H & x in N;
-        then x in the carrier of H & x in the carrier of N;
-        then x in the carrier of H1 & x in the carrier of N;
-        then x in the carrier of H1 & x in the carrier of N1 by B4;
-        then x in the carrier of H1 & x in N1;
-        then x in H1 & x in N1;
-        hence x in H1 /\ N1 by GROUP_2:82;
-      end;
-
-      hence H1 /\ N1 = (1).K by GROUP_2:def 6;
-    end;
-    hence H,((K,N)`*`) are_complements_in K;
-  end;
-
+  assume N is Subgroup of K;
+  then A2: N is normal Subgroup of K by GROUP_6:8;
+  then the multMagma of (K,N)`*` = the multMagma of N by Lm6;
+  then H1,((K,N)`*`) are_complements_in K iff H,N are_complements_in K;
+  hence thesis by A1,A2,ThDef7Sub3;
 end;
-
-
 
 theorem ThDef7Sub5:
   for G being Group
@@ -1863,199 +1744,16 @@ proof
   hence H,N are_complements_in K by A1,A3,ThDef7Sub3;
 end;
 
-
-
 theorem ThDef7Sub6:
   for G being Group
   for K being Subgroup of G
   for H being Subgroup of K
   for N being normal Subgroup of G st N is Subgroup of K
   holds H,N are_complements_in K
-  iff H,((K,N)`*`) are_complements_in K
-proof
-  let G be Group;
-  let K be Subgroup of G;
-  let H be Subgroup of K;
-  let N be normal Subgroup of G;
-  assume A2: N is Subgroup of K;
-  then A3: N is normal Subgroup of K by GROUP_6:8;
-  hereby 
-    assume H,N are_complements_in K;
-    then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A3,ThDef7Sub3;
-    hence H,((K,N)`*`) are_complements_in K by A2,ThDef7Sub4;
-  end;
-  assume H,((K,N)`*`) are_complements_in K;
-  then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A2,ThDef7Sub4;
-  hence H,N are_complements_in K by A3,ThDef7Sub3;
-end;
+  iff H,((K,N)`*`) are_complements_in K by ThDef7Sub5,GROUP_2:56;
 
-
-
-theorem ThDef7HelperCore:
-  for G being Group
-  for H,N being Subgroup of G
-  for H1,N1 being Subgroup of G
-  st the carrier of H1 = the carrier of H
-   & the carrier of N1 = the carrier of N
-  holds H*N = H1*N1 & H /\ N = H1 /\ N1
-proof
-  let G be Group;
-  let H,N be Subgroup of G;
-  let H1,N1 be Subgroup of G;
-  assume A1: the carrier of H1 = the carrier of H;
-  assume A2: the carrier of N1 = the carrier of N;
-
-
-  for x being object
-  holds x in H1 * N1 iff x in H * N
-  proof
-    let x be object;
-    thus x in H1 * N1 implies x in H * N
-    proof
-      assume x in H1 * N1;
-      then consider h1, n1 being Element of G such that
-      B1: x = h1 * n1 & h1 in H1 & n1 in N1
-      by GROUP_5:4;
-      the carrier of H1 = the carrier of H by A1;
-      then B2: h1 in H by B1;
-      the carrier of N1 = the carrier of N by A2;
-      then n1 in N by B1;
-      then h1 * n1 in H * N by B2, GROUP_5:4;
-      hence x in H * N by B1;
-    end;
-
-    thus x in H * N implies x in H1 * N1
-    proof
-      assume x in H * N;
-      then consider h, n being Element of G such that
-      B1: x = h * n & h in H & n in N
-      by GROUP_5:4;
-      the carrier of H = the carrier of H1 by A1;
-      then B2: h in H1 by B1;
-      the carrier of N = the carrier of N1 by A2;
-      then n in N1 by B1;
-      then h * n in H1 * N1 by B2, GROUP_5:4;
-      hence x in H1 * N1 by B1;
-    end;
-  end;
-  hence H*N = H1*N1 by TARSKI:2;
-
-
-  for x being Element of G
-  holds x in H /\ N iff x in H1 /\ N1
-  proof
-    let x be Element of G;
-    thus x in H /\ N implies x in H1 /\ N1
-    proof
-      assume x in H /\ N;
-      then x in H & x in N by GROUP_2:82;
-      then x in the carrier of H & x in the carrier of N;
-      then x in the carrier of H1 & x in the carrier of N by A1;
-      then x in the carrier of H1 & x in the carrier of N1 by A2;
-      then x in H1 & x in N1;
-      hence x in (H1 /\ N1) by GROUP_2:82;
-    end;
-    thus x in H1 /\ N1 implies x in H /\ N
-    proof
-      assume x in H1 /\ N1;
-      then x in H1 & x in N1 by GROUP_2:82;
-      then x in the carrier of H1 & x in the carrier of N1;
-      then x in the carrier of H & x in the carrier of N1 by A1;
-      then x in the carrier of H & x in the carrier of N by A2;
-      then x in H & x in N;
-      hence x in (H /\ N) by GROUP_2:82;
-    end;
-  end;
-  hence thesis by GROUP_2:60;
-end;
-
-
-theorem ThDef7Helper:
-  for G being Group
-  for H,N being Subgroup of G
-  for H1,N1 being strict Subgroup of G
-  st H1 = the multMagma of H & N1 = the multMagma of N
-  holds H*N = H1*N1 & H /\ N = H1 /\ N1 by ThDef7HelperCore;
-:: proof
-::   let G be Group;
-::   let H,N be Subgroup of G;
-::   let H1,N1 be strict Subgroup of G;
-::   assume A1: H1 = the multMagma of H;
-::   assume N1 = the multMagma of N;
-::   then the carrier of H1 = the carrier of H
-::   & the carrier of N1 = the carrier of N by A1;
-::   hence thesis by ThDef7HelperCore;
-:: end;
-
-theorem ThDef7SubAlt:
-  for G being Group
-  for H,N being Subgroup of G
-  holds H,N are_complements_in G iff
-  (N is normal & H * N = the carrier of G & H /\ N = (1).G)
-proof
-  let G be Group;
-  let H,N be Subgroup of G;
-  thus H,N are_complements_in G
-  implies (N is normal & H*N = the carrier of G & H/\N = (1).G)
-  proof
-    assume H,N are_complements_in G;
-    then consider H1 being strict Subgroup of G,
-    N1 being strict normal Subgroup of G such that
-    A1: H1 = the multMagma of H
-    & N1 = the multMagma of N
-    & H1 * N1 = the carrier of G
-    & H1 /\ N1 = (1).G;
-    for g being Element of G
-    holds N |^ g = the multMagma of N
-    proof
-      let g be Element of G;
-      B1: carr N1 = the carrier of N1 by GROUP_2:def 9
-                 .= carr N by A1, GROUP_2:def 9;
-      the carrier of N |^ g = (carr N) |^ g by GROUP_3:def 6
-      .= the carrier of (N1 |^ g) by B1,GROUP_3:def 6
-      .= the carrier of N1 by GROUP_3:def 13
-      .= carr N by B1,GROUP_2:def 9
-      .= the carrier of N by GROUP_2:def 9;
-      hence N |^ g = the multMagma of N by GROUP_2:59;
-    end;
-    hence N is normal by GROUP_3:def 13;
-    thus H * N = the carrier of G by A1,ThDef7Helper;
-    thus H /\ N = (1).G by A1,ThDef7Helper;
-  end;
-  assume A0: N is normal;
-  assume A1: H * N = the carrier of G;
-  assume A2: H /\ N = (1).G;
-
-  ex H1 being strict Subgroup of G st
-  ex N1 being strict normal Subgroup of G
-  st H1 = the multMagma of H
-   & N1 = the multMagma of N
-   & H1 * N1 = the carrier of G
-   & H1 /\ N1 = (1).G
-  proof
-    reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
-    take H1;
-    thus thesis
-    proof
-      reconsider N1=the multMagma of N as strict normal Subgroup of G
-      by A0,LmDef5;
-      take N1;
-      thus H1 = the multMagma of H;
-      thus N1 = the multMagma of N;
-      thus H1 * N1 = the carrier of G by A1,ThDef7Helper;
-      thus H1 /\ N1 = (1).G by A2,ThDef7Helper;
-    end;
-  end;
-  hence H,N are_complements_in G;
-end;
-
-definition
-  let G be Group;
-  let H,N be Subgroup of G;
-  redefine pred H,N are_complements_in G means :Def7:
-  N is normal & H * N = the carrier of G & H /\ N = (1).G;
-  compatibility by ThDef7SubAlt;
-end;
+proof end;
+::> *396
 
 theorem Th25:
   for G being Group
@@ -2568,12 +2266,11 @@ proof
   let H be Subgroup of G;
   let N be normal Subgroup of G;
   let N1 be strict normal Subgroup of G;
-  assume N1 = the multMagma of N;
-  then the carrier of H = the carrier of H
-  & the carrier of N1 = the carrier of N;
-  hence thesis by ThDef7HelperCore;
+  assume A1: N1 = the multMagma of N;
+  reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,ThDef7Helper;
+  hence thesis by ThDef7Helper;
 end;
-
 
 theorem Th30:
   for G being Group
@@ -3364,3 +3061,4 @@ proof
 end;
 
 ::> 4: This inference is not accepted
+::> 396: Formula expected

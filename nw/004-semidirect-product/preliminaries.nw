@@ -1,376 +1,35 @@
 % -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
-\section{Preliminaries about Automorphisms}
+\section{Preliminaries}
 
-
-<<Preliminaries about Automorphism Groups>>=
-begin :: The product of the families of the groups
-
-<<The carrier of a subgroup is non-empty>>
-
-<<Right cosets of a subgroup are a non-empty set>>
-
-<<Register: Element of $\Aut(G)$ is multiplicative>>
-
-<<Register: $\id_{G}$ is a group automorphism>>
-
-<<Register: The automorphism group is non-empty, strict, and consists of functions>>
-
-<<Definition: [[phi /. a]] is an Endomorphism of G>>
-
-<<Definition: $\varphi H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>
-
-<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>
-
-<<Register: Underlying set of $A\times G$ is non empty>>
-
-<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>
-
-<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>
-
-<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>
-
-<<Theorem: Elements of Products of Subgroups>>
-
-<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
-
-<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
+<<Preliminaries>>=
+begin :: Preliminaries
+<<Reservations for [[group_24.miz]]>>
 
 <<Theorem: Dedekind modular identity>>
 
+<<Theorem: If $H\subgroup G$, then the magma underlying $H$ is a strict subgroup of $G$.>>
+
+<<Theorem: If $N\normalSubgroup G$, the magma underlying $N$ is a strict normal subgroup of $G$>>
+
+<<Theorem: magma of $N$ = magma of $(N)_{H}$>>
+
+<<Theorem: If $H_{i}=K_{i}$, then $H_{1}\cap H_{2}=K_{1}\cap K_{2}$>>
+
+<<Preliminaries about Automorphism Groups>>
+
+<<Preliminaries about Product Groups>>
 @
 
-\begin{registration}
-The carrier of a subgroup is non-empty.
-\end{registration}
+\begin{reserve}
+Let $G$ be a strict group, let $A$ be a group, let $\varphi\colon A\to\Aut(G)$
+be a group morphism.
+\end{reserve}
 
-<<The carrier of a subgroup is non-empty>>=
-registration
-  let G be Group;
-  let H be Subgroup of G;
-  cluster the carrier of H -> non empty;
-  correctness;
-end;
-
-registration
-  let G be Group;
-  let H be Subgroup of G;
-  cluster carr H -> non empty;
-  correctness
-  proof
-    1_H in H;
-    hence thesis by GROUP_2:def 9;
-  end;
-end;
+<<Reservations for [[group_24.miz]]>>=
+reserve G for strict Group;
+reserve A for Group;
+reserve phi for Homomorphism of A,AutGroup(G);
 @ 
-
-\begin{registration}
-Right cosets of a subgroup are a non-empty set.
-Left cosets are registered in [[GROUP_8]] as non-empty.
-\end{registration}
-
-<<Right cosets of a subgroup are a non-empty set>>=
-registration
-  let G be Group;
-  let H be Subgroup of G;
-  cluster Right_Cosets H -> non empty;
-  correctness by GROUP_2:135;
-end;
-@ 
-
-\begin{registration}
-An element of the set underlying $\Aut(G)$ is multiplicative (as a function).
-\end{registration}
-
-<<Register: Element of $\Aut(G)$ is multiplicative>>=
-registration
-  let G be strict Group;
-  cluster -> multiplicative for Element of Aut G;
-  correctness by AUTGROUP:def 1;
-end;
-@
-
-\begin{registration}
-For any group $G$, the identity function $\id_{G}$ is a group automorphism.
-\end{registration}
-
-<<Register: $\id_{G}$ is a group automorphism>>=
-registration
-  let A be Group;
-  cluster id A -> multiplicative;
-  correctness by GROUP_6:38;
-
-  cluster id A -> bijective;
-  coherence
-  proof
-    set f = id A;
-    rng (id A) = the carrier of A;
-    then (id A is one-to-one & id A is onto) by FUNCT_2:def 3;
-    hence id A is bijective;
-  end;
-end;
-@
-
-\begin{registration}
-The automorphism group is non-empty, strict, and consists of functions.
-\end{registration}
-
-<<Register: The automorphism group is non-empty, strict, and consists of functions>>=
-registration
-  let G be strict Group;
-  cluster AutGroup G -> non empty strict constituted-Functions;
-  coherence by MONOID_0:80;
-end;
-@ 
-
-\begin{definition}
-Let $a\in A$. Then we should think of $\varphi(a)$ as a Homomorphism of
-$G$ to $G$.
-\end{definition}
-
-<<Definition: [[phi /. a]] is an Endomorphism of G>>=
-definition
-  let A, G, phi;
-  let a be Element of A;
-  func phi /. a -> Homomorphism of G,G equals phi.a;
-  correctness
-  proof
-    phi.a is Element of Aut G;
-    hence phi.a is Homomorphism of G, G;
-  end;
-end;
-@
-
-\begin{definition}
-Let $H\subgroup A$, $G$ be groups, and $\varphi\colon H\to\Aut(G)$ be a
-group morphism. If $a$ is an Element of $A$ and $a\in H$, then
-$\varphi(h)$ is an function of $G$ to $G$.
-\end{definition}
-
-<<Definition: $\varphi H\to\Aut(G)$ and $a\in A$, $\varphi(a)\in\Aut(G)$>>=
-definition
-  let A,G;
-  let H be Subgroup of A;
-  let phi be Homomorphism of H,AutGroup G;
-  let a be Element of A such that
-A1: a in H;
-  func phi /. a -> Function of G,G equals
-  :Def2a: phi.a;
-  correctness
-  proof
-    reconsider h=a as Element of H by A1;
-    phi.h = phi.a & phi.h is Element of Aut G;
-    hence thesis;
-  end;
-end;
-@
-
-\begin{registration}
-In fact, $\varphi(a)$ is an automorphism.
-\end{registration}
-
-<<Register: $\varphi\colon H\to\Aut(G)$ has $\varphi(a)$ is an endomorphism>>=
-registration
-  let G be strict Group, A be Group;
-  let phi be Homomorphism of A, AutGroup G;
-  let a be Element of A;
-  cluster phi/.a -> multiplicative;
-  coherence;
-end;
-@ 
-
-\begin{registration}
-The underlying set of the product group $A\times G$ is nonempty;
-\end{registration}
-
-<<Register: Underlying set of $A\times G$ is non empty>>=
-registration
-  let G, A be Group;
-  cluster product (Carrier <*A,G*>) -> non empty;
-  correctness;
-  cluster product <*A,G*> -> non empty;
-  correctness;
-end;
-
-registration
-  let G, A;
-  cluster product (Carrier <*A,G*>) -> non empty;
-  correctness;
-  cluster product (Carrier <*G,A*>) -> non empty;
-  correctness;
-end;
-@
-
-\begin{theorem}
-  Let $G_{1}$, $G_{2}$ be groups.
-  If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$.
-\end{theorem}
-
-<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>=
-
-theorem th4a:
-  for G1,G2 being Group
-  for x being Element of product (<*G1,G2*>)
-  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
-proof
-  let G1,G2 be Group;
-  let x be Element of product (<*G1,G2*>);
-  A1: dom (Carrier <*G1,G2*>) = {1,2} by PARTFUN1:def 2;
-  x in the carrier of product (<*G1,G2*>);
-  then x in product (Carrier <*G1,G2*>) by GROUP_7:def 2;
-  then consider f being Function such that
-  A2: x = f
-      & dom f = dom (Carrier <*G1,G2*>)
-      & (for y being object st y in dom (Carrier <*G1,G2*>)
-         holds f.y in (Carrier <*G1,G2*>).y)
-  by CARD_3:def 5;
-
-  thus x.1 in G1
-  proof
-    B1: <* G1, G2 *>.1 = G1 by FINSEQ_1:44;
-    B2: 1 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
-    then ex R being 1-sorted st
-    (R = <*G1,G2*>.1 & (Carrier <*G1,G2*>).1 = the carrier of R)
-    by PRALG_1:def 15;
-    hence thesis by A2, B1, B2;
-  end;
-
-  thus x.2 in G2
-  proof
-    B1: <* G1, G2 *>.2 = G2 by FINSEQ_1:44;
-    B2: 2 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
-    then ex R being 1-sorted st
-    (R = <*G1,G2*>.2 & (Carrier <*G1,G2*>).2 = the carrier of R)
-    by PRALG_1:def 15;
-    hence thesis by A2, B1, B2;
-  end;
-  thus dom x = {1,2} by A2,PARTFUN1:def 2;
-end;
-@ 
-
-\begin{lemma}
-If $x\in U(A\times G)$ is an element of the underlying set, then
-$x_{1}\in A$ and $x_{2}\in G$.
-\end{lemma}
-
-<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>=
-Lm0:
-  for G1,G2 being Group
-  for x being Element of product (Carrier <*G1,G2*>)
-  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
-proof
-  let G1,G2 be Group;
-  let x be Element of product (Carrier <*G1,G2*>);
-  x is Element of the carrier of product <*G1,G2*> by GROUP_7:def 2;
-  hence thesis by th4a;
-end;
-@ %def Lm0
-
-\begin{lemma}
-For $a\in A$ and $g\in G$, we have $(a,g)\in U(A\times G)$ be an element
-of the underlying set.
-\end{lemma}
-
-<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>=
-Lm1:
-  for A,G being Group
-  for a being Element of A, g being Element of G
-  holds <*a,g*> in product (Carrier <*A,G*>)
-proof
-  let A,G be Group;
-  let a be Element of A;
-  let g be Element of G;
-  <*a,g*> in the carrier of (product <*A,G*>);
-  hence <*a,g*> in product (Carrier <*A,G*>) by GROUP_7:def 2;
-end;
-@ %def Lm1
-
-\begin{theorem}
-Let $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$.
-Let $g_{1}$ be an element of $G_{1}$ such that $g_{1}\in H_{1}$,
-and let $g_{2}$ be an element of $G_{2}$ such that $g_{2}\in H_{2}$.
-Then $(g_{1},g_{2})\in H_{1}\times H_{2}$.
-\end{theorem}
-
-<<Theorem: Elements of Products of Subgroups>>=
-theorem Th50:
-  for G1,G2 being Group 
-  for H1 being Subgroup of G1
-  for H2 being Subgroup of G2
-  for h1 being Element of G1 st h1 in H1
-  for h2 being Element of G2 st h2 in H2
-  holds <*h1,h2*> in product <*H1,H2*>
-proof
-  let G1,G2 be Group;
-  let H1 be Subgroup of G1;
-  let H2 be Subgroup of G2;
-  let h1 be Element of G1;
-  assume A1: h1 in H1;
-  let h2 be Element of G2;
-  assume A2: h2 in H2;
-  set H = <*H1,H2*>;
-  A3: dom Carrier H = {1,2} by PARTFUN1:def 2;
-  A4: <*h1,h2*>.2 = h2 by FINSEQ_1:44;
-  A5: H.2 = H2 by FINSEQ_1:44;
-  A6: H.1 = H1 by FINSEQ_1:44;
-  A7: <*h1,h2*>.1 = h1 by FINSEQ_1:44;
-  A8: for a being object st a in {1,2}
-      holds <*h1,h2*>.a in (Carrier <*H1,H2*>).a
-  proof
-    let a be object;
-    assume B1: a in {1,2};
-    then per cases by TARSKI:def 2;
-    suppose B2: a = 1;
-      then ex R being 1-sorted st R = H.1 & (Carrier H).1 = the carrier of R
-      by B1, PRALG_1:def 15;
-      hence thesis by A1,A7,A6,B2;
-    end;
-    suppose B3: a = 2;
-      then ex R being 1-sorted st R = H.2 & (Carrier H).2 = the carrier of R
-      by B1, PRALG_1:def 15;
-      hence thesis by A2,A4,A5,B3;
-    end;
-  end;
-  dom <*h1,h2*> = {1,2} by FINSEQ_1:2,89;
-  then <*h1,h2*> in product Carrier (<*H1,H2*>) by A3,A8,CARD_3:9;
-  hence <*h1,h2*> in product <*H1,H2*> by GROUP_7:def 2;
-end;
-@ %def Th50
-
-\begin{theorem}
-Let $K\properSubgroup H\subgroup G$ be strict subgroups.
-Then there exists some element $g$ of $G$ such that $g\in H$ and
-$g\notin K$.
-\end{theorem}
-
-<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>=
-theorem Th51:
-  for G being Group
-  for H,K being strict Subgroup of G
-  st H <> K & K is Subgroup of H
-  ex g being Element of G
-  st g in H & not g in K
-proof
-  let G be Group;
-  let H,K be strict Subgroup of G;
-  assume A1: H <> K;
-  assume A2: K is Subgroup of H;
-  then A3: the carrier of K c= the carrier of H by GROUP_2:def 5;
-  not H is Subgroup of K by A1, A2, GROUP_2:55; then
-  not (the carrier of H c= the carrier of K)
-  by GROUP_2:57;
-  then the carrier of K c= the carrier of H
-  & (the carrier of H <> the carrier of K) 
-  by A3;
-  then the carrier of K c< the carrier of H by XBOOLE_0:def 8;
-  then consider x being object such that
-  A4: ( x in the carrier of H & not x in the carrier of K) by XBOOLE_0:6;
-  A5: x in H & not x in K by A4;
-  then x in G by GROUP_2:40;
-  then reconsider g=x as Element of G;
-  take g;
-  thus g in H & not g in K by A5;
-end;
-@ %def Th51
 
 \begin{theorem}[Dedekind Modular Identity]
 Let $A$, $B$, $C$ be subgroups of $G$.
@@ -442,3 +101,194 @@ proof
   hence A * (B /\ C) = (A * B) /\ carr C by A3, XBOOLE_0:def 10;
 end;
 @ %def DedekindModularProperty
+
+\begin{theorem}
+Let $H\subgroup G$.
+Then the magma underlying $H$ is a strict subgroup of $G$.
+\end{theorem}
+
+<<Theorem: If $H\subgroup G$, then the magma underlying $H$ is a strict subgroup of $G$.>>=
+theorem LmDef5a:
+  for G being Group
+  for H being Subgroup of G
+  holds the multMagma of H is strict Subgroup of G
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  set H0 = the multMagma of H;
+  A1: the multMagma of H is non empty Group-like;
+  (the carrier of H0 c= the carrier of G)
+  & (the multF of H0 = (the multF of G)||(the carrier of H0))
+  by GROUP_2:def 5;
+  hence the multMagma of H is strict Subgroup of G by A1,GROUP_2:def 5;
+end;
+@ %def LmDef5a
+
+\begin{theorem}
+Let $N\normalSubgroup G$.
+Then the magma underlying $N$ is a strict normal subgroup of $G$.
+\end{theorem}
+
+<<Theorem: If $N\normalSubgroup G$, the magma underlying $N$ is a strict normal subgroup of $G$>>=
+theorem LmDef5:
+  for G being Group
+  for N being normal Subgroup of G
+  holds the multMagma of N is strict normal Subgroup of G
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  reconsider N0 = the multMagma of N as strict Subgroup of G by LmDef5a;
+
+  for g being Element of G
+  holds N0 |^ g = N0
+  proof
+    let g be Element of G;
+    B1: carr N = the carrier of N by GROUP_2:def 9
+              .= carr N0 by GROUP_2:def 9;
+    B2: N |^ g = the multMagma of N by GROUP_3:def 13;
+    the carrier of (N0 |^ g) = (carr N) |^ g by B1,GROUP_3:def 6
+                            .= the carrier of N0 by B2, GROUP_3:def 6;
+    hence N0 |^ g = N0 by GROUP_2:59;
+  end;
+  hence the multMagma of N is strict normal Subgroup of G
+  by GROUP_3:def 13;
+end;
+@ %def LmDef5
+
+\begin{theorem}
+Let $H\subgroup G$ and $N\normalSubgroup G$. If $N\subgroup H$,
+then the magma underlying $N$ is equal to the magma underlying $(N)_{H}$.
+\end{theorem}
+
+<<Theorem: magma of $N$ = magma of $(N)_{H}$>>=
+theorem Lm6:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st N is Subgroup of H
+  holds the multMagma of N = the multMagma of (H,N)`*`
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume Z1: N is Subgroup of H;
+  then N is normal Subgroup of H by GROUP_6:8;
+  then reconsider N1=the multMagma of N as strict normal Subgroup of H
+  by LmDef5;
+  thus the multMagma of N = the multMagma of N1
+                         .= the multMagma of (H,N)`*` by GROUP_6:def 1;
+end;
+@ %def Lm6
+
+\begin{theorem}
+Let $K\subgroup G$.
+Let $H_{1},H_{2}\subgroup G$ and $K_{1},K_{2}\subgroup K$
+be such that $H_{i}=K_{i}$ for $i=1,2$.
+Then $H_{1}\cap H_{2}=K_{1}\cap K_{2}$.
+\end{theorem}
+
+<<Theorem: If $H_{i}=K_{i}$, then $H_{1}\cap H_{2}=K_{1}\cap K_{2}$>>=
+theorem ThCapLemma:
+  for G being Group
+  for H1,H2,K being Subgroup of G
+  for K1,K2 being Subgroup of K
+  st the multMagma of H1 = the multMagma of K1
+  & the multMagma of H2 = the multMagma of K2
+  holds H1 /\ H2 = K1 /\ K2
+proof
+  let G be Group;
+  let H1,H2,K be Subgroup of G;
+  let K1,K2 be Subgroup of K;
+  assume Z1: the multMagma of H1 = the multMagma of K1;
+  assume Z2: the multMagma of H2 = the multMagma of K2;
+  Z3: K1 /\ K2 is Subgroup of G by GROUP_2:56;
+  Z4: for g being Element of G
+  st g in H1 /\ H2 holds g in K1 /\ K2
+  proof
+    let g be Element of G;
+    assume g in H1 /\ H2;
+    then g in H1 & g in H2 by GROUP_2:82;
+    then g in H1 & g in K2 by Z2;
+    then g in K1 & g in K2 by Z1;
+    hence g in K1 /\ K2 by GROUP_2:82;
+  end;
+
+  for g being Element of G
+  st g in K1 /\ K2 holds g in H1 /\ H2
+  proof
+    let g be Element of G;
+    assume g in K1 /\ K2;
+    then g in K1 & g in K2 by GROUP_2:82;
+    then g in H1 & g in K2 by Z1;
+    then g in H1 & g in H2 by Z2;
+    hence g in H1 /\ H2 by GROUP_2:82;
+  end;
+  hence H1 /\ H2 = K1 /\ K2 by Z3, Z4, GROUP_2:def 6;
+end;
+@ %def ThCapLemma
+
+\begin{theorem}
+Let $K\subgroup G$.
+Let $H_{1},H_{2}\subgroup G$ and $K_{1},K_{2}\subgroup K$
+be such that $H_{i}=K_{i}$ for $i=1,2$.
+Then $H_{1}\cdot H_{2}=K_{1}\cdot K_{2}$.
+\end{theorem}
+
+<<Theorem: If $H_{i}=K_{i}$, then $H_{1}\cdot H_{2}=K_{1}\cdot K_{2}$>>=
+theorem ThProdLemma:
+  for G being Group
+  for H1,H2,K being Subgroup of G
+  for K1,K2 being Subgroup of K
+  st the multMagma of H1 = the multMagma of K1
+  & the multMagma of H2 = the multMagma of K2
+  holds H1 * H2 = K1 * K2
+proof
+  let G be Group;
+  let H1,H2,K be Subgroup of G;
+  let K1,K2 be Subgroup of K;
+  assume A1: the multMagma of H1 = the multMagma of K1;
+  assume A2: the multMagma of H2 = the multMagma of K2;
+  A3: carr H1 = the carrier of H1 by GROUP_2:def 9
+  .= carr K1 by A1, GROUP_2:def 9;
+  carr H2 = the carrier of H2 by GROUP_2:def 9
+  .= carr K2 by A2,GROUP_2:def 9;
+  then A4: carr H1 = carr K1 & carr H2 = carr K2 by A3;
+  for x being object
+  holds x in (carr H1) * (carr H2) iff x in (carr K1) * (carr K2)
+  proof
+    let x be object;
+    thus x in (carr H1) * (carr H2) implies x in (carr K1) * (carr K2)
+    proof
+      assume x in (carr H1) * (carr H2);
+      then consider h1,h2 being Element of G such that
+      B1: x = h1*h2 & h1 in carr H1 & h2 in carr H2
+      by GROUP_2:8;
+      B2: h1 in carr K1 & h2 in carr K2 by A4,B1;
+      then h1 in the carrier of K1 & h2 in the carrier of K2 by GROUP_2:def 9;
+      then reconsider k1=h1,k2=h2 as Element of K by GROUP_2:42;
+      B3: k1*k2 = x by B1,GROUP_2:43;
+      k1 in carr K1 & k2 in carr K2 by B2;
+      then k1 * k2 in (carr K1) * (carr K2) by GROUP_2:8;
+      hence x in (carr K1) * (carr K2) by B3;
+    end;
+
+    thus x in (carr K1) * (carr K2) implies x in (carr H1) * (carr H2)
+    proof
+      assume x in (carr K1) * (carr K2);
+      then consider k1,k2 being Element of K such that
+      B1: x = k1*k2 & k1 in carr K1 & k2 in carr K2
+      by GROUP_2:8;
+      B2: k1 in carr H1 & k2 in carr H2 by A4,B1;
+      reconsider h1=k1,h2=k2 as Element of G by GROUP_2:42;
+      B3: h1*h2 = x by B1,GROUP_2:43;
+      h1 in carr H1 & h2 in carr H2 by B2;
+      then h1*h2 in (carr H1) * (carr H2) by GROUP_2:8;
+      hence x in (carr H1) * (carr H2) by B3;
+    end;
+  end;
+  then A5: (carr H1) * (carr H2) = (carr K1) * (carr K2) by TARSKI:2;
+
+  thus H1 * H2 = (carr H1) * (carr H2) by GROUP_4:def 8
+  .= K1 * K2 by A5,GROUP_4:def 8;
+end;
+@ %def ThProdLemma

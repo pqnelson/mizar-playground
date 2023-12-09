@@ -1,0 +1,214 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\subsection{Preliminaries about Product Groups}
+
+<<Preliminaries about Product Groups>>=
+<<Register: Underlying set of $A\times G$ is non empty>>
+
+<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>
+
+<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>
+
+<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>
+
+<<Theorem: Elements of Products of Subgroups>>
+
+<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
+
+<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
+
+@ 
+
+
+\begin{registration}
+The underlying set of the product group $A\times G$ is nonempty;
+\end{registration}
+
+<<Register: Underlying set of $A\times G$ is non empty>>=
+registration
+  let G, A be Group;
+  cluster product (Carrier <*A,G*>) -> non empty;
+  correctness;
+  cluster product <*A,G*> -> non empty;
+  correctness;
+end;
+
+registration
+  let G, A;
+  cluster product (Carrier <*A,G*>) -> non empty;
+  correctness;
+  cluster product (Carrier <*G,A*>) -> non empty;
+  correctness;
+end;
+@
+
+\begin{theorem}
+  Let $G_{1}$, $G_{2}$ be groups.
+  If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$.
+\end{theorem}
+
+<<Theorem: If $x\in G_{1}\times G_{2}$, then $x_{1}\in G_{1}$ and $x_{2}\in G_{2}$ and $\dom(x)=\{1,2\}$>>=
+
+theorem th4a:
+  for G1,G2 being Group
+  for x being Element of product (<*G1,G2*>)
+  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
+proof
+  let G1,G2 be Group;
+  let x be Element of product (<*G1,G2*>);
+  A1: dom (Carrier <*G1,G2*>) = {1,2} by PARTFUN1:def 2;
+  x in the carrier of product (<*G1,G2*>);
+  then x in product (Carrier <*G1,G2*>) by GROUP_7:def 2;
+  then consider f being Function such that
+  A2: x = f
+      & dom f = dom (Carrier <*G1,G2*>)
+      & (for y being object st y in dom (Carrier <*G1,G2*>)
+         holds f.y in (Carrier <*G1,G2*>).y)
+  by CARD_3:def 5;
+
+  thus x.1 in G1
+  proof
+    B1: <* G1, G2 *>.1 = G1 by FINSEQ_1:44;
+    B2: 1 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
+    then ex R being 1-sorted st
+    (R = <*G1,G2*>.1 & (Carrier <*G1,G2*>).1 = the carrier of R)
+    by PRALG_1:def 15;
+    hence thesis by A2, B1, B2;
+  end;
+
+  thus x.2 in G2
+  proof
+    B1: <* G1, G2 *>.2 = G2 by FINSEQ_1:44;
+    B2: 2 in dom (Carrier <*G1,G2*>) by A1, TARSKI:def 2;
+    then ex R being 1-sorted st
+    (R = <*G1,G2*>.2 & (Carrier <*G1,G2*>).2 = the carrier of R)
+    by PRALG_1:def 15;
+    hence thesis by A2, B1, B2;
+  end;
+  thus dom x = {1,2} by A2,PARTFUN1:def 2;
+end;
+@ 
+
+\begin{lemma}
+If $x\in U(A\times G)$ is an element of the underlying set, then
+$x_{1}\in A$ and $x_{2}\in G$.
+\end{lemma}
+
+<<Lemma: if $x\in U(A\times G)$, then $x_{1}\in A$ and $x_{2}\in G$>>=
+Lm0:
+  for G1,G2 being Group
+  for x being Element of product (Carrier <*G1,G2*>)
+  holds x.1 in G1 & x.2 in G2 & dom x = {1,2}
+proof
+  let G1,G2 be Group;
+  let x be Element of product (Carrier <*G1,G2*>);
+  x is Element of the carrier of product <*G1,G2*> by GROUP_7:def 2;
+  hence thesis by th4a;
+end;
+@ %def Lm0
+
+\begin{lemma}
+For $a\in A$ and $g\in G$, we have $(a,g)\in U(A\times G)$ be an element
+of the underlying set.
+\end{lemma}
+
+<<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>=
+Lm1:
+  for A,G being Group
+  for a being Element of A, g being Element of G
+  holds <*a,g*> in product (Carrier <*A,G*>)
+proof
+  let A,G be Group;
+  let a be Element of A;
+  let g be Element of G;
+  <*a,g*> in the carrier of (product <*A,G*>);
+  hence <*a,g*> in product (Carrier <*A,G*>) by GROUP_7:def 2;
+end;
+@ %def Lm1
+
+\begin{theorem}
+Let $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$.
+Let $g_{1}$ be an element of $G_{1}$ such that $g_{1}\in H_{1}$,
+and let $g_{2}$ be an element of $G_{2}$ such that $g_{2}\in H_{2}$.
+Then $(g_{1},g_{2})\in H_{1}\times H_{2}$.
+\end{theorem}
+
+<<Theorem: Elements of Products of Subgroups>>=
+theorem Th50:
+  for G1,G2 being Group 
+  for H1 being Subgroup of G1
+  for H2 being Subgroup of G2
+  for h1 being Element of G1 st h1 in H1
+  for h2 being Element of G2 st h2 in H2
+  holds <*h1,h2*> in product <*H1,H2*>
+proof
+  let G1,G2 be Group;
+  let H1 be Subgroup of G1;
+  let H2 be Subgroup of G2;
+  let h1 be Element of G1;
+  assume A1: h1 in H1;
+  let h2 be Element of G2;
+  assume A2: h2 in H2;
+  set H = <*H1,H2*>;
+  A3: dom Carrier H = {1,2} by PARTFUN1:def 2;
+  A4: <*h1,h2*>.2 = h2 by FINSEQ_1:44;
+  A5: H.2 = H2 by FINSEQ_1:44;
+  A6: H.1 = H1 by FINSEQ_1:44;
+  A7: <*h1,h2*>.1 = h1 by FINSEQ_1:44;
+  A8: for a being object st a in {1,2}
+      holds <*h1,h2*>.a in (Carrier <*H1,H2*>).a
+  proof
+    let a be object;
+    assume B1: a in {1,2};
+    then per cases by TARSKI:def 2;
+    suppose B2: a = 1;
+      then ex R being 1-sorted st R = H.1 & (Carrier H).1 = the carrier of R
+      by B1, PRALG_1:def 15;
+      hence thesis by A1,A7,A6,B2;
+    end;
+    suppose B3: a = 2;
+      then ex R being 1-sorted st R = H.2 & (Carrier H).2 = the carrier of R
+      by B1, PRALG_1:def 15;
+      hence thesis by A2,A4,A5,B3;
+    end;
+  end;
+  dom <*h1,h2*> = {1,2} by FINSEQ_1:2,89;
+  then <*h1,h2*> in product Carrier (<*H1,H2*>) by A3,A8,CARD_3:9;
+  hence <*h1,h2*> in product <*H1,H2*> by GROUP_7:def 2;
+end;
+@ %def Th50
+
+\begin{theorem}
+Let $K\properSubgroup H\subgroup G$ be strict subgroups.
+Then there exists some element $g$ of $G$ such that $g\in H$ and
+$g\notin K$.
+\end{theorem}
+
+<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>=
+theorem Th51:
+  for G being Group
+  for H,K being strict Subgroup of G
+  st H <> K & K is Subgroup of H
+  ex g being Element of G
+  st g in H & not g in K
+proof
+  let G be Group;
+  let H,K be strict Subgroup of G;
+  assume A1: H <> K;
+  assume A2: K is Subgroup of H;
+  then A3: the carrier of K c= the carrier of H by GROUP_2:def 5;
+  not H is Subgroup of K by A1, A2, GROUP_2:55; then
+  not (the carrier of H c= the carrier of K)
+  by GROUP_2:57;
+  then the carrier of K c= the carrier of H
+  & (the carrier of H <> the carrier of K) 
+  by A3;
+  then the carrier of K c< the carrier of H by XBOOLE_0:def 8;
+  then consider x being object such that
+  A4: ( x in the carrier of H & not x in the carrier of K) by XBOOLE_0:6;
+  A5: x in H & not x in K by A4;
+  then x in G by GROUP_2:40;
+  then reconsider g=x as Element of G;
+  take g;
+  thus g in H & not g in K by A5;
+end;
+@ %def Th51
