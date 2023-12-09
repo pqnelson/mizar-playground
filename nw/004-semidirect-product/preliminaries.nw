@@ -35,6 +35,8 @@ begin :: The product of the families of the groups
 
 <<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
 
+<<Theorem: Dedekind modular identity>>
+
 @
 
 \begin{registration}
@@ -270,9 +272,11 @@ of the underlying set.
 
 <<Lemma: $a\in A$ and $g\in G$ implies $(a,g)\in U(A\times G)$>>=
 Lm1:
+  for A,G being Group
   for a being Element of A, g being Element of G
   holds <*a,g*> in product (Carrier <*A,G*>)
 proof
+  let A,G be Group;
   let a be Element of A;
   let g be Element of G;
   <*a,g*> in the carrier of (product <*A,G*>);
@@ -367,3 +371,74 @@ proof
   thus g in H & not g in K by A5;
 end;
 @ %def Th51
+
+\begin{theorem}[Dedekind Modular Identity]
+Let $A$, $B$, $C$ be subgroups of $G$.
+If $A\subgroup C$, then $A(B\cap C)=(AB)\cap C$ as sets.
+\end{theorem}
+
+<<Theorem: Dedekind modular identity>>=
+::$N Dedekinds ``Modular'' Identity
+theorem DedekindModularProperty:
+  for G being Group
+  for A,B,C being Subgroup of G
+  st A is Subgroup of C
+  holds A * (B /\ C) = (A * B) /\ carr C
+proof
+  let G be Group;
+  let A,B,C be Subgroup of G;
+  assume A is Subgroup of C;
+  then the carrier of A c= the carrier of C by GROUP_2:def 5;
+  then the carrier of A c= carr C by GROUP_2:def 9;
+  then A2: carr A c= carr C by GROUP_2:def 9;
+  for x being Element of G
+  st x in A * (B /\ C)
+  holds x in (A * B) /\ carr C
+  proof
+    let x be Element of G;
+    assume x in A * (B /\ C);
+    then x in (carr A) * carr (B /\ C) by GROUP_4:def 8;
+    then consider a,b being Element of G such that
+    B2: x = a*b & a in carr A & b in carr (B /\ C)
+    by GROUP_2:8;
+    b in carr (B /\ C) by B2;
+    then b in carr B /\ carr C by GROUP_2:81;
+    then B3: b in carr B & b in carr C by XBOOLE_0:def 4;
+    then x in (carr A)*(carr B) by B2, GROUP_2:8;
+    then B4: x in A*B by GROUP_4:def 8;
+    a in carr C by B2, A2;
+    then x in carr C by B2,B3,GROUP_2:74;
+    hence x in (A * B) /\ carr C by B4, XBOOLE_0:def 4;
+  end;
+  then A3: A * (B /\ C) c= (A * B) /\ carr C;
+  for x being Element of G
+  st x in (A * B) /\ carr C
+  holds x in A * (B /\ C)
+  proof
+    let x be Element of G;
+    assume B1: x in (A * B) /\ carr C;
+    then x in A * B & x in carr C by XBOOLE_0:def 4;
+    then x in (carr A) * (carr B) by GROUP_4:def 8;
+    then consider a,b being Element of G such that
+    B2: x = a * b & a in carr A & b in carr B by GROUP_2:8;
+    a" in carr A by B2, GROUP_2:75;
+    then a" in carr C by A2;
+    then a" in carr C & x in carr C by B1, XBOOLE_0:def 4;
+    then (a") * x in carr C by GROUP_2:74;
+    then B3: (a") * x in C by GROUP_2:def 9;
+    b = 1_G * b by GROUP_1:def 4
+     .= (a" * a) * b by GROUP_1:def 5
+     .= (a") * x by B2, GROUP_1:def 3;
+    then b in C by B3;
+    then b in B & b in C by B2, GROUP_2:def 9;
+    then b in B /\ C by GROUP_2:82;
+    then b in carr (B /\ C) by GROUP_2:def 9;
+    then a in carr A & b in carr (B /\ C) by B2;
+    then a * b in (carr A) * carr (B /\ C) by GROUP_2:8;
+    then a * b in A * (B /\ C) by GROUP_4:def 8;
+    hence thesis by B2;
+  end;
+  then (A * B) /\ carr C c= A * (B /\ C);
+  hence A * (B /\ C) = (A * B) /\ carr C by A3, XBOOLE_0:def 10;
+end;
+@ %def DedekindModularProperty
