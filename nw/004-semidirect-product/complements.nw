@@ -26,11 +26,31 @@ begin :: Complementary Subgroups
 
 <<Definition: $H$, $N$ are complements in $G$>>
 
+<<Theorem: If $H=H_{k}$, then $carr(H)=carr(H_{k})$>>
+
+<<Theorem: Let $H,K,N\subgroup G$. If $N$ is a normal subgroup of $K$, then $NH=HN$.>>
+
+<<Theorem: if $N\subgroup H$, then $N=(N)_{H}$>>
+
+<<Theorem: If $H_{1}=H_{2}$ and $N_{1}=N_{2}$, then $H_{1}N_{1}=H_{2}N_{2}$ and $H_{1}\cap N_{1}=H_{2}\cap N_{2}$>>
+
+<<Redefine: $H$, $N$ are complements in $G$>>
+
+<<Theorem: If $N\normalSubgroup K$, then $H$ and $N$ are complements in $K$ if and only if $HN=K$ and $H\cap N=\trivialSubgroup$>>
+
+<<Theorem: If $N\normalSubgroup K$, then $H$ and $N$ are complements in $K$ if and only if $NH=K$ and $H\cap N=\trivialSubgroup$>>
+
+<<Theorem: If $N\subgroup K$, then $H$ and $(N)_{H}$ are complements in $K$ if and only if $NH=K$ and $H\cap N=\trivialSubgroup$.>>
+
+<<Theorem: $H$ and $N$ are complements in $K$ iff $H$ and $(N)_{H}$ are>>
+
+<<Theorem: $H$ and $N$ are complements in $K$ if and only if $H$ and $(N)_{H}$ are complements in $K$>>
+
 <<Theorem: $\langle U(G)\rangle = G$>>
 
 <<Theorem: $H$, $N$ are complements in $G$ iff $H\join N=G$ and $H\cap N=\trivialSubgroup$>>
 
-<<Theorem: surjectivity for group morphisms>>
+<<Theorem: surjectivity for functions>>
 
 <<Theorem: equal groups are isomorphic>>
 
@@ -39,6 +59,8 @@ begin :: Complementary Subgroups
 <<Theorem: Universal Property of Quotient Groups>>
 
 <<Theorem: for any $N_{1}\normalSubgroup G_{1}$ and $N_{2}\normalSubgroup G_{2}$ and $\varphi\colon G_{1}\to G_{2}$ isomorphism, if $\varphi(N_{1})=N_{2}$, then $G_{1}/N_{1}\iso G_{2}/N_{2}$>>
+
+<<Theorem: $H$, $N$ are complements implies there exists an isomorphism $\varphi\colon H\to G/N$>>
 
 <<Theorem: for $H$ being complement to $N\normalSubgroup G$ in $G$, $H\iso G/N$>>
 
@@ -52,18 +74,22 @@ begin :: Complementary Subgroups
 @
 
 \begin{definition}
-Let $G$ be a group, let $H\subgroup G$ be a subgroup, let
-$N\normalSubgroup G$ be a normal subgroup. Then we say $H$ and $N$
-\define{are complements in} $G$ if $HN=G$ and $H\cap N=\trivialSubgroup$.
+Let $G$, $H$, and $N$ be groups.
+Then we say $H$ and $N$ \define{are complements in} $G$ if
+there is a strict subgroup $H_{1}\subgroup G$ and a strict normal
+subgroup $N_{1}\normalSubgroup G$ such that $H_{1}=H$ and $N_{1}=N$ and $H_{1}N_{1}=G$ and $H_{1}\cap N_{1}=\trivialSubgroup$.
 \end{definition}
 
 <<Definition: $H$, $N$ are complements in $G$>>=
 definition
-  let G be Group;
-  let H be Subgroup of G;
-  let N be normal Subgroup of G;
-  pred H,N are_complements_in G means :Def4:
-  H * N = the carrier of G & H /\ N = (1).G;
+  let G,H,N be Group;
+  pred H,N are_complements_in G means :Def7a:
+  ex H1 being strict Subgroup of G st
+  ex N1 being strict normal Subgroup of G
+  st H1 = the multMagma of H
+   & N1 = the multMagma of N
+   & H1 * N1 = the carrier of G
+   & H1 /\ N1 = (1).G;
 end;
 @ %def are_complements_in
 
@@ -73,7 +99,346 @@ We add [[are_complements_in]] as a predicate in our vocabulary.
 
 <<DICT/group-24.voc>>=
 Rare_complements_in
+@
+
+\begin{theorem}
+Let $H,K\subgroup G$ and $H_{k}\subgroup K$.
+If $H=H_{k}$, then $carr(H)=carr(H_{k})$.
+\end{theorem}
+
+<<Theorem: If $H=H_{k}$, then $carr(H)=carr(H_{k})$>>=
+theorem ThCarrEq:
+  for G being Group
+  for H,K being Subgroup of G
+  for HK being Subgroup of K
+  st the multMagma of H = the multMagma of HK
+  holds carr H = carr HK
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  let HK be Subgroup of K;
+  assume A1: the multMagma of H = the multMagma of HK;
+  thus carr H = the carrier of H by GROUP_2:def 9
+             .= the carrier of HK by A1
+             .= carr HK by GROUP_2:def 9;
+end;
+@ %def ThCarrEq
+
+\begin{theorem}
+Let $H,K,N\subgroup G$. If $N$ is a normal subgroup of $K$, then $NH=HN$.
+\end{theorem}
+
+<<Theorem: Let $H,K,N\subgroup G$. If $N$ is a normal subgroup of $K$, then $NH=HN$.>>=
+theorem Th58Helper:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being Subgroup of G
+  st N is normal Subgroup of K
+  holds N * H = H * N
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  then reconsider H0=H as Subgroup of K;
+  let N be Subgroup of G;
+  assume A2: N is normal Subgroup of K;
+  then reconsider N0=N as normal Subgroup of K;
+  A3: the multMagma of N0 = the multMagma of N;
+  A4: the multMagma of H0 = the multMagma of H;
+  thus N * H = N0 * H0 by ThProdLemma,A3,A4
+            .= H0 * N0 by GROUP_5:8
+            .= H * N by ThProdLemma,A3,A4;
+end;
+@ %def Th58Helper
+
+\begin{theorem}
+Let $N\normalSubgroup G$ and $H\subgroup G$. If $N\subgroup H$,
+then the magma underlying $N$ is equal to $(N)_{H}$.
+\end{theorem}
+
+<<Theorem: if $N\subgroup H$, then $N=(N)_{H}$>>=
+theorem Lm6:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st N is Subgroup of H
+  holds the multMagma of N = the multMagma of (H,N)`*`
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume Z1: N is Subgroup of H;
+  then N is normal Subgroup of H by GROUP_6:8;
+  then reconsider N1=the multMagma of N as strict normal Subgroup of H
+  by LmDef5;
+  thus the multMagma of N = the multMagma of N1
+                         .= the multMagma of (H,N)`*` by GROUP_6:def 1;
+end;
+@ %def Lm6
+
+\begin{theorem}
+Let $H_{i}$, $N_{i}$ be subgroups of $G$.
+If $H_{1}=H_{2}$ and $N_{1}=N_{2}$, then $H_{1}N_{1}=H_{2}N_{2}$ and $H_{1}\cap N_{1}=H_{2}\cap N_{2}$.
+\end{theorem}
+
+<<Theorem: If $H_{1}=H_{2}$ and $N_{1}=N_{2}$, then $H_{1}N_{1}=H_{2}N_{2}$ and $H_{1}\cap N_{1}=H_{2}\cap N_{2}$>>=
+theorem ThDef7Helper:
+  for G being Group
+  for H1,N1,H2,N2 being Subgroup of G
+  st the multMagma of H1 = the multMagma of H2
+  & the multMagma of N1 = the multMagma of N2
+  holds H1*N1 = H2*N2 & H1 /\ N1 = H2 /\ N2
+proof
+  let G be Group;
+  let H1,N1,H2,N2 be Subgroup of G;
+  assume A1: the multMagma of H1 = the multMagma of H2;
+  assume A2: the multMagma of N1 = the multMagma of N2;
+  reconsider K=G as Subgroup of G by GROUP_2:54;
+  reconsider HK=the multMagma of H1,NK=the multMagma of N1 as Subgroup of K
+  by LmDef5a;
+  thus H1*N1 = HK*NK by ThProdLemma
+            .= H2*N2 by A1,A2,ThProdLemma;
+  thus H1 /\ N1 = HK /\ NK by ThCapLemma
+               .= H2 /\ N2 by A1,A2,ThCapLemma;
+end;
+@ %def ThDef7Helper
+
+\begin{definition}
+Let $H,N\subgroup G$.
+We redefine the predicate that $H$ and $N$ \define{are complements in} $G$
+to mean $N$ is normal, $HN=$ the carrier of $G$, and $H\cap N=\trivialSubgroup$.
+\end{definition}
+
+<<Redefine: $H$, $N$ are complements in $G$>>=
+definition
+  let G be Group;
+  let H,N be Subgroup of G;
+  redefine pred H,N are_complements_in G means :Def7:
+  N is normal & H * N = the carrier of G & H /\ N = (1).G;
+  compatibility
+  <<Proof: compatibility of redefinition>>
+end;
+@ %def Def7
+
+<<Proof: compatibility of redefinition>>=
+proof
+  thus H,N are_complements_in G
+  implies (N is normal & H*N = the carrier of G & H/\N = (1).G)
+  <<Proof: old definition implies redefinition>>
+  <<Proof: redefinition implies old definition>>
+end;
 @ 
+
+<<Proof: old definition implies redefinition>>=
+proof
+  assume H,N are_complements_in G;
+  then consider H1 being strict Subgroup of G,
+  N1 being strict normal Subgroup of G such that
+  A1: H1 = the multMagma of H
+  & N1 = the multMagma of N
+  & H1 * N1 = the carrier of G
+  & H1 /\ N1 = (1).G;
+  for g being Element of G
+  holds N |^ g = the multMagma of N
+  proof
+    let g be Element of G;
+    B1: carr N1 = the carrier of N1 by GROUP_2:def 9
+               .= carr N by A1, GROUP_2:def 9;
+    the carrier of N |^ g = (carr N) |^ g by GROUP_3:def 6
+    .= the carrier of (N1 |^ g) by B1,GROUP_3:def 6
+    .= the carrier of N1 by GROUP_3:def 13
+    .= carr N by B1,GROUP_2:def 9
+    .= the carrier of N by GROUP_2:def 9;
+    hence N |^ g = the multMagma of N by GROUP_2:59;
+  end;
+  hence N is normal by GROUP_3:def 13;
+  thus H * N = the carrier of G by A1,ThDef7Helper;
+  thus H /\ N = (1).G by A1,ThDef7Helper;
+end;    
+@
+
+<<Proof: redefinition implies old definition>>=
+assume A1: N is normal;
+assume A2: H * N = the carrier of G;
+assume A3: H /\ N = (1).G;
+
+ex H1 being strict Subgroup of G st
+ex N1 being strict normal Subgroup of G
+st H1 = the multMagma of H
+& N1 = the multMagma of N
+& H1 * N1 = the carrier of G
+& H1 /\ N1 = (1).G
+proof
+  reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+  take H1;
+  thus thesis
+  proof
+    reconsider N1=the multMagma of N as strict normal Subgroup of G
+    by A1,LmDef5;
+    take N1;
+    thus H1 = the multMagma of H;
+    thus N1 = the multMagma of N;
+    thus H1 * N1 = the carrier of G by A2,ThDef7Helper;
+    thus H1 /\ N1 = (1).G by A3,ThDef7Helper;
+  end;
+end;
+hence H,N are_complements_in G;
+@
+
+\begin{theorem}
+Let $H,K\subgroup G$, let $N\subgroup G$. If $N\normalSubgroup K$,
+then $H$ and $N$ are complements in $K$ if and only if $HN=K$ and $H\cap N=\trivialSubgroup$.
+\end{theorem}
+
+<<Theorem: If $N\normalSubgroup K$, then $H$ and $N$ are complements in $K$ if and only if $HN=K$ and $H\cap N=\trivialSubgroup$>>=
+theorem ThDef7Sub3:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being Subgroup of G st N is normal Subgroup of K
+  holds H,N are_complements_in K
+  iff ((N * H = the carrier of K) & (H /\ N = (1).K))
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  then reconsider H1=the multMagma of H as strict Subgroup of K
+  by LmDef5a;
+  let N be Subgroup of G;
+  assume A2: N is normal Subgroup of K;
+  then reconsider N1=the multMagma of N as strict normal Subgroup of K
+  by LmDef5;
+  A3: N * H = N1 * H1 by ThProdLemma;
+  A4: N /\ H = N1 /\ H1 & H /\ N = H1 /\ N1 by ThCapLemma;
+  A5: H1 /\ (N1 qua Subgroup of K) = (N1 qua Subgroup of K) /\ H1;
+  thus H,N are_complements_in K implies ((N * H = the carrier of K) & (H /\ N = (1).K))
+  proof
+    assume H,N are_complements_in K;
+    then B1: H1,N1 are_complements_in K;
+    thus the carrier of K = H1 * N1 by B1,Def7
+                         .= N1 * H1 by GROUP_5:8
+                         .= N * H by A3;
+
+    thus (1).K = H1 /\ N1 by B1,Def7
+              .= H /\ N by A4;
+  end;
+
+  thus ((N * H = the carrier of K) & (H /\ N = (1).K)) implies H,N are_complements_in K
+  proof
+    assume B1: N * H = the carrier of K;
+    assume B2: H /\ N = (1).K;
+    H1, N1 are_complements_in K
+    proof
+      thus N1 is normal;
+      thus the carrier of K = N * H by B1
+                           .= N1 * H1 by A3
+                           .= H1 * N1 by GROUP_5:8;
+      thus (1).K = H /\ N by B2
+                .= H1 /\ N1 by A4;
+    end;
+    hence H,N are_complements_in K;
+  end;
+
+  thus thesis by A3,A4,Def7;
+end;
+@ %def ThDef7Sub3
+
+\begin{theorem}
+Let $H,K\subgroup G$, let $N\subgroup G$. If $N\normalSubgroup K$,
+then $H$ and $N$ are complements in $K$ if and only if $NH=K$ and $H\cap N=\trivialSubgroup$.
+\end{theorem}
+
+<<Theorem: If $N\normalSubgroup K$, then $H$ and $N$ are complements in $K$ if and only if $NH=K$ and $H\cap N=\trivialSubgroup$>>=
+theorem ThDef7Sub2:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being Subgroup of G st N is normal Subgroup of K
+  holds H,N are_complements_in K
+  iff ((H * N = the carrier of K) & (H /\ N = (1).K))
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  let N be Subgroup of G;
+  assume A2: N is normal Subgroup of K;
+  then A3: N*H=H*N by A1,Th58Helper;
+  then (H * N = the carrier of K) iff (N * H = the carrier of K);
+  hence thesis by A1,A2,ThDef7Sub3;
+end;
+@ %def ThDef7Sub2
+
+\begin{theorem}
+Let $H,K\subgroup G$, let $N\normalSubgroup G$. If $N\subgroup K$,
+then $H$ and $(N)_{H}$ are complements in $K$ if and only if $NH=K$ and
+$H\cap N=\trivialSubgroup$.
+\end{theorem}
+
+<<Theorem: If $N\subgroup K$, then $H$ and $(N)_{H}$ are complements in $K$ if and only if $NH=K$ and $H\cap N=\trivialSubgroup$.>>=
+theorem ThDef7Sub4:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being normal Subgroup of G st N is Subgroup of K
+  holds H,((K,N)`*`) are_complements_in K
+  iff ((N * H = the carrier of K) & (H /\ N = (1).K))
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  then reconsider H1=the multMagma of H as strict Subgroup of K by LmDef5a;
+  let N be normal Subgroup of G;
+  assume N is Subgroup of K;
+  then A2: N is normal Subgroup of K by GROUP_6:8;
+  then the multMagma of (K,N)`*` = the multMagma of N by Lm6;
+  then H1,((K,N)`*`) are_complements_in K iff H,N are_complements_in K;
+  hence thesis by A1,A2,ThDef7Sub3;
+end;
+@ %def ThDef7Sub4
+
+\begin{theorem}
+Let $H,K\subgroup G$, let $N\normalSubgroup G$. If $N\subgroup K$,
+then $H$ and $(N)_{H}$ are complements in $K$ if and only if
+$H$ and $N$ are complements in $K$.
+\end{theorem}
+
+<<Theorem: $H$ and $N$ are complements in $K$ iff $H$ and $(N)_{H}$ are>>=
+theorem ThDef7Sub5:
+  for G being Group
+  for H,K being Subgroup of G st H is Subgroup of K
+  for N being normal Subgroup of G st N is Subgroup of K
+  holds H,N are_complements_in K
+  iff H,((K,N)`*`) are_complements_in K
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  assume A1: H is Subgroup of K;
+  let N be normal Subgroup of G;
+  assume A2: N is Subgroup of K;
+  then A3: N is normal Subgroup of K by GROUP_6:8;
+  hereby 
+    assume H,N are_complements_in K;
+    then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A3,ThDef7Sub3;
+    hence H,((K,N)`*`) are_complements_in K by A1,A2,ThDef7Sub4;
+  end;
+  assume H,((K,N)`*`) are_complements_in K;
+  then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A2,ThDef7Sub4;
+  hence H,N are_complements_in K by A1,A3,ThDef7Sub3;
+end;
+@ %def ThDef7Sub5
+
+\begin{theorem}
+Let $H\subgroup K\subgroup G$ and $N\normalSubgroup G$.
+Then $H$ and $N$ are complements in $K$ if and only if $H$ and $(N)_{H}$
+are complements in $K$.
+\end{theorem}
+
+<<Theorem: $H$ and $N$ are complements in $K$ if and only if $H$ and $(N)_{H}$ are complements in $K$>>=
+theorem ThDef7Sub6:
+  for G being Group
+  for K being Subgroup of G
+  for H being Subgroup of K
+  for N being normal Subgroup of G st N is Subgroup of K
+  holds H,N are_complements_in K
+  iff H,((K,N)`*`) are_complements_in K by ThDef7Sub5,GROUP_2:56;
+@ %def ThDef7Sub6
 
 \begin{theorem}
 Let $G$ be a group, $A\subset U(G)$ be a set.
@@ -135,32 +500,31 @@ end;
 @ %def Th26
 
 \begin{theorem}
-Let $f\colon G_{1}\to G_{2}$ be a group morphism.
-If for each $y\in G_{2}$ there is a corresponding $x\in G_{1}$ such that $f(x)=y$,
+Let $A$ and $B$ be nonempty sets, let $f\colon A\to B$ be a function.
+If for each $y\in B$ there is a corresponding $x\in A$ such that $f(x)=y$,
 then $f$ is surjective.
 \end{theorem}
 
-<<Theorem: surjectivity for group morphisms>>=
-LmOnto:
-  for G1,G2 being Group
-  for f being Function of G1,G2
-  st (for y being Element of G2 ex x being Element of G1 st f.x = y)
+<<Theorem: surjectivity for functions>>=
+theorem LmOnto:
+  for A,B being non empty set
+  for f being Function of A,B
+  st (for y being Element of B ex x being Element of A st f.x = y)
   holds f is onto
 proof
-  let G1,G2 be Group;
-  let f be Function of G1,G2;
-  assume A1: for y being Element of G2 ex x being Element of G1 st f.x = y;
-  for y being object st y in the carrier of G2
-  ex x being object st (x in the carrier of G1 & y = f.x)
+  let A,B be non empty set;
+  let f be Function of A,B;
+  assume A1: for y being Element of B ex x being Element of A st f.x = y;
+  for y being object st y in B
+  ex x being object st (x in A & y = f.x)
   proof
     let y be object;
-    assume y in the carrier of G2;
-    then reconsider y0=y as Element of G2;
-    ex x being Element of G1 st f.x = y0 by A1;
+    assume y in B;
+    then reconsider y0=y as Element of B;
+    ex x being Element of A st f.x = y0 by A1;
     hence thesis;
   end;
-
-  then rng f = the carrier of G2 by FUNCT_2:10;
+  then rng f = B by FUNCT_2:10;
   hence f is onto by FUNCT_2:def 3;
 end;
 @ %def LmOnto
@@ -437,6 +801,127 @@ end;
 @ %def Th27
 
 \begin{theorem}
+Let $H\subgroup G$ and $N\normalSubgroup G$.
+If $H$, $N$ are complements, then there exists a morphism $\varphi\colon H\to G/N$
+such that $\varphi(h)=hN$ and $\varphi$ is bijective.
+\end{theorem}
+
+<<Theorem: $H$, $N$ are complements implies there exists an isomorphism $\varphi\colon H\to G/N$>>=
+theorem Th28b:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  st H,N are_complements_in G
+  ex phi being Homomorphism of H, G./.N
+  st (for h being Element of H
+      for g being Element of G st g = h
+      holds phi.h = g*N) & phi is bijective
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  assume H,N are_complements_in G;
+  then A2: H * N = the carrier of G & H /\ N = (1).G;
+
+  defpred P[Element of H, Element of G./.N] means
+  ex g being Element of G st g = $1 & $2 = g*N;
+
+  A3: for x being Element of H
+  ex y being Element of G./.N
+  st P[x,y]
+  proof
+    let x be Element of H;
+    reconsider g=x as Element of G by GROUP_2:42;
+    take y = (nat_hom N).g;
+    y = g*N by GROUP_6:def 8;
+    hence P[x,y];
+  end;
+
+  consider phi being Function of H,G./.N such that
+  A4: for x being Element of H holds P[x, phi.x]
+  from FUNCT_2:sch 3(A3);
+
+  A5: for h being Element of H
+      for g being Element of G st g = h
+      holds phi.h = g*N
+  proof
+    let h be Element of H;
+    let g be Element of G;
+    assume B1: g = h;
+    P[h, phi.h] by A4; then
+    ex g0 being Element of G st g0 = h & phi.h = g0*N;
+    hence phi.h = g*N by B1;
+  end;
+
+
+  for a,b being Element of H
+  holds phi.(a * b) = (phi.a) * (phi.b)
+  proof
+    let a,b be Element of H;
+    reconsider g1=a,g2=b as Element of G by GROUP_2:42;
+    B1: phi.a = g1 * N by A5
+             .= (nat_hom N).g1 by GROUP_6:def 8;
+    B2: phi.b = g2 * N by A5
+             .= (nat_hom N).g2 by GROUP_6:def 8;
+    a * b = g1 * g2 by GROUP_2:43; then
+    phi.(a * b) = (g1 * g2) * N by A5
+               .= (nat_hom N).(g1 * g2) by GROUP_6:def 8;
+    hence phi.(a * b) = (phi.a) * (phi.b) by B1,B2,GROUP_6:def 6;
+  end;
+  then reconsider phi as Homomorphism of H,G./.N by GROUP_6:def 6;
+  take phi;
+  thus for h being Element of H
+       for g being Element of G st g = h
+       holds phi.h = g*N by A5;
+
+  for y being Element of G./.N
+  ex x being Element of H
+  st phi.x = y
+  proof
+    let y be Element of G./.N;
+    y in G./.N; then
+    consider g being Element of G such that
+    Z1: y = g*N & y = N*g by GROUP_6:23;
+    g in H * N by A2; then
+    consider h,n being Element of G such that
+    Z2: g = h * n & h in H & n in N by GROUP_5:4;
+    g * N = h * (n * N) by Z2,GROUP_2:105
+         .= h * (carr N) by Z2,GROUP_2:113
+         .= h * N by GROUP_2:def 13;
+    then Z3: y = h * N by Z1;
+    reconsider x=h as Element of H by Z2;
+    take x;
+    thus phi.x = y by A5,Z3;
+  end;
+
+  then A3: phi is onto by LmOnto;
+
+  for a,b being Element of H st phi.a = phi.b
+  holds a = b
+  proof
+    let a,b be Element of H;
+    assume Z1: phi.a = phi.b;
+    reconsider ga=a, gb=b as Element of G by GROUP_2:42;
+    ga*N = phi.a by A5
+        .= gb*N by Z1,A5;
+    then Z2: (gb")*ga in N by GROUP_2:114;
+    gb in H; then
+    gb" in H & ga in H by GROUP_2:51;
+    then (gb")*ga in H by GROUP_2:50;
+    then (gb")*ga in H /\ N by Z2,GROUP_2:82;
+    then (gb")*ga in (1).G by A2;
+    then (gb")*ga = 1_G by GROUP_5:1;
+    then ga = gb * 1_G by GROUP_1:13
+    .= gb by GROUP_1:def 4;
+    hence a = b;
+  end;
+
+  then phi is one-to-one by GROUP_6:1;
+  hence phi is bijective by A3;
+end;
+@ %def Th28b
+
+\begin{theorem}
 Let $N\normalSubgroup G$. Then every complement $H$ to $N$ in $G$ is
 isomorphic to the quotient group $H\iso G/N$.
 \end{theorem}
@@ -451,70 +936,14 @@ theorem Th28:
 proof
   let G be Group;
   let H be Subgroup of G;
-  let N be strict normal Subgroup of G;
-  assume A1: H,N are_complements_in G;
-  then A2: H /\ N = (1).H by GROUP_2:63;
-  A3: H, H./.((1).H) are_isomorphic by GROUP_6:71;
-  A4: H "\/" N = the multMagma of G by A1, Th26;
-
-  reconsider phi=id G as Function of H "\/" N,G by A4;
-
-  for x,y being Element of H "\/" N
-  holds phi.(x * y) = (phi.x) * (phi.y) by A4;
-  then reconsider phi as Homomorphism of H "\/" N,G by GROUP_6:def 6;
-  A6: phi is bijective
-  proof
-    for y being Element of G
-    ex x being Element of H "\/" N
-    st phi.x = y
-    proof
-      let y be Element of G;
-      consider x being Element of H "\/" N such that
-      C1: x = y by A4;
-      take x;
-      thus phi.x = y by C1;
-    end;
-    then B1: phi is onto by LmOnto;
-    thus phi is bijective by B1;
-  end;
-  
-  phi .: the carrier of (((H "\/" N), N) `*`) = the carrier of N
-  proof
-    B1: the multMagma of N is Subgroup of H "\/" N by GROUP_4:60;
-    for x being Element of G st x in phi .: the carrier of (((H "\/" N), N) `*`)
-    holds x in the carrier of N
-    proof
-      let x be Element of G;
-      assume x in phi .: the carrier of (((H "\/" N), N) `*`);
-      then consider c being Element of the carrier of (H "\/" N) such that
-      Z1: c in the carrier of (((H "\/" N), N) `*`) & x = phi.c
-      by FUNCT_2:65;
-      c in H "\/" N; then c in dom phi by FUNCT_2:def 1; then
-      c = x by Z1,FUNCT_1:17;
-      hence x in the carrier of N by B1, Z1, GROUP_6:def 1;
-    end;
-    then B2: phi .: the carrier of (((H "\/" N), N) `*`) c= the carrier of N;
-    for x being object st x in the carrier of N
-    holds x in phi .: the carrier of (((H "\/" N), N) `*`)
-    proof
-      let x be object;
-      assume Z1: x in the carrier of N;
-      then x in N;
-      then x in G by GROUP_2:40;
-      then reconsider x0=x as Element of G;
-      Z2: x0 in the carrier of (((H "\/" N), N) `*`) by B1, Z1, GROUP_6:def 1;
-      phi.x0 = x0;
-      hence x in phi .: the carrier of (((H "\/" N), N) `*`) by Z2, FUNCT_2:35;
-    end;
-    then (the carrier of N) c= (phi .: (the carrier of (((H "\/" N), N) `*`)));
-    hence thesis by B2, XBOOLE_0:def 10;
-  end;
-  then A7: (H "\/" N)./.(((H "\/" N), N) `*`), G./.N are_isomorphic by A6,Th27;
-
-  (H "\/" N) ./. (((H "\/" N), N) `*`), H ./. ((1).H) are_isomorphic by A2, GROUP_6:81;
-  then (H "\/" N) ./. (((H "\/" N), N) `*`), H are_isomorphic
-  by A3,GROUP_6:67;
-  hence G ./. N, H are_isomorphic by A7, GROUP_6:67;
+  let N be normal Subgroup of G;
+  assume H,N are_complements_in G;
+  then ex phi being Homomorphism of H,G./.N
+  st (for h being Element of H
+      for g being Element of G st g = h
+      holds phi.h = g*N) & phi is bijective by Th28b;
+  then H, (G./.N) are_isomorphic by GROUP_6:def 11;
+  hence G ./. N, H are_isomorphic;
 end;
 @ %def Th28
 
@@ -526,13 +955,13 @@ Every complement to $N$ in $G$ are isomorphic to each other.
 theorem
   for G being Group
   for H1, H2 being Subgroup of G
-  for N being strict normal Subgroup of G
+  for N being normal Subgroup of G
   st H1,N are_complements_in G & H2,N are_complements_in G
   holds H1,H2 are_isomorphic
 proof
   let G be Group;
   let H1, H2 be Subgroup of G;
-  let N be strict normal Subgroup of G;
+  let N be normal Subgroup of G;
   assume A1: H1,N are_complements_in G;
   assume A2: H2,N are_complements_in G;
 

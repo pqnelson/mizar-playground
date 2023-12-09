@@ -1752,9 +1752,6 @@ theorem ThDef7Sub6:
   holds H,N are_complements_in K
   iff H,((K,N)`*`) are_complements_in K by ThDef7Sub5,GROUP_2:56;
 
-proof end;
-::> *396
-
 theorem Th25:
   for G being Group
   for A being Subset of G st A = the carrier of G
@@ -1837,29 +1834,6 @@ proof
   hence f is onto by FUNCT_2:def 3;
 end;
 
-:: theorem LmOnto:
-::   for G1,G2 being Group
-::   for f being Function of G1,G2
-::   st (for y being Element of G2 ex x being Element of G1 st f.x = y)
-::   holds f is onto
-:: proof
-::   let G1,G2 be Group;
-::   let f be Function of G1,G2;
-::   assume A1: for y being Element of G2 ex x being Element of G1 st f.x = y;
-::   for y being object st y in the carrier of G2
-::   ex x being object st (x in the carrier of G1 & y = f.x)
-::   proof
-::     let y be object;
-::     assume y in the carrier of G2;
-::     then reconsider y0=y as Element of G2;
-::     ex x being Element of G1 st f.x = y0 by A1;
-::     hence thesis;
-::   end;
-
-::   then rng f = the carrier of G2 by FUNCT_2:10;
-::   hence f is onto by FUNCT_2:def 3;
-:: end;
-
 theorem
   G = the multMagma of A implies A,G are_isomorphic
 proof
@@ -1903,7 +1877,7 @@ proof
   consider n being Element of G such that
   A2: n = (g2") * g1;
   take n;
-  thus n in N by A1, A2, GROUP_2:114;
+ thus n in N by A1, A2, GROUP_2:114;
   thus g2 * n = (g2 * (g2")) * g1 by A2, GROUP_1:def 3
              .= (1_G) * g1 by GROUP_1:def 5
              .= g1 by GROUP_1:def 4;
@@ -2246,6 +2220,8 @@ proof
   thus H1,H2 are_isomorphic by A3,A4,GROUP_6:67;
 end;
 
+begin :: Split extensions of groups.
+
 definition
   let G,K be Group;
   pred G splits_over K means :Def6:
@@ -2318,6 +2294,34 @@ definition
   ex H being Subgroup of G st H,N are_complements_in G;
   compatibility by Th30;
 end;
+
+theorem
+  for G being Group
+  for N being normal Subgroup of G
+  for K being Subgroup of G st N is Subgroup of K
+  holds K splits_over N iff ex H being Subgroup of K st
+  H,N are_complements_in K
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: N is Subgroup of K;
+  then reconsider N1=N as normal Subgroup of K by GROUP_6:8;
+  thus K splits_over N implies ex H being Subgroup of K
+  st H,N are_complements_in K
+  proof
+    assume B1: K splits_over N;
+    then K splits_over N1;
+    then ex H being Subgroup of K st H,N1 are_complements_in K;
+    hence ex H being Subgroup of K st H,N are_complements_in K;
+  end;
+  given H being Subgroup of K such that 
+  A2: H,N are_complements_in K;
+  H,N1 are_complements_in K by A2;
+  then K splits_over N1;
+  hence K splits_over N;
+end;
+
 
 :: theorem ThDef5:
 ::   for G being Group
@@ -3041,7 +3045,8 @@ theorem
       for h being Element of H
       holds f.((phi/.h).n) = (g.h) * (f.n) * (g.(h")))
   ex k being Homomorphism of semidirect_product(H,N,phi), G
-  st f = k * (incl2 (H,N, phi)) & g = k * (incl1 (H, N, phi))
+  st f = k * (incl1 (N, H, phi)) & g = k * (incl2 (N, H, phi))
+::>               *103                          *103
 proof
   let H,G be Group;
   let N be strict Group;
@@ -3051,14 +3056,17 @@ proof
   assume A1: for n being Element of N
   for h being Element of H
   holds f.((phi/.h).n) = (g.h) * (f.n) * (g.(h"));
-  consider k being Homomorphism of semidirect_product(H,N,phi), G such that
-  not contradiction;
+  consider k being Homomorphism of semidirect_product(H,N,phi), G;
+::>                                                              *403
   take k;
-  thus f = k * (incl2 (H,N, phi));
-::>                             *4
-  thus g = k * (incl1 (H, N, phi));
-::>                              *4
+  thus f = k * (incl1 (N, H, phi));
+::>                 *103
+  thus g = k * (incl2 (N, H, phi));
+::>                 *103
 end;
 
 ::> 4: This inference is not accepted
+::> 51: Invalid conclusion
+::> 103: Unknown functor
 ::> 396: Formula expected
+::> 403: "such" expected

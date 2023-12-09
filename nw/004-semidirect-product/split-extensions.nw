@@ -1,0 +1,319 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Split Extensions of Groups}
+
+<<Split extensions of groups>>=
+begin :: Split extensions of groups.
+
+<<Definition: $G$ splits over $K$>>
+
+<<Lemma: If $N_{1}=N$, then $HN=HN_{1}$ and $H\cap N=H\cap N_{1}$>>
+
+<<Theorem: $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ which complements $N$>>
+
+<<Redefine: $G$ splits over $N$>>
+
+<<Theorem: $K$ splits over $N$ iff there is a $H\subgroup K$ complement to $N$>>
+
+<<Theorem: if $H$, $N$ are complements, then any $g\in G$ may be factorized as $g=hn$>>
+
+<<Theorem: Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.>>
+
+@
+
+\begin{definition}
+Let $G$, $K$ be groups. We say that $G$ \define{splits over} $K$ to mean
+there exists a strict normal subgroup of $G$ such that $N=K$ and there
+exists some subgroup $H\subgroup G$ such that $H$ and $N$ are
+complements in $G$.
+\end{definition}
+
+<<Definition: $G$ splits over $K$>>=
+definition
+  let G,K be Group;
+  pred G splits_over K means :Def6:
+  ex N being strict normal Subgroup of G
+  st N = the multMagma of K & (ex H being Subgroup of G
+  st H,N are_complements_in G);
+end;
+@ %def splits_over Def6
+
+\begin{lemma}
+Let $H\subgroup G$, $N\normalSubgroup G$, and $N_{1}\normalSubgroup G$ strict.
+If $N_{1}=N$, then $HN=HN_{1}$ and $H\cap N=H\cap N_{1}$.
+\end{lemma}
+
+<<Lemma: If $N_{1}=N$, then $HN=HN_{1}$ and $H\cap N=H\cap N_{1}$>>=
+LmDef5c:
+  for G being Group
+  for H being Subgroup of G
+  for N being normal Subgroup of G
+  for N1 being strict normal Subgroup of G
+  st N1 = the multMagma of N
+  holds H * N = H * N1 & H /\ N = H /\ N1
+proof
+  let G be Group;
+  let H be Subgroup of G;
+  let N be normal Subgroup of G;
+  let N1 be strict normal Subgroup of G;
+  assume A1: N1 = the multMagma of N;
+  reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,ThDef7Helper;
+  hence thesis by ThDef7Helper;
+end;
+@ %def LmDef5c
+
+\begin{theorem}
+Let $N\normalSubgroup G$.
+Then $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ which complements $N$.
+\end{theorem}
+
+<<Theorem: $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ which complements $N$>>=
+theorem Th30:
+  for G being Group
+  for N being normal Subgroup of G
+  holds G splits_over N
+  iff (ex H being Subgroup of G st H,N are_complements_in G)
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  thus G splits_over N implies (ex H being Subgroup of G st H,N are_complements_in G)
+  proof
+    given N1 being strict normal Subgroup of G such that 
+    A1: N1 = the multMagma of N & (ex H being Subgroup of G st H,N1 are_complements_in G);
+    consider H being Subgroup of G such that
+    A2: H,N1 are_complements_in G by A1;
+    take H;
+    A3: H * N = the carrier of G by A1,A2,LmDef5c;
+    H /\ N = (1).G by A1,A2,LmDef5c;
+    hence H,N are_complements_in G by A3;
+  end;
+  thus (ex H being Subgroup of G st H,N are_complements_in G) implies G splits_over N
+  proof
+    given H being Subgroup of G such that 
+    A1: H,N are_complements_in G;
+    ex N1 being strict normal Subgroup of G
+    st N1 = the multMagma of N
+    & (ex H being Subgroup of G st H,N1 are_complements_in G)
+    proof
+      reconsider N1=the multMagma of N as strict normal Subgroup of G by LmDef5;
+      take N1;
+      thus N1 = the multMagma of N;
+      take H;
+      A2: H * N1 = the carrier of G by A1,LmDef5c;
+      H /\ N1 = (1).G by A1,LmDef5c;
+      hence H,N1 are_complements_in G by A2;
+    end;
+    hence G splits_over N;
+  end;
+end;
+@ %def Th30
+
+\begin{definition}
+Let $N\normalSubgroup G$. We redefine the predicate $G$ \define{splits over} $N$ 
+to mean there exists a subgroup $H\subgroup G$ such that $H$ and $N$ are
+complements in $G$.
+\end{definition}
+
+<<Redefine: $G$ splits over $N$>>=
+definition
+  let G be Group;
+  let N be normal Subgroup of G;
+  redefine pred G splits_over N means :Def5:
+  ex H being Subgroup of G st H,N are_complements_in G;
+  compatibility by Th30;
+end;
+@ %def Def5
+
+\begin{theorem}
+Let $N\normalSubgroup G$ and $K\subgroup G$.
+If $N\subgroup K$, then $K$ splits over $N$ if and only if there is a
+subgroup $H$ of $K$ such that $N$ and $H$ are complements in $K$.
+\end{theorem}
+
+<<Theorem: $K$ splits over $N$ iff there is a $H\subgroup K$ complement to $N$>>=
+theorem
+  for G being Group
+  for N being normal Subgroup of G
+  for K being Subgroup of G st N is Subgroup of K
+  holds K splits_over N iff ex H being Subgroup of K st
+  H,N are_complements_in K
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let K be Subgroup of G;
+  assume A1: N is Subgroup of K;
+  then reconsider N1=N as normal Subgroup of K by GROUP_6:8;
+  thus K splits_over N implies ex H being Subgroup of K
+  st H,N are_complements_in K
+  proof
+    assume B1: K splits_over N;
+    then K splits_over N1;
+    then ex H being Subgroup of K st H,N1 are_complements_in K;
+    hence ex H being Subgroup of K st H,N are_complements_in K;
+  end;
+  given H being Subgroup of K such that 
+  A2: H,N are_complements_in K;
+  H,N1 are_complements_in K by A2;
+  then K splits_over N1;
+  hence K splits_over N;
+end;
+@ 
+
+\begin{theorem}
+If $H$ and $N$ are complements in $G$, then to each $g\in G$
+there is an $h\in H$ and $n\in N$ such that $g=hn$.
+\end{theorem}
+
+<<Theorem: if $H$, $N$ are complements, then any $g\in G$ may be factorized as $g=hn$>>=
+theorem Th40:
+  for G being Group
+  for N being normal Subgroup of G
+  for H being Subgroup of G
+  st H,N are_complements_in G
+  for g being Element of G
+  ex h,n being Element of G
+  st h in H & n in N & h*n = g
+proof
+  let G be Group;
+  let N be normal Subgroup of G;
+  let H be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  let g be Element of G;
+  g in H*N by A1;
+  then consider h,n being Element of G such that
+  A2: g = h*n & h in H & n in N by GROUP_5:4;
+  take h,n;
+  thus h in H by A2;
+  thus n in N by A2;
+  thus h*n = g by A2;
+end;
+@ %def Th40
+
+\begin{theorem}
+Let $H,K\subgroup G$.
+Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.
+\end{theorem}
+
+<<Theorem: Let $f\colon H\times K\to G$, $f(h,k)=hk$. Then $f$ is injective if and only if $H\cap K=\trivialSubgroup$.>>=
+:: Bourbaki mentions this, literally in passing in a sentence in
+:: General Topology Chapter II, not even making a proposition or lemma
+:: out of it.
+theorem Th55:
+  for G being Group
+  for H,K being Subgroup of G
+  for phi being Function of product <*H,K*>,G
+  st (for h,k being Element of G st h in H & k in K
+      holds phi.(<*h,k*>) = h*k)
+  holds phi is one-to-one iff H /\ K = (1).G
+proof
+  let G be Group;
+  let H,K be Subgroup of G;
+  let phi be Function of product <*H,K*>,G;
+  assume A1: for h,k being Element of G st h in H & k in K
+  holds phi.(<*h,k*>) = h*k;
+  A2: 1_G in H & 1_G in K by GROUP_2:46;
+
+  thus phi is one-to-one implies H /\ K = (1).G
+  proof
+    assume B1: phi is one-to-one;
+    B1b: for h1,h2,k1,k2 being Element of G
+    st h1 in H & h2 in H & k1 in K & k2 in K
+    & phi.(<*h1,k1*>) = phi.(<*h2,k2*>)
+    holds <*h1,k1*> = <*h2,k2*>
+    proof
+      let h1,h2,k1,k2 be Element of G;
+      assume Z1: h1 in H;
+      assume Z2: h2 in H;
+      assume Z3: k1 in K;
+      assume Z4: k2 in K;
+      assume Z5: phi.(<*h1,k1*>) = phi.(<*h2,k2*>);
+      <*h1,k1*> in product <*H,K*> by Z1,Z3,Th50;
+      then reconsider x1 = <*h1,k1*> as Element of product <*H,K*>;
+      <*h2,k2*> in product <*H,K*> by Z2,Z4,Th50;
+      then reconsider x2 = <*h2,k2*> as Element of product <*H,K*>;
+      phi.x1 = phi.x2 by Z5;
+      then x1 = x2 by B1,GROUP_6:1;
+      hence <*h1,k1*> = <*h2,k2*>;
+    end;
+
+    H /\ K <> (1).G implies contradiction
+    proof
+      assume B2: H /\ K <> (1).G;
+      (1).G is Subgroup of H /\ K by GROUP_2:65;
+      then consider h1 being Element of G such that
+      B3: h1 in H /\ K & not h1 in (1).G by B2,Th51;
+      B4: h1 in H & h1 in K by B3, GROUP_2:82;
+      B5: h1 <> 1_G by B3, GROUP_5:1;
+      h1" in K by B4, GROUP_2:51;
+      then B6: h1 in H & h1" in K by B4;
+      then phi.(<*h1,h1"*>) = h1 * (h1") by A1
+      .= 1_G by GROUP_1:def 5
+      .= (1_G) * (1_G) by GROUP_1:def 4
+      .= phi.(<*1_G, 1_G*>) by A1,A2;
+      then <*h1, h1"*> = <*1_G,1_G*> by A2,B1b,B6;
+      then h1 = 1_G & h1" = 1_G by Lm1;
+      hence contradiction by B5;
+    end;
+
+    hence H /\ K = (1).G;
+  end;
+  thus H /\ K = (1).G implies phi is one-to-one
+  proof
+    assume B1: H /\ K = (1).G;
+    for x,y being Element of product <*H,K*>
+    st phi.x = phi.y
+    holds x = y
+    proof
+      let x,y be Element of product <*H,K*>;
+      assume B2: phi.x = phi.y;
+      x.1 in H & x.2 in K & dom x = {1,2} by th4a;
+      then x.1 in H & x.1 in G & x.2 in K & x.2 in G & dom x = {1,2}
+      by GROUP_2:41;
+      then consider h1,k1 being Element of G such that
+      B3a: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K;
+      dom x = {1,2} by th4a;
+      then len x = 2 by FINSEQ_1:2,def 3;
+      then x = <*h1,k1*> by B3a,FINSEQ_1:44;
+      then B3: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K & x = <*h1,k1*>
+      by B3a;
+      y.1 in H & y.2 in K & dom y = {1,2} by th4a;
+      then y.1 in G & y.1 in H & y.2 in G & y.2 in K & dom y = {1,2}
+      by GROUP_2:41;
+      then consider h2,k2 being Element of G such that
+      B4a: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K;
+      dom y = {1,2} by th4a;
+      then len y = 2 by FINSEQ_1:2,def 3;
+      then y = <*h2,k2*> by B4a,FINSEQ_1:44;
+      then B4: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K & y = <*h2,k2*>
+      by B4a;
+      h1*k1 = phi.x by A1,B3
+           .= h2*k2 by A1,B2,B4;
+      then (h2") * (h1 * k1) = ((h2") * h2) * k2 by GROUP_1:def 3
+                            .= (1_G) * k2 by GROUP_1:def 5
+                            .= k2 by GROUP_1:def 4;
+      then B6: k2 * (k1") = (((h2") * h1) * k1) * (k1") by GROUP_1:def 3
+                         .= ((h2") * h1) * (k1 * (k1")) by GROUP_1:def 3
+                         .= ((h2") * h1) * 1_G by GROUP_1:def 5
+                         .= (h2") * h1 by GROUP_1:def 4;
+      k2 in K & k1" in K by B3,B4, GROUP_2:51;
+      then B7: k2 * (k1") in K by GROUP_2:50;
+      then B8: (h2") * h1 in K by B6;
+      h1 in H & h2" in H by B3,B4, GROUP_2:51;
+      then B9: (h2") * h1 in H by GROUP_2:50;
+      then B10: k2 * (k1") in H by B6;
+      (h2") * h1 in H /\ K by B8,B9,GROUP_2:82;
+      then (h2") * h1 = 1_G by B1,GROUP_5:1;
+      then B11: h1 = (h2")" by GROUP_1:12
+      .= h2;
+      k2 * (k1") in H /\ K by B7,B10,GROUP_2:82;
+      then k2 * (k1") = 1_G by B1,GROUP_5:1;
+      then k2 = (k1")" by GROUP_1:12
+      .= k1;
+      then <*h1,k1*> = <*h2,k2*> by B11;
+      hence x = y by B3,B4;
+    end;
+
+    hence phi is one-to-one by GROUP_6:1;
+  end;
+end;
+@ %def Th55
