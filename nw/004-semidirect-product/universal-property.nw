@@ -48,8 +48,8 @@ proof
   holds f.((phi/.h).n) = (g.h) * (f.n) * (g.(h"));
   set S = semidirect_product(N,H,phi);
   <<Proof step: construct $k(n,h)=f(n)g(h)$>>
-  take k;
 
+  take k;
 
   A4: for n being Element of N
   for h being Element of H
@@ -88,6 +88,12 @@ proof
 end;
 @
 
+\begin{proof}
+Constructing $k$ is straightforward but tedious.
+We first construct it as a function, then demonstrate it is a group
+morphism. 
+\end{proof}
+
 <<Proof step: construct $k(n,h)=f(n)g(h)$>>=
 defpred P[Element of S, Element of G] means
 for n being Element of N,h being Element of H st $1 = <*n,h*> holds $2 = (f.n)*(g.h);
@@ -111,7 +117,7 @@ proof
   end;
   hence P[x,y] by B1;
 end;
-  
+
 consider k being Function of S, G such that
 A3: for x being Element of S holds P[x,k.x]
 from FUNCT_2:sch 3(A2);

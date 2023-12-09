@@ -2811,6 +2811,7 @@ proof
   thus h*n = g by A2;
 end;
 
+
 LmAssoc:
   for G being Group
   for g1,g2,g3,g4,g5 being Element of G
@@ -2848,11 +2849,7 @@ proof
   assume A1: for n being Element of N
   for h being Element of H
   holds f.((phi/.h).n) = (g.h) * (f.n) * (g.(h"));
-
   set S = semidirect_product(N,H,phi);
-
-  :: defpred P[Element of S, Element of G] means
-  :: ex n being Element of N,h being Element of H st $1 = <*n,h*> & $2 = (f.n)*(g.h);
   defpred P[Element of S, Element of G] means
   for n being Element of N,h being Element of H st $1 = <*n,h*> holds $2 = (f.n)*(g.h);
 
@@ -2864,7 +2861,6 @@ proof
     consider n being Element of N, h being Element of H such that
     B1: x = <*n,h*> by th5;
     take y = (f.n) * (g.h);
-    x = <*n,h*> implies y = (f.n) * (g.h);
     for n1 being Element of N,h1 being Element of H st x = <*n1,h1*>
     holds y = (f.n1)*(g.h1)
     proof
@@ -2874,10 +2870,9 @@ proof
       then n=n1 & h=h1 by B1,Lm1;
       hence y = (f.n1)*(g.h1);
     end;
-
     hence P[x,y] by B1;
   end;
-  
+
   consider k being Function of S, G such that
   A3: for x being Element of S holds P[x,k.x]
   from FUNCT_2:sch 3(A2);
@@ -2952,6 +2947,6 @@ proof
     .= (1_G)*(g.h) by GROUP_6:31
     .= g.h by GROUP_1:def 4;
   end;
-
   hence g = k * (incl2 (N, H, phi)) by FUNCT_2:63;
 end;
+
