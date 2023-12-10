@@ -57,9 +57,9 @@ proof
   proof
     let n be Element of N;
     let h be Element of H;
-    reconsider x=<*n,h*> as Element of S by th3;
+    reconsider x=<*n,h*> as Element of S by Th11;
     P[x,k.x] by A3;
-    hence k.(<*n,h*>)=(f.n)*(g.h) by Lm1;
+    hence k.(<*n,h*>)=(f.n)*(g.h) by Th14;
   end;
 
   for n being Element of N
@@ -67,7 +67,7 @@ proof
   proof
     let n be Element of N;
     thus (k * (incl1 (N, H, phi))).n = k.((incl1 (N, H, phi)).n) by FUNCT_2:15
-    .= k.(<*n, 1_H*>) by Def10
+    .= k.(<*n, 1_H*>) by Def4
     .= (f.n)*(g.(1_H)) by A4
     .= (f.n)*(1_G) by GROUP_6:31
     .= f.n by GROUP_1:def 4;
@@ -79,7 +79,7 @@ proof
   proof
     let h be Element of H;
     thus (k * (incl2 (N, H, phi))).h = k.((incl2 (N, H, phi)).h) by FUNCT_2:15
-    .= k.(<*1_N,h*>) by Def11
+    .= k.(<*1_N,h*>) by Def5
     .= (f.(1_N))*(g.h) by A4
     .= (1_G)*(g.h) by GROUP_6:31
     .= g.h by GROUP_1:def 4;
@@ -104,7 +104,7 @@ st P[x,y]
 proof
   let x be Element of S;
   consider n being Element of N, h being Element of H such that
-  B1: x = <*n,h*> by th5;
+  B1: x = <*n,h*> by Th13;
   take y = (f.n) * (g.h);
   for n1 being Element of N,h1 being Element of H st x = <*n1,h1*>
   holds y = (f.n1)*(g.h1)
@@ -112,7 +112,7 @@ proof
     let n1 be Element of N;
     let h1 be Element of H;
     assume x = <*n1,h1*>;
-    then n=n1 & h=h1 by B1,Lm1;
+    then n=n1 & h=h1 by B1,Th14;
     hence y = (f.n1)*(g.h1);
   end;
   hence P[x,y] by B1;
@@ -127,14 +127,14 @@ holds k.(x1 * x2) = (k.x1) * (k.x2)
 proof
   let x1,x2 be Element of S;
   consider n1 being Element of N, h1 being Element of H such that
-  B1: x1 = <*n1,h1*> by th5;
+  B1: x1 = <*n1,h1*> by Th13;
   consider n2 being Element of N, h2 being Element of H such that
-  B2: x2 = <*n2,h2*> by th5;
+  B2: x2 = <*n2,h2*> by Th13;
   P[x1, k.x1] by A3;
   then B3: k.x1 = (f.n1)*(g.h1) by B1;
   P[x2, k.x2] by A3;
   then B4: k.x2 = (f.n2)*(g.h2) by B2;
-  B5: x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,th6;
+  B5: x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,Th15;
   P[x1 * x2, k.(x1 * x2)] by A3;
   hence k.(x1 * x2) = (f.(n1 * ((phi/.h1)/.n2))) * (g.(h1 * h2)) by B5
   .= ((f.n1)*(f.((phi/.h1)/.n2))) * (g.(h1 * h2)) by GROUP_6:def 6

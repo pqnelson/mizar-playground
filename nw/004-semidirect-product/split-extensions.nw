@@ -28,12 +28,12 @@ complements in $G$.
 <<Definition: $G$ splits over $K$>>=
 definition
   let G,K be Group;
-  pred G splits_over K means :Def6:
+  pred G splits_over K means :Def8:
   ex N being strict normal Subgroup of G
   st N = the multMagma of K & (ex H being Subgroup of G
   st H,N are_complements_in G);
 end;
-@ %def splits_over Def6
+@ %def splits_over Def8
 
 \begin{voc}
 We add [[splits_over]] as a predicate in our vocabulary.
@@ -63,8 +63,8 @@ proof
   let N1 be strict normal Subgroup of G;
   assume A1: N1 = the multMagma of N;
   reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
-  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,ThDef7Helper;
-  hence thesis by ThDef7Helper;
+  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,Th37;
+  hence thesis by Th37;
 end;
 @ %def LmDef5c
 
@@ -74,7 +74,7 @@ Then $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ w
 \end{theorem}
 
 <<Theorem: $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ which complements $N$>>=
-theorem Th30:
+theorem Th63:
   for G being Group
   for N being normal Subgroup of G
   holds G splits_over N
@@ -112,7 +112,7 @@ proof
     hence G splits_over N;
   end;
 end;
-@ %def Th30
+@ %def Th63
 
 \begin{definition}
 Let $N\normalSubgroup G$. We redefine the predicate $G$ \define{splits over} $N$ 
@@ -124,11 +124,11 @@ complements in $G$.
 definition
   let G be Group;
   let N be normal Subgroup of G;
-  redefine pred G splits_over N means :Def5:
+  redefine pred G splits_over N means :Def9:
   ex H being Subgroup of G st H,N are_complements_in G;
-  compatibility by Th30;
+  compatibility by Th63;
 end;
-@ %def Def5
+@ %def Def9
 
 \begin{theorem}
 Let $N\normalSubgroup G$ and $K\subgroup G$.
@@ -171,7 +171,7 @@ there is an $h\in H$ and $n\in N$ such that $g=hn$.
 \end{theorem}
 
 <<Theorem: if $H$, $N$ are complements, then any $g\in G$ may be factorized as $g=hn$>>=
-theorem Th40:
+theorem
   for G being Group
   for N being normal Subgroup of G
   for H being Subgroup of G
@@ -193,4 +193,4 @@ proof
   thus n in N by A2;
   thus h*n = g by A2;
 end;
-@ %def Th40
+@

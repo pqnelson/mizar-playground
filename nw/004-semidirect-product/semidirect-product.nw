@@ -86,7 +86,7 @@ it follows that we want our desired multiplication for $G\rtimes A$.
 definition
   let G, A, phi;
   func semidirect_product (G, A, phi) -> non empty strict multMagma means
-  :Def1:
+  :Def3:
   the carrier of it = product (Carrier <* G, A *>) &
   (for f, g being Element of product (Carrier <* G, A *>)
    ex h being Function, a1 being Element of A, g2 being Element of G
@@ -99,7 +99,7 @@ definition
   uniqueness
   <<Proof: Uniqueness of Semidirect Products>>
 end;
-@ %def Def1
+@ %def Def3
 
 \begin{voc}
 Before moving on, we need to add [[semidirect_product]] to the
@@ -255,7 +255,7 @@ registration
   coherence
   proof
     the carrier of semidirect_product (G, A, phi) = product (Carrier <*G,A*>)
-    by Def1;
+    by Def3;
     hence thesis by MONOID_0:80;
   end;
 end;
@@ -275,7 +275,7 @@ registration
     holds b1 is FinSequence-like
     proof
       let b1 be Element of semidirect_product(G, A, phi);
-      b1 is Element of product (Carrier <*G,A*>) by Def1;
+      b1 is Element of product (Carrier <*G,A*>) by Def3;
       hence b1 is FinSequence-like;
     end;
     hence thesis;
@@ -289,14 +289,14 @@ underlying set of the direct product.
 \end{theorem}
 
 <<Theorem: Carrier of semidirect product is the carrier of the direct product>>=
-theorem th2:
+theorem Th10:
   the carrier of semidirect_product (G, A, phi) = the carrier of product <*G,A*>
 proof
   thus the carrier of semidirect_product (G,A,phi)
-   = product (Carrier <*G,A*>) by Def1
+   = product (Carrier <*G,A*>) by Def3
   .= the carrier of product <*G,A*> by GROUP_7:def 2;
 end;
-@ %def th2
+@ %def Th10
 
 \begin{theorem}
 For any $a\in A$ and $g\in G$, we have $\langle a,g\rangle$ be an
@@ -304,11 +304,11 @@ element of $G\rtimes_{\varphi}A$.
 \end{theorem}
 
 <<Theorem: $\forall a\in A,g\in G, \langle g,a\rangle\in G\rtimes_{\varphi}A$>>=
-theorem th3:
+theorem Th11:
   for a being Element of A
   for g being Element of G
-  holds <* g, a *> is Element of semidirect_product (G, A, phi) by th2;
-@ %def th3
+  holds <* g, a *> is Element of semidirect_product (G, A, phi) by Th10;
+@ %def Th11
 
 \begin{theorem}
 For any $x\in G\rtimes_{\varphi}A$, we have $x_{1}\in A$ and $x_{2}\in G$
@@ -316,16 +316,16 @@ and $\dom(x)=\{1,2\}$.
 \end{theorem}
 
 <<Theorem: $x\in G\rtimes_{\varphi}A$ implies $x_{1}\in G$ and $x_{2}\in A$ and $\dom(x)=\{1,2\}$>>=
-theorem th4:
+theorem Th12:
   for x being Element of semidirect_product (G, A, phi)
   holds x.1 in G & x.2 in A & dom x = {1,2}
 proof
   let x be Element of semidirect_product (G, A, phi);
   x in the carrier of semidirect_product (G, A, phi);
-  then x in the carrier of product <*G,A*> by th2;
+  then x in the carrier of product <*G,A*> by Th10;
   hence thesis by th4a;
 end;
-@ %def th4
+@ %def Th12
 
 \begin{theorem}
 For each $x\in G\rtimes_{\varphi}A$, there is a corresponding $a\in A$
@@ -333,24 +333,24 @@ and $g\in G$ such that $x=\langle a,g\rangle$.
 \end{theorem}
 
 <<Theorem: $x\in G\rtimes A$ implies $\exists a\in A,g\in G,x=\langle g,a\rangle$>>=
-theorem th5:
+theorem Th13:
   for x being Element of semidirect_product (G, A, phi)
   ex g being Element of G, a being Element of A
   st x = <* g, a *>
 proof
   let x be Element of semidirect_product (G, A, phi);
 
-  x.1 in G & x.2 in A by th4;
+  x.1 in G & x.2 in A by Th12;
   then consider g being Element of G, a being Element of A such that
   A1: g = x.1 & a = x.2;
 
   take g, a;
   
-  dom x = {1,2} by th4;
+  dom x = {1,2} by Th12;
   then len x = 2 by FINSEQ_1:2,def 3;
   hence x = <* g, a *> by A1, FINSEQ_1:44;
 end;
-@ %def th5
+@ %def Th13
 
 \begin{theorem}
 Let $x_{1}$, $x_{2}$, $y_{1}$, $y_{2}$ be objects.
@@ -359,7 +359,7 @@ only if $x_{1}=x_{2}$ and $y_{1}=y_{2}$.
 \end{theorem}
 
 <<Theorem: $\langle x,y\rangle$ satisfies the properties of an ordered pair>>=
-theorem Lm1:
+theorem Th14:
   for x1, x2, y1, y2 being object
   holds <*x1,y1*> = <*x2,y2*> iff (x1 = x2 & y1 = y2)
 proof
@@ -374,7 +374,7 @@ proof
   end;
   thus (x1 = x2 & y1 = y2) implies <*x1,y1*> = <*x2,y2*>;
 end;
-@ 
+@ %def Th14
 
 \begin{theorem}
 Let $x$, $y\in A\ltimes G$, let $a_{1}$, $a_{2}\in A$, and let
@@ -383,7 +383,7 @@ then $xy = \langle a_{1}a_{2}, g_{1}\cdot\varphi_{a_{1}}(g_{2})\rangle$.
 \end{theorem}
 
 <<Theorem: $\langle a_{1},g_{1}\rangle\langle a_{2},g_{2}\rangle = \langle a_{1}a_{2}, g_{1}\cdot\varphi_{a_{1}}(g_{2})\rangle$>>=
-theorem th6:
+theorem Th15:
   for x,y being Element of semidirect_product (G, A, phi)
   for a1,a2 being Element of A
   for g1,g2 being Element of G
@@ -399,33 +399,33 @@ proof
   x in product (Carrier <* G, A*>) & y in product (Carrier <*G,A*>)
   proof
     x in semidirect_product(G,A,phi);
-    hence x in product (Carrier <*G,A*>) by Def1;
+    hence x in product (Carrier <*G,A*>) by Def3;
     y in semidirect_product(G,A,phi);
-    hence y in product (Carrier <*G,A*>) by Def1;
+    hence y in product (Carrier <*G,A*>) by Def3;
   end;
   then consider h being Function, aa1 being Element of A, gg2 being Element
   of G such that
   A3: h = x * y & aa1 = x.2 & gg2 = y.1 
       & h.1 = (the multF of G).(x.1, (phi/.aa1)/.gg2)
-      & h.2 = (the multF of A).(x.2, y.2) by Def1;
+      & h.2 = (the multF of A).(x.2, y.2) by Def3;
   A4: a1 = aa1 & g2 = gg2 by A1,A2,A3,FINSEQ_1:44;
 
   h.2 = (the multF of A).(x.2, a2) by A2,A3,FINSEQ_1:44
      .= (the multF of A).(a1, a2) by A1,FINSEQ_1:44;
   then A5: (x * y).2 = a1 * a2 by A3;
   A6: (x * y).1 = g1 * ((phi /. a1)/.g2) by A1,A3,A4,FINSEQ_1:44;
-  dom (x * y) = {1,2} by th4;
+  dom (x * y) = {1,2} by Th12;
   then len (x * y) = 2 by FINSEQ_1:2,def 3;
   hence x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A5,A6,FINSEQ_1:44;
 end;
-@ %def th6
+@ %def Th15
 
 \begin{theorem}
 For any $g\in G$, we have $\varphi_{1_{A}}(g)=g$.
 \end{theorem}
 
 <<Theorem: $\varphi_{1_{A}}(g)=g$>>=
-theorem th7:
+theorem Th16:
   for g being Element of G
   holds (phi /. 1_A) /. g = g
 proof
@@ -434,7 +434,7 @@ proof
               .= id the carrier of G by AUTGROUP:9;
   hence (phi /. 1_A) /. g = g;
 end;
-@ %def th7
+@ %def Th16
 
 \begin{registration}
 The semidirect product is a unital magma.
@@ -447,20 +447,20 @@ registration
   correctness
   proof
     set S = semidirect_product (G, A, phi);
-    reconsider e = <* 1_G, 1_A*> as Element of S by th3;
+    reconsider e = <* 1_G, 1_A*> as Element of S by Th11;
     take e;
     let x be Element of S;
     consider g being Element of G, a being Element of A such that
     A1: x = <* g, a *>
-    by th5;
+    by Th13;
 
-    A2: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by th7
+    A2: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by Th16
                                    .= g by GROUP_1:def 4;
     A3: ((phi /. a) /. (1_G)) = 1_G by GROUP_6:31;
-    thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1, th6
+    thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1, Th15
               .= <* g * ((phi /. a) /. 1_G), a *> by GROUP_1:def 4
               .= x by A1, A3, GROUP_1:def 4;
-    thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,th6
+    thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,Th15
               .= <* 1_G * ((phi /. (1_A)) /. g), a *> by GROUP_1:def 4
               .= <* (1_G) * (g), a *> by A2, GROUP_1:def 4
               .= x by A1,GROUP_1:def 4;
@@ -483,15 +483,15 @@ proof
   assume A1: e = <* 1_G, 1_A*>;
   consider g being Element of G, a being Element of A such that
   A2: x = <* g, a *>
-  by th5;
+  by Th13;
 
-  A3: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by th7
+  A3: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by Th16
                                  .= g by GROUP_1:def 4;
-  thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1,A2, th6
+  thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1,A2, Th15
             .= <* g * ((phi /. a) /. 1_G), a *> by GROUP_1:def 4
             .= <* g * 1_G, a *> by GROUP_6:31
             .= x by A2, GROUP_1:def 4;
-  thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,A2,th6
+  thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,A2,Th15
             .= <* 1_G * ((phi /. (1_A)) /. g), a *> by GROUP_1:def 4
             .= <* (1_G) * g, a *> by A3, GROUP_1:def 4
             .= x by A2, GROUP_1:def 4;
@@ -503,16 +503,16 @@ We have $1_{G\rtimes A}=\langle 1_{G}, 1_{A}\rangle$.
 \end{theorem}
 
 <<Theorem: The unit for the semidirect product>>=
-theorem th14:
+theorem Th17:
   1_(semidirect_product (G, A, phi)) = <* 1_G, 1_A *>
 proof
   reconsider e = <* 1_G, 1_A *> as Element of semidirect_product (G, A, phi)
-  by th2;
+  by Th10;
   for x being Element of semidirect_product (G, A, phi)
   holds x * e = x & e * x = x by Lm8;
   hence thesis by GROUP_1:def 4;
 end;
-@ %def th14
+@ %def Th17
 
 \begin{theorem}
   For any $a_{1}$, $a_{2}\in A$ and any $g\in G$, we have
@@ -520,7 +520,7 @@ end;
 \end{theorem}
 
 <<Theorem: $(\varphi_{a_{1}}\circ\varphi_{a_{2}})(g)=\varphi_{a_{1}a_{2}}(g)$>>=
-theorem th9:
+theorem Th18:
   for a1,a2 being Element of A
   for g being Element of G
   holds (phi.a1) . ((phi /. a2) . g) = (phi /. (a1 * a2)) . g
@@ -532,7 +532,7 @@ proof
                             .= (phi.a1) . ((phi . a2) . g) by FUNCT_2:15;
   hence (phi.a1) . ((phi /. a2) . g) = (phi /. (a1 * a2)) . g; 
 end;
-@ %def th9
+@ %def Th18
 
 \begin{theorem}
 For any $a\in A$ and $g\in G$, we have $(\varphi_{a^{-1}}\circ\varphi_{a})(g)=g$
@@ -540,7 +540,7 @@ and $(\varphi_{a}\circ\varphi_{a^{-1}})(g)=g$.
 \end{theorem}
 
 <<Theorem: $(\varphi_{a^{-1}}\circ\varphi_{a})(g)=g$ and $(\varphi_{a}\circ\varphi_{a^{-1}})(g)=g$>>=
-theorem th10:
+theorem Th19:
   for a being Element of A
   for g being Element of G
   holds (phi/.(a")) /. ((phi /. a) /. g) = g
@@ -548,14 +548,14 @@ theorem th10:
 proof
   let a be Element of A;
   let g be Element of G;
-  thus (phi /. (a")) /. ((phi /. a) /. g) = (phi /. (a" * a)) /. g by th9
+  thus (phi /. (a")) /. ((phi /. a) /. g) = (phi /. (a" * a)) /. g by Th18
                                          .= (phi /. 1_A) /. g by GROUP_1:def 5
-                                         .= g by th7;
-  thus (phi/. a) /. ((phi /. (a")) /. g) = (phi /. (a * a")) /. g by th9
+                                         .= g by Th16;
+  thus (phi/. a) /. ((phi /. (a")) /. g) = (phi /. (a * a")) /. g by Th18
                                         .= (phi /. 1_A) /. g by GROUP_1:def 5
-                                        .= g by th7;
+                                        .= g by Th16;
 end;
-@ %def th10
+@ %def Th19
 
 \begin{theorem}
 Let $x\in A\ltimes G$ be $x=\langle a,g\rangle$, let $e=\langle 1_{A},1_{G}$.
@@ -564,7 +564,7 @@ element to $x$, i.e., $xy=e$ and $yx=e$.
 \end{theorem}
 
 <<Theorem: inverse element for semidirect product>>=
-theorem th11:
+theorem Th20:
   for x,y being Element of semidirect_product (G, A, phi)
   for a being Element of A
   for g being Element of G
@@ -580,17 +580,17 @@ proof
    = (phi /. (a")) /. (g" * g) by GROUP_6:def 6
   .= (phi /. (a")) /. 1_G by GROUP_1:def 5
   .= 1_G by GROUP_6:31;
-  A4: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by th10;
+  A4: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by Th19;
 
-  thus x * y = <* g * ((phi/.a)/.((phi/.(a"))/.(g"))), a * (a") *> by A1,A2,th6
+  thus x * y = <* g * ((phi/.a)/.((phi/.(a"))/.(g"))), a * (a") *> by A1,A2,Th15
             .= <* 1_G, a * a" *> by A4,GROUP_1:def 5
             .= <* 1_G, 1_A *> by GROUP_1:def 5
-            .= 1_(semidirect_product (G, A, phi)) by th14;
-  thus y * x = <* (phi/.(a")).(g") * ((phi/. a")/.g), (a") * a *> by A1,A2,th6
+            .= 1_(semidirect_product (G, A, phi)) by Th17;
+  thus y * x = <* (phi/.(a")).(g") * ((phi/. a")/.g), (a") * a *> by A1,A2,Th15
             .= <* 1_G, 1_A *> by A3,GROUP_1:def 5
-            .= 1_(semidirect_product (G, A, phi)) by th14;
+            .= 1_(semidirect_product (G, A, phi)) by Th17;
 end;
-@ %def th11
+@ %def Th20
 
 \begin{theorem}
 Let $M$ be a non-empty unital magma.
@@ -643,26 +643,26 @@ registration
       let x, y, z be Element of semidirect_product (G, A, phi);
       consider g1 being Element of G, a1 being Element of A such that
       A1: x = <* g1, a1 *>
-      by th5;
+      by Th13;
       consider g2 being Element of G, a2 being Element of A such that
       A2: y = <* g2, a2 *>
-      by th5;
+      by Th13;
       consider g3 being Element of G, a3 being Element of A such that
       A3: z = <* g3, a3 *>
-      by th5;
+      by Th13;
       
-      x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A1,A2,th6;
+      x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A1,A2,Th15;
       then A5: (x * y) * z = <* (g1 * ((phi /.a1)/.g2)) * ((phi/.(a1*a2))/.g3),
-      (a1 * a2) * a3*> by A3,th6;
+      (a1 * a2) * a3*> by A3,Th15;
       
-      y * z = <* g2 * ((phi /. a2)/.g3), a2 * a3 *> by A2,A3,th6;
+      y * z = <* g2 * ((phi /. a2)/.g3), a2 * a3 *> by A2,A3,Th15;
       then A6: x * (y * z) = <* g1 * ((phi/.a1)/.(g2 * ((phi/.a2)/.g3))),
       a1 * (a2 * a3) *>
-      by A1,th6;
+      by A1,Th15;
       
       A7: (a1 * a2) * a3 = a1 * (a2 * a3) by GROUP_1:def 3;
       
-      ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by th9;
+      ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by Th18;
       then 
       ((phi /. a1).(g2 * ((phi /. a2)/.g3)))
       = ((phi /. a1).g2) * ((phi /. (a1 * a2)) . g3) by GROUP_6:def 6;
@@ -685,11 +685,11 @@ registration
     proof
       let h be Element of S;
       consider g being Element of G, a being Element of A such that
-      B1: h = <* g, a *> by th5;
-      reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by th3;
+      B1: h = <* g, a *> by Th13;
+      reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by Th11;
       take y;
-      thus h * y = 1_S by B1,th11;
-      thus y * h = 1_S by B1,th11;
+      thus h * y = 1_S by B1,Th20;
+      thus y * h = 1_S by B1,Th20;
     end;
     hence thesis by thUnitalMagmaIsGroupCond;
   end;
@@ -705,7 +705,7 @@ have $x^{-1}=\langle \varphi_{a^{-1}}(g^{-1}),a^{-1}\rangle$.
 \end{theorem}
 
 <<Theorem: $\langle g,a\rangle^{-1} = \langle\varphi_{a^{-1}}(g^{-1}),a^{-1}\rangle$>>=
-theorem th15:
+theorem Th22:
   for a being Element of A
   for g being Element of G
   for x being Element of semidirect_product (G, A, phi)
@@ -717,12 +717,12 @@ proof
   let g be Element of G;
   let x be Element of semidirect_product (G, A, phi);
   assume A1: x = <* g, a *>;
-  reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by th3;
-  x * y = 1_S & y * x = 1_S by A1,th11;
+  reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by Th11;
+  x * y = 1_S & y * x = 1_S by A1,Th20;
   then y = x" by GROUP_1:5;
   hence thesis;
 end;
-@ %def th15
+@ %def Th22
 
 
 \subsection{Inclusion Morphisms}
@@ -766,7 +766,7 @@ We have $(g_{1},1)(g_{2},1)=(g_{1}g_{2},1)$.
 \end{theorem}
 
 <<Theorem: $(g_{1},1)(g_{2},1)=(g_{1}g_{2},1)$>>=
-theorem th16:
+theorem Th23:
   for g1,g2 being Element of G
   for x,y,z being Element of semidirect_product (G, A, phi)
   st x = <*g1,1_A*> & y = <*g2,1_A*> & z = <*(g1*g2),1_A*>
@@ -777,18 +777,18 @@ proof
   assume A1: x = <*g1,1_A*>;
   assume A2: y = <*g2,1_A*>;
   assume A3: z = <*(g1*g2),1_A*>;
-  thus x * y = <* g1 * ((phi /. 1_A) /. g2), (1_A) * (1_A) *> by A1,A2,th6
+  thus x * y = <* g1 * ((phi /. 1_A) /. g2), (1_A) * (1_A) *> by A1,A2,Th15
             .= <* g1 * ((phi /. 1_A) /. g2), 1_A *> by GROUP_1:def 4
-            .= z by A3, th7;
+            .= z by A3, Th16;
 end;
-@ %def th16
+@ %def Th23
 
 \begin{theorem}
 We have $(1,a_{1})(1,a_{2})=(1,a_{1}a_{2})$.
 \end{theorem}
 
 <<Theorem: $(1,a_{1})(1,a_{2})=(1,a_{1}a_{2})$>>=
-theorem th17:
+theorem Th24:
   for a1,a2 being Element of A
   for x,y,z being Element of semidirect_product (G, A, phi)
   st x = <*1_G,a1*> & y = <*1_G,a2*> & z = <*1_G,(a1*a2)*>
@@ -799,11 +799,11 @@ proof
   assume A1: x = <*1_G, a1*>;
   assume A2: y = <*1_G, a2*>;
   assume A3: z = <*1_G, (a1*a2)*>;
-  thus x * y = <* 1_G * ((phi /. a1)/.(1_G)), a1 * a2 *> by A1,A2,th6
+  thus x * y = <* 1_G * ((phi /. a1)/.(1_G)), a1 * a2 *> by A1,A2,Th15
             .= <* 1_G * (1_G), a1 * a2 *> by GROUP_6:31
             .= z by A3,GROUP_1:def 4;
 end;
-@ %def th17
+@ %def Th24
 
 \begin{theorem}
 Let $N\subgroup A$. Then $N$ is normal if and only if for each element
@@ -812,7 +812,7 @@ $a$, $h$ of $A$ such that $h\in N$, we have $h^{a}\in N$.
 
 <<Theorem: $N$ is normal iff $n^{a}\in N$>>=
 :: Compare to AUTGROUP:1, we do not need strictness
-theorem th23:
+theorem Th25:
   for H being Subgroup of A
   holds H is normal
   iff (for a,h being Element of A st h in H holds h |^ a in H)
@@ -863,7 +863,7 @@ proof
     hence H is normal by GROUP_3:119;
   end;
 end;
-@ %def th23
+@ %def Th25
 
 \begin{definition}
 We define the function $j_{1}\colon G\to G\rtimes G$ by $j_{1}(g)=(g,1)$.
@@ -873,7 +873,7 @@ We define the function $j_{1}\colon G\to G\rtimes G$ by $j_{1}(g)=(g,1)$.
 definition
   let G, A, phi;
   func incl1 (G, A, phi) -> Function of G, semidirect_product (G,A,phi) means
-  :Def10:
+  :Def4:
   for g being Element of G holds it.g = <* g, 1_A *>;
 
   existence
@@ -887,7 +887,7 @@ definition
     proof
       let x be Element of G;
       reconsider y=<*x,1_A*> as Element of semidirect_product(G,A,phi)
-      by th3;
+      by Th11;
       take y;
       thus P[x, y];
     end;
@@ -919,7 +919,7 @@ definition
     hence thesis;
   end;
 end;
-@ %def incl1 Def10
+@ %def incl1 Def4
 
 \begin{voc}
 We add [[incl1]] to our vocabulary.
@@ -947,8 +947,8 @@ registration
       let a1,a2 be Element of A;
       ((incl2 (G, A, phi)).a1) = <*1_G,a1*>
       & ((incl2 (G, A, phi)).a2) = <*1_G,a2*>
-      & (incl2 (G, A, phi)).(a1 * a2) = <*1_G,a1*a2*> by Def11;
-      hence thesis by th17;
+      & (incl2 (G, A, phi)).(a1 * a2) = <*1_G,a1*a2*> by Def5;
+      hence thesis by Th24;
     end;
     hence thesis by GROUP_6:def 6;
   end;
@@ -962,9 +962,9 @@ registration
     proof
       let a1,a2 be Element of A;
       assume A1: (incl2 (G, A, phi)).a1 = (incl2 (G, A, phi)).a2;
-      <*1_G, a1*> = (incl2 (G, A, phi)).a1 by Def11
-                 .= <*1_G, a2*> by A1,Def11;
-      hence a1 = a2 by Lm1;
+      <*1_G, a1*> = (incl2 (G, A, phi)).a1 by Def5
+                 .= <*1_G, a2*> by A1,Def5;
+      hence a1 = a2 by Th14;
     end;
     hence incl2 (G, A, phi) is one-to-one by GROUP_6:1;
   end;
@@ -979,7 +979,7 @@ We define $j_{2}\colon A\to G\rtimes A$.
 definition
   let G, A, phi;
   func incl2 (G, A, phi) -> Function of A, semidirect_product (G,A,phi) means
-  :Def11:
+  :Def5:
   for a being Element of A holds it.a = <* 1_G, a *>;
   existence
   proof
@@ -992,7 +992,7 @@ definition
     proof
       let x be Element of A;
       reconsider y=<*1_G,x*> as Element of semidirect_product(G,A,phi)
-      by th3;
+      by Th11;
       take y;
       thus P[x, y];
     end;
@@ -1024,7 +1024,7 @@ definition
     hence thesis;
   end;
 end;
-@ %def incl2 Def11
+@ %def incl2 Def5
 
 \begin{voc}
 We add [[incl2]] to our vocabulary.
@@ -1053,8 +1053,8 @@ registration
       let g1,g2 be Element of G;
       ((incl1 (G, A, phi)).g1) = <*g1,1_A*>
       & ((incl1 (G, A, phi)).g2) = <*g2,1_A*>
-      & (incl1 (G, A, phi)).(g1 * g2) = <*g1*g2,1_A*> by Def10;
-      hence thesis by th16;
+      & (incl1 (G, A, phi)).(g1 * g2) = <*g1*g2,1_A*> by Def4;
+      hence thesis by Th23;
     end;
     hence thesis by GROUP_6:def 6;
   end;
@@ -1067,9 +1067,9 @@ registration
     proof
       let g1,g2 be Element of G;
       assume A1: (incl1 (G, A, phi)).g1 = (incl1 (G, A, phi)).g2;
-      <*g1, 1_A*> = (incl1 (G, A, phi)).g1 by Def10
-                 .= <*g2,1_A*> by A1,Def10;
-      hence g1 = g2 by Lm1;
+      <*g1, 1_A*> = (incl1 (G, A, phi)).g1 by Def4
+                 .= <*g2,1_A*> by A1,Def4;
+      hence g1 = g2 by Th14;
     end;
     hence incl1 (G, A, phi) is one-to-one by GROUP_6:1;
   end;
@@ -1082,7 +1082,7 @@ The image of $j_{1}$ is a normal subgroup of $G\rtimes A$.
 
 <<Theorem: Image of $j_{1}$ is a normal subgroup of $G\rtimes A$>>=
 :: Aschbacher, Finite Group Theory (10.1.3)
-theorem Th28:
+theorem Th26:
   Image (incl1 (G, A, phi)) is normal Subgroup of
   semidirect_product (G, A, phi)
 proof
@@ -1094,28 +1094,28 @@ proof
     assume g in Image (incl1 (G, A, phi));
     then consider g0 being Element of G such that
     A1: g = (incl1 (G, A, phi)).g0 by GROUP_6:45;
-    A2: g = <*g0,1_A*> by A1,Def10;
+    A2: g = <*g0,1_A*> by A1,Def4;
     consider x1 being Element of G, x2 being Element of A such that
     A3: x = <* x1, x2 *>
-    by th5;
-    (x") = <* (phi/.(x2"))/.(x1"),x2" *> by A3, th15;
+    by Th13;
+    (x") = <* (phi/.(x2"))/.(x1"),x2" *> by A3, Th22;
     then (x") * g = <* ((phi/.(x2"))/.(x1"))*((phi/.(x2"))/.g0),
-                       (x2") * (1_A) *> by A2,th6
+                       (x2") * (1_A) *> by A2,Th15
     .= <* ((phi/.(x2"))/.(x1"))*((phi/.(x2"))/.g0), (x2") *> by GROUP_1:def 4
     .= <* (phi/.(x2"))/.((x1") * g0), (x2") *> by GROUP_6:def 6;
     then A4: ((x") * g) * x
-    = <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), (x2") * x2 *> by A3,th6
+    = <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), (x2") * x2 *> by A3,Th15
     .= <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), 1_A *>
        by GROUP_1:def 5
     .= <* ((phi/.(x2"))/.(((x1") * g0) * x1)), 1_A *> by GROUP_6:def 6
     .= <* (phi /. (x2"))/.(g0 |^ x1), 1_A *> by GROUP_3:def 2;
     g |^ x = ((x") * g) * x by GROUP_3:def 2
-    .= ((incl1 (G, A, phi)).((phi /. (x2"))/.(g0 |^ x1))) by A4,Def10;
+    .= ((incl1 (G, A, phi)).((phi /. (x2"))/.(g0 |^ x1))) by A4,Def4;
     hence g |^ x in Image (incl1 (G, A, phi)) by GROUP_6:45;
   end;
-  hence thesis by th23;
+  hence thesis by Th25;
 end;
-@ %def Th28
+@ %def Th26
 
 \begin{registration}
 We register the fact $\Im(j_{1})\normalSubgroup A\ltimes G$.
@@ -1125,7 +1125,7 @@ We register the fact $\Im(j_{1})\normalSubgroup A\ltimes G$.
 registration
   let A, G, phi;
   cluster Image (incl1 (G, A, phi)) -> normal;
-  correctness by Th28;
+  correctness by Th26;
 end;
 @
 
@@ -1134,7 +1134,7 @@ $\Im(j_{1})\cap\Im(j_{2})=\trivialSubgroup$.
 \end{theorem}
 
 <<Theorem: $\Im(j_{1})\cap\Im(j_{2})=\trivialSubgroup$>>=
-theorem Th29:
+theorem
   Image (incl2 (G, A, phi)) /\ Image (incl1 (G, A, phi))
   = (1).(semidirect_product(G,A,phi))
 proof
@@ -1153,11 +1153,11 @@ proof
     consider a being Element of A such that
     B3: x = (incl2 (G, A, phi)).a
     by B1, GROUP_6:45;
-    <*1_G, a*> = x by B3,Def11
-              .= <*g,1_A*> by B2,Def10;
-    then a = 1_A & 1_G = g by Lm1;
-    then x = <*1_G,1_A*> by B2,Def10
-          .= 1_S by th14;
+    <*1_G, a*> = x by B3,Def5
+              .= <*g,1_A*> by B2,Def4;
+    then a = 1_A & 1_G = g by Th14;
+    then x = <*1_G,1_A*> by B2,Def4
+          .= 1_S by Th17;
     hence x in {1_S} by TARSKI:def 1;
   end;
   then the carrier of (ImA /\ ImG) c= {1_S};
@@ -1166,7 +1166,7 @@ proof
   (1).S is Subgroup of ImA /\ ImG by GROUP_2:65;
   hence thesis by A1, GROUP_2:55;
 end;
-@ %def Th29
+@
 
 \begin{theorem}
 Every element of $A\ltimes G$ is the product of an element of
@@ -1174,7 +1174,7 @@ $\Im(j_{1})$ with an element of $\Im(j_{2})$.
 \end{theorem}
 
 <<Theorem: every $x\in A\ltimes G$ is the product of elements $a\in\Im(j_{1})$ and $g\in\Im(j_{2})$ as $x=ga$>>=
-theorem Th30:
+theorem Th28:
   for x being Element of semidirect_product(G,A,phi)
   ex g being Element of G,a being Element of A
   st ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a) = x
@@ -1182,24 +1182,24 @@ proof
   let x be Element of semidirect_product(G, A, phi);
   consider g being Element of G, a being Element of A such that
   A1: x = <*g,a*>
-  by th5;
+  by Th13;
   take g,a;
   ((incl1(G,A,phi)).g) = <*g,1_A*> & ((incl2(G,A,phi)).a) = <*1_G,a*>
-  by Def10,Def11;
+  by Def4,Def5;
   hence ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a)
-  = <* g * ((phi /. (1_A))/.(1_G)), (1_A) * (a) *> by th6
-  .= <* g * (1_G), (1_A) * (a) *> by th7
+  = <* g * ((phi /. (1_A))/.(1_G)), (1_A) * (a) *> by Th15
+  .= <* g * (1_G), (1_A) * (a) *> by Th16
   .= <* g * (1_G), a *> by GROUP_1:def 4
   .= x by A1, GROUP_1:def 4;
 end;
-@ %def Th30
+@ %def Th28
 
 \begin{theorem}
 $\Im(j_{2})\Im(j_{1})=U(A\ltimes G)$.
 \end{theorem}
 
 <<Theorem: $U(A\ltimes G)=\Im(j_{2})\Im(j_{1})$>>=
-theorem Th31:
+theorem Th29:
   (Image incl1(G,A,phi)) * (Image incl2(G,A,phi))
   = the carrier of (semidirect_product(G,A,phi))
 proof
@@ -1210,7 +1210,7 @@ proof
     
     consider g being Element of G, a being Element of A such that
     B1: ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a) = x
-    by Th30;
+    by Th28;
     ((incl1(G,A,phi)).g) in Image(incl1(G,A,phi)) &
     ((incl2(G,A,phi)).a) in Image(incl2(G,A,phi)) by GROUP_6:45;
     hence x in (Image incl1(G,A,phi)) * (Image incl2(G,A,phi))
@@ -1221,25 +1221,25 @@ proof
   set S = semidirect_product(G,A,phi);
   thus thesis by A1, XBOOLE_0:def 10;
 end;
-@ %def Th31
+@ %def Th29
 
 \begin{theorem}
 $\Im(j_{2})\wedge\Im(j_{1})=A\ltimes G$.
 \end{theorem}
 
 <<Theorem: $\Im(j_{2})\vee\Im(j_{1})=A\ltimes G$>>=
-theorem Th32:
+theorem
   Image (incl1 (G, A, phi)) "\/" Image (incl2 (G, A, phi))
   = (semidirect_product(G,A,phi))
 proof
   set S = semidirect_product(G,A,phi);
   set U = (Image incl1(G,A,phi)) * (Image incl2(G,A,phi));
   U c= the carrier of gr U by GROUP_4:def 4; then
-  the carrier of S c= the carrier of (gr U) by Th31;
+  the carrier of S c= the carrier of (gr U) by Th29;
   then S = gr U by GROUP_2:61;
   hence thesis by GROUP_4:50;
 end;
-@ %def Th32
+@
 
 \begin{theorem}
 We see $G\iso\Im(j_{2})$.
@@ -1258,7 +1258,7 @@ Let $g\in G$ and $a\in A$. Then $(1,g)^{(a,1)}=(1,\varphi_{a^{-1}}(g))$.
 <<Theorem: Let $g\in G$ and $a\in A$, then $(1,g)^{(a,1)}=(1,\varphi_{a^{-1}}(g))$>>=
 :: Aschbacher, Finite Group Theory (10.1.4) --- note there is a sign
 :: error in Aschbacher's book.
-theorem Th27:
+theorem
   for a being Element of A
   for g being Element of G
   holds ((incl1(G,A,phi)).g) |^ ((incl2(G,A,phi)).a)
@@ -1268,22 +1268,22 @@ proof
   let g be Element of G;
   set xg = (incl1(G,A,phi)).g;
   set xa = (incl2(G,A,phi)).a;
-  A1: xa = <* 1_G,a *> by Def11;
-  then A2: xa" = <* ((phi/.(a"))/.((1_G)")), a" *> by th15
+  A1: xa = <* 1_G,a *> by Def5;
+  then A2: xa" = <* ((phi/.(a"))/.((1_G)")), a" *> by Th22
               .= <* ((phi/.(a"))/.(1_G)), a" *> by GROUP_1:8
               .= <* 1_G, a" *> by GROUP_6:31;
-  xg = <*g, 1_A*> by Def10; then
-  (xa") * xg = <* (1_G) * ((phi /. (a"))/.g), (a") * (1_A) *> by A2,th6
+  xg = <*g, 1_A*> by Def4; then
+  (xa") * xg = <* (1_G) * ((phi /. (a"))/.g), (a") * (1_A) *> by A2,Th15
             .= <* (1_G) * ((phi /. (a"))/.g), (a") *> by GROUP_1:def 4
             .= <* ((phi /. (a"))/.g), (a") *> by GROUP_1:def 4;
   then ((xa")*xg)*xa = <* ((phi/.(a"))/.g)*((phi/.(a"))/.(1_G)), (a")*a *>
-  by A1, th6
+  by A1, Th15
                     .= <* ((phi /. (a"))/.g) * (1_G), (a")*a *> by GROUP_6:31
                     .= <* ((phi /. (a"))/.g), (a")*a *> by GROUP_1:def 4
                     .= <* ((phi /. (a"))/.g), 1_A *> by GROUP_1:def 5;
   hence thesis by GROUP_3:def 2;
 end;
-@ %def Th27
+@
 
 \begin{theorem}
 When $\varphi_{a}(g)=g$ for all $a\in A$ and $g\in G$, we have
@@ -1300,12 +1300,12 @@ theorem
   semidirect_product (G, A, 1:(A, AutGroup G)) = product <*G, A*>
 proof
   set S = semidirect_product (G, A, 1:(A, AutGroup G));
-  A1: the carrier of S = the carrier of product <*G,A*> by th2;
+  A1: the carrier of S = the carrier of product <*G,A*> by Th10;
   set B1 = the multF of S;
   set B2 = the multF of product <*G, A*>;
   set U = product (Carrier <*G,A*>);
   the carrier of S = product (Carrier<*G,A*>) &
-  B1 is BinOp of the carrier of S by Def1;
+  B1 is BinOp of the carrier of S by Def3;
   then A2: B1 is BinOp of U;
   the carrier of product <*G,A*> = product (Carrier <*G,A*>) &
   the multF of product <*G,A*> is BinOp of the carrier of product <*G,A*>
@@ -1316,17 +1316,17 @@ proof
   holds B1.(x,y) = B2.(x,y)
   proof
     let x,y be Element of product (Carrier <*G,A*>);
-    x is Element of S by Def1;
+    x is Element of S by Def3;
     then consider g1 being Element of G, a1 being Element of A such that
-    A4: x = <*g1,a1*> by th5;
-    y is Element of S by Def1;
+    A4: x = <*g1,a1*> by Th13;
+    y is Element of S by Def3;
     then consider g2 being Element of G, a2 being Element of A such that
-    A5: y = <*g2,a2*> by th5;
+    A5: y = <*g2,a2*> by Th13;
     1:(A, AutGroup G) = A --> (1_(AutGroup G)) by GROUP_6:def 7; then
     (1:(A, AutGroup G)).a1 = id the carrier of G by AUTGROUP:9; then
     A6: (((1:(A, AutGroup G)) /. a1) /. g2) = g2;
-    reconsider x0=x,y0=y as Element of S by Def1;
-    A8: x0 * y0 = <* g1 * g2, a1 * a2 *> by A4, A5, A6, th6;
+    reconsider x0=x,y0=y as Element of S by Def3;
+    A8: x0 * y0 = <* g1 * g2, a1 * a2 *> by A4, A5, A6, Th15;
 
     B2.(x,y) = <*g1,a1*> * <*g2, a2*> by A4,A5
             .= <* g1 * g2,a1 * a2 *> by GROUP_7:29;

@@ -448,7 +448,7 @@ proof
   hence <*a,g*> in product (Carrier <*A,G*>) by GROUP_7:def 2;
 end;
 
-theorem Th50:
+theorem
   for G1,G2 being Group 
   for H1 being Subgroup of G1
   for H2 being Subgroup of G2
@@ -491,7 +491,7 @@ proof
   hence <*h1,h2*> in product <*H1,H2*> by GROUP_7:def 2;
 end;
 
-theorem Th51:
+theorem
   for G being Group
   for H,K being strict Subgroup of G
   st H <> K & K is Subgroup of H
@@ -519,7 +519,7 @@ proof
   thus g in H & not g in K by A5;
 end;
 
-theorem Th51:
+theorem
   for G being Group
   for H,K being strict Subgroup of G
   st H <> K & K is Subgroup of H
@@ -552,7 +552,7 @@ begin :: Semidirect Products of Groups
 definition
   let G, A, phi;
   func semidirect_product (G, A, phi) -> non empty strict multMagma means
-  :Def1:
+  :Def3:
   the carrier of it = product (Carrier <* G, A *>) &
   (for f, g being Element of product (Carrier <* G, A *>)
    ex h being Function, a1 being Element of A, g2 being Element of G
@@ -674,7 +674,7 @@ registration
   coherence
   proof
     the carrier of semidirect_product (G, A, phi) = product (Carrier <*G,A*>)
-    by Def1;
+    by Def3;
     hence thesis by MONOID_0:80;
   end;
 end;
@@ -688,55 +688,55 @@ registration
     holds b1 is FinSequence-like
     proof
       let b1 be Element of semidirect_product(G, A, phi);
-      b1 is Element of product (Carrier <*G,A*>) by Def1;
+      b1 is Element of product (Carrier <*G,A*>) by Def3;
       hence b1 is FinSequence-like;
     end;
     hence thesis;
   end;
 end;
 
-theorem th2:
+theorem Th10:
   the carrier of semidirect_product (G, A, phi) = the carrier of product <*G,A*>
 proof
   thus the carrier of semidirect_product (G,A,phi)
-   = product (Carrier <*G,A*>) by Def1
+   = product (Carrier <*G,A*>) by Def3
   .= the carrier of product <*G,A*> by GROUP_7:def 2;
 end;
 
-theorem th3:
+theorem Th11:
   for a being Element of A
   for g being Element of G
-  holds <* g, a *> is Element of semidirect_product (G, A, phi) by th2;
+  holds <* g, a *> is Element of semidirect_product (G, A, phi) by Th10;
 
-theorem th4:
+theorem Th12:
   for x being Element of semidirect_product (G, A, phi)
   holds x.1 in G & x.2 in A & dom x = {1,2}
 proof
   let x be Element of semidirect_product (G, A, phi);
   x in the carrier of semidirect_product (G, A, phi);
-  then x in the carrier of product <*G,A*> by th2;
+  then x in the carrier of product <*G,A*> by Th10;
   hence thesis by th4a;
 end;
 
-theorem th5:
+theorem Th13:
   for x being Element of semidirect_product (G, A, phi)
   ex g being Element of G, a being Element of A
   st x = <* g, a *>
 proof
   let x be Element of semidirect_product (G, A, phi);
 
-  x.1 in G & x.2 in A by th4;
+  x.1 in G & x.2 in A by Th12;
   then consider g being Element of G, a being Element of A such that
   A1: g = x.1 & a = x.2;
 
   take g, a;
   
-  dom x = {1,2} by th4;
+  dom x = {1,2} by Th12;
   then len x = 2 by FINSEQ_1:2,def 3;
   hence x = <* g, a *> by A1, FINSEQ_1:44;
 end;
 
-theorem Lm1:
+theorem Th14:
   for x1, x2, y1, y2 being object
   holds <*x1,y1*> = <*x2,y2*> iff (x1 = x2 & y1 = y2)
 proof
@@ -752,7 +752,7 @@ proof
   thus (x1 = x2 & y1 = y2) implies <*x1,y1*> = <*x2,y2*>;
 end;
 
-theorem th6:
+theorem Th15:
   for x,y being Element of semidirect_product (G, A, phi)
   for a1,a2 being Element of A
   for g1,g2 being Element of G
@@ -768,27 +768,27 @@ proof
   x in product (Carrier <* G, A*>) & y in product (Carrier <*G,A*>)
   proof
     x in semidirect_product(G,A,phi);
-    hence x in product (Carrier <*G,A*>) by Def1;
+    hence x in product (Carrier <*G,A*>) by Def3;
     y in semidirect_product(G,A,phi);
-    hence y in product (Carrier <*G,A*>) by Def1;
+    hence y in product (Carrier <*G,A*>) by Def3;
   end;
   then consider h being Function, aa1 being Element of A, gg2 being Element
   of G such that
   A3: h = x * y & aa1 = x.2 & gg2 = y.1 
       & h.1 = (the multF of G).(x.1, (phi/.aa1)/.gg2)
-      & h.2 = (the multF of A).(x.2, y.2) by Def1;
+      & h.2 = (the multF of A).(x.2, y.2) by Def3;
   A4: a1 = aa1 & g2 = gg2 by A1,A2,A3,FINSEQ_1:44;
 
   h.2 = (the multF of A).(x.2, a2) by A2,A3,FINSEQ_1:44
      .= (the multF of A).(a1, a2) by A1,FINSEQ_1:44;
   then A5: (x * y).2 = a1 * a2 by A3;
   A6: (x * y).1 = g1 * ((phi /. a1)/.g2) by A1,A3,A4,FINSEQ_1:44;
-  dom (x * y) = {1,2} by th4;
+  dom (x * y) = {1,2} by Th12;
   then len (x * y) = 2 by FINSEQ_1:2,def 3;
   hence x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A5,A6,FINSEQ_1:44;
 end;
 
-theorem th7:
+theorem Th16:
   for g being Element of G
   holds (phi /. 1_A) /. g = g
 proof
@@ -798,7 +798,7 @@ proof
   hence (phi /. 1_A) /. g = g;
 end;
 
-theorem th9:
+theorem Th18:
   for a1,a2 being Element of A
   for g being Element of G
   holds (phi.a1) . ((phi /. a2) . g) = (phi /. (a1 * a2)) . g
@@ -811,7 +811,7 @@ proof
   hence (phi.a1) . ((phi /. a2) . g) = (phi /. (a1 * a2)) . g; 
 end;
 
-theorem th10:
+theorem Th19:
   for a being Element of A
   for g being Element of G
   holds (phi/.(a")) /. ((phi /. a) /. g) = g
@@ -819,12 +819,12 @@ theorem th10:
 proof
   let a be Element of A;
   let g be Element of G;
-  thus (phi /. (a")) /. ((phi /. a) /. g) = (phi /. (a" * a)) /. g by th9
+  thus (phi /. (a")) /. ((phi /. a) /. g) = (phi /. (a" * a)) /. g by Th18
                                          .= (phi /. 1_A) /. g by GROUP_1:def 5
-                                         .= g by th7;
-  thus (phi/. a) /. ((phi /. (a")) /. g) = (phi /. (a * a")) /. g by th9
+                                         .= g by Th16;
+  thus (phi/. a) /. ((phi /. (a")) /. g) = (phi /. (a * a")) /. g by Th18
                                         .= (phi /. 1_A) /. g by GROUP_1:def 5
-                                        .= g by th7;
+                                        .= g by Th16;
 end;
 
 Lm8:
@@ -836,15 +836,15 @@ proof
   assume A1: e = <* 1_G, 1_A*>;
   consider g being Element of G, a being Element of A such that
   A2: x = <* g, a *>
-  by th5;
+  by Th13;
 
-  A3: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by th7
+  A3: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by Th16
                                  .= g by GROUP_1:def 4;
-  thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1,A2, th6
+  thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1,A2, Th15
             .= <* g * ((phi /. a) /. 1_G), a *> by GROUP_1:def 4
             .= <* g * 1_G, a *> by GROUP_6:31
             .= x by A2, GROUP_1:def 4;
-  thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,A2,th6
+  thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,A2,Th15
             .= <* 1_G * ((phi /. (1_A)) /. g), a *> by GROUP_1:def 4
             .= <* (1_G) * g, a *> by A3, GROUP_1:def 4
             .= x by A2, GROUP_1:def 4;
@@ -856,37 +856,37 @@ registration
   correctness
   proof
     set S = semidirect_product (G, A, phi);
-    reconsider e = <* 1_G, 1_A*> as Element of S by th3;
+    reconsider e = <* 1_G, 1_A*> as Element of S by Th11;
     take e;
     let x be Element of S;
     consider g being Element of G, a being Element of A such that
     A1: x = <* g, a *>
-    by th5;
+    by Th13;
 
-    A2: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by th7
+    A2: ((phi /. (1_A)) /. g) * 1_G = g * 1_G by Th16
                                    .= g by GROUP_1:def 4;
     A3: ((phi /. a) /. (1_G)) = 1_G by GROUP_6:31;
-    thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1, th6
+    thus x * e = <* g * ((phi /. a) /. 1_G), a * 1_A *> by A1, Th15
               .= <* g * ((phi /. a) /. 1_G), a *> by GROUP_1:def 4
               .= x by A1, A3, GROUP_1:def 4;
-    thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,th6
+    thus e * x = <* 1_G * ((phi /. (1_A)) /. g), 1_A * a *> by A1,Th15
               .= <* 1_G * ((phi /. (1_A)) /. g), a *> by GROUP_1:def 4
               .= <* (1_G) * (g), a *> by A2, GROUP_1:def 4
               .= x by A1,GROUP_1:def 4;
   end;
 end;
 
-theorem th14:
+theorem Th17:
   1_(semidirect_product (G, A, phi)) = <* 1_G, 1_A *>
 proof
   reconsider e = <* 1_G, 1_A *> as Element of semidirect_product (G, A, phi)
-  by th2;
+  by Th10;
   for x being Element of semidirect_product (G, A, phi)
   holds x * e = x & e * x = x by Lm8;
   hence thesis by GROUP_1:def 4;
 end;
 
-theorem th11:
+theorem Th20:
   for x,y being Element of semidirect_product (G, A, phi)
   for a being Element of A
   for g being Element of G
@@ -902,15 +902,15 @@ proof
    = (phi /. (a")) /. (g" * g) by GROUP_6:def 6
   .= (phi /. (a")) /. 1_G by GROUP_1:def 5
   .= 1_G by GROUP_6:31;
-  A4: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by th10;
+  A4: ((phi /. a) /. ((phi/.(a"))/.(g"))) = g" by Th19;
 
-  thus x * y = <* g * ((phi/.a)/.((phi/.(a"))/.(g"))), a * (a") *> by A1,A2,th6
+  thus x * y = <* g * ((phi/.a)/.((phi/.(a"))/.(g"))), a * (a") *> by A1,A2,Th15
             .= <* 1_G, a * a" *> by A4,GROUP_1:def 5
             .= <* 1_G, 1_A *> by GROUP_1:def 5
-            .= 1_(semidirect_product (G, A, phi)) by th14;
-  thus y * x = <* (phi/.(a")).(g") * ((phi/. a")/.g), (a") * a *> by A1,A2,th6
+            .= 1_(semidirect_product (G, A, phi)) by Th17;
+  thus y * x = <* (phi/.(a")).(g") * ((phi/. a")/.g), (a") * a *> by A1,A2,Th15
             .= <* 1_G, 1_A *> by A3,GROUP_1:def 5
-            .= 1_(semidirect_product (G, A, phi)) by th14;
+            .= 1_(semidirect_product (G, A, phi)) by Th17;
 end;
 
 theorem thUnitalMagmaIsGroupCond:
@@ -951,26 +951,26 @@ registration
       let x, y, z be Element of semidirect_product (G, A, phi);
       consider g1 being Element of G, a1 being Element of A such that
       A1: x = <* g1, a1 *>
-      by th5;
+      by Th13;
       consider g2 being Element of G, a2 being Element of A such that
       A2: y = <* g2, a2 *>
-      by th5;
+      by Th13;
       consider g3 being Element of G, a3 being Element of A such that
       A3: z = <* g3, a3 *>
-      by th5;
+      by Th13;
       
-      x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A1,A2,th6;
+      x * y = <* g1 * ((phi /. a1)/.g2), a1 * a2 *> by A1,A2,Th15;
       then A5: (x * y) * z = <* (g1 * ((phi /.a1)/.g2)) * ((phi/.(a1*a2))/.g3),
-      (a1 * a2) * a3*> by A3,th6;
+      (a1 * a2) * a3*> by A3,Th15;
       
-      y * z = <* g2 * ((phi /. a2)/.g3), a2 * a3 *> by A2,A3,th6;
+      y * z = <* g2 * ((phi /. a2)/.g3), a2 * a3 *> by A2,A3,Th15;
       then A6: x * (y * z) = <* g1 * ((phi/.a1)/.(g2 * ((phi/.a2)/.g3))),
       a1 * (a2 * a3) *>
-      by A1,th6;
+      by A1,Th15;
       
       A7: (a1 * a2) * a3 = a1 * (a2 * a3) by GROUP_1:def 3;
       
-      ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by th9;
+      ((phi /. a1) . ((phi /. a2).g3)) = (phi /. (a1 * a2)) . g3 by Th18;
       then 
       ((phi /. a1).(g2 * ((phi /. a2)/.g3)))
       = ((phi /. a1).g2) * ((phi /. (a1 * a2)) . g3) by GROUP_6:def 6;
@@ -993,11 +993,11 @@ registration
     proof
       let h be Element of S;
       consider g being Element of G, a being Element of A such that
-      B1: h = <* g, a *> by th5;
-      reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by th3;
+      B1: h = <* g, a *> by Th13;
+      reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by Th11;
       take y;
-      thus h * y = 1_S by B1,th11;
-      thus y * h = 1_S by B1,th11;
+      thus h * y = 1_S by B1,Th20;
+      thus y * h = 1_S by B1,Th20;
     end;
     hence thesis by thUnitalMagmaIsGroupCond;
   end;
@@ -1006,7 +1006,7 @@ end;
 LmDoubleCheckSemidirectProductIsGroup:
   semidirect_product (G, A, phi) is Group;
 
-theorem th15:
+theorem Th22:
   for a being Element of A
   for g being Element of G
   for x being Element of semidirect_product (G, A, phi)
@@ -1018,13 +1018,13 @@ proof
   let g be Element of G;
   let x be Element of semidirect_product (G, A, phi);
   assume A1: x = <* g, a *>;
-  reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by th3;
-  x * y = 1_S & y * x = 1_S by A1,th11;
+  reconsider y = <* (phi/.(a"))/.(g"), a" *> as Element of S by Th11;
+  x * y = 1_S & y * x = 1_S by A1,Th20;
   then y = x" by GROUP_1:5;
   hence thesis;
 end;
 
-theorem th16:
+theorem Th23:
   for g1,g2 being Element of G
   for x,y,z being Element of semidirect_product (G, A, phi)
   st x = <*g1,1_A*> & y = <*g2,1_A*> & z = <*(g1*g2),1_A*>
@@ -1035,12 +1035,12 @@ proof
   assume A1: x = <*g1,1_A*>;
   assume A2: y = <*g2,1_A*>;
   assume A3: z = <*(g1*g2),1_A*>;
-  thus x * y = <* g1 * ((phi /. 1_A) /. g2), (1_A) * (1_A) *> by A1,A2,th6
+  thus x * y = <* g1 * ((phi /. 1_A) /. g2), (1_A) * (1_A) *> by A1,A2,Th15
             .= <* g1 * ((phi /. 1_A) /. g2), 1_A *> by GROUP_1:def 4
-            .= z by A3, th7;
+            .= z by A3, Th16;
 end;
 
-theorem th17:
+theorem Th24:
   for a1,a2 being Element of A
   for x,y,z being Element of semidirect_product (G, A, phi)
   st x = <*1_G,a1*> & y = <*1_G,a2*> & z = <*1_G,(a1*a2)*>
@@ -1051,13 +1051,13 @@ proof
   assume A1: x = <*1_G, a1*>;
   assume A2: y = <*1_G, a2*>;
   assume A3: z = <*1_G, (a1*a2)*>;
-  thus x * y = <* 1_G * ((phi /. a1)/.(1_G)), a1 * a2 *> by A1,A2,th6
+  thus x * y = <* 1_G * ((phi /. a1)/.(1_G)), a1 * a2 *> by A1,A2,Th15
             .= <* 1_G * (1_G), a1 * a2 *> by GROUP_6:31
             .= z by A3,GROUP_1:def 4;
 end;
 
 :: Compare to AUTGROUP:1, we do not need strictness
-theorem th23:
+theorem Th25:
   for H being Subgroup of A
   holds H is normal
   iff (for a,h being Element of A st h in H holds h |^ a in H)
@@ -1112,7 +1112,7 @@ end;
 definition
   let G, A, phi;
   func incl1 (G, A, phi) -> Function of G, semidirect_product (G,A,phi) means
-  :Def10:
+  :Def4:
   for g being Element of G holds it.g = <* g, 1_A *>;
 
   existence
@@ -1126,7 +1126,7 @@ definition
     proof
       let x be Element of G;
       reconsider y=<*x,1_A*> as Element of semidirect_product(G,A,phi)
-      by th3;
+      by Th11;
       take y;
       thus P[x, y];
     end;
@@ -1172,8 +1172,8 @@ registration
       let g1,g2 be Element of G;
       ((incl1 (G, A, phi)).g1) = <*g1,1_A*>
       & ((incl1 (G, A, phi)).g2) = <*g2,1_A*>
-      & (incl1 (G, A, phi)).(g1 * g2) = <*g1*g2,1_A*> by Def10;
-      hence thesis by th16;
+      & (incl1 (G, A, phi)).(g1 * g2) = <*g1*g2,1_A*> by Def4;
+      hence thesis by Th23;
     end;
     hence thesis by GROUP_6:def 6;
   end;
@@ -1186,9 +1186,9 @@ registration
     proof
       let g1,g2 be Element of G;
       assume A1: (incl1 (G, A, phi)).g1 = (incl1 (G, A, phi)).g2;
-      <*g1, 1_A*> = (incl1 (G, A, phi)).g1 by Def10
-                 .= <*g2,1_A*> by A1,Def10;
-      hence g1 = g2 by Lm1;
+      <*g1, 1_A*> = (incl1 (G, A, phi)).g1 by Def4
+                 .= <*g2,1_A*> by A1,Def4;
+      hence g1 = g2 by Th14;
     end;
     hence incl1 (G, A, phi) is one-to-one by GROUP_6:1;
   end;
@@ -1197,7 +1197,7 @@ end;
 definition
   let G, A, phi;
   func incl2 (G, A, phi) -> Function of A, semidirect_product (G,A,phi) means
-  :Def11:
+  :Def5:
   for a being Element of A holds it.a = <* 1_G, a *>;
   existence
   proof
@@ -1210,7 +1210,7 @@ definition
     proof
       let x be Element of A;
       reconsider y=<*1_G,x*> as Element of semidirect_product(G,A,phi)
-      by th3;
+      by Th11;
       take y;
       thus P[x, y];
     end;
@@ -1256,8 +1256,8 @@ registration
       let a1,a2 be Element of A;
       ((incl2 (G, A, phi)).a1) = <*1_G,a1*>
       & ((incl2 (G, A, phi)).a2) = <*1_G,a2*>
-      & (incl2 (G, A, phi)).(a1 * a2) = <*1_G,a1*a2*> by Def11;
-      hence thesis by th17;
+      & (incl2 (G, A, phi)).(a1 * a2) = <*1_G,a1*a2*> by Def5;
+      hence thesis by Th24;
     end;
     hence thesis by GROUP_6:def 6;
   end;
@@ -1271,16 +1271,16 @@ registration
     proof
       let a1,a2 be Element of A;
       assume A1: (incl2 (G, A, phi)).a1 = (incl2 (G, A, phi)).a2;
-      <*1_G, a1*> = (incl2 (G, A, phi)).a1 by Def11
-                 .= <*1_G, a2*> by A1,Def11;
-      hence a1 = a2 by Lm1;
+      <*1_G, a1*> = (incl2 (G, A, phi)).a1 by Def5
+                 .= <*1_G, a2*> by A1,Def5;
+      hence a1 = a2 by Th14;
     end;
     hence incl2 (G, A, phi) is one-to-one by GROUP_6:1;
   end;
 end;
 
 :: Aschbacher, Finite Group Theory (10.1.3)
-theorem Th28:
+theorem Th26:
   Image (incl1 (G, A, phi)) is normal Subgroup of
   semidirect_product (G, A, phi)
 proof
@@ -1292,35 +1292,35 @@ proof
     assume g in Image (incl1 (G, A, phi));
     then consider g0 being Element of G such that
     A1: g = (incl1 (G, A, phi)).g0 by GROUP_6:45;
-    A2: g = <*g0,1_A*> by A1,Def10;
+    A2: g = <*g0,1_A*> by A1,Def4;
     consider x1 being Element of G, x2 being Element of A such that
     A3: x = <* x1, x2 *>
-    by th5;
-    (x") = <* (phi/.(x2"))/.(x1"),x2" *> by A3, th15;
+    by Th13;
+    (x") = <* (phi/.(x2"))/.(x1"),x2" *> by A3, Th22;
     then (x") * g = <* ((phi/.(x2"))/.(x1"))*((phi/.(x2"))/.g0),
-                       (x2") * (1_A) *> by A2,th6
+                       (x2") * (1_A) *> by A2,Th15
     .= <* ((phi/.(x2"))/.(x1"))*((phi/.(x2"))/.g0), (x2") *> by GROUP_1:def 4
     .= <* (phi/.(x2"))/.((x1") * g0), (x2") *> by GROUP_6:def 6;
     then A4: ((x") * g) * x
-    = <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), (x2") * x2 *> by A3,th6
+    = <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), (x2") * x2 *> by A3,Th15
     .= <* ((phi/.(x2"))/.((x1")*g0)*((phi/.(x2"))/.x1)), 1_A *>
        by GROUP_1:def 5
     .= <* ((phi/.(x2"))/.(((x1") * g0) * x1)), 1_A *> by GROUP_6:def 6
     .= <* (phi /. (x2"))/.(g0 |^ x1), 1_A *> by GROUP_3:def 2;
     g |^ x = ((x") * g) * x by GROUP_3:def 2
-    .= ((incl1 (G, A, phi)).((phi /. (x2"))/.(g0 |^ x1))) by A4,Def10;
+    .= ((incl1 (G, A, phi)).((phi /. (x2"))/.(g0 |^ x1))) by A4,Def4;
     hence g |^ x in Image (incl1 (G, A, phi)) by GROUP_6:45;
   end;
-  hence thesis by th23;
+  hence thesis by Th25;
 end;
 
 registration
   let A, G, phi;
   cluster Image (incl1 (G, A, phi)) -> normal;
-  correctness by Th28;
+  correctness by Th26;
 end;
 
-theorem Th29:
+theorem
   Image (incl2 (G, A, phi)) /\ Image (incl1 (G, A, phi))
   = (1).(semidirect_product(G,A,phi))
 proof
@@ -1339,11 +1339,11 @@ proof
     consider a being Element of A such that
     B3: x = (incl2 (G, A, phi)).a
     by B1, GROUP_6:45;
-    <*1_G, a*> = x by B3,Def11
-              .= <*g,1_A*> by B2,Def10;
-    then a = 1_A & 1_G = g by Lm1;
-    then x = <*1_G,1_A*> by B2,Def10
-          .= 1_S by th14;
+    <*1_G, a*> = x by B3,Def5
+              .= <*g,1_A*> by B2,Def4;
+    then a = 1_A & 1_G = g by Th14;
+    then x = <*1_G,1_A*> by B2,Def4
+          .= 1_S by Th17;
     hence x in {1_S} by TARSKI:def 1;
   end;
   then the carrier of (ImA /\ ImG) c= {1_S};
@@ -1353,7 +1353,7 @@ proof
   hence thesis by A1, GROUP_2:55;
 end;
 
-theorem Th30:
+theorem Th28:
   for x being Element of semidirect_product(G,A,phi)
   ex g being Element of G,a being Element of A
   st ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a) = x
@@ -1361,18 +1361,18 @@ proof
   let x be Element of semidirect_product(G, A, phi);
   consider g being Element of G, a being Element of A such that
   A1: x = <*g,a*>
-  by th5;
+  by Th13;
   take g,a;
   ((incl1(G,A,phi)).g) = <*g,1_A*> & ((incl2(G,A,phi)).a) = <*1_G,a*>
-  by Def10,Def11;
+  by Def4,Def5;
   hence ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a)
-  = <* g * ((phi /. (1_A))/.(1_G)), (1_A) * (a) *> by th6
-  .= <* g * (1_G), (1_A) * (a) *> by th7
+  = <* g * ((phi /. (1_A))/.(1_G)), (1_A) * (a) *> by Th15
+  .= <* g * (1_G), (1_A) * (a) *> by Th16
   .= <* g * (1_G), a *> by GROUP_1:def 4
   .= x by A1, GROUP_1:def 4;
 end;
 
-theorem Th31:
+theorem Th29:
   (Image incl1(G,A,phi)) * (Image incl2(G,A,phi))
   = the carrier of (semidirect_product(G,A,phi))
 proof
@@ -1383,7 +1383,7 @@ proof
     
     consider g being Element of G, a being Element of A such that
     B1: ((incl1(G,A,phi)).g) * ((incl2(G,A,phi)).a) = x
-    by Th30;
+    by Th28;
     ((incl1(G,A,phi)).g) in Image(incl1(G,A,phi)) &
     ((incl2(G,A,phi)).a) in Image(incl2(G,A,phi)) by GROUP_6:45;
     hence x in (Image incl1(G,A,phi)) * (Image incl2(G,A,phi))
@@ -1395,14 +1395,14 @@ proof
   thus thesis by A1, XBOOLE_0:def 10;
 end;
 
-theorem Th32:
+theorem
   Image (incl1 (G, A, phi)) "\/" Image (incl2 (G, A, phi))
   = (semidirect_product(G,A,phi))
 proof
   set S = semidirect_product(G,A,phi);
   set U = (Image incl1(G,A,phi)) * (Image incl2(G,A,phi));
   U c= the carrier of gr U by GROUP_4:def 4; then
-  the carrier of S c= the carrier of (gr U) by Th31;
+  the carrier of S c= the carrier of (gr U) by Th29;
   then S = gr U by GROUP_2:61;
   hence thesis by GROUP_4:50;
 end;
@@ -1413,7 +1413,7 @@ theorem
 
 :: Aschbacher, Finite Group Theory (10.1.4) --- note there is a sign
 :: error in Aschbacher's book.
-theorem Th27:
+theorem
   for a being Element of A
   for g being Element of G
   holds ((incl1(G,A,phi)).g) |^ ((incl2(G,A,phi)).a)
@@ -1423,16 +1423,16 @@ proof
   let g be Element of G;
   set xg = (incl1(G,A,phi)).g;
   set xa = (incl2(G,A,phi)).a;
-  A1: xa = <* 1_G,a *> by Def11;
-  then A2: xa" = <* ((phi/.(a"))/.((1_G)")), a" *> by th15
+  A1: xa = <* 1_G,a *> by Def5;
+  then A2: xa" = <* ((phi/.(a"))/.((1_G)")), a" *> by Th22
               .= <* ((phi/.(a"))/.(1_G)), a" *> by GROUP_1:8
               .= <* 1_G, a" *> by GROUP_6:31;
-  xg = <*g, 1_A*> by Def10; then
-  (xa") * xg = <* (1_G) * ((phi /. (a"))/.g), (a") * (1_A) *> by A2,th6
+  xg = <*g, 1_A*> by Def4; then
+  (xa") * xg = <* (1_G) * ((phi /. (a"))/.g), (a") * (1_A) *> by A2,Th15
             .= <* (1_G) * ((phi /. (a"))/.g), (a") *> by GROUP_1:def 4
             .= <* ((phi /. (a"))/.g), (a") *> by GROUP_1:def 4;
   then ((xa")*xg)*xa = <* ((phi/.(a"))/.g)*((phi/.(a"))/.(1_G)), (a")*a *>
-  by A1, th6
+  by A1, Th15
                     .= <* ((phi /. (a"))/.g) * (1_G), (a")*a *> by GROUP_6:31
                     .= <* ((phi /. (a"))/.g), (a")*a *> by GROUP_1:def 4
                     .= <* ((phi /. (a"))/.g), 1_A *> by GROUP_1:def 5;
@@ -1443,12 +1443,12 @@ theorem
   semidirect_product (G, A, 1:(A, AutGroup G)) = product <*G, A*>
 proof
   set S = semidirect_product (G, A, 1:(A, AutGroup G));
-  A1: the carrier of S = the carrier of product <*G,A*> by th2;
+  A1: the carrier of S = the carrier of product <*G,A*> by Th10;
   set B1 = the multF of S;
   set B2 = the multF of product <*G, A*>;
   set U = product (Carrier <*G,A*>);
   the carrier of S = product (Carrier<*G,A*>) &
-  B1 is BinOp of the carrier of S by Def1;
+  B1 is BinOp of the carrier of S by Def3;
   then A2: B1 is BinOp of U;
   the carrier of product <*G,A*> = product (Carrier <*G,A*>) &
   the multF of product <*G,A*> is BinOp of the carrier of product <*G,A*>
@@ -1459,17 +1459,17 @@ proof
   holds B1.(x,y) = B2.(x,y)
   proof
     let x,y be Element of product (Carrier <*G,A*>);
-    x is Element of S by Def1;
+    x is Element of S by Def3;
     then consider g1 being Element of G, a1 being Element of A such that
-    A4: x = <*g1,a1*> by th5;
-    y is Element of S by Def1;
+    A4: x = <*g1,a1*> by Th13;
+    y is Element of S by Def3;
     then consider g2 being Element of G, a2 being Element of A such that
-    A5: y = <*g2,a2*> by th5;
+    A5: y = <*g2,a2*> by Th13;
     1:(A, AutGroup G) = A --> (1_(AutGroup G)) by GROUP_6:def 7; then
     (1:(A, AutGroup G)).a1 = id the carrier of G by AUTGROUP:9; then
     A6: (((1:(A, AutGroup G)) /. a1) /. g2) = g2;
-    reconsider x0=x,y0=y as Element of S by Def1;
-    A8: x0 * y0 = <* g1 * g2, a1 * a2 *> by A4, A5, A6, th6;
+    reconsider x0=x,y0=y as Element of S by Def3;
+    A8: x0 * y0 = <* g1 * g2, a1 * a2 *> by A4, A5, A6, Th15;
 
     B2.(x,y) = <*g1,a1*> * <*g2, a2*> by A4,A5
             .= <* g1 * g2,a1 * a2 *> by GROUP_7:29;
@@ -1482,7 +1482,7 @@ begin :: Complementary Subgroups
 
 definition
   let G,H,N be Group;
-  pred H,N are_complements_in G means :Def7a:
+  pred H,N are_complements_in G means :Def6:
   ex H1 being strict Subgroup of G st
   ex N1 being strict normal Subgroup of G
   st H1 = the multMagma of H
@@ -1491,7 +1491,7 @@ definition
    & H1 /\ N1 = (1).G;
 end;
 
-theorem ThCarrEq:
+theorem
   for G being Group
   for H,K being Subgroup of G
   for HK being Subgroup of K
@@ -1507,7 +1507,7 @@ proof
              .= carr HK by GROUP_2:def 9;
 end;
 
-theorem Th58Helper:
+theorem Th35:
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
   for N being Subgroup of G
@@ -1528,7 +1528,7 @@ proof
             .= H * N by ThProdLemma,A3,A4;
 end;
 
-theorem Lm6:
+theorem Th36:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -1546,7 +1546,7 @@ proof
                          .= the multMagma of (H,N)`*` by GROUP_6:def 1;
 end;
 
-theorem ThDef7Helper:
+theorem Th37:
   for G being Group
   for H1,N1,H2,N2 being Subgroup of G
   st the multMagma of H1 = the multMagma of H2
@@ -1597,8 +1597,8 @@ definition
         hence N |^ g = the multMagma of N by GROUP_2:59;
       end;
       hence N is normal by GROUP_3:def 13;
-      thus H * N = the carrier of G by A1,ThDef7Helper;
-      thus H /\ N = (1).G by A1,ThDef7Helper;
+      thus H * N = the carrier of G by A1,Th37;
+      thus H /\ N = (1).G by A1,Th37;
     end;    
     assume A1: N is normal;
     assume A2: H * N = the carrier of G;
@@ -1620,15 +1620,15 @@ definition
         take N1;
         thus H1 = the multMagma of H;
         thus N1 = the multMagma of N;
-        thus H1 * N1 = the carrier of G by A2,ThDef7Helper;
-        thus H1 /\ N1 = (1).G by A3,ThDef7Helper;
+        thus H1 * N1 = the carrier of G by A2,Th37;
+        thus H1 /\ N1 = (1).G by A3,Th37;
       end;
     end;
     hence H,N are_complements_in G;
   end;
 end;
 
-theorem ThDef7Sub3:
+theorem Th38:
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
   for N being Subgroup of G st N is normal Subgroup of K
@@ -1678,7 +1678,7 @@ proof
   thus thesis by A3,A4,Def7;
 end;
 
-theorem ThDef7Sub2:
+theorem
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
   for N being Subgroup of G st N is normal Subgroup of K
@@ -1690,12 +1690,12 @@ proof
   assume A1: H is Subgroup of K;
   let N be Subgroup of G;
   assume A2: N is normal Subgroup of K;
-  then A3: N*H=H*N by A1,Th58Helper;
+  then A3: N*H=H*N by A1,Th35;
   then (H * N = the carrier of K) iff (N * H = the carrier of K);
-  hence thesis by A1,A2,ThDef7Sub3;
+  hence thesis by A1,A2,Th38;
 end;
 
-theorem ThDef7Sub4:
+theorem Th40:
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
   for N being normal Subgroup of G st N is Subgroup of K
@@ -1709,12 +1709,12 @@ proof
   let N be normal Subgroup of G;
   assume N is Subgroup of K;
   then A2: N is normal Subgroup of K by GROUP_6:8;
-  then the multMagma of (K,N)`*` = the multMagma of N by Lm6;
+  then the multMagma of (K,N)`*` = the multMagma of N by Th36;
   then H1,((K,N)`*`) are_complements_in K iff H,N are_complements_in K;
-  hence thesis by A1,A2,ThDef7Sub3;
+  hence thesis by A1,A2,Th38;
 end;
 
-theorem ThDef7Sub5:
+theorem Th41:
   for G being Group
   for H,K being Subgroup of G st H is Subgroup of K
   for N being normal Subgroup of G st N is Subgroup of K
@@ -1729,23 +1729,23 @@ proof
   then A3: N is normal Subgroup of K by GROUP_6:8;
   hereby 
     assume H,N are_complements_in K;
-    then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A3,ThDef7Sub3;
-    hence H,((K,N)`*`) are_complements_in K by A1,A2,ThDef7Sub4;
+    then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A3,Th38;
+    hence H,((K,N)`*`) are_complements_in K by A1,A2,Th40;
   end;
   assume H,((K,N)`*`) are_complements_in K;
-  then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A2,ThDef7Sub4;
-  hence H,N are_complements_in K by A1,A3,ThDef7Sub3;
+  then ((N * H = the carrier of K) & (H /\ N = (1).K)) by A1,A2,Th40;
+  hence H,N are_complements_in K by A1,A3,Th38;
 end;
 
-theorem ThDef7Sub6:
+theorem
   for G being Group
   for K being Subgroup of G
   for H being Subgroup of K
   for N being normal Subgroup of G st N is Subgroup of K
   holds H,N are_complements_in K
-  iff H,((K,N)`*`) are_complements_in K by ThDef7Sub5,GROUP_2:56;
+  iff H,((K,N)`*`) are_complements_in K by Th41,GROUP_2:56;
 
-theorem Th25:
+theorem Th43:
   for G being Group
   for A being Subset of G st A = the carrier of G
   holds gr A = the multMagma of G
@@ -1757,7 +1757,7 @@ proof
   hence the multMagma of G = gr A by GROUP_2:61;
 end;
 
-theorem Th26:
+theorem Th44:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -1773,7 +1773,7 @@ proof
   proof
     assume A1: H,N are_complements_in G;
     then H "\/" N = gr (A) by GROUP_4:50;
-    hence H "\/" N = the multMagma of G by Th25;
+    hence H "\/" N = the multMagma of G by Th43;
     thus H /\ N = (1).G by A1;
   end;
   thus (H "\/" N = the multMagma of G & H /\ N = (1).G) implies H,N are_complements_in G
@@ -1809,7 +1809,7 @@ proof
   hence f is onto by FUNCT_2:def 3;
 end;
 
-theorem Th27b:
+theorem
   G = the multMagma of A implies A,G are_isomorphic
 proof
   assume A1: G = the multMagma of A;
@@ -1839,7 +1839,7 @@ proof
   hence A,G are_isomorphic by GROUP_6:def 11;
 end;
 
-theorem Th30:
+theorem Th47:
   for G being Group
   for N being normal Subgroup of G
   for g1,g2 being Element of G
@@ -1915,7 +1915,7 @@ proof
                  .= g12 * N by B1, B4, GROUP_6:def 6;
     then consider n being Element of G1 such that
     B5: n in N & g12 = (g1 * g2) * n
-    by Th30;
+    by Th47;
     B6: n in Ker f by A1, B5, GROUP_2:40;
     f.g12 = (f.(g1 * g2)) * (f.n) by B5, GROUP_6:def 6
          .= (f.(g1 * g2)) * (1_G2) by A1, B5, GROUP_2:40, GROUP_6:41
@@ -1937,7 +1937,7 @@ proof
     g * N = g1 * N by B1, GROUP_6:def 8;
     then consider n being Element of G1 such that
     B2: n in N & g = g1 * n
-    by Th30;
+    by Th47;
     B3: n in Ker f by A1, B2, GROUP_2:40;
     f.g = (f.g1) * (f.n) by B2, GROUP_6:def 6
        .= (f.g1) * (1_G2) by A1, B2, GROUP_2:40, GROUP_6:41
@@ -1949,7 +1949,7 @@ proof
   hence f = fBar * (nat_hom N) by FUNCT_2:def 8;
 end;
 
-theorem Th27:
+theorem
   for G1,G2 being Group
   for N1 being normal Subgroup of G1
   for N2 being normal Subgroup of G2
@@ -2030,7 +2030,7 @@ proof
                       .= (phi.x2) * N2 by GROUP_6:def 8;
     then consider n being Element of G2 such that
     B6: n in N2 & phi.x1 = (phi.x2) * n
-    by Th30;
+    by Th47;
     consider n1 being object such that
     B7: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
     by A2, B6, FUNCT_2:64;
@@ -2048,7 +2048,7 @@ proof
   hence G1./.N1, G2./.N2 are_isomorphic by A6, GROUP_6:def 11;
 end;
 
-theorem Th28b:
+theorem Th50:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -2161,7 +2161,7 @@ proof
   hence phi is bijective by A3;
 end;
 
-theorem Th28:
+theorem Th51:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -2175,7 +2175,7 @@ proof
   then ex phi being Homomorphism of H,G./.N
   st (for h being Element of H
       for g being Element of G st g = h
-      holds phi.h = g*N) & phi is bijective by Th28b;
+      holds phi.h = g*N) & phi is bijective by Th50;
   then H, (G./.N) are_isomorphic by GROUP_6:def 11;
   hence G ./. N, H are_isomorphic;
 end;
@@ -2193,12 +2193,12 @@ proof
   assume A1: H1,N are_complements_in G;
   assume A2: H2,N are_complements_in G;
 
-  A3: G ./. N, H1 are_isomorphic by A1,Th28;
-  A4: G ./. N, H2 are_isomorphic by A2,Th28;
+  A3: G ./. N, H1 are_isomorphic by A1,Th51;
+  A4: G ./. N, H2 are_isomorphic by A2,Th51;
   thus H1,H2 are_isomorphic by A3,A4,GROUP_6:67;
 end;
 
-theorem Th50:
+theorem Th53:
   for G1,G2 being Group 
   for H1 being Subgroup of G1
   for H2 being Subgroup of G2
@@ -2242,7 +2242,7 @@ proof
   hence <*h1,h2*> in product <*H1,H2*> by GROUP_7:def 2;
 end;
 
-theorem Th51:
+theorem Th54:
   for G being Group
   for H,K being strict Subgroup of G
   st H <> K & K is Subgroup of H
@@ -2300,9 +2300,9 @@ proof
       assume Z3: k1 in K;
       assume Z4: k2 in K;
       assume Z5: phi.(<*h1,k1*>) = phi.(<*h2,k2*>);
-      <*h1,k1*> in product <*H,K*> by Z1,Z3,Th50;
+      <*h1,k1*> in product <*H,K*> by Z1,Z3,Th53;
       then reconsider x1 = <*h1,k1*> as Element of product <*H,K*>;
-      <*h2,k2*> in product <*H,K*> by Z2,Z4,Th50;
+      <*h2,k2*> in product <*H,K*> by Z2,Z4,Th53;
       then reconsider x2 = <*h2,k2*> as Element of product <*H,K*>;
       phi.x1 = phi.x2 by Z5;
       then x1 = x2 by B1,GROUP_6:1;
@@ -2315,7 +2315,7 @@ proof
       assume B2: H /\ K <> (1).G;
       (1).G is Subgroup of H /\ K by GROUP_2:65;
       then consider h1 being Element of G such that
-      B3: h1 in H /\ K & not h1 in (1).G by B2,Th51;
+      B3: h1 in H /\ K & not h1 in (1).G by B2,Th54;
       B4: h1 in H & h1 in K by B3, GROUP_2:82;
       B5: h1 <> 1_G by B3, GROUP_5:1;
       B7: 1_G in H & 1_G in K by GROUP_2:46;
@@ -2326,7 +2326,7 @@ proof
       .= (1_G) * (1_G) by GROUP_1:def 4
       .= phi.(<*1_G, 1_G*>) by A1,A2;
       then <*h1, h1"*> = <*1_G,1_G*> by A2,B1b,B4,B6,B7,GROUP_6:1;
-      then h1 = 1_G & h1" = 1_G by Lm1;
+      then h1 = 1_G & h1" = 1_G by Th14;
       hence contradiction by B5;
     end;
 
@@ -2385,7 +2385,7 @@ proof
       then k2 * (k1") = 1_G by B1,GROUP_5:1;
       then B12: k2 = (k1")" by GROUP_1:12
       .= k1;
-      then <*h1,k1*> = <*h2,k2*> by B11,Lm1;
+      then <*h1,k1*> = <*h2,k2*> by B11,Th14;
       hence x = y by B3,B4;
     end;
 
@@ -2436,14 +2436,14 @@ proof
     assume B1: h in H;
     assume B2: k in K;
 
-    <*h,k*> in product <*H,K*> by B1,B2,Th50; then
+    <*h,k*> in product <*H,K*> by B1,B2,Th53; then
     <*h,k*> in the carrier of product <*H,K*>; then
     reconsider x=<*h,k*> as Element of product (Carrier <*H,K*>)
     by GROUP_7:def 2;
     P[x, phi.x] by A2;
     then consider h1,k1 being Element of G such that
     B3: h1 in H & k1 in K & x = <*h1,k1*> & phi.x = h1*k1;
-    h1 = h & k1 = k by B3,Lm1;
+    h1 = h & k1 = k by B3,Th14;
     hence phi.(<*h,k*>) = h*k by B3;
   end;
 
@@ -2474,7 +2474,7 @@ proof
   proof
     let f be Function of product (Carrier <*N,H*>),G;
     the carrier of semidirect_product (N,H,phi) = product (Carrier <*N,H*>)
-    by Def1;
+    by Def3;
     hence f is Function of semidirect_product (N,H,phi), G;
   end;
   consider psi being Function of product (Carrier <*N,H*>),G such
@@ -2487,7 +2487,7 @@ proof
   thus thesis by A2;
 end;
 
-theorem Lm60:
+theorem Th58:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -2498,7 +2498,7 @@ proof
   hence H1 * H2 c= the carrier of H1 "\/" H2 by GROUP_4:def 4;
 end;
 
-theorem Th60:
+theorem Th59:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -2506,12 +2506,12 @@ theorem Th60:
 proof
   let G be Group;
   let H1,H2 be Subgroup of G;
-  thus H1*H2 c= the carrier of H1 "\/" H2 by Lm60;
-  H2 * H1 c= the carrier of H2 "\/" H1 by Lm60;
+  thus H1*H2 c= the carrier of H1 "\/" H2 by Th58;
+  H2 * H1 c= the carrier of H2 "\/" H1 by Th58;
   hence H2 * H1 c= the carrier of H1 "\/" H2 by GROUP_4:56;
 end;
 
-theorem Th88:
+theorem Th60:
   for G being Group
   for H1,H2 being Subgroup of G
   st H1 * H2 = the carrier of (H1 "\/" H2)
@@ -2521,7 +2521,7 @@ proof
   let H1,H2 be Subgroup of G;
   assume A1: H1 * H2 = the carrier of (H1 "\/" H2);
 
-  then A2: H2 * H1 c= H1 * H2 by Th60;
+  then A2: H2 * H1 c= H1 * H2 by Th59;
   for x being Element of G st x in H1 * H2 holds x in H2 * H1
   proof
     let x be Element of G;
@@ -2542,7 +2542,7 @@ proof
   thus thesis by A2,A3,XBOOLE_0:def 10;
 end;
 
-theorem Th89:
+theorem Th61:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -2554,15 +2554,15 @@ proof
   let N be normal Subgroup of G;
   assume A1: H,N are_complements_in G;
   A2: H * N = the carrier of G by A1;
-  H "\/" N = the multMagma of G by A1,Th26; then
+  H "\/" N = the multMagma of G by A1,Th44; then
   A3: the carrier of (H "\/" N) = the carrier of G;
   H * N = the carrier of (H "\/" N) by A2,A3;
-  then H * N = N * H by Th88;
+  then H * N = N * H by Th60;
   hence thesis by A2;
 end;
 
 :: Aschbacher, Theorem 10.2
-theorem Th70:
+theorem
   for G being Group
   for N being strict normal Subgroup of G
   for H being Subgroup of G
@@ -2596,11 +2596,11 @@ proof
   proof
     let x,y be Element of S;
     consider n1 being Element of N, a1 being Element of H such that
-    B1: x = <*n1,a1*> by th5;
+    B1: x = <*n1,a1*> by Th13;
     a1 is Element of G & n1 is Element of G by GROUP_2:42;
     then reconsider ga1=a1,gn1=n1 as Element of G;
     consider n2 being Element of N, a2 being Element of H such that
-    B2: y = <*n2,a2*> by th5;
+    B2: y = <*n2,a2*> by Th13;
     a2 is Element of G & n2 is Element of G by GROUP_2:42;
     then reconsider ga2=a2,gn2=n2 as Element of G;
     B6: ga1 in H & gn1 in N & ga2 in H & gn2 in N;
@@ -2615,7 +2615,7 @@ proof
     .= gn1 * (ga1 * gn2) * (ga1") * ga1 * ga2 by GROUP_1:def 3
     .= gn1 * (gn2 |^ (ga1")) * ga1 * ga2 by B7, GROUP_1:def 3;
     B4: ((alpha /. ga1) . gn2) = gn2 |^ (ga1") & gn2 |^ (ga1") in N
-    by A2,B6,th23;
+    by A2,B6,Th25;
     then B10: ga1 * ga2 in H & gn1 * (gn2 |^ (ga1")) in N by B6, GROUP_2:50;
     B11: n1 * ((alpha/.a1).n2) = (the multF of G).(gn1, (alpha/.ga1).gn2)
     proof
@@ -2628,7 +2628,7 @@ proof
       gn1 * y = (the multF of G).(gn1, (alpha/.ga1).gn2);
       hence thesis by C1, GROUP_2:43;
     end;
-    x * y = <*n1 * ((alpha/.a1)/.n2), a1*a2 *> by B1,B2,th6
+    x * y = <*n1 * ((alpha/.a1)/.n2), a1*a2 *> by B1,B2,Th15
          .= <* gn1 * (gn2 |^ (ga1")), ga1*ga2 *> by B4, B11, GROUP_2:43;
     then beta.(x * y) = (gn1 * (gn2 |^ (ga1"))) * (ga1 * ga2) by A3,B10
                      .= (beta.x) * (beta.y) by B5, GROUP_1:def 3;
@@ -2670,13 +2670,13 @@ proof
   proof
     let y be Element of G;
     y in the carrier of G;
-    then y in N * H by A1,Th89;
+    then y in N * H by A1,Th61;
     then consider n,h being Element of G such that
     B1: y = n * h & n in N & h in H
     by GROUP_5:4;
     reconsider h1=h as Element of H by B1;
     reconsider n1=n as Element of N by B1;
-    reconsider x = <*n1,h1*> as Element of S by th3;
+    reconsider x = <*n1,h1*> as Element of S by Th11;
     take x;
     thus beta.x = y by B1,A3;
   end;
@@ -2685,12 +2685,11 @@ proof
   hence thesis by A4;
 end;
 
-
 begin :: Split extensions of groups.
 
 definition
   let G,K be Group;
-  pred G splits_over K means :Def6:
+  pred G splits_over K means :Def8:
   ex N being strict normal Subgroup of G
   st N = the multMagma of K & (ex H being Subgroup of G
   st H,N are_complements_in G);
@@ -2710,11 +2709,11 @@ proof
   let N1 be strict normal Subgroup of G;
   assume A1: N1 = the multMagma of N;
   reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
-  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,ThDef7Helper;
-  hence thesis by ThDef7Helper;
+  H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,Th37;
+  hence thesis by Th37;
 end;
 
-theorem Th30:
+theorem Th63:
   for G being Group
   for N being normal Subgroup of G
   holds G splits_over N
@@ -2756,9 +2755,9 @@ end;
 definition
   let G be Group;
   let N be normal Subgroup of G;
-  redefine pred G splits_over N means :Def5:
+  redefine pred G splits_over N means :Def9:
   ex H being Subgroup of G st H,N are_complements_in G;
-  compatibility by Th30;
+  compatibility by Th63;
 end;
 
 theorem
@@ -2788,7 +2787,7 @@ proof
   hence K splits_over N;
 end;
 
-theorem Th40:
+theorem
   for G being Group
   for N being normal Subgroup of G
   for H being Subgroup of G
@@ -2859,7 +2858,7 @@ proof
   proof
     let x be Element of S;
     consider n being Element of N, h being Element of H such that
-    B1: x = <*n,h*> by th5;
+    B1: x = <*n,h*> by Th13;
     take y = (f.n) * (g.h);
     for n1 being Element of N,h1 being Element of H st x = <*n1,h1*>
     holds y = (f.n1)*(g.h1)
@@ -2867,7 +2866,7 @@ proof
       let n1 be Element of N;
       let h1 be Element of H;
       assume x = <*n1,h1*>;
-      then n=n1 & h=h1 by B1,Lm1;
+      then n=n1 & h=h1 by B1,Th14;
       hence y = (f.n1)*(g.h1);
     end;
     hence P[x,y] by B1;
@@ -2882,14 +2881,14 @@ proof
   proof
     let x1,x2 be Element of S;
     consider n1 being Element of N, h1 being Element of H such that
-    B1: x1 = <*n1,h1*> by th5;
+    B1: x1 = <*n1,h1*> by Th13;
     consider n2 being Element of N, h2 being Element of H such that
-    B2: x2 = <*n2,h2*> by th5;
+    B2: x2 = <*n2,h2*> by Th13;
     P[x1, k.x1] by A3;
     then B3: k.x1 = (f.n1)*(g.h1) by B1;
     P[x2, k.x2] by A3;
     then B4: k.x2 = (f.n2)*(g.h2) by B2;
-    B5: x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,th6;
+    B5: x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,Th15;
     P[x1 * x2, k.(x1 * x2)] by A3;
     hence k.(x1 * x2) = (f.(n1 * ((phi/.h1)/.n2))) * (g.(h1 * h2)) by B5
     .= ((f.n1)*(f.((phi/.h1)/.n2))) * (g.(h1 * h2)) by GROUP_6:def 6
@@ -2920,9 +2919,9 @@ proof
   proof
     let n be Element of N;
     let h be Element of H;
-    reconsider x=<*n,h*> as Element of S by th3;
+    reconsider x=<*n,h*> as Element of S by Th11;
     P[x,k.x] by A3;
-    hence k.(<*n,h*>)=(f.n)*(g.h) by Lm1;
+    hence k.(<*n,h*>)=(f.n)*(g.h) by Th14;
   end;
 
   for n being Element of N
@@ -2930,7 +2929,7 @@ proof
   proof
     let n be Element of N;
     thus (k * (incl1 (N, H, phi))).n = k.((incl1 (N, H, phi)).n) by FUNCT_2:15
-    .= k.(<*n, 1_H*>) by Def10
+    .= k.(<*n, 1_H*>) by Def4
     .= (f.n)*(g.(1_H)) by A4
     .= (f.n)*(1_G) by GROUP_6:31
     .= f.n by GROUP_1:def 4;
@@ -2942,7 +2941,7 @@ proof
   proof
     let h be Element of H;
     thus (k * (incl2 (N, H, phi))).h = k.((incl2 (N, H, phi)).h) by FUNCT_2:15
-    .= k.(<*1_N,h*>) by Def11
+    .= k.(<*1_N,h*>) by Def5
     .= (f.(1_N))*(g.h) by A4
     .= (1_G)*(g.h) by GROUP_6:31
     .= g.h by GROUP_1:def 4;
