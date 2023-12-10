@@ -49,7 +49,7 @@ If $N_{1}=N$, then $HN=HN_{1}$ and $H\cap N=H\cap N_{1}$.
 \end{lemma}
 
 <<Lemma: If $N_{1}=N$, then $HN=HN_{1}$ and $H\cap N=H\cap N_{1}$>>=
-LmDef5c:
+Lm4:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -62,11 +62,11 @@ proof
   let N be normal Subgroup of G;
   let N1 be strict normal Subgroup of G;
   assume A1: N1 = the multMagma of N;
-  reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+  reconsider H1=the multMagma of H as strict Subgroup of G by Th2;
   H * N = H1 * N1 & H /\ N = H1 /\ N1 by A1,Th37;
   hence thesis by Th37;
 end;
-@ %def LmDef5c
+@ %def Lm4
 
 \begin{theorem}
 Let $N\normalSubgroup G$.
@@ -89,8 +89,8 @@ proof
     consider H being Subgroup of G such that
     A2: H,N1 are_complements_in G by A1;
     take H;
-    A3: H * N = the carrier of G by A1,A2,LmDef5c;
-    H /\ N = (1).G by A1,A2,LmDef5c;
+    A3: H * N = the carrier of G by A1,A2,Lm4;
+    H /\ N = (1).G by A1,A2,Lm4;
     hence H,N are_complements_in G by A3;
   end;
   thus (ex H being Subgroup of G st H,N are_complements_in G) implies G splits_over N
@@ -101,12 +101,12 @@ proof
     st N1 = the multMagma of N
     & (ex H being Subgroup of G st H,N1 are_complements_in G)
     proof
-      reconsider N1=the multMagma of N as strict normal Subgroup of G by LmDef5;
+      reconsider N1=the multMagma of N as strict normal Subgroup of G by Th3;
       take N1;
       thus N1 = the multMagma of N;
       take H;
-      A2: H * N1 = the carrier of G by A1,LmDef5c;
-      H /\ N1 = (1).G by A1,LmDef5c;
+      A2: H * N1 = the carrier of G by A1,Lm4;
+      H /\ N1 = (1).G by A1,Lm4;
       hence H,N1 are_complements_in G by A2;
     end;
     hence G splits_over N;

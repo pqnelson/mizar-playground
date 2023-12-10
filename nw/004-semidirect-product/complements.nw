@@ -184,7 +184,7 @@ proof
   assume Z1: N is Subgroup of H;
   then N is normal Subgroup of H by GROUP_6:8;
   then reconsider N1=the multMagma of N as strict normal Subgroup of H
-  by LmDef5;
+  by Th3;
   thus the multMagma of N = the multMagma of N1
                          .= the multMagma of (H,N)`*` by GROUP_6:def 1;
 end;
@@ -209,7 +209,7 @@ proof
   assume A2: the multMagma of N1 = the multMagma of N2;
   reconsider K=G as Subgroup of G by GROUP_2:54;
   reconsider HK=the multMagma of H1,NK=the multMagma of N1 as Subgroup of K
-  by LmDef5a;
+  by Th2;
   thus H1*N1 = HK*NK by ThProdLemma
             .= H2*N2 by A1,A2,ThProdLemma;
   thus H1 /\ N1 = HK /\ NK by ThCapLemma
@@ -283,12 +283,12 @@ st H1 = the multMagma of H
 & H1 * N1 = the carrier of G
 & H1 /\ N1 = (1).G
 proof
-  reconsider H1=the multMagma of H as strict Subgroup of G by LmDef5a;
+  reconsider H1=the multMagma of H as strict Subgroup of G by Th2;
   take H1;
   thus thesis
   proof
     reconsider N1=the multMagma of N as strict normal Subgroup of G
-    by A1,LmDef5;
+    by A1,Th3;
     take N1;
     thus H1 = the multMagma of H;
     thus N1 = the multMagma of N;
@@ -316,11 +316,11 @@ proof
   let H,K be Subgroup of G;
   assume A1: H is Subgroup of K;
   then reconsider H1=the multMagma of H as strict Subgroup of K
-  by LmDef5a;
+  by Th2;
   let N be Subgroup of G;
   assume A2: N is normal Subgroup of K;
   then reconsider N1=the multMagma of N as strict normal Subgroup of K
-  by LmDef5;
+  by Th3;
   A3: N * H = N1 * H1 by ThProdLemma;
   A4: N /\ H = N1 /\ H1 & H /\ N = H1 /\ N1 by ThCapLemma;
   A5: H1 /\ (N1 qua Subgroup of K) = (N1 qua Subgroup of K) /\ H1;
@@ -397,7 +397,7 @@ proof
   let G be Group;
   let H,K be Subgroup of G;
   assume A1: H is Subgroup of K;
-  then reconsider H1=the multMagma of H as strict Subgroup of K by LmDef5a;
+  then reconsider H1=the multMagma of H as strict Subgroup of K by Th2;
   let N be normal Subgroup of G;
   assume N is Subgroup of K;
   then A2: N is normal Subgroup of K by GROUP_6:8;
@@ -1149,20 +1149,20 @@ proof
     proof
       let x,y be Element of product <*H,K*>;
       assume B2: phi.x = phi.y;
-      x.1 in H & x.2 in K & dom x = {1,2} by th4a;
+      x.1 in H & x.2 in K & dom x = {1,2} by Th7;
       then x.1 in H & x.1 in G & x.2 in K & x.2 in G & dom x = {1,2} by GROUP_2:41;
       then consider h1,k1 being Element of G such that
       B3a: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K;
-      dom x = {1,2} by th4a;
+      dom x = {1,2} by Th7;
       then len x = 2 by FINSEQ_1:2,def 3;
       then x = <*h1,k1*> by B3a,FINSEQ_1:44;
       then B3: x.1 = h1 & x.2 = k1 & h1 in H & k1 in K & x = <*h1,k1*>
       by B3a;
-      y.1 in H & y.2 in K & dom y = {1,2} by th4a;
+      y.1 in H & y.2 in K & dom y = {1,2} by Th7;
       then y.1 in G & y.1 in H & y.2 in G & y.2 in K & dom y = {1,2} by GROUP_2:41;
       then consider h2,k2 being Element of G such that
       B4a: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K;
-      dom y = {1,2} by th4a;
+      dom y = {1,2} by Th7;
       then len y = 2 by FINSEQ_1:2,def 3;
       then y = <*h2,k2*> by B4a,FINSEQ_1:44;
       then B4: y.1 = h2 & y.2 = k2 & h2 in H & k2 in K & y = <*h2,k2*>
@@ -1229,7 +1229,7 @@ proof
     x in product (Carrier <*H,K*>);
     then x in the carrier of product <*H,K*> by GROUP_7:def 2;
     then x in product (<*H,K*>);
-    then B1: x.1 in H & x.2 in K & dom x = {1,2} by th4a;
+    then B1: x.1 in H & x.2 in K & dom x = {1,2} by Th7;
     then x.1 in H & x.1 in G & x.2 in K & x.2 in G by GROUP_2:40;
     then consider h,k being Element of G such that
     B2: h = x.1 & k = x.2 & h in H & k in K;

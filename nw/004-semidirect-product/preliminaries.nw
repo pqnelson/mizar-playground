@@ -110,7 +110,7 @@ Then the magma underlying $H$ is a strict subgroup of $G$.
 \end{theorem}
 
 <<Theorem: If $H\subgroup G$, then the magma underlying $H$ is a strict subgroup of $G$.>>=
-theorem LmDef5a:
+theorem Th2:
   for G being Group
   for H being Subgroup of G
   holds the multMagma of H is strict Subgroup of G
@@ -124,7 +124,7 @@ proof
   by GROUP_2:def 5;
   hence the multMagma of H is strict Subgroup of G by A1,GROUP_2:def 5;
 end;
-@ %def LmDef5a
+@ %def Th2
 
 \begin{theorem}
 Let $N\normalSubgroup G$.
@@ -132,14 +132,14 @@ Then the magma underlying $N$ is a strict normal subgroup of $G$.
 \end{theorem}
 
 <<Theorem: If $N\normalSubgroup G$, the magma underlying $N$ is a strict normal subgroup of $G$>>=
-theorem LmDef5:
+theorem Th3:
   for G being Group
   for N being normal Subgroup of G
   holds the multMagma of N is strict normal Subgroup of G
 proof
   let G be Group;
   let N be normal Subgroup of G;
-  reconsider N0 = the multMagma of N as strict Subgroup of G by LmDef5a;
+  reconsider N0 = the multMagma of N as strict Subgroup of G by Th2;
 
   for g being Element of G
   holds N0 |^ g = N0
@@ -155,7 +155,7 @@ proof
   hence the multMagma of N is strict normal Subgroup of G
   by GROUP_3:def 13;
 end;
-@ %def LmDef5
+@ %def Th3
 
 \begin{theorem}
 Let $H\subgroup G$ and $N\normalSubgroup G$. If $N\subgroup H$,
@@ -163,7 +163,7 @@ then the magma underlying $N$ is equal to the magma underlying $(N)_{H}$.
 \end{theorem}
 
 <<Theorem: magma of $N$ = magma of $(N)_{H}$>>=
-theorem Lm6:
+theorem
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -176,11 +176,11 @@ proof
   assume Z1: N is Subgroup of H;
   then N is normal Subgroup of H by GROUP_6:8;
   then reconsider N1=the multMagma of N as strict normal Subgroup of H
-  by LmDef5;
+  by Th3;
   thus the multMagma of N = the multMagma of N1
                          .= the multMagma of (H,N)`*` by GROUP_6:def 1;
 end;
-@ %def Lm6
+@
 
 \begin{theorem}
 Let $K\subgroup G$.
