@@ -62,13 +62,11 @@ proof
     then consider a,b being Element of G such that
     B2: x = a*b & a in carr A & b in carr (B /\ C)
     by GROUP_2:8;
-    b in carr (B /\ C) by B2;
-    then b in carr B /\ carr C by GROUP_2:81;
+    b in carr B /\ carr C by B2, GROUP_2:81;
     then B3: b in carr B & b in carr C by XBOOLE_0:def 4;
     then x in (carr A)*(carr B) by B2, GROUP_2:8;
     then B4: x in A*B by GROUP_4:def 8;
-    a in carr C by B2, A2;
-    then x in carr C by B2,B3,GROUP_2:74;
+    x in carr C by A2,B2,B3,GROUP_2:74;
     hence x in (A * B) /\ carr C by B4, XBOOLE_0:def 4;
   end;
   then A3: A * (B /\ C) c= (A * B) /\ carr C;
@@ -82,22 +80,16 @@ proof
     then x in (carr A) * (carr B) by GROUP_4:def 8;
     then consider a,b being Element of G such that
     B2: x = a * b & a in carr A & b in carr B by GROUP_2:8;
-    a" in carr A by B2, GROUP_2:75;
-    then a" in carr C by A2;
-    then a" in carr C & x in carr C by B1, XBOOLE_0:def 4;
-    then (a") * x in carr C by GROUP_2:74;
-    then B3: (a") * x in C by GROUP_2:def 9;
+    a" in carr C & x in carr C by A2, B1, B2, GROUP_2:75, XBOOLE_0:def 4;
+    then B3: (a") * x in carr C by GROUP_2:74;
     b = 1_G * b by GROUP_1:def 4
      .= (a" * a) * b by GROUP_1:def 5
      .= (a") * x by B2, GROUP_1:def 3;
-    then b in C by B3;
-    then b in B & b in C by B2, GROUP_2:def 9;
+    then b in B & b in C by B2, B3, GROUP_2:def 9;
     then b in B /\ C by GROUP_2:82;
     then b in carr (B /\ C) by GROUP_2:def 9;
-    then a in carr A & b in carr (B /\ C) by B2;
-    then a * b in (carr A) * carr (B /\ C) by GROUP_2:8;
-    then a * b in A * (B /\ C) by GROUP_4:def 8;
-    hence thesis by B2;
+    then a * b in (carr A) * carr (B /\ C) by B2, GROUP_2:8;
+    hence thesis by B2, GROUP_4:def 8;
   end;
   then (A * B) /\ carr C c= A * (B /\ C);
   hence A * (B /\ C) = (A * B) /\ carr C by A3, XBOOLE_0:def 10;
@@ -210,8 +202,7 @@ proof
     let g be Element of G;
     assume g in H1 /\ H2;
     then g in H1 & g in H2 by GROUP_2:82;
-    then g in H1 & g in K2 by Z2;
-    then g in K1 & g in K2 by Z1;
+    then g in K1 & g in K2 by Z1,Z2;
     hence g in K1 /\ K2 by GROUP_2:82;
   end;
 
@@ -221,8 +212,7 @@ proof
     let g be Element of G;
     assume g in K1 /\ K2;
     then g in K1 & g in K2 by GROUP_2:82;
-    then g in H1 & g in K2 by Z1;
-    then g in H1 & g in H2 by Z2;
+    then g in H1 & g in H2 by Z1,Z2;
     hence g in H1 /\ H2 by GROUP_2:82;
   end;
   hence H1 /\ H2 = K1 /\ K2 by Z3, Z4, GROUP_2:def 6;
@@ -251,10 +241,9 @@ proof
   assume A1: the multMagma of H1 = the multMagma of K1;
   assume A2: the multMagma of H2 = the multMagma of K2;
   A3: carr H1 = the carrier of H1 by GROUP_2:def 9
-  .= carr K1 by A1, GROUP_2:def 9;
-  carr H2 = the carrier of H2 by GROUP_2:def 9
-  .= carr K2 by A2,GROUP_2:def 9;
-  then A4: carr H1 = carr K1 & carr H2 = carr K2 by A3;
+             .= carr K1 by A1, GROUP_2:def 9;
+  A4: carr H2 = the carrier of H2 by GROUP_2:def 9
+             .= carr K2 by A2,GROUP_2:def 9;
   for x being object
   holds x in (carr H1) * (carr H2) iff x in (carr K1) * (carr K2)
   proof
@@ -265,13 +254,9 @@ proof
       then consider h1,h2 being Element of G such that
       B1: x = h1*h2 & h1 in carr H1 & h2 in carr H2
       by GROUP_2:8;
-      B2: h1 in carr K1 & h2 in carr K2 by A4,B1;
-      then h1 in the carrier of K1 & h2 in the carrier of K2 by GROUP_2:def 9;
-      then reconsider k1=h1,k2=h2 as Element of K by GROUP_2:42;
-      B3: k1*k2 = x by B1,GROUP_2:43;
-      k1 in carr K1 & k2 in carr K2 by B2;
-      then k1 * k2 in (carr K1) * (carr K2) by GROUP_2:8;
-      hence x in (carr K1) * (carr K2) by B3;
+      reconsider k1=h1,k2=h2 as Element of K by A3,A4,B1;
+      k1*k2 = x by B1,GROUP_2:43;
+      hence x in (carr K1) * (carr K2) by A3, A4, B1, GROUP_2:8;
     end;
 
     thus x in (carr K1) * (carr K2) implies x in (carr H1) * (carr H2)
@@ -280,17 +265,14 @@ proof
       then consider k1,k2 being Element of K such that
       B1: x = k1*k2 & k1 in carr K1 & k2 in carr K2
       by GROUP_2:8;
-      B2: k1 in carr H1 & k2 in carr H2 by A4,B1;
       reconsider h1=k1,h2=k2 as Element of G by GROUP_2:42;
-      B3: h1*h2 = x by B1,GROUP_2:43;
-      h1 in carr H1 & h2 in carr H2 by B2;
-      then h1*h2 in (carr H1) * (carr H2) by GROUP_2:8;
-      hence x in (carr H1) * (carr H2) by B3;
+      h1 * h2 = x by B1,GROUP_2:43;
+      hence x in (carr H1) * (carr H2) by A3, A4, B1, GROUP_2:8;
     end;
   end;
   then A5: (carr H1) * (carr H2) = (carr K1) * (carr K2) by TARSKI:2;
 
   thus H1 * H2 = (carr H1) * (carr H2) by GROUP_4:def 8
-  .= K1 * K2 by A5,GROUP_4:def 8;
+              .= K1 * K2 by A5,GROUP_4:def 8;
 end;
 @ %def ThProdLemma

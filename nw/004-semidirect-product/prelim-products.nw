@@ -14,8 +14,6 @@
 
 <<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
 
-<<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>
-
 @ 
 
 
@@ -132,7 +130,7 @@ Then $(g_{1},g_{2})\in H_{1}\times H_{2}$.
 \end{theorem}
 
 <<Theorem: Elements of Products of Subgroups>>=
-theorem
+theorem Th8:
   for G1,G2 being Group 
   for H1 being Subgroup of G1
   for H2 being Subgroup of G2
@@ -149,32 +147,30 @@ proof
   assume A2: h2 in H2;
   set H = <*H1,H2*>;
   A3: dom Carrier H = {1,2} by PARTFUN1:def 2;
-  A4: <*h1,h2*>.2 = h2 by FINSEQ_1:44;
-  A5: H.2 = H2 by FINSEQ_1:44;
-  A6: H.1 = H1 by FINSEQ_1:44;
-  A7: <*h1,h2*>.1 = h1 by FINSEQ_1:44;
-  A8: for a being object st a in {1,2}
+  A4: for a being object st a in {1,2}
       holds <*h1,h2*>.a in (Carrier <*H1,H2*>).a
   proof
     let a be object;
     assume B1: a in {1,2};
     then per cases by TARSKI:def 2;
     suppose B2: a = 1;
-      then ex R being 1-sorted st R = H.1 & (Carrier H).1 = the carrier of R
+      then B3: ex R being 1-sorted st R = H.1 & (Carrier H).1 = the carrier of R
       by B1, PRALG_1:def 15;
-      hence thesis by A1,A7,A6,B2;
+      H.1 = H1 by FINSEQ_1:44;
+      hence thesis by A1,B2,B3,FINSEQ_1:44;
     end;
-    suppose B3: a = 2;
-      then ex R being 1-sorted st R = H.2 & (Carrier H).2 = the carrier of R
+    suppose B4: a = 2;
+      then B5: ex R being 1-sorted st R = H.2 & (Carrier H).2 = the carrier of R
       by B1, PRALG_1:def 15;
-      hence thesis by A2,A4,A5,B3;
+      H.2 = H2 by FINSEQ_1:44;
+      hence thesis by A2,B4,B5,FINSEQ_1:44;
     end;
   end;
   dom <*h1,h2*> = {1,2} by FINSEQ_1:2,89;
-  then <*h1,h2*> in product Carrier (<*H1,H2*>) by A3,A8,CARD_3:9;
+  then <*h1,h2*> in product Carrier (<*H1,H2*>) by A3,A4,CARD_3:9;
   hence <*h1,h2*> in product <*H1,H2*> by GROUP_7:def 2;
 end;
-@
+@ %def Th8
 
 \begin{theorem}
 Let $K\properSubgroup H\subgroup G$ be strict subgroups.
@@ -183,7 +179,7 @@ $g\notin K$.
 \end{theorem}
 
 <<Theorem: If $K\properSubgroup H\subgroup G$, then $\exists g\in H,g\notin K$>>=
-theorem
+theorem Th9:
   for G being Group
   for H,K being strict Subgroup of G
   st H <> K & K is Subgroup of H
@@ -194,20 +190,17 @@ proof
   let H,K be strict Subgroup of G;
   assume A1: H <> K;
   assume A2: K is Subgroup of H;
-  then A3: the carrier of K c= the carrier of H by GROUP_2:def 5;
-  not H is Subgroup of K by A1, A2, GROUP_2:55; then
-  not (the carrier of H c= the carrier of K)
-  by GROUP_2:57;
+  then not H is Subgroup of K by A1, GROUP_2:55;
   then the carrier of K c= the carrier of H
   & (the carrier of H <> the carrier of K) 
-  by A3;
-  then the carrier of K c< the carrier of H by XBOOLE_0:def 8;
+  by A2, GROUP_2:def 5, GROUP_2:57;
   then consider x being object such that
-  A4: ( x in the carrier of H & not x in the carrier of K) by XBOOLE_0:6;
-  A5: x in H & not x in K by A4;
+  A3: ( x in the carrier of H & not x in the carrier of K)
+  by XBOOLE_0:6, XBOOLE_0:def 8;
+  x in H & not x in K by A3;
   then x in G by GROUP_2:40;
   then reconsider g=x as Element of G;
   take g;
-  thus g in H & not g in K by A5;
+  thus g in H & not g in K by A3;
 end;
-@
+@ %def Th9

@@ -89,9 +89,7 @@ proof
     consider H being Subgroup of G such that
     A2: H,N1 are_complements_in G by A1;
     take H;
-    A3: H * N = the carrier of G by A1,A2,Lm4;
-    H /\ N = (1).G by A1,A2,Lm4;
-    hence H,N are_complements_in G by A3;
+    thus thesis by A1,A2;
   end;
   thus (ex H being Subgroup of G st H,N are_complements_in G) implies G splits_over N
   proof
@@ -105,9 +103,7 @@ proof
       take N1;
       thus N1 = the multMagma of N;
       take H;
-      A2: H * N1 = the carrier of G by A1,Lm4;
-      H /\ N1 = (1).G by A1,Lm4;
-      hence H,N1 are_complements_in G by A2;
+      thus thesis by A1;
     end;
     hence G splits_over N;
   end;
@@ -152,15 +148,13 @@ proof
   thus K splits_over N implies ex H being Subgroup of K
   st H,N are_complements_in K
   proof
-    assume B1: K splits_over N;
+    assume K splits_over N;
     then K splits_over N1;
-    then ex H being Subgroup of K st H,N1 are_complements_in K;
     hence ex H being Subgroup of K st H,N are_complements_in K;
   end;
   given H being Subgroup of K such that 
   A2: H,N are_complements_in K;
-  H,N1 are_complements_in K by A2;
-  then K splits_over N1;
+  K splits_over N1 by A2;
   hence K splits_over N;
 end;
 @ 
@@ -185,9 +179,8 @@ proof
   let H be Subgroup of G;
   assume A1: H,N are_complements_in G;
   let g be Element of G;
-  g in H*N by A1;
-  then consider h,n being Element of G such that
-  A2: g = h*n & h in H & n in N by GROUP_5:4;
+  consider h,n being Element of G such that
+  A2: g = h*n & h in H & n in N by A1, GROUP_5:4;
   take h,n;
   thus h in H by A2;
   thus n in N by A2;

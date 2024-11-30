@@ -59,7 +59,7 @@ proof
     let h be Element of H;
     reconsider x=<*n,h*> as Element of S by Th11;
     P[x,k.x] by A3;
-    hence k.(<*n,h*>)=(f.n)*(g.h) by Th14;
+    hence k.(<*n,h*>)=(f.n)*(g.h);
   end;
 
   for n being Element of N
@@ -115,7 +115,7 @@ proof
     then n=n1 & h=h1 by B1,Th14;
     hence y = (f.n1)*(g.h1);
   end;
-  hence P[x,y] by B1;
+  hence P[x,y];
 end;
 
 consider k being Function of S, G such that
@@ -130,30 +130,21 @@ proof
   B1: x1 = <*n1,h1*> by Th13;
   consider n2 being Element of N, h2 being Element of H such that
   B2: x2 = <*n2,h2*> by Th13;
-  P[x1, k.x1] by A3;
-  then B3: k.x1 = (f.n1)*(g.h1) by B1;
-  P[x2, k.x2] by A3;
-  then B4: k.x2 = (f.n2)*(g.h2) by B2;
-  B5: x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,Th15;
-  P[x1 * x2, k.(x1 * x2)] by A3;
-  hence k.(x1 * x2) = (f.(n1 * ((phi/.h1)/.n2))) * (g.(h1 * h2)) by B5
+  x1 * x2 = <* n1 * ((phi /. h1)/.n2), h1 * h2*> by B1,B2,Th15;
+  hence k.(x1 * x2) = (f.(n1 * ((phi/.h1)/.n2))) * (g.(h1 * h2)) by A3
   .= ((f.n1)*(f.((phi/.h1)/.n2))) * (g.(h1 * h2)) by GROUP_6:def 6
-  .= (f.n1)*(f.((phi/.h1)/.n2))*(g.(h1 * h2)) by GROUP_1:def 3
   .= (f.n1)*((g.h1) * (f.n2) * (g.(h1")))*(g.(h1 * h2)) by A1
   .= (f.n1)*(g.h1)*(f.n2)*(g.(h1"))*(g.(h1 * h2)) by LmAssoc
-  .= ((f.n1)*(g.h1)*(f.n2)*(g.(h1")))*(g.(h1 * h2)) by GROUP_1:def 3
   .= ((f.n1)*(g.h1)*(f.n2)*(g.(h1")))*((g.h1)*(g.h2)) by GROUP_6:def 6
   .= ((f.n1)*(g.h1)*(f.n2)*(g.(h1")))*(g.h1)*(g.h2) by GROUP_1:def 3
-  .= (f.n1)*(g.h1)*(f.n2)*(g.(h1"))*(g.h1)*(g.h2) by GROUP_1:def 3
   .= (f.n1)*(g.h1)*(f.n2)*((g.(h1"))*(g.h1))*(g.h2) by GROUP_1:def 3
   .= (f.n1)*(g.h1)*(f.n2)*(g.((h1")*h1))*(g.h2) by GROUP_6:def 6
   .= (f.n1)*(g.h1)*(f.n2)*(g.(1_H))*(g.h2) by GROUP_1:def 5
   .= (f.n1)*(g.h1)*(f.n2)*(1_G)*(g.h2) by GROUP_6:31
   .= (f.n1)*(g.h1)*(f.n2)*(g.h2) by GROUP_1:def 4
-  .= ((f.n1)*(g.h1))*(f.n2)*(g.h2) by GROUP_1:def 3
-  .= (k.x1)*(f.n2)*(g.h2) by B3,A3
+  .= (k.x1)*(f.n2)*(g.h2) by A3,B1
   .= (k.x1)*((f.n2)*(g.h2)) by GROUP_1:def 3
-  .= (k.x1)*(k.x2) by B4, A3;
+  .= (k.x1)*(k.x2) by A3, B2;
 end;
 then reconsider k as Homomorphism of S,G by GROUP_6:def 6;
 @
@@ -173,10 +164,8 @@ LmAssoc:
 proof
   let G be Group;
   let g1,g2,g3,g4,g5 be Element of G;
-  thus (g1*(g2 * g3 * g4))*g5
-  = (g1*(g2*(g3*g4)))*g5 by GROUP_1:def 3
-  .= ((g1*g2)*(g3*g4))*g5 by GROUP_1:def 3
-  .= (g1*g2*g3*g4)*g5 by GROUP_1:def 3
-  .= g1*g2*g3*g4*g5 by GROUP_1:def 3;
+  thus (g1*(g2 * g3 * g4))*g5 = (g1*(g2*(g3*g4)))*g5 by GROUP_1:def 3
+                             .= ((g1*g2)*(g3*g4))*g5 by GROUP_1:def 3
+                             .= g1*g2*g3*g4*g5 by GROUP_1:def 3;
 end;
 @ %def LmAssoc
