@@ -66,10 +66,6 @@ begin :: Complementary Subgroups
 
 <<Corollary: Every complement to $N$ in $G$ are isomorphic to each other.>>
 
-<<Theorem: $h_{1}\in H_{1}$ and $h_{2}\in H_{2}$ implies $\langle h_{1},h_{2}\rangle\in H_{1}\times H_{2}$>>
-
-<<Theorem: if $K\properSubgroup H\subgroup G$, then $\exists g\in H, g\notin K$ >>
-
 <<Theorem: multiplication from different subgroups is injective iff the subgroups are disjoint>>
 
 <<Theorem: existence of $f\colon H\times K\to G$, $f(h,k)=hk$>>
@@ -151,16 +147,16 @@ theorem Th35:
 proof
   let G be Group;
   let H,K be Subgroup of G;
-  assume A1: H is Subgroup of K;
+  assume H is Subgroup of K;
   then reconsider H0=H as Subgroup of K;
   let N be Subgroup of G;
-  assume A2: N is normal Subgroup of K;
+  assume N is normal Subgroup of K;
   then reconsider N0=N as normal Subgroup of K;
-  A3: the multMagma of N0 = the multMagma of N;
-  A4: the multMagma of H0 = the multMagma of H;
-  thus N * H = N0 * H0 by ThProdLemma,A3,A4
+  A1: the multMagma of N0 = the multMagma of N;
+  A2: the multMagma of H0 = the multMagma of H;
+  thus N * H = N0 * H0 by ThProdLemma,A1,A2
             .= H0 * N0 by GROUP_5:8
-            .= H * N by ThProdLemma,A3,A4;
+            .= H * N by ThProdLemma,A1,A2;
 end;
 @ %def Th35
 
@@ -180,7 +176,7 @@ proof
   let G be Group;
   let H be Subgroup of G;
   let N be normal Subgroup of G;
-  assume Z1: N is Subgroup of H;
+  assume N is Subgroup of H;
   then N is normal Subgroup of H by GROUP_6:8;
   then reconsider N1=the multMagma of N as strict normal Subgroup of H
   by Th3;
@@ -313,22 +309,22 @@ theorem Th38:
 proof
   let G be Group;
   let H,K be Subgroup of G;
-  assume A1: H is Subgroup of K;
+  assume H is Subgroup of K;
   then reconsider H1=the multMagma of H as strict Subgroup of K
   by Th2;
   let N be Subgroup of G;
-  assume A2: N is normal Subgroup of K;
+  assume N is normal Subgroup of K;
   then reconsider N1=the multMagma of N as strict normal Subgroup of K
   by Th3;
-  A3: N * H = N1 * H1 by ThProdLemma;
+  A1: N * H = N1 * H1 by ThProdLemma;
   hence H,N are_complements_in K implies ((N * H = the carrier of K) & (H /\ N = (1).K))
   by ThCapLemma, GROUP_5:8;
 
   thus ((N * H = the carrier of K) & (H /\ N = (1).K)) implies H,N are_complements_in K
   proof
-    assume B1: N * H = the carrier of K;
+    assume A2: N * H = the carrier of K;
     assume H /\ N = (1).K;
-    then H1, N1 are_complements_in K by B1, A3, ThCapLemma, GROUP_5:8;
+    then H1, N1 are_complements_in K by A1, A2, ThCapLemma, GROUP_5:8;
     hence H,N are_complements_in K;
   end;
 end;
@@ -529,12 +525,9 @@ theorem
   G = the multMagma of A implies A,G are_isomorphic
 proof
   assume A1: G = the multMagma of A;
-  then A2: id G is Function of G, A;
-  A3: the multF of A = the multF of G by A1;
   ex f being Homomorphism of A,G st f is bijective
   proof
     reconsider f=id A as Function of A,G by A1;
-    B2: f = id A;
     for a1,a2 being Element of A
     holds f.(a1 * a2) = (f.a1) * (f.a2) by A1;
 
@@ -649,7 +642,6 @@ proof
     then consider n being Element of G1 such that
     B5: n in N & g12 = (g1 * g2) * n
     by Th47;
-    B6: n in Ker f by A1, B5, GROUP_2:40;
     f.g12 = (f.(g1 * g2)) * (f.n) by B5, GROUP_6:def 6
          .= (f.(g1 * g2)) * (1_G2) by A1, B5, GROUP_2:40, GROUP_6:41
          .= f.(g1 * g2) by GROUP_1:def 4
@@ -671,7 +663,6 @@ proof
     then consider n being Element of G1 such that
     B2: n in N & g = g1 * n
     by Th47;
-    B3: n in Ker f by A1, B2, GROUP_2:40;
     f.g = (f.g1) * (f.n) by B2, GROUP_6:def 6
        .= (f.g1) * (1_G2) by A1, B2, GROUP_2:40, GROUP_6:41
        .= f.g1 by GROUP_1:def 4
@@ -705,7 +696,6 @@ proof
   let phi be Homomorphism of G1,G2;
   assume A1: phi is bijective;
   assume A2: phi .: the carrier of N1 = the carrier of N2;
-  A3: (nat_hom N2) * phi is Homomorphism of G1,G2./.N2;
   for g being Element of G1
   st g in N1
   holds g in Ker ((nat_hom N2) * phi)
@@ -719,9 +709,9 @@ proof
     then ((nat_hom N2) * phi).g = 1_(G2./.N2) by FUNCT_2:15;
     hence g in Ker ((nat_hom N2) * phi) by GROUP_6:41;
   end;
-  then A4: N1 is Subgroup of Ker ((nat_hom N2) * phi) by GROUP_2:58;
+  then N1 is Subgroup of Ker ((nat_hom N2) * phi) by GROUP_2:58;
   then consider phiBar being Homomorphism of G1./.N1,G2./.N2 such that
-  A5: ((nat_hom N2) * phi) = phiBar * (nat_hom N1) by UniversalPropertyQuotientGroups;
+  A3: ((nat_hom N2) * phi) = phiBar * (nat_hom N1) by UniversalPropertyQuotientGroups;
 
   for y being Element of G2./.N2
   ex x being Element of G1./.N1
@@ -732,23 +722,23 @@ proof
     B1: y = g2 * N2 & y = N2 * g2
     by GROUP_6:21;
     B2: phi" is Homomorphism of G2,G1 by A1, GROUP_6:62;
-    then B3: (phi").g2 in G1 by FUNCT_2:5;
+    then (phi").g2 in G1 by FUNCT_2:5;
     then (nat_hom N1).((phi").g2) in G1./.N1 by FUNCT_2:5;
     then consider x being Element of G1./.N1 such that
-    B4: x = (nat_hom N1).((phi").g2);
+    B3: x = (nat_hom N1).((phi").g2);
     take x;
-    B5: phi is one-to-one & rng phi = the carrier of G2 by A1, FUNCT_2:def 3;
+    B4: phi is one-to-one & rng phi = the carrier of G2 by A1, FUNCT_2:def 3;
 
     g2 in G2;
     then g2 in dom (phi") by B2, FUNCT_2:def 1; then
-    B6: (phi.((phi").g2)) = (phi * (phi")).g2 by FUNCT_1:13
-                         .= (id the carrier of G2).g2 by B5,FUNCT_2:29
+    B5: (phi.((phi").g2)) = (phi * (phi")).g2 by FUNCT_1:13
+                         .= (id the carrier of G2).g2 by B4,FUNCT_2:29
                          .= g2;
-    thus phiBar.x = (phiBar * (nat_hom N1)).((phi").g2) by B2, B4, FUNCT_2:5,15
-                 .= (nat_hom N2).(phi.((phi").g2)) by A5, B2, FUNCT_2:5,15
-                 .= y by B1, B6, GROUP_6:def 8;
+    thus phiBar.x = (phiBar * (nat_hom N1)).((phi").g2) by B2, B3, FUNCT_2:5,15
+                 .= (nat_hom N2).(phi.((phi").g2)) by A3, B2, FUNCT_2:5,15
+                 .= y by B1, B5, GROUP_6:def 8;
   end;
-  then A6: phiBar is onto by LmOnto;
+  then A4: phiBar is onto by LmOnto;
 
   for a,b being Element of G1./.N1 st phiBar.a = phiBar.b
   holds a = b
@@ -761,32 +751,31 @@ proof
     consider x2 being Element of G1 such that
     B3: b = x2 * N1 & b = N1 * x2
     by GROUP_6:21;
-    B4: x1 in G1 & x2 in G1;
-    B5: phiBar.a = phiBar.((nat_hom N1).x1) by B2,GROUP_6:def 8
-                .= ((nat_hom N2) * phi).x1 by A5,FUNCT_2:15
+    B4: phiBar.a = phiBar.((nat_hom N1).x1) by B2,GROUP_6:def 8
+                .= ((nat_hom N2) * phi).x1 by A3,FUNCT_2:15
                 .= (nat_hom N2).(phi.x1) by FUNCT_2:15;
     phiBar.b = phiBar.((nat_hom N1).x2) by B3, GROUP_6:def 8
             .= (phiBar * (nat_hom N1)).x2 by FUNCT_2:15
-            .= (nat_hom N2).(phi.x2) by A5, FUNCT_2:15;
-    then (phi.x1) * N2 = (nat_hom N2).(phi.x2) by B1,B5,GROUP_6:def 8
+            .= (nat_hom N2).(phi.x2) by A3, FUNCT_2:15;
+    then (phi.x1) * N2 = (nat_hom N2).(phi.x2) by B1,B4,GROUP_6:def 8
                       .= (phi.x2) * N2 by GROUP_6:def 8;
     then consider n being Element of G2 such that
-    B6: n in N2 & phi.x1 = (phi.x2) * n
+    B5: n in N2 & phi.x1 = (phi.x2) * n
     by Th47;
     consider n1 being object such that
-    B7: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
-    by A2, B6, FUNCT_2:64;
-    reconsider n1 as Element of G1 by B7;
-    phi.x1 = phi.(x2 * n1) by B6, B7, GROUP_6:def 6;
+    B6: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
+    by A2, B5, FUNCT_2:64;
+    reconsider n1 as Element of G1 by B6;
+    phi.x1 = phi.(x2 * n1) by B5, B6, GROUP_6:def 6;
     then (x2") * x1 = (x2") * (x2 * n1) by A1, GROUP_6:1
                    .= ((x2") * x2) * n1 by GROUP_1:def 3
                    .= (1_G1) * n1 by GROUP_1:def 5
                    .= n1 by GROUP_1:def 4;
-    then (x2") * x1 in N1 by B7;
+    then (x2") * x1 in N1 by B6;
     hence a = b by B2, B3, GROUP_2:114;
   end;
   then phiBar is one-to-one by GROUP_6:1;
-  hence G1./.N1, G2./.N2 are_isomorphic by A6, GROUP_6:def 11;
+  hence G1./.N1, G2./.N2 are_isomorphic by A4, GROUP_6:def 11;
 end;
 @
 
@@ -873,13 +862,12 @@ proof
     Z1: y = g*N & y = N*g by GROUP_6:23;
     consider h,n being Element of G such that
     Z2: g = h * n & h in H & n in N by A2, GROUP_5:4;
+    reconsider x=h as Element of H by Z2;
+    take x;
     g * N = h * (n * N) by Z2,GROUP_2:105
          .= h * (carr N) by Z2,GROUP_2:113
          .= h * N by GROUP_2:def 13;
-    then Z3: y = h * N by Z1;
-    reconsider x=h as Element of H by Z2;
-    take x;
-    thus phi.x = y by A5,Z3;
+    hence phi.x = y by A5,Z1;
   end;
 
   then A3: phi is onto by LmOnto;
@@ -957,35 +945,6 @@ end;
 @
 
 \begin{theorem}
-Let $H_{1}\subgroup G_{1}$ and $H_{2}\subgroup G_{2}$.
-Let $h_{1}\in H_{1}$ and $h_{2}\in H_{2}$, then $\langle h_{1},h_{2}\rangle\in H_{1}\times H_{2}$.
-\end{theorem}
-
-<<Theorem: $h_{1}\in H_{1}$ and $h_{2}\in H_{2}$ implies $\langle h_{1},h_{2}\rangle\in H_{1}\times H_{2}$>>=
-theorem
-  for G1,G2 being Group 
-  for H1 being Subgroup of G1
-  for H2 being Subgroup of G2
-  for h1 being Element of G1 st h1 in H1
-  for h2 being Element of G2 st h2 in H2
-  holds <*h1,h2*> in product <*H1,H2*> by Th8;
-@
-
-\begin{theorem}
-Let $K\properSubgroup H\subgroup G$. Then there exists a $g\in H$ and
-$g\notin K$.
-\end{theorem}
-
-<<Theorem: if $K\properSubgroup H\subgroup G$, then $\exists g\in H, g\notin K$ >>=
-theorem
-  for G being Group
-  for H,K being strict Subgroup of G
-  st H <> K & K is Subgroup of H
-  ex g being Element of G
-  st g in H & not g in K by Th9;
-@
-
-\begin{theorem}
 Let $H\subgroup G$ and $K\subgroup G$, let $\varphi\colon H\times K\to G$
 be defined by $\varphi(h,k)=hk$.
 Then $\varphi$ is injective iff $H\cap K=\trivialSubgroup$.
@@ -995,7 +954,7 @@ Then $\varphi$ is injective iff $H\cap K=\trivialSubgroup$.
 :: Bourbaki mentions this, literally in passing in a sentence in
 :: General Topology Chapter II, not even making a proposition or lemma
 :: out of it.
-theorem Th55:
+theorem Th53:
   for G being Group
   for H,K being Subgroup of G
   for phi being Function of product <*H,K*>,G
@@ -1086,7 +1045,6 @@ proof
                          .= (h2") * h1 by GROUP_1:def 4;
       k2 in K & k1" in K by B4,B6, GROUP_2:51;
       then B8: k2 * (k1") in K by GROUP_2:50;
-      then (h2") * h1 in K by B7;
       h1 in H & h2" in H by B4,B6, GROUP_2:51;
       then B9: (h2") * h1 in H by GROUP_2:50;
       (h2") * h1 = 1_G by B1,B7,B8,B9,GROUP_2:82,GROUP_5:1;
@@ -1101,7 +1059,7 @@ proof
     hence phi is one-to-one by GROUP_6:1;
   end;
 end;
-@ %def Th55
+@ %def Th53
 
 \begin{theorem}
 There exists a function $f\colon H\times K\to G$ such that $f(h,k)=hk$,
@@ -1109,7 +1067,7 @@ and it is injective iff $H\cap K=\trivialSubgroup$.
 \end{theorem}
 
 <<Theorem: existence of $f\colon H\times K\to G$, $f(h,k)=hk$>>=
-theorem Th56:
+theorem Th54:
   for G being Group
   for H,K being Subgroup of G
   ex phi being Function of product (Carrier <*H,K*>),G
@@ -1165,16 +1123,16 @@ proof
   holds phi.(<*h,k*>) = h*k;
 
   the carrier of product <*H,K*> = product (Carrier <*H,K*>) by GROUP_7:def 2;
-  hence phi is one-to-one iff H /\ K = (1).G by A3,Th55;
+  hence phi is one-to-one iff H /\ K = (1).G by A3,Th53;
 end;
-@ %def Th56
+@ %def Th54
 
 \begin{theorem}
 Existence of homomorphism $\varphi\colon N\rtimes H\to G$, $\varphi(n,h)=nh$.
 \end{theorem}
 
 <<Theorem: Existence of homomorphism $\varphi\colon N\rtimes H\to G$, $\varphi(n,h)=nh$.>>=
-theorem Th57:
+theorem Th55:
   for G being Group
   for H being Subgroup of G
   for N being strict normal Subgroup of G
@@ -1200,19 +1158,19 @@ proof
   that
   A2: (for n,h being Element of G st n in N & h in H holds psi.(<*n,h*>)=n*h)
   & (psi is one-to-one iff N /\ H = (1).G)
-  by Th56;
+  by Th54;
   reconsider psi as Function of semidirect_product (N,H,phi), G by A1;
   take psi;
   thus thesis by A2;
 end;
-@ %def Th57
+@ %def Th55
 
 \begin{theorem}
 If $H_{1},H_{2}\subgroup G$, then $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$.
 \end{theorem}
 
 <<Theorem: If $H_{1},H_{2}\subgroup G$, then $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$>>=
-theorem Th58:
+theorem Th56:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -1222,14 +1180,14 @@ proof
   H1 "\/" H2 = gr (H1 * H2) by GROUP_4:50;
   hence H1 * H2 c= the carrier of H1 "\/" H2 by GROUP_4:def 4;
 end;
-@ %def Th58
+@ %def Th56
 
 \begin{theorem}
 If $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$, then $H_{2}\cdot H_{1}\subset U(H_{1}\vee H_{2})$.
 \end{theorem}
 
 <<Theorem: If $H_{1}\cdot H_{2}\subset U(H_{1}\vee H_{2})$, then $H_{2}\cdot H_{1}\subset U(H_{1}\vee H_{2})$>>=
-theorem Th59:
+theorem Th57:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -1237,18 +1195,18 @@ theorem Th59:
 proof
   let G be Group;
   let H1,H2 be Subgroup of G;
-  thus H1*H2 c= the carrier of H1 "\/" H2 by Th58;
-  H2 * H1 c= the carrier of H2 "\/" H1 by Th58;
+  thus H1*H2 c= the carrier of H1 "\/" H2 by Th56;
+  H2 * H1 c= the carrier of H2 "\/" H1 by Th56;
   hence H2 * H1 c= the carrier of H1 "\/" H2 by GROUP_4:56;
 end;
-@ %def Th59
+@ %def Th57
 
 \begin{theorem}
 If $H_{1}\cdot H_{2}=U(H_{1}\vee H_{2})$, then $H_{1}\cdot H_{2}=H_{2}\cdot H_{1}$.
 \end{theorem}
 
 <<Theorem: If $H_{1}\cdot H_{2}=U(H_{1}\vee H_{2})$, then $H_{1}\cdot H_{2}=H_{2}\cdot H_{1}$>>=
-theorem Th60:
+theorem Th58:
   for G being Group
   for H1,H2 being Subgroup of G
   st H1 * H2 = the carrier of (H1 "\/" H2)
@@ -1258,7 +1216,7 @@ proof
   let H1,H2 be Subgroup of G;
   assume A1: H1 * H2 = the carrier of (H1 "\/" H2);
 
-  then A2: H2 * H1 c= H1 * H2 by Th59;
+  then A2: H2 * H1 c= H1 * H2 by Th57;
   for x being Element of G st x in H1 * H2 holds x in H2 * H1
   proof
     let x be Element of G;
@@ -1277,14 +1235,14 @@ proof
   then A3: H1 * H2 c= H2 * H1;
   thus thesis by A2,A3,XBOOLE_0:def 10;
 end;
-@ %def Th60
+@ %def Th58
 
 \begin{theorem}
 If $H$ and $N$ are complements in $G$, then $H\cdot N=G$ and $N\cdot H=G$.
 \end{theorem}
 
 <<Theorem: If $H$ and $N$ are complements in $G$, then $H\cdot N=G$ and $N\cdot H=G$>>=
-theorem Th61:
+theorem Th59:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -1296,9 +1254,9 @@ proof
   let N be normal Subgroup of G;
   assume A1: H,N are_complements_in G;
   then H "\/" N = the multMagma of G by Th44;
-  hence thesis by A1, Th60;
+  hence thesis by A1, Th58;
 end;
-@ %def Th61
+@ %def Th59
 
 \begin{theorem}
 Suppose $H$, $N$ are complements in $G$.
@@ -1336,7 +1294,7 @@ proof
   A3: (for n,h being Element of G st n in N & h in H
        holds beta.(<*n,h*>) = n*h)
   & (beta is one-to-one iff N /\ H = (1).G)
-  by Th57;
+  by Th55;
 
   for x,y being Element of S
   holds beta.(x * y) = (beta.x) * (beta.y)
@@ -1400,7 +1358,7 @@ proof
   proof
     let y be Element of G;
     y in the carrier of G;
-    then y in N * H by A1,Th61;
+    then y in N * H by A1,Th59;
     then consider n,h being Element of G such that
     B1: y = n * h & n in N & h in H
     by GROUP_5:4;

@@ -1,0 +1,464 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Intermezzo on Cosets}
+
+<<Intermezzo on Cosets>>=
+begin :: Intermezzo on cosets
+
+<<Reserve: $G$ is a group, $H$ is a subgroup of $G$>>
+
+<<Register: Elements of cosets are nonempty>>
+
+<<Theorem: left cosets of $H$ are equal or disjoint>>
+
+<<Theorem: right cosets of $H$ are equal or disjoint>>
+
+<<Theorem: if $K\subgroup H$, then $KH=H$ and $HK=H$>>
+
+<<Theorem: If $K\subgroup H$ and $U=gK$ is a coset of $K$ in $G$, then $UH$ is a left coset of $K$ in $G$>>
+
+<<Theorem: If $K\subgroup H$ and $U=Kg$ is a coset of $K$ in $G$, then $UH$ is a right coset of $K$ in $G$>>
+
+<<Theorem: if $U$ is a left coset of $H$, then $UH=U$>>
+
+<<Theorem: if $U$ is a right coset of $H$, then $HU=U$>>
+
+<<Theorem: if $h\in H$ and $U$ is a left coset of $H$, then $Uh=U$ and $Uh$ is a left coset of $H$>>
+
+<<Theorem: if $h\in H$ and $U$ is a right coset of $H$, then $hU=U$ and $hU$ is a right coset of $H$>>
+
+<<Theorem: $(A\cap B)g = Ag \cap Bg$>>
+
+<<Theorem: $g(A\cap B) = gA\cap gB$>>
+
+:: Mentioned in passing in Philip Hall's 1957 book on group theory
+<<Theorem: if $g\in G$ and $K\subgroup H$, then $gK\cap H=\emptyset$ or $gK\subset H$>>
+
+<<Theorem: if $g\in G$ and $K\subgroup H$, then $Kg\cap H=\emptyset$ or $Kg\subset H$>>
+
+@
+
+\begin{reserve}
+Let $G$ be a group, let $H$ be a subgroup of $G$.
+\end{reserve}
+
+<<Reserve: $G$ is a group, $H$ is a subgroup of $G$>>=
+reserve G for Group, H for Subgroup of G;
+@ 
+
+\begin{registration}
+Elements of left (and right) cosets are nonempty sets.
+\end{registration}
+
+<<Register: Elements of cosets are nonempty>>=
+:: should be moved to GROUP_2
+registration
+  let G, H;
+  cluster -> non empty for Element of Left_Cosets H;
+  correctness
+  proof
+    let U be Element of Left_Cosets H;
+    consider g being Element of G such that
+    A1: U = g * H by GROUP_2:def 15;
+    thus thesis by A1, GROUP_2:108;
+  end;
+  cluster -> non empty for Element of Right_Cosets H;
+  correctness
+  proof
+    let U be Element of Right_Cosets H;
+    consider g being Element of G such that
+    A1: U = H * g by GROUP_2:def 16;
+    thus thesis by A1, GROUP_2:108;
+  end;
+end;
+@ 
+
+\begin{theorem}
+Let $U$, $V$ be left cosets of $H$.
+Then either $U=V$ or $U\cap V=\emptyset$.
+\end{theorem}
+
+<<Theorem: left cosets of $H$ are equal or disjoint>>=
+theorem Th65:
+  for U,V being Element of Left_Cosets H
+  holds U = V or U misses V
+proof
+  let U,V be Element of Left_Cosets H;
+  assume A1: not U = V;
+  consider g1 being Element of G such that
+  A2: U = g1 * H by GROUP_2:def 15;
+  consider g2 being Element of G such that
+  A3: V = g2 * H by GROUP_2:def 15;
+  thus U misses V by A1,A2,A3,GROUP_2:115;
+end;
+@ %def Th65
+
+\begin{theorem}
+Let $U$, $V$ be right cosets of $H$.
+Then either $U=V$ or $U\cap V=\emptyset$.
+\end{theorem}
+
+<<Theorem: right cosets of $H$ are equal or disjoint>>=
+theorem Th66: :: 66
+  for U,V being Element of Right_Cosets H
+  holds U = V or U misses V
+proof
+  let U,V be Element of Right_Cosets H;
+  assume A1: not U = V;
+  consider g1 being Element of G such that
+  A2: U = H * g1 by GROUP_2:def 16;
+  consider g2 being Element of G such that
+  A3: V = H * g2 by GROUP_2:def 16;
+  thus U misses V by A1,A2,A3,GROUP_2:121;
+end;
+@ %def Th66
+
+\begin{theorem}
+Let $K\subgroup H$ be a subgroup of $H$.
+Then $KH=H$ and $HK=H$.
+\end{theorem}
+
+<<Theorem: if $K\subgroup H$, then $KH=H$ and $HK=H$>>=
+theorem Th67: :: 67
+  for K being Subgroup of H
+  holds K * (carr H) = carr H & (carr H) * K = carr H
+proof
+  let K be Subgroup of H;
+  for x being object
+  holds x in K * (carr H) iff x in carr H
+  proof
+    let x be object;
+    thus x in K * (carr H) implies x in carr H
+    proof
+      assume x in K * (carr H);
+      then consider g1,g2 being Element of G such that
+      A1: x = g1 * g2 & g1 in K & g2 in carr H by GROUP_2:95;
+      g1 in H & g2 in H by A1, TARSKI:def 3, GROUP_2:def 5,def 9;
+      then g1 * g2 in H by GROUP_2:50;
+      hence x in carr H by A1, GROUP_2:def 9;
+    end;
+    assume A1: x in carr H;
+    ex g1,g2 being Element of G
+    st x = g1*g2 & g1 in K & g2 in carr H
+    proof
+      reconsider g2=x as Element of G by A1;
+      take g1 = 1_G, g2;
+      thus x = g1 * g2 by GROUP_1:def 4;
+      thus g1 in K by GROUP_2:46;
+      thus g2 in carr H by A1;
+    end;
+    hence x in K * (carr H) by GROUP_2:95;
+  end;
+  hence K * (carr H) = carr H by TARSKI:2;
+
+  for x being object
+  holds x in (carr H) * K iff x in carr H
+  proof
+    let x be object;
+    thus x in (carr H) * K implies x in carr H
+    proof
+      assume x in (carr H) * K;
+      then consider g1,g2 being Element of G such that
+      A1: x = g1 * g2 & g1 in carr H & g2 in K by GROUP_2:94;
+      g1 in H & g2 in H by A1, TARSKI:def 3, GROUP_2:def 5,def 9;
+      then g1 * g2 in H by GROUP_2:50;
+      hence x in carr H by A1, GROUP_2:def 9;
+    end;
+    assume A1: x in carr H;
+    ex g1,g2 being Element of G
+    st x = g1*g2 & g1 in carr H & g2 in K
+    proof
+      reconsider g1=x as Element of G  by A1;
+      take g1, g2 = 1_G;
+      thus x = g1 * g2 by GROUP_1:def 4;
+      thus g1 in carr H by A1;
+      thus g2 in K by GROUP_2:46;
+    end;
+    hence x in (carr H) * K by GROUP_2:94;
+  end;
+  hence (carr H) * K = carr H by TARSKI:2;
+end;
+@ %def Th67
+
+\begin{theorem} %Th68
+Let $K\subgroup H$ be a subgroup of $H$.
+For each left coset $U$ of $K$ in $G$, we have $UH$ be a left coset of $H$ in $G$.
+\end{theorem}
+
+<<Theorem: If $K\subgroup H$ and $U=gK$ is a coset of $K$ in $G$, then $UH$ is a left coset of $K$ in $G$>>=
+theorem :: 68
+  for K being Subgroup of H
+  for U being Element of Left_Cosets (K qua Subgroup of G)
+  holds U*H in Left_Cosets H
+proof
+  let K be Subgroup of H;
+  let U be Element of Left_Cosets (K qua Subgroup of G);
+  consider k being Element of G such that
+  A1: U = k*K by GROUP_2:def 15;
+  U * H = (k * K) * (carr H) by A1,GROUP_2:def 11
+       .= k * (K * (carr H)) by GROUP_3:10
+       .= k * (carr H) by Th67
+       .= k * H by GROUP_2:def 13;
+  hence U*H in Left_Cosets H by GROUP_2:def 15;
+end;
+@ 
+
+\begin{theorem} % Th69
+Let $K\subgroup H$ be a subgroup of $H$.
+For each right coset $U$ of $K$ in $G$, we have $HU$ be a right coset of $H$ in $G$.
+\end{theorem}
+
+<<Theorem: If $K\subgroup H$ and $U=Kg$ is a coset of $K$ in $G$, then $UH$ is a right coset of $K$ in $G$>>=
+theorem :: 69
+  for K being Subgroup of H
+  for U being Element of Right_Cosets (K qua Subgroup of G)
+  holds H*U in Right_Cosets H
+proof
+  let K be Subgroup of H;
+  let U be Element of Right_Cosets (K qua Subgroup of G);
+  consider k being Element of G such that
+  A1: U = K * k by GROUP_2:def 16;
+  H * U = (carr H) * (K * k) by A1, GROUP_2:def 12
+       .= ((carr H) * K) * k by GROUP_3:11
+       .= (carr H) * k by Th67
+       .= H * k by GROUP_2:def 14;
+  hence H*U in Right_Cosets H by GROUP_2:def 16;
+end;
+@ 
+
+\begin{theorem} % Th70
+Let $U$ be a left coset of $H$ in $G$. Then $UH=U$.
+\end{theorem}
+
+<<Theorem: if $U$ is a left coset of $H$, then $UH=U$>>=
+theorem :: 70
+  for U being Element of Left_Cosets H
+  holds U*H = U
+proof
+  let U be Element of Left_Cosets H;
+  consider g being Element of G such that
+  A1: U = g*H by GROUP_2:def 15;
+  thus U * H = U * (carr H) by GROUP_2:def 11
+            .= (g * (carr H)) * (carr H) by A1, GROUP_2:def 13
+            .= g * ((carr H) * (carr H)) by GROUP_2:29
+            .= g * (carr H) by GROUP_2:76
+            .= U by A1, GROUP_2:def 13;
+end;
+@ 
+
+\begin{theorem} % Th71
+Let $U$ be a right coset of $H$ in $G$. Then $HU=U$.
+\end{theorem}
+
+<<Theorem: if $U$ is a right coset of $H$, then $HU=U$>>=
+theorem :: 71
+  for U being Element of Right_Cosets H
+  holds H*U = U
+proof
+  let U be Element of Right_Cosets H;
+  consider g being Element of G such that
+  A1: U = H*g by GROUP_2:def 16;
+  thus H * U = (carr H) * U by GROUP_2:def 12
+            .= (carr H) * ((carr H) * g) by A1, GROUP_2:def 14
+            .= ((carr H) * (carr H)) * g by GROUP_2:31
+            .= (carr H) * g by GROUP_2:76
+            .= U by A1, GROUP_2:def 14;
+end;
+@ 
+
+\begin{theorem} % Th72
+Let $U$ be a left coset of $H$, let $h$ be an element of $G$.
+If $h\in H$, then $Uh=U$ and $Uh$ is a left coset of $H$.
+\end{theorem}
+
+<<Theorem: if $h\in H$ and $U$ is a left coset of $H$, then $Uh=U$ and $Uh$ is a left coset of $H$>>=
+theorem Th72: :: 72
+  for U being Element of Left_Cosets H
+  for h being Element of G st h in H
+  holds U * h = U & U * h in Left_Cosets H
+proof
+  let U be Element of Left_Cosets H;
+  let h be Element of G;
+  assume A1: h in H;
+  consider g being Element of G such that
+  A2: U = g*H by GROUP_2:def 15;
+  thus U * h = g * (H * h) by A2, GROUP_2:106
+            .= g * (carr H) by A1, GROUP_2:119
+            .= U by A2, GROUP_2:def 13;
+  hence U * h in Left_Cosets H;
+end;
+@ %def Th72
+
+\begin{theorem} % Th73
+Let $U$ be a right coset of $H$, let $h$ be an element of $G$.
+If $h\in H$, then $hU=U$ and $hU$ is a right coset of $H$.
+\end{theorem}
+
+<<Theorem: if $h\in H$ and $U$ is a right coset of $H$, then $hU=U$ and $hU$ is a right coset of $H$>>=
+theorem Th73: :: 73
+  for U being Element of Right_Cosets H
+  for h being Element of G st h in H
+  holds h * U = U & h * U in Right_Cosets H
+proof
+  let U be Element of Right_Cosets H;
+  let h be Element of G;
+  assume A1: h in H;
+  consider g being Element of G such that
+  A2: U = H*g by GROUP_2:def 16;
+  thus h * U = (h * H) * g by A2, GROUP_2:106
+            .= (carr H) * g by A1, GROUP_2:113
+            .= U by A2, GROUP_2:def 14;
+  hence h * U in Right_Cosets H;
+end;
+@ %def Th73
+
+\begin{theorem} % Th74
+Let $A$, $B$ be subsets of $G$. Let $g$ be an element of $G$.
+Then $(A\cap B)g = (Ag)\cap(Bg)$.
+\end{theorem}
+
+<<Theorem: $(A\cap B)g = Ag \cap Bg$>>=
+theorem Th74: :: 74
+  for A,B being Subset of G
+  for g being Element of G
+  holds (A /\ B) * g = (A * g) /\ (B * g)
+proof
+  let A,B be Subset of G;
+  let g be Element of G;
+
+  for x being object
+  holds x in (A /\ B) * g iff x in (A * g) /\ (B * g)
+  proof
+    let x be object;
+    thus x in (A /\ B) * g implies x in (A * g) /\ (B * g)
+    proof
+      assume x in (A /\ B) * g;
+      then x in (A /\ B) * {g} by GROUP_2:def 4;
+      then x in (A * {g}) /\ (B * {g}) by GROUP_2:15, TARSKI:def 3;
+      then x in (A * g) /\ (B * {g}) by GROUP_2:def 4;
+      hence x in (A * g) /\ (B * g) by GROUP_2:def 4;
+    end;
+    assume x in (A * g) /\ (B * g);
+    then A1: x in A * g & x in B * g by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = a*g & a in A
+    by GROUP_2:28;
+    consider b being Element of G such that
+    A3: x = b*g & b in B
+    by A1, GROUP_2:28;
+    a = b by A2,A3,GROUP_1:6;
+    then a in A /\ B by A2, A3, XBOOLE_0:def 4;
+    hence x in (A /\ B) * g by A2, GROUP_2:28;
+  end;
+  hence thesis by TARSKI:2;
+end;
+@ %def Th74
+
+\begin{theorem} % Th75
+Let $A$, $B$ be subsets of $G$. Let $g$ be an element of $G$.
+Then $g(A\cap B) = (gA)\cap(gB)$.
+\end{theorem}
+
+<<Theorem: $g(A\cap B) = gA\cap gB$>>=
+theorem Th75: :: Th75
+  for A,B being Subset of G
+  for g being Element of G
+  holds g * (A /\ B) = (g * A) /\ (g * B)
+proof
+  let A,B be Subset of G;
+  let g be Element of G;
+  for x being object
+  holds x in g * (A /\ B) iff x in (g * A) /\ (g * B)
+  proof
+    let x be object;
+    thus x in g * (A /\ B) implies x in (g * A) /\ (g * B)
+    proof
+      assume x in g * (A /\ B);
+      then x in {g} * (A /\ B) by GROUP_2:def 3;
+      then x in ({g} * A) /\ ({g} * B) by GROUP_2:14, TARSKI:def 3;
+      then x in (g * A) /\ ({g} * B) by GROUP_2:def 3;
+      hence x in (g * A) /\ (g * B) by GROUP_2:def 3;
+    end;
+    assume x in (g * A) /\ (g * B);
+    then A1: x in g * A & x in g * B by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = g * a & a in A by GROUP_2:27;
+    consider b being Element of G such that
+    A3: x = g * b & b in B by A1, GROUP_2:27;
+    b = a by A2,A3,GROUP_1:6;
+    then a in A /\ B by A2, A3, XBOOLE_0:def 4;
+    hence x in g * (A /\ B) by A2, GROUP_2:27;
+  end;
+  hence thesis by TARSKI:2;
+end;
+@ %def Th75
+
+The next two theorems were mentioned in Philip Hall's 1957 book on group
+theory in passing, but never proven.
+
+\begin{theorem} % Th76
+Let $K\subgroup H$ be a subgroup of $H$. Let $g$ be an element of $G$.
+Then either $gK\cap H=\emptyset$ or $gK\subset H$.
+\end{theorem}
+
+<<Theorem: if $g\in G$ and $K\subgroup H$, then $gK\cap H=\emptyset$ or $gK\subset H$>>=
+theorem :: Th76:
+  for K being Subgroup of H
+  for g being Element of G
+  holds g*K misses carr H or g*K c= carr H
+proof
+  let K be Subgroup of H;
+  let g be Element of G;
+  assume not g*K misses carr H;
+  then consider x being object such that
+  A1: x in g*K & x in carr H
+  by XBOOLE_0:3;
+  A2: g in H
+  proof
+    consider k being Element of G such that
+    B1: x = g*k & k in K by A1, GROUP_2:103;
+    k in H by B1, GROUP_2:40; then
+    B2: k" in H by GROUP_2:51;
+    g*k in H by A1, B1, GROUP_2:def 9;
+    then (g * k) * (k") in H by B2, GROUP_2:50;
+    then g * (k * k") in H by GROUP_1:def 3;
+    then g * (1_G) in H by GROUP_1:def 5;
+    hence g in H by GROUP_1:def 4;
+  end;
+  g*K c= g*H by GROUP_3:6;
+  hence g*K c= carr H by A2, GROUP_2:113;
+end;
+@ 
+
+\begin{theorem} % Th77
+Let $K\subgroup H$ be a subgroup of $H$. Let $g$ be an element of $G$.
+Then either $Kg\cap H=\emptyset$ or $Kg\subset H$.
+\end{theorem}
+
+<<Theorem: if $g\in G$ and $K\subgroup H$, then $Kg\cap H=\emptyset$ or $Kg\subset H$>>=
+theorem :: Th77:
+  for K being Subgroup of H
+  for g being Element of G
+  holds K*g misses carr H or K*g c= carr H
+proof
+  let K be Subgroup of H;
+  let g be Element of G;
+  assume not K*g misses carr H;
+  then consider x being object such that
+  A1: x in K*g & x in carr H
+  by XBOOLE_0:3;
+  A2: g in H
+  proof
+    consider k being Element of G such that
+    B1: x = k*g & k in K by A1, GROUP_2:104;
+    k in H by B1, GROUP_2:40; then
+    B2: k" in H by GROUP_2:51;
+    k * g in H by A1, B1, GROUP_2:def 9;
+    then (k") * (k * g)  in H by B2, GROUP_2:50;
+    then (k" * k) * g in H by GROUP_1:def 3;
+    then (1_G) * g in H by GROUP_1:def 5;
+    hence g in H by GROUP_1:def 4;
+  end;
+  K*g c= H*g by GROUP_3:6;
+  hence K*g c= carr H by A2, GROUP_2:119;
+end;
+@ 

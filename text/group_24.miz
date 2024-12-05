@@ -41,7 +41,7 @@ environ
  registrations XBOOLE_0, SUBSET_1, RELAT_1, FUNCT_1, FINSET_1,
    FINSEQ_1, REALSET1, STRUCT_0, GROUP_1, GROUP_2, GROUP_3, MONOID_0,
    LATTICES, ORDINAL1, CARD_1, CARD_3, NEWTON, FUNCOP_1, RELSET_1, FUNCT_2,
-   FUNCT_4, GROUP_6, GROUP_7, GR_CY_1, GR_CY_2, GROUPP_1;
+   FUNCT_4, GROUP_6, GROUP_7, GR_CY_1, GR_CY_2, GROUPP_1, GROUP_8;
  requirements NUMERALS, REAL, BOOLE, SUBSET, ARITHM;
  definitions STRUCT_0, GROUP_1, TARSKI, ALGSTR_0;
  equalities STRUCT_0, ALGSTR_0, PARTFUN1, AUTGROUP;
@@ -167,7 +167,7 @@ proof
   let G be Group;
   let H be Subgroup of G;
   let N be normal Subgroup of G;
-  assume Z1: N is Subgroup of H;
+  assume N is Subgroup of H;
   then N is normal Subgroup of H by GROUP_6:8;
   then reconsider N1=the multMagma of N as strict normal Subgroup of H
   by Th3;
@@ -1455,16 +1455,16 @@ theorem Th35:
 proof
   let G be Group;
   let H,K be Subgroup of G;
-  assume A1: H is Subgroup of K;
+  assume H is Subgroup of K;
   then reconsider H0=H as Subgroup of K;
   let N be Subgroup of G;
-  assume A2: N is normal Subgroup of K;
+  assume N is normal Subgroup of K;
   then reconsider N0=N as normal Subgroup of K;
-  A3: the multMagma of N0 = the multMagma of N;
-  A4: the multMagma of H0 = the multMagma of H;
-  thus N * H = N0 * H0 by ThProdLemma,A3,A4
+  A1: the multMagma of N0 = the multMagma of N;
+  A2: the multMagma of H0 = the multMagma of H;
+  thus N * H = N0 * H0 by ThProdLemma,A1,A2
             .= H0 * N0 by GROUP_5:8
-            .= H * N by ThProdLemma,A3,A4;
+            .= H * N by ThProdLemma,A1,A2;
 end;
 
 theorem Th36:
@@ -1477,7 +1477,7 @@ proof
   let G be Group;
   let H be Subgroup of G;
   let N be normal Subgroup of G;
-  assume Z1: N is Subgroup of H;
+  assume N is Subgroup of H;
   then N is normal Subgroup of H by GROUP_6:8;
   then reconsider N1=the multMagma of N as strict normal Subgroup of H
   by Th3;
@@ -1576,22 +1576,22 @@ theorem Th38:
 proof
   let G be Group;
   let H,K be Subgroup of G;
-  assume A1: H is Subgroup of K;
+  assume H is Subgroup of K;
   then reconsider H1=the multMagma of H as strict Subgroup of K
   by Th2;
   let N be Subgroup of G;
-  assume A2: N is normal Subgroup of K;
+  assume N is normal Subgroup of K;
   then reconsider N1=the multMagma of N as strict normal Subgroup of K
   by Th3;
-  A3: N * H = N1 * H1 by ThProdLemma;
+  A1: N * H = N1 * H1 by ThProdLemma;
   hence H,N are_complements_in K implies ((N * H = the carrier of K) & (H /\ N = (1).K))
   by ThCapLemma, GROUP_5:8;
 
   thus ((N * H = the carrier of K) & (H /\ N = (1).K)) implies H,N are_complements_in K
   proof
-    assume B1: N * H = the carrier of K;
+    assume A2: N * H = the carrier of K;
     assume H /\ N = (1).K;
-    then H1, N1 are_complements_in K by B1, A3, ThCapLemma, GROUP_5:8;
+    then H1, N1 are_complements_in K by A1, A2, ThCapLemma, GROUP_5:8;
     hence H,N are_complements_in K;
   end;
 end;
@@ -1730,12 +1730,9 @@ theorem
   G = the multMagma of A implies A,G are_isomorphic
 proof
   assume A1: G = the multMagma of A;
-  then A2: id G is Function of G, A;
-  A3: the multF of A = the multF of G by A1;
   ex f being Homomorphism of A,G st f is bijective
   proof
     reconsider f=id A as Function of A,G by A1;
-    B2: f = id A;
     for a1,a2 being Element of A
     holds f.(a1 * a2) = (f.a1) * (f.a2) by A1;
 
@@ -1833,7 +1830,6 @@ proof
     then consider n being Element of G1 such that
     B5: n in N & g12 = (g1 * g2) * n
     by Th47;
-    B6: n in Ker f by A1, B5, GROUP_2:40;
     f.g12 = (f.(g1 * g2)) * (f.n) by B5, GROUP_6:def 6
          .= (f.(g1 * g2)) * (1_G2) by A1, B5, GROUP_2:40, GROUP_6:41
          .= f.(g1 * g2) by GROUP_1:def 4
@@ -1855,7 +1851,6 @@ proof
     then consider n being Element of G1 such that
     B2: n in N & g = g1 * n
     by Th47;
-    B3: n in Ker f by A1, B2, GROUP_2:40;
     f.g = (f.g1) * (f.n) by B2, GROUP_6:def 6
        .= (f.g1) * (1_G2) by A1, B2, GROUP_2:40, GROUP_6:41
        .= f.g1 by GROUP_1:def 4
@@ -1880,7 +1875,6 @@ proof
   let phi be Homomorphism of G1,G2;
   assume A1: phi is bijective;
   assume A2: phi .: the carrier of N1 = the carrier of N2;
-  A3: (nat_hom N2) * phi is Homomorphism of G1,G2./.N2;
   for g being Element of G1
   st g in N1
   holds g in Ker ((nat_hom N2) * phi)
@@ -1894,9 +1888,9 @@ proof
     then ((nat_hom N2) * phi).g = 1_(G2./.N2) by FUNCT_2:15;
     hence g in Ker ((nat_hom N2) * phi) by GROUP_6:41;
   end;
-  then A4: N1 is Subgroup of Ker ((nat_hom N2) * phi) by GROUP_2:58;
+  then N1 is Subgroup of Ker ((nat_hom N2) * phi) by GROUP_2:58;
   then consider phiBar being Homomorphism of G1./.N1,G2./.N2 such that
-  A5: ((nat_hom N2) * phi) = phiBar * (nat_hom N1) by UniversalPropertyQuotientGroups;
+  A3: ((nat_hom N2) * phi) = phiBar * (nat_hom N1) by UniversalPropertyQuotientGroups;
 
   for y being Element of G2./.N2
   ex x being Element of G1./.N1
@@ -1907,23 +1901,23 @@ proof
     B1: y = g2 * N2 & y = N2 * g2
     by GROUP_6:21;
     B2: phi" is Homomorphism of G2,G1 by A1, GROUP_6:62;
-    then B3: (phi").g2 in G1 by FUNCT_2:5;
+    then (phi").g2 in G1 by FUNCT_2:5;
     then (nat_hom N1).((phi").g2) in G1./.N1 by FUNCT_2:5;
     then consider x being Element of G1./.N1 such that
-    B4: x = (nat_hom N1).((phi").g2);
+    B3: x = (nat_hom N1).((phi").g2);
     take x;
-    B5: phi is one-to-one & rng phi = the carrier of G2 by A1, FUNCT_2:def 3;
+    B4: phi is one-to-one & rng phi = the carrier of G2 by A1, FUNCT_2:def 3;
 
     g2 in G2;
     then g2 in dom (phi") by B2, FUNCT_2:def 1; then
-    B6: (phi.((phi").g2)) = (phi * (phi")).g2 by FUNCT_1:13
-                         .= (id the carrier of G2).g2 by B5,FUNCT_2:29
+    B5: (phi.((phi").g2)) = (phi * (phi")).g2 by FUNCT_1:13
+                         .= (id the carrier of G2).g2 by B4,FUNCT_2:29
                          .= g2;
-    thus phiBar.x = (phiBar * (nat_hom N1)).((phi").g2) by B2, B4, FUNCT_2:5,15
-                 .= (nat_hom N2).(phi.((phi").g2)) by A5, B2, FUNCT_2:5,15
-                 .= y by B1, B6, GROUP_6:def 8;
+    thus phiBar.x = (phiBar * (nat_hom N1)).((phi").g2) by B2, B3, FUNCT_2:5,15
+                 .= (nat_hom N2).(phi.((phi").g2)) by A3, B2, FUNCT_2:5,15
+                 .= y by B1, B5, GROUP_6:def 8;
   end;
-  then A6: phiBar is onto by LmOnto;
+  then A4: phiBar is onto by LmOnto;
 
   for a,b being Element of G1./.N1 st phiBar.a = phiBar.b
   holds a = b
@@ -1936,32 +1930,31 @@ proof
     consider x2 being Element of G1 such that
     B3: b = x2 * N1 & b = N1 * x2
     by GROUP_6:21;
-    B4: x1 in G1 & x2 in G1;
-    B5: phiBar.a = phiBar.((nat_hom N1).x1) by B2,GROUP_6:def 8
-                .= ((nat_hom N2) * phi).x1 by A5,FUNCT_2:15
+    B4: phiBar.a = phiBar.((nat_hom N1).x1) by B2,GROUP_6:def 8
+                .= ((nat_hom N2) * phi).x1 by A3,FUNCT_2:15
                 .= (nat_hom N2).(phi.x1) by FUNCT_2:15;
     phiBar.b = phiBar.((nat_hom N1).x2) by B3, GROUP_6:def 8
             .= (phiBar * (nat_hom N1)).x2 by FUNCT_2:15
-            .= (nat_hom N2).(phi.x2) by A5, FUNCT_2:15;
-    then (phi.x1) * N2 = (nat_hom N2).(phi.x2) by B1,B5,GROUP_6:def 8
+            .= (nat_hom N2).(phi.x2) by A3, FUNCT_2:15;
+    then (phi.x1) * N2 = (nat_hom N2).(phi.x2) by B1,B4,GROUP_6:def 8
                       .= (phi.x2) * N2 by GROUP_6:def 8;
     then consider n being Element of G2 such that
-    B6: n in N2 & phi.x1 = (phi.x2) * n
+    B5: n in N2 & phi.x1 = (phi.x2) * n
     by Th47;
     consider n1 being object such that
-    B7: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
-    by A2, B6, FUNCT_2:64;
-    reconsider n1 as Element of G1 by B7;
-    phi.x1 = phi.(x2 * n1) by B6, B7, GROUP_6:def 6;
+    B6: n1 in the carrier of G1 & n1 in the carrier of N1 & n = phi.n1
+    by A2, B5, FUNCT_2:64;
+    reconsider n1 as Element of G1 by B6;
+    phi.x1 = phi.(x2 * n1) by B5, B6, GROUP_6:def 6;
     then (x2") * x1 = (x2") * (x2 * n1) by A1, GROUP_6:1
                    .= ((x2") * x2) * n1 by GROUP_1:def 3
                    .= (1_G1) * n1 by GROUP_1:def 5
                    .= n1 by GROUP_1:def 4;
-    then (x2") * x1 in N1 by B7;
+    then (x2") * x1 in N1 by B6;
     hence a = b by B2, B3, GROUP_2:114;
   end;
   then phiBar is one-to-one by GROUP_6:1;
-  hence G1./.N1, G2./.N2 are_isomorphic by A6, GROUP_6:def 11;
+  hence G1./.N1, G2./.N2 are_isomorphic by A4, GROUP_6:def 11;
 end;
 
 theorem Th50:
@@ -2040,13 +2033,12 @@ proof
     Z1: y = g*N & y = N*g by GROUP_6:23;
     consider h,n being Element of G such that
     Z2: g = h * n & h in H & n in N by A2, GROUP_5:4;
+    reconsider x=h as Element of H by Z2;
+    take x;
     g * N = h * (n * N) by Z2,GROUP_2:105
          .= h * (carr N) by Z2,GROUP_2:113
          .= h * N by GROUP_2:def 13;
-    then Z3: y = h * N by Z1;
-    reconsider x=h as Element of H by Z2;
-    take x;
-    thus phi.x = y by A5,Z3;
+    hence phi.x = y by A5,Z1;
   end;
 
   then A3: phi is onto by LmOnto;
@@ -2109,25 +2101,10 @@ proof
   thus H1,H2 are_isomorphic by A3,A4,GROUP_6:67;
 end;
 
-theorem
-  for G1,G2 being Group 
-  for H1 being Subgroup of G1
-  for H2 being Subgroup of G2
-  for h1 being Element of G1 st h1 in H1
-  for h2 being Element of G2 st h2 in H2
-  holds <*h1,h2*> in product <*H1,H2*> by Th8;
-
-theorem
-  for G being Group
-  for H,K being strict Subgroup of G
-  st H <> K & K is Subgroup of H
-  ex g being Element of G
-  st g in H & not g in K by Th9;
-
 :: Bourbaki mentions this, literally in passing in a sentence in
 :: General Topology Chapter II, not even making a proposition or lemma
 :: out of it.
-theorem Th55:
+theorem Th53:
   for G being Group
   for H,K being Subgroup of G
   for phi being Function of product <*H,K*>,G
@@ -2218,7 +2195,6 @@ proof
                          .= (h2") * h1 by GROUP_1:def 4;
       k2 in K & k1" in K by B4,B6, GROUP_2:51;
       then B8: k2 * (k1") in K by GROUP_2:50;
-      then (h2") * h1 in K by B7;
       h1 in H & h2" in H by B4,B6, GROUP_2:51;
       then B9: (h2") * h1 in H by GROUP_2:50;
       (h2") * h1 = 1_G by B1,B7,B8,B9,GROUP_2:82,GROUP_5:1;
@@ -2234,7 +2210,7 @@ proof
   end;
 end;
 
-theorem Th56:
+theorem Th54:
   for G being Group
   for H,K being Subgroup of G
   ex phi being Function of product (Carrier <*H,K*>),G
@@ -2290,10 +2266,10 @@ proof
   holds phi.(<*h,k*>) = h*k;
 
   the carrier of product <*H,K*> = product (Carrier <*H,K*>) by GROUP_7:def 2;
-  hence phi is one-to-one iff H /\ K = (1).G by A3,Th55;
+  hence phi is one-to-one iff H /\ K = (1).G by A3,Th53;
 end;
 
-theorem Th57:
+theorem Th55:
   for G being Group
   for H being Subgroup of G
   for N being strict normal Subgroup of G
@@ -2319,13 +2295,13 @@ proof
   that
   A2: (for n,h being Element of G st n in N & h in H holds psi.(<*n,h*>)=n*h)
   & (psi is one-to-one iff N /\ H = (1).G)
-  by Th56;
+  by Th54;
   reconsider psi as Function of semidirect_product (N,H,phi), G by A1;
   take psi;
   thus thesis by A2;
 end;
 
-theorem Th58:
+theorem Th56:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -2336,7 +2312,7 @@ proof
   hence H1 * H2 c= the carrier of H1 "\/" H2 by GROUP_4:def 4;
 end;
 
-theorem Th59:
+theorem Th57:
   for G being Group
   for H1,H2 being Subgroup of G
   holds H1*H2 c= the carrier of H1 "\/" H2
@@ -2344,12 +2320,12 @@ theorem Th59:
 proof
   let G be Group;
   let H1,H2 be Subgroup of G;
-  thus H1*H2 c= the carrier of H1 "\/" H2 by Th58;
-  H2 * H1 c= the carrier of H2 "\/" H1 by Th58;
+  thus H1*H2 c= the carrier of H1 "\/" H2 by Th56;
+  H2 * H1 c= the carrier of H2 "\/" H1 by Th56;
   hence H2 * H1 c= the carrier of H1 "\/" H2 by GROUP_4:56;
 end;
 
-theorem Th60:
+theorem Th58:
   for G being Group
   for H1,H2 being Subgroup of G
   st H1 * H2 = the carrier of (H1 "\/" H2)
@@ -2359,7 +2335,7 @@ proof
   let H1,H2 be Subgroup of G;
   assume A1: H1 * H2 = the carrier of (H1 "\/" H2);
 
-  then A2: H2 * H1 c= H1 * H2 by Th59;
+  then A2: H2 * H1 c= H1 * H2 by Th57;
   for x being Element of G st x in H1 * H2 holds x in H2 * H1
   proof
     let x be Element of G;
@@ -2379,7 +2355,7 @@ proof
   thus thesis by A2,A3,XBOOLE_0:def 10;
 end;
 
-theorem Th61:
+theorem Th59:
   for G being Group
   for H being Subgroup of G
   for N being normal Subgroup of G
@@ -2391,7 +2367,7 @@ proof
   let N be normal Subgroup of G;
   assume A1: H,N are_complements_in G;
   then H "\/" N = the multMagma of G by Th44;
-  hence thesis by A1, Th60;
+  hence thesis by A1, Th58;
 end;
 
 :: Aschbacher, Theorem 10.2
@@ -2422,7 +2398,7 @@ proof
   A3: (for n,h being Element of G st n in N & h in H
        holds beta.(<*n,h*>) = n*h)
   & (beta is one-to-one iff N /\ H = (1).G)
-  by Th57;
+  by Th55;
 
   for x,y being Element of S
   holds beta.(x * y) = (beta.x) * (beta.y)
@@ -2486,7 +2462,7 @@ proof
   proof
     let y be Element of G;
     y in the carrier of G;
-    then y in N * H by A1,Th61;
+    then y in N * H by A1,Th59;
     then consider n,h being Element of G such that
     B1: y = n * h & n in N & h in H
     by GROUP_5:4;
@@ -2529,7 +2505,7 @@ proof
   hence thesis by Th37;
 end;
 
-theorem Th63:
+theorem Th61:
   for G being Group
   for N being normal Subgroup of G
   holds G splits_over N
@@ -2569,10 +2545,10 @@ definition
   let N be normal Subgroup of G;
   redefine pred G splits_over N means :Def9:
   ex H being Subgroup of G st H,N are_complements_in G;
-  compatibility by Th63;
+  compatibility by Th61;
 end;
 
-theorem
+theorem :: 62
   for G being Group
   for N being normal Subgroup of G
   for K being Subgroup of G st N is Subgroup of K
@@ -2582,7 +2558,7 @@ proof
   let G be Group;
   let N be normal Subgroup of G;
   let K be Subgroup of G;
-  assume A1: N is Subgroup of K;
+  assume N is Subgroup of K;
   then reconsider N1=N as normal Subgroup of K by GROUP_6:8;
   thus K splits_over N implies ex H being Subgroup of K
   st H,N are_complements_in K
@@ -2592,8 +2568,8 @@ proof
     hence ex H being Subgroup of K st H,N are_complements_in K;
   end;
   given H being Subgroup of K such that 
-  A2: H,N are_complements_in K;
-  K splits_over N1 by A2;
+  A1: H,N are_complements_in K;
+  K splits_over N1 by A1;
   hence K splits_over N;
 end;
 
@@ -2747,3 +2723,1525 @@ proof
   hence g = k * (incl2 (N, H, phi)) by FUNCT_2:63;
 end;
 
+begin :: Intermezzo on cosets
+
+reserve G for Group, H for Subgroup of G;
+
+:: should be moved to GROUP_2
+registration
+  let G, H;
+  cluster -> non empty for Element of Left_Cosets H;
+  correctness
+  proof
+    let U be Element of Left_Cosets H;
+    consider g being Element of G such that
+    A1: U = g * H by GROUP_2:def 15;
+    thus thesis by A1, GROUP_2:108;
+  end;
+  cluster -> non empty for Element of Right_Cosets H;
+  correctness
+  proof
+    let U be Element of Right_Cosets H;
+    consider g being Element of G such that
+    A1: U = H * g by GROUP_2:def 16;
+    thus thesis by A1, GROUP_2:108;
+  end;
+end;
+
+theorem Th65:
+  for U,V being Element of Left_Cosets H
+  holds U = V or U misses V
+proof
+  let U,V be Element of Left_Cosets H;
+  assume A1: not U = V;
+  consider g1 being Element of G such that
+  A2: U = g1 * H by GROUP_2:def 15;
+  consider g2 being Element of G such that
+  A3: V = g2 * H by GROUP_2:def 15;
+  thus U misses V by A1,A2,A3,GROUP_2:115;
+end;
+
+theorem Th66: :: 66
+  for U,V being Element of Right_Cosets H
+  holds U = V or U misses V
+proof
+  let U,V be Element of Right_Cosets H;
+  assume A1: not U = V;
+  consider g1 being Element of G such that
+  A2: U = H * g1 by GROUP_2:def 16;
+  consider g2 being Element of G such that
+  A3: V = H * g2 by GROUP_2:def 16;
+  thus U misses V by A1,A2,A3,GROUP_2:121;
+end;
+
+theorem Th67: :: 67
+  for K being Subgroup of H
+  holds K * (carr H) = carr H & (carr H) * K = carr H
+proof
+  let K be Subgroup of H;
+  for x being object
+  holds x in K * (carr H) iff x in carr H
+  proof
+    let x be object;
+    thus x in K * (carr H) implies x in carr H
+    proof
+      assume x in K * (carr H);
+      then consider g1,g2 being Element of G such that
+      A1: x = g1 * g2 & g1 in K & g2 in carr H by GROUP_2:95;
+      g1 in H & g2 in H by A1, TARSKI:def 3, GROUP_2:def 5,def 9;
+      then g1 * g2 in H by GROUP_2:50;
+      hence x in carr H by A1, GROUP_2:def 9;
+    end;
+    assume A1: x in carr H;
+    ex g1,g2 being Element of G
+    st x = g1*g2 & g1 in K & g2 in carr H
+    proof
+      reconsider g2=x as Element of G by A1;
+      take g1 = 1_G, g2;
+      thus x = g1 * g2 by GROUP_1:def 4;
+      thus g1 in K by GROUP_2:46;
+      thus g2 in carr H by A1;
+    end;
+    hence x in K * (carr H) by GROUP_2:95;
+  end;
+  hence K * (carr H) = carr H by TARSKI:2;
+
+  for x being object
+  holds x in (carr H) * K iff x in carr H
+  proof
+    let x be object;
+    thus x in (carr H) * K implies x in carr H
+    proof
+      assume x in (carr H) * K;
+      then consider g1,g2 being Element of G such that
+      A1: x = g1 * g2 & g1 in carr H & g2 in K by GROUP_2:94;
+      g1 in H & g2 in H by A1, TARSKI:def 3, GROUP_2:def 5,def 9;
+      then g1 * g2 in H by GROUP_2:50;
+      hence x in carr H by A1, GROUP_2:def 9;
+    end;
+    assume A1: x in carr H;
+    ex g1,g2 being Element of G
+    st x = g1*g2 & g1 in carr H & g2 in K
+    proof
+      reconsider g1=x as Element of G  by A1;
+      take g1, g2 = 1_G;
+      thus x = g1 * g2 by GROUP_1:def 4;
+      thus g1 in carr H by A1;
+      thus g2 in K by GROUP_2:46;
+    end;
+    hence x in (carr H) * K by GROUP_2:94;
+  end;
+  hence (carr H) * K = carr H by TARSKI:2;
+end;
+
+theorem :: 68
+  for K being Subgroup of H
+  for U being Element of Left_Cosets (K qua Subgroup of G)
+  holds U*H in Left_Cosets H
+proof
+  let K be Subgroup of H;
+  let U be Element of Left_Cosets (K qua Subgroup of G);
+  consider k being Element of G such that
+  A1: U = k*K by GROUP_2:def 15;
+  U * H = (k * K) * (carr H) by A1,GROUP_2:def 11
+       .= k * (K * (carr H)) by GROUP_3:10
+       .= k * (carr H) by Th67
+       .= k * H by GROUP_2:def 13;
+  hence U*H in Left_Cosets H by GROUP_2:def 15;
+end;
+
+theorem :: 69
+  for K being Subgroup of H
+  for U being Element of Right_Cosets (K qua Subgroup of G)
+  holds H*U in Right_Cosets H
+proof
+  let K be Subgroup of H;
+  let U be Element of Right_Cosets (K qua Subgroup of G);
+  consider k being Element of G such that
+  A1: U = K * k by GROUP_2:def 16;
+  H * U = (carr H) * (K * k) by A1, GROUP_2:def 12
+       .= ((carr H) * K) * k by GROUP_3:11
+       .= (carr H) * k by Th67
+       .= H * k by GROUP_2:def 14;
+  hence H*U in Right_Cosets H by GROUP_2:def 16;
+end;
+
+theorem :: 70
+  for U being Element of Left_Cosets H
+  holds U*H = U
+proof
+  let U be Element of Left_Cosets H;
+  consider g being Element of G such that
+  A1: U = g*H by GROUP_2:def 15;
+  thus U * H = U * (carr H) by GROUP_2:def 11
+            .= (g * (carr H)) * (carr H) by A1, GROUP_2:def 13
+            .= g * ((carr H) * (carr H)) by GROUP_2:29
+            .= g * (carr H) by GROUP_2:76
+            .= U by A1, GROUP_2:def 13;
+end;
+
+theorem :: 71
+  for U being Element of Right_Cosets H
+  holds H*U = U
+proof
+  let U be Element of Right_Cosets H;
+  consider g being Element of G such that
+  A1: U = H*g by GROUP_2:def 16;
+  thus H * U = (carr H) * U by GROUP_2:def 12
+            .= (carr H) * ((carr H) * g) by A1, GROUP_2:def 14
+            .= ((carr H) * (carr H)) * g by GROUP_2:31
+            .= (carr H) * g by GROUP_2:76
+            .= U by A1, GROUP_2:def 14;
+end;
+
+theorem Th72: :: 72
+  for U being Element of Left_Cosets H
+  for h being Element of G st h in H
+  holds U * h = U & U * h in Left_Cosets H
+proof
+  let U be Element of Left_Cosets H;
+  let h be Element of G;
+  assume A1: h in H;
+  consider g being Element of G such that
+  A2: U = g*H by GROUP_2:def 15;
+  thus U * h = g * (H * h) by A2, GROUP_2:106
+            .= g * (carr H) by A1, GROUP_2:119
+            .= U by A2, GROUP_2:def 13;
+  hence U * h in Left_Cosets H;
+end;
+
+theorem Th73: :: 73
+  for U being Element of Right_Cosets H
+  for h being Element of G st h in H
+  holds h * U = U & h * U in Right_Cosets H
+proof
+  let U be Element of Right_Cosets H;
+  let h be Element of G;
+  assume A1: h in H;
+  consider g being Element of G such that
+  A2: U = H*g by GROUP_2:def 16;
+  thus h * U = (h * H) * g by A2, GROUP_2:106
+            .= (carr H) * g by A1, GROUP_2:113
+            .= U by A2, GROUP_2:def 14;
+  hence h * U in Right_Cosets H;
+end;
+
+theorem Th74: :: 74
+  for A,B being Subset of G
+  for g being Element of G
+  holds (A /\ B) * g = (A * g) /\ (B * g)
+proof
+  let A,B be Subset of G;
+  let g be Element of G;
+
+  for x being object
+  holds x in (A /\ B) * g iff x in (A * g) /\ (B * g)
+  proof
+    let x be object;
+    thus x in (A /\ B) * g implies x in (A * g) /\ (B * g)
+    proof
+      assume x in (A /\ B) * g;
+      then x in (A /\ B) * {g} by GROUP_2:def 4;
+      then x in (A * {g}) /\ (B * {g}) by GROUP_2:15, TARSKI:def 3;
+      then x in (A * g) /\ (B * {g}) by GROUP_2:def 4;
+      hence x in (A * g) /\ (B * g) by GROUP_2:def 4;
+    end;
+    assume x in (A * g) /\ (B * g);
+    then A1: x in A * g & x in B * g by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = a*g & a in A
+    by GROUP_2:28;
+    consider b being Element of G such that
+    A3: x = b*g & b in B
+    by A1, GROUP_2:28;
+    a = b by A2,A3,GROUP_1:6;
+    then a in A /\ B by A2, A3, XBOOLE_0:def 4;
+    hence x in (A /\ B) * g by A2, GROUP_2:28;
+  end;
+  hence thesis by TARSKI:2;
+end;
+
+theorem Th75: :: Th75
+  for A,B being Subset of G
+  for g being Element of G
+  holds g * (A /\ B) = (g * A) /\ (g * B)
+proof
+  let A,B be Subset of G;
+  let g be Element of G;
+  for x being object
+  holds x in g * (A /\ B) iff x in (g * A) /\ (g * B)
+  proof
+    let x be object;
+    thus x in g * (A /\ B) implies x in (g * A) /\ (g * B)
+    proof
+      assume x in g * (A /\ B);
+      then x in {g} * (A /\ B) by GROUP_2:def 3;
+      then x in ({g} * A) /\ ({g} * B) by GROUP_2:14, TARSKI:def 3;
+      then x in (g * A) /\ ({g} * B) by GROUP_2:def 3;
+      hence x in (g * A) /\ (g * B) by GROUP_2:def 3;
+    end;
+    assume x in (g * A) /\ (g * B);
+    then A1: x in g * A & x in g * B by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = g * a & a in A by GROUP_2:27;
+    consider b being Element of G such that
+    A3: x = g * b & b in B by A1, GROUP_2:27;
+    b = a by A2,A3,GROUP_1:6;
+    then a in A /\ B by A2, A3, XBOOLE_0:def 4;
+    hence x in g * (A /\ B) by A2, GROUP_2:27;
+  end;
+  hence thesis by TARSKI:2;
+end;
+
+:: Mentioned in passing in Philip Hall's 1957 book on group theory
+theorem :: Th76:
+  for K being Subgroup of H
+  for g being Element of G
+  holds g*K misses carr H or g*K c= carr H
+proof
+  let K be Subgroup of H;
+  let g be Element of G;
+  assume not g*K misses carr H;
+  then consider x being object such that
+  A1: x in g*K & x in carr H
+  by XBOOLE_0:3;
+  A2: g in H
+  proof
+    consider k being Element of G such that
+    B1: x = g*k & k in K by A1, GROUP_2:103;
+    k in H by B1, GROUP_2:40; then
+    B2: k" in H by GROUP_2:51;
+    g*k in H by A1, B1, GROUP_2:def 9;
+    then (g * k) * (k") in H by B2, GROUP_2:50;
+    then g * (k * k") in H by GROUP_1:def 3;
+    then g * (1_G) in H by GROUP_1:def 5;
+    hence g in H by GROUP_1:def 4;
+  end;
+  g*K c= g*H by GROUP_3:6;
+  hence g*K c= carr H by A2, GROUP_2:113;
+end;
+
+theorem :: Th77:
+  for K being Subgroup of H
+  for g being Element of G
+  holds K*g misses carr H or K*g c= carr H
+proof
+  let K be Subgroup of H;
+  let g be Element of G;
+  assume not K*g misses carr H;
+  then consider x being object such that
+  A1: x in K*g & x in carr H
+  by XBOOLE_0:3;
+  A2: g in H
+  proof
+    consider k being Element of G such that
+    B1: x = k*g & k in K by A1, GROUP_2:104;
+    k in H by B1, GROUP_2:40; then
+    B2: k" in H by GROUP_2:51;
+    k * g in H by A1, B1, GROUP_2:def 9;
+    then (k") * (k * g)  in H by B2, GROUP_2:50;
+    then (k" * k) * g in H by GROUP_1:def 3;
+    then (1_G) * g in H by GROUP_1:def 5;
+    hence g in H by GROUP_1:def 4;
+  end;
+  K*g c= H*g by GROUP_3:6;
+  hence K*g c= carr H by A2, GROUP_2:119;
+end;
+
+
+begin :: Transversals of Subgroups
+
+definition
+  let G,H;
+  let IT be Subset of G;
+  attr IT is H-left-transversal-like means
+  :DefLTL:
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ IT = {g};
+  attr IT is H-right-transversal-like means
+  :DefRTL:
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ IT = {g};
+end;
+
+registration
+  let G,H;
+  cluster H-left-transversal-like for Subset of G;
+  existence
+  proof
+    set IT = {the Element of U where U is Element of Left_Cosets H : not contradiction};
+    for x being object st x in IT holds x in the carrier of G
+    proof
+      let x be object;
+      assume x in IT;
+      then ex U being Element of Left_Cosets H st x = the Element of U;
+      hence x in the carrier of G;
+    end;
+  
+    then IT c= the carrier of G;
+    then reconsider IT as Subset of G;
+    take IT;
+    for U being Element of Left_Cosets H
+    ex g being Element of G st U /\ IT = {g}
+    proof
+      let U be Element of Left_Cosets H;
+      consider g being Element of G such that
+      Z1: g = the Element of U;
+      take g;
+      for x being object
+      holds x in {g} iff (x in U & x in IT)
+      proof
+        let x be object;
+        thus x in {g} implies (x in U & x in IT)
+        proof
+          assume x in {g};
+          then Z2: x = g by TARSKI:def 1;
+          thus x in U by Z1,Z2;
+          thus x in IT by Z1,Z2;
+        end;
+        thus x in U & x in IT implies x in {g}
+        proof
+          assume Z2: x in U;
+          assume x in IT;
+          then consider V being Element of Left_Cosets H such that
+          Z3: x = the Element of V;
+          per cases by Th65;
+          suppose U = V;
+            hence thesis by Z1, Z3, TARSKI:def 1;
+          end;
+          suppose U misses V;
+            then U /\ V = {} by XBOOLE_0:def 7;
+            hence thesis by Z2, Z3, XBOOLE_0:def 4;
+          end;
+        end;
+      end;
+      hence U /\ IT = {g} by XBOOLE_0:def 4;
+    end;
+    hence thesis;
+  end;
+
+  cluster H-right-transversal-like for Subset of G;
+  existence
+  proof
+    set IT = {the Element of U where U is Element of Right_Cosets H : not contradiction};
+    for x being object st x in IT holds x in the carrier of G
+    proof
+      let x be object;
+      assume x in IT;
+      then ex U being Element of Right_Cosets H st x = the Element of U;
+      hence thesis;
+    end;
+  
+    then IT c= the carrier of G;
+    then reconsider IT as Subset of G;
+    take IT;
+    for U being Element of Right_Cosets H
+    ex g being Element of G st U /\ IT = {g}
+    proof
+      let U be Element of Right_Cosets H;
+      consider g being Element of G such that
+      Z1: g = the Element of U;
+      take g;
+      for x being object
+      holds x in {g} iff (x in U & x in IT)
+      proof
+        let x be object;
+        thus x in {g} implies (x in U & x in IT)
+        proof
+          assume x in {g};
+          then Z2: x = g by TARSKI:def 1;
+          thus x in U by Z1,Z2;
+          thus x in IT by Z1,Z2;
+        end;
+        thus x in U & x in IT implies x in {g}
+        proof
+          assume Z2: x in U;
+          assume x in IT;
+          then consider V being Element of Right_Cosets H such that
+          Z3: x = the Element of V;
+          per cases by Th66;
+          suppose U = V;
+            :: then x = g by Z1, Z3;
+            hence thesis by Z1, Z3, TARSKI:def 1;
+          end;
+          suppose U misses V;
+            then U /\ V = {} by XBOOLE_0:def 7;
+            hence thesis by Z2, Z3, XBOOLE_0:def 4;
+          end;
+        end;
+      end;
+      hence U /\ IT = {g} by XBOOLE_0:def 4;
+    end;
+    hence thesis;
+  end;
+end;
+
+registration
+  let G, H;
+  cluster H-left-transversal-like -> non empty for Subset of G;
+  correctness
+  proof
+    let L be Subset of G;
+    assume A1: L is H-left-transversal-like;
+    carr H in Left_Cosets H by GROUP_2:135;
+    then ex g being Element of G st (carr H) /\ L = {g} by A1;
+    hence thesis;
+  end;
+  cluster H-right-transversal-like -> non empty for Subset of G;
+  correctness
+  proof
+    let R be Subset of G;
+    assume A1: R is H-right-transversal-like;
+    carr H in Right_Cosets H by GROUP_2:135;
+    then ex g being Element of G st (carr H) /\ R = {g} by A1;
+    hence thesis;
+  end;
+end;
+
+definition
+  let G, H;
+  let A be Subset of H;
+  let B be Subset of G;
+  func A * B -> Subset of G equals :Def12:
+  { (g * h) where g, h is Element of G : g in A & h in B };
+  coherence
+  proof
+    set S = {(g * h) where g, h is Element of G : (g in A & h in B)};
+    {(g * h) where g, h is Element of G : ( g in A & h in B )} c= the carrier of G
+    proof
+      let x be object;
+      assume x in { (g * h) where g, h is Element of G : ( g in A & h in B ) };
+      then ex g, h being Element of G st
+      ( x = g * h & g in A & h in B ) ;
+      hence x in the carrier of G;
+    end;
+    hence { (g * h) where g, h is Element of G : ( g in A & h in B ) } is Subset of G;
+  end;
+end;
+
+definition
+  let G, H;
+  let A be Subset of G;
+  let B be Subset of H;
+  func A * B -> Subset of G equals :Def13:
+  { (g * h) where g, h is Element of G : g in A & h in B };
+  coherence
+  proof
+    set S = {(g * h) where g, h is Element of G : (g in A & h in B)};
+    {(g * h) where g, h is Element of G : ( g in A & h in B )} c= the carrier of G
+    proof
+      let x be object;
+      assume x in { (g * h) where g, h is Element of G : ( g in A & h in B ) };
+      then ex g, h being Element of G st
+      ( x = g * h & g in A & h in B ) ;
+      hence x in the carrier of G;
+    end;
+    hence { (g * h) where g, h is Element of G : ( g in A & h in B ) } is Subset of G;
+  end;
+end;
+
+definition
+  let G,H;
+  mode Left_Transversal of H is H-left-transversal-like Subset of G;
+  mode Right_Transversal of H is H-right-transversal-like Subset of G;
+end;
+
+reserve LH for Left_Transversal of H,
+        RH for Right_Transversal of H;
+
+theorem Th78:
+  for U being Element of Left_Cosets H
+  for g being Element of G
+  holds U /\ LH = {g} iff (U = g*H & g in LH)
+proof
+  let U be Element of Left_Cosets H;
+  let g be Element of G;
+  thus U /\ LH = {g} implies U = g*H & g in LH
+  proof
+    assume A1: U /\ LH = {g};
+    A2: g*H in Left_Cosets H by GROUP_2:def 15;
+    A3: g in {g} by TARSKI:def 1;
+    g in g*H & g in U by A1, A3, XBOOLE_0:def 4, GROUP_2:108;
+    then g in (g*H) /\ U by XBOOLE_0:def 4;
+    hence U = g*H by A2, Th65, XBOOLE_0:def 7;
+    thus g in LH by A1, A3, XBOOLE_0:def 4;
+  end;
+  assume A1: U = g*H;
+  assume A2: g in LH;
+  g in U by A1, GROUP_2:108;
+  then A3: g in U /\ LH by A2, XBOOLE_0:def 4;
+  consider h being Element of G such that
+  A4: U /\ LH = {h} by DefLTL;
+  thus U /\ LH = {g} by A3, A4, TARSKI:def 1;
+end;
+
+theorem Th79:
+  for U being Element of Right_Cosets H
+  for g being Element of G
+  holds U /\ RH = {g} iff (U = H*g & g in RH)
+proof
+  let U be Element of Right_Cosets H;
+  let g be Element of G;
+  thus U /\ RH = {g} implies U = H*g & g in RH
+  proof
+    assume A1: U /\ RH = {g};
+    A2: H*g in Right_Cosets H by GROUP_2:def 16;
+    A3: g in {g} by TARSKI:def 1;
+    then g in H*g & g in U by A1, GROUP_2:108, XBOOLE_0:def 4;
+    then g in (H*g) /\ U by XBOOLE_0:def 4;
+    hence U = H*g by A2, Th66, XBOOLE_0:def 7;
+    thus g in RH by A1, A3, XBOOLE_0:def 4;
+  end;
+  assume A1: U = H*g;
+  assume A2: g in RH;
+  g in U by A1, GROUP_2:108;
+  then A3: g in U /\ RH by A2, XBOOLE_0:def 4;
+  ex h being Element of G st U /\ RH = {h} by DefRTL;
+  hence U /\ RH = {g} by A3, TARSKI:def 1;
+end;
+
+theorem Th80:
+  for h being Element of G st h in H
+  holds LH*h is Left_Transversal of H
+proof
+  let h be Element of G;
+  assume A1: h in H;
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ (LH * h) = {g}
+  proof
+    let U be Element of Left_Cosets H;
+    consider g0 being Element of G such that
+    A2: U /\ LH = {g0} by DefLTL;
+    
+    take g = g0*h;
+
+    A3: (U /\ LH) * h = {g0} * {h} by A2, GROUP_2:def 4
+                     .= {g} by GROUP_2:18;
+
+    (U /\ LH) * h = (U * h) /\ (LH * h) by Th74
+                 .= U /\ (LH * h) by A1, Th72;
+    hence U /\ (LH * h) = {g} by A3;
+  end;
+
+  hence LH*h is Left_Transversal of H by DefLTL;
+end;
+
+theorem Th81:
+  for h being Element of G st h in H
+  holds h*RH is Right_Transversal of H
+proof
+  let h be Element of G;
+  assume A1: h in H;
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ (h * RH) = {g}
+  proof
+    let U be Element of Right_Cosets H;
+    consider g0 being Element of G such that
+    A2: U /\ RH = {g0} by DefRTL;
+    take g = h * g0;
+
+    A3: h * (U /\ RH) = {h} * {g0} by A2,GROUP_2:def 3
+                     .= {g} by GROUP_2:18;
+
+    h * (U /\ RH) = (h * U) /\ (h * RH) by Th75
+                 .= U /\ (h * RH) by A1, Th73;
+    hence U /\ (h * RH) = {g} by A3;
+  end;
+  hence h*RH is Right_Transversal of H by DefRTL;
+end;
+
+theorem :: Th82:
+  ex LH being Left_Transversal of H
+  st 1_G in LH
+proof
+  set LH0 = the Left_Transversal of H;
+  carr H in Left_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A1: (carr H) /\ LH0 = {h}
+  by DefLTL;
+  h in H
+  proof
+    h in {h} by TARSKI:def 1;
+    then h in carr H by A1, XBOOLE_0:def 4;
+    hence thesis by GROUP_2:def 9;
+  end;
+  then reconsider LH = LH0 * (h") as Left_Transversal of H by Th80, GROUP_2:51;
+  take LH;
+  h in {h} by TARSKI:def 1;
+  then h in LH0 by A1, XBOOLE_0:def 4;
+  then h * (h") in LH0 * (h") by GROUP_2:28;
+  hence thesis by GROUP_1:def 5;
+end;
+
+theorem :: Th83:
+  ex RH being Right_Transversal of H
+  st 1_G in RH
+proof
+  set RH0 = the Right_Transversal of H;
+  carr H in Right_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A1: (carr H) /\ RH0 = {h} by DefRTL;
+  h in H
+  proof
+    h in {h} by TARSKI:def 1;
+    then h in carr H by A1, XBOOLE_0:def 4;
+    hence thesis by GROUP_2:def 9;
+  end;
+  then reconsider RH = (h") * RH0 as Right_Transversal of H by Th81, GROUP_2:51;
+  take RH;
+  h in {h} by TARSKI:def 1;
+  then h in RH0 by A1, XBOOLE_0:def 4;
+  then (h") * h in (h") * RH0  by GROUP_2:27;
+  hence thesis by GROUP_1:def 5;
+end;
+
+theorem :: Th84:
+  for g being Element of G
+  ex h being Element of G st g*H /\ LH = {h} & h in LH
+proof
+  let g be Element of G;
+  g*H in Left_Cosets H by GROUP_2:def 15;
+  then consider h being Element of G such that
+  A1: g*H /\ LH = {h} by DefLTL;
+  take h;
+  thus g*H /\ LH = {h} by A1;
+  h in {h} by TARSKI:def 1;
+  hence thesis by A1, XBOOLE_0:def 4;
+end;
+
+theorem :: Th85:
+  for g being Element of G
+  ex h being Element of G st H*g /\ RH = {h} & h in RH
+proof
+  let g be Element of G;
+  H*g in Right_Cosets H by GROUP_2:def 16;
+  then consider h being Element of G such that
+  A1: H*g /\ RH = {h} by DefRTL;
+  take h;
+  thus H*g /\ RH = {h} by A1;
+  h in {h} by TARSKI:def 1;
+  hence thesis by A1, XBOOLE_0:def 4;
+end;
+
+theorem Th86:
+  for g being Element of G
+  holds g*H /\ LH = {g} iff g in LH
+proof
+  let g be Element of G;
+  g*H in Left_Cosets H by GROUP_2:def 15;
+  hence thesis by Th78;
+end;
+
+theorem Th87:
+  for g being Element of G
+  holds H*g /\ RH = {g} iff g in RH
+proof
+  let g be Element of G;
+  H*g in Right_Cosets H by GROUP_2:def 16;
+  hence thesis by Th79;
+end;
+
+theorem Th88:
+  for g1,g2 being Element of G
+  holds g1 in g2*H iff g2 in g1*H
+proof
+  let g1,g2 be Element of G;
+  hereby 
+    assume A1: g1 in g2*H;
+    g1 in g1*H by GROUP_2:108;
+    then g1*H = g2*H by A1, XBOOLE_0:3, GROUP_2:115;
+    hence g2 in g1*H by GROUP_2:108;
+  end;
+  assume A1: g2 in g1*H;
+  g2 in g2*H by GROUP_2:108;
+  then g1*H = g2*H by A1, XBOOLE_0:3, GROUP_2:115;
+  hence g1 in g2*H by GROUP_2:108;
+end;
+
+theorem Th89:
+  for g1,g2 being Element of G
+  holds g1 in H*g2 iff g2 in H*g1
+proof
+  let g1,g2 be Element of G;
+  hereby 
+    assume A1: g1 in H*g2;
+    g1 in H*g1 by GROUP_2:108;
+    then H*g1 = H*g2 by A1, XBOOLE_0:3, GROUP_2:121;
+    hence g2 in H*g1 by GROUP_2:108;
+  end;
+  assume A1: g2 in H*g1;
+  g2 in H*g2 by GROUP_2:108;
+  then H*g1 = H*g2 by A1, XBOOLE_0:3, GROUP_2:121;
+  hence g1 in H*g2 by GROUP_2:108;
+end;
+
+theorem Th90:
+  for A being Subset of G
+  holds A is H-left-transversal-like
+  iff (for g being Element of G
+       ex a being Element of G
+       st a in A & g in a*H
+        & for b being Element of G st b in A
+          holds b*H misses a*H or a = b)
+proof
+  let A be Subset of G;
+  hereby 
+    assume A1: A is H-left-transversal-like;
+    let g be Element of G;
+    g*H is Element of Left_Cosets H by GROUP_2:def 15;
+    then consider a being Element of G such that
+    A2: (g*H) /\ A = {a} by A1;
+    take a;
+    A3: a in {a} by TARSKI:def 1;
+    thus A4: a in A by A2, A3, XBOOLE_0:def 4;
+    a in g*H by A2, A3, XBOOLE_0:def 4;
+    hence g in a*H by Th88;
+    let b be Element of G;
+    assume A5: b in A;
+    assume A6: not b*H misses a*H;
+    {b} = b*H /\ A by A1,A5,Th86
+       .= a*H /\ A by A6, GROUP_2:115
+       .= {a} by A1,A4,Th86;
+    hence a = b by ZFMISC_1:3;
+  end;
+  assume A1: for g being Element of G
+             ex a being Element of G
+             st a in A & g in a*H
+              & for b being Element of G st b in A
+                holds b*H misses a*H or a = b;
+
+  for U being Element of Left_Cosets H
+  ex a being Element of G st U /\ A = {a}
+  proof
+    let U be Element of Left_Cosets H;
+    consider u being Element of G such that
+    A2: U = u*H by GROUP_2:def 15;
+    consider a being Element of G such that
+    A3: a in A & u in a*H and
+    A4: for b being Element of G st b in A holds b*H misses a*H or a=b
+    by A1;
+    take a;
+    for x being object holds x in {a} iff x in U & x in A
+    proof
+      let x be object;
+      a in U by A2, A3, Th88;
+      hence x in {a} implies x in U & x in A by A3, TARSKI:def 1;
+      assume A5: x in U;
+      assume A6: x in A;
+      then reconsider x0=x as Element of G;
+      per cases;
+      suppose x = a;
+        hence thesis by TARSKI:def 1;
+      end;
+      suppose A7: x <> a;
+        a in a*H & a in U by A2, A3, Th88, GROUP_2:108;
+        then A8: a*H = U by A2, GROUP_2:115, XBOOLE_0:3;
+        x0 in x0*H & x0 in U by A5, GROUP_2:108;
+        then x0 in x0*H /\ U by XBOOLE_0:def 4;
+        hence thesis by A4,A6,A7,A8,XBOOLE_0:def 7;
+      end;
+    end;
+
+    hence U /\ A = {a} by XBOOLE_0:def 4;
+  end;
+
+  hence A is H-left-transversal-like;
+end;
+
+theorem Th91:
+  for A being Subset of G
+  holds A is H-right-transversal-like
+  iff (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+proof
+  let A be Subset of G;
+  thus A is H-right-transversal-like 
+  implies (for g being Element of G
+           ex a being Element of G
+           st a in A & g in H*a
+            & for b being Element of G st b in A
+              holds H*b misses H*a or a = b)
+  proof
+    assume A1: A is H-right-transversal-like;
+    let g be Element of G;
+    H*g is Element of Right_Cosets H by GROUP_2:def 16;
+    then consider a being Element of G such that
+    A2: (H*g) /\ A = {a} by A1;
+    take a;
+    A3: a in {a} by TARSKI:def 1;
+    hence A4: a in A by A2, XBOOLE_0:def 4;
+    a in H*g by A2, A3, XBOOLE_0:def 4;
+    hence g in H*a by Th89;
+    let b be Element of G;
+    assume A5: b in A;
+    assume A6: not H*b misses H*a;
+    {b} = (H*b) /\ A by A1,A5,Th87
+       .= (H*a) /\ A by A6, GROUP_2:121
+       .= {a} by A1,A4,Th87;
+    hence a = b by ZFMISC_1:3;
+  end;
+  assume A1: for g being Element of G
+             ex a being Element of G
+             st a in A & g in H*a
+                & for b being Element of G st b in A
+                  holds H*b misses H*a or a = b;
+  for U being Element of Right_Cosets H
+  ex a being Element of G st U /\ A = {a}
+  proof
+    let U be Element of Right_Cosets H;
+    consider u being Element of G such that
+    A2: U = H*u by GROUP_2:def 16;
+    consider a being Element of G such that
+    A3: a in A & u in H*a and
+    A4: for b being Element of G st b in A holds H*b misses H*a or a=b
+    by A1;
+    take a;
+    for x being object holds x in {a} iff x in U & x in A
+    proof
+      let x be object;
+      a in U by A2, A3, Th89;
+      hence x in {a} implies x in U & x in A by A3, TARSKI:def 1;
+      assume A5: x in U;
+      assume A6: x in A;
+      then reconsider x0=x as Element of G;
+      per cases;
+      suppose x = a;
+        hence thesis by TARSKI:def 1;
+      end;
+      suppose A7: x <> a;
+        a in H*a & a in U by A2, A3, Th89, GROUP_2:108;
+        then A8: H*a = U by A2, GROUP_2:121, XBOOLE_0:3;
+        x0 in H*x0 & x0 in U by A5, GROUP_2:108;
+        then x0 in H*x0 /\ U by XBOOLE_0:def 4;
+        hence thesis by A4, A6, A7, A8, XBOOLE_0:def 7;
+      end;
+    end;
+
+    hence U /\ A = {a} by XBOOLE_0:def 4;
+  end;
+
+  hence A is H-right-transversal-like;
+end;
+
+theorem Th92:
+  for A being Subset of G
+  holds A is H-left-transversal-like
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = a*h
+        & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+          holds b = a & h1 = h)
+proof
+  let A be Subset of G;
+  (for g being Element of G
+  ex a being Element of G
+  st a in A & g in a*H 
+  & for b being Element of G st b in A
+    holds b*H misses a*H or a = b) iff
+  (for g being Element of G
+   ex a,h being Element of G
+   st a in A & h in H & g = a*h
+   & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+     holds b = a & h1 = h)
+  proof
+    thus (for g being Element of G
+    ex a being Element of G
+    st a in A & g in a*H 
+    & for b being Element of G st b in A
+    holds b*H misses a*H or a = b) implies
+    (for g being Element of G
+    ex a,h being Element of G
+    st a in A & h in H & g = a*h
+    & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+    holds b = a & h1 = h)
+    proof
+      assume A1: for g being Element of G
+      ex a being Element of G
+      st a in A & g in a*H
+       & for b being Element of G st b in A holds b*H misses a*H or a = b;
+      let g be Element of G;
+      consider a being Element of G such that
+      A2: a in A & g in a*H and
+      A3: for b being Element of G st b in A holds b*H misses a*H or a = b
+      by A1;
+      consider h being Element of G such that
+      A4: g = a*h & h in H by A2, GROUP_2:103;
+      
+      take a,h;
+      thus a in A by A2;
+      thus h in H by A4;
+      thus g = a*h by A4;
+      let b,h1 be Element of G;
+      assume A5: b in A;
+      assume A6: h1 in H;
+      assume A7: g = b*h1;
+
+      per cases by A3,A5;
+      suppose A8: b*H misses a*H;
+        g in b*H by A6, A7, GROUP_2:103;
+        hence thesis by A2, A8, XBOOLE_0:3;
+      end;
+      suppose A9: a = b;
+        hence a = b;
+        thus thesis by A4, A7, A9, GROUP_1:6;
+      end;
+    end;
+    assume A1: for g being Element of G
+    ex a,h being Element of G
+    st a in A & h in H & g = a*h
+    & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+      holds b = a & h1 = h;
+    let g be Element of G;
+    consider a,h being Element of G such that
+    A2: a in A & h in H & g = a*h and
+    A3: for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+        holds b = a & h1 = h
+    by A1;
+    take a;
+    thus a in A by A2;
+    thus g in a*H by A2,GROUP_2:103;
+    let b be Element of G;
+    assume A4: b in A;
+    assume not b*H misses a*H;
+    then a*H = b*H by GROUP_2:115;
+    then ex h1 being Element of G st g = b * h1 & h1 in H by A2, GROUP_2:103;
+    hence a = b by A3, A4;
+  end;
+  hence thesis by Th90;
+end;
+
+theorem Th93:
+  for A being Subset of G
+  holds A is H-right-transversal-like
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = h*a
+        & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+          holds b = a & h1 = h)
+proof
+  let A be Subset of G;
+  (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = h*a
+        & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+        holds b = a & h1 = h)
+  proof
+    thus (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+      implies (for g being Element of G
+           ex a,h being Element of G
+           st a in A & h in H & g = h*a
+            & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+              holds b = a & h1 = h)
+    proof
+      assume A1: for g being Element of G
+      ex a being Element of G
+      st a in A & g in H*a
+       & for b being Element of G st b in A holds H*b misses H*a or a = b;
+      let g be Element of G;
+      consider a being Element of G such that
+      A2: a in A & g in H*a and
+      A3: for b being Element of G st b in A holds H*b misses H*a or a = b
+      by A1;
+      consider h being Element of G such that
+      A4: g = h*a & h in H by A2,GROUP_2:104;
+      take a,h;
+      thus a in A by A2;
+      thus h in H by A4;
+      thus g = h*a by A4;
+      let b,h1 be Element of G;
+      assume A5: b in A;
+      assume A6: h1 in H;
+      assume A7: g = h1*b;
+      per cases by A3,A5;
+      suppose A8: H*b misses H*a;
+        g in H*b by A6, A7, GROUP_2:104;
+        hence thesis by A2, A8, XBOOLE_0:3;
+      end;
+      suppose a = b;
+        hence thesis by A4, A7, GROUP_1:6;
+      end;
+    end;
+    assume A1: for g being Element of G ex a,h being Element of G st a in A & h in H & g = h*a & for b,h1 being Element of G st b in A & h1 in H & g = h1*b holds b = a & h1 = h;
+    let g be Element of G;
+    consider a,h being Element of G such that
+    A2: a in A & h in H & g = h*a and
+    A3: for b,h1 being Element of G st b in A & h1 in H & g = h1*b holds b = a & h1 = h
+    by A1;
+    take a;
+    thus a in A by A2;
+    thus g in H*a by A2, GROUP_2:104;
+    let b be Element of G;
+    assume A4: b in A;
+    assume not H*b misses H*a;
+    then H*b = H*a by GROUP_2:121;
+    then consider h1 being Element of G such that
+    A6: g = h1 * b & h1 in H by A2, GROUP_2:104;
+    thus a = b by A3,A4,A6;
+  end;
+  hence thesis by Th91;
+end;
+
+theorem Th94:
+  for K being Subgroup of H
+  for A being Subset of H
+  holds A is (K qua Subgroup of H)-left-transversal-like
+  iff (for h being Element of G st h in H
+       ex a,k being Element of G
+       st a in A & k in K & h = a*k
+        & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+          holds b = a & k1 = k)
+proof
+  let K be Subgroup of H;
+  let A be Subset of H;
+  (for h being Element of G st h in H
+   ex a,k being Element of G
+   st a in A & k in K & h = a*k
+    & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+      holds b = a & k1 = k)
+  iff (for h being Element of H
+       ex a,k being Element of H
+       st a in A & k in K & h = a*k
+        & for b,k1 being Element of H st b in A & k1 in K & h = b*k1
+        holds b = a & k1 = k)
+  proof
+    thus (for h being Element of G st h in H
+    ex a,k being Element of G
+    st a in A & k in K & h = a*k
+     & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+       holds b = a & k1 = k)
+    implies (for h being Element of H
+    ex a,k being Element of H
+    st a in A & k in K & h = a*k
+     & for b,k1 being Element of H st b in A & k1 in K & h = b*k1
+       holds b = a & k1 = k)
+    proof
+      assume A1: for h being Element of G st h in H
+      ex a,k being Element of G st a in A & k in K & h = a*k
+      & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+        holds b = a & k1 = k;
+      let h be Element of H;
+      reconsider gh=h as Element of G by GROUP_2:42;
+      h in H; then
+      consider ga,gk being Element of G such that
+      A2: ga in A & gk in K & gh = ga*gk and
+      A3: for b,k1 being Element of G st b in A & k1 in K & gh = b*k1
+          holds b = ga & k1 = gk
+      by A1;
+      reconsider a = ga, k = gk as Element of H by A2, GROUP_2:42;
+      take a,k;
+      thus a in A by A2;
+      thus k in K by A2;
+      thus h = a*k by A2, GROUP_2:43;
+      let b,k1 be Element of H;
+      assume A4: b in A;
+      assume A5: k1 in K;
+      assume A6: h = b*k1;
+      reconsider gb = b, gk1=k1 as Element of G by GROUP_2:42;
+      h = gb * gk1 by A6,GROUP_2:43;
+      hence thesis by A4,A5,A3;
+    end;
+    assume A1: for h being Element of H ex a,k being Element of H st a in A & k in K & h = a*k & for b,k1 being Element of H st b in A & k1 in K & h = b*k1 holds b = a & k1 = k;
+    let h be Element of G;
+    assume h in H;
+    then reconsider hh=h as Element of H;
+    consider ha,hk being Element of H such that
+    A2: ha in A & hk in K & hh = ha*hk and
+    A3: for b,k1 being Element of H st b in A & k1 in K & h = b*k1 holds b = ha & k1 = hk
+    by A1;
+    ha in G & hk in G by GROUP_2:41;
+    then reconsider a=ha, k=hk as Element of G;
+    take a,k;
+    thus a in A by A2;
+    thus k in K by A2;
+    thus h = a*k by A2, GROUP_2:43;
+    let b,k1 be Element of G;
+    assume A4: b in A;
+    assume A5: k1 in K;
+    assume A6: h = b*k1;
+    b in H & k1 in H by A4,A5,GROUP_2:41;
+    then reconsider hb=b, hk1=k1 as Element of H;
+    b*k1 = hb*hk1 by GROUP_2:43;
+    hence b = a & k1 = k by A3, A4, A5, A6;
+  end;
+  
+  hence thesis by Th92;
+end;
+
+theorem Th95:
+  for K being Subgroup of H
+  for A being Subset of H
+  holds A is (K qua Subgroup of H)-right-transversal-like
+  iff (for h being Element of G st h in H
+       ex a,k being Element of G
+       st a in A & k in K & h = k*a
+        & for b,k1 being Element of G st b in A & k1 in K & h = k1*b
+          holds b = a & k1 = k)
+proof
+  let K be Subgroup of H;
+  let A be Subset of H;
+  (for h being Element of G st h in H
+  ex a,k being Element of G
+  st a in A & k in K & h = k*a
+   & for b,k1 being Element of G st b in A & k1 in K & h = k1*b
+     holds b = a & k1 = k)
+  iff (for h being Element of H
+       ex a,k being Element of H
+       st a in A & k in K & h = k*a
+        & for b,k1 being Element of H st b in A & k1 in K & h = k1*b
+        holds b = a & k1 = k)
+  proof
+    hereby 
+      assume A1: for h being Element of G st h in H ex a,k being Element of G st a in A & k in K & h = k*a & for b,k1 being Element of G st b in A & k1 in K & h = k1*b holds b = a & k1 = k;
+      let h be Element of H;
+      reconsider gh=h as Element of G by GROUP_2:42;
+      h in H; then
+      consider ga,gk being Element of G such that
+      A2: ga in A & gk in K & gh = gk*ga and
+      A3: for b,k1 being Element of G st b in A & k1 in K & gh = k1*b
+          holds b = ga & k1 = gk
+      by A1;
+      reconsider a = ga, k = gk as Element of H by A2, GROUP_2:42;
+      take a,k;
+      thus a in A by A2;
+      thus k in K by A2;
+      thus h = k*a by A2, GROUP_2:43;
+      let b,k1 be Element of H;
+      assume A4: b in A;
+      assume A5: k1 in K;
+      assume A6: h = k1*b;
+      reconsider gb = b, gk1=k1 as Element of G by GROUP_2:42;
+      k1 * b = gk1 * gb by GROUP_2:43;
+      hence b = a & k1 = k by A3,A4,A5,A6;
+    end;
+    assume A1: for h being Element of H ex a,k being Element of H st a in A & k in K & h = k*a & for b,k1 being Element of H st b in A & k1 in K & h = k1*b holds b = a & k1 = k;
+    let h be Element of G;
+    assume h in H;
+    then reconsider hh=h as Element of H;
+    consider ha,hk being Element of H such that
+    A2: ha in A & hk in K & hh = hk*ha and
+    A3: for b,k1 being Element of H st b in A & k1 in K & h = k1*b holds b = ha & k1 = hk
+    by A1;
+    ha in G & hk in G by GROUP_2:41;
+    then reconsider a=ha, k=hk as Element of G;
+    take a,k;
+    thus a in A by A2;
+    thus k in K by A2;
+    thus h = k*a by A2, GROUP_2:43;
+    let b,k1 be Element of G;
+    assume A4: b in A;
+    assume A5: k1 in K;
+    assume A6: h = k1*b;
+    b in H & k1 in H by A4,A5,GROUP_2:41;
+    then reconsider hb=b, hk1=k1 as Element of H;
+    k1*b = hk1*hb by GROUP_2:43;
+    hence b = a & k1 = k by A3, A4, A5, A6;
+  end;
+  
+  hence thesis by Th93;
+end;
+
+theorem LTLProductProperty:
+  for K being Subgroup of H
+  for LK being Left_Transversal of (K qua Subgroup of H)
+  for LH being Left_Transversal of H
+  holds LH * LK is (K qua Subgroup of G)-left-transversal-like
+proof
+  let K be Subgroup of H;
+  let LK be Left_Transversal of (K qua Subgroup of H);
+  let LH be Left_Transversal of H;
+
+  for g being Element of G
+  ex a,k being Element of G
+  st a in LH * LK & k in K & g = a*k
+  & for b,k1 being Element of G st b in LH*LK & k1 in K & g = b*k1
+  holds b = a & k1 = k
+  proof
+    let g be Element of G;
+    consider ah,h being Element of G such that
+    A1: ah in LH & h in H & g = ah*h and
+    A2: for b1,h1 being Element of G st b1 in LH & h1 in H & g = b1*h1 holds b1 = ah & h1 = h
+    by Th92;
+    consider ak,k being Element of G such that
+    A3: ak in LK & k in K & h = ak*k and
+    A4: for b1,k1 being Element of G st b1 in LK & k1 in K & h = b1*k1 holds b1 = ak & k1 = k
+    by A1,Th94;
+    take a = ah * ak;
+    take k;
+    thus a in LH * LK by A1,A3;
+    thus k in K by A3;
+    thus g = a * k by A1,A3,GROUP_1:def 3;
+    let b,k1 be Element of G;
+    assume A5: b in LH*LK;
+    assume A6: k1 in K;
+    assume A7: g = b*k1;
+    consider bh,bk being Element of G such that
+    A8: b = bh * bk & bh in LH & bk in LK by A5;
+
+    A9: bk*k1 in H
+    proof
+      B1: bk in H by A8;
+      k1 in H by A6, GROUP_2:40;
+      hence thesis by B1, GROUP_2:50;
+    end;
+
+    A10: g = bh * (bk * k1) by A7, A8, GROUP_1:def 3;
+    then A11: bk in LK & k1 in K & bk * k1 = h by A2,A6,A8,A9;
+    then bk = ak & k1 = k by A4;
+    then g = ah * (ak * k) by A2,A8,A9,A10
+          .= (ah * ak) * k by GROUP_1:def 3
+          .= a * k1 by A4,A11;
+    hence b = a by A7, GROUP_1:6;
+    thus k1 = k by A4,A11;
+  end;
+
+  hence thesis by Th92;
+end;
+
+theorem RTLProductProperty:
+  for K being Subgroup of H
+  for RK being Right_Transversal of K
+  for RH being Right_Transversal of H
+  holds RK * RH is (K qua Subgroup of G)-right-transversal-like
+proof
+  let K be Subgroup of H;
+  let RK be Right_Transversal of K;
+  let RH be Right_Transversal of H;
+
+  for g being Element of G
+  ex a,k being Element of G
+  st a in RK * RH & k in K & g = k*a
+  & for b,k1 being Element of G st b in RK*RH & k1 in K & g = k1*b
+  holds b = a & k1 = k
+  proof
+    let g be Element of G;
+    consider ah,h being Element of G such that
+    A1: ah in RH & h in H & g = h*ah and
+    A2: for b,h1 being Element of G st b in RH & h1 in H & g = h1*b
+        holds b = ah & h1 = h
+    by Th93;
+    consider ak,k being Element of G such that
+    A3: ak in RK & k in K & h = k*ak and
+    A4: for b1,k1 being Element of G st b1 in RK & k1 in K & h = k1*b1 holds b1 = ak & k1 = k
+    by A1,Th95;
+    take a = ak*ah,k;
+    thus a in RK * RH by A1,A3;
+    thus k in K by A3;
+    thus g = k*a by A1, A3, GROUP_1:def 3;
+    let b,k1 be Element of G;
+    assume A5: b in RK*RH;
+    assume A6: k1 in K;
+    assume A7: g = k1*b;
+    consider bk,bh being Element of G such that
+    A8: b = bk*bh & bk in RK & bh in RH by A5;
+
+    A9: k1*bk in H
+    proof
+      B1: bk in H by A8;
+      k1 in H by A6, GROUP_2:40;
+      hence thesis by B1, GROUP_2:50;
+    end;
+
+    A10: g = (k1 * bk) * bh by A7, A8, GROUP_1:def 3;
+    then A11: bh = ah & (k1 * bk) = h by A2,A8,A9;
+    then bk = ak & k1 = k by A4,A6,A8;
+    then g = (k * ak) * ah by A2,A8,A9,A10
+          .= k * (ak * ah) by GROUP_1:def 3
+          .= k1 * a by A4,A6,A8,A11;
+    hence b = a by A7, GROUP_1:6;
+    thus k1 = k by A4,A6,A8,A11;
+  end;
+
+  hence RK * RH is (K qua Subgroup of G)-right-transversal-like by Th93;
+end;
+
+registration
+  let G, H;
+  let K be Subgroup of H;
+  let LH be Left_Transversal of H;
+  let LK be Left_Transversal of K;
+  cluster LH * LK -> K-left-transversal-like;
+  correctness by LTLProductProperty;
+end;
+
+registration
+  let G, H;
+  let K be Subgroup of H;
+  let RH be Right_Transversal of H;
+  let RK be Right_Transversal of K;
+  cluster RK * RH -> K-right-transversal-like;
+  correctness by RTLProductProperty;
+end;
+
+theorem Th98:
+  for g being Element of G
+  for A being Subset of G
+  holds (g * A)" = (A ")*(g ")
+proof
+  let g be Element of G;
+  let A be Subset of G;
+  for x being object
+  holds x in (g * A)" iff x in (A ")*(g ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (g * A)";
+      then consider gx being Element of G such that
+      A1: x = gx" & gx in g * A by GROUP_2:2;
+      consider a being Element of G such that
+      A2: gx = g * a & a in A by A1, GROUP_2:27;
+      A3: gx " = (a ")*(g ") by A2,GROUP_1:17;
+      a" in A" by A2, GROUP_2:2;
+      hence x in (A ")*(g ") by A1,A3, GROUP_2:28;
+    end;
+    assume x in (A ")*(g ");
+    then consider ai being Element of G such that
+    A1: x = ai*(g ") & ai in A" by GROUP_2:28;
+    consider a being Element of G such that
+    A2: a" = ai & a in A by A1, GROUP_2:2;
+    A3: g * a in g*A by A2,GROUP_2:27;
+    x = (g * a)" by A1,A2,GROUP_1:17;
+    hence x in (g * A)" by A3, GROUP_2:2;
+  end;
+  hence (g * A)" = (A ")*(g ") by TARSKI:2;
+end;
+
+theorem Th99:
+  for g being Element of G
+  for A being Subset of G
+  holds (A * g)" = (g ")*(A ")
+proof
+  let g be Element of G;
+  let A be Subset of G;
+  for x being object
+  holds x in (A * g)" iff x in (g ")*(A ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (A * g)";
+      then consider ag being Element of G such that
+      A1: x = ag" & ag in A * g by GROUP_2:2;
+      consider a being Element of G such that
+      A2: ag = a*g & a in A by A1, GROUP_2:28;
+      A3: a" in A" by A2,GROUP_2:2;
+      ag" = (g ")*(a ") by A2,GROUP_1:17;
+      hence x in (g ")*(A ") by A1,A3,GROUP_2:27;
+    end;
+    assume x in (g ")*(A ");
+    then consider ai being Element of G such that
+    A1: x = (g ")*ai & ai in A " by GROUP_2:27;
+    consider a being Element of G such that
+    A2: ai = a" & a in A by A1, GROUP_2:2;
+    A3: a * g in A*g by A2,GROUP_2:28;
+    x = (a * g)" by A1,A2,GROUP_1:17;
+    hence x in (A * g)" by A3, GROUP_2:2;
+  end;
+
+  hence (A * g)" = (g ")*(A ") by TARSKI:2;
+end;
+
+theorem Th100:
+  for A,B being Subset of G
+  holds (A /\ B)" = (A ") /\ (B ")
+proof
+  let A,B be Subset of G;
+  for x being object
+  holds x in (A /\ B)" iff x in (A ") /\ (B ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (A /\ B)";
+      then consider ab being Element of G such that
+      A1: x = ab" & ab in (A /\ B) by GROUP_2:2;
+      ab in A & ab in B by A1, XBOOLE_0:def 4;
+      then ab" in A" & ab" in B" by GROUP_2:2;
+      hence x in (A ") /\ (B ") by A1, XBOOLE_0:def 4;
+    end;
+    assume x in (A ") /\ (B ");
+    then A1: x in A" & x in B" by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = a" & a in A by GROUP_2:2;
+    a in B
+    proof
+      ex b being Element of G st a" = b" & b in B by A1,A2,GROUP_2:2;
+      hence thesis by GROUP_1:9;
+    end;
+    then a in A /\ B by A2, XBOOLE_0:def 4;
+    hence x in (A /\ B)" by A2, GROUP_2:2;
+  end;
+  hence (A /\ B)" = (A ") /\ (B ") by TARSKI:2;
+end;
+
+theorem Th101:
+  RH " is Left_Transversal of H
+proof
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ (RH " ) = {g}
+  proof
+    let U be Element of Left_Cosets H;
+    consider g0 being Element of G such that
+    A1: U = g0*H by GROUP_2:def 15;
+    U = g0 * (carr H) by A1, GROUP_2:def 13;
+    then
+    U" = ((carr H)") * (g0 ") by Th98
+      .= (carr H) * (g0 ") by GROUP_2:77
+      .= H * (g0 ") by GROUP_2:def 14;
+    then U" in Right_Cosets H by GROUP_2:def 16;
+    then consider g1 being Element of G such that
+    A2: (U") /\ RH = {g1} by DefRTL;
+    A3: ((U ") /\ RH)" = ((U ") ") /\ (RH ") by Th100
+                      .= U /\ (RH ");
+    take g = g1 ";
+    thus U /\ (RH " ) = {g} by A2, A3, GROUP_2:3;
+  end;
+  hence RH " is Left_Transversal of H by DefLTL;
+end;
+
+theorem Th102:
+  LH " is Right_Transversal of H
+proof
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ (LH ") = {g}
+  proof
+    let U be Element of Right_Cosets H;
+    consider g0 being Element of G such that
+    A1: U = H*g0 by GROUP_2:def 16;
+    U = (carr H) * g0 by A1, GROUP_2:def 14; then
+    U" = (g0 ") * ((carr H) ") by Th99
+      .= (g0 ") * (carr H) by GROUP_2:77
+      .= (g0 ") * H by GROUP_2:def 13;
+    then U" in Left_Cosets H by GROUP_2:def 15;
+    then consider g1 being Element of G such that
+    A2: (U") /\ LH = {g1} by DefLTL;
+    A3: ((U ") /\ LH)" = ((U ") ") /\ (LH ") by Th100
+                      .= U /\ (LH ");
+    take g = g1 ";
+    thus U /\ (LH ") = {g} by A2, A3, GROUP_2:3;
+  end;
+  hence LH " is Right_Transversal of H by DefRTL;
+end;
+
+registration
+  let G,H;
+  let RH be Right_Transversal of H;
+  cluster RH " -> H-left-transversal-like;
+  correctness by Th101;
+end;
+
+registration
+  let G,H;
+  let LH be Left_Transversal of H;
+  cluster LH " -> H-right-transversal-like;
+  correctness by Th102;
+end;

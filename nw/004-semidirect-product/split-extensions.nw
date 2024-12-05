@@ -74,7 +74,7 @@ Then $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ w
 \end{theorem}
 
 <<Theorem: $G$ splits over $N$ if and only if there exists a subgroup $H\subgroup G$ which complements $N$>>=
-theorem Th63:
+theorem Th61:
   for G being Group
   for N being normal Subgroup of G
   holds G splits_over N
@@ -108,7 +108,7 @@ proof
     hence G splits_over N;
   end;
 end;
-@ %def Th63
+@ %def Th61
 
 \begin{definition}
 Let $N\normalSubgroup G$. We redefine the predicate $G$ \define{splits over} $N$ 
@@ -122,7 +122,7 @@ definition
   let N be normal Subgroup of G;
   redefine pred G splits_over N means :Def9:
   ex H being Subgroup of G st H,N are_complements_in G;
-  compatibility by Th63;
+  compatibility by Th61;
 end;
 @ %def Def9
 
@@ -133,7 +133,7 @@ subgroup $H$ of $K$ such that $N$ and $H$ are complements in $K$.
 \end{theorem}
 
 <<Theorem: $K$ splits over $N$ iff there is a $H\subgroup K$ complement to $N$>>=
-theorem
+theorem :: 62
   for G being Group
   for N being normal Subgroup of G
   for K being Subgroup of G st N is Subgroup of K
@@ -143,7 +143,7 @@ proof
   let G be Group;
   let N be normal Subgroup of G;
   let K be Subgroup of G;
-  assume A1: N is Subgroup of K;
+  assume N is Subgroup of K;
   then reconsider N1=N as normal Subgroup of K by GROUP_6:8;
   thus K splits_over N implies ex H being Subgroup of K
   st H,N are_complements_in K
@@ -153,8 +153,8 @@ proof
     hence ex H being Subgroup of K st H,N are_complements_in K;
   end;
   given H being Subgroup of K such that 
-  A2: H,N are_complements_in K;
-  K splits_over N1 by A2;
+  A1: H,N are_complements_in K;
+  K splits_over N1 by A1;
   hence K splits_over N;
 end;
 @ 

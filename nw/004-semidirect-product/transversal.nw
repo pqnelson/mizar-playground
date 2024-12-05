@@ -1,0 +1,1639 @@
+% -*- mode: poly-noweb; noweb-code-mode: mizar-mode; -*-
+\section{Transversals of Subgroups}
+
+The basic strategy will be to define attributes ``$H$-left transversal
+like'' (and ``$H$-right transversal like''), so we can use an expandable
+mode for ``left transversals of $H$'' (and ``right transversals of
+$H$'').
+This allows us to multiply a transversal by a subset of a group, or a
+subgroup, automatically.
+
+<<Transversals of Subgroups>>=
+begin :: Transversals of Subgroups
+
+<<Definition: $H$-transversal-like for subsets of $G$>>
+
+<<Register: $H$-left/right-transversal-like for subset of $G$>>
+
+<<Register: $H$-transversal-like subsets are nonempty>>
+
+<<Definition: $A\subset H$, $B\subset G$, define $AB\subset G$>>
+
+<<Definition: $A\subset G$, $B\subset H$, define $AB\subset G$>>
+
+<<Definition: Transversal of $H$>>
+
+<<Reserve: $L_{H}$ and $R_{H}$ for left (and right) transversal of $H$>>
+
+<<Theorem: $U\cap L_{H}=\{g\}$ iff $U=gH$ and $g\in L_{H}$>>
+
+<<Theorem: $U\cap L_{R}=\{g\}$ iff $U=Hg$ and $g\in R_{H}$>>
+
+<<Theorem: $h\in H$ implies $L_{H}h$ is a left transversal of $H$>>
+
+<<Theorem: $h\in H$ implies $hR_{H}$ is a right transversal of $H$>>
+
+<<Theorem: $\exists L_{H}\ldotp 1_{G}\in L_{H}$>>
+
+<<Theorem: $\exists R_{H}\ldotp 1_{G}\in R_{H}$>>
+
+<<Theorem: $\forall g\in G\ldotp\exists h\in G\ldotp gH\cap L_{H}=\{h\}\land h\in H$>>
+
+<<Theorem: $\forall g\in G\ldotp\exists h\in G\ldotp Hg\cap R_{H}=\{h\}\land h\in H$>>
+
+<<Theorem: $gH\cap L_{H}=\{g\}\iff g\in L_{H}$>>
+
+<<Theorem: $Hg\cap R_{H}=\{g\}\iff g\in R_{H}$>>
+
+<<Theorem: $g_{1}\in g_{2}H\iff g_{2}\in g_{1}H$>>
+
+<<Theorem: $g_{1}\in Hg_{2}\iff g_{2}\in Hg_{1}$>>
+
+<<Theorem: $A$ is left transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ such that $g\in aH$ and these are unique>>
+
+<<Theorem: $A$ is right transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ such that $g\in Ha$ and these are unique>>
+
+<<Theorem: $A$ is left transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ and $h\in H$ such that $g=ah$ and these are unique>>
+
+<<Theorem: $A$ is right transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ and $h\in H$ such that $g=ha$ and these are unique>>
+
+<<Theorem: $A\subset G$ is a left transversal of $K\subgroup H$ iff for each $h\in H$ there exists unique $a\in A$ and $k\in K$ such that $h=ak$>>
+
+<<Theorem: $A\subset G$ is a right transversal of $K\subgroup H$ iff for each $h\in H$ there exists unique $a\in A$ and $k\in K$ such that $h=ka$>>
+
+<<Theorem: if $L_{K}$ is a left transversal of $K$ in $H$, then $L_{H}L_{K}$ is a left transversal of $K$ in $G$>>
+
+<<Theorem: if $R_{K}$ is a right transversal of $K$ in $H$, then $R_{K}R_{H}$ is a right transversal of $K$ in $G$>>
+
+<<Register: $L_{H}L_{K}$ is a left transversal of $K$ in $G$>>
+
+<<Register: $R_{K}R_{H}$ is a right transversal of $K$ in $G$>>
+
+<<Theorem: if $g\in G$ and $A\subset G$, then $(gA)^{-1}=A^{-1}g^{-1}$>>
+
+<<Theorem: $(Ag)^{-1}=g^{-1}A^{-1}$>>
+
+<<Theorem: $(A\cap B)^{-1}=A^{-1}\cap B^{-1}$>>
+
+<<Theorem: $R_{H}^{-1}$ is a left transversal of $H$>>
+
+<<Theorem: $L_{H}^{-1}$ is a right transversal of $H$>>
+
+<<Register: $R_{H}^{-1}$ is a left transversal of $H$>>
+
+<<Register: $L_{H}^{-1}$ is a right transversal of $H$>>
+@
+
+\begin{definition}
+Let $G$ be a group, $H$ a subgroup of $G$.
+Let $A$ be a subset of $G$.
+We say $A$ is \define{$H$-left-transversal-like} if for every left coset
+$U$ of $H$, there exists an element $g$ of $G$ such that $U\cap A=\{g\}$.
+\end{definition}
+
+\begin{definition}
+Let $G$ be a group, $H$ a subgroup of $G$.
+Let $A$ be a subset of $G$.
+We say $A$ is \define{$H$-right-transversal-like} if for every right coset
+$U$ of $H$, there exists an element $g$ of $G$ such that $U\cap A=\{g\}$.
+\end{definition}
+
+\begin{def-remark}
+When registering facts about \emph{both} $H$-left-transversal-like
+subsets \emph{and} $H$-right-transversal-like subsets, we will simply
+abbreviate the chunk name to discuss ``$H$-transversal-like subsets''.
+\end{def-remark}
+
+<<Definition: $H$-transversal-like for subsets of $G$>>=
+definition
+  let G,H;
+  let IT be Subset of G;
+  attr IT is H-left-transversal-like means
+  :DefLTL:
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ IT = {g};
+  attr IT is H-right-transversal-like means
+  :DefRTL:
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ IT = {g};
+end;
+@ %def DefLTL DefRTL
+
+\begin{voc}
+We add these terms to our vocabulary.
+\end{voc}
+<<DICT/group-24.voc>>=
+V-left-transversal-like
+V-right-transversal-like
+@
+
+\begin{registration}
+There exists an $H$-left-transversal-like subset of $G$, and there
+exists an $H$-right-transversal-like subset of $G$.
+\end{registration}
+
+<<Register: $H$-left/right-transversal-like for subset of $G$>>=
+registration
+  let G,H;
+  cluster H-left-transversal-like for Subset of G;
+  existence
+  <<Proof: existence of $H$-left-transversal-like subset of $G$>>
+
+  cluster H-right-transversal-like for Subset of G;
+  existence
+  <<Proof: existence of $H$-right-transversal-like subset of $G$>>
+end;
+@
+
+\begin{proof}[Proof sketch (existence of $H$-left-transversal-like subsets)]
+Set $A=\{U\mid U\mbox{ is left coset of }H\}$.
+We see for any $x\in A$ that $x\in G$.
+This means $A\subset G$ and we reconsider $A$'s type to be ``subset of $G$''.
+
+Take $A$.
+
+We want to prove: for every $U$ being a left coset of $H$, there exists an element $g$ of
+$G$ such that $U\cap A=\{g\}$. This is done in two steps:
+\begin{enumerate}
+\item for any $x$, we have $x\in\{g\}$ if and only if $x\in U$ and $x\in A$
+\item then $U\cap A=\{g\}$ by definition of the binary intersection of sets.
+\end{enumerate}
+This concludes the proof.
+\end{proof}
+<<Proof: existence of $H$-left-transversal-like subset of $G$>>=
+proof
+  set IT = {the Element of U where U is Element of Left_Cosets H : not contradiction};
+  for x being object st x in IT holds x in the carrier of G
+  proof
+    let x be object;
+    assume x in IT;
+    then ex U being Element of Left_Cosets H st x = the Element of U;
+    hence x in the carrier of G;
+  end;
+
+  then IT c= the carrier of G;
+  then reconsider IT as Subset of G;
+  take IT;
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ IT = {g}
+  proof
+    let U be Element of Left_Cosets H;
+    consider g being Element of G such that
+    Z1: g = the Element of U;
+    take g;
+    for x being object
+    holds x in {g} iff (x in U & x in IT)
+    proof
+      let x be object;
+      thus x in {g} implies (x in U & x in IT)
+      proof
+        assume x in {g};
+        then Z2: x = g by TARSKI:def 1;
+        thus x in U by Z1,Z2;
+        thus x in IT by Z1,Z2;
+      end;
+      thus x in U & x in IT implies x in {g}
+      proof
+        assume Z2: x in U;
+        assume x in IT;
+        then consider V being Element of Left_Cosets H such that
+        Z3: x = the Element of V;
+        per cases by Th65;
+        suppose U = V;
+          hence thesis by Z1, Z3, TARSKI:def 1;
+        end;
+        suppose U misses V;
+          then U /\ V = {} by XBOOLE_0:def 7;
+          hence thesis by Z2, Z3, XBOOLE_0:def 4;
+        end;
+      end;
+    end;
+    hence U /\ IT = {g} by XBOOLE_0:def 4;
+  end;
+  hence thesis;
+end;
+@
+
+\begin{proof}[Proof sketch (existence of $H$-right-transversal-like subsets)]
+The argument is analogous to the case for the existence of
+$H$-left-transversal-like subsets.
+\end{proof}
+
+<<Proof: existence of $H$-right-transversal-like subset of $G$>>=
+proof
+  set IT = {the Element of U where U is Element of Right_Cosets H : not contradiction};
+  for x being object st x in IT holds x in the carrier of G
+  proof
+    let x be object;
+    assume x in IT;
+    then ex U being Element of Right_Cosets H st x = the Element of U;
+    hence thesis;
+  end;
+
+  then IT c= the carrier of G;
+  then reconsider IT as Subset of G;
+  take IT;
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ IT = {g}
+  proof
+    let U be Element of Right_Cosets H;
+    consider g being Element of G such that
+    Z1: g = the Element of U;
+    take g;
+    for x being object
+    holds x in {g} iff (x in U & x in IT)
+    proof
+      let x be object;
+      thus x in {g} implies (x in U & x in IT)
+      proof
+        assume x in {g};
+        then Z2: x = g by TARSKI:def 1;
+        thus x in U by Z1,Z2;
+        thus x in IT by Z1,Z2;
+      end;
+      thus x in U & x in IT implies x in {g}
+      proof
+        assume Z2: x in U;
+        assume x in IT;
+        then consider V being Element of Right_Cosets H such that
+        Z3: x = the Element of V;
+        per cases by Th66;
+        suppose U = V;
+          :: then x = g by Z1, Z3;
+          hence thesis by Z1, Z3, TARSKI:def 1;
+        end;
+        suppose U misses V;
+          then U /\ V = {} by XBOOLE_0:def 7;
+          hence thesis by Z2, Z3, XBOOLE_0:def 4;
+        end;
+      end;
+    end;
+    hence U /\ IT = {g} by XBOOLE_0:def 4;
+  end;
+  hence thesis;
+end;
+@
+
+\begin{registration}
+We observe that $H$-transversal-like subsets are nonempty.
+\end{registration}
+
+<<Register: $H$-transversal-like subsets are nonempty>>=
+registration
+  let G, H;
+  cluster H-left-transversal-like -> non empty for Subset of G;
+  correctness
+  proof
+    let L be Subset of G;
+    assume A1: L is H-left-transversal-like;
+    carr H in Left_Cosets H by GROUP_2:135;
+    then ex g being Element of G st (carr H) /\ L = {g} by A1;
+    hence thesis;
+  end;
+  cluster H-right-transversal-like -> non empty for Subset of G;
+  correctness
+  proof
+    let R be Subset of G;
+    assume A1: R is H-right-transversal-like;
+    carr H in Right_Cosets H by GROUP_2:135;
+    then ex g being Element of G st (carr H) /\ R = {g} by A1;
+    hence thesis;
+  end;
+end;
+@
+
+\begin{definition}
+Let $G$ be a group, $H$ a subgroup of $G$.
+Let $A$ be a subset of $H$ and $B$ a subset of $G$.
+Then we define their product $AB$ to be a subset of $G$ equal to
+$\{gh \mid g\in A,h\in B\}$.
+\end{definition}
+
+<<Definition: $A\subset H$, $B\subset G$, define $AB\subset G$>>=
+definition
+  let G, H;
+  let A be Subset of H;
+  let B be Subset of G;
+  func A * B -> Subset of G equals :Def12:
+  { (g * h) where g, h is Element of G : g in A & h in B };
+  coherence
+  proof
+    set S = {(g * h) where g, h is Element of G : (g in A & h in B)};
+    {(g * h) where g, h is Element of G : ( g in A & h in B )} c= the carrier of G
+    proof
+      let x be object;
+      assume x in { (g * h) where g, h is Element of G : ( g in A & h in B ) };
+      then ex g, h being Element of G st
+      ( x = g * h & g in A & h in B ) ;
+      hence x in the carrier of G;
+    end;
+    hence { (g * h) where g, h is Element of G : ( g in A & h in B ) } is Subset of G;
+  end;
+end;
+@ 
+
+\begin{definition}
+Let $G$ be a group, $H$ a subgroup of $G$.
+Let $A$ be a subset of $G$ and $B$ a subset of $H$.
+Then we define their product $AB$ to be a subset of $G$ equal to
+$\{hg \mid h\in A,g\in B\}$.
+\end{definition}
+
+<<Definition: $A\subset G$, $B\subset H$, define $AB\subset G$>>=
+definition
+  let G, H;
+  let A be Subset of G;
+  let B be Subset of H;
+  func A * B -> Subset of G equals :Def13:
+  { (g * h) where g, h is Element of G : g in A & h in B };
+  coherence
+  proof
+    set S = {(g * h) where g, h is Element of G : (g in A & h in B)};
+    {(g * h) where g, h is Element of G : ( g in A & h in B )} c= the carrier of G
+    proof
+      let x be object;
+      assume x in { (g * h) where g, h is Element of G : ( g in A & h in B ) };
+      then ex g, h being Element of G st
+      ( x = g * h & g in A & h in B ) ;
+      hence x in the carrier of G;
+    end;
+    hence { (g * h) where g, h is Element of G : ( g in A & h in B ) } is Subset of G;
+  end;
+end;
+@ 
+
+\begin{definition*}
+Let $G$ be a group, let $H$ be a subgroup of $H$.
+We define the abbreviations:
+\begin{enumerate}
+\item a \define{Left Transversal of $H$} is an $H$-left-transversal-like
+  subset of $G$;
+\item a \define{Right Transversal of $H$} is an
+  $H$-right-transversal-like subset of $G$.
+\end{enumerate}
+\end{definition*}
+
+<<Definition: Transversal of $H$>>=
+definition
+  let G,H;
+  mode Left_Transversal of H is H-left-transversal-like Subset of G;
+  mode Right_Transversal of H is H-right-transversal-like Subset of G;
+end;
+@
+
+\begin{voc}
+We add these new modes to our vocabulary list.
+\end{voc}
+
+<<DICT/group-24.voc>>=
+MLeft_Transversal
+MRight_Transversal
+@
+
+\begin{reserve}
+We reserve $L_{H}$ for a left transversal of $H$, and $R_{H}$ for a
+right transversal of $H$.
+\end{reserve}
+
+<<Reserve: $L_{H}$ and $R_{H}$ for left (and right) transversal of $H$>>=
+reserve LH for Left_Transversal of H,
+        RH for Right_Transversal of H;
+@ %def LH RH
+
+
+\begin{theorem} % Th78
+Let $U$ be a left coset of $H$, let $L_{H}$ be a left transversal of $H$.
+For any element $g$ of $G$, we have $U\cap L_{H}=\{g\}$ if and only if
+$U=gH$ and $g\in L_{H}$.
+\end{theorem}
+
+<<Theorem: $U\cap L_{H}=\{g\}$ iff $U=gH$ and $g\in L_{H}$>>=
+theorem Th78:
+  for U being Element of Left_Cosets H
+  for g being Element of G
+  holds U /\ LH = {g} iff (U = g*H & g in LH)
+proof
+  let U be Element of Left_Cosets H;
+  let g be Element of G;
+  thus U /\ LH = {g} implies U = g*H & g in LH
+  proof
+    assume A1: U /\ LH = {g};
+    A2: g*H in Left_Cosets H by GROUP_2:def 15;
+    A3: g in {g} by TARSKI:def 1;
+    g in g*H & g in U by A1, A3, XBOOLE_0:def 4, GROUP_2:108;
+    then g in (g*H) /\ U by XBOOLE_0:def 4;
+    hence U = g*H by A2, Th65, XBOOLE_0:def 7;
+    thus g in LH by A1, A3, XBOOLE_0:def 4;
+  end;
+  assume A1: U = g*H;
+  assume A2: g in LH;
+  g in U by A1, GROUP_2:108;
+  then A3: g in U /\ LH by A2, XBOOLE_0:def 4;
+  consider h being Element of G such that
+  A4: U /\ LH = {h} by DefLTL;
+  thus U /\ LH = {g} by A3, A4, TARSKI:def 1;
+end;
+@ %def Th78
+
+\begin{theorem}
+Let $U$ be a right coset of $H$, let $R_{H}$ be a right transversal of $H$.
+For any element $g$ of $G$, we have $U\cap R_{H}=\{g\}$ if and only if
+$U=Hg$ and $g\in R_{H}$.
+\end{theorem}
+
+<<Theorem: $U\cap L_{R}=\{g\}$ iff $U=Hg$ and $g\in R_{H}$>>=
+theorem Th79:
+  for U being Element of Right_Cosets H
+  for g being Element of G
+  holds U /\ RH = {g} iff (U = H*g & g in RH)
+proof
+  let U be Element of Right_Cosets H;
+  let g be Element of G;
+  thus U /\ RH = {g} implies U = H*g & g in RH
+  proof
+    assume A1: U /\ RH = {g};
+    A2: H*g in Right_Cosets H by GROUP_2:def 16;
+    A3: g in {g} by TARSKI:def 1;
+    then g in H*g & g in U by A1, GROUP_2:108, XBOOLE_0:def 4;
+    then g in (H*g) /\ U by XBOOLE_0:def 4;
+    hence U = H*g by A2, Th66, XBOOLE_0:def 7;
+    thus g in RH by A1, A3, XBOOLE_0:def 4;
+  end;
+  assume A1: U = H*g;
+  assume A2: g in RH;
+  g in U by A1, GROUP_2:108;
+  then A3: g in U /\ RH by A2, XBOOLE_0:def 4;
+  ex h being Element of G st U /\ RH = {h} by DefRTL;
+  hence U /\ RH = {g} by A3, TARSKI:def 1;
+end;
+@ %def Th79
+
+\begin{theorem} % Th80
+Let $L_{H}$ be a left transversal of $H$, let $h$ be an element of $G$.
+If $h\in H$, then $L_{H}h$ is a left transversal of $H$.
+\end{theorem}
+
+<<Theorem: $h\in H$ implies $L_{H}h$ is a left transversal of $H$>>=
+theorem Th80:
+  for h being Element of G st h in H
+  holds LH*h is Left_Transversal of H
+proof
+  let h be Element of G;
+  assume A1: h in H;
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ (LH * h) = {g}
+  proof
+    let U be Element of Left_Cosets H;
+    consider g0 being Element of G such that
+    A2: U /\ LH = {g0} by DefLTL;
+    
+    take g = g0*h;
+
+    A3: (U /\ LH) * h = {g0} * {h} by A2, GROUP_2:def 4
+                     .= {g} by GROUP_2:18;
+
+    (U /\ LH) * h = (U * h) /\ (LH * h) by Th74
+                 .= U /\ (LH * h) by A1, Th72;
+    hence U /\ (LH * h) = {g} by A3;
+  end;
+
+  hence LH*h is Left_Transversal of H by DefLTL;
+end;
+@ %def Th80
+
+\begin{theorem}
+Let $R_{H}$ be a right transversal of $H$, let $h$ be an element of $G$.
+If $h\in H$, then $hR_{H}$ is a right transversal of $H$.
+\end{theorem}
+
+<<Theorem: $h\in H$ implies $hR_{H}$ is a right transversal of $H$>>=
+theorem Th81:
+  for h being Element of G st h in H
+  holds h*RH is Right_Transversal of H
+proof
+  let h be Element of G;
+  assume A1: h in H;
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ (h * RH) = {g}
+  proof
+    let U be Element of Right_Cosets H;
+    consider g0 being Element of G such that
+    A2: U /\ RH = {g0} by DefRTL;
+    take g = h * g0;
+
+    A3: h * (U /\ RH) = {h} * {g0} by A2,GROUP_2:def 3
+                     .= {g} by GROUP_2:18;
+
+    h * (U /\ RH) = (h * U) /\ (h * RH) by Th75
+                 .= U /\ (h * RH) by A1, Th73;
+    hence U /\ (h * RH) = {g} by A3;
+  end;
+  hence h*RH is Right_Transversal of H by DefRTL;
+end;
+@ %def Th81
+
+\begin{theorem} % Th82
+There exists a left transversal of $H$ containing the identity element.
+\end{theorem}
+
+<<Theorem: $\exists L_{H}\ldotp 1_{G}\in L_{H}$>>=
+theorem :: Th82:
+  ex LH being Left_Transversal of H
+  st 1_G in LH
+proof
+  set LH0 = the Left_Transversal of H;
+  carr H in Left_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A1: (carr H) /\ LH0 = {h}
+  by DefLTL;
+  h in H
+  proof
+    h in {h} by TARSKI:def 1;
+    then h in carr H by A1, XBOOLE_0:def 4;
+    hence thesis by GROUP_2:def 9;
+  end;
+  then reconsider LH = LH0 * (h") as Left_Transversal of H by Th80, GROUP_2:51;
+  take LH;
+  h in {h} by TARSKI:def 1;
+  then h in LH0 by A1, XBOOLE_0:def 4;
+  then h * (h") in LH0 * (h") by GROUP_2:28;
+  hence thesis by GROUP_1:def 5;
+end;
+@ 
+
+\begin{theorem} % Th83
+There exists a right transversal of $H$ containing the identity element.
+\end{theorem}
+
+<<Theorem: $\exists R_{H}\ldotp 1_{G}\in R_{H}$>>=
+theorem :: Th83:
+  ex RH being Right_Transversal of H
+  st 1_G in RH
+proof
+  set RH0 = the Right_Transversal of H;
+  carr H in Right_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A1: (carr H) /\ RH0 = {h} by DefRTL;
+  h in H
+  proof
+    h in {h} by TARSKI:def 1;
+    then h in carr H by A1, XBOOLE_0:def 4;
+    hence thesis by GROUP_2:def 9;
+  end;
+  then reconsider RH = (h") * RH0 as Right_Transversal of H by Th81, GROUP_2:51;
+  take RH;
+  h in {h} by TARSKI:def 1;
+  then h in RH0 by A1, XBOOLE_0:def 4;
+  then (h") * h in (h") * RH0  by GROUP_2:27;
+  hence thesis by GROUP_1:def 5;
+end;
+@ 
+
+\begin{theorem} % Th84
+For each element $g$ of $G$, there exists an element $h$ of $G$ such that
+$gH\cap L_{H}=\{h\}$ and $h\in L_{H}$.
+\end{theorem}
+
+<<Theorem: $\forall g\in G\ldotp\exists h\in G\ldotp gH\cap L_{H}=\{h\}\land h\in H$>>=
+theorem :: Th84:
+  for g being Element of G
+  ex h being Element of G st g*H /\ LH = {h} & h in LH
+proof
+  let g be Element of G;
+  g*H in Left_Cosets H by GROUP_2:def 15;
+  then consider h being Element of G such that
+  A1: g*H /\ LH = {h} by DefLTL;
+  take h;
+  thus g*H /\ LH = {h} by A1;
+  h in {h} by TARSKI:def 1;
+  hence thesis by A1, XBOOLE_0:def 4;
+end;
+@ 
+
+\begin{theorem} % Th85
+For each element $g$ of $G$, there exists an element $h$ of $G$ such that
+$Hg\cap R_{H}=\{h\}$ and $h\in R_{H}$.
+\end{theorem}
+
+<<Theorem: $\forall g\in G\ldotp\exists h\in G\ldotp Hg\cap R_{H}=\{h\}\land h\in H$>>=
+theorem :: Th85:
+  for g being Element of G
+  ex h being Element of G st H*g /\ RH = {h} & h in RH
+proof
+  let g be Element of G;
+  H*g in Right_Cosets H by GROUP_2:def 16;
+  then consider h being Element of G such that
+  A1: H*g /\ RH = {h} by DefRTL;
+  take h;
+  thus H*g /\ RH = {h} by A1;
+  h in {h} by TARSKI:def 1;
+  hence thesis by A1, XBOOLE_0:def 4;
+end;
+@ 
+
+\begin{theorem} % Th86
+Let $g$ be an element of $G$.
+Then $gH\cap L_{H}=\{g\}$ if and only if $g\in L_{H}$.
+\end{theorem}
+
+<<Theorem: $gH\cap L_{H}=\{g\}\iff g\in L_{H}$>>=
+theorem Th86:
+  for g being Element of G
+  holds g*H /\ LH = {g} iff g in LH
+proof
+  let g be Element of G;
+  g*H in Left_Cosets H by GROUP_2:def 15;
+  hence thesis by Th78;
+end;
+@ %def Th86
+
+\begin{theorem} 
+Let $g$ be an element of $G$.
+Then $gH\cap R_{H}=\{g\}$ if and only if $g\in R_{H}$.
+\end{theorem}
+
+<<Theorem: $Hg\cap R_{H}=\{g\}\iff g\in R_{H}$>>=
+theorem Th87:
+  for g being Element of G
+  holds H*g /\ RH = {g} iff g in RH
+proof
+  let g be Element of G;
+  H*g in Right_Cosets H by GROUP_2:def 16;
+  hence thesis by Th79;
+end;
+@ %def Th87
+
+\begin{theorem} 
+Let $g_{1}$, $g_{2}$ be elements of $G$.
+Then $g_{1}\in g_{2}H$ if and only if $g_{2}\in g_{1}H$.
+\end{theorem}
+
+<<Theorem: $g_{1}\in g_{2}H\iff g_{2}\in g_{1}H$>>=
+theorem Th88:
+  for g1,g2 being Element of G
+  holds g1 in g2*H iff g2 in g1*H
+proof
+  let g1,g2 be Element of G;
+  hereby 
+    assume A1: g1 in g2*H;
+    g1 in g1*H by GROUP_2:108;
+    then g1*H = g2*H by A1, XBOOLE_0:3, GROUP_2:115;
+    hence g2 in g1*H by GROUP_2:108;
+  end;
+  assume A1: g2 in g1*H;
+  g2 in g2*H by GROUP_2:108;
+  then g1*H = g2*H by A1, XBOOLE_0:3, GROUP_2:115;
+  hence g1 in g2*H by GROUP_2:108;
+end;
+@ %def Th88
+
+\begin{theorem}
+Let $g_{1}$, $g_{2}$ be elements of $G$.
+Then $g_{1}\in Hg_{2}$ if and only if $g_{2}\in Hg_{1}$.
+\end{theorem}
+
+<<Theorem: $g_{1}\in Hg_{2}\iff g_{2}\in Hg_{1}$>>=
+theorem Th89:
+  for g1,g2 being Element of G
+  holds g1 in H*g2 iff g2 in H*g1
+proof
+  let g1,g2 be Element of G;
+  hereby 
+    assume A1: g1 in H*g2;
+    g1 in H*g1 by GROUP_2:108;
+    then H*g1 = H*g2 by A1, XBOOLE_0:3, GROUP_2:121;
+    hence g2 in H*g1 by GROUP_2:108;
+  end;
+  assume A1: g2 in H*g1;
+  g2 in H*g2 by GROUP_2:108;
+  then H*g1 = H*g2 by A1, XBOOLE_0:3, GROUP_2:121;
+  hence g1 in H*g2 by GROUP_2:108;
+end;
+@ %def Th89
+
+\subsection{Criteria for a subset to be a transversal}
+
+\begin{theorem} % Th90
+Let $A$ be a subset of $G$.
+Then $A$ is a left transversal of $H$ if and only if 
+for each element $g$ of $G$, there exists an element $a$ of $G$
+such that $a\in A$ and $g\in aH$ and for any element $b$ of $G$ such
+that $b\in A$ we have $bH\cap aH=\emptyset$ or $a=b$.
+\end{theorem}
+
+<<Theorem: $A$ is left transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ such that $g\in aH$ and these are unique>>=
+theorem Th90:
+  for A being Subset of G
+  holds A is H-left-transversal-like
+  iff (for g being Element of G
+       ex a being Element of G
+       st a in A & g in a*H
+        & for b being Element of G st b in A
+          holds b*H misses a*H or a = b)
+proof
+  let A be Subset of G;
+  hereby 
+    assume A1: A is H-left-transversal-like;
+    let g be Element of G;
+    g*H is Element of Left_Cosets H by GROUP_2:def 15;
+    then consider a being Element of G such that
+    A2: (g*H) /\ A = {a} by A1;
+    take a;
+    A3: a in {a} by TARSKI:def 1;
+    thus A4: a in A by A2, A3, XBOOLE_0:def 4;
+    a in g*H by A2, A3, XBOOLE_0:def 4;
+    hence g in a*H by Th88;
+    let b be Element of G;
+    assume A5: b in A;
+    assume A6: not b*H misses a*H;
+    {b} = b*H /\ A by A1,A5,Th86
+       .= a*H /\ A by A6, GROUP_2:115
+       .= {a} by A1,A4,Th86;
+    hence a = b by ZFMISC_1:3;
+  end;
+  assume A1: for g being Element of G
+             ex a being Element of G
+             st a in A & g in a*H
+              & for b being Element of G st b in A
+                holds b*H misses a*H or a = b;
+
+  for U being Element of Left_Cosets H
+  ex a being Element of G st U /\ A = {a}
+  proof
+    let U be Element of Left_Cosets H;
+    consider u being Element of G such that
+    A2: U = u*H by GROUP_2:def 15;
+    consider a being Element of G such that
+    A3: a in A & u in a*H and
+    A4: for b being Element of G st b in A holds b*H misses a*H or a=b
+    by A1;
+    take a;
+    for x being object holds x in {a} iff x in U & x in A
+    proof
+      let x be object;
+      a in U by A2, A3, Th88;
+      hence x in {a} implies x in U & x in A by A3, TARSKI:def 1;
+      assume A5: x in U;
+      assume A6: x in A;
+      then reconsider x0=x as Element of G;
+      per cases;
+      suppose x = a;
+        hence thesis by TARSKI:def 1;
+      end;
+      suppose A7: x <> a;
+        a in a*H & a in U by A2, A3, Th88, GROUP_2:108;
+        then A8: a*H = U by A2, GROUP_2:115, XBOOLE_0:3;
+        x0 in x0*H & x0 in U by A5, GROUP_2:108;
+        then x0 in x0*H /\ U by XBOOLE_0:def 4;
+        hence thesis by A4,A6,A7,A8,XBOOLE_0:def 7;
+      end;
+    end;
+
+    hence U /\ A = {a} by XBOOLE_0:def 4;
+  end;
+
+  hence A is H-left-transversal-like;
+end;
+@ %def Th90
+
+\begin{theorem} % Th91
+Let $A$ be a subset of $G$.
+Then $A$ is a right transversal of $H$ if and only if 
+for each element $g$ of $G$, there exists an element $a$ of $G$
+such that $a\in A$ and $g\in Ha$ and for any element $b$ of $G$ such
+that $b\in A$ we have $Hb\cap Ha=\emptyset$ or $a=b$.
+\end{theorem}
+
+<<Theorem: $A$ is right transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ such that $g\in Ha$ and these are unique>>=
+theorem Th91:
+  for A being Subset of G
+  holds A is H-right-transversal-like
+  iff (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+proof
+  let A be Subset of G;
+  thus A is H-right-transversal-like 
+  implies (for g being Element of G
+           ex a being Element of G
+           st a in A & g in H*a
+            & for b being Element of G st b in A
+              holds H*b misses H*a or a = b)
+  proof
+    assume A1: A is H-right-transversal-like;
+    let g be Element of G;
+    H*g is Element of Right_Cosets H by GROUP_2:def 16;
+    then consider a being Element of G such that
+    A2: (H*g) /\ A = {a} by A1;
+    take a;
+    A3: a in {a} by TARSKI:def 1;
+    hence A4: a in A by A2, XBOOLE_0:def 4;
+    a in H*g by A2, A3, XBOOLE_0:def 4;
+    hence g in H*a by Th89;
+    let b be Element of G;
+    assume A5: b in A;
+    assume A6: not H*b misses H*a;
+    {b} = (H*b) /\ A by A1,A5,Th87
+       .= (H*a) /\ A by A6, GROUP_2:121
+       .= {a} by A1,A4,Th87;
+    hence a = b by ZFMISC_1:3;
+  end;
+  assume A1: for g being Element of G
+             ex a being Element of G
+             st a in A & g in H*a
+                & for b being Element of G st b in A
+                  holds H*b misses H*a or a = b;
+  for U being Element of Right_Cosets H
+  ex a being Element of G st U /\ A = {a}
+  proof
+    let U be Element of Right_Cosets H;
+    consider u being Element of G such that
+    A2: U = H*u by GROUP_2:def 16;
+    consider a being Element of G such that
+    A3: a in A & u in H*a and
+    A4: for b being Element of G st b in A holds H*b misses H*a or a=b
+    by A1;
+    take a;
+    for x being object holds x in {a} iff x in U & x in A
+    proof
+      let x be object;
+      a in U by A2, A3, Th89;
+      hence x in {a} implies x in U & x in A by A3, TARSKI:def 1;
+      assume A5: x in U;
+      assume A6: x in A;
+      then reconsider x0=x as Element of G;
+      per cases;
+      suppose x = a;
+        hence thesis by TARSKI:def 1;
+      end;
+      suppose A7: x <> a;
+        a in H*a & a in U by A2, A3, Th89, GROUP_2:108;
+        then A8: H*a = U by A2, GROUP_2:121, XBOOLE_0:3;
+        x0 in H*x0 & x0 in U by A5, GROUP_2:108;
+        then x0 in H*x0 /\ U by XBOOLE_0:def 4;
+        hence thesis by A4, A6, A7, A8, XBOOLE_0:def 7;
+      end;
+    end;
+
+    hence U /\ A = {a} by XBOOLE_0:def 4;
+  end;
+
+  hence A is H-right-transversal-like;
+end;
+@ %def Th91
+
+\begin{theorem} % Th92
+Let $A$ be a subset of $G$.
+Then $A$ is a left transversal of $H$ if and only if 
+for each element $g$ of $G$, there exists elements $a$ and $h$ of $G$
+such that $a\in A$ and $h\in H$ and $g=ah$
+and for any elements $b$ and $h'$ of $G$ such
+that $b\in A$ and $h'\in H$ and $g=bh'$ we have $b=a$ and $h'=h$.
+\end{theorem}
+
+<<Theorem: $A$ is left transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ and $h\in H$ such that $g=ah$ and these are unique>>=
+theorem Th92:
+  for A being Subset of G
+  holds A is H-left-transversal-like
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = a*h
+        & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+          holds b = a & h1 = h)
+proof
+  let A be Subset of G;
+  (for g being Element of G
+  ex a being Element of G
+  st a in A & g in a*H 
+  & for b being Element of G st b in A
+    holds b*H misses a*H or a = b) iff
+  (for g being Element of G
+   ex a,h being Element of G
+   st a in A & h in H & g = a*h
+   & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+     holds b = a & h1 = h)
+  proof
+    thus (for g being Element of G
+    ex a being Element of G
+    st a in A & g in a*H 
+    & for b being Element of G st b in A
+    holds b*H misses a*H or a = b) implies
+    (for g being Element of G
+    ex a,h being Element of G
+    st a in A & h in H & g = a*h
+    & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+    holds b = a & h1 = h)
+    proof
+      assume A1: for g being Element of G
+      ex a being Element of G
+      st a in A & g in a*H
+       & for b being Element of G st b in A holds b*H misses a*H or a = b;
+      let g be Element of G;
+      consider a being Element of G such that
+      A2: a in A & g in a*H and
+      A3: for b being Element of G st b in A holds b*H misses a*H or a = b
+      by A1;
+      consider h being Element of G such that
+      A4: g = a*h & h in H by A2, GROUP_2:103;
+      
+      take a,h;
+      thus a in A by A2;
+      thus h in H by A4;
+      thus g = a*h by A4;
+      let b,h1 be Element of G;
+      assume A5: b in A;
+      assume A6: h1 in H;
+      assume A7: g = b*h1;
+
+      per cases by A3,A5;
+      suppose A8: b*H misses a*H;
+        g in b*H by A6, A7, GROUP_2:103;
+        hence thesis by A2, A8, XBOOLE_0:3;
+      end;
+      suppose A9: a = b;
+        hence a = b;
+        thus thesis by A4, A7, A9, GROUP_1:6;
+      end;
+    end;
+    assume A1: for g being Element of G
+    ex a,h being Element of G
+    st a in A & h in H & g = a*h
+    & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+      holds b = a & h1 = h;
+    let g be Element of G;
+    consider a,h being Element of G such that
+    A2: a in A & h in H & g = a*h and
+    A3: for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+        holds b = a & h1 = h
+    by A1;
+    take a;
+    thus a in A by A2;
+    thus g in a*H by A2,GROUP_2:103;
+    let b be Element of G;
+    assume A4: b in A;
+    assume not b*H misses a*H;
+    then a*H = b*H by GROUP_2:115;
+    then ex h1 being Element of G st g = b * h1 & h1 in H by A2, GROUP_2:103;
+    hence a = b by A3, A4;
+  end;
+  hence thesis by Th90;
+end;
+@ %def Th92
+
+\begin{theorem} % Th93
+Let $A$ be a subset of $G$.
+Then $A$ is a right transversal of $H$ if and only if 
+for each element $g$ of $G$, there exists elements $a$ and $h$ of $G$
+such that $a\in A$ and $h\in H$ and $g=ha$
+and for any elements $b$ and $h'$ of $G$ such
+that $b\in A$ and $h'\in H$ and $g=h'b$ we have $b=a$ and $h'=h$.
+\end{theorem}
+
+<<Theorem: $A$ is right transversal of $H$ iff every $g\in G$ has a corresponding $a\in A$ and $h\in H$ such that $g=ha$ and these are unique>>=
+theorem Th93:
+  for A being Subset of G
+  holds A is H-right-transversal-like
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = h*a
+        & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+          holds b = a & h1 = h)
+proof
+  let A be Subset of G;
+  (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+  iff (for g being Element of G
+       ex a,h being Element of G
+       st a in A & h in H & g = h*a
+        & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+        holds b = a & h1 = h)
+  proof
+    thus (for g being Element of G
+       ex a being Element of G
+       st a in A & g in H*a
+        & for b being Element of G st b in A
+        holds H*b misses H*a or a = b)
+      implies (for g being Element of G
+           ex a,h being Element of G
+           st a in A & h in H & g = h*a
+            & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+              holds b = a & h1 = h)
+    proof
+      assume A1: for g being Element of G
+      ex a being Element of G
+      st a in A & g in H*a
+       & for b being Element of G st b in A holds H*b misses H*a or a = b;
+      let g be Element of G;
+      consider a being Element of G such that
+      A2: a in A & g in H*a and
+      A3: for b being Element of G st b in A holds H*b misses H*a or a = b
+      by A1;
+      consider h being Element of G such that
+      A4: g = h*a & h in H by A2,GROUP_2:104;
+      take a,h;
+      thus a in A by A2;
+      thus h in H by A4;
+      thus g = h*a by A4;
+      let b,h1 be Element of G;
+      assume A5: b in A;
+      assume A6: h1 in H;
+      assume A7: g = h1*b;
+      per cases by A3,A5;
+      suppose A8: H*b misses H*a;
+        g in H*b by A6, A7, GROUP_2:104;
+        hence thesis by A2, A8, XBOOLE_0:3;
+      end;
+      suppose a = b;
+        hence thesis by A4, A7, GROUP_1:6;
+      end;
+    end;
+    assume A1: for g being Element of G ex a,h being Element of G st a in A & h in H & g = h*a & for b,h1 being Element of G st b in A & h1 in H & g = h1*b holds b = a & h1 = h;
+    let g be Element of G;
+    consider a,h being Element of G such that
+    A2: a in A & h in H & g = h*a and
+    A3: for b,h1 being Element of G st b in A & h1 in H & g = h1*b holds b = a & h1 = h
+    by A1;
+    take a;
+    thus a in A by A2;
+    thus g in H*a by A2, GROUP_2:104;
+    let b be Element of G;
+    assume A4: b in A;
+    assume not H*b misses H*a;
+    then H*b = H*a by GROUP_2:121;
+    then consider h1 being Element of G such that
+    A6: g = h1 * b & h1 in H by A2, GROUP_2:104;
+    thus a = b by A3,A4,A6;
+  end;
+  hence thesis by Th91;
+end;
+@ %def Th93
+
+\begin{theorem} % Th94
+Let $K$ be a subgroup of $H$.
+Let $A$ be a subset of $G$.
+Then $A$ is a left transversal of $K$ in $H$
+if and only if 
+for each element $h$ of $G$ such that $h\in H$
+there exists corresponding elements $a$ and $k$ of $G$ such that
+such that $a\in A$ and $k\in K$ and $h=ak$
+and for any elements $b$ and $k'$ of $G$ such
+that $b\in A$ and $k'\in K$ and $h=bk'$ we have $b=a$ and $k'=k$.
+\end{theorem}
+
+<<Theorem: $A\subset G$ is a left transversal of $K\subgroup H$ iff for each $h\in H$ there exists unique $a\in A$ and $k\in K$ such that $h=ak$>>=
+theorem Th94:
+  for K being Subgroup of H
+  for A being Subset of H
+  holds A is (K qua Subgroup of H)-left-transversal-like
+  iff (for h being Element of G st h in H
+       ex a,k being Element of G
+       st a in A & k in K & h = a*k
+        & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+          holds b = a & k1 = k)
+proof
+  let K be Subgroup of H;
+  let A be Subset of H;
+  (for h being Element of G st h in H
+   ex a,k being Element of G
+   st a in A & k in K & h = a*k
+    & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+      holds b = a & k1 = k)
+  iff (for h being Element of H
+       ex a,k being Element of H
+       st a in A & k in K & h = a*k
+        & for b,k1 being Element of H st b in A & k1 in K & h = b*k1
+        holds b = a & k1 = k)
+  proof
+    thus (for h being Element of G st h in H
+    ex a,k being Element of G
+    st a in A & k in K & h = a*k
+     & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+       holds b = a & k1 = k)
+    implies (for h being Element of H
+    ex a,k being Element of H
+    st a in A & k in K & h = a*k
+     & for b,k1 being Element of H st b in A & k1 in K & h = b*k1
+       holds b = a & k1 = k)
+    proof
+      assume A1: for h being Element of G st h in H
+      ex a,k being Element of G st a in A & k in K & h = a*k
+      & for b,k1 being Element of G st b in A & k1 in K & h = b*k1
+        holds b = a & k1 = k;
+      let h be Element of H;
+      reconsider gh=h as Element of G by GROUP_2:42;
+      h in H; then
+      consider ga,gk being Element of G such that
+      A2: ga in A & gk in K & gh = ga*gk and
+      A3: for b,k1 being Element of G st b in A & k1 in K & gh = b*k1
+          holds b = ga & k1 = gk
+      by A1;
+      reconsider a = ga, k = gk as Element of H by A2, GROUP_2:42;
+      take a,k;
+      thus a in A by A2;
+      thus k in K by A2;
+      thus h = a*k by A2, GROUP_2:43;
+      let b,k1 be Element of H;
+      assume A4: b in A;
+      assume A5: k1 in K;
+      assume A6: h = b*k1;
+      reconsider gb = b, gk1=k1 as Element of G by GROUP_2:42;
+      h = gb * gk1 by A6,GROUP_2:43;
+      hence thesis by A4,A5,A3;
+    end;
+    assume A1: for h being Element of H ex a,k being Element of H st a in A & k in K & h = a*k & for b,k1 being Element of H st b in A & k1 in K & h = b*k1 holds b = a & k1 = k;
+    let h be Element of G;
+    assume h in H;
+    then reconsider hh=h as Element of H;
+    consider ha,hk being Element of H such that
+    A2: ha in A & hk in K & hh = ha*hk and
+    A3: for b,k1 being Element of H st b in A & k1 in K & h = b*k1 holds b = ha & k1 = hk
+    by A1;
+    ha in G & hk in G by GROUP_2:41;
+    then reconsider a=ha, k=hk as Element of G;
+    take a,k;
+    thus a in A by A2;
+    thus k in K by A2;
+    thus h = a*k by A2, GROUP_2:43;
+    let b,k1 be Element of G;
+    assume A4: b in A;
+    assume A5: k1 in K;
+    assume A6: h = b*k1;
+    b in H & k1 in H by A4,A5,GROUP_2:41;
+    then reconsider hb=b, hk1=k1 as Element of H;
+    b*k1 = hb*hk1 by GROUP_2:43;
+    hence b = a & k1 = k by A3, A4, A5, A6;
+  end;
+  
+  hence thesis by Th92;
+end;
+@ %def Th94
+
+\begin{theorem} % Th95
+Let $K$ be a subgroup of $H$.
+Let $A$ be a subset of $G$.
+Then $A$ is a right transversal of $K$ in $H$
+if and only if 
+for each element $h$ of $G$ such that $h\in H$
+there exists corresponding elements $a$ and $k$ of $G$ such that
+such that $a\in A$ and $k\in K$ and $h=ka$
+and for any elements $b$ and $k'$ of $G$ such
+that $b\in A$ and $k'\in K$ and $h=k'b$ we have $b=a$ and $k'=k$.
+\end{theorem}
+
+<<Theorem: $A\subset G$ is a right transversal of $K\subgroup H$ iff for each $h\in H$ there exists unique $a\in A$ and $k\in K$ such that $h=ka$>>=
+theorem Th95:
+  for K being Subgroup of H
+  for A being Subset of H
+  holds A is (K qua Subgroup of H)-right-transversal-like
+  iff (for h being Element of G st h in H
+       ex a,k being Element of G
+       st a in A & k in K & h = k*a
+        & for b,k1 being Element of G st b in A & k1 in K & h = k1*b
+          holds b = a & k1 = k)
+proof
+  let K be Subgroup of H;
+  let A be Subset of H;
+  (for h being Element of G st h in H
+  ex a,k being Element of G
+  st a in A & k in K & h = k*a
+   & for b,k1 being Element of G st b in A & k1 in K & h = k1*b
+     holds b = a & k1 = k)
+  iff (for h being Element of H
+       ex a,k being Element of H
+       st a in A & k in K & h = k*a
+        & for b,k1 being Element of H st b in A & k1 in K & h = k1*b
+        holds b = a & k1 = k)
+  proof
+    hereby 
+      assume A1: for h being Element of G st h in H ex a,k being Element of G st a in A & k in K & h = k*a & for b,k1 being Element of G st b in A & k1 in K & h = k1*b holds b = a & k1 = k;
+      let h be Element of H;
+      reconsider gh=h as Element of G by GROUP_2:42;
+      h in H; then
+      consider ga,gk being Element of G such that
+      A2: ga in A & gk in K & gh = gk*ga and
+      A3: for b,k1 being Element of G st b in A & k1 in K & gh = k1*b
+          holds b = ga & k1 = gk
+      by A1;
+      reconsider a = ga, k = gk as Element of H by A2, GROUP_2:42;
+      take a,k;
+      thus a in A by A2;
+      thus k in K by A2;
+      thus h = k*a by A2, GROUP_2:43;
+      let b,k1 be Element of H;
+      assume A4: b in A;
+      assume A5: k1 in K;
+      assume A6: h = k1*b;
+      reconsider gb = b, gk1=k1 as Element of G by GROUP_2:42;
+      k1 * b = gk1 * gb by GROUP_2:43;
+      hence b = a & k1 = k by A3,A4,A5,A6;
+    end;
+    assume A1: for h being Element of H ex a,k being Element of H st a in A & k in K & h = k*a & for b,k1 being Element of H st b in A & k1 in K & h = k1*b holds b = a & k1 = k;
+    let h be Element of G;
+    assume h in H;
+    then reconsider hh=h as Element of H;
+    consider ha,hk being Element of H such that
+    A2: ha in A & hk in K & hh = hk*ha and
+    A3: for b,k1 being Element of H st b in A & k1 in K & h = k1*b holds b = ha & k1 = hk
+    by A1;
+    ha in G & hk in G by GROUP_2:41;
+    then reconsider a=ha, k=hk as Element of G;
+    take a,k;
+    thus a in A by A2;
+    thus k in K by A2;
+    thus h = k*a by A2, GROUP_2:43;
+    let b,k1 be Element of G;
+    assume A4: b in A;
+    assume A5: k1 in K;
+    assume A6: h = k1*b;
+    b in H & k1 in H by A4,A5,GROUP_2:41;
+    then reconsider hb=b, hk1=k1 as Element of H;
+    k1*b = hk1*hb by GROUP_2:43;
+    hence b = a & k1 = k by A3, A4, A5, A6;
+  end;
+  
+  hence thesis by Th93;
+end;
+@ %def Th95
+
+\subsection{Operations on Transversals}
+
+\begin{theorem} % LTLProductProperty
+Let $K$ be a subgroup of $H$.
+Let $L_{K}$ be a left transversal of $K$ in $H$,
+and let $L_{H}$ be a left transversal of $H$ in $G$.
+Then $L_{H}L_{K}$ is a left transversal of $K$ in $G$.
+\end{theorem}
+
+<<Theorem: if $L_{K}$ is a left transversal of $K$ in $H$, then $L_{H}L_{K}$ is a left transversal of $K$ in $G$>>=
+theorem LTLProductProperty:
+  for K being Subgroup of H
+  for LK being Left_Transversal of (K qua Subgroup of H)
+  for LH being Left_Transversal of H
+  holds LH * LK is (K qua Subgroup of G)-left-transversal-like
+proof
+  let K be Subgroup of H;
+  let LK be Left_Transversal of (K qua Subgroup of H);
+  let LH be Left_Transversal of H;
+
+  for g being Element of G
+  ex a,k being Element of G
+  st a in LH * LK & k in K & g = a*k
+  & for b,k1 being Element of G st b in LH*LK & k1 in K & g = b*k1
+  holds b = a & k1 = k
+  proof
+    let g be Element of G;
+    consider ah,h being Element of G such that
+    A1: ah in LH & h in H & g = ah*h and
+    A2: for b1,h1 being Element of G st b1 in LH & h1 in H & g = b1*h1 holds b1 = ah & h1 = h
+    by Th92;
+    consider ak,k being Element of G such that
+    A3: ak in LK & k in K & h = ak*k and
+    A4: for b1,k1 being Element of G st b1 in LK & k1 in K & h = b1*k1 holds b1 = ak & k1 = k
+    by A1,Th94;
+    take a = ah * ak;
+    take k;
+    thus a in LH * LK by A1,A3;
+    thus k in K by A3;
+    thus g = a * k by A1,A3,GROUP_1:def 3;
+    let b,k1 be Element of G;
+    assume A5: b in LH*LK;
+    assume A6: k1 in K;
+    assume A7: g = b*k1;
+    consider bh,bk being Element of G such that
+    A8: b = bh * bk & bh in LH & bk in LK by A5;
+
+    A9: bk*k1 in H
+    proof
+      B1: bk in H by A8;
+      k1 in H by A6, GROUP_2:40;
+      hence thesis by B1, GROUP_2:50;
+    end;
+
+    A10: g = bh * (bk * k1) by A7, A8, GROUP_1:def 3;
+    then A11: bk in LK & k1 in K & bk * k1 = h by A2,A6,A8,A9;
+    then bk = ak & k1 = k by A4;
+    then g = ah * (ak * k) by A2,A8,A9,A10
+          .= (ah * ak) * k by GROUP_1:def 3
+          .= a * k1 by A4,A11;
+    hence b = a by A7, GROUP_1:6;
+    thus k1 = k by A4,A11;
+  end;
+
+  hence thesis by Th92;
+end;
+@ %def LTLProductProperty
+
+\begin{theorem} % RTLProductProperty
+Let $K$ be a subgroup of $H$.
+Let $R_{K}$ be a right transversal of $K$ in $H$,
+and let $R_{H}$ be a right transversal of $H$ in $G$.
+Then $R_{K}R_{H}$ is a right transversal of $K$ in $G$.
+\end{theorem}
+
+<<Theorem: if $R_{K}$ is a right transversal of $K$ in $H$, then $R_{K}R_{H}$ is a right transversal of $K$ in $G$>>=
+theorem RTLProductProperty:
+  for K being Subgroup of H
+  for RK being Right_Transversal of K
+  for RH being Right_Transversal of H
+  holds RK * RH is (K qua Subgroup of G)-right-transversal-like
+proof
+  let K be Subgroup of H;
+  let RK be Right_Transversal of K;
+  let RH be Right_Transversal of H;
+
+  for g being Element of G
+  ex a,k being Element of G
+  st a in RK * RH & k in K & g = k*a
+  & for b,k1 being Element of G st b in RK*RH & k1 in K & g = k1*b
+  holds b = a & k1 = k
+  proof
+    let g be Element of G;
+    consider ah,h being Element of G such that
+    A1: ah in RH & h in H & g = h*ah and
+    A2: for b,h1 being Element of G st b in RH & h1 in H & g = h1*b
+        holds b = ah & h1 = h
+    by Th93;
+    consider ak,k being Element of G such that
+    A3: ak in RK & k in K & h = k*ak and
+    A4: for b1,k1 being Element of G st b1 in RK & k1 in K & h = k1*b1 holds b1 = ak & k1 = k
+    by A1,Th95;
+    take a = ak*ah,k;
+    thus a in RK * RH by A1,A3;
+    thus k in K by A3;
+    thus g = k*a by A1, A3, GROUP_1:def 3;
+    let b,k1 be Element of G;
+    assume A5: b in RK*RH;
+    assume A6: k1 in K;
+    assume A7: g = k1*b;
+    consider bk,bh being Element of G such that
+    A8: b = bk*bh & bk in RK & bh in RH by A5;
+
+    A9: k1*bk in H
+    proof
+      B1: bk in H by A8;
+      k1 in H by A6, GROUP_2:40;
+      hence thesis by B1, GROUP_2:50;
+    end;
+
+    A10: g = (k1 * bk) * bh by A7, A8, GROUP_1:def 3;
+    then A11: bh = ah & (k1 * bk) = h by A2,A8,A9;
+    then bk = ak & k1 = k by A4,A6,A8;
+    then g = (k * ak) * ah by A2,A8,A9,A10
+          .= k * (ak * ah) by GROUP_1:def 3
+          .= k1 * a by A4,A6,A8,A11;
+    hence b = a by A7, GROUP_1:6;
+    thus k1 = k by A4,A6,A8,A11;
+  end;
+
+  hence RK * RH is (K qua Subgroup of G)-right-transversal-like by Th93;
+end;
+@ %def RTLProductProperty
+
+\begin{registration}
+Let $K$ be a subgroup of $H$.
+Let $L_{H}$ be a left transversal of $H$ in $G$, $L_{K}$ be a left transversal
+of $K$ in $H$.
+Then we observe $L_{H}L_{K}$ is a left transversal of $K$ in $G$.
+\end{registration}
+
+<<Register: $L_{H}L_{K}$ is a left transversal of $K$ in $G$>>=
+registration
+  let G, H;
+  let K be Subgroup of H;
+  let LH be Left_Transversal of H;
+  let LK be Left_Transversal of K;
+  cluster LH * LK -> K-left-transversal-like;
+  correctness by LTLProductProperty;
+end;
+@ 
+
+\begin{registration}
+Let $K$ be a subgroup of $H$.
+Let $R_{H}$ be a right transversal of $H$ in $G$, $R_{K}$ be a right transversal
+of $K$ in $H$.
+Then we observe $R_{K}R_{H}$ is a right transversal of $K$ in $G$.
+\end{registration}
+
+<<Register: $R_{K}R_{H}$ is a right transversal of $K$ in $G$>>=
+registration
+  let G, H;
+  let K be Subgroup of H;
+  let RH be Right_Transversal of H;
+  let RK be Right_Transversal of K;
+  cluster RK * RH -> K-right-transversal-like;
+  correctness by RTLProductProperty;
+end;
+@ 
+
+\begin{theorem} % Th79a
+Let $g$ be an element of $G$, let $A$ be a subset of $A$.
+We have $(gA)^{-1}=A^{-1}g^{-1}$.
+\end{theorem}
+
+<<Theorem: if $g\in G$ and $A\subset G$, then $(gA)^{-1}=A^{-1}g^{-1}$>>=
+theorem Th98:
+  for g being Element of G
+  for A being Subset of G
+  holds (g * A)" = (A ")*(g ")
+proof
+  let g be Element of G;
+  let A be Subset of G;
+  for x being object
+  holds x in (g * A)" iff x in (A ")*(g ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (g * A)";
+      then consider gx being Element of G such that
+      A1: x = gx" & gx in g * A by GROUP_2:2;
+      consider a being Element of G such that
+      A2: gx = g * a & a in A by A1, GROUP_2:27;
+      A3: gx " = (a ")*(g ") by A2,GROUP_1:17;
+      a" in A" by A2, GROUP_2:2;
+      hence x in (A ")*(g ") by A1,A3, GROUP_2:28;
+    end;
+    assume x in (A ")*(g ");
+    then consider ai being Element of G such that
+    A1: x = ai*(g ") & ai in A" by GROUP_2:28;
+    consider a being Element of G such that
+    A2: a" = ai & a in A by A1, GROUP_2:2;
+    A3: g * a in g*A by A2,GROUP_2:27;
+    x = (g * a)" by A1,A2,GROUP_1:17;
+    hence x in (g * A)" by A3, GROUP_2:2;
+  end;
+  hence (g * A)" = (A ")*(g ") by TARSKI:2;
+end;
+@ %def Th98
+
+\begin{theorem} % Th79b
+Let $g$ be an element of $G$, let $A$ be a subset of $A$.
+We have $(Ag)^{-1}=g^{-1}A^{-1}$.
+\end{theorem}
+
+<<Theorem: $(Ag)^{-1}=g^{-1}A^{-1}$>>=
+theorem Th99:
+  for g being Element of G
+  for A being Subset of G
+  holds (A * g)" = (g ")*(A ")
+proof
+  let g be Element of G;
+  let A be Subset of G;
+  for x being object
+  holds x in (A * g)" iff x in (g ")*(A ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (A * g)";
+      then consider ag being Element of G such that
+      A1: x = ag" & ag in A * g by GROUP_2:2;
+      consider a being Element of G such that
+      A2: ag = a*g & a in A by A1, GROUP_2:28;
+      A3: a" in A" by A2,GROUP_2:2;
+      ag" = (g ")*(a ") by A2,GROUP_1:17;
+      hence x in (g ")*(A ") by A1,A3,GROUP_2:27;
+    end;
+    assume x in (g ")*(A ");
+    then consider ai being Element of G such that
+    A1: x = (g ")*ai & ai in A " by GROUP_2:27;
+    consider a being Element of G such that
+    A2: ai = a" & a in A by A1, GROUP_2:2;
+    A3: a * g in A*g by A2,GROUP_2:28;
+    x = (a * g)" by A1,A2,GROUP_1:17;
+    hence x in (A * g)" by A3, GROUP_2:2;
+  end;
+
+  hence (A * g)" = (g ")*(A ") by TARSKI:2;
+end;
+@ %def Th99
+
+\begin{theorem} % Th79c
+Let $A$ and $B$ be subsets of $G$.
+Then $(A\cap B)^{-1}=A^{-1}\cap B^{-1}$.
+\end{theorem}
+
+<<Theorem: $(A\cap B)^{-1}=A^{-1}\cap B^{-1}$>>=
+theorem Th100:
+  for A,B being Subset of G
+  holds (A /\ B)" = (A ") /\ (B ")
+proof
+  let A,B be Subset of G;
+  for x being object
+  holds x in (A /\ B)" iff x in (A ") /\ (B ")
+  proof
+    let x be object;
+    hereby 
+      assume x in (A /\ B)";
+      then consider ab being Element of G such that
+      A1: x = ab" & ab in (A /\ B) by GROUP_2:2;
+      ab in A & ab in B by A1, XBOOLE_0:def 4;
+      then ab" in A" & ab" in B" by GROUP_2:2;
+      hence x in (A ") /\ (B ") by A1, XBOOLE_0:def 4;
+    end;
+    assume x in (A ") /\ (B ");
+    then A1: x in A" & x in B" by XBOOLE_0:def 4;
+    then consider a being Element of G such that
+    A2: x = a" & a in A by GROUP_2:2;
+    a in B
+    proof
+      ex b being Element of G st a" = b" & b in B by A1,A2,GROUP_2:2;
+      hence thesis by GROUP_1:9;
+    end;
+    then a in A /\ B by A2, XBOOLE_0:def 4;
+    hence x in (A /\ B)" by A2, GROUP_2:2;
+  end;
+  hence (A /\ B)" = (A ") /\ (B ") by TARSKI:2;
+end;
+@ %def Th100
+
+\begin{theorem} % Th90
+We have $R_{H}^{-1}$ be a left transversal of $H$
+\end{theorem}
+
+<<Theorem: $R_{H}^{-1}$ is a left transversal of $H$>>=
+theorem Th101:
+  RH " is Left_Transversal of H
+proof
+  for U being Element of Left_Cosets H
+  ex g being Element of G st U /\ (RH " ) = {g}
+  proof
+    let U be Element of Left_Cosets H;
+    consider g0 being Element of G such that
+    A1: U = g0*H by GROUP_2:def 15;
+    U = g0 * (carr H) by A1, GROUP_2:def 13;
+    then
+    U" = ((carr H)") * (g0 ") by Th98
+      .= (carr H) * (g0 ") by GROUP_2:77
+      .= H * (g0 ") by GROUP_2:def 14;
+    then U" in Right_Cosets H by GROUP_2:def 16;
+    then consider g1 being Element of G such that
+    A2: (U") /\ RH = {g1} by DefRTL;
+    A3: ((U ") /\ RH)" = ((U ") ") /\ (RH ") by Th100
+                      .= U /\ (RH ");
+    take g = g1 ";
+    thus U /\ (RH " ) = {g} by A2, A3, GROUP_2:3;
+  end;
+  hence RH " is Left_Transversal of H by DefLTL;
+end;
+@ %def Th101
+
+\begin{theorem}
+We have $L_{H}^{-1}$ be a right transversal of $H$.
+\end{theorem}
+
+<<Theorem: $L_{H}^{-1}$ is a right transversal of $H$>>=
+theorem Th102:
+  LH " is Right_Transversal of H
+proof
+  for U being Element of Right_Cosets H
+  ex g being Element of G st U /\ (LH ") = {g}
+  proof
+    let U be Element of Right_Cosets H;
+    consider g0 being Element of G such that
+    A1: U = H*g0 by GROUP_2:def 16;
+    U = (carr H) * g0 by A1, GROUP_2:def 14; then
+    U" = (g0 ") * ((carr H) ") by Th99
+      .= (g0 ") * (carr H) by GROUP_2:77
+      .= (g0 ") * H by GROUP_2:def 13;
+    then U" in Left_Cosets H by GROUP_2:def 15;
+    then consider g1 being Element of G such that
+    A2: (U") /\ LH = {g1} by DefLTL;
+    A3: ((U ") /\ LH)" = ((U ") ") /\ (LH ") by Th100
+                      .= U /\ (LH ");
+    take g = g1 ";
+    thus U /\ (LH ") = {g} by A2, A3, GROUP_2:3;
+  end;
+  hence LH " is Right_Transversal of H by DefRTL;
+end;
+@ %def Th102
+
+\begin{registration}
+We observe $R_{H}^{-1}$ is a left transversal of $H$.
+\end{registration}
+
+<<Register: $R_{H}^{-1}$ is a left transversal of $H$>>=
+registration
+  let G,H;
+  let RH be Right_Transversal of H;
+  cluster RH " -> H-left-transversal-like;
+  correctness by Th101;
+end;
+@ 
+
+\begin{registration}
+We observe $L_{H}^{-1}$ is a right transversal of $H$.
+\end{registration}
+
+<<Register: $L_{H}^{-1}$ is a right transversal of $H$>>=
+registration
+  let G,H;
+  let LH be Left_Transversal of H;
+  cluster LH " -> H-right-transversal-like;
+  correctness by Th102;
+end;
+@ 
+
