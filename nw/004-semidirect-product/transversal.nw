@@ -23,6 +23,8 @@ begin :: Transversals of Subgroups
 
 <<Definition: Transversal of $H$>>
 
+<<Register: sethood for left and right transversals>>
+
 <<Reserve: $L_{H}$ and $R_{H}$ for left (and right) transversal of $H$>>
 
 <<Theorem: $U\cap L_{H}=\{g\}$ iff $U=gH$ and $g\in L_{H}$>>
@@ -82,6 +84,30 @@ begin :: Transversals of Subgroups
 <<Register: $R_{H}^{-1}$ is a left transversal of $H$>>
 
 <<Register: $L_{H}^{-1}$ is a right transversal of $H$>>
+
+<<Theorem: $A$ is left transversal of $H$ iff $AH=G$ and $\forall s,t\in A$, $s = t$ or $st^{-1}\notin H$>>
+
+<<Theorem: $A$ is right transversal of $H$ iff $HA=G$ and $\forall s,t\in A$, $s = t$ or $st^{-1}\notin H$>>
+
+<<Theorem: $L_{H}H=G$>>
+
+<<Theorem: $HR_{H}=G$>>
+
+<<Theorem: if $K\subgroup G$ is a left transversal of $H$, then $H\cap K=\trivialGroup$>>
+
+<<Theorem: if $K\subgroup G$ is a right transversal of $H$, then $H\cap K=\trivialGroup$>>
+
+<<Theorem: for $a,c\in H_{1}$ and $b,d\in H_{2}$, if $ab=cd$ then $c^{-1}a=db^{-1}$ and $c^{-1}a\in H_{1}\cap H_{2}$ and $db^{-1}\in H_{1}\cap H_{2}$>>
+
+<<Theorem: If either $gh^{-1}\in\trivialSubgroup$ or $g^{-1}h\in\trivialSubgroup$, then $g=h$>>
+
+<<Theorem: $H$, $N$ are complements in $G$ implies every $g\in G$ factors uniquely as $g=hn$>>
+
+<<Theorem: $H$, $N$ are complements in $G$ implies every $g\in G$ factors uniquely as $g=nh$>>
+
+<<Theorem: $H$, $N$ are complements implies $H$ is left transversal of $N$>>
+
+<<Theorem: $H$, $N$ are complements implies $H$ is right transversal of $N$>>
 @
 
 \begin{definition}
@@ -389,6 +415,37 @@ We add these new modes to our vocabulary list.
 MLeft_Transversal
 MRight_Transversal
 @
+
+\begin{registration}
+We should register the fact that transversals form a set. This requires
+registering the sethood for Subsets of a group.
+\end{registration}
+
+<<Register: sethood for left and right transversals>>=
+:: Probably should be in GROUP_1
+registration
+  let G;
+  sethood of Subset of G
+  proof
+    take X = {a where a is Element of bool (the carrier of G) : not contradiction};
+    thus thesis;
+  end;
+end;
+
+registration
+  let G,H;
+  sethood of H-left-transversal-like Subset of G
+  proof
+    take X = {a where a is Subset of G : a is H-left-transversal-like};
+    thus thesis;
+  end;
+  sethood of H-right-transversal-like Subset of G
+  proof
+    take X = {a where a is Subset of G : a is H-right-transversal-like};
+    thus thesis;
+  end;
+end;
+@ 
 
 \begin{reserve}
 We reserve $L_{H}$ for a left transversal of $H$, and $R_{H}$ for a
@@ -1637,3 +1694,451 @@ registration
 end;
 @ 
 
+\begin{theorem}
+Let $A\subset G$.
+Then $A$ is an $H$-left transversal if and only if $AH=G$ and for all
+$s,t\in G$ such that $s\neq t$ and $s,t\in A$ we have $st^{-1}\notin H$.
+\end{theorem}
+
+<<Theorem: $A$ is left transversal of $H$ iff $AH=G$ and $\forall s,t\in A$, $s = t$ or $st^{-1}\notin H$>>=
+:: Kurzweil and Stellmacher, proposition 1.9, but for both left and right
+:: transversals of H
+theorem Th102:
+  for A being Subset of G
+  holds A is H-left-transversal-like iff A*H = the carrier of G &
+  (for s,t being Element of G st s <> t & s in A & t in A
+  holds not (s") * t in H)
+proof
+  let A be Subset of G;
+  hereby 
+    assume A1: A is H-left-transversal-like;
+    for g being Element of G
+    holds g in A*H
+    proof
+      let g be Element of G;
+      ex a,h being Element of G
+      st a in A & h in H & g = a*h
+         & for b,h1 being Element of G st b in A & h1 in H & g = b*h1
+           holds b = a & h1 = h
+      by A1, Th92;
+      hence thesis by GROUP_2:94;
+    end;
+    then the carrier of G c= A*H;
+    hence A*H = the carrier of G by XBOOLE_0:def 10;
+    let s,t be Element of G;
+    assume A2: s <> t;
+    assume A3: s in A;
+    assume A4: t in A;
+    (s") * t in H implies contradiction
+    proof
+      assume A5: (s") * t in H;
+      {s} = s*H /\ A by A1, A3, Th86
+         .= t*H /\ A by A5, GROUP_2:114
+         .= {t} by A1, A4, Th86;
+      hence contradiction by A2, ZFMISC_1:3;
+    end;
+    hence not (s") * t in H;
+  end;
+  assume A1: A*H = the carrier of G;
+  assume A2: for s,t being Element of G st s <> t & s in A & t in A holds not (s") * t in H;
+  for g being Element of G
+  ex a being Element of G
+  st a in A & g in a*H
+  & for b being Element of G st b in A
+  holds b*H misses a*H or a = b
+  proof
+    let g be Element of G;
+    consider a,h being Element of G such that
+    A3: g = a*h & a in A & h in H by A1, GROUP_2:94;
+    take a;
+    thus a in A by A3;
+    thus g in a*H by A3,GROUP_2:103;
+    let b be Element of G;
+    assume A4: b in A;
+    assume A5: not b*H misses a*H;
+    a*H in Left_Cosets H & b*H in Left_Cosets H by GROUP_2:def 15;
+    then (a") * b in H by A5, Th65, GROUP_2:114;
+    hence a = b by A2,A3,A4;
+  end;
+  hence A is H-left-transversal-like by Th90;
+end;
+@ %def Th102
+
+\begin{theorem}
+Let $A\subset G$.
+Then $A$ is an $H$-right transversal if and only if $HA=G$ and for all
+$s,t\in G$ such that $s\neq t$ and $s,t\in A$ we have $st^{-1}\notin H$.
+\end{theorem}
+
+<<Theorem: $A$ is right transversal of $H$ iff $HA=G$ and $\forall s,t\in A$, $s = t$ or $st^{-1}\notin H$>>=
+theorem Th103:
+  for A being Subset of G
+  holds A is H-right-transversal-like iff H*A = the carrier of G &
+  (for s,t being Element of G st s <> t & s in A & t in A
+  holds not s * (t") in H)
+proof
+  let A be Subset of G;
+  hereby 
+    assume A1: A is H-right-transversal-like;
+    for g being Element of G
+    holds g in H*A
+    proof
+      let g be Element of G;
+      ex a,h being Element of G
+      st a in A & h in H & g = h*a
+       & for b,h1 being Element of G st b in A & h1 in H & g = h1*b
+         holds b = a & h1 = h
+      by A1, Th93;
+      hence g in H*A by GROUP_2:95;
+    end;
+
+    then the carrier of G c= H*A;
+    hence H*A = the carrier of G by XBOOLE_0:def 10;
+    let s,t be Element of G;
+    assume A2: s <> t;
+    assume A3: s in A;
+    assume A4: t in A;
+    s * (t") in H implies contradiction
+    proof
+      assume A5: s * (t") in H;
+      {s} = H*s /\ A by A1, A3, Th87
+         .= H*t /\ A by A5, GROUP_2:120
+         .= {t} by A1, A4, Th87;
+      hence contradiction by A2, ZFMISC_1:3;
+    end;
+    hence not s * (t") in H;
+  end;
+  assume A1: H*A = the carrier of G;
+  assume A2: for s,t being Element of G st s <> t & s in A & t in A
+  holds not s * (t") in H;
+  for g being Element of G
+  ex a being Element of G
+  st a in A & g in H*a
+  & for b being Element of G st b in A
+  holds H*b misses H*a or a = b
+  proof
+    let g be Element of G;
+    consider h,a being Element of G such that
+    A3: g = h*a & h in H & a in A by A1, GROUP_2:95;
+    take a;
+    thus a in A by A3;
+    thus g in H*a by A3,GROUP_2:104;
+    let b be Element of G;
+    assume A4: b in A;
+    assume A5: not H*b misses H*a;
+    H*a in Right_Cosets H & H*b in Right_Cosets H by GROUP_2:def 16;
+    then b * (a") in H by A5, Th66, GROUP_2:120;
+    hence a = b by A2,A3,A4;
+  end;
+
+  hence A is H-right-transversal-like by Th91;
+end;
+@ %def Th103
+
+\begin{theorem}
+For any left $H$-transversal $L_{H}$, we have $L_{H}H=G$.
+\end{theorem}
+
+<<Theorem: $L_{H}H=G$>>=
+theorem Th104:
+  LH*H = the carrier of G
+proof
+  for g being Element of G
+  holds g in LH*H
+  proof
+    let g be Element of G;
+    ex a,h being Element of G st a in LH & h in H & g = a*h
+    & for b,h1 being Element of G st b in LH & h1 in H & g = b*h1
+      holds b = a & h1 = h by Th92;
+    hence g in LH*H by GROUP_2:94;
+  end;
+
+  then the carrier of G c= LH*H;
+  hence thesis by XBOOLE_0:def 10;
+end;
+@ %def Th104
+
+\begin{theorem}
+For any right $H$-transversal $R_{H}$, we have $HR_{H}=G$ as sets.
+\end{theorem}
+
+<<Theorem: $HR_{H}=G$>>=
+theorem Th105:
+  H * RH = the carrier of G
+proof
+  for g being Element of G holds g in H*RH
+  proof
+    let g be Element of G;
+    ex a,h being Element of G st a in RH & h in H & g = h*a
+    & for b,h1 being Element of G st b in RH & h1 in H & g = h1*b
+      holds b = a & h1 = h by Th93;
+    hence g in H*RH by GROUP_2:95;
+  end;
+  then the carrier of G c= H * RH;
+  hence thesis by XBOOLE_0:def 10;
+end;
+@ %def Th105
+
+\begin{theorem}
+Let $K$ be a subgroup of $G$. If the set underlying $K$ is a left transversal
+of $H$, then $H\cap K=\trivialGroup$.
+\end{theorem}
+
+<<Theorem: if $K\subgroup G$ is a left transversal of $H$, then $H\cap K=\trivialGroup$>>=
+theorem Th106:
+  for K being Subgroup of G
+  st carr K is H-left-transversal-like
+  holds H /\ K = (1).G
+proof
+  let K be Subgroup of G;
+  assume A1: carr K is H-left-transversal-like;
+  carr H in Left_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A2: (carr H) /\ (carr K) = {h} by A1;
+  A3: carr (H /\ K) = {h} by A2, GROUP_2:81;
+  then A4: H /\ K is finite by GROUP_2:def 9;
+  card (H /\ K) = card {h} by A3, GROUP_2:def 9
+               .= 1 by CARD_1:30;
+  hence H /\ K = (1).G by A4, GROUP_2:70;
+end;
+@ %def Th106
+
+\begin{theorem}
+Let $K$ be a subgroup of $G$. If the set underlying $K$ is a right transversal
+of $H$, then $H\cap K=\trivialGroup$.
+\end{theorem}
+
+<<Theorem: if $K\subgroup G$ is a right transversal of $H$, then $H\cap K=\trivialGroup$>>=
+theorem Th107:
+  for K being Subgroup of G
+  st carr K is H-right-transversal-like
+  holds H /\ K = (1).G
+proof
+  let K be Subgroup of G;
+  assume A1: carr K is H-right-transversal-like;
+  carr H in Right_Cosets H by GROUP_2:135;
+  then consider h being Element of G such that
+  A2: (carr H) /\ (carr K) = {h} by A1;
+  A3: carr (H /\ K) = {h} by A2, GROUP_2:81;
+  then A4: H /\ K is finite by GROUP_2:def 9;
+  card (H /\ K) = card {h} by A3, GROUP_2:def 9
+               .= 1 by CARD_1:30;
+  hence H /\ K = (1).G by A4, GROUP_2:70;
+end;
+@ %def Th107
+
+\begin{theorem}
+Let $H_{1}$, $H_{2}$ be subgroups of $G$.
+Let $a$, $b$, $c$, $d$ be Elements of $G$.
+If $a,c\in H_{1}$ and $b,d\in H_{2}$ and $ab=cd$,
+then $c^{-1}a=db^{-1}$ and $c^{-1}a\in H_{1}\cap H_{2}$ and $db^{-1}\in H_{1}\cap H_{2}$.
+\end{theorem}
+
+<<Theorem: for $a,c\in H_{1}$ and $b,d\in H_{2}$, if $ab=cd$ then $c^{-1}a=db^{-1}$ and $c^{-1}a\in H_{1}\cap H_{2}$ and $db^{-1}\in H_{1}\cap H_{2}$>>=
+:: Now, we can establish the fact that complements to normal subgroups
+:: describe transversals to that normal subgroup.
+theorem Th108:
+  for H1,H2 being Subgroup of G
+  for a,b,c,d being Element of G
+  st a in H1 & c in H1 & b in H2 & d in H2
+  holds a*b = c*d implies (c")*a = d*(b") & (c")*a in H1 /\ H2 &
+  d*(b") in H1 /\ H2
+proof
+  let H1,H2 be Subgroup of G;
+  let a,b,c,d be Element of G;
+  assume A1: a in H1;
+  assume A2: c in H1;
+  assume A3: b in H2;
+  assume A4: d in H2;
+  assume A5: a*b = c*d;
+  then a = (c*d)*(b ") by GROUP_1:14
+        .= c*(d * (b")) by GROUP_1:def 3;
+  hence A6: (c ")*a = d * (b ") by GROUP_1:13;
+
+  c " in H1 by A2, GROUP_2:51;
+  then A7: (c ")*a in H1 by A1, GROUP_2:50;
+  b" in H2 by A3, GROUP_2:51;
+  then d*(b ") in H2 by A4, GROUP_2:50;
+  hence thesis by A6, A7, GROUP_2:82;
+end;
+@ %def Th108
+
+\begin{theorem}
+Let $g,h$ be Elements of $G$.
+If either $gh^{-1}\in\trivialSubgroup$ or $g^{-1}h\in\trivialSubgroup$,
+then $g=h$.
+\end{theorem}
+
+<<Theorem: If either $gh^{-1}\in\trivialSubgroup$ or $g^{-1}h\in\trivialSubgroup$, then $g=h$>>=
+theorem Th109:
+  for g,h being Element of G
+  st g*(h ") in (1).G or (g ")*h in (1).G
+  holds g = h
+proof
+  let g,h be Element of G;
+  assume g*(h ") in (1).G or (g ")*h in (1).G;
+  then g*(h ") in {1_G} or (g ")*h in {1_G} by GROUP_2:def 7;
+  then g*(h ") = 1_G or (g ")*h = 1_G by TARSKI:def 1;
+  then (g = (h ") " & (h ") = g ") or (g " = h " & h = (g ") ") by GROUP_1:12;
+  hence thesis;
+end;
+@ %def Th109
+
+\begin{theorem}
+Let $N$ be a subgroup of $G$.
+Assume $H$, $N$ are complements in $G$.
+Then every element $g$ of $G$ can be written uniquely as $g=hn$ for some
+$h\in H$ and $n\in N$.
+\end{theorem}
+
+<<Theorem: $H$, $N$ are complements in $G$ implies every $g\in G$ factors uniquely as $g=hn$>>=
+theorem Th110:
+  for N being Subgroup of G
+  st H,N are_complements_in G
+  for g being Element of G
+  ex h,n being Element of G
+  st h in H & n in N & g = h*n
+   & (for h1, n1 being Element of G st h1 in H & n1 in N & g = h1*n1
+      holds h1 = h & n1 = n)
+proof
+  let N be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  let g be Element of G;
+  H*N = the carrier of G by A1; then
+  consider h,n being Element of G such that
+  A2: g = h*n & h in H & n in N by GROUP_5:4;
+  take h,n;
+  thus h in H by A2;
+  thus n in N by A2;
+  thus g = h*n by A2;
+  let h1, n1 be Element of G;
+  assume A3: h1 in H;
+  assume A4: n1 in N;
+  assume A5: g = h1*n1;
+  then h*n = h1*n1 by A2;
+  then n1*(n") in H /\ N & (h1")*h in H /\ N & (h1")*h = n1 * (n ")
+  by A2,A3,A4,Th108;
+  then A6: n1*(n") in (1).G & (h1")*h in (1).G by A1;
+  hence thesis by Th109;
+end;
+@ %def Th110
+
+\begin{theorem}
+Let $N$ be a subgroup of $G$.
+Assume $H$, $N$ are complements in $G$.
+Then every element $g$ of $G$ can be written uniquely as $g=nh$ for some
+$h\in H$ and $n\in N$.
+\end{theorem}
+
+<<Theorem: $H$, $N$ are complements in $G$ implies every $g\in G$ factors uniquely as $g=nh$>>=
+theorem Th111:
+  for N being Subgroup of G
+  st H,N are_complements_in G
+  for g being Element of G
+  ex h,n being Element of G
+  st h in H & n in N & g = n*h
+   & for h1, n1 being Element of G st h1 in H & n1 in N & g = n1*h1
+     holds h1 = h & n1 = n
+proof
+  let N be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  let g be Element of G;
+  N*H = the carrier of G by A1,Th59; then
+  consider n,h being Element of G such that
+  A2: g = n*h & n in N & h in H by GROUP_5:4;
+  take h,n;
+  thus h in H & n in N & g = n*h by A2;
+  let h1, n1 be Element of G;
+  assume A3: h1 in H;
+  assume A4: n1 in N;
+  assume A5: g = n1*h1;
+  then n*h = n1*h1 by A2;
+  then (n1")*n = h1 * (h ") & (n1")*n in N /\ H & h*(h1") in N /\ H
+  by A2,A3,A4,Th108;
+  then (n1")*n in (1).G & h*(h1") in (1).G by A1;
+  hence thesis by Th109;
+end;
+@ %def Th111
+
+\begin{theorem}
+Let $N$ be a subgroup of $G$.
+If $H$ and $N$ are complements in $G$, then $\thecarrier{H}$ is a
+left transversal of $N$.
+\end{theorem}
+
+<<Theorem: $H$, $N$ are complements implies $H$ is left transversal of $N$>>=
+:: Kurzweil and Stellmacher, proposition 1.10, as two propositions
+theorem
+  for N being Subgroup of G
+  st H,N are_complements_in G
+  holds carr H is N-left-transversal-like
+proof
+  let N be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  for g being Element of G
+  ex h,n being Element of G
+  st h in carr H & n in N & g = h*n
+   & (for h1, n1 being Element of G st h1 in carr H & n1 in N & g = h1*n1
+      holds h1 = h & n1 = n)
+  proof
+    let g be Element of G;
+    consider h,n being Element of G such that
+    A2: h in H & n in N & g = h*n and
+    A3: for h1, n1 being Element of G st h1 in H & n1 in N & g = h1*n1
+        holds h1 = h & n1 = n
+    by A1, Th110;
+    take h,n;
+    thus h in carr H by A2, GROUP_2:def 9;
+    thus n in N by A2;
+    thus g = h*n by A2;
+    let h1, n1 be Element of G;
+    assume A4: h1 in carr H;
+    assume A5: n1 in N;
+    assume A6: g = h1*n1;
+    h1 in H by A4, GROUP_2:def 9;
+    hence thesis by A3,A5,A6;
+  end;
+  hence carr H is N-left-transversal-like by Th92;
+end;
+@ 
+
+\begin{theorem}
+Let $N$ be a subgroup of $G$.
+If $H$ and $N$ are complements in $G$, then $\thecarrier{H}$ is a
+right transversal of $N$.
+\end{theorem}
+
+<<Theorem: $H$, $N$ are complements implies $H$ is right transversal of $N$>>=
+theorem
+  for N being Subgroup of G
+  st H,N are_complements_in G
+  holds carr H is N-right-transversal-like
+proof
+  let N be Subgroup of G;
+  assume A1: H,N are_complements_in G;
+  for g being Element of G
+  ex h,n being Element of G
+  st h in carr H & n in N & g = n*h
+   & for h1, n1 being Element of G st h1 in carr H & n1 in N & g = n1*h1
+     holds h1 = h & n1 = n
+  proof
+    let g be Element of G;
+    consider h,n being Element of G such that
+    A2: h in H & n in N & g = n*h and
+    A3: for h1, n1 being Element of G st h1 in H & n1 in N & g = n1*h1
+        holds h1 = h & n1 = n
+    by A1, Th111;
+    take h,n;
+    thus h in carr H by A2, GROUP_2:def 9;
+    thus n in N by A2;
+    thus g = n*h by A2;
+    let h1, n1 be Element of G;
+    assume A4: h1 in carr H;
+    assume A5: n1 in N;
+    assume A6: g = n1*h1;
+    h1 in H by A4, GROUP_2:def 9;
+    hence thesis by A3,A5,A6;
+  end;
+  hence carr H is N-right-transversal-like by Th93;
+end;
+@ 
